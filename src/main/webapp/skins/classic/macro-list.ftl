@@ -34,8 +34,10 @@
                         </#if>
                         </#if>
                     </h2>
-                    <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
+                    <#list article.articleTags as articleTag>
+                    ${articleTag}
+                    <#--    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> 
+                    -->
                     </#list>
                     <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${article.timeAgo}</span>
                     <#if "" != article.articleLatestCmterName>

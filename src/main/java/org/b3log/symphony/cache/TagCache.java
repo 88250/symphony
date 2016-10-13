@@ -24,11 +24,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.CompositeFilterOperator;
@@ -63,18 +64,6 @@ public class TagCache {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TagCache.class.getName());
-
-    /**
-     * Tag repository.
-     */
-    @Inject
-    private TagRepository tagRepository;
-
-    /**
-     * Short link query service.
-     */
-    @Inject
-    private ShortLinkQueryService shortLinkQueryService;
 
     /**
      * Icon tags.
@@ -148,7 +137,7 @@ public class TagCache {
     }
 
     /**
-     * Gets a tag with the specified tag title.
+     * Gets a tag URI with the specified tag title.
      *
      * @param title the specified tag title
      * @return tag URI, returns {@code null} if not found
@@ -203,6 +192,9 @@ public class TagCache {
      * Loads new tags.
      */
     public void loadNewTags() {
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
+
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setCurrentPageNum(1).setPageSize(Symphonys.getInt("newTagsCnt")).setPageCount(1);
 
@@ -221,6 +213,10 @@ public class TagCache {
      * Loads icon tags.
      */
     public void loadIconTags() {
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
+        final ShortLinkQueryService shortLinkQueryService = beanManager.getReference(ShortLinkQueryService.class);
+
         final Query query = new Query().setFilter(
                 CompositeFilterOperator.and(
                         new PropertyFilter(Tag.TAG_ICON_PATH, FilterOperator.NOT_EQUAL, ""),
@@ -269,6 +265,10 @@ public class TagCache {
      * Loads all tags.
      */
     public void loadAllTags() {
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
+        final ShortLinkQueryService shortLinkQueryService = beanManager.getReference(ShortLinkQueryService.class);
+
         final Query query = new Query().setFilter(
                 new PropertyFilter(Tag.TAG_STATUS, FilterOperator.EQUAL, Tag.TAG_STATUS_C_VALID))
                 .setCurrentPageNum(1).setPageSize(Integer.MAX_VALUE).setPageCount(1);
