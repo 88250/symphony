@@ -15,10 +15,12 @@
  */
 package org.b3log.symphony.processor;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -63,7 +65,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.4, Oct 11, 2016
+ * @version 1.7.1.5, Oct 13, 2016
  * @since 0.2.5
  */
 @RequestProcessor
@@ -207,8 +209,7 @@ public class NotificationProcessor {
         }
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
-
-        int notificationType = -1;
+        int notificationType;
 
         switch (type) {
             case "commented":
@@ -261,7 +262,7 @@ public class NotificationProcessor {
         JSONObject requestJSONObject;
         try {
             requestJSONObject = Requests.parseRequestJSONObject(request, response);
-        } catch (final Exception e) {
+        } catch (final IOException | ServletException e) {
             LOGGER.error(e.getMessage());
 
             context.renderJSON(false);

@@ -25,9 +25,9 @@
                 <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
             </h2>
             <div class="ft-gray">
-                <#list notification.articleTags?split(",") as articleTag>
-                <a class="tag" rel="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">
-                    ${articleTag}</a>
+                <#list notification.articleTagObjs as articleTag>
+                <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
+                    ${articleTag.tagTitle}</a>
                 </#list> &nbsp;
                 <span class="icon-date"></span>
                 ${notification.createTime?string('yyyy-MM-dd HH:mm')}
@@ -42,7 +42,7 @@
     </#list>
 </ul>
 <#else>
-${noMessageLabel}
+<div class="no-list">${noMessageLabel}</div>
 </#if>
 
 <@pagination url="/notifications/following-user"/>

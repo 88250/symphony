@@ -1930,7 +1930,13 @@ public class AdminProcessor {
             final String name = parameterNames.nextElement();
             final String value = request.getParameter(name);
 
-            if (name.equals(Tag.TAG_STATUS)) {
+            if (name.equals(Tag.TAG_REFERENCE_CNT)
+                    || name.equals(Tag.TAG_COMMENT_CNT)
+                    || name.equals(Tag.TAG_FOLLOWER_CNT)
+                    || name.contains(Tag.TAG_LINK_CNT)
+                    || name.contains(Tag.TAG_STATUS)
+                    || name.equals(Tag.TAG_GOOD_CNT)
+                    || name.equals(Tag.TAG_BAD_CNT)) {
                 tag.put(name, Integer.valueOf(value));
             } else {
                 tag.put(name, value);

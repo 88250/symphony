@@ -201,6 +201,11 @@ public final class Article {
 
     //// Transient ////
     /**
+     * Key of article tag objects.
+     */
+    public static final String ARTICLE_T_TAG_OBJS = "articleTagObjs";
+
+    /**
      * Key of article vote.
      */
     public static final String ARTICLE_T_VOTE = "articleVote";
