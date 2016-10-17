@@ -394,7 +394,7 @@
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <div id="revision"><div id="revisions"></div></div>
-        <div class="reply-btn fn-pointer tooltipped tooltipped-n" aria-label="${cmtLabel}"><span class="icon-reply"></span></div>
+        <div class="reply-btn fn-pointer tooltipped tooltipped-w" aria-label="${cmtLabel}"><span class="icon-reply"></span></div>
         <div class="editor-panel">
             <div class="wrapper">
             <#if isLoggedIn>
