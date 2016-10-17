@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Vote query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jul 31, 2016
+ * @version 1.1.0.1, Oct 17, 2016
  * @since 1.3.0
  */
 @Service
@@ -80,7 +80,7 @@ public class VoteQueryService {
      */
     public int isVoted(final String userId, final String dataId) {
         try {
-            final List<Filter> filters = new ArrayList<Filter>();
+            final List<Filter> filters = new ArrayList<>();
             filters.add(new PropertyFilter(Vote.USER_ID, FilterOperator.EQUAL, userId));
             filters.add(new PropertyFilter(Vote.DATA_ID, FilterOperator.EQUAL, dataId));
 
