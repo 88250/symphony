@@ -45,7 +45,6 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
@@ -60,7 +59,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.4.6, Sep 23, 2016
+ * @version 1.7.4.7, Oct 17, 2016
  * @since 0.2.0
  */
 @Service
@@ -112,7 +111,7 @@ public class UserQueryService {
 
         try {
             return (int) pointtransferRepository.count(query);
-        } catch (final Exception e) {
+        } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets invited user count failed", e);
 
             return 0;
@@ -307,7 +306,7 @@ public class UserQueryService {
             }
         });
 
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> ret = new ArrayList<>();
 
         if (index < 0) {
             return ret;
@@ -424,59 +423,53 @@ public class UserQueryService {
      * @throws ServiceException service exception
      */
     public Set<String> getUserNames(final String text) throws ServiceException {
-        Stopwatchs.start("Get usernames");
+        final Set<String> ret = new HashSet<>();
 
-        try {
-            final Set<String> ret = new HashSet<String>();
+        int idx = text.indexOf('@');
 
-            int idx = text.indexOf('@');
-
-            if (-1 == idx) {
-                return ret;
-            }
-
-            String copy = text.trim();
-            copy = copy.replaceAll("\\n", " ");
-            copy = copy.replaceAll("(?=\\pP)[^@]", " ");
-            String[] uNames = StringUtils.substringsBetween(copy, "@", " ");
-            String tail = StringUtils.substringAfterLast(copy, "@");
-
-            if (tail.contains(" ")) {
-                tail = null;
-            }
-
-            if (null != tail) {
-                if (null == uNames) {
-                    uNames = new String[1];
-                    uNames[0] = tail;
-                } else {
-                    uNames = Arrays.copyOf(uNames, uNames.length + 1);
-                    uNames[uNames.length - 1] = tail;
-                }
-            }
-
-            if (null == uNames) {
-                return ret;
-            }
-
-            for (int i = 0; i < uNames.length; i++) {
-                final String maybeUserName = uNames[i];
-
-                if (null != getUserByName(maybeUserName)) { // Found a user
-                    ret.add(maybeUserName);
-
-                    copy = copy.replaceFirst("@" + maybeUserName, "");
-                    idx = copy.indexOf('@');
-                    if (-1 == idx) {
-                        return ret;
-                    }
-                }
-            }
-
+        if (-1 == idx) {
             return ret;
-        } finally {
-            Stopwatchs.end();
         }
+
+        String copy = text.trim();
+        copy = copy.replaceAll("\\n", " ");
+        copy = copy.replaceAll("(?=\\pP)[^@]", " ");
+        String[] uNames = StringUtils.substringsBetween(copy, "@", " ");
+        String tail = StringUtils.substringAfterLast(copy, "@");
+
+        if (tail.contains(" ")) {
+            tail = null;
+        }
+
+        if (null != tail) {
+            if (null == uNames) {
+                uNames = new String[1];
+                uNames[0] = tail;
+            } else {
+                uNames = Arrays.copyOf(uNames, uNames.length + 1);
+                uNames[uNames.length - 1] = tail;
+            }
+        }
+
+        if (null == uNames) {
+            return ret;
+        }
+
+        for (int i = 0; i < uNames.length; i++) {
+            final String maybeUserName = uNames[i];
+
+            if (null != getUserByName(maybeUserName)) { // Found a user
+                ret.add(maybeUserName);
+
+                copy = copy.replaceFirst("@" + maybeUserName, "");
+                idx = copy.indexOf('@');
+                if (-1 == idx) {
+                    return ret;
+                }
+            }
+        }
+
+        return ret;
     }
 
     /**
@@ -552,7 +545,7 @@ public class UserQueryService {
         if (requestJSONObject.has(Common.USER_NAME_OR_EMAIL)) {
             final String nameOrEmail = requestJSONObject.optString(Common.USER_NAME_OR_EMAIL);
 
-            final List<Filter> filters = new ArrayList<Filter>();
+            final List<Filter> filters = new ArrayList<>();
             filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, nameOrEmail));
             filters.add(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, nameOrEmail));
             query.setFilter(new CompositeFilter(CompositeFilterOperator.OR, filters));

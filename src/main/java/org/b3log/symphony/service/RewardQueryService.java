@@ -35,7 +35,7 @@ import org.b3log.symphony.repository.RewardRepository;
  * Reward query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Aug 31, 2015
+ * @version 1.1.0.1, Oct 17, 2015
  * @since 1.3.0
  */
 @Service
@@ -61,7 +61,7 @@ public class RewardQueryService {
      */
     public long rewardedCount(final String dataId, final int type) {
         final Query query = new Query();
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Reward.DATA_ID, FilterOperator.EQUAL, dataId));
         filters.add(new PropertyFilter(Reward.TYPE, FilterOperator.EQUAL, type));
 
@@ -86,7 +86,7 @@ public class RewardQueryService {
      */
     public boolean isRewarded(final String userId, final String dataId, final int type) {
         final Query query = new Query();
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Reward.SENDER_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Reward.DATA_ID, FilterOperator.EQUAL, dataId));
         filters.add(new PropertyFilter(Reward.TYPE, FilterOperator.EQUAL, type));

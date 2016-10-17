@@ -54,6 +54,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.Article;
@@ -661,9 +662,14 @@ public class ArticleProcessor {
         dataModel.put("fileMaxSize", fileMaxSize);
 
         // Fill article thank
-        article.put(Common.THANKED, rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_THANK_ARTICLE));
-        article.put(Common.THANKED_COUNT, rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_THANK_ARTICLE));
-
+        Stopwatchs.start("Fills article thank");
+        try {
+            article.put(Common.THANKED, rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_THANK_ARTICLE));
+            article.put(Common.THANKED_COUNT, rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_THANK_ARTICLE));
+        } finally {
+            Stopwatchs.end();
+        }
+        
         String stickConfirmLabel = langPropsService.get("stickConfirmLabel");
         stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));
         dataModel.put("stickConfirmLabel", stickConfirmLabel);
@@ -732,24 +738,29 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
         // Fill comment thank
-        for (final JSONObject comment : articleComments) {
-            comment.put(Comment.COMMENT_T_NICE,
-                    comment.optDouble(Comment.COMMENT_SCORE) >= niceCmtScore);
+        Stopwatchs.start("Fills comment thank");
+        try {
+            final String thankTemplate = langPropsService.get("thankConfirmLabel");
+            for (final JSONObject comment : articleComments) {
+                comment.put(Comment.COMMENT_T_NICE,
+                        comment.optDouble(Comment.COMMENT_SCORE) >= niceCmtScore);
 
-            String thankTemplate = langPropsService.get("thankConfirmLabel");
-            thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
-                    .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));
-            comment.put(Comment.COMMENT_T_THANK_LABEL, thankTemplate);
+                final String thankStr = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
+                        .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));
+                comment.put(Comment.COMMENT_T_THANK_LABEL, thankStr);
 
-            final String commentId = comment.optString(Keys.OBJECT_ID);
-            if (isLoggedIn) {
-                comment.put(Common.REWARDED,
-                        rewardQueryService.isRewarded(currentUserId, commentId, Reward.TYPE_C_COMMENT));
-                final int commentVote = voteQueryService.isVoted(currentUserId, commentId);
-                comment.put(Comment.COMMENT_T_VOTE, commentVote);
+                final String commentId = comment.optString(Keys.OBJECT_ID);
+                if (isLoggedIn) {
+                    comment.put(Common.REWARDED,
+                            rewardQueryService.isRewarded(currentUserId, commentId, Reward.TYPE_C_COMMENT));
+                    final int commentVote = voteQueryService.isVoted(currentUserId, commentId);
+                    comment.put(Comment.COMMENT_T_VOTE, commentVote);
+                }
+
+                comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
             }
-
-            comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
+        } finally {
+            Stopwatchs.end();
         }
 
         // Referral statistic
