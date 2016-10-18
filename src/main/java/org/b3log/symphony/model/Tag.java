@@ -37,7 +37,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.6.4, Oct 12, 2016
+ * @version 1.15.6.5, Oct 18, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -274,7 +274,7 @@ public final class Tag {
 
     static {
         NORMALIZE_MAPPINGS.put("JavaScript", new HashSet<>(Arrays.asList("JS")));
-        NORMALIZE_MAPPINGS.put("Elasticsearch", new HashSet<>(Arrays.asList("ES")));
+        NORMALIZE_MAPPINGS.put("Elasticsearch", new HashSet<>(Arrays.asList("ES搜索引擎", "ES搜索")));
     }
 
     /**
@@ -451,7 +451,7 @@ public final class Tag {
         for (final Map.Entry<String, Set<String>> entry : NORMALIZE_MAPPINGS.entrySet()) {
             final Set<String> oddTitles = entry.getValue();
             for (final String oddTitle : oddTitles) {
-                if (StringUtils.containsIgnoreCase(title, oddTitle)) {
+                if (StringUtils.equalsIgnoreCase(title, oddTitle)) {
                     return entry.getKey();
                 }
             }
