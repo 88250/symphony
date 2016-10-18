@@ -144,7 +144,7 @@ var Register = {
                     } else {
                         $("#registerTip").removeClass("tip-succ");
                         $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
-                        $("#captcha").attr("src", "/captcha?code=" + Math.random());
+                        $("#captcha").attr("src", Label.servePath + "/captcha?code=" + Math.random());
                         $("#securityCode").val("");
                     }
                 }
