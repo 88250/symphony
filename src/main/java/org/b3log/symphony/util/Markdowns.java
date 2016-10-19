@@ -91,7 +91,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.5.10, Oct 13, 2016
+ * @version 1.8.6.10, Oct 19, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -119,6 +119,7 @@ public final class Markdowns {
                 addAttributes("iframe", "src", "width", "height", "border", "marginwidth", "marginheight").
                 addAttributes("audio", "controls", "src").
                 addAttributes("video", "controls", "src", "width", "height").
+                addAttributes("source", "src", "media", "type").
                 addAttributes("object", "width", "height", "data", "type").
                 addAttributes("param", "name", "value").
                 addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking"),
@@ -144,13 +145,11 @@ public final class Markdowns {
 
         final Elements audios = doc.getElementsByTag("audio");
         for (final Element audio : audios) {
-            audio.text(LANG_PROPS_SERVICE.get("notSupportPlayLabel"));
             audio.attr("preload", "none");
         }
 
-        final Elements videos = doc.getElementsByTag("videos");
+        final Elements videos = doc.getElementsByTag("video");
         for (final Element video : videos) {
-            video.text(LANG_PROPS_SERVICE.get("notSupportPlayLabel"));
             video.attr("preload", "none");
         }
 
