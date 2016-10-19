@@ -77,7 +77,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.25.28, Oct 19, 2016
+ * @version 2.14.25.29, Oct 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -251,7 +251,9 @@ public class ArticleMgmtService {
             for (final JSONObject tagArticleRel : tagArticleRels) {
                 final String tagId = tagArticleRel.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
                 final JSONObject tag = tagRepository.get(tagId);
-                tag.put(Tag.TAG_REFERENCE_CNT, tag.optInt(Tag.TAG_REFERENCE_CNT) - 1);
+                int cnt = tag.optInt(Tag.TAG_REFERENCE_CNT) - 1;
+                cnt = cnt < 0 ? 0 : cnt;
+                tag.put(Tag.TAG_REFERENCE_CNT, cnt);
                 tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
 
                 tagRepository.update(tagId, tag);
@@ -1241,14 +1243,14 @@ public class ArticleMgmtService {
 
         final List<JSONObject> newTags = new ArrayList<>();
 
-        for (int i = 0; i < tagStrings.length; i++) {
-            final String tagTitle = tagStrings[i].trim();
+        for (final String tagString : tagStrings) {
+            final String tagTitle = tagString.trim();
             JSONObject newTag = tagRepository.getByTitle(tagTitle);
-
             if (null == newTag) {
                 newTag = new JSONObject();
                 newTag.put(Tag.TAG_TITLE, tagTitle);
             }
+            
             newTags.add(newTag);
         }
 
@@ -1276,9 +1278,9 @@ public class ArticleMgmtService {
 
         for (final JSONObject tagDropped : tagsDropped) {
             final String tagId = tagDropped.getString(Keys.OBJECT_ID);
-            final int refCnt = tagDropped.getInt(Tag.TAG_REFERENCE_CNT);
-
-            tagDropped.put(Tag.TAG_REFERENCE_CNT, refCnt - 1);
+            int refCnt = tagDropped.getInt(Tag.TAG_REFERENCE_CNT) - 1;
+            refCnt = refCnt < 0 ? 0 : refCnt;
+            tagDropped.put(Tag.TAG_REFERENCE_CNT, refCnt);
             final int tagCmtCnt = tagDropped.getInt(Tag.TAG_COMMENT_CNT);
             tagDropped.put(Tag.TAG_COMMENT_CNT, tagCmtCnt - articleCmtCnt);
             tagDropped.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
