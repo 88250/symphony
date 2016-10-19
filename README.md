@@ -143,15 +143,17 @@ Sym 的诞生离不开以下开源项目：
 
 **首页**
 
-![首页](https://cloud.githubusercontent.com/assets/873584/17779283/b703a752-6599-11e6-8bfb-453de8f87732.png)
+![index](https://cloud.githubusercontent.com/assets/873584/19502589/a71b28ca-95e0-11e6-82da-2e2585f912d4.png)
 
 **帖子**
 
-![帖子](https://cloud.githubusercontent.com/assets/873584/17779286/b71a930e-6599-11e6-9822-094aa234abec.png)
+![article](https://cloud.githubusercontent.com/assets/873584/19502600/b9a92172-95e0-11e6-9a39-402c08b87e6f.png)
+
+（右边红色回帖按钮的位置应该在右下角，截图软件不给力..）
 
 **个人设置**
 
-![个人设置](https://cloud.githubusercontent.com/assets/873584/17779285/b70c71e8-6599-11e6-8847-90d72372f4d9.png)
+![settings](https://cloud.githubusercontent.com/assets/873584/19502605/c04f1e46-95e0-11e6-980f-a927bd774dc3.png)
 
 **发布编辑**
 
@@ -163,8 +165,10 @@ Sym 的诞生离不开以下开源项目：
 * 支持 Emoji
 * 使用本地存储保障数据在未提交时不丢
 
-![发布编辑](https://cloud.githubusercontent.com/assets/873584/17779284/b7096372-6599-11e6-9932-4f15793448e5.png)
+![post](https://cloud.githubusercontent.com/assets/873584/19502607/c290209c-95e0-11e6-8fca-484cdef94bd6.png)
 
 ### 移动端
 
 移动端使用单独的模版进行渲染，解决通过一套模版自适应不能达成的效果和体验。
+
+![mobile](https://cloud.githubusercontent.com/assets/873584/19502609/c4b25502-95e0-11e6-9d6a-1ea18bfebf6f.png)

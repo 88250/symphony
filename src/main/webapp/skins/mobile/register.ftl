@@ -43,7 +43,7 @@
                                 </td>
                                 <td>
                                     <input type="text" id="securityCode" />
-                                    <img id="captcha" class="fn-pointer" src="/captcha" onclick="this.src = '/captcha?' + (new Date()).getTime()" />
+                                    <img id="captcha" class="fn-pointer" src="${servePath}/captcha" onclick="this.src = '${servePath}/captcha?' + (new Date()).getTime()" />
                                 </td>
                             </tr>
                             <tr>

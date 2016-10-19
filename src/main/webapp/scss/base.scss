@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.17.43, Oct 11, 2016
+ * @version 2.24.18.44, Oct 19, 2016
  */
 
 @import "variables";
@@ -703,7 +703,7 @@ button,
     border: 1px solid #D5D5D5;
     border-bottom-color: #E1E1E1;
     box-sizing: border-box;
-    line-height: 21px;
+    line-height: 19px;
     white-space: nowrap;
 }
 
@@ -1981,12 +1981,13 @@ ul.CodeMirror-hints {
 }
 
 .link-forge-upload input[type=text] {
-    height: 35px;
+    height: 40px;
 }
 
 .link-forge-upload button {
     position: absolute;
     right: 0;
+    height: 40px;
     border-radius: 0 3px 3px 0;
 }
 /* end link forge */
