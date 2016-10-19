@@ -7,16 +7,18 @@
 * 非常详细的 [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
 * 如果你在搭建或者二次开发时碰到问题，欢迎加 Q 群 17370164 进行讨论
 
-### 作者
-
-Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/symphony/graphs/contributors)看到。
-
-### 初衷
-
 Sym 的诞生是有如下几点原因：
 
-* 已有的用 Java 写的论坛很少也很丑，并且大多数已经不再维护
-* 我们想实现一种[新的网络社区体验](https://hacpai.com/b3log)，独立博客+论坛互动 
+（正版）
+* 好用的 Java 开源论坛系统难以寻找
+* 很多系统界面上仍然保持着老式风格，远远没有跟上前端发展的脚步
+* 很多系统没有创新、好玩的特性，缺少现代化的用户体验
+* 我们正在探索新的论坛模式，实现独奏（[Solo](https://github.com/b3log/solo)）与协奏（[Symphony](https://github.com/b3log/symphony)）相结合的[社区新体验](https://hacpai.com/b3log)
+
+（野版）
+
+* 做最 NB 的开源论坛系统
+* 作者技痒，炫技之作
 
 ## 基本理念
 
@@ -94,12 +96,15 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 * 一个好玩的产品或说是细节特性然并卵，需要做的是一个能够持续提供用户价值的产品/特性
 * 虽然直到目前 B3log 系产品用户不多，但我们已经初步证明了：Java 用来实现博客、论坛没有什么不好的
 * 使用开源软件，了解开源思想，融入开源
-
-## 其他
-
 * [如果你想做个程序员相关的论坛，请三思](https://hacpai.com/article/1471007706462)
 * [你怎么看待社群、社区这两个词？](https://hacpai.com/article/1465652829809)
 * [UGC 社区价值生态](https://hacpai.com/article/1462028669762)
+
+## 贡献
+
+Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/symphony/graphs/contributors)看到。
+
+我们非常期待你加入到这个项目中，无论是使用反馈还是代码补丁，都是对 Sym 一份满满的爱 :heart:
 
 ## Terms
 
