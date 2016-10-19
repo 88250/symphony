@@ -144,7 +144,7 @@ public class LinkForgeMgmtService {
                 }
 
                 final String linkId = link.optString(Keys.OBJECT_ID);
-                final double linkScore = link.optDouble(Link.LINK_SCORE);
+                final double linkScore = link.optDouble(Link.LINK_SCORE, 0D);
                 String title = link.optString(Link.LINK_TITLE) + " " + link.optString(Link.LINK_T_KEYWORDS);
                 title = Pangu.spacingText(title);
                 String[] titles = title.split(" ");

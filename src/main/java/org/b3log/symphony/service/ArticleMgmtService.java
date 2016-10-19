@@ -77,7 +77,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.24.28, Oct 13, 2016
+ * @version 2.14.25.28, Oct 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -1451,7 +1451,7 @@ public class ArticleMgmtService {
             tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
             tagArticleRelation.put(Article.ARTICLE_LATEST_CMT_TIME, article.optLong(Article.ARTICLE_LATEST_CMT_TIME));
             tagArticleRelation.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
-            tagArticleRelation.put(Article.REDDIT_SCORE, article.optDouble(Article.REDDIT_SCORE));
+            tagArticleRelation.put(Article.REDDIT_SCORE, article.optDouble(Article.REDDIT_SCORE, 0D));
             tagArticleRelation.put(Article.ARTICLE_PERFECT, article.optInt(Article.ARTICLE_PERFECT));
 
             tagArticleRepository.add(tagArticleRelation);

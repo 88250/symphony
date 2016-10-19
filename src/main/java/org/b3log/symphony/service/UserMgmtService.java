@@ -84,7 +84,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.14.18.17, Oct 13, 2016
+ * @version 1.14.19.17, Oct 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -205,7 +205,7 @@ public class UserMgmtService {
 
                     updateOnlineStatus(userId, ip, true);
 
-                    LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userId);
+                    LOGGER.log(Level.DEBUG, "Logged in with cookie[userId={0}]", userId);
 
                     return true;
                 }
