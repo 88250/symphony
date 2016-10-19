@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="item">
-                    <a href="/perfect" class="item-header" style="background-image: url(${perfectBgIcon});">${perfectLabel}</a>
+                    <a href="${servePath}/perfect" class="item-header" style="background-image: url(${perfectBgIcon});">${perfectLabel}</a>
                     <div class="module-panel">
                         <ul class="module-list">
                             <#list perfectArticles as article>
@@ -101,7 +101,7 @@
                 <a class="item-header" style="background-image: url(${activityBgIcon});" href="${servePath}/pre-post">${postArticleLabel}</a>
                 <div class="module-panel">
                     <ul class="module-list">
-                        <li><a class="title" href="<#if useCaptchaCheckin??>/activity/checkin<#else>/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a></li>
+                        <li><a class="title" href="<#if useCaptchaCheckin??>${servePath}/activity/checkin<#else>${servePath}/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a></li>
                         <li><a class="title" href="${servePath}/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a></li>
                         <li><a class="title" href="${servePath}/activity/1A0001">${activity1A0001Label}</a></li>
                         <li><a class="title" href="${servePath}/activity/character">${characterLabel}</a></li>
