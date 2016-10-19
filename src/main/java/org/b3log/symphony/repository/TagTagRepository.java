@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Tag-Tag relation repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, May 31, 2015
+ * @version 1.0.0.1, Oct 19, 2016
  * @since 1.3.0
  */
 @Repository
@@ -47,11 +47,7 @@ public class TagTagRepository extends AbstractRepository {
     /**
      * Weight threshold.
      */
-    private static final int WEIGHT;
-
-    static {
-        WEIGHT = Symphonys.getInt("tagRelatedWeight");
-    }
+    private static final int WEIGHT = Symphonys.getInt("tagRelatedWeight");
 
     /**
      * Public constructor.
@@ -84,7 +80,7 @@ public class TagTagRepository extends AbstractRepository {
      */
     public JSONObject getByTag1Id(final String tag1Id, final int currentPageNum, final int pageSize)
             throws RepositoryException {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + "1_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tag1Id));
         filters.add(new PropertyFilter(Common.WEIGHT, FilterOperator.GREATER_THAN_OR_EQUAL, WEIGHT));
 
@@ -119,7 +115,7 @@ public class TagTagRepository extends AbstractRepository {
      */
     public JSONObject getByTag2Id(final String tag2Id, final int currentPageNum, final int pageSize)
             throws RepositoryException {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + "2_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tag2Id));
         filters.add(new PropertyFilter(Common.WEIGHT, FilterOperator.GREATER_THAN_OR_EQUAL, WEIGHT));
 
@@ -148,7 +144,7 @@ public class TagTagRepository extends AbstractRepository {
      */
     public JSONObject getByTag1IdAndTag2Id(final String tag1Id, final String tag2Id)
             throws RepositoryException {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + "1_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tag1Id));
         filters.add(new PropertyFilter(Tag.TAG + "2_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tag2Id));
 
