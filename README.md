@@ -20,6 +20,8 @@ Sym 的诞生是有如下几点原因：
 * 做最 NB 的开源论坛系统
 * 作者技痒，炫技之作
 
+总之，[【黑客派】](https://hacpai.com)需要这样一个论坛系统才能镇得住会员，[【B3log开源Q群】](http://shang.qq.com/wpa/qunwpa?idkey=f77a54e7d2bd53bed4043f70838da92fa49eccda53e706ef2124943cb0df4df5)水友需要这样一个水塘....
+
 ## 基本理念
 
 ### 实时交互
