@@ -67,7 +67,7 @@
             <h2>${modifiableLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/user/${user.oId}" method="POST">
+            <form action="${servePath}/admin/user/${user.oId}" method="POST">
                 <label for="userPassword">${userPasswordLabel}</label>
                 <input type="text" id="userPassword" name="userPassword" value="${user.userPassword}" />
 
@@ -257,7 +257,7 @@
             <h2>${advancedUpdateLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/user/${user.oId}/email" method="POST">
+            <form action="${servePath}/admin/user/${user.oId}/email" method="POST">
                 <label for="userEmail">${userEmailLabel}</label>
                 <input type="text" id="userEmail" name="userEmail" value="${user.userEmail}" />
 
@@ -266,7 +266,7 @@
             </form>
             <br/>
 
-            <form action="/admin/user/${user.oId}/username" method="POST">
+            <form action="${servePath}/admin/user/${user.oId}/username" method="POST">
                 <label for="userName">${userNameLabel}</label>
                 <input type="text" name="userName" value="${user.userName}" />
 
@@ -281,7 +281,7 @@
             <h2>${chargePointLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/user/${user.oId}/charge-point" method="POST">
+            <form action="${servePath}/admin/user/${user.oId}/charge-point" method="POST">
                 <label>${userNameLabel}</label>
                 <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
 
@@ -302,7 +302,7 @@
             <h2>${exchangePointLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/user/${user.oId}/exchange-point" method="POST">
+            <form action="${servePath}/admin/user/${user.oId}/exchange-point" method="POST">
                 <label>${userNameLabel}</label>
                 <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
 
@@ -320,7 +320,7 @@
             <h2>${abusePointLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/user/${user.oId}/abuse-point" method="POST">
+            <form action="${servePath}/admin/user/${user.oId}/abuse-point" method="POST">
                 <label>${userNameLabel}</label>
                 <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
 
@@ -341,7 +341,7 @@
             <h2>${compensateInitPointLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/user/${user.oId}/init-point" method="POST">
+            <form action="${servePath}/admin/user/${user.oId}/init-point" method="POST">
                 <label>${userNameLabel}</label>
                 <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
 

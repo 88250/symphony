@@ -3,10 +3,10 @@
 <@admin "tags">
 <div class="content admin">
     <div class="module list">
-        <form method="GET" action="tags" class="form">
+        <form method="GET" action="${servePath}/admin/tags" class="form">
             <input name="title" type="text" placeholder="${tagLabel}"/>
             <button type="submit" class="green">${searchLabel}</button>
-            <button type="button" class="btn red" onclick="window.location = '/admin/add-tag'">${addTagLabel}</button>
+            <button type="button" class="btn red" onclick="window.location = '${servePath}/admin/add-tag'">${addTagLabel}</button>
         </form>
         <ul>
             <#list tags as item>

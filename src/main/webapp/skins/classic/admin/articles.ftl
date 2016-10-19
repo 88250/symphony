@@ -3,13 +3,13 @@
 <@admin "articles">
 <div class="content admin">
     <div class="module list">
-        <form method="GET" action="articles" class="form">
+        <form method="GET" action="${servePath}/admin/articles" class="form">
             <input name="id" type="text" placeholder="${articleLabel} Id"/>
             <button type="submit" class="green">${searchLabel}</button>
             <#if esEnabled || algoliaEnabled>
             <button type="button" class="btn red" onclick="searchIndex();">${searchIndexLabel}</button>
             </#if>
-            <button type="button" class="btn red" onclick="window.location = '/admin/add-article'">${addArticleLabel}</button>
+            <button type="button" class="btn red" onclick="window.location = '${servePath}/admin/add-article'">${addArticleLabel}</button>
         </form>
         <ul>
             <#list articles as item>

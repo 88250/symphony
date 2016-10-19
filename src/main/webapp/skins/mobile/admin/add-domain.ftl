@@ -7,7 +7,7 @@
             <h2>${addDomainLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/add-domain" method="POST">
+            <form action="${servePath}/admin/add-domain" method="POST">
                 <label>${titleLabel}</label>
                 <input name="domainTitle" type="text" />
 

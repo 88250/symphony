@@ -6,7 +6,7 @@
             <h2>${addArticleLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/add-article" method="POST">
+            <form action="${servePath}/admin/add-article" method="POST">
                 <label>${userNameLabel}</label>
                 <input name="userName" type="text" />
 

@@ -16,7 +16,7 @@
             <h2>${modifiableLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/reserved-word/${word.oId}" method="POST">
+            <form action="${servePath}/admin/reserved-word/${word.oId}" method="POST">
                 <label for="optionValue">${reservedWordLabel}</label>
                 <input type="text" id="optionValue" name="optionValue" value="${word.optionValue}" />
 
@@ -31,7 +31,7 @@
             <h2 class="ft-red">${removeLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/remove-reserved-word" method="POST" onsubmit="return window.confirm('Sure?')">
+            <form action="${servePath}/admin/remove-reserved-word" method="POST" onsubmit="return window.confirm('Sure?')">
                 <label for="id">Id</label>
                 <input type="text" id="id" name="id" value="${word.oId}" readonly="readonly"/>
 

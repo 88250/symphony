@@ -22,7 +22,7 @@
             <a class="tag" target="_blank" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
             </#list>
 
-            <form method="POST" action="/admin/domain/${domain.oId}/add-tag" class="fn-clear">
+            <form method="POST" action="${servePath}/admin/domain/${domain.oId}/add-tag" class="fn-clear">
                 <label form="addTag">${addTagLabel}</label>
                 <input type="text" name="tagTitle" />
 
@@ -30,7 +30,7 @@
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
 
-            <form method="POST" action="/admin/domain/${domain.oId}/remove-tag">
+            <form method="POST" action="${servePath}/admin/domain/${domain.oId}/remove-tag">
                 <label form="addTag">${removeTagLabel}</label>
                 <input type="text" name="tagTitle" />
 
@@ -45,7 +45,7 @@
             <h2>${modifiableLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/domain/${domain.oId}" method="POST">
+            <form action="${servePath}/admin/domain/${domain.oId}" method="POST">
                 <label for="domainTitle">${domainLabel}${updateCaseOnlyLabel}</label>
                 <input type="text" id="domainTitle" name="domainTitle" value="${domain.domainTitle}" />
 
@@ -93,7 +93,7 @@
             <h2 class="ft-red">${removeLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/remove-domain" method="POST" onsubmit="return window.confirm('Sure?')">
+            <form action="${servePath}/admin/remove-domain" method="POST" onsubmit="return window.confirm('Sure?')">
                 <label for="domainId">Id</label>
                 <input type="text" id="domainId" name="domainId" value="${domain.oId}" readonly="readonly"/>
 

@@ -7,7 +7,7 @@
         </div>
 
         <div class="module-panel form fn-clear">
-            <form action="/admin/ad" method="POST">
+            <form action="${servePath}/admin/ad" method="POST">
                 <label for="sideFullAd">${sideFullPosLabel}</label>
                 <textarea rows="20" name="sideFullAd">${sideFullAd}</textarea>
 

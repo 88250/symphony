@@ -7,7 +7,7 @@
             <h2>${addUserLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/add-user" method="POST">
+            <form action="${servePath}/admin/add-user" method="POST">
                 <label>${userNameLabel}</label>
                 <input name="userName" type="text" />
 

@@ -3,10 +3,10 @@
 <@admin "domains">
 <div class="content admin">
     <div class="module list">
-        <form method="GET" action="domains" class="form">
+        <form method="GET" action="${servePath}/admin/domains" class="form">
             <input name="title" type="text" placeholder="${domainLabel}"/>
             <button type="submit" class="green">${searchLabel}</button>
-            <button type="button" class="btn red" onclick="window.location = '/admin/add-domain'">${addDomainLabel}</button>
+            <button type="button" class="btn red" onclick="window.location = '${servePath}/admin/add-domain'">${addDomainLabel}</button>
         </form>
         <ul>
             <#list domains as item>

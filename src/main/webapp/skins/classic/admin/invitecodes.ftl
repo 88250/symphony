@@ -3,7 +3,7 @@
 <@admin "invitecodes">
 <div class="content admin">
     <div class="module list">
-        <form method="POST" action="invitecodes/generate" class="form">
+        <form method="POST" action="${servePath}/admininvitecodes/generate" class="form">
             <input name="quantity" type="number" placeholder="${quantityLabel}" style="width: 30%" />
             <input name="memo" type="text" placeholder="${memoLabel}"/>
             <button type="submit" class="green">${generateLabel}</button>
