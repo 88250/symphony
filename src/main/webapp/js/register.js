@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.4.2.9, Sep 1, 2016
+ * @version 2.4.2.9, Oct 19, 2016
  */
 
 /**
@@ -105,7 +105,7 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        window.location.href = "https://hacpai.com/article/1440573175609";
+                        window.location.href = Label.servePath;
                     } else {
                         $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                     }
@@ -179,7 +179,7 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        window.location.href = "https://hacpai.com";
+                        window.location.href = Label.servePath;
                     } else {
                         $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                     }
