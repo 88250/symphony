@@ -1115,7 +1115,7 @@ var Util = {
             window.localStorage.clear();
             window.localStorage.unreadNotificationCount = 0;
         }
-        window.location.href = Label.servePath + '/logout?goto=' + location.protocol + '//' + location.host;
+        window.location.href = Label.servePath + '/logout?goto=' + Label.servePath;
     },
     /**
      * @description 获取字符串开始位置     
