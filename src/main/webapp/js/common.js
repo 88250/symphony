@@ -1146,7 +1146,7 @@ var Util = {
                 multipart: true,
                 pasteZone: obj.pasteZone,
                 dropZone: obj.pasteZone,
-                url: "/upload",
+                url: Label.servePath + "/upload",
                 paramName: "file",
                 add: function (e, data) {
                     filename = data.files[0].name;
