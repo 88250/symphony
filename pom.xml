@@ -246,7 +246,7 @@
                     <stopKey>stop</stopKey>
                     <stopPort>4501</stopPort>
                     <webAppConfig>
-                        <contextPath>/symphony</contextPath>
+                        <contextPath>/</contextPath>
                     </webAppConfig>
                     <scanIntervalSeconds>1</scanIntervalSeconds>
                 </configuration>
