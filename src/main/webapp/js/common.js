@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.34.21.34, Oct 8, 2016
+ * @version 1.34.22.34, Oct 19, 2016
  */
 
 /**
@@ -1115,7 +1115,7 @@ var Util = {
             window.localStorage.clear();
             window.localStorage.unreadNotificationCount = 0;
         }
-        window.location.href = '/logout?goto=' + location.protocol + '//' + location.host;
+        window.location.href = Label.servePath + '/logout?goto=' + location.protocol + '//' + location.host;
     },
     /**
      * @description 获取字符串开始位置     
