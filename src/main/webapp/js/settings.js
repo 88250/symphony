@@ -74,7 +74,7 @@ var Settings = {
                 multipart: true,
                 pasteZone: null,
                 dropZone: null,
-                url: "/upload",
+                url: Label.servePath + "/upload",
                 add: function (e, data) {
                     ext = data.files[0].type.split("/")[1];
 

@@ -25,7 +25,7 @@
             <h2>${modifiableLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/tag/${tag.oId}" method="POST">
+            <form action="${servePath}/admin/tag/${tag.oId}" method="POST">
                 <label for="tagTitle">${tagLabel}${updateCaseOnlyLabel}</label>
                 <input type="text" id="tagTitle" name="tagTitle" value="${tag.tagTitle}" />
 

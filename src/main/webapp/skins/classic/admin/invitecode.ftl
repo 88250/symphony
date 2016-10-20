@@ -24,7 +24,7 @@
             <h2>${modifiableLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/invitecode/${invitecode.oId}" method="POST">
+            <form action="${servePath}/admin/invitecode/${invitecode.oId}" method="POST">
                 <label>${statusLabel}</label>
                 <select id="status" name="status">
                     <option value="0"<#if 0 == invitecode.status> selected</#if>>${usedLabel}</option>

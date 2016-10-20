@@ -55,7 +55,7 @@
             <h2>${modifiableLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/article/${article.oId}" method="POST">
+            <form action="${servePath}/admin/article/${article.oId}" method="POST">
                 <label for="articleTitle">${titleLabel}</label>
                 <input type="text" id="articleTitle" name="articleTitle" value="${article.articleTitle}" />
 
@@ -121,7 +121,7 @@
             <h2>${stickLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/stick-article" method="POST">
+            <form action="${servePath}/admin/stick-article" method="POST">
                 <label for="articleId">Id</label>
                 <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly="readonly"/>
 
@@ -136,7 +136,7 @@
             <h2>${cancelStickLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/cancel-stick-article" method="POST">
+            <form action="${servePath}/admin/cancel-stick-article" method="POST">
                 <label for="articleId">Id</label>
                 <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly="readonly"/>
 
@@ -152,7 +152,7 @@
             <h2>${searchIndexLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/search-index-article" method="POST">
+            <form action="${servePath}/admin/search-index-article" method="POST">
                 <label for="articleId">Id</label>
                 <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly="readonly"/>
 
@@ -168,7 +168,7 @@
             <h2 class="ft-red">${removeLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/remove-article" method="POST" onsubmit="return window.confirm('Sure?')">
+            <form action="${servePath}/admin/remove-article" method="POST" onsubmit="return window.confirm('Sure?')">
                 <label for="articleId">Id</label>
                 <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly="readonly"/>
 

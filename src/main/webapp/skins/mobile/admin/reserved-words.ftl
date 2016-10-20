@@ -4,7 +4,7 @@
 <div class="list content admin">
     <div class="fn-hr10"></div>
     <div class="form wrapper">
-        <button type="button" class="btn red" onclick="window.location = '/admin/add-reserved-word'">${allReservedWordLabel}</button>
+        <button type="button" class="btn red" onclick="window.location = '${servePath}/admin/add-reserved-word'">${allReservedWordLabel}</button>
     </div>
     <ul>
         <#list words as item>
@@ -17,6 +17,6 @@
         </li>
         </#list>
     </ul>
-    <@pagination url="/admin/tags"/>
+    <@pagination url="${servePath}/admin/tags"/>
 </div>
 </@admin>

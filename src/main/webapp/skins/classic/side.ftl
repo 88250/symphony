@@ -71,7 +71,7 @@
                           aria-label="${hotArticle.articleAuthorName}"
                           style="background-image:url('${hotArticle.articleAuthorThumbnailURL20}')"></span>
                     <#if "someone" != hotArticle.articleAuthorName></a></#if>
-                <a rel="nofollow" class="title" href="${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
+                <a rel="nofollow" class="title" href="${servePath}${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
             </li>
             </#list>
         </ul>
@@ -127,7 +127,7 @@
                           style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"
                           class="avatar-small tooltipped tooltipped-se slogan"></span>
                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
-                <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
+                <a class="title" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
             </li>
             </#list>
         </ul>

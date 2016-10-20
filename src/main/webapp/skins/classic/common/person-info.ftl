@@ -4,7 +4,7 @@
         <button class="btn red tooltipped tooltipped-e" aria-label="${addArticleLabel}"
                 onclick="window.location = '${servePath}/pre-post'">${postArticleLabel}</button>
         <#if !isDailyCheckin>
-        <a class="fn-right" href="<#if useCaptchaCheckin>/activity/checkin<#else>/activity/daily-checkin</#if>">${dailyCheckinLabel}</a>
+        <a class="fn-right" href="<#if useCaptchaCheckin>${servePath}/activity/checkin<#else>${servePath}/activity/daily-checkin</#if>">${dailyCheckinLabel}</a>
         <#else>
         <a class="ft-gray fn-right tooltipped tooltipped-w" aria-label="${checkinStreakLabel}/${checkinStreakPart0Label}" href="${servePath}/top/checkin">
             ${currentUser.userCurrentCheckinStreak}/<span class="ft-red">${currentUser.userLongestCheckinStreak}</span>

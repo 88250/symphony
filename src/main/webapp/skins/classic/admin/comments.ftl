@@ -26,7 +26,7 @@
             </li>
             </#list>
         </ul>
-        <@pagination url="/admin/comments"/>
+        <@pagination url="${servePath}/admin/comments"/>
     </div>
 </div>
 </@admin>

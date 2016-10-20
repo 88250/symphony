@@ -31,7 +31,7 @@
             <h2>${modifiableLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/comment/${comment.oId}" method="POST">
+            <form action="${servePath}/admin/comment/${comment.oId}" method="POST">
                 <label>${commentStatusLabel}</label>
                 <select id="commentStatus" name="commentStatus">
                     <option value="0"<#if 0 == comment.commentStatus> selected</#if>>${validLabel}</option>
@@ -52,7 +52,7 @@
             <h2 class="ft-red">${removeLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/remove-comment" method="POST" onsubmit="return window.confirm('Sure?')">
+            <form action="${servePath}/admin/remove-comment" method="POST" onsubmit="return window.confirm('Sure?')">
                 <label for="commentId">Id</label>
                 <input type="text" id="commentId" name="commentId" value="${comment.oId}" readonly="readonly"/>
 

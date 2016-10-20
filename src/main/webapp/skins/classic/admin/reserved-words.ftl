@@ -4,7 +4,7 @@
 <div class="content admin">
     <div class="module list">
         <div class="form">
-            <button type="button" class="btn red" onclick="window.location = '/admin/add-reserved-word'">${allReservedWordLabel}</button>
+            <button type="button" class="btn red" onclick="window.location = '${servePath}/admin/add-reserved-word'">${allReservedWordLabel}</button>
         </div>
         <ul>
             <#list words as item>
@@ -16,7 +16,7 @@
             </li>
             </#list>
         </ul>
-        <@pagination url="/admin/tags"/>
+        <@pagination url="${servePath}/admin/tags"/>
     </div>
 </div>
 </@admin>

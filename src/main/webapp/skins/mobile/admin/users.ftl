@@ -6,7 +6,7 @@
     <form method="GET" action="users" class="form wrapper">
         <input name="userNameOrEmail" type="text" placeholder="${userNameLabel}/${userEmailLabel}"/>
         <button type="submit" class="green">${searchLabel}</button> &nbsp;
-        <button type="button" class="btn red" onclick="window.location = '/admin/add-user'">${addUserLabel}</button>
+        <button type="button" class="btn red" onclick="window.location = '${servePath}/admin/add-user'">${addUserLabel}</button>
     </form>
     <ul>
         <#list users as item>
@@ -47,6 +47,6 @@
         </li>
         </#list>
     </ul>
-    <@pagination url="/admin/users"/>
+    <@pagination url="${servePath}/admin/users"/>
 </div>
 </@admin>

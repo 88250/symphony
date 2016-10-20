@@ -7,7 +7,7 @@
             <h2>${allReservedWordLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="/admin/add-reserved-word" method="POST">
+            <form action="${servePath}/admin/add-reserved-word" method="POST">
                 <label>${reservedWordLabel}</label>
                 <input name="word" type="text" />
 

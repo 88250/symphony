@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="item">
-                    <a href="/perfect" class="item-header" style="background-image: url(${perfectBgIcon});">${perfectLabel}</a>
+                    <a href="${servePath}/perfect" class="item-header" style="background-image: url(${perfectBgIcon});">${perfectLabel}</a>
                     <div class="module-panel">
                         <ul class="module-list">
                             <#list perfectArticles as article>

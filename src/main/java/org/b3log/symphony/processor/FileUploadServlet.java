@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * File upload to local.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.2, Sep 23, 2016
+ * @version 1.1.3.2, Oct 19, 2016
  * @since 1.4.0
  */
 @WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
@@ -89,7 +89,7 @@ public class FileUploadServlet extends HttpServlet {
         }
 
         final String uri = req.getRequestURI();
-        String key = uri.substring("/upload/".length());
+        String key = StringUtils.substringAfter(uri, "/upload/");
         key = StringUtils.substringBeforeLast(key, "?"); // Erase Qiniu template
         key = StringUtils.substringBeforeLast(key, "?"); // Erase Qiniu template
 

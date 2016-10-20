@@ -365,7 +365,7 @@ public class VoteMgmtService {
     private void updateTagArticleScore(final JSONObject article) throws RepositoryException {
         final List<JSONObject> tagArticleRels = tagArticleRepository.getByArticleId(article.optString(Keys.OBJECT_ID));
         for (final JSONObject tagArticleRel : tagArticleRels) {
-            tagArticleRel.put(Article.REDDIT_SCORE, article.optDouble(Article.REDDIT_SCORE));
+            tagArticleRel.put(Article.REDDIT_SCORE, article.optDouble(Article.REDDIT_SCORE, 0D));
 
             tagArticleRepository.update(tagArticleRel.optString(Keys.OBJECT_ID), tagArticleRel);
         }

@@ -87,7 +87,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.23.14.29, Oct 13, 2016
+ * @version 2.23.14.30, Oct 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -555,29 +555,15 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getNews(final int currentPageNum, final int pageSize) throws ServiceException {
-
         try {
-            JSONObject oldAnnouncementTag = tagRepository.getByTitle("B3log Announcement");
-            JSONObject currentAnnouncementTag = tagRepository.getByTitle("B3log公告");
-            if (null == oldAnnouncementTag && null == currentAnnouncementTag) {
+            JSONObject currentAnnouncementTag = tagRepository.getByTitle("B3log");
+            if (null == currentAnnouncementTag) {
                 return Collections.emptyList();
             }
 
-            if (null == oldAnnouncementTag) {
-                oldAnnouncementTag = new JSONObject();
-            }
-
-            if (null == currentAnnouncementTag) {
-                currentAnnouncementTag = new JSONObject();
-            }
-
             Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                    setFilter(CompositeFilterOperator.or(
-                            new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL,
-                                    oldAnnouncementTag.optString(Keys.OBJECT_ID)),
-                            new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL,
-                                    currentAnnouncementTag.optString(Keys.OBJECT_ID))
-                    ))
+                    setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL,
+                            currentAnnouncementTag.optString(Keys.OBJECT_ID)))
                     .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
 
             JSONObject result = tagArticleRepository.get(query);

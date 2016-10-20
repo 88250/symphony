@@ -3,10 +3,10 @@
 <@admin "domains">
 <div class="list content admin">
     <div class="fn-hr10"></div>
-    <form method="GET" action="domains" class="form wrapper">
+    <form method="GET" action="${servePath}/admin/domains" class="form wrapper">
         <input name="title" type="text" placeholder="${domainLabel}"/>
         <button type="submit" class="green">${searchLabel}</button>
-    <button type="button" class="btn red" onclick="window.location = '/admin/add-domain'">${addDomainLabel}</button>
+    <button type="button" class="btn red" onclick="window.location = '${servePath}/admin/add-domain'">${addDomainLabel}</button>
     </form>
     <ul>
         <#list domains as item>
@@ -29,6 +29,6 @@
         </li>
         </#list>
     </ul>
-    <@pagination url="/admin/domains"/>
+    <@pagination url="${servePath}/admin/domains"/>
 </div>
 </@admin>

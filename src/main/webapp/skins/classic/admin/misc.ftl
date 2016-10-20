@@ -7,7 +7,7 @@
         </div>
 
         <div class="module-panel form fn-clear">
-            <form action="/admin/misc" method="POST">
+            <form action="${servePath}/admin/misc" method="POST">
                 <#list options as item>
                 <label>${item.label}</label>
                 <select id="${item.oId}" name="${item.oId}">

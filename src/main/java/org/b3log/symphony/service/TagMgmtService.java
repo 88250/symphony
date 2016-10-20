@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Tag management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.2, Oct 12, 2016
+ * @version 1.2.1.3, Oct 19, 2016
  * @since 1.1.0
  */
 @Service
@@ -175,7 +175,7 @@ public class TagMgmtService {
             domainCache.loadDomains();
 
             return ret;
-        } catch (final Exception e) {
+        } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
@@ -271,7 +271,7 @@ public class TagMgmtService {
      * @throws ServiceException service exception
      */
     public void relateTags(final String tagString) throws ServiceException {
-        final List<JSONObject> tags = new ArrayList<JSONObject>();
+        final List<JSONObject> tags = new ArrayList<>();
 
         try {
             final String[] tagTitles = tagString.split(",");

@@ -669,7 +669,7 @@ public class ArticleProcessor {
         } finally {
             Stopwatchs.end();
         }
-        
+
         String stickConfirmLabel = langPropsService.get("stickConfirmLabel");
         stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));
         dataModel.put("stickConfirmLabel", stickConfirmLabel);
@@ -712,7 +712,7 @@ public class ArticleProcessor {
 
         double niceCmtScore = Double.MAX_VALUE;
         if (!niceComments.isEmpty()) {
-            niceCmtScore = niceComments.get(niceComments.size() - 1).optDouble(Comment.COMMENT_SCORE);
+            niceCmtScore = niceComments.get(niceComments.size() - 1).optDouble(Comment.COMMENT_SCORE, 0D);
 
             for (final JSONObject comment : niceComments) {
                 String thankTemplate = langPropsService.get("thankConfirmLabel");
@@ -742,8 +742,7 @@ public class ArticleProcessor {
         try {
             final String thankTemplate = langPropsService.get("thankConfirmLabel");
             for (final JSONObject comment : articleComments) {
-                comment.put(Comment.COMMENT_T_NICE,
-                        comment.optDouble(Comment.COMMENT_SCORE) >= niceCmtScore);
+                comment.put(Comment.COMMENT_T_NICE, comment.optDouble(Comment.COMMENT_SCORE, 0D) >= niceCmtScore);
 
                 final String thankStr = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
                         .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));

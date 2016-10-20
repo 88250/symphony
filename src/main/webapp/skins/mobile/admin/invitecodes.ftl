@@ -3,7 +3,7 @@
 <@admin "invitecodes">
 <div class="list content admin">
     <div class="fn-hr10"></div>
-    <form method="POST" action="invitecodes/generate" class="form wrapper">
+    <form method="POST" action="${servePath}/admin/invitecodes/generate" class="form wrapper">
         <input name="quantity" type="number" placeholder="${quantityLabel}" style="width: 30%" />
         <input name="memo" type="text" placeholder="${memoLabel}"/>
         <button type="submit" class="green">${generateLabel}</button>
@@ -26,6 +26,6 @@
         </li>
         </#list>
     </ul>
-    <@pagination url="/admin/invitecodes"/>
+    <@pagination url="${servePath}/admin/invitecodes"/>
 </div>
 </@admin>
