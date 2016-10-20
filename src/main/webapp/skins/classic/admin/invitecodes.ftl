@@ -26,7 +26,7 @@
             </li>
             </#list>
         </ul>
-        <@pagination url="/admin/invitecodes"/>
+        <@pagination url="${servePath}/admin/invitecodes"/>
     </div>
 </div>
 </@admin>

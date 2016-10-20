@@ -47,7 +47,7 @@
             </li>
             </#list>
         </ul>
-        <@pagination url="/admin/users"/>
+        <@pagination url="${servePath}/admin/users"/>
     </div>
 </div>
 </@admin>

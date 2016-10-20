@@ -17,6 +17,6 @@
         </li>
         </#list>
     </ul>
-    <@pagination url="/admin/tags"/>
+    <@pagination url="${servePath}/admin/tags"/>
 </div>
 </@admin>

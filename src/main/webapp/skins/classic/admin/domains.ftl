@@ -29,7 +29,7 @@
             </li>
             </#list>
         </ul>
-        <@pagination url="/admin/domains"/>
+        <@pagination url="${servePath}/admin/domains"/>
     </div>
 </div>
 </@admin>
