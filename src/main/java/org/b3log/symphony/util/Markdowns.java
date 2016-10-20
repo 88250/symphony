@@ -91,7 +91,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.6.10, Oct 19, 2016
+ * @version 1.9.6.10, Oct 20, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -168,7 +168,7 @@ public final class Markdowns {
             return "";
         }
 
-        final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL, 5000);
+        final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS, 5000);
         // String ret = pegDownProcessor.markdownToHtml(markdownText);
 
         final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
@@ -225,7 +225,7 @@ public final class Markdowns {
 
         public ToHtmlSerializer(final LinkRenderer linkRenderer, final Map<String, VerbatimSerializer> verbatimSerializers, final List<ToHtmlSerializerPlugin> plugins) {
             this.linkRenderer = linkRenderer;
-            this.verbatimSerializers = new HashMap<String, VerbatimSerializer>(verbatimSerializers);
+            this.verbatimSerializers = new HashMap<>(verbatimSerializers);
             if (!this.verbatimSerializers.containsKey(VerbatimSerializer.DEFAULT)) {
                 this.verbatimSerializers.put(VerbatimSerializer.DEFAULT, DefaultVerbatimSerializer.INSTANCE);
             }
