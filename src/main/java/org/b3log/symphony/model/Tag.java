@@ -37,7 +37,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.6.5, Oct 18, 2016
+ * @version 1.15.6.6, Oct 23, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -275,6 +275,7 @@ public final class Tag {
     static {
         NORMALIZE_MAPPINGS.put("JavaScript", new HashSet<>(Arrays.asList("JS")));
         NORMALIZE_MAPPINGS.put("Elasticsearch", new HashSet<>(Arrays.asList("ES搜索引擎", "ES搜索")));
+        NORMALIZE_MAPPINGS.put("golang", new HashSet<>(Arrays.asList("Go", "Go语言")));
     }
 
     /**
