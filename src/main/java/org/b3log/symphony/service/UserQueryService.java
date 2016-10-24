@@ -48,11 +48,13 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.FollowRepository;
 import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Times;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -75,6 +77,12 @@ public class UserQueryService {
      */
     @Inject
     private UserRepository userRepository;
+    
+    /**
+     * Follow repository.
+     */
+    @Inject
+    private FollowRepository followRepository;
 
     /**
      * Avatar query service.
@@ -87,7 +95,8 @@ public class UserQueryService {
      */
     @Inject
     private PointtransferRepository pointtransferRepository;
-
+    
+    
     /**
      * All usernames.
      */
@@ -650,6 +659,18 @@ public class UserQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         final JSONArray users = result.optJSONArray(Keys.RESULTS);
+        try {
+            for(int i=0;i<users.length();i++){
+                JSONObject user=users.getJSONObject(i);
+                if(followRepository.exists(requestJSONObject.optString(Keys.OBJECT_ID) ,user.optString(Keys.OBJECT_ID))){
+                    users.getJSONObject(i).put("isFollowing", true);
+                }else{
+                    users.getJSONObject(i).put("isFollowing", false);
+                }
+            }
+        } catch (RepositoryException | JSONException ex) {
+                java.util.logging.Logger.getLogger(UserQueryService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
         ret.put(User.USERS, users);
 
         return ret;
