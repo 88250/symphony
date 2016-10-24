@@ -42,7 +42,7 @@
             </div>
             <span class="tooltipped tooltipped-w cmts" aria-label="${uncollectLabel} ${article.articleCollectCnt}" 
                                   onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})">
-                <span class="icon-star ft-red"></span>
+                <span class="icon-star ft-red"> ${article.articleCollectCnt}</span>
             </span>
         </li>
         </#list>

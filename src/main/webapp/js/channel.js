@@ -130,15 +130,15 @@ var ArticleChannel = {
                             + '<span class="fn-pointer tooltipped tooltipped-n" '
                             + ' aria-label="' + Label.thankLabel + '" onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
                             + '\', \'' + data.commentThankLabel + '\','
-                            + (data.commentAuthorName === 'someone' ? 1 : 0) + ', this)"><span class="icon-heart"></span></span> '
+                            + (data.commentAuthorName === 'someone' ? 1 : 0) + ', this)"><span class="icon-heart"> 0</span></span> '
                             + '<span class="tooltipped tooltipped-n fn-pointer" '
                             + 'aria-label="' + Label.upLabel + ' 0"'
                             + 'onclick="Article.voteUp(\'' + data.commentId + '\', \'comment\', this)">'
-                            + '<span class="icon-thumbs-up"></span></span> '
+                            + '<span class="icon-thumbs-up"> 0</span></span> '
                             + '<span class="tooltipped tooltipped-n fn-pointer"'
                             + 'aria-label="' + Label.downLabel + ' 0" '
                             + 'onclick="Article.voteDown(\'' + data.commentId + '\', \'comment\', this)">'
-                            + '<span class="icon-thumbs-down"></span></span> ';
+                            + '<span class="icon-thumbs-down"> 0</span></span> ';
 
                     if ((Label.isLoggedIn && data.commentAuthorName !== Label.currentUserName) || !Label.isLoggedIn) {
                         template += ' <span aria-label="' + Label.replyLabel + '" class="fn-pointer tooltipped tooltipped-n icon-reply-btn" onclick="Comment.reply(\''

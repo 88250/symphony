@@ -476,20 +476,14 @@ var Comment = {
                     $("body").append($heart);
 
                     $heart.animate({"left": x - 150, "top": y - 60, "opacity": 0},
-                            1500,
+                            1000,
                             function () {
-                                var $cnt = $(it).closest('li').find('.rewarded-cnt'),
-                                        cnt = parseInt($cnt.text());
-                                if ($cnt.length <= 0) {
-                                    $(it).closest('li').find('.comment-reward').
-                                            html('<span aria-label="' + Label.thankedLabel + ' 1" class="fn-hidden hover-show tooltipped tooltipped-n ft-red">'
-                                                    + '<span class="icon-heart"></span>1</span>');
-                                } else {
-                                    $cnt.attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1));
-                                    $cnt.html('<span class="icon-heart"></span>' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
-                                }
+                                var cnt = parseInt($(it).text());
+
+                                $(it).attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1))
+                                .html('<span class="icon-heart ft-red"> ' + (cnt + 1) + '</span>');
+
                                 $heart.remove();
-                                $(it).remove();
                             }
                     );
 
@@ -775,15 +769,17 @@ var Article = {
                         downCnt = parseInt($voteDown.attr('aria-label').substr(3));
                 if (result.sc) {
                     if (0 === result.type) { // cancel up
-                        $voteUp.attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
+                        $voteUp.attr('aria-label', Label.upLabel + ' ' + (upCnt - 1))
+                        .html('<span class="icon-thumbs-up"> ' + (upCnt - 1) + '</span>');
                         if ('comment' === type && upCnt - 1 < 1) {
                             $voteUp.addClass('fn-hidden').addClass('hover-show');
                         }
                     } else {
-                        $voteUp.removeClass('fn-hidden').removeClass('hover-show').attr('aria-label', Label.upLabel + ' ' + (upCnt + 1)).children()
-                                .addClass("ft-red");
+                        $voteUp.removeClass('fn-hidden').removeClass('hover-show').attr('aria-label', Label.upLabel + ' ' + (upCnt + 1))
+                                .html('<span class="icon-thumbs-up ft-red"> ' + (upCnt + 1) + '</span>');
                         if ($voteDown.children().hasClass('ft-red')) {
-                            $voteDown.attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
+                            $voteDown.attr('aria-label', Label.downLabel + ' ' + (downCnt - 1))
+                            .html('<span class="icon-thumbs-down"> ' + (downCnt - 1) + '</span>');
                             if ('comment' === type && downCnt - 1 < 1) {
                                 $voteDown.addClass('fn-hidden').addClass('hover-show');
                             }
@@ -831,16 +827,18 @@ var Article = {
                         downCnt = parseInt($voteDown.attr('aria-label').substr(3));
                 if (result.sc) {
                     if (1 === result.type) { // cancel down
-                        $voteDown.attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
+                        $voteDown.attr('aria-label', Label.downLabel + ' ' + (downCnt - 1))
+                        .html('<span class="icon-thumbs-down"> ' + (downCnt - 1) + '</span>');
                         if ('comment' === type && downCnt - 1 < 1) {
                             $voteDown.addClass('fn-hidden').addClass('hover-show');
                         }
                     } else {
                         $voteDown.removeClass('fn-hidden').removeClass('hover-show')
-                                .attr('aria-label', Label.downLabel + ' ' + (downCnt + 1)).children()
-                                .addClass("ft-red");
+                                .attr('aria-label', Label.downLabel + ' ' + (downCnt + 1))
+                                .html('<span class="icon-thumbs-down ft-red"> ' + (downCnt + 1) + '</span>');;
                         if ($voteUp.children().hasClass('ft-red')) {
-                            $voteUp.attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
+                            $voteUp.attr('aria-label', Label.upLabel + ' ' + (upCnt - 1))
+                            .html('<span class="icon-thumbs-up"> ' + (upCnt - 1) + '</span>');;;
                             if ('comment' === type && upCnt - 1 < 1) {
                                 $voteUp.addClass('fn-hidden').addClass('hover-show');
                             }
@@ -1095,8 +1093,8 @@ var Article = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     var thxCnt = parseInt($('#thankArticle').attr('aria-label').substr(3));
-                    $("#thankArticle").removeAttr("onclick").find("span").addClass("ft-red");
-                    $("#thankArticle").attr('aria-label', Label.thankLabel + ' ' + (thxCnt + 1));
+                    $("#thankArticle").removeAttr("onclick").attr('aria-label', Label.thankLabel + ' ' + (thxCnt + 1))
+                    .html('<span class="icon-heart ft-red">' + (thxCnt + 1) + '</span>');
 
                     var $heart = $("<i class='icon-heart ft-red'></i>"),
                             y = $('#thankArticle').offset().top,
