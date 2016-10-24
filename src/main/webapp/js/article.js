@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.33.22, Oct 2, 2016
+ * @version 1.25.33.23, Oct 24, 2016
  */
 
 /**
@@ -91,7 +91,8 @@ var Comment = {
                 return false;
             }
             $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
-            $('#replyUseName').text('').removeData();
+            $('#replyUseName').html('<a href="javascript:void(0)" onclick="Util.goTop();Comment._bgFade($(\'.article-module\'))" class="ft-a-icon"><span class="icon-reply-to"></span>' 
+                + $('.article-title').text() + '</a>').removeData();
 
             // 如果 hide 初始化， focus 无效
             if ($('.editor-panel').css('bottom') !== '0px') {
@@ -370,6 +371,7 @@ var Comment = {
 
         Comment.editor.on('keydown', function (cm, evt) {
             // mac command + enter add article
+            $.ua.set(navigator.userAgent);
             if ($.ua.os.name.indexOf('Mac OS') > -1 && evt.metaKey && evt.keyCode === 13) {
                 Comment.add(Label.articleOId, Label.csrfToken);
                 return false;
@@ -568,7 +570,7 @@ var Comment = {
                             + '<div class="comment-info ft-smaller">';
 
                     if (data.commentAuthorName !== 'someone') {
-                        template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
+                        template += '<a class="ft-gray" rel="nofollow" href="/member/' + data.commentAuthorName + '">';
                     }
                     template += data.commentAuthorName;
                     if (data.commentAuthorName !== 'someone') {
@@ -733,8 +735,7 @@ var Comment = {
             replyUserHTML = $avatar[0].outerHTML;
         }
 
-        $('#replyUseName').html(replyUserHTML)
-                .css('visibility', 'visible').data('commentOriginalCommentId', id);
+        $('#replyUseName').html(replyUserHTML).data('commentOriginalCommentId', id);
     }
 };
 

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.16.36, Oct 8, 2016
+ * @version 2.14.16.37, Oct 24, 2016
  */
 
 @import "variables";
@@ -56,27 +56,7 @@
 
 /* start article */
 .article-module {
-    padding: 5px 10px 10px 10px;
-}
-
-.article-action {
-    margin-right: -9px;
-}
-
-.article-action .fn-right > a,
-.article-action .fn-right > span {
-    padding: 5px 10px;
-    border-radius: 2px;
-    display: inline-block;
-    line-height: 12px;
-    float: left;
-    text-decoration: none;
-    color: #333;
-}
-
-.article-action .fn-right > a:hover,
-.article-action .fn-right > span:hover {
-    color: $blue;
+    padding: 10px;
 }
 
 #heatBar {
@@ -91,7 +71,7 @@ h2.article-title {
     word-break: break-all;
     font-size: 18px;
     font-weight: normal;
-    margin: 5px 0 10px;
+    margin-bottom: 10px;
 }
 
 h2.article-title > a {
@@ -141,56 +121,96 @@ label.cmt-anonymous {
     color: $blue;
 }
 
-.comments > .comment-header {
-    padding: 5px 0 5px 10px;
-    border-bottom: 1px solid #CCCCCC;
+.article-actions {
+    padding: 10px;
 }
 
-.comments > .comment-header > .ft-smaller {
-    line-height: 25px;
+.action-btns {
+    margin-top: 2px;
 }
 
-.comments > div.comment-header .icon-chevron-down {
-    margin: 0px 10px 0 0;
-    font-size: 24px;
-}
-
-.comments > div.comment-header a {
+.action-btns > span, 
+.action-btns > a {
+    color: $fade;
     text-decoration: none;
+    margin-left: 10px;
+    min-width: 16px;
+    text-align: center;
+}
+
+.action-btns > span:hover, 
+.action-btns > a:hover {
+    color: $gray;
+}
+
+.action-btns > span.icon-reply-btn {
+    color: $gray;
+}
+
+.action-btns > span.icon-reply-btn:hover {
     color: #333;
 }
 
-.comments > div.comment-header .icon-sortasc,
-.comments > div.comment-header .icon-time {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 4px 10px 0 0;
-    display: inherit;
+
+.comments {
+    .comments-header a {
+        color: $fade;
+        font-size: 16px;
+        text-decoration: none;
+    }
+
+    .comments-header a:hover {
+        color: $gray;
+    }
+
+    .list > ul > li.cmt-shield-shield {
+        background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .9)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .9)), color-stop(.75, rgba(255, 255, 255, .9)), color-stop(.75, transparent), to(transparent));
+        background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
+        background-image: linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
+        background-color: #f7f7f7;
+        background-size: 45px 45px;
+    }
+
+    .list > ul > li.cmt-perfect,
+    .list > ul > li.cmt-perfect:hover {
+        background-color: #f9f6f6;
+    }
+
+    .list > ul > li:hover .hover-show,
+    .list > ul > li.focus .fn-hidden {
+        visibility: visible;
+    }
+
+    .list > ul > li:last-child {
+        border-bottom-width: 0;
+    }
+
+    .list > ul > li .fn-pointer:hover {
+        color: $gray; 
+    }
+
+    .comment > p:first-child {
+        margin-top: 0px;
+    }
+
+    .comment > p:last-child {
+        margin-bottom: 0px;
+    }
+
+    .comment > p > img:last-child {
+        margin-bottom: 10px;
+    }
+
+    .comment-info .icon-heart {
+        vertical-align: text-bottom;
+    }
 }
 
-.comments li.shield {
-    background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .9)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .9)), color-stop(.75, rgba(255, 255, 255, .9)), color-stop(.75, transparent), to(transparent));
-    background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
-    background-image: linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
-    background-color: #f7f7f7;
-    background-size: 45px 45px;
-}
-
-.comments.list > ul > li.perfect,
-.comments.list > ul > li.perfect:hover {
-    background-color: #f9f6f6;
-}
-
-.comments > ul > li:hover .hover-show {
-    visibility: visible;
-}
-
-.comments.list > ul > li:last-child {
+.nice .comments > ul > li:last-child {
     border-bottom-width: 0;
 }
 
 .comment-get-comment.list > ul > li {
-    margin-bottom: 10px;
     padding-top: 0;
 }
 
@@ -205,36 +225,6 @@ label.cmt-anonymous {
 
 .comment-replies.list > ul > li {
     background-color: transparent;
-}
-
-.comments.list li.focus .fn-hidden {
-    visibility: visible;
-}
-
-.comments li .fn-pointer:hover {
-    color: #999; 
-}
-
-.comments .comment > p {
-    margin-top: 10px;
-    margin-bottom: 0;
-}
-
-.comments .comment > p > img:last-child {
-    margin-bottom: 10px;
-}
-
-.comments .comment-info .icon-heart {
-    vertical-align: text-bottom;
-}
-
-.nice {
-    margin-top: 10px;
-    margin-bottom: 0px;
-}
-
-.nice .comments > ul > li:last-child {
-    border-bottom-width: 0;
 }
 
 #articleRewardContent {
@@ -256,7 +246,6 @@ label.cmt-anonymous {
 }
 
 #articleRewardContent.reward > span {
-    margin: 20px;
     display: inline-block;
 }
 
@@ -271,13 +260,12 @@ label.cmt-anonymous {
 }
 
 .share {
-    margin-top: 20px;
     position: relative;
 }
 
 .share #qrCode {
     position: absolute;
-    bottom: 30px;
+    bottom: 28px;
     right: 0;
     border: 5px solid #e5e5e5;
     z-index: 1;
@@ -292,6 +280,7 @@ label.cmt-anonymous {
     -webkit-transition: all 0.2s ease-out 0s;
     display: inline-block;
     font-size: 16px;
+    margin: 0 5px;
 }
 
 .share [class^="icon-"]:hover {
@@ -302,8 +291,7 @@ label.cmt-anonymous {
     min-height: 88px;
 }
 
-#replyUseName {
-    visibility: hidden;
+#replyUseName { 
     line-height: 20px;
     height: 20px;
 }
@@ -619,15 +607,6 @@ label.cmt-anonymous {
 /* start tag-article.html */
 .tag-articles .article-module {
     padding-bottom: 0;
-}
-
-.tag-articles .article-action .fn-right {
-    margin-right: -14px;
-}
-
-.article-action .fn-right > span.counts {
-    margin-top: 2px;
-    color: #999;
 }
 
 .tag-articles-tag-desc.tag-desc {

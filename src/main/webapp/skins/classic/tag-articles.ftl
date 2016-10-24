@@ -29,8 +29,8 @@
                             <a class="ft-gray" href="${servePath}/domain/${domain.domainURI}">${domain.domainTitle}</a>
                             </#list> 
 
-                            <span class="article-action">
-                                <span class="fn-right">
+                            <span>
+                                <span class="fn-right action-btns">
                                 <span class="tooltipped tooltipped-n counts" aria-label="${referenceLabel} / ${cmtLabel} / ${followLabel}">
                                     ${tag.tagReferenceCount?c} /
                                     ${tag.tagCommentCount?c} /

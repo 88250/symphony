@@ -22,43 +22,6 @@
             <div class="wrapper">
                 <div class="content">
                     <div class="module article-module">
-                    <div class="fn-clear article-action">
-                        <span class="fn-right">
-                            <#if "" != article.articleToC>
-                            <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
-                                  class="tooltipped tooltipped-n"><span class="icon-unordered-list ft-red"></span></span>
-                            </#if>
-                            <span id="thankArticle" aria-label="${thankLabel} ${article.thankedCnt}"
-                                  class="tooltipped tooltipped-n"
-                                  <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
-                            <span class="tooltipped tooltipped-n" aria-label="${upLabel} ${article.articleGoodCnt}"
-                                  onclick="Article.voteUp('${article.oId}', 'article', this)">
-                                <span class="icon-thumbs-up<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>"></span></span>
-                            <span  class="tooltipped tooltipped-n" aria-label="${downLabel} ${article.articleBadCnt}"
-                                  onclick="Article.voteDown('${article.oId}', 'article', this)">
-                            <span class="icon-thumbs-down<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>"></span></span>
-                            <#if isLoggedIn && isFollowing>
-                            <span class="tooltipped tooltipped-n" aria-label="${uncollectLabel} ${article.articleCollectCnt}" 
-                                  onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star ft-red"></span></span>
-                            <#else>
-                            <span class="tooltipped tooltipped-n" aria-label="${collectLabel} ${article.articleCollectCnt}"
-                                  onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
-                            </#if>
-                            <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
-                                  class="tooltipped tooltipped-n"><span class="icon-refresh"></span></span>
-                            <#if article.isMyArticle && 3 != article.articleType>
-                            <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" 
-                               class="tooltipped tooltipped-n"><span class="icon-edit"></span></a>
-                            </#if>
-                            <#if article.isMyArticle>
-                            <a class="tooltipped tooltipped-n" aria-label="${stickLabel}" 
-                               href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a>
-                            </#if>
-                            <#if isAdminLoggedIn>
-                            <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
-                            </#if>
-                        </span>
-                    </div>
 
                     <h2 class="article-title">
                         <#if 1 == article.articlePerfect>
@@ -117,22 +80,6 @@
                     <div class="content-reset article-content"></div>
                     </#if>
                     
-                    <div class="fn-clear">
-                        <div class="share fn-right">
-                            <div id="qrCode" class="fn-none"
-                                 data-shareurl="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"></div>
-                            <span class="tooltipped tooltipped-w" aria-label="share to wechat" data-type="wechat"><span class="icon-wechat"></span></span>
-                            <span class="tooltipped tooltipped-nw" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span>
-                            <span class="tooltipped tooltipped-nw" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span>
-                            <span class="tooltipped tooltipped-nw" aria-label="share to google" data-type="google"><span class="icon-google"></span></span>
-                            <span class="tooltipped tooltipped-nw ft-red" data-type="copy"
-                                  aria-label="${copyLabel}"
-                                  id="shareClipboard"
-                                  data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"><span 
-                                    class="icon-copy"></span></span>
-                        </div>
-                    </div>
-                    
                     <#if 0 < article.articleRewardPoint>
                     <div class="content-reset<#if !article.rewarded> reward</#if>" id="articleRewardContent">
                          <#if !article.rewarded>
@@ -144,15 +91,70 @@
                         </#if>
                     </div>
                     </#if>
-                    
+                    </div>
+
+                    <div class="module fn-clear article-actions ft-center">
+                         <span class="share">
+                            <div id="qrCode" class="fn-none"
+                                 data-shareurl="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"></div>
+                            <span class="tooltipped tooltipped-w" aria-label="share to wechat" data-type="wechat"><span class="icon-wechat"></span></span>
+                            <span class="tooltipped tooltipped-nw" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span>
+                            <span class="tooltipped tooltipped-nw" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span>
+                            <span class="tooltipped tooltipped-nw" aria-label="share to google" data-type="google"><span class="icon-google"></span></span>
+                            <span class="tooltipped tooltipped-nw ft-red" data-type="copy"
+                                  aria-label="${copyLabel}"
+                                  id="shareClipboard"
+                                  data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"><span 
+                                    class="icon-copy"></span></span>
+                        </span>
+                        <span class="action-btns">
+                            <#if "" != article.articleToC>
+                            <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
+                                  class="tooltipped tooltipped-n"><span class="icon-unordered-list ft-red"></span></span>
+                            </#if>
+                            <span id="thankArticle" aria-label="${thankLabel} ${article.thankedCnt}"
+                                  class="tooltipped tooltipped-n"
+                                  <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
+                            <span class="tooltipped tooltipped-n" aria-label="${upLabel} ${article.articleGoodCnt}"
+                                  onclick="Article.voteUp('${article.oId}', 'article', this)">
+                                <span class="icon-thumbs-up<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>"></span></span>
+                            <span  class="tooltipped tooltipped-n" aria-label="${downLabel} ${article.articleBadCnt}"
+                                  onclick="Article.voteDown('${article.oId}', 'article', this)">
+                            <span class="icon-thumbs-down<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>"></span></span>
+                            <#if isLoggedIn && isFollowing>
+                            <span class="tooltipped tooltipped-n" aria-label="${uncollectLabel} ${article.articleCollectCnt}" 
+                                  onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star ft-red"></span></span>
+                            <#else>
+                            <span class="tooltipped tooltipped-n" aria-label="${collectLabel} ${article.articleCollectCnt}"
+                                  onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
+                            </#if>
+                            <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
+                                  class="tooltipped tooltipped-n"><span class="icon-refresh"></span></span>
+                            <#if article.isMyArticle && 3 != article.articleType>
+                            <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" 
+                               class="tooltipped tooltipped-n"><span class="icon-edit"></span></a>
+                            </#if>
+                            <#if article.isMyArticle>
+                            <a class="tooltipped tooltipped-n" aria-label="${stickLabel}" 
+                               href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a>
+                            </#if>
+                            <#if isAdminLoggedIn>
+                            <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                            </#if>
+                            <span class="tooltipped tooltipped-n icon-reply-btn" aria-label="${cmtLabel}" onclick="$('.reply-btn').click()"><span class="icon-reply"></span></span>
+                        </span>
+                    </div>
+
                     <#if article.articleNiceComments?size != 0>
                     <div class="module nice">
-                        <div class="module-header">${niceCommentsLabel}</div>
+                        <div class="module-header">
+                            <span class="icon-thumbs-up ft-blue"></span>
+                            ${niceCommentsLabel}
+                        </div>
                         <div class="module-panel list comments">
-                            <ul>                
+                            <ul>              
                             <#list article.articleNiceComments as comment>
                             <li>
-                                    <#if !comment?has_next><div id="bottomComment"></div></#if>
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
                                         <#if comment.commentAnonymous == 0>
@@ -198,24 +200,29 @@
                         </div>
                     </div>
                     </#if>
-                    </div>
-                    <div class="module">
-                        <div class="list comments" id="comments">
-                            <div class="fn-clear comment-header">
-                                <span class="fn-left ft-smaller">${article.articleCommentCount} ${cmtLabel}</span>
-                                <span<#if article.articleComments?size == 0> class="fn-none"</#if>>
-                                    <a class="tooltipped tooltipped-nw fn-right" href="#bottomComment" aria-label="${jumpToBottomCommentLabel}"><span class="icon-chevron-down"></span></a>
-                                    <a class="tooltipped tooltipped-nw fn-right" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
-                                       aria-label="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"><span class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if>"></span></a>
-                                </span>
-                            </div>
+
+                    <div class="module comments" id="comments">
+                        <div class="comments-header module-header">
+                            <span class="article-cmt-cnt">${article.articleCommentCount} ${cmtLabel}</span>
+                            <span class="fn-right<#if article.articleComments?size == 0> fn-none</#if>">
+                                <a class="tooltipped tooltipped-nw" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
+                                   aria-label="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"><span class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if>"></span></a>&nbsp;
+                                <a class="tooltipped tooltipped-nw" href="#bottomComment" aria-label="${jumpToBottomCommentLabel}"><span class="icon-chevron-down"></span></a>
+                            </span>
+                        </div> 
+                        <div class="list">
                             <ul>
+                                <#if article.articleComments?size == 0>
+                                <li class="ft-center">
+                                    <a href="javascript:$('.reply-btn').click()" class="ft-a-icon"><span class="icon-reply"></span> ${cmtLabel}</a>
+                                </li>
+                                </#if>
                                 <#assign notificationCmtIds = "">
                                 <#list article.articleComments as comment>
                                 <#assign notificationCmtIds = notificationCmtIds + comment.oId>
                                 <#if comment_has_next><#assign notificationCmtIds = notificationCmtIds + ","></#if>
                                 <li id="${comment.oId}" 
-                                    class="<#if comment.commentStatus == 1>shield</#if><#if comment.commentNice> perfect</#if><#if comment.commentReplyCnt != 0> selected</#if>">
+                                    class="<#if comment.commentStatus == 1>cmt-shield</#if><#if comment.commentNice> cmt-perfect</#if><#if comment.commentReplyCnt != 0> cmt-selected</#if>">
                                     <#if !comment?has_next><div id="bottomComment"></div></#if>
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
@@ -270,11 +277,11 @@
                                             <div class="comment-action">
                                                 <div class="ft-fade fn-clear">
                                                     <#if comment.commentReplyCnt != 0>
-                                                    <span class="fn-pointer ft-smaller" onclick="Comment.showReply('${comment.oId}', this, 'comment-replies')">
+                                                    <span class="fn-pointer ft-smaller fn-left" onclick="Comment.showReply('${comment.oId}', this, 'comment-replies')">
                                                         ${comment.commentReplyCnt} ${replyLabel} <span class="icon-chevron-down"></span>
                                                     </span>
                                                     </#if>
-                                                     <span class="fn-right fn-hidden hover-show">
+                                                     <span class="fn-right fn-hidden hover-show action-btns">
                                                         <#if (isLoggedIn && !comment.rewarded) || !isLoggedIn>
                                                         <span class="fn-pointer tooltipped tooltipped-n"
                                                               aria-label="${thankLabel}"
@@ -290,7 +297,7 @@
                                                             <span class="icon-thumbs-down<#if isLoggedIn && 1 == comment.commentVote> ft-red</#if>"></span></span>
 
                                                         <#if (isLoggedIn && comment.commentAuthorName != currentUser.userName) || !isLoggedIn>
-                                                        <span aria-label="${replyLabel}" class="fn-pointer tooltipped tooltipped-n" 
+                                                        <span aria-label="${replyLabel}" class="icon-reply-btn fn-pointer tooltipped tooltipped-n" 
                                                               onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')"><span class="icon-reply"></span></span>
                                                         </#if>
                                                     </span>

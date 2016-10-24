@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.10.14.15, Oct 9, 2016
+ * @version 1.10.14.16, Oct 24, 2016
  */
 
 /**
@@ -55,23 +55,25 @@ var ArticleChannel = {
 
             switch (data.type) {
                 case "comment":
-                    var cmtCount = parseInt($("#comments .comment-header .ft-smaller").text()) + 1;
+                    var cmtCount = parseInt($(".comments-header .article-cmt-cnt").text()) + 1;
                     // 总帖数更新
-                    $("#comments .comment-header .ft-smaller").text(cmtCount + ' ' + Label.cmtLabel);
+                    $(".comments-header .article-cmt-cnt").text(cmtCount + ' ' + Label.cmtLabel);
 
                     // 新增第一条评论时到底部的锚点
                     var bottomCmt = '';
-                    if ($('#comments > ul > li').length === 0) {
+                    if ($('#comments .list > ul > li.ft-center').length === 1) {
                         $('.comment-header > .fn-none').show();
                         bottomCmt = '<div id="bottomComment"></div>';
                         // 显示预览模式 & 回到底部
-                        $('#comments > div > span:last').show();
+                        $('.comments-header > .fn-none').show();
+                        // 移除没有评论的提示
+                        $('#comments .list > ul > li.ft-center').remove();
                     }
 
                     // ua
                     var UAName = Util.getDeviceByUa(data.commentUA);
                     if (UAName !== '') {
-                        UAName = ' <span class="cmt-via fn-hidden hover-show">via ' + UAName + '</span>';
+                        UAName = ' <span class="cmt-via ft-fade fn-hidden hover-show">via ' + UAName + '</span>';
                     }
 
                     var template = '<li id="' + data.commentId + '">'
@@ -106,13 +108,13 @@ var ArticleChannel = {
                     } else {
                         template += '<span class="ft-gray">' + data.commentAuthorName + '</span> <span class="ft-fade"> • </span> <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>';
                     }
-                    template += ' <span class="ft-fade"> • ' + data.timeAgo;
+                    template += ' <span class="ft-fade"> • ' + data.timeAgo + '</span> <span class="comment-reward"></span>';
 
                     if (data.userUAStatus === 0) {
                         template += ' ' + UAName;
                     }
 
-                    template += '</span></span><span class="fn-right">';
+                    template += '</span><span class="fn-right">';
                     if (data.commentOriginalCommentId !== '') {
                         template += '<span class="fn-pointer ft-fade tooltipped tooltipped-nw" aria-label="'
                                 + Label.goCommentLabel + '" onclick="Comment.showReply(\'' + data.commentOriginalCommentId + '\', this, \'comment-get-comment\')"><span class="icon-reply-to"></span>  <div class="avatar-small" style="background-image:url(\''
@@ -124,7 +126,7 @@ var ArticleChannel = {
                     }
                     template += '</span></div><div class="content-reset comment">'
                             + data.commentContent + '</div><div class="comment-action"><div class="ft-fade fn-clear">'
-                            + '<span class="fn-right fn-hidden hover-show">'
+                            + '<span class="fn-right fn-hidden hover-show action-btns">'
                             + '<span class="fn-pointer tooltipped tooltipped-n" '
                             + ' aria-label="' + Label.thankLabel + '" onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
                             + '\', \'' + data.commentThankLabel + '\','
@@ -139,16 +141,16 @@ var ArticleChannel = {
                             + '<span class="icon-thumbs-down"></span></span> ';
 
                     if ((Label.isLoggedIn && data.commentAuthorName !== Label.currentUserName) || !Label.isLoggedIn) {
-                        template += ' <span aria-label="' + Label.replyLabel + '" class="fn-pointer tooltipped tooltipped-n" onclick="Comment.reply(\''
+                        template += ' <span aria-label="' + Label.replyLabel + '" class="fn-pointer tooltipped tooltipped-n icon-reply-btn" onclick="Comment.reply(\''
                                 + data.commentAuthorName + '\', \''
                                 + data.commentId + '\')"><span class="icon-reply"></span></span> ';
                     }
-                    template += '</span></div></div></li>';
+                    template += '</span></div><div class="comment-replies list"></div></div></li>';
 
                     if (0 === Label.userCommentViewMode) { // tranditional view mode
-                        $("#comments > ul").append(template);
+                        $("#comments .list > ul").append(template);
                     } else {
-                        $("#comments > ul").prepend(template);
+                        $("#comments .list > ul").prepend(template);
                     }
 
                     // 代码高亮
@@ -169,7 +171,7 @@ var ArticleChannel = {
                                 $replyBtn.click();
                             }
                         } else {
-                            $originalComment.find('.comment-action > .ft-fade').prepend('<span class="fn-pointer ft-smaller" onclick="Comment.showReply(\''
+                            $originalComment.find('.comment-action > .ft-fade').prepend('<span class="fn-pointer ft-smaller fn-left" onclick="Comment.showReply(\''
                                     + data.commentOriginalCommentId + '\', this, \'comment-replies\')" style="opacity: 1;"> 1 '
                                     + Label.replyLabel + ' <span class="icon-chevron-down"></span>');
                         }
