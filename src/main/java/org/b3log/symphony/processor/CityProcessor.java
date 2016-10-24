@@ -62,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 1.2.0.5, Sep 26, 2016
+ * @version 1.3.0.5, Oct 24, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -85,13 +85,13 @@ public class CityProcessor {
      */
     @Inject
     private OptionQueryService optionQueryService;
-    
+
     /**
      * Avatar query service.
      */
     @Inject
     private AvatarQueryService avatarQueryService;
-    
+
     /**
      * User query service.
      */
@@ -113,14 +113,14 @@ public class CityProcessor {
      * @param city the specified city
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"/city/{city}","/city/{city}/articles"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/city/{city}", "/city/{city}/articles"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showCityArticles(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
-        
+
         renderer.setTemplateName("city.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         filler.fillHeaderAndFooter(request, response, dataModel);
@@ -133,8 +133,7 @@ public class CityProcessor {
         filler.fillLatestCmts(dataModel);
 
         List<JSONObject> articles = new ArrayList<>();
-        dataModel.put(Article.ARTICLES, articles);//下面会根据数量有无而put,此处的作用是什么?(先赋默认值再修改?)
-        //页面上未找到selected关键字,在何处进行了渲染?
+        dataModel.put(Article.ARTICLES, articles); // an empty list to avoid null check in template
         dataModel.put(Common.SELECTED, Common.CITY);
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
@@ -189,12 +188,21 @@ public class CityProcessor {
             dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
         }
 
-        dataModel.put(Common.CURRENT, "/articles");
+        dataModel.put(Common.CURRENT, "");
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
     }
-    
+
+    /**
+     * Shows city users.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param city the specified city
+     * @throws Exception exception
+     */
     @RequestProcessing(value = {"/city/{city}/users"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
@@ -202,9 +210,11 @@ public class CityProcessor {
             final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
+
         renderer.setTemplateName("city.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         filler.fillHeaderAndFooter(request, response, dataModel);
+
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         filler.fillRandomArticles(avatarViewMode, dataModel);
         filler.fillSideHotArticles(avatarViewMode, dataModel);
@@ -221,8 +231,10 @@ public class CityProcessor {
         dataModel.put(Common.CITY, langService.get("sameCityLabel"));
         if (UserExt.USER_GEO_STATUS_C_PUBLIC != user.optInt(UserExt.USER_GEO_STATUS)) {
             dataModel.put(UserExt.USER_GEO_STATUS, false);
+
             return;
         }
+
         final String userCity = user.optString(UserExt.USER_CITY);
 
         String queryCity = city;
@@ -247,26 +259,26 @@ public class CityProcessor {
         final int pageNum = Integer.valueOf(pageNumStr);
         final int pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
         final int windowSize = Symphonys.getInt("cityUsersWindowSize");
-        
-        
+
         final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(Keys.OBJECT_ID,user.optString(Keys.OBJECT_ID));
+        requestJSONObject.put(Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, Integer.MAX_VALUE);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, Integer.MAX_VALUE);
-        final long latestLoginTime = DateUtils.addDays(new Date(), -15).getTime();
+        final long latestLoginTime = DateUtils.addDays(new Date(), Integer.MIN_VALUE).getTime(); // all users
         requestJSONObject.put(UserExt.USER_LATEST_LOGIN_TIME, latestLoginTime);
         requestJSONObject.put(UserExt.USER_CITY, queryCity);
         final JSONArray cityUsers = userQueryService.getUsersByCity(requestJSONObject).optJSONArray(User.USERS);
-        if (null != cityUsers && cityUsers.length()>0) {
-            for(int i=0;i<cityUsers.length();i++){
-                if(!cityUsers.getJSONObject(i).optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID))){
+        if (null != cityUsers && cityUsers.length() > 0) {
+            for (int i = 0; i < cityUsers.length(); i++) {
+                if (!cityUsers.getJSONObject(i).optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID))) {
                     users.add(cityUsers.getJSONObject(i));
                 }
             }
+
             dataModel.put(User.USERS, users);
         }
-        
+
         final int pageCount = (int) Math.ceil(cityUsers.length() / (double) pageSize);
 
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);

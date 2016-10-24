@@ -61,7 +61,8 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.4.7, Oct 17, 2016
+ * @author <a href="http://zephyrjung.github.io">Zephyr</a>
+ * @version 1.7.4.8, Oct 24, 2016
  * @since 0.2.0
  */
 @Service
@@ -77,7 +78,7 @@ public class UserQueryService {
      */
     @Inject
     private UserRepository userRepository;
-    
+
     /**
      * Follow repository.
      */
@@ -95,8 +96,7 @@ public class UserQueryService {
      */
     @Inject
     private PointtransferRepository pointtransferRepository;
-    
-    
+
     /**
      * All usernames.
      */
@@ -660,17 +660,15 @@ public class UserQueryService {
 
         final JSONArray users = result.optJSONArray(Keys.RESULTS);
         try {
-            for(int i=0;i<users.length();i++){
-                JSONObject user=users.getJSONObject(i);
-                if(followRepository.exists(requestJSONObject.optString(Keys.OBJECT_ID) ,user.optString(Keys.OBJECT_ID))){
-                    users.getJSONObject(i).put("isFollowing", true);
-                }else{
-                    users.getJSONObject(i).put("isFollowing", false);
-                }
+            for (int i = 0; i < users.length(); i++) {
+                JSONObject user = users.getJSONObject(i);
+                users.getJSONObject(i).put(Common.IS_FOLLOWING,
+                        followRepository.exists(requestJSONObject.optString(Keys.OBJECT_ID), user.optString(Keys.OBJECT_ID)));
             }
-        } catch (RepositoryException | JSONException ex) {
-                java.util.logging.Logger.getLogger(UserQueryService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (final RepositoryException | JSONException e) {
+            LOGGER.log(Level.ERROR, "Fills following failed", e);
         }
+
         ret.put(User.USERS, users);
 
         return ret;
