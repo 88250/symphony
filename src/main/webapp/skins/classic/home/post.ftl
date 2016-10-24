@@ -95,7 +95,7 @@
                         <span class="ft-gray"><span class="ft-green">提问</span>或<span class="ft-green">分享</span>对别人有帮助的经验与见解</span>
                         <#elseif 1 == articleType>
                         <span class="icon-locked"></span> ${discussionLabel}
-                        <span class="ft-gray">@好友并在<span class="ft-red">私密</span>空间中进行交流</span>
+                        <span class="ft-gray">邀请好友在<span class="ft-red">私密</span>空间中进行交流</span>
                         <#elseif 2 == articleType>
                         <span class="icon-feed"></span> ${cityBroadcastLabel}
                         <span class="ft-gray">发起你所在城市的招聘、Meetup 等，仅需<i>${broadcastPoint}</i> 积分</span>
