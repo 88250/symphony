@@ -9,6 +9,9 @@
 </div>
 <#if 0 == user.userFollowingUserStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="follow list">
+    <#if userHomeFollowingUsers?size == 0>
+        <p class="ft-center ft-gray home-invisible">${chickenEggLabel}</p>
+    </#if>
     <ul>
         <#list userHomeFollowingUsers as followingUser>
         <li>

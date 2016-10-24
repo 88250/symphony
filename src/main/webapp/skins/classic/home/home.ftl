@@ -11,6 +11,9 @@
 </div>
 <#if 0 == user.userArticleStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="list">
+    <#if userHomeArticles?size == 0>
+        <p class="ft-center ft-gray home-invisible">${chickenEggLabel}</p>
+    </#if>
     <ul> 
         <#list userHomeArticles as article>
         <li>

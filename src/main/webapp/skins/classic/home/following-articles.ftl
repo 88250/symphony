@@ -9,6 +9,9 @@
 </div>
 <#if 0 == user.userFollowingArticleStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="list">
+    <#if userHomeFollowingArticles?size == 0>
+        <p class="ft-center ft-gray home-invisible">${chickenEggLabel}</p>
+    </#if>
     <ul class="fn-clear">
         <#list userHomeFollowingArticles as article>
         <li class="fn-flex read">

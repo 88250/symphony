@@ -11,6 +11,9 @@
 </div>
 <#if 0 == user.userCommentStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="list">
+    <#if userHomeComments?size == 0>
+        <p class="ft-center ft-gray home-invisible">${chickenEggLabel}</p>
+    </#if>
     <ul>
         <#list userHomeComments as comment>
         <li class="fn-flex comment-list-item">

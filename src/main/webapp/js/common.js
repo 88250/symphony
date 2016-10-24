@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.34.22.34, Oct 19, 2016
+ * @version 1.35.22.34, Oct 25, 2016
  */
 
 /**
