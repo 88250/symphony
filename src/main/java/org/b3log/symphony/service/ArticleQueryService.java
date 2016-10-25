@@ -87,7 +87,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.23.14.30, Oct 19, 2016
+ * @version 2.23.15.30, Oct 25, 2016
  * @since 0.2.0
  */
 @Service
@@ -547,7 +547,7 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets news (articles tags contains "B3log Announcement").
+     * Gets news (perfect articles).
      *
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
@@ -556,33 +556,13 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getNews(final int currentPageNum, final int pageSize) throws ServiceException {
         try {
-            JSONObject currentAnnouncementTag = tagRepository.getByTitle("B3log");
-            if (null == currentAnnouncementTag) {
-                return Collections.emptyList();
-            }
-
-            Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                    setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL,
-                            currentAnnouncementTag.optString(Keys.OBJECT_ID)))
-                    .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
-
-            JSONObject result = tagArticleRepository.get(query);
-            final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
-
-            final Set<String> articleIds = new HashSet<>();
-            for (int i = 0; i < tagArticleRelations.length(); i++) {
-                articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
-            }
-
-            final JSONObject sa = userQueryService.getSA();
-
-            final List<Filter> subFilters = new ArrayList<>();
-            subFilters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
-            subFilters.add(new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, sa.optString(User.USER_EMAIL)));
-            query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, subFilters))
-                    .addProjection(Article.ARTICLE_TITLE, String.class).addProjection(Article.ARTICLE_PERMALINK, String.class)
-                    .addProjection(Article.ARTICLE_CREATE_TIME, Long.class).addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING);
-            result = articleRepository.get(query);
+            final Query query = new Query().
+                    setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT)).
+                    addProjection(Article.ARTICLE_TITLE, String.class).
+                    addProjection(Article.ARTICLE_PERMALINK, String.class).
+                    addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                    addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING);
+            final JSONObject result = articleRepository.get(query);
 
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             for (final JSONObject article : ret) {
