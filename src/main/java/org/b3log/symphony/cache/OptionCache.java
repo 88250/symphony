@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * Option cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 11, 2016
+ * @version 1.0.0.1, Oct 25, 2016
  * @since 1.5.0
  */
 @Named
@@ -38,10 +38,10 @@ public class OptionCache {
     /**
      * Option cache.
      */
-    private static final Cache cache = CacheFactory.getCache(Option.OPTIONS);
+    private static final Cache CACHE = CacheFactory.getCache(Option.OPTIONS);
 
     static {
-        cache.setMaxCount(1024);
+        CACHE.setMaxCount(1024);
     }
 
     /**
@@ -51,7 +51,7 @@ public class OptionCache {
      * @return option, returns {@code null} if not found
      */
     public JSONObject getOption(final String id) {
-        final JSONObject option = (JSONObject) cache.get(id);
+        final JSONObject option = (JSONObject) CACHE.get(id);
         if (null == option) {
             return null;
         }
@@ -65,7 +65,7 @@ public class OptionCache {
      * @param option the specified option
      */
     public void putOption(final JSONObject option) {
-        cache.put(option.optString(Keys.OBJECT_ID), JSONs.clone(option));
+        CACHE.put(option.optString(Keys.OBJECT_ID), JSONs.clone(option));
     }
 
     /**
@@ -74,6 +74,6 @@ public class OptionCache {
      * @param id the specified option id
      */
     public void removeOption(final String id) {
-        cache.remove(id);
+        CACHE.remove(id);
     }
 }

@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import org.apache.commons.lang.StringUtils;
@@ -53,7 +54,7 @@ import org.jsoup.Jsoup;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.3.0, Oct 13, 2016
+ * @version 1.4.4.0, Oct 25, 2016
  * @since 1.4.0
  */
 @Named
@@ -83,12 +84,12 @@ public class TagCache {
     /**
      * &lt;title, URI&gt;
      */
-    private static final Map<String, String> TITLE_URIS = new HashMap<>();
+    private static final Map<String, String> TITLE_URIS = new ConcurrentHashMap<>();
 
     /**
      * &lt;id, tag&gt;
      */
-    private static final Map<String, JSONObject> CACHE = new HashMap<>();
+    private static final Map<String, JSONObject> CACHE = new ConcurrentHashMap<>();
 
     /**
      * Gets a tag by the specified tag id.
