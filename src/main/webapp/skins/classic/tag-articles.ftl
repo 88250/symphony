@@ -75,7 +75,7 @@
                     <div class="module">
                         <div class="module-header fn-clear">
                             <span class="fn-right">
-                                <a<#if "" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}">${default1Label}</a>
+                                <a<#if "" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}">${defaultLabel}</a>
                                 <span class="ft-fade">/</span>
                                 <a<#if "/hot" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}/hot">${hotArticlesLabel}</a>
                                 <span class="ft-fade">/</span>
