@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.35.22.34, Oct 25, 2016
+ * @version 1.35.23.34, Oct 25, 2016
  */
 
 /**
@@ -86,7 +86,9 @@ var Util = {
             return false;
         }).bind('keyup', 't', function () {
             // t 回到顶部
-            Util.goTop();
+            if (Util.prevKey === undefined) {
+                Util.goTop();
+            }
             return false;
         }).bind('keyup', 'n', function (event) {
             // g n 跳转到通知页面
@@ -132,7 +134,7 @@ var Util = {
             // j 移动到下一项
             var query = '.content .list > ul > ';
             if ($('#comments').length === 1) {
-                query = '#comments > ul > ';
+                query = '#comments .list > ul > ';
             }
             var $prev = $(query + 'li.focus');
             if ($prev.length === 0) {
@@ -147,7 +149,7 @@ var Util = {
             // k 移动到上一项
             var query = '.content .list > ul > ';
             if ($('#comments').length === 1) {
-                query = '#comments > ul > ';
+                query = '#comments .list > ul > ';
             }
             var $next = $(query + 'li.focus');
             if ($next.length === 0) {
@@ -162,7 +164,7 @@ var Util = {
             // f 移动到第一项
             var query = '.content .list > ul > ';
             if ($('#comments').length === 1) {
-                query = '#comments > ul > ';
+                query = '#comments .list > ul > ';
             }
             $(query + 'li.focus').removeClass('focus');
             $(query + 'li:first').addClass('focus');
@@ -175,7 +177,7 @@ var Util = {
             }
             var query = '.content .list > ul > ';
             if ($('#comments').length === 1) {
-                query = '#comments > ul > ';
+                query = '#comments .list > ul > ';
             }
             $(query + 'li.focus').removeClass('focus');
             $(query + 'li:last').addClass('focus');
@@ -185,7 +187,7 @@ var Util = {
             // o/enter 打开选中项
             var query = '.content .list > ul > ';
             if ($('#comments').length === 1) {
-                query = '#comments > ul > ';
+                query = '#comments .list > ul > ';
             }
             var href = $(query + 'li.focus .fn-flex-1 h2 > a').attr('href');
             if (href) {
@@ -196,7 +198,7 @@ var Util = {
             // o/enter 打开选中项
             var query = '.content .list > ul > ';
             if ($('#comments').length === 1) {
-                query = '#comments > ul > ';
+                query = '#comments .list > ul > ';
             }
             var href = $(query + 'li.focus .fn-flex-1 h2 > a').attr('href');
             if (href) {

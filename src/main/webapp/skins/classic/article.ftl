@@ -101,7 +101,7 @@
                             <span class="tooltipped tooltipped-nw" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span>
                             <span class="tooltipped tooltipped-nw" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span>
                             <span class="tooltipped tooltipped-nw" aria-label="share to google" data-type="google"><span class="icon-google"></span></span>
-                            <span class="tooltipped tooltipped-nw ft-red" data-type="copy"
+                            <span class="tooltipped tooltipped-nw ft-blue" data-type="copy"
                                   aria-label="${copyLabel}"
                                   id="shareClipboard"
                                   data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"><span 

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.16.37, Oct 24, 2016
+ * @version 2.14.17.37, Oct 25, 2016
  */
 
 @import "variables";
@@ -118,7 +118,7 @@ label.cmt-anonymous {
 }
 
 #shareClipboard.tooltipped-hover {
-    color: $blue;
+    color: $red;
 }
 
 .article-actions {
@@ -281,6 +281,7 @@ label.cmt-anonymous {
     display: inline-block;
     font-size: 16px;
     margin: 0 5px;
+    vertical-align: bottom;
 }
 
 .share [class^="icon-"]:hover {
