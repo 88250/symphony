@@ -62,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 1.3.0.5, Oct 24, 2016
+ * @version 1.3.1.5, Oct 25, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -124,6 +124,8 @@ public class CityProcessor {
         renderer.setTemplateName("city.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         filler.fillHeaderAndFooter(request, response, dataModel);
+
+        dataModel.put(Common.CURRENT, "");
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
@@ -188,7 +190,6 @@ public class CityProcessor {
             dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
         }
 
-        dataModel.put(Common.CURRENT, "");
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
@@ -214,6 +215,8 @@ public class CityProcessor {
         renderer.setTemplateName("city.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         filler.fillHeaderAndFooter(request, response, dataModel);
+
+        dataModel.put(Common.CURRENT, "/users");
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         filler.fillRandomArticles(avatarViewMode, dataModel);
@@ -287,7 +290,6 @@ public class CityProcessor {
             dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
         }
 
-        dataModel.put(Common.CURRENT, "/users");
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);

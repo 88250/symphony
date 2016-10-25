@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.33.23, Oct 24, 2016
+ * @version 1.25.34.23, Oct 25, 2016
  */
 
 /**
@@ -62,7 +62,7 @@ var Comment = {
      * @param {string} url 跳转的 url 
      */
     goComment: function (url) {
-        $('#comments > ul > li').removeAttr('style');
+        $('#comments .list > ul > li').removeAttr('style');
         Comment._bgFade($(url.substr(url.length - 14, 14)));
         window.location = url;
     },
@@ -141,43 +141,43 @@ var Comment = {
             return false;
         }).bind('keyup', 'h', function assets() {
             // x h 感谢选中回贴
-            if ($('#comments > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('#comments > ul > li.focus .icon-heart').parent().click();
+            if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                $('#comments .list > ul > li.focus .icon-heart').parent().click();
             }
             return false;
         }).bind('keyup', 't', function assets() {
             // x t 赞同选中回贴
-            if ($('#comments > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('#comments > ul > li.focus .icon-thumbs-up').parent().click();
+            if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                $('#comments .list > ul > li.focus .icon-thumbs-up').parent().click();
             }
             return false;
         }).bind('keyup', 'd', function assets() {
             // x d 反对选中回贴
-            if ($('#comments > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('#comments > ul > li.focus .icon-thumbs-down').parent().click();
+            if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                $('#comments .list > ul > li.focus .icon-thumbs-down').parent().click();
             }
             return false;
         }).bind('keyup', 'r', function assets() {
-            if ($('#comments > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('#comments > ul > li.focus .icon-reply').parent().click();
+            if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                $('#comments .list > ul > li.focus .icon-reply').parent().click();
             }
             return false;
         }).bind('keyup', 'c', function assets() {
             // x c 查看选中回复的回贴
-            if ($('#comments > ul > li.focus .comment-info .fn-pointer.ft-fade').length === 1 && Util.prevKey === 'x') {
-                $('#comments > ul > li.focus .comment-info .fn-pointer.ft-fade').click();
+            if ($('#comments .list > ul > li.focus .comment-info .fn-pointer.ft-fade').length === 1 && Util.prevKey === 'x') {
+                $('#comments .list > ul > li.focus .comment-info .fn-pointer.ft-fade').click();
             }
             return false;
         }).bind('keyup', 'm', function assets() {
             // x m 查看选中回贴的回复
-            if ($('#comments > ul > li.focus .comment-action > .ft-fade > .fn-pointer').length === 1 && Util.prevKey === 'x') {
-                $('#comments > ul > li.focus .comment-action > .ft-fade > .fn-pointer').click();
+            if ($('#comments .list > ul > li.focus .comment-action > .ft-fade > .fn-pointer').length === 1 && Util.prevKey === 'x') {
+                $('#comments .list > ul > li.focus .comment-action > .ft-fade > .fn-pointer').click();
             }
             return false;
         }).bind('keyup', 'a', function assets() {
             // x a 管理员编辑选中的回贴
             if (Util.prevKey === 'x' && Label.isAdminLoggedIn) {
-                window.location = $('#comments > ul > li.focus .icon-setting').parent().attr('href');
+                window.location = $('#comments .list > ul > li.focus .icon-setting').parent().attr('href');
             }
             return false;
         }).bind('keyup', 'm', function assets() {
@@ -195,31 +195,31 @@ var Comment = {
         }).bind('keyup', 't', function assets() {
             // v t 赞同帖子
             if (Util.prevKey === 'v') {
-                $('.article-action .icon-thumbs-up').parent().click();
+                $('.action-btns .icon-thumbs-up').parent().click();
             }
             return false;
         }).bind('keyup', 'd', function assets() {
             // v d 反对帖子
             if (Util.prevKey === 'v') {
-                $('.article-action .icon-thumbs-down').parent().click();
+                $('.action-btns .icon-thumbs-down').parent().click();
             }
             return false;
         }).bind('keyup', 'c', function assets() {
             // v c 收藏帖子
             if (Util.prevKey === 'v') {
-                $('.article-action .icon-star').parent().click();
+                $('.action-btns .icon-star').parent().click();
             }
             return false;
         }).bind('keyup', 'l', function assets() {
             // v h 查看帖子历史
             if (Util.prevKey === 'v') {
-                $('.article-action .icon-refresh').parent().click();
+                $('.action-btns .icon-refresh').parent().click();
             }
             return false;
         }).bind('keyup', 'e', function assets() {
             // v e 编辑帖子
             if (Util.prevKey === 'v') {
-                window.location = $('.article-action .icon-edit').parent().attr('href');
+                window.location = $('.action-btns .icon-edit').parent().attr('href');
             }
             return false;
         }).bind('keyup', 'p', function assets() {
@@ -231,7 +231,7 @@ var Comment = {
         }).bind('keyup', 'a', function assets() {
             // v a 管理员编辑帖子 
             if (Util.prevKey === 'v') {
-                window.location = $('.article-action .icon-setting').parent().attr('href');
+                window.location = $('.action-btns .icon-setting').parent().attr('href');
             }
             return false;
         });
@@ -1355,7 +1355,7 @@ var Article = {
             return false;
         }
 
-        var $menu = $('.article-action .icon-unordered-list');
+        var $menu = $('.action-btns .icon-unordered-list');
         if ($menu.hasClass('ft-red')) {
             $articleToc.hide();
             $menu.removeClass('ft-red');
