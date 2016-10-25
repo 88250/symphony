@@ -87,7 +87,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.23.15.30, Oct 25, 2016
+ * @version 2.24.15.30, Oct 26, 2016
  * @since 0.2.0
  */
 @Service
@@ -174,6 +174,80 @@ public class ArticleQueryService {
      * Count to fetch article tags for relevant articles.
      */
     private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
+
+    /**
+     * Gets the next article.
+     *
+     * @param articleId the specified article id
+     * @return permalink and title, <pre>
+     * {
+     *     "articlePermalink": "",
+     *     "articleTitle": ""
+     * }
+     * </pre>, returns {@code null} if not found
+     */
+    public JSONObject getNextPermalink(final String articleId) {
+        Stopwatchs.start("Get next");
+
+        try {
+            final Query query = new Query().setFilter(
+                    new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN, articleId)).
+                    addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).
+                    addProjection(Article.ARTICLE_PERMALINK, String.class).
+                    addProjection(Article.ARTICLE_TITLE, String.class).
+                    setCurrentPageNum(1).setPageCount(1).setPageSize(1);
+
+            final JSONArray result = articleRepository.get(query).optJSONArray(Keys.RESULTS);
+            if (0 == result.length()) {
+                return null;
+            }
+
+            return result.optJSONObject(0);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets next article permalink failed", e);
+
+            return null;
+        } finally {
+            Stopwatchs.end();
+        }
+    }
+
+    /**
+     * Gets the previous article.
+     *
+     * @param articleId the specified article id
+     * @return permalink and title, <pre>
+     * {
+     *     "articlePermalink": "",
+     *     "articleTitle": ""
+     * }
+     * </pre>, returns {@code null} if not found
+     */
+    public JSONObject getPreviousPermalink(final String articleId) {
+        Stopwatchs.start("Get previous");
+
+        try {
+            final Query query = new Query().setFilter(
+                    new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, articleId)).
+                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                    addProjection(Article.ARTICLE_PERMALINK, String.class).
+                    addProjection(Article.ARTICLE_TITLE, String.class).
+                    setCurrentPageNum(1).setPageCount(1).setPageSize(1);
+
+            final JSONArray result = articleRepository.get(query).optJSONArray(Keys.RESULTS);
+            if (0 == result.length()) {
+                return null;
+            }
+
+            return result.optJSONObject(0);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets previous article permalink failed", e);
+
+            return null;
+        } finally {
+            Stopwatchs.end();
+        }
+    }
 
     /**
      * Get an articles by the specified title.

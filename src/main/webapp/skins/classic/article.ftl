@@ -72,8 +72,8 @@
                                 </#if>
                             </div>
                             <div class="next-prev ft-fade">
-                                <a<#if no> rel="prev"</#if> href="sf" class="<#if no>fn-hidden </#if>tooltipped tooltipped-w" aria-label="${prevPost}"><</a> &nbsp; &nbsp;
-                                <a<#if no> rel="next"</#if> href="sf" class="<#if no>fn-hidden </#if>tooltipped tooltipped-e" aria-label="${nextPost}">></a>
+                                <#if articlePrevious??><a rel="prev" href="${articlePrevious.articlePermalink}" class="tooltipped tooltipped-w" aria-label="${articlePrevious.articleTitle}"><</a></#if> &nbsp; &nbsp;
+                                <#if articleNext??><a rel="next" href="${articleNext.articlePermalink}" class="tooltipped tooltipped-e" aria-label="${articleNext.articleTitle}">></a></#if>
                             </div>
                         </div>
 
