@@ -88,6 +88,7 @@
                                 </li>
                                 </#list>
                             </ul>
+                            <@pagination url="/city/${city?url('utf-8')}/users"/>
                         </div>
                         </#if>
                     </div>
