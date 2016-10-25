@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.17.37, Oct 25, 2016
+ * @version 2.14.17.38, Oct 26, 2016
  */
 
 @import "variables";
@@ -67,25 +67,38 @@
     z-index: 20;
 }
 
-h2.article-title {
+h1.article-title {
     word-break: break-all;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: normal;
     margin-bottom: 10px;
 }
 
-h2.article-title > a {
+h1.article-title > a {
     color: #595959;
 }
 
-h2.article-title > a:hover {
+h1.article-title > a:hover {
     color: #333;
 }
 
-.article-info .fn-flex-1 {
+.article-info {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
     font-size: 12px;
-    line-height: 19px;
-    margin-bottom: 9px;
+    line-height: 18px;
+    padding-bottom: 10px;
+
+    .next-prev {
+        font-size: 24px;
+        font-weight: bold;
+        color: #666;
+        line-height: 38px;
+
+        a {
+            text-decoration: none;
+        }
+    }
 }
 
 #thoughtProgress {
@@ -118,24 +131,32 @@ label.cmt-anonymous {
 }
 
 #shareClipboard.tooltipped-hover {
-    color: $red;
+    color: $blue;
 }
 
 .article-actions {
-    padding: 10px;
-}
+    padding-top: 10px;
+    text-align: center;
 
-.action-btns [class^="icon-"] {
-    vertical-align: middle;
+    .has-cnt {
+        border: 1px solid #eee;
+        border-radius: 3px;
+        transition: 218ms;
+        padding: 2px 5px;
+        font-size: 13px;
+    }
+
+    .has-cnt:hover {
+        background-color: #ccc;
+        border-color: #ccc;
+        color: #fff;
+    }
 }
 
 .action-btns > span, 
 .action-btns > a {
     color: $fade;
     text-decoration: none;
-    margin-left: 10px;
-    min-width: 16px;
-    text-align: center;
 }
 
 .action-btns > span:hover, 
@@ -143,14 +164,21 @@ label.cmt-anonymous {
     color: $gray;
 }
 
+.action-btns > span.ft-red, 
+.action-btns > a.ft-red,
+.action-btns > span.ft-red:hover, 
+.action-btns > a.ft-red:hover {
+    color: $red;
+}
+
 .action-btns > span.icon-reply-btn {
     color: $gray;
+    font-weight: bold;
 }
 
 .action-btns > span.icon-reply-btn:hover {
     color: #333;
 }
-
 
 .comments {
     .comments-header a {
@@ -280,7 +308,6 @@ label.cmt-anonymous {
     -webkit-transition: all 0.2s ease-out 0s;
     display: inline-block;
     font-size: 16px;
-    margin: 0 5px;
     vertical-align: bottom;
 }
 
