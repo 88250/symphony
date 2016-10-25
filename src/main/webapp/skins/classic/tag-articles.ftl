@@ -29,19 +29,18 @@
                             <a class="ft-gray" href="${servePath}/domain/${domain.domainURI}">${domain.domainTitle}</a>
                             </#list> 
 
-                            <span class="article-action">
-                                <span class="fn-right">
-                                <span class="tooltipped tooltipped-n counts" aria-label="${referenceLabel} / ${cmtLabel} / ${followLabel}">
-                                    ${tag.tagReferenceCount?c} /
-                                    ${tag.tagCommentCount?c} /
-                                    ${tag.tagFollowerCount?c}
+                            <span>
+                                <span class="fn-right action-btns">
+                                <span class="counts">
+                                    ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
+                                    ${cmtLabel} ${tag.tagCommentCount?c} 
                                 </span>
                                 <#if isLoggedIn && isFollowing>
-                                <span class="tooltipped tooltipped-n fn-pointer" aria-label="${unfollowLabel} ${tag.tagFollowerCount}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="ft-red icon-star"></span></span>
+                                <span class="tooltipped tooltipped-n fn-pointer" aria-label="${unfollowLabel} ${tag.tagFollowerCount}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star ft-red"> ${tag.tagFollowerCount}</span></span>
                                 <#else>
-                                <span class="tooltipped tooltipped-n fn-pointer" aria-label="${followLabel} ${tag.tagFollowerCount}" onclick="Util.follow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"></span></span>
+                                <span class="tooltipped tooltipped-n fn-pointer" aria-label="${followLabel} ${tag.tagFollowerCount}" onclick="Util.follow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"> ${tag.tagFollowerCount}</span></span>
                                 </#if>
-                                <#if isAdminLoggedIn> &nbsp;
+                                <#if isAdminLoggedIn>
                                 <a class="tooltipped tooltipped-n" href="${servePath}/admin/tag/${tag.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                 </#if>
                                 </span>

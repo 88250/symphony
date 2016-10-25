@@ -9,6 +9,9 @@
 </div>
 <#if 0 == user.userFollowingArticleStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="list">
+    <#if userHomeFollowingArticles?size == 0>
+        <p class="ft-center ft-gray home-invisible">${chickenEggLabel}</p>
+    </#if>
     <ul class="fn-clear">
         <#list userHomeFollowingArticles as article>
         <li class="fn-flex read">
@@ -42,7 +45,7 @@
             </div>
             <span class="tooltipped tooltipped-w cmts" aria-label="${uncollectLabel} ${article.articleCollectCnt}" 
                                   onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})">
-                <span class="icon-star ft-red"></span>
+                <span class="icon-star ft-red"> ${article.articleCollectCnt}</span>
             </span>
         </li>
         </#list>

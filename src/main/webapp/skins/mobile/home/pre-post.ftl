@@ -29,7 +29,7 @@
                     <a href="${servePath}/post?type=1">
                         <div class="icon-locked"> ${discussionLabel}</div>
                     </a>
-                    <div class="ft-fade">@好友并在<span class="ft-red">私密</span>空间中进行交流</div>
+                    <div class="ft-fade">邀请好友在<span class="ft-red">私密</span>空间中进行交流</div>
                 </div>
                 <div>
                     <a href="${servePath}/post?type=2">

@@ -33,6 +33,8 @@
     </#list>
 </div>
 <#else>
+<div class="module">
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+</div>
 </#if>
 </@home>
