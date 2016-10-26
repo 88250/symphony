@@ -71,9 +71,17 @@
                                 <span id="articltVia" class="ft-fade" data-ua="${article.articleUA}"></span>
                                 </#if>
                             </div>
-                            <div class="next-prev ft-fade">
-                                <#if articlePrevious??><a rel="prev" href="${articlePrevious.articlePermalink}" class="tooltipped tooltipped-w" aria-label="${articlePrevious.articleTitle}"><</a></#if> &nbsp; &nbsp;
-                                <#if articleNext??><a rel="next" href="${articleNext.articlePermalink}" class="tooltipped tooltipped-e" aria-label="${articleNext.articleTitle}">></a></#if>
+                            <div class="next-prev ft-gray">
+                                <#if articlePrevious??>
+                                <a rel="prev" href="${articlePrevious.articlePermalink}" class="tooltipped tooltipped-w" aria-label="${articlePrevious.articleTitle}"><</a>
+                                <#else>
+                                <span class="ft-fade"><</span>
+                                </#if> &nbsp; &nbsp;
+                                <#if articleNext??>
+                                <a rel="next" href="${articleNext.articlePermalink}" class="tooltipped tooltipped-e" aria-label="${articleNext.articleTitle}">></a>
+                                <#else>
+                                <span class="ft-fade">></span>
+                                </#if>
                             </div>
                         </div>
 
