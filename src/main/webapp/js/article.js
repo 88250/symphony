@@ -222,7 +222,7 @@ var Comment = {
                 window.location = $('.action-btns .icon-edit').parent().attr('href');
             }
             return false;
-        }).bind('keyup', 'p', function assets() {
+        }).bind('keyup', 's', function assets() {
             // v p 置顶帖子
             if (Util.prevKey === 'v') {
                 Article.stick(Label.articleOId);
@@ -232,6 +232,18 @@ var Comment = {
             // v a 管理员编辑帖子 
             if (Util.prevKey === 'v') {
                 window.location = $('.action-btns .icon-setting').parent().attr('href');
+            }
+            return false;
+        }).bind('keyup', 'p', function assets() {
+            // v p 跳转到上一篇帖子 prev
+            if (Util.prevKey === 'v' && $('.article-info-action a[rel=prev]').length === 1) {
+                window.location = $('.article-info-action a[rel=prev]').attr('href');
+            }
+            return false;
+        }).bind('keyup', 'n', function assets() {
+            // v n 跳转到下一篇帖子 next
+            if (Util.prevKey === 'v' && $('.article-info-action a[rel=next]').length === 1) {
+                window.location = $('.article-info-action a[rel=next]').attr('href');
             }
             return false;
         });
