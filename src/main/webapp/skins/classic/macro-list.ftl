@@ -34,18 +34,20 @@
                         </#if>
                         </#if>
                     </h2>
-                    <#list article.articleTagObjs as articleTag>
-                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> 
-                    </#list>
-                    <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${article.timeAgo}</span>
-                    <#if "" != article.articleLatestCmterName>
-                    <#if article.syncWithSymphonyClient>
-                    <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> <span class="ft-gray">${article.articleLatestCmterName}</span>
-                    <#else>
-                    <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> 
-                    <#if article.articleLatestCmterName != 'someone'><a rel="nofollow" class="ft-gray" href="${servePath}/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleLatestCmterName != 'someone'></a><#else></span></#if>
-                    </#if>
-                    </#if>
+                    <div>
+                        <#list article.articleTagObjs as articleTag>
+                        <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> 
+                        </#list>
+                        <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${article.timeAgo}</span>
+                        <#if "" != article.articleLatestCmterName>
+                        <#if article.syncWithSymphonyClient>
+                        <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> <span class="ft-gray">${article.articleLatestCmterName}</span>
+                        <#else>
+                        <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> 
+                        <#if article.articleLatestCmterName != 'someone'><a rel="nofollow" class="ft-gray" href="${servePath}/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleLatestCmterName != 'someone'></a><#else></span></#if>
+                        </#if>
+                        </#if>
+                    </div>
                 </div>
             </div>
             <#if article.articleCommentCount != 0>

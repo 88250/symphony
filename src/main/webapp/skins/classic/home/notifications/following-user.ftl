@@ -24,12 +24,11 @@
                 </#if>
                 <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
             </h2>
-            <div class="ft-gray">
+            <div class="ft-fade ft-smaller">
                 <#list notification.articleTagObjs as articleTag>
                 <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
                     ${articleTag.tagTitle}</a>
-                </#list> &nbsp;
-                <span class="icon-date"></span>
+                </#list> •
                 ${notification.createTime?string('yyyy-MM-dd HH:mm')}
             </div> 
         </div>

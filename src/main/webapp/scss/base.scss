@@ -505,21 +505,11 @@ a[class^="icon-"].ft-fade:hover {
 
 /* start common */
 .tag {   
-    padding: 0 4px;
     font-size: 12px;
-    border-radius: 2px;
-    box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);
-    background-color: #f0f0f0;
-    color: #999;
+    color: $fade;
     white-space: nowrap;
     display: inline-block;
     line-height: 16px;
-}
-
-.tag:hover {
-    text-decoration: none;
-    color: #333;
-    background-color: #ccc;
 }
 
 .tooltipped {
@@ -1556,7 +1546,6 @@ a[class*=" icon-"]:hover {
     font-size: 16px;
     font-weight: normal;
     line-height: 20px;
-    margin-top: -2px;
     margin-bottom: 2px;
 }
 

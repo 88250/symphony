@@ -224,7 +224,7 @@
                         <div class="list">
                             <ul>
                                 <#if article.articleComments?size == 0>
-                                <li class="ft-center tooltipped tooltipped-w" aria-label="${cmtLabel}"
+                                <li class="ft-center fn-pointer"
                                     onclick="$('.article-actions .icon-reply-btn').click()">
                                     <img src="${noCmtImg}">
                                 </li>

@@ -25,8 +25,7 @@
                     </#if>
                     <a rel="bookmark" href="${notification.commentSharpURL}"> ${notification.commentArticleTitle}</a>
                 </h2>
-                <span class="ft-gray fn-sub">
-                    <span class="icon-date"></span>
+                <span class="ft-gray">
                     ${notification.commentCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>
