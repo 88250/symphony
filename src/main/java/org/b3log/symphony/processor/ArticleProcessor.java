@@ -592,7 +592,7 @@ public class ArticleProcessor {
         article.put(Common.IS_MY_ARTICLE, false);
         article.put(Article.ARTICLE_T_AUTHOR, author);
         article.put(Common.REWARDED, false);
-        if (!article.has(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK)) { // for legacy data
+        if (!article.has(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK)) { // TODO: for legacy data
             article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, "");
         }
 
@@ -669,6 +669,12 @@ public class ArticleProcessor {
         } finally {
             Stopwatchs.end();
         }
+
+        // Fill previous/next article
+        final JSONObject previous = articleQueryService.getPreviousPermalink(articleId);
+        final JSONObject next = articleQueryService.getNextPermalink(articleId);
+        dataModel.put(Article.ARTICLE_T_PREVIOUS, previous);
+        dataModel.put(Article.ARTICLE_T_NEXT, next);
 
         String stickConfirmLabel = langPropsService.get("stickConfirmLabel");
         stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));

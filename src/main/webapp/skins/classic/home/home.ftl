@@ -31,12 +31,11 @@
                     </#if>
                     <a rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
-                <span class="ft-gray">
+                <span class="ft-fade ft-smaller">
                     <#list article.articleTagObjs as articleTag>
                     <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
                         ${articleTag.tagTitle}</a>
-                    </#list> &nbsp; 
-                    <span class="icon-date"></span>
+                    </#list> •
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>

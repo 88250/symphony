@@ -14,13 +14,13 @@
     </#if>
     <ul class="fn-clear">
         <#list userHomeFollowingArticles as article>
-        <li class="fn-flex read">
+        <li class="fn-flex">
             <#if "someone" != article.articleAuthorName>
             <a aria-label="${article.articleAuthorName}" class="tooltipped tooltipped-s"
                target="_blank" rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
                 <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div>
             <#if "someone" != article.articleAuthorName></a></#if>
-            <div class="fn-flex-1 has-view">
+            <div class="fn-flex-1">
                 <h2>
                     <#if 1 == article.articlePerfect>
                     <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="20" viewBox="3 3 11 12" width="14">${perfectIcon}</svg></span>
@@ -34,19 +34,15 @@
                     </#if>
                     <a rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
-                <span class="ft-gray">
+                <span class="ft-fade ft-smaller">
                     <#list article.articleTagObjs as articleTag>
                     <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
                         ${articleTag.tagTitle}</a>
-                    </#list> &nbsp; 
-                    <span class="icon-date"></span>
+                    </#list>  •  
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span> 
             </div>
-            <span class="tooltipped tooltipped-w cmts" aria-label="${uncollectLabel} ${article.articleCollectCnt}" 
-                                  onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})">
-                <span class="icon-star ft-red"> ${article.articleCollectCnt}</span>
-            </span>
+            <button class="mid" onclick="Util.unfollow(this, '${article.oId}', 'article')">${uncollectLabel}</button>
         </li>
         </#list>
     </ul>

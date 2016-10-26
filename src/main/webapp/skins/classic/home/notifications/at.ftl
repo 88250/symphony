@@ -28,8 +28,7 @@
                     </#if>
                     <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
                 </h2>
-                <span class="ft-gray fn-sub">    
-                    <span class="icon-date"></span>
+                <span class="ft-gray">    
                     ${notification.createTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>
@@ -52,15 +51,14 @@
                 </#if>
                 <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
             </h2>
-            <p class="ft-gray">
+            <div class="ft-gray ft-fade">
                 <#list notification.articleTagObjs as articleTag>
                 <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
                     ${articleTag.tagTitle}</a>
                 </#list>
-                &nbsp; 
-                <span class="icon-date"></span>
+                •
                 ${notification.createTime?string('yyyy-MM-dd HH:mm')}
-            </p>
+            </div>
             <#if notification.articleCommentCount != 0>
             <div class="cmts tooltipped tooltipped-w" aria-label="${cmtLabel}${quantityLabel}">
                 <a class="count ft-gray" href="${notification.url}">${notification.articleCommentCount}</a>

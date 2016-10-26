@@ -39,8 +39,8 @@
     </div>
 </div>
 
-<div class="go-up tooltipped tooltipped-w" aria-label="${goTopLabel}" onclick="Util.goTop()">
-    <span class="icon-go-up"></span>
+<div class="go-top tooltipped tooltipped-w" aria-label="${goTopLabel}" onclick="Util.goTop()">
+    <span class="icon-go-top"></span>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/compress/libs.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>

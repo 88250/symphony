@@ -17,6 +17,7 @@ package org.b3log.symphony.cache;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import org.b3log.latke.Keys;
@@ -28,7 +29,7 @@ import org.json.JSONObject;
  * User cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, May 15, 2016
+ * @version 1.0.2.2, Oct 25, 2016
  * @since 1.4.0
  */
 @Named
@@ -38,12 +39,12 @@ public class UserCache {
     /**
      * Id, User.
      */
-    private static final Map<String, JSONObject> ID_CACHE = new HashMap<String, JSONObject>();
+    private static final Map<String, JSONObject> ID_CACHE = new ConcurrentHashMap<>();
 
     /**
      * Name, User.
      */
-    private static final Map<String, JSONObject> NAME_CACHE = new HashMap<String, JSONObject>();
+    private static final Map<String, JSONObject> NAME_CACHE = new ConcurrentHashMap<>();
 
     /**
      * Gets a user by the specified user id.

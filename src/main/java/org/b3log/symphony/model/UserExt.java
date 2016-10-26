@@ -23,11 +23,21 @@ import org.b3log.symphony.util.Symphonys;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.3.1.12, Sep 20, 2016
+ * @version 2.4.1.12, Oct 26, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
+
+    /**
+     * Key of user language.
+     */
+    public static final String USER_LANGUAGE = "userLanguage";
+
+    /**
+     * Key of user timezone.
+     */
+    public static final String USER_TIMEZONE = "userTimezone";
 
     /**
      * Key of user keyboard shortcuts status.

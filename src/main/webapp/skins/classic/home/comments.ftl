@@ -39,8 +39,7 @@
                         </#if>
                         <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
                     </h2>
-                    <span class="ft-gray fn-sub">
-                        <span class="icon-date"></span>
+                    <span class="ft-gray">
                         ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
                     </span>
                 </div>

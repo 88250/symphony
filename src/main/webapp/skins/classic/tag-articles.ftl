@@ -34,13 +34,13 @@
                                 <span class="counts">
                                     ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
                                     ${cmtLabel} ${tag.tagCommentCount?c} 
-                                </span>
+                                </span> &nbsp;
                                 <#if isLoggedIn && isFollowing>
-                                <span class="tooltipped tooltipped-n fn-pointer" aria-label="${unfollowLabel} ${tag.tagFollowerCount}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star ft-red"> ${tag.tagFollowerCount}</span></span>
+                                <span class="tooltipped tooltipped-n ft-red" aria-label="${unfollowLabel} ${tag.tagFollowerCount}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"></span> ${tag.tagFollowerCount}</span>
                                 <#else>
-                                <span class="tooltipped tooltipped-n fn-pointer" aria-label="${followLabel} ${tag.tagFollowerCount}" onclick="Util.follow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"> ${tag.tagFollowerCount}</span></span>
+                                <span class="tooltipped tooltipped-n" aria-label="${followLabel} ${tag.tagFollowerCount}" onclick="Util.follow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"></span> ${tag.tagFollowerCount}</span>
                                 </#if>
-                                <#if isAdminLoggedIn>
+                                <#if isAdminLoggedIn> &nbsp;
                                 <a class="tooltipped tooltipped-n" href="${servePath}/admin/tag/${tag.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                 </#if>
                                 </span>
@@ -75,7 +75,7 @@
                     <div class="module">
                         <div class="module-header fn-clear">
                             <span class="fn-right">
-                                <a<#if "" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}">${default1Label}</a>
+                                <a<#if "" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}">${defaultLabel}</a>
                                 <span class="ft-fade">/</span>
                                 <a<#if "/hot" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}/hot">${hotArticlesLabel}</a>
                                 <span class="ft-fade">/</span>

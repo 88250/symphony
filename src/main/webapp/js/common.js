@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.35.23.34, Oct 25, 2016
+ * @version 1.35.23.35, Oct 26, 2016
  */
 
 /**
@@ -776,14 +776,13 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeClass("disabled");
-                    if ("article" === type || ("tag" === type && typeof (index) !== 'undefined')) {
-                        $(it).html('<span class="icon-star ft-red"> ' + (index + 1) + '</span>').
+                    if (typeof (index) !== 'undefined') {
+                        $(it).html('<span class="icon-star"></span> ' + (index + 1)).
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
-                                .attr("aria-label", Label.uncollectLabel + ' ' +
-                                        (index + 1));
+                                .attr("aria-label", Label.uncollectLabel).addClass('ft-red');
                     } else {
                         $(it).attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
-                                .text(Label.unfollowLabel);
+                                .text("article" === type ? Label.uncollectLabel : Label.unfollowLabel);
                     }
                 }
             },
@@ -815,13 +814,13 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 if (result.sc) {
-                    if ("article" === type || ("tag" === type && typeof (index) !== 'undefined')) {
-                        $(it).removeClass('ft-red').html('<span class="icon-star"> ' + (index - 1) + '</span>')
+                    if (typeof (index) !== 'undefined') {
+                        $(it).removeClass('ft-red').html('<span class="icon-star"></span> ' + (index - 1))
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
-                                .attr("aria-label", Label.collectLabel + ' ' + (index - 1));
+                                .attr("aria-label", Label.collectLabel);
                     } else {
                         $(it).attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
-                                .text(Label.followLabel);
+                                .text("article" === type ? Label.collectLabel : Label.followLabel);
                     }
                 }
             },
@@ -961,9 +960,9 @@ var Util = {
 
         $(window).scroll(function () {
             if ($(window).scrollTop() > 20) {
-                $(".go-up").show();
+                $(".go-top").show();
             } else {
-                $(".go-up").hide();
+                $(".go-top").hide();
             }
         });
 
