@@ -2,8 +2,7 @@
     <div class="wrapper fn-clear">
         <div class="head-fn fn-left">
             <h1>
-                <a href="${servePath}/" style="background-image: url('${staticServePath}/images/hacpai.png')" alt="${symphonyLabel}" 
-                   title="${symphonyLabel}" width="42" class="fn-pointer"></a>
+                ${logoIcon}
             </h1>
         </div>
 
