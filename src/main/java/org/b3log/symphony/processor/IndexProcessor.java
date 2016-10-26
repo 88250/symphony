@@ -63,7 +63,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.2.19, Oct 11, 2016
+ * @version 1.9.2.20, Oct 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -117,7 +117,7 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -154,7 +154,7 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showRecent(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("recent.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -244,7 +244,7 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showHotArticles(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("hot.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -290,7 +290,7 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showPerfectArticles(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("perfect.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -363,7 +363,7 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showB3log(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("b3log.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -389,7 +389,7 @@ public class IndexProcessor {
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         renderer.setTemplateName("kill-browser.ftl");
         context.setRenderer(renderer);
 

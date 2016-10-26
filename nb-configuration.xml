@@ -54,6 +54,7 @@ Any value defined here will override the pom.xml file value but is only applicab
         <word>timeline</word>
         <word>timelines</word>
         <word>timezone</word>
+        <word>timezones</word>
         <word>Unfollows</word>
         <word>unrewarded</word>
         <word>verifycode</word>

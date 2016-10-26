@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.1, Aug 20, 2016
+ * @version 1.3.0.2, Oct 26, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -85,7 +85,7 @@ public class TopProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showBalance(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);;
         context.setRenderer(renderer);
 
         renderer.setTemplateName("/top/balance.ftl");
@@ -118,7 +118,7 @@ public class TopProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showConsumption(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);;
         context.setRenderer(renderer);
 
         renderer.setTemplateName("/top/consumption.ftl");
@@ -151,7 +151,7 @@ public class TopProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showCheckin(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);;
         context.setRenderer(renderer);
 
         renderer.setTemplateName("/top/checkin.ftl");

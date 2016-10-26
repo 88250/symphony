@@ -62,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.6, Oct 12, 2016
+ * @version 1.7.0.7, Oct 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -182,7 +182,7 @@ public class TagProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTagsWall(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);;
         context.setRenderer(renderer);
 
         renderer.setTemplateName("tags.ftl");
@@ -212,7 +212,7 @@ public class TagProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTagArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String tagURI) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);;
         context.setRenderer(renderer);
 
         renderer.setTemplateName("tag-articles.ftl");

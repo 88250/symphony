@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.31.7.17, Oct 12, 2016",
+    "version": "3.32.7.17, Oct 26, 2016",
     "authors": [
         "Liang Ding", "Zephyr", "Bill Ho"
     ],
@@ -1140,6 +1140,16 @@
                     "name": "userKeyboardShortcutsStatus",
                     "type": "int",
                     "description": "0: enabled keyboard shortcuts, 1: disabled keyboard shortcuts"
+                },
+                {
+                    "name": "userLanguage",
+                    "type": "String",
+                    "length": 64
+                },
+                {
+                    "name": "userTimezone",
+                    "type": "String",
+                    "length": 64
                 }
             ]
         },

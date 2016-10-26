@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Sep 26, 2016
+ * @version 1.1.0.3, Oct 26, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -103,7 +103,7 @@ public class SearchProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void search(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
         renderer.setTemplateName("search-articles.ftl");

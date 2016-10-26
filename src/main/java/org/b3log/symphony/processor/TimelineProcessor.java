@@ -44,7 +44,7 @@ import org.b3log.symphony.util.Symphonys;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, Sep 26, 2016
+ * @version 1.1.0.8, Oct 26, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -80,7 +80,7 @@ public class TimelineProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTimeline(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);;
         context.setRenderer(renderer);
         renderer.setTemplateName("timeline.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

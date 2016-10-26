@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.18.9.14, Oct 11, 2016
+ * @version 1.19.9.14, Oct 26, 2016
  */
 
 /**
@@ -364,12 +364,15 @@ var Settings = {
         switch (type) {
             case "profiles":
                 requestJSONObject = this._validateProfiles();
+
                 break;
             case "sync/b3":
                 requestJSONObject = this._validateSyncB3();
+
                 break;
             case "password":
                 requestJSONObject = this._validatePassword();
+
                 break;
             case "privacy":
                 requestJSONObject = {
@@ -387,6 +390,7 @@ var Settings = {
                     userTimelineStatus: $("#userTimelineStatus").prop("checked"),
                     userForgeLinkStatus: $("#userForgeLinkStatus").prop("checked")
                 };
+
                 break;
             case "function":
                 requestJSONObject = {
@@ -397,9 +401,18 @@ var Settings = {
                     userSubMailStatus: $('#userSubMailStatus').prop("checked"),
                     userKeyboardShortcutsStatus: $('#userKeyboardShortcutsStatus').prop("checked")
                 };
+
                 break;
             case "emotionList":
                 requestJSONObject = this._validateEmotionList();
+
+                break;
+            case "i18n":
+                requestJSONObject = {
+                    userLanguage: $("#userLanguage").val(),
+                    userTimezone: $("#userTimezone").val()
+                };
+
                 break;
             default:
                 console.log("update settings has no type");
@@ -429,6 +442,8 @@ var Settings = {
                         $('#userTagsDom').text(requestJSONObject.userTags);
                         $('#userURLDom').text(requestJSONObject.userURL).attr('href', requestJSONObject.userURL);
                         $('#userIntroDom').text(requestJSONObject.userIntro);
+                        
+                        return;
                     }
                 } else {
                     $("#" + type.replace(/\//g, "") + "Tip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');

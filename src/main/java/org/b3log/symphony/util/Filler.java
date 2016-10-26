@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javax.inject.Inject;
@@ -276,7 +277,7 @@ public class Filler {
         // fillTrendTags(dataModel);
         fillPersonalNav(request, response, dataModel);
 
-        fillLangs(dataModel);
+        fillLangs(dataModel, request);
         fillIcons(dataModel);
         fillSideAd(dataModel);
 
@@ -443,11 +444,19 @@ public class Filler {
      * Fills the all language labels.
      *
      * @param dataModel the specified data model
+     * @param request the specified HTTP servlet request
      */
-    private void fillLangs(final Map<String, Object> dataModel) {
+    private void fillLangs(final Map<String, Object> dataModel, final HttpServletRequest request) {
         Stopwatchs.start("Fills lang");
         try {
-            dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
+            if ((Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
+                dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
+
+                return;
+            }
+
+            final Locale locale = org.b3log.latke.util.Locales.getLocale(request);
+            dataModel.putAll(langPropsService.getAll(locale));
         } finally {
             Stopwatchs.end();
         }

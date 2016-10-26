@@ -73,7 +73,7 @@ import org.jsoup.Jsoup;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.8, Sep 26, 2016
+ * @version 1.3.5.9, Oct 26, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -326,7 +326,7 @@ public class ChatRoomProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showChatRoom(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("chat-room.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

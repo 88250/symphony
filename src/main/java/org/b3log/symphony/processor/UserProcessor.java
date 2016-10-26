@@ -17,9 +17,12 @@ package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -85,6 +88,7 @@ import org.b3log.symphony.service.PostExportService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.util.Languages;
 import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
@@ -121,13 +125,14 @@ import org.json.JSONObject;
  * <li>Exports posts(article/comment) to a file (/export/posts), POST</li>
  * <li>Queries invitecode state (/invitecode/state), GET</li>
  * <li>Shows link forge (/member/{userName}/forge/link), GET</li>
+ * <li>i18n (/settings/i18n), POST</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.24.13.25, Sep 20, 2016
+ * @version 1.25.13.25, Oct 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -247,6 +252,52 @@ public class UserProcessor {
     private LinkForgeQueryService linkForgeQueryService;
 
     /**
+     * Updates user i18n.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     */
+    @RequestProcessing(value = "/settings/i18n", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
+    public void updateI18n(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) {
+        context.renderJSON();
+
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            request.setAttribute(Keys.REQUEST, requestJSONObject);
+        } catch (final Exception e) {
+            LOGGER.warn(e.getMessage());
+
+            requestJSONObject = new JSONObject();
+        }
+
+        String userLanguage = requestJSONObject.optString(UserExt.USER_LANGUAGE, Locale.US.toString());
+        if (!Languages.getAvailableLanguages().contains(userLanguage)) {
+            userLanguage = Locale.US.toString();
+        }
+
+        String userTimezone = requestJSONObject.optString(UserExt.USER_TIMEZONE, TimeZone.getDefault().getID());
+        if (!Arrays.asList(TimeZone.getAvailableIDs()).contains(userTimezone)) {
+            userTimezone = TimeZone.getDefault().getID();
+        }
+
+        try {
+            final JSONObject user = userQueryService.getCurrentUser(request);
+            user.put(UserExt.USER_LANGUAGE, userLanguage);
+            user.put(UserExt.USER_TIMEZONE, userTimezone);
+
+            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
+
+            context.renderTrueResult();
+        } catch (final ServiceException e) {
+            context.renderMsg(e.getMessage());
+        }
+    }
+
+    /**
      * Shows user link forge.
      *
      * @param context the specified context
@@ -260,7 +311,7 @@ public class UserProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showLinkForge(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response, final String userName) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/link-forge.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -403,7 +454,7 @@ public class UserProcessor {
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void showSettings(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         final String requestURI = request.getRequestURI();
         String page = StringUtils.substringAfter(requestURI, "/settings/");
@@ -481,6 +532,26 @@ public class UserProcessor {
             dataModel.put(Emotion.EMOTIONS, emojis);
         }
 
+        if (requestURI.contains("i18n")) {
+            dataModel.put(Common.LANGUAGES, Languages.getAvailableLanguages());
+
+            final List<JSONObject> timezones = new ArrayList<>();
+            final String[] availableIDs = TimeZone.getAvailableIDs();
+
+            final String language = user.optString(UserExt.USER_LANGUAGE);
+            final Locale locale = new Locale(language);
+            for (final String timezoneId : availableIDs) {
+                final String timezoneName = TimeZone.getTimeZone(timezoneId).getDisplayName(locale);
+
+                final JSONObject timezone = new JSONObject();
+                timezone.put(Common.ID, timezoneId);
+                timezone.put(Common.NAME, timezoneId + " (" + timezoneName + ")");
+
+                timezones.add(timezone);
+            }
+            dataModel.put(Common.TIMEZONES, timezones);
+        }
+
         dataModel.put(Common.TYPE, "settings");
     }
 
@@ -498,7 +569,7 @@ public class UserProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showHomeAnonymousComments(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response, final String userName) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -585,7 +656,7 @@ public class UserProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showAnonymousArticles(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response, final String userName) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -709,7 +780,7 @@ public class UserProcessor {
 
         final int pageNum = Integer.valueOf(pageNumStr);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
         filler.fillHeaderAndFooter(request, response, dataModel);
@@ -782,7 +853,7 @@ public class UserProcessor {
             final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -854,7 +925,7 @@ public class UserProcessor {
             final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/following-users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -932,7 +1003,7 @@ public class UserProcessor {
             final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/following-tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -1009,7 +1080,7 @@ public class UserProcessor {
             final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/following-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -1087,7 +1158,7 @@ public class UserProcessor {
             final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/followers.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -1166,7 +1237,7 @@ public class UserProcessor {
             final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/points.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

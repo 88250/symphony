@@ -27,6 +27,8 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -77,6 +79,7 @@ import org.b3log.symphony.util.Geos;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -428,8 +431,9 @@ public class UserMgmtService {
      *     "userEmail": "",
      *     "userAppRole": int,
      *     "userPassword": "", // Hashed
-     *     "userRole": "", // optional, uses {@value Role#DEFAULT_ROLE} instead if not speciffied
-     *     "userStatus": int // optional, uses {@value UserExt#USER_STATUS_C_NOT_VERIFIED} instead if not specified
+     *     "userRole": "", // optional, uses {@value Role#DEFAULT_ROLE} instead if not specified
+     *     "userStatus": int, // optional, uses {@value UserExt#USER_STATUS_C_NOT_VERIFIED} instead if not specified
+     *     "userLanguage": "" // optional, uses {@code "en_US"} instead if not specified
      * }
      * </pre>,see {@link User} for more details
      *
@@ -535,6 +539,8 @@ public class UserMgmtService {
             user.put(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
             user.put(UserExt.USER_SUB_MAIL_SEND_TIME, System.currentTimeMillis());
             user.put(UserExt.USER_KEYBOARD_SHORTCUTS_STATUS, UserExt.USER_XXX_STATUS_C_DISABLED);
+            user.put(UserExt.USER_LANGUAGE, requestJSONObject.optString(UserExt.USER_LANGUAGE, Locale.US.toString()));
+            user.put(UserExt.USER_TIMEZONE, requestJSONObject.optString(UserExt.USER_TIMEZONE, TimeZone.getDefault().getID()));
 
             if (toUpdate) {
                 user.put(UserExt.USER_NO, userNo);

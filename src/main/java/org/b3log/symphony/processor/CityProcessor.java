@@ -62,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 1.3.1.5, Oct 25, 2016
+ * @version 1.3.1.6, Oct 26, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -118,7 +118,7 @@ public class CityProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showCityArticles(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
         renderer.setTemplateName("city.ftl");
@@ -209,7 +209,7 @@ public class CityProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showCityUsers(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
         renderer.setTemplateName("city.ftl");
