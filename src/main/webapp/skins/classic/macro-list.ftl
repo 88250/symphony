@@ -20,8 +20,8 @@
                 <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                 </a>
             </h2>
-            <div class="abstract fn-ellipsis">
-                TODO
+            <div class="abstract">
+                ${article.articlePreviewContent}
             </div>
             <div class="ft-smaller ft-fade fn-clear list-info">
                 <span class="author"> 
@@ -54,7 +54,7 @@
                     </#if>   
 
                     <#if "" != article.articleLatestCmterName>
-                        •&nbsp; todo 
+                        •&nbsp; ${article.cmtTimeAgo} 
                         <span class="ft-gray">
                         <#if article.syncWithSymphonyClient>
                             ${article.articleLatestCmterName}

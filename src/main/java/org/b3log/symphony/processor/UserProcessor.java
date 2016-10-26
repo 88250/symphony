@@ -274,7 +274,7 @@ public class UserProcessor {
             requestJSONObject = new JSONObject();
         }
 
-        String userLanguage = requestJSONObject.optString(UserExt.USER_LANGUAGE, Locale.US.toString());
+        String userLanguage = requestJSONObject.optString(UserExt.USER_LANGUAGE, Locale.SIMPLIFIED_CHINESE.toString());
         if (!Languages.getAvailableLanguages().contains(userLanguage)) {
             userLanguage = Locale.US.toString();
         }

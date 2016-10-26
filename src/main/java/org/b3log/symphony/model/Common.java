@@ -148,6 +148,11 @@ public final class Common {
      * Key of time ago.
      */
     public static final String TIME_AGO = "timeAgo";
+    
+    /**
+     * Key of comment time ago.
+     */
+    public static final String CMT_TIME_AGO = "cmtTimeAgo";
 
     /**
      * Key of time.

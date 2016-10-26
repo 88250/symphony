@@ -87,7 +87,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.15.30, Oct 26, 2016
+ * @version 2.24.15.31, Oct 27, 2016
  * @since 0.2.0
  */
 @Service
@@ -820,7 +820,8 @@ public class ArticleQueryService {
                     addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                     addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                     addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                    addProjection(Article.ARTICLE_PERFECT, Integer.class);
+                    addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                    addProjection(Article.ARTICLE_CONTENT, String.class);
 
             result = articleRepository.get(query);
 
@@ -1246,7 +1247,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class);
+                addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                addProjection(Article.ARTICLE_CONTENT, String.class);
 
         return ret;
     }
@@ -1281,7 +1283,9 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class);
+                addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                addProjection(Article.ARTICLE_CONTENT, String.class).
+                addProjection(Article.ARTICLE_CONTENT, String.class);
 
         return ret;
     }
@@ -1316,7 +1320,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class);
+                addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                addProjection(Article.ARTICLE_CONTENT, String.class);
 
         return ret;
     }
@@ -1351,7 +1356,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class);
+                addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                addProjection(Article.ARTICLE_CONTENT, String.class);
 
         return ret;
     }
@@ -1864,22 +1870,10 @@ public class ArticleQueryService {
     /**
      * Organizes the specified articles.
      *
-     * <ul>
-     * <li>converts create/update/latest comment time (long) to date type</li>
-     * <li>generates author thumbnail URL</li>
-     * <li>generates author name</li>
-     * <li>escapes article title &lt; and &gt;</li>
-     * <li>generates article heat</li>
-     * <li>generates article view count display format(1k+/1.5k+...)</li>
-     * <li>generates time ago text</li>
-     * <li>generates stick remains minutes</li>
-     * <li>anonymous process</li>
-     * <li>builds tag objects</li>
-     * </ul>
-     *
      * @param avatarViewMode the specified avatarViewMode
      * @param articles the specified articles
      * @throws RepositoryException repository exception
+     * @see #organizeArticle(int, org.json.JSONObject)
      */
     public void organizeArticles(final int avatarViewMode, final List<JSONObject> articles) throws RepositoryException {
         Stopwatchs.start("Organize articles");
@@ -1903,9 +1897,11 @@ public class ArticleQueryService {
      * <li>generates article heat</li>
      * <li>generates article view count display format(1k+/1.5k+...)</li>
      * <li>generates time ago text</li>
+     * <li>generates comment time ago text</li>
      * <li>generates stick remains minutes</li>
      * <li>anonymous process</li>
      * <li>builds tag objects</li>
+     * <li>generates article preview content</li>
      * </ul>
      *
      * @param avatarViewMode the specified avatar view mode
@@ -1915,6 +1911,8 @@ public class ArticleQueryService {
     public void organizeArticle(final int avatarViewMode, final JSONObject article) throws RepositoryException {
         toArticleDate(article);
         genArticleAuthor(avatarViewMode, article);
+
+        article.put(Article.ARTICLE_T_PREVIEW_CONTENT, getArticleMetaDesc(article));
 
         String title = article.optString(Article.ARTICLE_TITLE).replace("<", "&lt;").replace(">", "&gt;");
         title = Markdowns.clean(title, "");
@@ -1991,6 +1989,7 @@ public class ArticleQueryService {
      */
     private void toArticleDate(final JSONObject article) {
         article.put(Common.TIME_AGO, Times.getTimeAgo(article.optLong(Article.ARTICLE_CREATE_TIME), Latkes.getLocale()));
+        article.put(Common.CMT_TIME_AGO, Times.getTimeAgo(article.optLong(Article.ARTICLE_LATEST_CMT_TIME), Latkes.getLocale()));
 
         article.put(Article.ARTICLE_CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
         article.put(Article.ARTICLE_UPDATE_TIME, new Date(article.optLong(Article.ARTICLE_UPDATE_TIME)));
@@ -2440,6 +2439,11 @@ public class ArticleQueryService {
 
             String ret = article.optString(Article.ARTICLE_CONTENT);
             ret = Jsoup.clean(ret, Whitelist.none());
+            ret = StringUtils.trim(ret);
+            ret = StringUtils.replaceEach(ret,
+                    new String[]{"&nbsp;", "#", "*", "-", ">"},
+                    new String[]{"", "", "", "", ""});
+
             if (ret.length() >= length) {
                 ret = StringUtils.substring(ret, 0, length)
                         + " ....";
