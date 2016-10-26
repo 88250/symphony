@@ -261,8 +261,6 @@ var Comment = {
             if (!isNaN(parseInt(window.location.hash.substr(1)))) {
                 Comment._bgFade($(window.location.hash));
             }
-        } else {
-            Comment._bgFade($('.article-module'));
         }
 
         this._setCmtVia();
