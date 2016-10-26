@@ -89,18 +89,50 @@ h1.article-title > a:hover {
     line-height: 18px;
     padding-bottom: 10px;
 
-    .next-prev {
+    .article-info-action {
         font-size: 24px;
         font-weight: bold;
-        color: #666;
         line-height: 38px;
 
         a {
             text-decoration: none;
+            transition: all 0.2s ease-out 0s;
+            color: #666;
         }
 
         a:hover {
             color: #333;
+        }
+
+        .share {
+            position: relative;
+            font-size: 18px;
+
+            #qrCode {
+                position: absolute;
+                op: 28px;
+                left: 0;
+                border: 5px solid #e5e5e5;
+                z-index: 1;
+                height: 90px;
+                border-radius: 3px;
+                width: 90px;
+            }
+
+            [class^="icon-"] {
+                cursor: pointer;
+                transition: all 0.2s ease-out 0s;
+                color: $fade;
+            }
+
+            [class^="icon-"]:hover {
+                color: $gray;
+            }
+
+        }
+
+        #shareClipboard.tooltipped-hover .icon-link {
+            color: $gray;
         }
     }
 }
@@ -134,16 +166,12 @@ label.cmt-anonymous {
     margin: 5px 20px 0 0;
 }
 
-#shareClipboard.tooltipped-hover {
-    color: $blue;
-}
-
 .article-actions {
     padding-top: 10px;
     text-align: center;
 
     .has-cnt {
-        border: 1px solid #eee;
+        border: 1px solid #d9d9d9;
         border-radius: 3px;
         transition: 218ms;
         padding: 2px 5px;
@@ -151,8 +179,8 @@ label.cmt-anonymous {
     }
 
     .has-cnt:hover {
-        background-color: #ccc;
-        border-color: #ccc;
+        background-color: #bcbcbc;
+        border-color: #bfbfbf;
         color: #fff;
     }
 }
@@ -176,7 +204,7 @@ label.cmt-anonymous {
 }
 
 .action-btns > span.icon-reply-btn {
-    color: $gray;
+    color: #666;
     font-weight: bold;
 }
 
@@ -209,7 +237,7 @@ label.cmt-anonymous {
     }
 
     .list > ul > li:hover .hover-show,
-    .list > ul > li.focus .fn-hidden {
+        .list > ul > li.focus .fn-hidden {
         visibility: visible;
     }
 
@@ -217,12 +245,8 @@ label.cmt-anonymous {
         border-bottom-width: 0;
     }
 
-    .list > ul > li .fn-pointer:hover {
-        color: $gray; 
-    }
-
-    .comment > p:first-child {
-        margin-top: 0px;
+    .comment {
+        margin-top: 7px;
     }
 
     .comment > p:last-child {
@@ -289,34 +313,6 @@ label.cmt-anonymous {
     padding: 4px;
     height: 102px;
     width: 100%;
-}
-
-.share {
-    position: relative;
-}
-
-.share #qrCode {
-    position: absolute;
-    bottom: 28px;
-    right: 0;
-    border: 5px solid #e5e5e5;
-    z-index: 1;
-    height: 90px;
-    border-radius: 3px;
-    width: 90px;
-}
-
-.share [class^="icon-"] {
-    cursor: pointer;
-    transition: all 0.2s ease-out 0s;
-    -webkit-transition: all 0.2s ease-out 0s;
-    display: inline-block;
-    font-size: 16px;
-    vertical-align: bottom;
-}
-
-.share [class^="icon-"]:hover {
-    color: $blue;
 }
 
 .CodeMirror-scroll {
@@ -401,26 +397,6 @@ label.cmt-anonymous {
 
 .article-toc li.toc-h5 a:hover {
     padding-left: 87px;
-}
-
-.reply-btn {
-    background-color: $red;
-    position: fixed;
-    bottom: 97px;
-    right: 20px;
-    padding-top: 19px;
-    width: 56px;
-    text-align: center;
-    color: #fff;
-    z-index: 12;
-    box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
-    height: 56px;
-    box-sizing: border-box;
-    border-radius: 28px;
-}
-
-.reply-btn:hover {
-    background-color: #c0372a;
 }
 
 .editor-panel {

@@ -85,7 +85,7 @@ var Comment = {
      */
     _initEditorPanel: function () {
         // 回复按钮设置
-        $('.reply-btn').click(function () {
+        $('.article-actions .icon-reply-btn').click(function () {
             if (!Label.isLoggedIn) {
                 Util.needLogin();
                 return false;
@@ -137,7 +137,7 @@ var Comment = {
             if (Util.prevKey) {
                 return false;
             }
-            $('.reply-btn').click();
+            $('.article-actions .icon-reply-btn').click();
             return false;
         }).bind('keyup', 'h', function assets() {
             // x h 感谢选中回贴

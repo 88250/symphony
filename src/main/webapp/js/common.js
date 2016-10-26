@@ -960,9 +960,9 @@ var Util = {
 
         $(window).scroll(function () {
             if ($(window).scrollTop() > 20) {
-                $(".go-up").show();
+                $(".go-top").show();
             } else {
-                $(".go-up").hide();
+                $(".go-top").hide();
             }
         });
 

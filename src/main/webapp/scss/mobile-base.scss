@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.13, Sep 13, 2016
+ * @version 1.5.6.14, Oct 26, 2016
  */
 
 /* start reset */
@@ -630,9 +630,6 @@ a[class*=" icon-"]:hover {
 .icon-upload:before {
     content: "\f0ee";
 }
-.icon-copy:before {
-    content: "\e908";
-}
 .icon-time:before {
     content: "\e906";
 }
@@ -753,7 +750,7 @@ a[class*=" icon-"]:hover {
 .icon-refresh:before {
   content: "\e60b";
 }
-.icon-go-up:before {
+.icon-go-top:before {
   content: "\e60c";
 }
 .icon-twitter:before {
@@ -823,7 +820,7 @@ a[class*=" icon-"]:hover {
     cursor: pointer;
 }
 
-.icon-go-up {
+.icon-go-top {
     background-color: #E7ECEE;
     border: 1px solid #D2D9DD;
     border-right-width: 0;
@@ -842,7 +839,7 @@ a[class*=" icon-"]:hover {
     right: 0;
 }
 
-.icon-go-up:hover {
+.icon-go-top:hover {
     background-color: #d8e0e3 !important;
 }
 /* end icon */

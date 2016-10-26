@@ -71,14 +71,28 @@
                                 <span id="articltVia" class="ft-fade" data-ua="${article.articleUA}"></span>
                                 </#if>
                             </div>
-                            <div class="next-prev ft-gray">
+                            <div class="article-info-action">
+                                <span class="share">
+                                    <div id="qrCode" class="fn-none"
+                                         data-shareurl="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"></div>
+                                    <span class="tooltipped tooltipped-n" aria-label="share to wechat" data-type="wechat"><span class="icon-wechat"></span></span> &nbsp;
+                                    <span class="tooltipped tooltipped-n" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span> &nbsp;
+                                    <span class="tooltipped tooltipped-n" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span> &nbsp;
+                                    <span class="tooltipped tooltipped-n" aria-label="share to google" data-type="google"><span class="icon-google"></span></span> &nbsp;
+                                    <span class="tooltipped tooltipped-n" data-type="copy"
+                                          aria-label="${copyLabel}"
+                                          id="shareClipboard"
+                                          data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"><span 
+                                            class="icon-link"></span></span>
+                                </span>
+                                 &nbsp;
                                 <#if articlePrevious??>
-                                <a rel="prev" href="${articlePrevious.articlePermalink}" class="tooltipped tooltipped-w" aria-label="${articlePrevious.articleTitle}"><</a>
+                                <a rel="prev" href="${articlePrevious.articlePermalink}" class="tooltipped tooltipped-n" aria-label="${articlePrevious.articleTitle}"><</a>
                                 <#else>
                                 <span class="ft-fade"><</span>
-                                </#if> &nbsp; &nbsp;
+                                </#if> &nbsp; 
                                 <#if articleNext??>
-                                <a rel="next" href="${articleNext.articlePermalink}" class="tooltipped tooltipped-e" aria-label="${articleNext.articleTitle}">></a>
+                                <a rel="next" href="${articleNext.articlePermalink}" class="tooltipped tooltipped-n" aria-label="${articleNext.articleTitle}">></a>
                                 <#else>
                                 <span class="ft-fade">></span>
                                 </#if>
@@ -104,7 +118,7 @@
                         </div>
                         </#if>
 
-                        <div class="article-actions">
+                        <div class="article-actions fn-clear">
                             <span class="action-btns fn-left">
                                 <span id="thankArticle" aria-label="${thankLabel}"
                                       class="tooltipped tooltipped-n has-cnt<#if article.thanked> ft-red</#if>"
@@ -118,38 +132,26 @@
                                 <span class="tooltipped tooltipped-n has-cnt" aria-label="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span> ${article.articleCollectCnt}</span>
                                 </#if>
                             </span>
-                             <span class="share">
-                                <div id="qrCode" class="fn-none"
-                                     data-shareurl="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"></div>
-                                <span class="tooltipped tooltipped-n" aria-label="share to wechat" data-type="wechat"><span class="icon-wechat"></span></span> &nbsp;
-                                <span class="tooltipped tooltipped-n" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span> &nbsp;
-                                <span class="tooltipped tooltipped-n" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span> &nbsp;
-                                <span class="tooltipped tooltipped-n" aria-label="share to google" data-type="google"><span class="icon-google"></span></span> &nbsp;
-                                <span class="tooltipped tooltipped-n ft-red" data-type="copy"
-                                      aria-label="${copyLabel}"
-                                      id="shareClipboard"
-                                      data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"><span 
-                                        class="icon-copy"></span></span>
-                            </span>
+                            
                             <span class="action-btns fn-right">
                                 <#if "" != article.articleToC>
                                 <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
-                                      class="tooltipped tooltipped-n"><span class="icon-unordered-list ft-red"></span></span> &nbsp;
+                                      class="tooltipped tooltipped-n"><span class="icon-unordered-list ft-red"></span></span> &nbsp; &nbsp;
                                 </#if>
                                 <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
-                                      class="tooltipped tooltipped-n"><span class="icon-refresh"></span></span> &nbsp;
+                                      class="tooltipped tooltipped-n"><span class="icon-refresh"></span></span> &nbsp; &nbsp;
                                 <#if article.isMyArticle && 3 != article.articleType>
                                 <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" 
-                                   class="tooltipped tooltipped-n"><span class="icon-edit"></span></a> &nbsp;
+                                   class="tooltipped tooltipped-n"><span class="icon-edit"></span></a> &nbsp; &nbsp;
                                 </#if>
                                 <#if article.isMyArticle>
                                 <a class="tooltipped tooltipped-n" aria-label="${stickLabel}" 
-                                   href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a> &nbsp;
+                                   href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a> &nbsp; &nbsp;
                                 </#if>
                                 <#if isAdminLoggedIn>
-                                <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a> &nbsp;
+                                <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a> &nbsp; &nbsp;
                                 </#if>
-                                <span class="tooltipped tooltipped-n icon-reply-btn" aria-label="${cmtLabel}" onclick="$('.reply-btn').click()"><span class="icon-reply"></span>${cmtLabel}</span>
+                                <span class="tooltipped tooltipped-n icon-reply-btn" aria-label="${cmtLabel}"><span class="icon-reply"></span>${cmtLabel}</span>
                             </span>
                         </div>
                     </div>
@@ -222,8 +224,8 @@
                         <div class="list">
                             <ul>
                                 <#if article.articleComments?size == 0>
-                                <li class="ft-center">
-                                    <a href="javascript:$('.reply-btn').click()" class="ft-a-icon"><span class="icon-reply"></span> ${cmtLabel}</a>
+                                <li class="ft-center action-btns">
+                                    <span onclick="$('.article-actions .icon-reply-btn').click()" class="icon-reply-btn fn-pointer"><span class="icon-reply"></span>${cmtLabel}</span>
                                 </li>
                                 </#if>
                                 <#assign notificationCmtIds = "">
@@ -395,7 +397,6 @@
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <div id="revision"><div id="revisions"></div></div>
-        <div class="reply-btn fn-pointer tooltipped tooltipped-w" aria-label="${cmtLabel}"><span class="icon-reply"></span></div>
         <div class="editor-panel">
             <div class="wrapper">
             <#if isLoggedIn>
