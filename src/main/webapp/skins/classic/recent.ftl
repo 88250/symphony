@@ -15,15 +15,24 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <div class="module">
+                        <div class="article-list list">
+                            <ul class="stick">
+                                <#list latestArticles as article>
+                                TODO
+                                </#list>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="module">
                         <div class="module-header fn-clear">
-                            <span class="fn-right">
-                                <a<#if "" == current> class="ft-gray"</#if> href="${servePath}/recent">${defaultLabel}</a>
-                                <span class="ft-fade">/</span>
-                                <a<#if "/hot" == current> class="ft-gray"</#if> href="${servePath}/recent/hot">${hotArticlesLabel}</a>
-                                <span class="ft-fade">/</span>
-                                <a<#if "/good" == current> class="ft-gray"</#if> href="${servePath}/recent/good">${goodCmtsLabel}</a>
-                                <span class="ft-fade">/</span>
-                                <a<#if "/reply" == current> class="ft-gray"</#if> href="${servePath}/recent/reply">${recentCommentLabel}</a>
+                            <span class="fn-right ft-fade">
+                                <a class="<#if "" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/recent">${defaultLabel}</a>
+                                /
+                                <a class="<#if "/hot" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/recent/hot">${hotArticlesLabel}</a>
+                                /
+                                <a class="<#if "/good" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/recent/good">${goodCmtsLabel}</a>
+                                /
+                                <a class="<#if "/reply" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/recent/reply">${recentCommentLabel}</a>
                             </span>
                         </div>
                         <@list listData=latestArticles/>

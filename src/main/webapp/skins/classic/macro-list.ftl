@@ -5,57 +5,74 @@
         <#list listData as article>
         <#assign articleIds = articleIds + article.oId>
         <#if article_has_next><#assign articleIds = articleIds + ","></#if>
-        <li<#if article.articleStickRemains gt 0 && articleStickCheck??> class="stick"</#if>>
-            <div class="fn-flex">
-                <#if article.articleAnonymous == 0>
-                <a rel="nofollow" 
-                   href="${servePath}/member/${article.articleAuthorName}"></#if><div
-                   class="avatar ft-gray tooltipped tooltipped-se"  
-                   aria-label="${article.articleAuthorName}"
-                   style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
-                <div class="fn-flex-1 has-view">
-                    <h2>
-                        <#if 1 == article.articlePerfect>
-                        <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" width="14" viewBox="3 3 11 12">${perfectIcon}</svg></span>
-                        </#if>
-                        <#if 1 == article.articleType>
-                        <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
-                        <#elseif 2 == article.articleType>
-                        <span class="tooltipped tooltipped-w" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
-                        <#elseif 3 == article.articleType>
-                        <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
-                        </#if>
-                        <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark"
-                           href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
-                        </a>
-                        <#if articleStickCheck??>
-                        <#if article.articleStick < 9223372036854775807>
-                        <span class="ft-smaller ft-red stick-remains fn-none">${stickLabel}${remainsLabel} ${article.articleStickRemains?c} ${minuteLabel}</span>
-                        </#if>
-                        </#if>
-                    </h2>
-                    <div>
-                        <#list article.articleTagObjs as articleTag>
-                        <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> 
-                        </#list>
-                        <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${article.timeAgo}</span>
-                        <#if "" != article.articleLatestCmterName>
+        <li>
+            <h2>
+                <#if 1 == article.articlePerfect>
+                <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" width="14" viewBox="3 3 11 12">${perfectIcon}</svg></span>
+                </#if>
+                <#if 1 == article.articleType>
+                <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
+                <#elseif 2 == article.articleType>
+                <span class="tooltipped tooltipped-w" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
+                <#elseif 3 == article.articleType>
+                <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
+                </#if>
+                <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
+                </a>
+            </h2>
+            <div class="abstract fn-ellipsis">
+                TODO
+            </div>
+            <div class="ft-smaller ft-fade fn-clear list-info">
+                <span class="author"> 
+                    <#if article.articleAnonymous == 0>
+                    <a rel="nofollow" 
+                       href="${servePath}/member/${article.articleAuthorName}"></#if><div
+                       class="avatar-small"
+                       style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>&nbsp;
+                    <#if article.articleAnonymous == 0>
+                    <a rel="nofollow" class="user-name"
+                       href="${servePath}/member/${article.articleAuthorName}"></#if>
+                       ${article.articleAuthorName}
+                    <#if article.articleAnonymous == 0></a></#if>
+                    • ${article.timeAgo}
+                </span>
+
+                <span class="fn-left">
+                    <#list article.articleTagObjs as articleTag>
+                    <a rel="tag" class="ft-fade" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> &nbsp; 
+                    </#list>
+                </span>
+
+                <span class="fn-right">
+                    <#if article.articleViewCount != 0>
+                    <a class="ft-fade" href="${servePath}${article.articlePermalink}">${viewLabel} <span class="level<#if article.articleViewCount lt 800>${(article.articleViewCount/200)?int}<#else>4</#if>">${article.articleViewCount}</span></a>&nbsp;
+                    </#if>   
+
+                    <#if article.articleCommentCount != 0> •&nbsp;
+                    <a class="ft-fade" href="${servePath}${article.articlePermalink}#comments">${cmtLabel} <span class="level<#if article.articleCommentCount lt 80>${(article.articleCommentCount/20)?int}<#else>4</#if>">${article.articleCommentCount}</span></a>&nbsp;
+                    </#if>   
+
+                    <#if "" != article.articleLatestCmterName>
+                        •&nbsp; ${latestCmtFromLabel} 
+                        <span class="ft-gray">
                         <#if article.syncWithSymphonyClient>
-                        <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> <span class="ft-gray">${article.articleLatestCmterName}</span>
+                            ${article.articleLatestCmterName}
                         <#else>
-                        <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> 
-                        <#if article.articleLatestCmterName != 'someone'><a rel="nofollow" class="ft-gray" href="${servePath}/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleLatestCmterName != 'someone'></a><#else></span></#if>
+                            <#if article.articleLatestCmterName != 'someone'>
+                            <a rel="nofollow" class="user-name" href="${servePath}/member/${article.articleLatestCmterName}">
+                            </#if>
+                            ${article.articleLatestCmterName}
+                            <#if article.articleLatestCmterName != 'someone'>
+                            </a>
+                            </#if>
                         </#if>
-                        </#if>
-                    </div>
-                </div>
+                        </span>
+                    </#if>
+                </span>
             </div>
-            <#if article.articleCommentCount != 0>
-            <div class="cmts tooltipped tooltipped-w" aria-label="${cmtLabel}${quantityLabel}">
-                <a class="count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleCommentCount}</a>
-            </div>
-            </#if>
-            <i class="heat tooltipped tooltipped-n" aria-label="${postActivityLabel}" style="width:${article.articleHeat*3}px"></i>
+            
+            <span class="heat tooltipped tooltipped-n" aria-label="${postActivityLabel}" style="width:${article.articleHeat*3}px"></span>
         </li>
         </#list>
     </ul>

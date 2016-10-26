@@ -664,60 +664,6 @@ var Util = {
         };
     },
     /**
-     * @description 鼠标移动到文章列表标题上时，显示其开头内容
-     */
-    _initArticlePreview: function () {
-        $(".article-list h2 > a").hover(function () {
-            var $ele = $(this);
-
-            if (3 === $ele.data('type')) { // 如果是思绪
-                // 不进行预览
-                return false;
-            }
-
-            $ele.addClass("previewing");
-
-            var $li = $ele.closest("li"),
-                    previewHTML = '<div class="preview"><span class="ico-arrow"></span><span class="ico-arrowborder"></span>';
-            $(".article-list .preview").hide();
-            if ($li.find('.preview').length === 1) {
-                $li.find('.preview').show();
-
-                return false;
-            }
-
-            if ($li.find('.no-preview').length === 1) {
-                return false;
-            }
-
-            setTimeout(function () {
-                if (!$ele.hasClass("previewing")) {
-                    return false;
-                }
-
-                $.ajax({
-                    url: Label.servePath + "/article/" + $ele.data('id') + "/preview",
-                    type: "GET",
-                    cache: false,
-                    success: function (result, textStatus) {
-                        if (!result.sc || $.trim(result.html) === '') {
-                            $li.append('<div class="no-preview"></div>');
-                            return false;
-                        }
-
-                        $li.append(previewHTML + result.html + '</div>');
-                        $li.find('.preview').show();
-                    }
-                });
-            }, 800);
-        }, function () {
-            var $li = $(this).closest("li");
-            $li.find('.preview').hide();
-
-            $(this).removeClass("previewing");
-        });
-    },
-    /**
      * @description 设置当前登录用户的未读提醒计数.
      */
     setUnreadNotificationCount: function () {
@@ -939,8 +885,6 @@ var Util = {
         this._initNav();
         // 每日活跃
         this._initActivity();
-        // 如果有列表就展现描述预览
-        this._initArticlePreview();
         // 登录密码输入框回车事件
         $("#loginPassword").keyup(function (event) {
             if (event.keyCode === 13) {

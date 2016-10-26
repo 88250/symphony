@@ -435,20 +435,12 @@ blockquote {
     font-size: 12px;
 }
 
-.ft-gray,
-.ft-gray a {
+.ft-gray {
     color: #999;
 }
 
-.ft-fade,
-.ft-fade a,
-a[class^="icon-"].ft-fade {
+.ft-fade {
     color: #ccc;
-}
-
-.ft-fade a:hover,
-a[class^="icon-"].ft-fade:hover {
-    color: #999;
 }
 
 .ft-red {
@@ -490,10 +482,6 @@ a[class^="icon-"].ft-fade:hover {
 
 .count:hover {
     text-decoration: none;
-}
-
-.count:visited {
-    color: #999;
 }
 
 .sub-head {
