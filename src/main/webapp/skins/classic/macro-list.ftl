@@ -45,16 +45,16 @@
                 </span>
 
                 <span class="fn-right">
-                    <#if article.articleViewCount != 0>
-                    <a class="ft-fade" href="${servePath}${article.articlePermalink}">${viewLabel} <span class="level<#if article.articleViewCount lt 800>${(article.articleViewCount/200)?int}<#else>4</#if>">${article.articleViewCount}</span></a>&nbsp;
+                    <#if article.articleCommentCount != 0>
+                    <a class="ft-fade" href="${servePath}${article.articlePermalink}#comments"><span class="level<#if article.articleCommentCount lt 80>${(article.articleCommentCount/20)?int}<#else>4</#if>">${article.articleCommentCount}</span> ${cmtLabel}</a>&nbsp;
                     </#if>   
 
-                    <#if article.articleCommentCount != 0> •&nbsp;
-                    <a class="ft-fade" href="${servePath}${article.articlePermalink}#comments">${cmtLabel} <span class="level<#if article.articleCommentCount lt 80>${(article.articleCommentCount/20)?int}<#else>4</#if>">${article.articleCommentCount}</span></a>&nbsp;
+                    <#if article.articleViewCount != 0> •&nbsp;
+                    <a class="ft-fade" href="${servePath}${article.articlePermalink}"><span class="level<#if article.articleViewCount lt 800>${(article.articleViewCount/200)?int}<#else>4</#if>">${article.articleViewCount} ${viewLabel}</span></a>&nbsp;
                     </#if>   
 
                     <#if "" != article.articleLatestCmterName>
-                        •&nbsp; ${latestCmtFromLabel} 
+                        •&nbsp; todo 
                         <span class="ft-gray">
                         <#if article.syncWithSymphonyClient>
                             ${article.articleLatestCmterName}
@@ -66,7 +66,7 @@
                             <#if article.articleLatestCmterName != 'someone'>
                             </a>
                             </#if>
-                        </#if>
+                        </#if> 
                         </span>
                     </#if>
                 </span>

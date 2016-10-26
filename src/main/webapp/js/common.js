@@ -132,7 +132,7 @@ var Util = {
             return false;
         }).bind('keyup', 'j', function (event) {
             // j 移动到下一项
-            var query = '.content .list > ul > ';
+            var query = '.content .list:last > ul > ';
             if ($('#comments').length === 1) {
                 query = '#comments .list > ul > ';
             }
@@ -147,7 +147,7 @@ var Util = {
             return false;
         }).bind('keyup', 'k', function (event) {
             // k 移动到上一项
-            var query = '.content .list > ul > ';
+            var query = '.content .list:last > ul > ';
             if ($('#comments').length === 1) {
                 query = '#comments .list > ul > ';
             }
@@ -162,7 +162,7 @@ var Util = {
             return false;
         }).bind('keyup', 'f', function (event) {
             // f 移动到第一项
-            var query = '.content .list > ul > ';
+            var query = '.content .list:last > ul > ';
             if ($('#comments').length === 1) {
                 query = '#comments .list > ul > ';
             }
@@ -175,7 +175,7 @@ var Util = {
             if (Util.prevKey) {
                 return false;
             }
-            var query = '.content .list > ul > ';
+            var query = '.content .list:last > ul > ';
             if ($('#comments').length === 1) {
                 query = '#comments .list > ul > ';
             }
@@ -185,7 +185,7 @@ var Util = {
             return false;
         }).bind('keyup', 'o', function (event) {
             // o/enter 打开选中项
-            var query = '.content .list > ul > ';
+            var query = '.content .list:last > ul > ';
             if ($('#comments').length === 1) {
                 query = '#comments .list > ul > ';
             }
@@ -196,7 +196,7 @@ var Util = {
             return false;
         }).bind('keyup', 'return', function (event) {
             // o/enter 打开选中项
-            var query = '.content .list > ul > ';
+            var query = '.content .list:last > ul > ';
             if ($('#comments').length === 1) {
                 query = '#comments .list > ul > ';
             }
