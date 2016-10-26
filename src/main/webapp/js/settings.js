@@ -445,13 +445,20 @@ var Settings = {
                         
                         return;
                     }
+
+
                 } else {
                     $("#" + type.replace(/\//g, "") + "Tip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
                 }
+
                 $("#" + type.replace(/\//g, "") + "Tip").show();
 
                 setTimeout(function () {
                     $("#" + type.replace(/\//g, "") + "Tip").hide();
+
+                    if (type === 'i18n') {
+                        window.location.reload();
+                    }
                 }, 5000);
 
             }

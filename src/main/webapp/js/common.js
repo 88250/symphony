@@ -991,7 +991,7 @@ var Util = {
         });
         
         // 导航过长处理
-        if ($('.nav-tabs a:last').offset().top > 0) {
+        if ($('.nav-tabs a:last').length === 1 && $('.nav-tabs a:last').offset().top > 0) {
             $('.nav-tabs').mouseover(function () {
                 $('.user-nav').hide();
             }).mouseout(function () {
