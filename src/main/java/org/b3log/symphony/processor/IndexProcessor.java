@@ -15,6 +15,8 @@
  */
 package org.b3log.symphony.processor;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -197,16 +199,28 @@ public class IndexProcessor {
         }
 
         final JSONObject result = articleQueryService.getRecentArticles(avatarViewMode, sortMode, pageNum, pageSize);
-        final List<JSONObject> latestArticles = (List<JSONObject>) result.get(Article.ARTICLES);
-        dataModel.put(Common.LATEST_ARTICLES, latestArticles);
+        final List<JSONObject> allArticles = (List<JSONObject>) result.get(Article.ARTICLES);
 
         dataModel.put(Article.ARTICLE_T_STICK_CHECK, true);
-
         dataModel.put(Common.SELECTED, Common.RECENT);
 
-        for (final JSONObject article : latestArticles) {
-            article.put(Article.ARTICLE_T_IS_STICK, article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0);
+        final List<JSONObject> stickArticles = new ArrayList<>();
+
+        final Iterator<JSONObject> iterator = allArticles.iterator();
+        while (iterator.hasNext()) {
+            final JSONObject article = iterator.next();
+
+            final boolean stick = article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0;
+            article.put(Article.ARTICLE_T_IS_STICK, stick);
+
+            if (stick) {
+                stickArticles.add(article);
+                iterator.remove();
+            }
         }
+
+        dataModel.put(Common.STICK_ARTICLES, stickArticles);
+        dataModel.put(Common.LATEST_ARTICLES, allArticles);
 
         final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
