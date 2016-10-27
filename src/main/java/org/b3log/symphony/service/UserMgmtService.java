@@ -429,11 +429,11 @@ public class UserMgmtService {
      * {
      *     "userName": "",
      *     "userEmail": "",
-     *     "userAppRole": int,
      *     "userPassword": "", // Hashed
+     *     "userLanguage": "",
+     *     "userAppRole": int, // optional, default to 0
      *     "userRole": "", // optional, uses {@value Role#DEFAULT_ROLE} instead if not specified
      *     "userStatus": int, // optional, uses {@value UserExt#USER_STATUS_C_NOT_VERIFIED} instead if not specified
-     *     "userLanguage": "" // optional, uses {@code "zh_CN"} instead if not specified
      * }
      * </pre>,see {@link User} for more details
      *
@@ -539,8 +539,15 @@ public class UserMgmtService {
             user.put(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
             user.put(UserExt.USER_SUB_MAIL_SEND_TIME, System.currentTimeMillis());
             user.put(UserExt.USER_KEYBOARD_SHORTCUTS_STATUS, UserExt.USER_XXX_STATUS_C_DISABLED);
-            user.put(UserExt.USER_LANGUAGE,
-                    requestJSONObject.optString(UserExt.USER_LANGUAGE, Locale.SIMPLIFIED_CHINESE.toString()));
+
+            final JSONObject optionLanguage = optionRepository.get(Option.ID_C_MISC_LANGUAGE);
+            final String adminSpecifiedLang = optionLanguage.optString(Option.OPTION_VALUE);
+            if ("0".equals(adminSpecifiedLang)) {
+                user.put(UserExt.USER_LANGUAGE, requestJSONObject.optString(UserExt.USER_LANGUAGE, "zh_CN"));
+            } else {
+                user.put(UserExt.USER_LANGUAGE, adminSpecifiedLang);
+            }
+
             user.put(UserExt.USER_TIMEZONE,
                     requestJSONObject.optString(UserExt.USER_TIMEZONE, TimeZone.getDefault().getID()));
 

@@ -17,6 +17,7 @@ package org.b3log.symphony.processor;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -39,6 +40,7 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
@@ -82,7 +84,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.6.13, Oct 26, 2016
+ * @version 1.9.6.14, Oct 27, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -389,6 +391,8 @@ public class LoginProcessor {
         user.put(User.USER_NAME, name);
         user.put(User.USER_EMAIL, email);
         user.put(User.USER_PASSWORD, "");
+        final Locale locale = Locales.getLocale(request);
+        user.put(UserExt.USER_LANGUAGE, locale.getLanguage() + "_" + locale.getCountry());
 
         try {
             final String newUserId = userMgmtService.addUser(user);

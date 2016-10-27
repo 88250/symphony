@@ -132,7 +132,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.22.5.16, Oct 26, 2016
+ * @version 2.22.5.17, Oct 27, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1082,6 +1082,9 @@ public class AdminProcessor {
             user.put(User.USER_PASSWORD, MD5.hash(password));
             user.put(UserExt.USER_APP_ROLE, appRole);
             user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
+
+            final JSONObject admin = (JSONObject) request.getAttribute(User.USER);
+            user.put(UserExt.USER_LANGUAGE, admin.optString(UserExt.USER_LANGUAGE));
 
             userId = userMgmtService.addUser(user);
         } catch (final ServiceException e) {

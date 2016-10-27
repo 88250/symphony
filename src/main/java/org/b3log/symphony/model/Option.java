@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.6.0.2, Sep 11, 2016
+ * @version 2.7.0.2, Oct 27, 2016
  * @since 0.2.0
  */
 public final class Option {
@@ -99,6 +99,16 @@ public final class Option {
      * Key of allow add comment.
      */
     public static final String ID_C_MISC_ALLOW_ADD_COMMENT = "miscAllowAddComment";
+
+    /**
+     * Key of language.
+     */
+    public static final String ID_C_MISC_LANGUAGE = "miscLanguage";
+
+    /**
+     * Key of timezone.
+     */
+    public static final String ID_C_MISC_TIMEZONE = "miscTimezone";
 
     /**
      * Key of side full ad.
