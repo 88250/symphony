@@ -46,11 +46,11 @@
 
                 <span class="fn-right">
                     <#if article.articleCommentCount != 0>
-                    <a class="ft-fade" href="${servePath}${article.articlePermalink}#comments"><span class="level<#if article.articleCommentCount lt 80>${(article.articleCommentCount/20)?int}<#else>4</#if>">${article.articleCommentCount}</span> ${cmtLabel}</a> &nbsp;•&nbsp;
+                    <a class="ft-fade" href="${servePath}${article.articlePermalink}#comments"><b class="level<#if article.articleCommentCount lt 80>${(article.articleCommentCount/20)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a> &nbsp;•&nbsp;
                     </#if>   
 
                     <#if article.articleViewCount != 0> 
-                    <a class="ft-fade" href="${servePath}${article.articlePermalink}"><span class="level<#if article.articleViewCount lt 800>${(article.articleViewCount/200)?int}<#else>4</#if>">${article.articleViewCount} ${viewLabel}</span></a>&nbsp;
+                    <a class="ft-fade" href="${servePath}${article.articlePermalink}"><span class="level<#if article.articleViewCount lt 800>${(article.articleViewCount/200)?int}<#else>4</#if>">${article.articleViewCount}</span> ${viewLabel}</a>&nbsp;
                     </#if>   
 
                     <#if "" != article.articleLatestCmterName>

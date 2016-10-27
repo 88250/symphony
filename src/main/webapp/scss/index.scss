@@ -142,7 +142,8 @@ h1.article-title > a:hover {
 #thoughtProgress {
     height: 2px;
     position: relative;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
+    margin-top: -11px;
 }
 
 #thoughtProgress .bar {
@@ -442,8 +443,9 @@ label.cmt-anonymous {
 /* start article list */
 .article-list {
 
-    ul > li.stick {
-        background-color: #F9F6F6;
+
+    ul > li {
+        padding: 20px;
     }
 
     .stick li:last-child {
@@ -463,8 +465,8 @@ label.cmt-anonymous {
     }
 
     .abstract {
-        margin: 10px 0;
-        color: $gray;
+        margin: 20px 0;
+        color: $fade;
     }
 
     .author {
@@ -481,19 +483,19 @@ label.cmt-anonymous {
     }
 
     .level0 {
-        color: #e07a70;
+        color: #ccc;
     }
     .level1 {
-        color: #d75346;
+        color: #ffcc00;
     }
     .level2 {
-        color: #c0372a;
+        color: #ffc1cc;
     }
     .level3 {
-        color: #962b21;
+        color: #ff6633;
     }
     .level4 {
-        color: #541812;
+        color: $red;
     }
 }
 
