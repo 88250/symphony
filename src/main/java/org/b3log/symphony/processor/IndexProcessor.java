@@ -15,6 +15,8 @@
  */
 package org.b3log.symphony.processor;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -63,7 +65,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.2.19, Oct 11, 2016
+ * @version 1.9.2.20, Oct 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -117,7 +119,7 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -154,7 +156,7 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showRecent(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("recent.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -197,16 +199,28 @@ public class IndexProcessor {
         }
 
         final JSONObject result = articleQueryService.getRecentArticles(avatarViewMode, sortMode, pageNum, pageSize);
-        final List<JSONObject> latestArticles = (List<JSONObject>) result.get(Article.ARTICLES);
-        dataModel.put(Common.LATEST_ARTICLES, latestArticles);
+        final List<JSONObject> allArticles = (List<JSONObject>) result.get(Article.ARTICLES);
 
         dataModel.put(Article.ARTICLE_T_STICK_CHECK, true);
-
         dataModel.put(Common.SELECTED, Common.RECENT);
 
-        for (final JSONObject article : latestArticles) {
-            article.put(Article.ARTICLE_T_IS_STICK, article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0);
+        final List<JSONObject> stickArticles = new ArrayList<>();
+
+        final Iterator<JSONObject> iterator = allArticles.iterator();
+        while (iterator.hasNext()) {
+            final JSONObject article = iterator.next();
+
+            final boolean stick = article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0;
+            article.put(Article.ARTICLE_T_IS_STICK, stick);
+
+            if (stick) {
+                stickArticles.add(article);
+                iterator.remove();
+            }
         }
+
+        dataModel.put(Common.STICK_ARTICLES, stickArticles);
+        dataModel.put(Common.LATEST_ARTICLES, allArticles);
 
         final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -244,7 +258,7 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showHotArticles(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("hot.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -290,7 +304,7 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showPerfectArticles(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("perfect.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -363,7 +377,7 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showB3log(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("b3log.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -389,7 +403,7 @@ public class IndexProcessor {
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         renderer.setTemplateName("kill-browser.ftl");
         context.setRenderer(renderer);
 

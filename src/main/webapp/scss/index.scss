@@ -1,3 +1,4 @@
+
 /**
  * Copyright (c) 2012-2016, b3log.org & hacpai.com
  *
@@ -141,7 +142,8 @@ h1.article-title > a:hover {
 #thoughtProgress {
     height: 2px;
     position: relative;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
+    margin-top: -11px;
 }
 
 #thoughtProgress .bar {
@@ -156,6 +158,7 @@ h1.article-title > a:hover {
     left: 0;
     cursor: pointer;
     color: $red;
+    margin-left: -10px;
 }
 
 #revision .pagination {
@@ -439,78 +442,62 @@ label.cmt-anonymous {
 /* end article */
 
 /* start article list */
-.article-list ul > li.stick {
-    background-color: #F9F6F6;
-}
+.article-list {
 
-.article-list li.stick .stick-remains {
-    vertical-align: top;
-}
 
-.article-list li.stick:hover .stick-remains {
-    display: inline;
-}
+    ul > li {
+        padding: 20px;
+    }
 
-.article-list li .commenters {
-    display: none;
-    top: 32%;
-    position: absolute;
-    right: 10px;
-}
+    .stick li:last-child {
+        border-bottom-width: 0;
+    }
 
-.article-list li .commenters > a {
-    float: left;
-    margin-left: 4px;
-    width: 25px;
-    text-decoration: none;
-    color: #999;
-}
+    li .stick-remains {
+        vertical-align: top;
+    }
 
-.article-list li .commenters > a:hover {
-    color: $blue;
-}
+    li:hover .stick-remains {
+        display: inline;
+    }
 
-.article-list li:hover .commenters {
-    display: block;
-}
+    li h2 a:visited {
+        color: $gray;
+    }
 
-.article-list .preview {
-    position: absolute;
-    left: 65px;
-    z-index: 1;
-    top: 40px;
-    background-color: #FFF;
-    border: 1px solid #DDDDDD;
-    border-radius: 3px 3px 3px 3px;
-    padding: 5px 10px;
-    opacity: 0.9;
-    filter: alpha(opacity=90);
-    width: 70%;
-    min-width: 130px;
-    min-height: 36px;
-}
+    .abstract {
+        margin: 20px 0;
+        color: $fade;
+    }
 
-.article-list .preview .ico-arrow {
-    width: 0px;
-    height: 0px;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid rgba(256, 256, 256, 0.9);
-    position: absolute;
-    top: -10px;
-    z-index: 1;
-    left: 11px;
-}
+    .author {
+        width: 30%;
+        float: left;
+    }
 
-.article-list .preview .ico-arrowborder {
-    width: 0px;
-    height: 0px;
-    border-left: 11px solid transparent;
-    border-right: 11px solid transparent;
-    border-bottom: 11px solid #DDDDDD;
-    position: absolute;
-    top: -11px;
-    left: 10px;
+    .user-name {
+        color: $gray;
+    }
+
+    .list-info {
+        line-height: 20px;
+    }
+
+    .level0 {
+        color: #ccc;
+    }
+    .level1 {
+        color: #ffcc00;
+    }
+    .level2 {
+        color: #ffc1cc;
+    }
+    .level3 {
+        color: #ff6633;
+    }
+    .level4 {
+        color: $red;
+    }
 }
 
 .heat {

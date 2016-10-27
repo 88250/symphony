@@ -19,10 +19,45 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.44.1.11, Oct 11, 2016
+ * @version 1.46.1.11, Oct 27, 2016
  * @since 0.2.0
  */
 public final class Common {
+
+    /**
+     * Key of stick articles.
+     */
+    public static final String STICK_ARTICLES = "stickArticles";
+
+    /**
+     * Key of id.
+     */
+    public static final String ID = "id";
+
+    /**
+     * Key of name.
+     */
+    public static final String NAME = "name";
+
+    /**
+     * Key of language.
+     */
+    public static final String LANGUAGE = "language";
+
+    /**
+     * Key of languages.
+     */
+    public static final String LANGUAGES = "languages";
+
+    /**
+     * Key of timezone.
+     */
+    public static final String TIMEZONE = "timezone";
+
+    /**
+     * Key of timezones.
+     */
+    public static final String TIMEZONES = "timezones";
 
     /**
      * Key of forge.
@@ -118,6 +153,11 @@ public final class Common {
      * Key of time ago.
      */
     public static final String TIME_AGO = "timeAgo";
+
+    /**
+     * Key of comment time ago.
+     */
+    public static final String CMT_TIME_AGO = "cmtTimeAgo";
 
     /**
      * Key of time.
@@ -283,7 +323,7 @@ public final class Common {
      * Key of current user.
      */
     public static final String CURRENT_USER = "currentUser";
-    
+
     /**
      * Key of current.
      */

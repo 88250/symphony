@@ -74,16 +74,16 @@
                     <#if articles?size != 0>
                     <div class="module">
                         <div class="module-header fn-clear">
-                            <span class="fn-right">
-                                <a<#if "" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}">${defaultLabel}</a>
-                                <span class="ft-fade">/</span>
-                                <a<#if "/hot" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}/hot">${hotArticlesLabel}</a>
-                                <span class="ft-fade">/</span>
-                                <a<#if "/good" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}/good">${goodCmtsLabel}</a>
-                                <span class="ft-fade">/</span>
-                                <a<#if "/perfect" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}/perfect">${perfectLabel}</a>
-                                <span class="ft-fade">/</span>
-                                <a<#if "/reply" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}/reply">${recentCommentLabel}</a>
+                            <span class="fn-right ft-fade">
+                                <a class="<#if "" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}">${defaultLabel}</a>
+                                /
+                                <a class="<#if "/hot" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/hot">${hotArticlesLabel}</a>
+                                /
+                                <a class="<#if "/good" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/good">${goodCmtsLabel}</a>
+                                /
+                                <a class="<#if "/perfect" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/perfect">${perfectLabel}</a>
+                                /
+                                <a class="<#if "/reply" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/reply">${recentCommentLabel}</a>
                             </span>
                         </div>
                         <@list listData=articles/>

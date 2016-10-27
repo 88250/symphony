@@ -42,7 +42,7 @@ import org.b3log.symphony.util.Filler;
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.6, Aug 22, 2016
+ * @version 1.2.0.7, Oct 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -91,7 +91,7 @@ public class ErrorProcessor {
             LOGGER.log(Level.TRACE, "Shows error page[requestURI={0}, templateName={1}]",
                     new Object[]{requestURI, templateName});
 
-            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
             renderer.setTemplateName("error/" + templateName);
             context.setRenderer(renderer);
 

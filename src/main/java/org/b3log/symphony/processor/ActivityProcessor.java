@@ -75,7 +75,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.9.1.7, Sep 23, 2016
+ * @version 1.9.1.8, Oct 26, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -135,7 +135,7 @@ public class ActivityProcessor {
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void showCharacter(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/activity/character.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -225,7 +225,7 @@ public class ActivityProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showActivities(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/activities.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -267,7 +267,7 @@ public class ActivityProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/activity/checkin.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -361,7 +361,7 @@ public class ActivityProcessor {
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void show1A0001(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/activity/1A0001.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -512,7 +512,7 @@ public class ActivityProcessor {
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void showEatingSnake(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/activity/eating-snake.ftl");
 
@@ -575,7 +575,7 @@ public class ActivityProcessor {
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void collectEatingSnake(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/activity/eating-snake.ftl");
 

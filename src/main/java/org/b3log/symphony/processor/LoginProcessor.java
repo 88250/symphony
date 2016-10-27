@@ -82,7 +82,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.6.12, Sep 25, 2016
+ * @version 1.9.6.13, Oct 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -178,7 +178,7 @@ public class LoginProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showForgetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
 
@@ -247,7 +247,7 @@ public class LoginProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showResetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
 
@@ -321,7 +321,7 @@ public class LoginProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showRegister(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put(Common.REFERRAL, "");

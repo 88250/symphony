@@ -18,18 +18,26 @@ package org.b3log.symphony.processor;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.TimeZone;
+import javax.servlet.http.HttpServletRequest;
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.util.Locales;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.util.Skins;
 import org.b3log.symphony.util.Symphonys;
+import org.json.JSONObject;
 
 /**
  * Skin user-switchable FreeMarker Renderer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 4, 2015
+ * @version 1.1.0.0, Oct 26, 2016
  * @since 1.3.0
  */
 public final class SkinRenderer extends AbstractFreeMarkerRenderer {
@@ -40,6 +48,20 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     private static final Logger LOGGER = Logger.getLogger(SkinRenderer.class.getName());
 
     /**
+     * HTTP servlet request.
+     */
+    private final HttpServletRequest request;
+
+    /**
+     * Constructs a skin renderer with the specified HTTP servlet request.
+     *
+     * @param request the specified HTTP servlet request
+     */
+    public SkinRenderer(final HttpServletRequest request) {
+        this.request = request;
+    }
+
+    /**
      * Gets a template with the specified template directory name and template name.
      *
      * @param templateDirName the specified template directory name
@@ -48,16 +70,32 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
      */
     @Override
     protected Template getTemplate(final String templateDirName, final String templateName) {
-        final Configuration cfg = Skins.TEMPLATE_HOLDER.get(templateDirName);
+        Configuration cfg = Skins.TEMPLATE_HOLDER.get(templateDirName);
 
         try {
             if (null == cfg) {
                 LOGGER.warn("Can't get template dir [" + templateDirName + "]");
 
-                return Skins.TEMPLATE_HOLDER.get(Symphonys.get("skinDirName")).getTemplate(templateName);
+                cfg = Skins.TEMPLATE_HOLDER.get(Symphonys.get("skinDirName"));
             }
 
-            return Skins.TEMPLATE_HOLDER.get(templateDirName).getTemplate(templateName);
+            final Template ret = cfg.getTemplate(templateName);
+
+            if ((Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
+                return ret;
+            }
+
+            final Locale locale = Locales.getLocale(request);
+            ret.setLocale(locale);
+
+            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+            if (null != user) {
+                ret.setTimeZone(TimeZone.getTimeZone(user.optString(UserExt.USER_TIMEZONE)));
+            } else {
+                ret.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getID()));
+            }
+
+            return ret;
         } catch (final IOException e) {
             LOGGER.log(Level.ERROR, "Get template [dir=" + templateDirName + ", name=" + templateName + "] error", e);
 
@@ -72,5 +110,4 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     @Override
     protected void afterRender(final HTTPRequestContext context) throws Exception {
     }
-
 }

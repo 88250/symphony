@@ -22,6 +22,8 @@
  * @version 1.5.6.14, Oct 26, 2016
  */
 
+@import "variables";
+
 /* start reset */
 html {
     -webkit-text-size-adjust: 100%;
@@ -619,28 +621,17 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
+.icon-weibo:before {
+  content: "\e908";
+}
+.icon-twitter:before {
+  content: "\e90c";
+}
 .icon-up:before {
   content: "\e90a";
-  font-weight: bold;
 }
 .icon-down:before {
   content: "\e90b";
-  font-weight: bold;
-}
-.icon-upload:before {
-    content: "\f0ee";
-}
-.icon-time:before {
-    content: "\e906";
-}
-.icon-sortasc:before {
-    content: "\e905";
-}
-.icon-locked:before {
-    content: "\e61e";
-}
-.icon-close:before {
-    content: "\e909";
 }
 .icon-points:before {
   content: "\e900";
@@ -729,14 +720,8 @@ a[class*=" icon-"]:hover {
 .icon-setting:before {
   content: "\e604";
 }
-.icon-google:before {
-  content: "\e605";
-}
 .icon-search:before {
   content: "\e606";
-}
-.icon-weibo:before {
-  content: "\e607";
 }
 .icon-date:before {
   content: "\e608";
@@ -753,14 +738,8 @@ a[class*=" icon-"]:hover {
 .icon-go-top:before {
   content: "\e60c";
 }
-.icon-twitter:before {
-  content: "\e60d";
-}
 .icon-edit:before {
   content: "\e60e";
-}
-.icon-tencent:before {
-  content: "\e60f";
 }
 .icon-tag:before {
   content: "\e610";
@@ -807,8 +786,26 @@ a[class*=" icon-"]:hover {
 .icon-heart:before {
   content: "\e9da";
 }
+.icon-google:before {
+  content: "\e90d";
+}
 .icon-wechat:before {
   content: "\e907";
+}
+.icon-upload:before {
+  content: "\f0ee";
+}
+.icon-time:before {
+  content: "\e906";
+}
+.icon-sortasc:before {
+  content: "\e905";
+}
+.icon-locked:before {
+  content: "\e61e";
+}
+.icon-close:before {
+  content: "\e909";
 }
 
 .icon-search {
@@ -1102,7 +1099,7 @@ a[class*=" icon-"]:hover {
     width: 100%;
     padding: 5px 0;
     z-index: 99;
-    background-color: #f7f7f7;
+    background-color: $blue;
     border-bottom: 1px solid #e5e5e5;
 }
 
@@ -1127,8 +1124,7 @@ a[class*=" icon-"]:hover {
 }
 
 .nav div > a {
-    color: #777;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    color: #fff;
     text-decoration: none;
     margin: 0 3px;
     padding: 4px 5px;
@@ -1158,56 +1154,32 @@ a[class*=" icon-"]:hover {
     vertical-align: super;
 }
 
-.nav .no-msg {
+.nav .user-nav .no-msg,
+.nav .user-nav .msg {
     background-color: #777;
     border-radius: 3px;
     color: #FFFFFF;
     font-size: 14px;
-    font-weight: normal;
-    margin: 4px 8px 0 8px;
     padding: 0px 6px;
-    text-shadow: 0 0 0;
+    margin: 5px 10px;
+    line-height: 20px;
 }
 
-.nav .no-msg:hover,
-.nav .msg:hover {
-    background-color: #4183C4;
-    color: #FFF;
-}
-
-.nav .msg {
+.nav .user-nav .msg {
     -webkit-animation:spaceboots 1s infinite;
     -moz-animation:spaceboots 1s infinite;
     -o-animation:spaceboots 1s infinite;
     -ms-animation:spaceboots 1s infinite;
     animation:spaceboots 1s infinite;
-    background-color: #D26911;
-    border-radius: 3px;
+    background-color: $red;
     color: #FFFFFF;
-    font-size: 14px;
-    font-weight: normal;
-    margin: 5px 8px 0 8px;
-    padding: 0px 6px;
-    text-shadow: 0 0 0;
 }
 
-.nav a.current.no-msg {
-    padding-bottom:0;
-    background-color: #D26911;
-    border-bottom-width: 0;
-    -webkit-animation:none;
-    -moz-animation:none;
-    -o-animation:none;
-    -ms-animation:none;
-    animation:none;
-    color: #FFF;
-}
-
-.nav a.current.msg {
-    padding-bottom:0;
-    background-color: #D26911;
-    border-bottom-width: 0;
-    color: #FFF;
+.nav .user-nav a.selected.no-msg,
+.nav .user-nav a.selected.msg {
+    animation: none;
+    background-color: $red;
+    border-bottom: 0;
 }
 
 .nav .form {
@@ -2060,7 +2032,6 @@ label.cmt-anonymous {
     border: 1px solid #DDD;
     font-size: 12px;
     line-height: 16px;
-    width: 44px;
 }
 
 .domains a.selected {

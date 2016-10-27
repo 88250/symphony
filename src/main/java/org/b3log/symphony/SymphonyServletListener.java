@@ -18,6 +18,7 @@ package org.b3log.symphony;
 import eu.bitwalker.useragentutils.BrowserType;
 import eu.bitwalker.useragentutils.UserAgent;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javax.servlet.ServletContextEvent;
@@ -41,6 +42,7 @@ import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
+import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.StaticResources;
@@ -471,6 +473,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
             request.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, user.optInt(UserExt.USER_AVATAR_VIEW_MODE));
 
             request.setAttribute(User.USER, user);
+
+            final Locale locale = Locales.getLocale(user.optString(UserExt.USER_LANGUAGE));
+            Locales.setLocale(request, locale);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);
         } finally {

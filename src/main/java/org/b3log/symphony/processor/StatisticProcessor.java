@@ -55,7 +55,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.0.4, Sep 25, 2016
+ * @version 1.2.0.5, Oct 26, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -210,7 +210,7 @@ public class StatisticProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showStatistic(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("statistic.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

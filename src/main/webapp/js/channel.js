@@ -238,7 +238,7 @@ var ArticleListChannel = {
 
         ArticleListChannel.ws.onmessage = function (evt) {
             var data = JSON.parse(evt.data);
-            $(".article-list .has-view h2 > a[rel=bookmark]").each(function () {
+            $(".article-list h2 > a[rel=bookmark]").each(function () {
                 var id = $(this).data('id').toString();
 
                 if (data.articleId === id) {
