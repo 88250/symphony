@@ -12,8 +12,22 @@
                 <#list options as item>
                 <label>${item.label}</label>
                 <select id="${item.oId}" name="${item.oId}">
+                    <#if "miscAllowRegister" == item.oId || "miscAllowAnonymousView" == item.oId ||
+                    "miscAllowAddArticle" == item.oId || "miscAllowAddComment" == item.oId>
                     <option value="0"<#if "0" == item.optionValue> selected</#if>>${yesLabel}</option>
                     <option value="1"<#if "1" == item.optionValue> selected</#if>>${noLabel}</option>
+                    <#if "miscAllowRegister" == item.oId>
+                    <option value="2"<#if "2" == item.optionValue> selected</#if>>${invitecodeLabel}</option>
+                    </#if>
+                    </#if>
+                    <#if "miscLanguage" == item.oId>
+                    <option value="0"<#if "0" == item.optionValue> selected</#if>>${selectByBrowserLabel}</option>
+                    <option value="zh_CN"<#if "zh_CN" == item.optionValue> selected</#if>>zh_CN</option>
+                    <option value="en_US"<#if "en_US" == item.optionValue> selected</#if>>en_US</option>
+                    </#if>
+                    <#if "miscTimezone" == item.oId>
+                    <option value="Asia/Shanghai"<#if "Asia/Shanghai" == item.optionValue> selected</#if>>Asia/Shanghai</option>
+                    </#if>
                 </select>
                 </#list>
 
