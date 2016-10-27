@@ -20,7 +20,7 @@
                 <div class="wrapper">
                     <div class="module">
                         <div class="module-header">
-                            <h2>${domainLabel}${navigationLabel}</h2>
+                            <h2>${domainNavLabel}</h2>
                             <a href="${servePath}/domains" class="ft-gray fn-right">All Domains</a>
                         </div>
                         <div class="module-panel">

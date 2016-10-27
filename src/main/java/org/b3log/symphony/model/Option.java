@@ -106,11 +106,6 @@ public final class Option {
     public static final String ID_C_MISC_LANGUAGE = "miscLanguage";
 
     /**
-     * Key of timezone.
-     */
-    public static final String ID_C_MISC_TIMEZONE = "miscTimezone";
-
-    /**
      * Key of side full ad.
      */
     public static final String ID_C_SIDE_FULL_AD = "adSideFull";

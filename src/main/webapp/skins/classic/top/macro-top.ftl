@@ -4,17 +4,17 @@
 <html>
     <head>
         <#if type == "balance">
-        <@head title="${wealthLabel}${rankingLabel} - ${symphonyLabel}">
+        <@head title="${wealthRankLabel} - ${symphonyLabel}">
         <link rel="canonical" href="${servePath}/top/balance">
         </@head>
         </#if>
         <#if type == "consumption">
-        <@head title="${consumptionLabel}${rankingLabel} - ${symphonyLabel}">
+        <@head title="${consumptionRankLabel} - ${symphonyLabel}">
         <link rel="canonical" href="${servePath}/top/consumption">
         </@head>
         </#if>
         <#if type == "checkin">
-        <@head title="${checkinTopLabel}${rankingLabel} - ${symphonyLabel}">
+        <@head title="${checkinTopLabel} - ${symphonyLabel}">
         <link rel="canonical" href="${servePath}/top/checkin">
         </@head>
         </#if>

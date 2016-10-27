@@ -14,11 +14,11 @@
             <div class="footer-nav fn-clear">
                 <a rel="help" href="${servePath}/about">${aboutLabel}</a>
                 <a href="https://hacpai.com/article/1457158841475">API</a>
-                <a href="${servePath}/tag/系统公告">${symAnnouncementLabel}</a>
+                <a href="${servePath}/tag/announcement">${symAnnouncementLabel}</a>
                 <a href="${servePath}/perfect">${perfectLabel}</a>
                 <a href="${servePath}/domains">${domainLabel}</a>
                 <a href="${servePath}/tags">${tagLabel}</a>
-                <a href="${servePath}/community">${communityGroupLabel}</a>
+                <a href="${servePath}/community">${communityDynamicLabel}</a>
                 <a href="https://hacpai.com/article/1460083956075">${adDeliveryLabel}</a>
                 <a href="${servePath}/statistic" class="last">${dataStatLabel}</a>
 
