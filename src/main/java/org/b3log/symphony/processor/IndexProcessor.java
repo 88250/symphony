@@ -409,7 +409,7 @@ public class IndexProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
+        final Map<String, String> langs = langPropsService.getAll(Locales.getLocale());
 
         dataModel.putAll(langs);
         Keys.fillRuntime(dataModel);

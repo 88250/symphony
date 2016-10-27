@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.Cookie;
@@ -77,7 +78,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.17.6.15, Oct 19, 2016
+ * @version 2.17.6.16, Oct 27, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -252,6 +253,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         try {
             super.requestDestroyed(servletRequestEvent);
 
+            Locales.setLocale(null);
+
             final HttpServletRequest request = (HttpServletRequest) servletRequestEvent.getServletRequest();
             final boolean isStatic = (Boolean) request.getAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE);
             if (!isStatic) {
@@ -371,6 +374,18 @@ public final class SymphonyServletListener extends AbstractServletListener {
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
             optionRepository.add(option);
 
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_MISC_LANGUAGE);
+            option.put(Option.OPTION_VALUE, "0"); // user browser
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_MISC_TIMEZONE);
+            option.put(Option.OPTION_VALUE, TimeZone.getDefault().getID());
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
+            optionRepository.add(option);
+
             transaction.commit();
 
             // Init admin
@@ -379,6 +394,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             admin.put(User.USER_EMAIL, init.getString("admin.email"));
             admin.put(User.USER_NAME, init.getString("admin.name"));
             admin.put(User.USER_PASSWORD, MD5.hash(init.getString("admin.password")));
+            admin.put(UserExt.USER_LANGUAGE, "en_US");
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             admin.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             final String adminId = userMgmtService.addUser(admin);
@@ -389,6 +405,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             defaultCommenter.put(User.USER_EMAIL, UserExt.DEFAULT_CMTER_EMAIL);
             defaultCommenter.put(User.USER_NAME, UserExt.DEFAULT_CMTER_NAME);
             defaultCommenter.put(User.USER_PASSWORD, MD5.hash(String.valueOf(new Random().nextInt())));
+            defaultCommenter.put(UserExt.USER_LANGUAGE, "en_US");
             defaultCommenter.put(User.USER_ROLE, UserExt.DEFAULT_CMTER_ROLE);
             defaultCommenter.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             userMgmtService.addUser(defaultCommenter);
@@ -426,6 +443,15 @@ public final class SymphonyServletListener extends AbstractServletListener {
         try {
             final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
             final UserRepository userRepository = beanManager.getReference(UserRepository.class);
+            final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
+
+            final JSONObject optionLang = optionRepository.get(Option.ID_C_MISC_LANGUAGE);
+            final String optionLangValue = optionLang.optString(Option.OPTION_VALUE);
+            if ("0".equals(optionLangValue)) {
+                Locales.setLocale(request.getLocale());
+            } else {
+                Locales.setLocale(Locales.getLocale(optionLangValue));
+            }
 
             JSONObject user = userQueryService.getCurrentUser(request);
             if (null == user) {
@@ -475,7 +501,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             request.setAttribute(User.USER, user);
 
             final Locale locale = Locales.getLocale(user.optString(UserExt.USER_LANGUAGE));
-            Locales.setLocale(request, locale);
+            Locales.setLocale(locale);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);
         } finally {

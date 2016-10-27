@@ -1757,6 +1757,7 @@ public class UserProcessor {
             user.put(User.USER_NAME, name);
             user.put(User.USER_EMAIL, email);
             user.put(User.USER_PASSWORD, password);
+            user.put(UserExt.USER_LANGUAGE, "zh_CN");
             user.put(UserExt.USER_B3_KEY, clientB3Key);
             user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
             user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
