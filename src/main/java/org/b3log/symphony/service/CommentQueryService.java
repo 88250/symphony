@@ -42,6 +42,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Article;
@@ -818,7 +819,8 @@ public class CommentQueryService {
         Stopwatchs.start("Organize comment");
 
         try {
-            comment.put(Common.TIME_AGO, Times.getTimeAgo(comment.optLong(Comment.COMMENT_CREATE_TIME), Latkes.getLocale()));
+            comment.put(Common.TIME_AGO,
+                    Times.getTimeAgo(comment.optLong(Comment.COMMENT_CREATE_TIME), Locales.getLocale()));
             comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
 
             final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
