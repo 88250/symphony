@@ -20,7 +20,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
@@ -31,6 +30,7 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.util.Locales;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
@@ -42,7 +42,7 @@ import org.b3log.symphony.util.Filler;
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.7, Oct 26, 2016
+ * @version 1.2.0.8, Oct 27, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -96,7 +96,7 @@ public class ErrorProcessor {
             context.setRenderer(renderer);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
-            dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
+            dataModel.putAll(langPropsService.getAll(Locales.getLocale()));
             filler.fillHeaderAndFooter(request, response, dataModel);
             if (HttpServletResponse.SC_FORBIDDEN == Integer.valueOf(statusCode)) {
                 dataModel.put(Common.TIMELINES, timelineMgmtService.getTimelines());

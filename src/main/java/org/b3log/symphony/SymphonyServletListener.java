@@ -253,6 +253,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         try {
             super.requestDestroyed(servletRequestEvent);
 
+            Locales.setLocale(null);
+
             final HttpServletRequest request = (HttpServletRequest) servletRequestEvent.getServletRequest();
             final boolean isStatic = (Boolean) request.getAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE);
             if (!isStatic) {
@@ -446,10 +448,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
             final JSONObject optionLang = optionRepository.get(Option.ID_C_MISC_LANGUAGE);
             final String optionLangValue = optionLang.optString(Option.OPTION_VALUE);
             if ("0".equals(optionLangValue)) {
-                Locales.setLocale(request, request.getLocale());
+                Locales.setLocale(request.getLocale());
             } else {
-                Locales.setLocale(request,
-                        new Locale(Locales.getLanguage(optionLangValue), Locales.getCountry(optionLangValue)));
+                Locales.setLocale(Locales.getLocale(optionLangValue));
             }
 
             JSONObject user = userQueryService.getCurrentUser(request);
@@ -500,7 +501,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             request.setAttribute(User.USER, user);
 
             final Locale locale = Locales.getLocale(user.optString(UserExt.USER_LANGUAGE));
-            Locales.setLocale(request, locale);
+            Locales.setLocale(locale);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);
         } finally {

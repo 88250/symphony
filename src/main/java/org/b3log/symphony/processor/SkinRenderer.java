@@ -18,7 +18,6 @@ package org.b3log.symphony.processor;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
@@ -85,8 +84,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
                 return ret;
             }
 
-            final Locale locale = Locales.getLocale(request);
-            ret.setLocale(locale);
+            ret.setLocale(Locales.getLocale());
 
             final JSONObject user = (JSONObject) request.getAttribute(User.USER);
             if (null != user) {

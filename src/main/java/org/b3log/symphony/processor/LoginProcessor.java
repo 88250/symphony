@@ -391,7 +391,7 @@ public class LoginProcessor {
         user.put(User.USER_NAME, name);
         user.put(User.USER_EMAIL, email);
         user.put(User.USER_PASSWORD, "");
-        final Locale locale = Locales.getLocale(request);
+        final Locale locale = Locales.getLocale();
         user.put(UserExt.USER_LANGUAGE, locale.getLanguage() + "_" + locale.getCountry());
 
         try {

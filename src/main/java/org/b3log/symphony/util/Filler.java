@@ -20,7 +20,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javax.inject.Inject;
@@ -36,6 +35,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.cache.DomainCache;
@@ -455,8 +455,7 @@ public class Filler {
                 return;
             }
 
-            final Locale locale = org.b3log.latke.util.Locales.getLocale(request);
-            dataModel.putAll(langPropsService.getAll(locale));
+            dataModel.putAll(langPropsService.getAll(Locales.getLocale()));
         } finally {
             Stopwatchs.end();
         }
