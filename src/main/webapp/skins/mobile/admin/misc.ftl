@@ -25,9 +25,6 @@
                     <option value="zh_CN"<#if "zh_CN" == item.optionValue> selected</#if>>zh_CN</option>
                     <option value="en_US"<#if "en_US" == item.optionValue> selected</#if>>en_US</option>
                     </#if>
-                    <#if "miscTimezone" == item.oId>
-                    <option value="Asia/Shanghai"<#if "Asia/Shanghai" == item.optionValue> selected</#if>>Asia/Shanghai</option>
-                    </#if>
                 </select>
                 </#list>
 

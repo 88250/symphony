@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.Cookie;
@@ -63,10 +62,13 @@ import org.b3log.symphony.event.solo.CommentSender;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
+import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.ArticleMgmtService;
+import org.b3log.symphony.service.TagMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Crypts;
@@ -292,6 +294,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         LOGGER.info("Initializing Sym....");
 
         final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
+        final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
+        final TagMgmtService tagMgmtService = beanManager.getReference(TagMgmtService.class);
         final ArticleMgmtService articleMgmtService = beanManager.getReference(ArticleMgmtService.class);
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
 
@@ -380,12 +384,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
             optionRepository.add(option);
 
-            option = new JSONObject();
-            option.put(Keys.OBJECT_ID, Option.ID_C_MISC_TIMEZONE);
-            option.put(Option.OPTION_VALUE, TimeZone.getDefault().getID());
-            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
-            optionRepository.add(option);
-
             transaction.commit();
 
             // Init admin
@@ -409,6 +407,13 @@ public final class SymphonyServletListener extends AbstractServletListener {
             defaultCommenter.put(User.USER_ROLE, UserExt.DEFAULT_CMTER_ROLE);
             defaultCommenter.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             userMgmtService.addUser(defaultCommenter);
+
+            // Add the first tag
+            final String tagTitle = Symphonys.get("systemAnnounce");
+            final String tagId = tagMgmtService.addTag(adminId, tagTitle);
+            final JSONObject tag = tagRepository.get(tagId);
+            tag.put(Tag.TAG_URI, "announcement");
+            tagMgmtService.updateTag(tagId, tag);
 
             // Hello World!
             final JSONObject article = new JSONObject();
