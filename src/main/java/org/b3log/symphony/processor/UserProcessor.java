@@ -132,7 +132,7 @@ import org.json.JSONObject;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.25.13.25, Oct 26, 2016
+ * @version 1.25.13.26, Oct 27, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1445,12 +1445,12 @@ public class UserProcessor {
         try {
             userListPageSize = Integer.valueOf(userListPageSizeStr);
 
-            if (15 > userListPageSize) {
-                userListPageSize = 15;
+            if (10 > userListPageSize) {
+                userListPageSize = 10;
             }
 
-            if (userListPageSize > 41) {
-                userListPageSize = 41;
+            if (userListPageSize > 30) {
+                userListPageSize = 30;
             }
         } catch (final Exception e) {
             userListPageSize = Symphonys.getInt("indexArticlesCnt");
