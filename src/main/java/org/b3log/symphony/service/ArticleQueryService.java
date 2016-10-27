@@ -2435,14 +2435,39 @@ public class ArticleQueryService {
         Stopwatchs.start("Meta Desc");
 
         try {
+            final int articleType = article.optInt(Article.ARTICLE_TYPE);
+            if (Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
+                return "....";
+            }
+
             final int length = Integer.valueOf("150");
 
             String ret = article.optString(Article.ARTICLE_CONTENT);
             ret = Jsoup.clean(ret, Whitelist.none());
             ret = StringUtils.trim(ret);
             ret = StringUtils.replaceEach(ret,
-                    new String[]{"&nbsp;", "#", "*", "-", ">"},
-                    new String[]{"", "", "", "", ""});
+                    new String[]{"&nbsp;", "#", "*", "-", "+", ">"},
+                    new String[]{"", "", "", "", "", ""});
+
+            final String[] pics = StringUtils.substringsBetween(ret, "![", ")");
+            if (null != pics) {
+                final String[] picsRepl = new String[pics.length];
+                for (int i = 0; i < picsRepl.length; i++) {
+                    picsRepl[i] = "[pic]";
+                    pics[i] = "![" + pics[i] + ")";
+                }
+                ret = StringUtils.replaceEach(ret, pics, picsRepl);
+            }
+
+            final String[] urls = StringUtils.substringsBetween(ret, "[", ")");
+            if (null != urls) {
+                final String[] urlsRepl = new String[urls.length];
+                for (int i = 0; i < urlsRepl.length; i++) {
+                    urlsRepl[i] = "[url]";
+                    urls[i] = "[" + urls[i] + ")";
+                }
+                ret = StringUtils.replaceEach(ret, urls, urlsRepl);
+            }
 
             if (ret.length() >= length) {
                 ret = StringUtils.substring(ret, 0, length)
