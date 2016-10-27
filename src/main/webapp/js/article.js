@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.34.24, Oct 26, 2016
+ * @version 1.25.35.24, Oct 27, 2016
  */
 
 /**
@@ -176,7 +176,8 @@ var Comment = {
             return false;
         }).bind('keyup', 'a', function assets() {
             // x a 管理员编辑选中的回贴
-            if (Util.prevKey === 'x' && Label.isAdminLoggedIn) {
+            if (Util.prevKey === 'x' && Label.isAdminLoggedIn 
+                && $('#comments .list > ul > li.focus .icon-setting').parent().length === 1) {
                 window.location = $('#comments .list > ul > li.focus .icon-setting').parent().attr('href');
             }
             return false;
@@ -218,7 +219,7 @@ var Comment = {
             return false;
         }).bind('keyup', 'e', function assets() {
             // v e 编辑帖子
-            if (Util.prevKey === 'v') {
+            if (Util.prevKey === 'v' && $('.action-btns .icon-edit').parent().length === 1) {
                 window.location = $('.action-btns .icon-edit').parent().attr('href');
             }
             return false;
@@ -230,7 +231,7 @@ var Comment = {
             return false;
         }).bind('keyup', 'a', function assets() {
             // v a 管理员编辑帖子 
-            if (Util.prevKey === 'v') {
+            if (Util.prevKey === 'v' && $('.action-btns .icon-setting').parent().length === 1) {
                 window.location = $('.action-btns .icon-setting').parent().attr('href');
             }
             return false;
@@ -1298,7 +1299,7 @@ var Article = {
             }
 
             // 当前目录样式
-            var scrollTop = $('body').scrollTop();
+            var scrollTop = $(window).scrollTop();
 
             for (var i = 0, iMax = toc.length; i < iMax; i++) {
                 if (scrollTop < toc[i].offsetTop - 5) {
@@ -1315,7 +1316,7 @@ var Article = {
             }
 
             // 位置是否固定
-            if ($('body').scrollTop() > top - 20) {
+            if ($(window).scrollTop() > top - 20) {
                 $articleToc.css('position', 'fixed');
                 $articleToc.next().css('position', 'fixed');
                 $articleToc.next().next().css('position', 'fixed');
@@ -1356,7 +1357,7 @@ var Article = {
         } else {
             $articleToc.show();
             $menu.addClass('ft-red');
-            if ($('body').scrollTop() > $('#articleToC').offset().top - 20) {
+            if ($(window).scrollTop() > $('#articleToC').offset().top - 20) {
                 $articleToc.css('position', 'fixed');
                 $articleToc.next().css('position', 'fixed');
                 $articleToc.next().next().css('position', 'fixed');
