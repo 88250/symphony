@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.18.46, Oct 26, 2016
+ * @version 2.24.19.46, Oct 27, 2016
  */
 
 @import "variables";
@@ -997,7 +997,7 @@ a[class*=" icon-"]:hover {
     text-align: center;
     position: fixed;
     width: 56px;
-    z-index: 10;
+    z-index: 13;
     right: 20px;
     box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
     padding-top: 15px;
@@ -1274,6 +1274,7 @@ a[class*=" icon-"]:hover {
     padding: 20px 0;
     background-image: url('../images/index-bg.svg');
     background-attachment: fixed;
+    min-height: 130px;
 }
 
 .side {
@@ -1305,34 +1306,168 @@ a[class*=" icon-"]:hover {
     display: flex;
     line-height: 38px;
     padding: 0 10px;
-}
 
-.nav .nav-tabs > a,
-.nav .user-nav > a {
-    display: inline-block;
-    color: #fff;
-    text-decoration: none;
-    text-align: center;
-    padding: 5px 10px;
-}
+    .nav-tabs > a,
+    .user-nav > a {
+        display: inline-block;
+        color: #fff;
+        text-decoration: none;
+        text-align: center;
+        padding: 5px 10px;
+    }
 
-.nav .nav-tabs > a:hover,
-.nav .user-nav > a:hover {
-    color: #FFF;
-    text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.3)
-}
+    .nav-tabs > a:hover,
+    .user-nav > a:hover {
+        color: #FFF;
+        text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.3)
+    }
 
-.nav a.selected {
-    border-bottom: 2px solid $red;
-    padding-bottom: 3px;
-}
+    a.selected {
+        border-bottom: 2px solid $red;
+        padding-bottom: 3px;
+    }
 
-.nav h1 {
-    margin-right: 20px;
-}
+    h1 {
+        margin-right: 20px;
+    }
 
-.nav h1 a svg {
-    vertical-align: baseline;
+    h1 a svg {
+        vertical-align: baseline;
+    }
+
+
+    input::-webkit-input-placeholder {
+        color: #ddd;
+    }
+
+    input.search {
+        background-color: rgba(255,255,255,.15);
+        border: 0px;
+        border-radius: 3px 3px 3px 3px;
+        padding: 5px 8px;
+        width: 180px;
+        margin: 10px 10px 0 20px;
+        line-height: 28px;
+        height: 28px;
+        color: #eee;
+        box-sizing: border-box;
+    }
+
+    input.search:hover {
+        background: rgba(255,255,255,0.25);
+    }
+
+    input.search:focus {
+        background: #fff;
+        color: #222;
+    }
+
+    .user-nav > a{
+        font-size: 20px;
+    }
+
+    .user-nav > a {
+        float: left;
+    }
+
+    .avatar-small {
+        display: inline-block;
+        margin-top: -6px;
+    }
+
+    .user-nav .no-msg,
+    .user-nav .msg {
+        background-color: #777;
+        border-radius: 3px;
+        color: #FFFFFF;
+        font-size: 14px;
+        padding: 0px 6px;
+        margin: 14px 10px;
+        line-height: 20px;
+    }
+
+    .user-nav .msg {
+        -webkit-animation:spaceboots 1s infinite;
+        -moz-animation:spaceboots 1s infinite;
+        -o-animation:spaceboots 1s infinite;
+        -ms-animation:spaceboots 1s infinite;
+        animation:spaceboots 1s infinite;
+        background-color: $red;
+        color: #FFFFFF;
+    }
+
+    .user-nav a.selected.no-msg,
+    .user-nav a.selected.msg {
+        animation: none;
+        background-color: $red;
+        border-bottom: 0;
+    }
+
+    .user-nav a.unlogin {
+        font-size: 14px;
+    }
+
+    .form {
+        padding: 10px;
+        position: absolute;
+        right: 0;
+        top: 48px;
+        z-index: 20;
+        width: 250px;
+        font-size: 14px;
+        line-height: 1.6;   
+    }
+
+    .form input[type="text"], 
+    .form input[type="password"] {
+        margin: 10px 0;
+    }
+
+    .person-list {
+        position: absolute;
+        top: 48px;
+        right: 10px;
+        width: 154px;
+        background-color: #fff;
+        line-height: 21px;
+        display: none;
+    }
+
+    .person-list:after {
+        top: -14px;
+        right: 12px;
+        left: auto;
+        position: absolute;
+        border: 7px solid transparent;
+        border-bottom-color: #fff;
+        content: " ";
+    }
+
+    .person-list li {
+        list-style: none;
+    }
+
+    .person-list li:first-child a {
+        border-radius: 3px 3px 0 0;
+    }
+
+    .person-list li:last-child {
+        border-bottom: 0;
+    }
+
+    .person-list a {
+        display: block;
+        text-shadow: 0 1px 0 #fff;
+        position: relative;
+        padding: 8px 10px;
+        border-bottom: 1px solid #eee;
+        color: #666;
+    }
+
+    .person-list a:hover {
+        text-decoration: none;
+        background-color: #f9f9f9;
+    }
 }
 
 .nav-tabs {
@@ -1350,139 +1485,6 @@ a[class*=" icon-"]:hover {
 .nav-tabs a.selected svg {
     visibility: visible;
 }
-
-.nav input::-webkit-input-placeholder {
-    color: #ddd;
-}
-
-.nav input.search {
-    background-color: rgba(255,255,255,.15);
-    border: 0px;
-    border-radius: 3px 3px 3px 3px;
-    padding: 5px 8px;
-    width: 180px;
-    margin: 10px 10px 0 20px;
-    line-height: 28px;
-    height: 28px;
-    color: #eee;
-    box-sizing: border-box;
-}
-
-.nav input.search:hover {
-    background: rgba(255,255,255,0.25);
-}
-
-.nav input.search:focus {
-    background: #fff;
-    color: #222;
-}
-
-.nav .user-nav > a{
-    font-size: 20px;
-}
-
-.nav .user-nav > a {
-    float: left;
-}
-
-.nav .avatar-small {
-    display: inline-block;
-    margin-top: -6px;
-}
-
-.nav .user-nav .no-msg,
-.nav .user-nav .msg {
-    background-color: #777;
-    border-radius: 3px;
-    color: #FFFFFF;
-    font-size: 14px;
-    padding: 0px 6px;
-    margin: 14px 10px;
-    line-height: 20px;
-}
-
-.nav .user-nav .msg {
-    -webkit-animation:spaceboots 1s infinite;
-    -moz-animation:spaceboots 1s infinite;
-    -o-animation:spaceboots 1s infinite;
-    -ms-animation:spaceboots 1s infinite;
-    animation:spaceboots 1s infinite;
-    background-color: $red;
-    color: #FFFFFF;
-}
-
-.nav .user-nav a.selected.no-msg,
-.nav .user-nav a.selected.msg {
-    animation: none;
-    background-color: $red;
-    border-bottom: 0;
-}
-
-.nav .user-nav a.unlogin {
-    font-size: 14px;
-}
-
-.nav .form {
-    padding: 10px;
-    position: absolute;
-    right: 0;
-    top: 48px;
-    z-index: 20;
-    width: 232px;
-    font-size: 14px;
-    line-height: 1.6;   
-}
-
-.nav .form input[type="text"], 
-.nav .form input[type="password"] {
-    margin: 10px 0;
-}
-
-.nav .person-list {
-    position: absolute;
-    top: 48px;
-    right: 1px;
-    width: 154px;
-    background-color: #fff;
-    line-height: 21px;
-    display: none;
-}
-
-.nav .person-list:after {
-    top: -14px;
-    right: 21px;
-    left: auto;
-    position: absolute;
-    border: 7px solid transparent;
-    border-bottom-color: #fff;
-    content: " ";
-}
-
-.nav .person-list li {
-    list-style: none;
-}
-
-.nav .person-list li:first-child a {
-    border-radius: 3px 3px 0 0;
-}
-
-.nav .person-list li:last-child {
-    border-bottom: 0;
-}
-
-.nav .person-list a {
-    display: block;
-    text-shadow: 0 1px 0 #fff;
-    position: relative;
-    padding: 8px 10px;
-    border-bottom: 1px solid #eee;
-    color: #666;
-}
-
-.nav .person-list a:hover {
-    text-decoration: none;
-    background-color: #f9f9f9;
-}
 /* end header */
 
 /* start footer */
@@ -1493,7 +1495,7 @@ a[class*=" icon-"]:hover {
     line-height: 24px;
     padding: 10px 0;
     position: relative;
-    z-index: 1;
+    z-index: 11;
     background-color: #FFF;
 }
 
@@ -1530,18 +1532,20 @@ a[class*=" icon-"]:hover {
     text-align: center;
 }
 
-.list h2 {
+.list > ul > li > h2,
+.list > ul > li .fn-flex > h2,
+.list > ul > li .fn-flex-1 > h2  {
     font-size: 16px;
     font-weight: normal;
     line-height: 20px;
     margin-bottom: 2px;
 }
 
-.list h2 > a {
+.list > ul > li h2 > a {
     color: #595959;
 }
 
-.list h2 > a:hover {
+.list > ul > li h2 > a:hover {
     color: #333;
 }
 
@@ -1557,7 +1561,7 @@ a[class*=" icon-"]:hover {
     position: relative;
 }
 
-.list li.last {
+.list > ul > li.last {
     border-bottom-width: 0;
 }
 

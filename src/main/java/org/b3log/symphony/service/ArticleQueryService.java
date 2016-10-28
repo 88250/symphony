@@ -17,6 +17,7 @@ package org.b3log.symphony.service;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -51,6 +52,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
@@ -87,7 +89,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.15.31, Oct 27, 2016
+ * @version 2.24.15.32, Oct 27, 2016
  * @since 0.2.0
  */
 @Service
@@ -1988,8 +1990,10 @@ public class ArticleQueryService {
      * @param article the specified article
      */
     private void toArticleDate(final JSONObject article) {
-        article.put(Common.TIME_AGO, Times.getTimeAgo(article.optLong(Article.ARTICLE_CREATE_TIME), Latkes.getLocale()));
-        article.put(Common.CMT_TIME_AGO, Times.getTimeAgo(article.optLong(Article.ARTICLE_LATEST_CMT_TIME), Latkes.getLocale()));
+        article.put(Common.TIME_AGO, 
+                Times.getTimeAgo(article.optLong(Article.ARTICLE_CREATE_TIME), Locales.getLocale()));
+        article.put(Common.CMT_TIME_AGO, 
+                Times.getTimeAgo(article.optLong(Article.ARTICLE_LATEST_CMT_TIME), Locales.getLocale()));
 
         article.put(Article.ARTICLE_CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
         article.put(Article.ARTICLE_UPDATE_TIME, new Date(article.optLong(Article.ARTICLE_UPDATE_TIME)));
@@ -2449,23 +2453,38 @@ public class ArticleQueryService {
                     new String[]{"&nbsp;", "#", "*", "-", "+", ">"},
                     new String[]{"", "", "", "", "", ""});
 
-            final String[] pics = StringUtils.substringsBetween(ret, "![", ")");
+            final int threshold = 20;
+            String[] pics = StringUtils.substringsBetween(ret, "![", ")");
             if (null != pics) {
+                if (pics.length > threshold) {
+                    pics = Arrays.copyOf(pics, threshold);
+                }
+
                 final String[] picsRepl = new String[pics.length];
                 for (int i = 0; i < picsRepl.length; i++) {
                     picsRepl[i] = "[pic]";
                     pics[i] = "![" + pics[i] + ")";
+
+                    if (i > threshold) {
+                        break;
+                    }
                 }
+
                 ret = StringUtils.replaceEach(ret, pics, picsRepl);
             }
 
-            final String[] urls = StringUtils.substringsBetween(ret, "[", ")");
+            String[] urls = StringUtils.substringsBetween(ret, "[", ")");
             if (null != urls) {
+                if (urls.length > threshold) {
+                    urls = Arrays.copyOf(urls, threshold);
+                }
+
                 final String[] urlsRepl = new String[urls.length];
                 for (int i = 0; i < urlsRepl.length; i++) {
                     urlsRepl[i] = "[url]";
                     urls[i] = "[" + urls[i] + ")";
                 }
+
                 ret = StringUtils.replaceEach(ret, urls, urlsRepl);
             }
 

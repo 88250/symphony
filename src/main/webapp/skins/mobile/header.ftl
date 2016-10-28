@@ -26,7 +26,7 @@
             <div class="form fn-none">
                 <table cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="40">
+                        <td width="80">
                             <label for="nameOrEmail">${accountLabel}</label>
                         </td>
                         <td>

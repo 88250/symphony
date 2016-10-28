@@ -30,10 +30,9 @@
                         <div class="domains-tags">
                             <#list domains as domain>
                                 <#if domain.domainTags?size gt 0>
-                                    <span data-id="${domain.oId}" class="btn small<#if 0 == domain_index> current</#if>">${domain.domainTitle}</span>&nbsp;
+                                    <span data-id="${domain.oId}" class="btn small<#if 0 == domain_index> current green</#if>">${domain.domainTitle}</span>&nbsp;
                                 </#if>
                             </#list>
-                            <div class="fn-hr5"></div>
                             <#list domains as domain>
                                 <#if domain.domainTags?size gt 0>
                                 <div id="tags${domain.oId}" class="domain-tags<#if 0 != domain_index> fn-none</#if>">

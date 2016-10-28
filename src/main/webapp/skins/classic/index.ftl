@@ -130,5 +130,9 @@
         </div>
     </div>
     <#include "footer.ftl">     
+    <script type="text/javascript">
+        $('.main.first .item .module-panel').outerWidth(parseInt(($('.footer .wrapper').width() - 20) / 2) - 42);
+        $('.main:last .item .module-panel').outerWidth(parseInt(($('.footer .wrapper').width() - 40) / 3) - 42);
+    </script>
 </body>
 </html>

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.17.12.10, Oct 20, 2016
+ * @version 2.17.12.11, Oct 27, 2016
  */
 
 /**
@@ -432,8 +432,8 @@ var AddArticle = {
 
         // domains 切换
         $('.domains-tags .btn').click(function () {
-            $('.domains-tags .btn.current').removeClass('current');
-            $(this).addClass('current');
+            $('.domains-tags .btn.current').removeClass('current green');
+            $(this).addClass('current').addClass('green');
             $('.domains-tags .domain-tags').hide();
             $('#tags' + $(this).data('id')).show();
         });

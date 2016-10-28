@@ -14,6 +14,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
+                    <#if 0 < stickArticles?size> 
                     <div class="module">
                         <div class="article-list list">
                             <ul class="stick">
@@ -97,6 +98,7 @@
                             </ul>
                         </div>
                     </div>
+                    </#if>
                     <div class="module">
                         <div class="module-header fn-clear">
                             <span class="fn-right ft-fade">
