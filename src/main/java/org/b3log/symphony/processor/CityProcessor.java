@@ -62,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 1.3.1.6, Oct 27, 2016
+ * @version 1.3.1.7, Oct 28, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -260,7 +260,7 @@ public class CityProcessor {
         }
 
         final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+        final int pageSize = Symphonys.getInt("cityUuserPageSize");
         final int windowSize = Symphonys.getInt("cityUsersWindowSize");
 
         final JSONObject requestJSONObject = new JSONObject();
@@ -268,7 +268,7 @@ public class CityProcessor {
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
-        final long latestLoginTime = DateUtils.addDays(new Date(),Integer.MIN_VALUE).getTime(); // all users
+        final long latestLoginTime = DateUtils.addDays(new Date(), Integer.MIN_VALUE).getTime(); // all users
         requestJSONObject.put(UserExt.USER_LATEST_LOGIN_TIME, latestLoginTime);
         requestJSONObject.put(UserExt.USER_CITY, queryCity);
         final JSONObject result = userQueryService.getUsersByCity(requestJSONObject);
