@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.17.12.11, Oct 27, 2016
+ * @version 2.18.12.11, Oct 29, 2016
  */
 
 /**
@@ -156,7 +156,8 @@ var AddArticle = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'}
+                    {name: 'preview'},
+                    {name: 'fullscreen'}
                 ],
                 status: false
             });
@@ -236,6 +237,25 @@ var AddArticle = {
                     cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
                     return CodeMirror.Pass;
                 }
+
+                if ($('.article-content .CodeMirror-preview').length === 0) {
+                    return false;
+                }
+
+                $.ajax({
+                    url: Label.servePath + "/markdown",
+                    type: "POST",
+                    cache: false,
+                    data: {
+                        markdownText: cm.getValue()
+                    },
+                    success: function (result, textStatus) {
+                        $('.article-content .CodeMirror-preview').html(result.html);
+                        hljs.initHighlighting.called = false;
+                        hljs.initHighlighting();
+                    }
+                });
+
 
                 var change = "",
                         unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
@@ -336,7 +356,8 @@ var AddArticle = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'}
+                    {name: 'preview'},
+                    {name: 'fullscreen'}
                 ],
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
@@ -372,6 +393,24 @@ var AddArticle = {
                     cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
                     return CodeMirror.Pass;
                 }
+
+                if ($('.article-reward-content .CodeMirror-preview').length === 0) {
+                    return false;
+                }
+
+                $.ajax({
+                    url: Label.servePath + "/markdown",
+                    type: "POST",
+                    cache: false,
+                    data: {
+                        markdownText: cm.getValue()
+                    },
+                    success: function (result, textStatus) {
+                        $('.article-reward-content .CodeMirror-preview').html(result.html);
+                        hljs.initHighlighting.called = false;
+                        hljs.initHighlighting();
+                    }
+                });
             });
         }
 
