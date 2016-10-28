@@ -268,7 +268,7 @@ public class CityProcessor {
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
-        final long latestLoginTime = DateUtils.addDays(new Date(),Integer.MIN_VALUE).getTime(); // all users
+        final long latestLoginTime = DateUtils.addDays(new Date(), Integer.MIN_VALUE).getTime(); // all users
         requestJSONObject.put(UserExt.USER_LATEST_LOGIN_TIME, latestLoginTime);
         requestJSONObject.put(UserExt.USER_CITY, queryCity);
         final JSONObject result = userQueryService.getUsersByCity(requestJSONObject);
