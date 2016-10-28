@@ -60,12 +60,13 @@ import org.json.JSONObject;
  * <li>Shows perfect articles (/perfect), GET</li>
  * <li>Shows about (/about), GET</li>
  * <li>Shows b3log (/b3log), GET</li>
+ * <li>Shows SymHub (/symhub), GET</li>
  * <li>Shows kill browser (/kill-browser), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.10.2.20, Oct 28, 2016
+ * @version 1.10.2.21, Oct 29, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -290,9 +291,9 @@ public class IndexProcessor {
             Stopwatchs.end();
         }
     }
-    
+
     /**
-     * Shows symhub list.
+     * Shows SymHub page.
      *
      * @param context the specified context
      * @param request the specified request
@@ -309,10 +310,13 @@ public class IndexProcessor {
         renderer.setTemplateName("symhub.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final List<JSONObject> syms = Symphonys.getSyms();
+        dataModel.put("syms", (Object) syms);
 
         Stopwatchs.start("Fills");
         try {
+            final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
             filler.fillHeaderAndFooter(request, response, dataModel);
             if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
                 filler.fillRandomArticles(avatarViewMode, dataModel);

@@ -15,11 +15,14 @@
  */
 package org.b3log.symphony.util;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,12 +33,16 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import org.apache.commons.io.IOUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.SymphonyServletListener;
 import org.json.JSONObject;
 
@@ -43,10 +50,15 @@ import org.json.JSONObject;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.4, Oct 28, 2016
+ * @version 1.6.0.4, Oct 29, 2016
  * @since 0.1.0
  */
 public final class Symphonys {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Symphonys.class);
 
     /**
      * Configurations.
@@ -179,6 +191,49 @@ public final class Symphonys {
                 }
             }
         }, 1000 * 60 * 60 * 2, 1000 * 60 * 60 * 2);
+    }
+
+    /**
+     * Gets all symphonies.
+     *
+     * @return a list of symphonies
+     */
+    public static List<JSONObject> getSyms() {
+        HttpURLConnection httpConn = null;
+        InputStream inputStream = null;
+
+        try {
+            httpConn = (HttpURLConnection) new URL("https://rhythm.b3log.org/syms").openConnection();
+            httpConn.setConnectTimeout(10000);
+            httpConn.setReadTimeout(10000);
+            httpConn.setRequestMethod("GET");
+            httpConn.setRequestProperty("User-Agent", "B3log Symphony/" + SymphonyServletListener.VERSION);
+
+            httpConn.connect();
+
+            inputStream = httpConn.getInputStream();
+            final String data = IOUtils.toString(inputStream, "UTF-8");
+            final JSONObject result = new JSONObject(data);
+            if (!result.optBoolean(Keys.STATUS_CODE)) {
+                return Collections.emptyList();
+            }
+
+            return CollectionUtils.jsonArrayToList(result.optJSONArray("syms"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets syms from Rhythm failed", e);
+
+            return Collections.emptyList();
+        } finally {
+            IOUtils.closeQuietly(inputStream);
+
+            if (null != httpConn) {
+                try {
+                    httpConn.disconnect();
+                } catch (final Exception e) {
+                    // ignore
+                }
+            }
+        }
     }
 
     /**

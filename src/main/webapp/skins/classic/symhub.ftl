@@ -17,12 +17,16 @@
                     <div class="module">
                         <div class="module-panel">
                             <ul class="module-list">
+                                <#list syms as sym>
                                 <li>
-                                    <a rel="nofollow" href="http://localhost:8080/member/Zephyr">
-                                        <span class="avatar-small slogan" style="background-image:url('https://img.hacpai.com/avatar/1465873147243_1476423401738.gif')"></span>
-                                        </a>
-                                    <a rel="friend" class="title" href="http://localhost:8080/article/1477383947293">从码农到园丁——论做 IT 培训班的可行性</a>
+                                    <a rel="nofollow" href="${sym.symURL}">
+                                        <span class="avatar-small slogan" style="background-image:url('${sym.symIcon}')"></span>
+                                    </a>
+                                    <a rel="friend" class="title" href="${sym.symURL}">${sym.symTitle} - 
+                                        <span class="ft-gray">${sym.symDesc}</span>
+                                    </a>
                                 </li>
+                                </#list>
                             </ul>
                         </div>
                     </div>
