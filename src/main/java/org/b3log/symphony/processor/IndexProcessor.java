@@ -65,7 +65,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.2.20, Oct 26, 2016
+ * @version 1.10.2.20, Oct 28, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -276,6 +276,40 @@ public class IndexProcessor {
         dataModel.put(Common.INDEX_ARTICLES, indexArticles);
 
         dataModel.put(Common.SELECTED, Common.HOT);
+
+        Stopwatchs.start("Fills");
+        try {
+            filler.fillHeaderAndFooter(request, response, dataModel);
+            if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
+                filler.fillRandomArticles(avatarViewMode, dataModel);
+            }
+            filler.fillSideHotArticles(avatarViewMode, dataModel);
+            filler.fillSideTags(dataModel);
+            filler.fillLatestCmts(dataModel);
+        } finally {
+            Stopwatchs.end();
+        }
+    }
+    
+    /**
+     * Shows symhub list.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/symhub", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showSymHub(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("symhub.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
         Stopwatchs.start("Fills");
         try {
