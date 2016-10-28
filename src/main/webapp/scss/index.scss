@@ -444,7 +444,6 @@ label.cmt-anonymous {
 /* start article list */
 .article-list {
 
-
     ul > li {
         padding: 20px;
     }
@@ -461,12 +460,16 @@ label.cmt-anonymous {
         display: inline;
     }
 
-    li h2 a:visited {
-        color: $gray;
-    }
-
     .abstract {
         margin: 20px 0;
+        color: #666;
+        display: block;
+        text-decoration: none;
+        text-align: justify;
+        line-height: 1.6;
+    }
+
+    .abstract:visited {
         color: $fade;
     }
 

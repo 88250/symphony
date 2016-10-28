@@ -25,6 +25,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -51,12 +52,13 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  * Mail management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 24, 2016
+ * @version 1.0.0.3, Oct 28, 2016
  * @since 1.6.0
  */
 @Service
@@ -196,7 +198,7 @@ public class MailMgmtService {
 
                 content = Emotions.convert(content);
                 content = Markdowns.toHTML(content);
-                content = Jsoup.parse(content).text();
+                content = Jsoup.clean(Jsoup.parse(content).text(), Whitelist.basic());
                 if (StringUtils.length(content) > 72) {
                     content = StringUtils.substring(content, 0, 72) + "....";
                 }
@@ -234,7 +236,7 @@ public class MailMgmtService {
             dataModel.put(User.USERS, (Object) users);
 
             final String fromName = langPropsService.get("symphonyEnLabel") + " "
-                    + langPropsService.get("weeklyEmailFromNameLabel");
+                    + langPropsService.get("weeklyEmailFromNameLabel", Latkes.getLocale());
             Mails.batchSendHTML(fromName, mailSubject, new ArrayList<>(toMails),
                     Mails.TEMPLATE_NAME_WEEKLY, dataModel);
 

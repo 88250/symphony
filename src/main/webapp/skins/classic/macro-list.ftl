@@ -20,9 +20,9 @@
                 <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                 </a>
             </h2>
-            <div class="abstract">
+            <a class="abstract" href="${servePath}${article.articlePermalink}">
                 ${article.articlePreviewContent}
-            </div>
+            </a>
             <div class="ft-smaller ft-fade fn-clear list-info">
                 <span class="author"> 
                     <#if article.articleAnonymous == 0>
