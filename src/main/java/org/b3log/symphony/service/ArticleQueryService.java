@@ -89,7 +89,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.15.32, Oct 27, 2016
+ * @version 2.24.16.32, Oct 28, 2016
  * @since 0.2.0
  */
 @Service
@@ -2493,7 +2493,7 @@ public class ArticleQueryService {
                         + " ....";
             }
 
-            ret = Jsoup.parse(ret).text();
+            ret = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
             ret = ret.replaceAll("\"", "'");
 
             return ret;
