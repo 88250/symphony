@@ -25,6 +25,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -56,7 +57,7 @@ import org.jsoup.Jsoup;
  * Mail management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 24, 2016
+ * @version 1.0.0.3, Oct 28, 2016
  * @since 1.6.0
  */
 @Service
@@ -234,7 +235,7 @@ public class MailMgmtService {
             dataModel.put(User.USERS, (Object) users);
 
             final String fromName = langPropsService.get("symphonyEnLabel") + " "
-                    + langPropsService.get("weeklyEmailFromNameLabel");
+                    + langPropsService.get("weeklyEmailFromNameLabel", Latkes.getLocale());
             Mails.batchSendHTML(fromName, mailSubject, new ArrayList<>(toMails),
                     Mails.TEMPLATE_NAME_WEEKLY, dataModel);
 

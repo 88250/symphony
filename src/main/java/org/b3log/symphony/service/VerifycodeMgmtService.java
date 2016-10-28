@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Verifycode management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Sep 16, 2016
+ * @version 1.1.0.4, Oct 28, 2016
  * @since 1.3.0
  */
 @Service
@@ -165,12 +165,12 @@ public class VerifycodeMgmtService {
                 switch (bizType) {
                     case Verifycode.BIZ_TYPE_C_REGISTER:
                         dataModel.put(Common.URL, Latkes.getServePath() + "/register?code=" + code);
-                        subject = langPropsService.get("registerEmailSubjectLabel");
+                        subject = langPropsService.get("registerEmailSubjectLabel", Latkes.getLocale());
 
                         break;
                     case Verifycode.BIZ_TYPE_C_RESET_PWD:
                         dataModel.put(Common.URL, Latkes.getServePath() + "/reset-pwd?code=" + code);
-                        subject = langPropsService.get("forgetEmailSubjectLabel");
+                        subject = langPropsService.get("forgetEmailSubjectLabel", Latkes.getLocale());
 
                         break;
                     default:
@@ -183,7 +183,7 @@ public class VerifycodeMgmtService {
                 verifycodeRepository.update(verifycode.optString(Keys.OBJECT_ID), verifycode);
 
                 final String fromName = langPropsService.get("symphonyEnLabel")
-                        + " " + langPropsService.get("verifycodeEmailFromNameLabel");
+                        + " " + langPropsService.get("verifycodeEmailFromNameLabel", Latkes.getLocale());
                 Mails.sendHTML(fromName, subject, toMail,
                         Mails.TEMPLATE_NAME_VERIFYCODE, dataModel);
             }
