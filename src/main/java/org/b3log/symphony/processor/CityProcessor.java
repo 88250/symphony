@@ -62,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 1.3.1.5, Oct 25, 2016
+ * @version 1.3.1.6, Oct 27, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -118,7 +118,7 @@ public class CityProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showCityArticles(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
         renderer.setTemplateName("city.ftl");
@@ -209,7 +209,7 @@ public class CityProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showCityUsers(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
         renderer.setTemplateName("city.ftl");
@@ -265,24 +265,23 @@ public class CityProcessor {
 
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
-        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
-        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, Integer.MAX_VALUE);
+        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
-        final long latestLoginTime = DateUtils.addDays(new Date(), Integer.MIN_VALUE).getTime(); // all users
+        final long latestLoginTime = DateUtils.addDays(new Date(),Integer.MIN_VALUE).getTime(); // all users
         requestJSONObject.put(UserExt.USER_LATEST_LOGIN_TIME, latestLoginTime);
         requestJSONObject.put(UserExt.USER_CITY, queryCity);
         final JSONObject result = userQueryService.getUsersByCity(requestJSONObject);
         final JSONArray cityUsers = result.optJSONArray(User.USERS);
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         if (null != cityUsers && cityUsers.length() > 0) {
-            for (int i = (pageNum - 1) * pageSize , cnt = 0; cnt < pageSize && i < cityUsers.length(); i++,cnt++) {
-                if (!cityUsers.getJSONObject(i).optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID))) {
-                    users.add(cityUsers.getJSONObject(i));
-                }
+            for (int i = 0; i < cityUsers.length(); i++) {
+                users.add(cityUsers.getJSONObject(i));
             }
             dataModel.put(User.USERS, users);
         }
 
-        final int pageCount = (int) Math.ceil(cityUsers.length() / (double) pageSize);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
 
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {

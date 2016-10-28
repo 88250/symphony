@@ -633,14 +633,13 @@ public class UserQueryService {
         final String city = requestJSONObject.optString(UserExt.USER_CITY);
         final long latestTime = requestJSONObject.optLong(UserExt.USER_LATEST_LOGIN_TIME);
 
-        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+        final Query query = new Query().addSort(UserExt.USER_LATEST_LOGIN_TIME, SortDirection.DESCENDING)
                 .setCurrentPageNum(currentPageNum).setPageSize(pageSize)
                 .setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(UserExt.USER_CITY, FilterOperator.EQUAL, city),
                         new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID),
                         new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, latestTime)
                 ));
-
         JSONObject result = null;
         try {
             result = userRepository.get(query);
@@ -668,9 +667,7 @@ public class UserQueryService {
         } catch (final RepositoryException | JSONException e) {
             LOGGER.log(Level.ERROR, "Fills following failed", e);
         }
-
         ret.put(User.USERS, users);
-
         return ret;
     }
 
