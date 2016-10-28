@@ -212,7 +212,7 @@ public class TagProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTagArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String tagURI) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);;
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
         renderer.setTemplateName("tag-articles.ftl");
