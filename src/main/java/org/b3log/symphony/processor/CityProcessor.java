@@ -62,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 1.3.1.6, Oct 27, 2016
+ * @version 1.3.1.7, Oct 28, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -260,7 +260,7 @@ public class CityProcessor {
         }
 
         final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+        final int pageSize = Symphonys.getInt("cityUuserPageSize");
         final int windowSize = Symphonys.getInt("cityUsersWindowSize");
 
         final JSONObject requestJSONObject = new JSONObject();
