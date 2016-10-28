@@ -52,6 +52,7 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  * Mail management service.
@@ -197,7 +198,7 @@ public class MailMgmtService {
 
                 content = Emotions.convert(content);
                 content = Markdowns.toHTML(content);
-                content = Jsoup.parse(content).text();
+                content = Jsoup.clean(Jsoup.parse(content).text(), Whitelist.basic());
                 if (StringUtils.length(content) > 72) {
                     content = StringUtils.substring(content, 0, 72) + "....";
                 }
