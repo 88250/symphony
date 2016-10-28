@@ -88,8 +88,8 @@
                                 </li>
                                 </#list>
                             </ul>
-                            <@pagination url="/city/${city?url('utf-8')}/users"/>
                         </div>
+                        <@pagination url="/city/${city?url('utf-8')}/users"/>
                         </#if>
                     </div>
                     <#include "common/domains.ftl">
