@@ -192,11 +192,17 @@ Sym 提供了 [API](https://hacpai.com/article/1457158841475) 进行帖子、回
 
 ## 案例
 
+个人维护：
+
 * [黑客派](https://hacpai.com)
 * [宽客网](http://www.cnq.net)
 * [贵州IT](http://www.gzit.info)
 * [超级产品经理](https://imspm.com)
 * [Titandb 学习主站](https://titandb.cn)
+
+公司维护：
+
+* [四方环视](http://bbs.ivrpano.com)
 
 如果你也搭建好了，欢迎通过 Pull Request 将你的站点加到这个列表中 :-p
 
