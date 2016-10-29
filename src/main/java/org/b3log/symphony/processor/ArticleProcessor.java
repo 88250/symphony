@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
+
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -127,6 +129,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://zephyrjung.github.io>Zephyr</a>
  * @version 1.24.19.33, Oct 26, 2016
  * @since 0.2.0
  */
@@ -1430,6 +1433,31 @@ public class ArticleProcessor {
     }
 
     /**
+     * Markdown Format
+     * 
+     * <p>
+     * 处理部分pegdown与markdown语法不同的地方
+     * 单立函数为防在其他地方使用，目前功能如下
+     * 1. 粗体，如“你好**黑客派**”=>“你好 **黑客派** ”
+     * 2. 斜体，如“你好_黑客派_”=>“你好 _黑客派_ ”或如“你好*黑客派*”=>“你好 *黑客派* ”
+     * </p>
+     * @author
+     * @param markdownText
+     * @return
+     */
+    private String markdownFormat(String markdownText,String escape){
+    	StringBuilder result=new StringBuilder();
+    	String[] mds=markdownText.split("\n");
+    	for(String md:mds){
+    		String change=StringUtils.substringBetween(md, escape);
+    		String replace=" "+escape+change+escape+" ";
+    		md=StringUtils.replace(md, escape, "");
+    		result.append(StringUtils.replace(md, change, replace)+"\n");
+    	}
+    	return result.toString();
+    }
+    
+    /**
      * Markdowns.
      *
      * <p>
@@ -1452,8 +1480,16 @@ public class ArticleProcessor {
     public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         context.renderJSON(true);
-
         String markdownText = request.getParameter("markdownText");
+        if(markdownText.contains("_")){
+        	markdownText=markdownFormat(markdownText,"_");
+        }
+        if(markdownText.contains("**")){
+        	markdownText=markdownFormat(markdownText,"**");
+        }
+//        if(markdownText.contains("*")){
+//        	markdownText=markdownFormat(markdownText,"\\*","*");
+//        }
         if (Strings.isEmptyOrNull(markdownText)) {
             context.renderJSONValue("html", "");
 
@@ -1476,6 +1512,7 @@ public class ArticleProcessor {
         markdownText = shortLinkQueryService.linkTag(markdownText);
         markdownText = Emotions.convert(markdownText);
         markdownText = Markdowns.toHTML(markdownText);
+        System.out.println(markdownText);
         markdownText = Markdowns.clean(markdownText, "");
 
         context.renderJSONValue("html", markdownText);

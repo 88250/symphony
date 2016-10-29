@@ -209,7 +209,7 @@ var EatingSnake = {
         EatingSnake.snakeColor += 5;
         EatingSnake.appleColor -= 5;
         clearInterval(EatingSnake.interval);
-        if (EatingSnake.currTime >= 10) {
+        if (EatingSnake.currTime >= 25) {
             EatingSnake.currTime = EatingSnake.currTime - EatingSnake.stepTime;
         }
         EatingSnake.interval = setInterval(EatingSnake.gameRun, EatingSnake.currTime);
