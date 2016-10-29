@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.4, Oct 29, 2016
+ * @version 1.6.0.5, Oct 29, 2016
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -68,7 +68,7 @@ public final class Symphonys {
     /**
      * HacPai bot User-Agent.
      */
-    public static final String USER_AGENT_BOT = "Mozilla/5.0 (compatible; HacPaibot/1.0; +https://hacpai.com/)";
+    public static final String USER_AGENT_BOT = "Mozilla/5.0 (compatible; HacPai/1.1; +https://hacpai.com)";
 
     /**
      * Reserved tags.
@@ -151,6 +151,11 @@ public final class Symphonys {
         new Timer(true).schedule(new TimerTask() {
             @Override
             public void run() {
+                final String symURL = Latkes.getServePath();
+                if (Networks.isIPv4(symURL)) {
+                    return;
+                }
+
                 HttpURLConnection httpConn = null;
                 OutputStream outputStream = null;
 
@@ -169,7 +174,7 @@ public final class Symphonys {
 
                     outputStream = httpConn.getOutputStream();
                     final JSONObject sym = new JSONObject();
-                    sym.put("symURL", Latkes.getServePath());
+                    sym.put("symURL", symURL);
                     sym.put("symTitle", langPropsService.get("symphonyLabel", Latkes.getLocale()));
 
                     IOUtils.write(sym.toString(), outputStream, "UTF-8");
