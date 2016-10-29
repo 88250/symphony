@@ -1021,7 +1021,8 @@
         "Cmd-E": toggleBlockquote,
         'Shift-Cmd-L': toggleOrderedList,
         'Cmd-L': toggleUnOrderedList,
-        "Cmd-D": togglePreview
+        'Cmd-D': togglePreview,
+        'Shift-Cmd-A': toggleFullScreen
     };
 
 
@@ -1107,8 +1108,62 @@
      * Toggle full screen of the editor.
      */
     function toggleFullScreen(editor) {
-        editor.codemirror.setOption("fullScreen", !editor.codemirror.getOption("fullScreen"));
-        editor.codemirror.focus();
+        var cm = editor.codemirror,
+        wrap = editor.codemirror.getWrapperElement();
+        
+        if ('icon-fullscreen' === editor.toolbar.fullscreen.className) {
+            editor.toolbar.fullscreen.className = 'icon-contract';
+            editor.toolbar.preview.style.display = 'none';
+            if (editor.toolbar.preview.className.indexOf('active') > -1) {
+                editor.toolbar.preview.click();
+            }
+
+            $(editor.element.parentElement).css({
+                'position': 'fixed',
+                'top': '0',
+                'z-index': '12',
+                'left': '0',
+                'margin-top': '0',
+                'right': '0'
+            });
+
+            cm.state.fullScreenRestore = {scrollTop: window.pageYOffset, scrollLeft: window.pageXOffset,
+                                          width: wrap.style.width, height: wrap.style.height};
+            wrap.style.width = "50%";
+            wrap.style.height = ($(window).height() - $('.editor-toolbar').outerHeight()) + 'px';
+            cm.refresh();
+
+            $.ajax({
+                url: Label.servePath + "/markdown",
+                type: "POST",
+                cache: false,
+                data: {
+                    markdownText: cm.getValue()
+                },
+                success: function (result, textStatus) {
+                    $(editor.element.parentElement).prepend('<div class="CodeMirror-preview content-reset" style="height:' 
+                + ($(window).height() - $('.editor-toolbar').outerHeight()) + 'px">' + result.html + '</div>');
+                    hljs.initHighlighting.called = false;
+                    hljs.initHighlighting();
+                }
+            });
+
+            return false;
+        }
+
+        editor.toolbar.fullscreen.className = 'icon-fullscreen';
+        editor.toolbar.preview.style.display = 'inline';
+        $(editor.element.parentElement).css({
+            'position': 'inherit',
+            'margin-top': '20px'
+        });
+
+        $(editor.element.parentElement).find('.CodeMirror-preview').remove();    
+
+        var info = cm.state.fullScreenRestore;
+        wrap.style.width = info.width; 
+        wrap.style.height = info.height;
+        cm.refresh();
     }
 
 

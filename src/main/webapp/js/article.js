@@ -310,7 +310,8 @@ var Comment = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'}
+                    {name: 'preview'},
+                    {name: 'fullscreen'}
                 ],
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
@@ -364,6 +365,25 @@ var Comment = {
                     commentContent: cm.getValue()
                 });
             }
+
+            if ($('.article-comment-content .CodeMirror-preview').length === 0) {
+                return false;
+            }
+
+            $.ajax({
+                url: Label.servePath + "/markdown",
+                type: "POST",
+                cache: false,
+                data: {
+                    markdownText: cm.getValue()
+                },
+                success: function (result, textStatus) {
+                    $('.article-comment-content .CodeMirror-preview').html(result.html);
+                    hljs.initHighlighting.called = false;
+                    hljs.initHighlighting();
+                }
+            });
+
 
             var cursor = cm.getCursor();
             var token = cm.getTokenAt(cursor);

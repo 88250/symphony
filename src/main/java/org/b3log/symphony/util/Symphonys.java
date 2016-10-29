@@ -15,20 +15,50 @@
  */
 package org.b3log.symphony.util;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import org.apache.commons.io.IOUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
+import org.b3log.latke.util.CollectionUtils;
+import org.b3log.symphony.SymphonyServletListener;
+import org.json.JSONObject;
 
 /**
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.4, Sep 11, 2016
+ * @version 1.6.0.4, Oct 29, 2016
  * @since 0.1.0
  */
 public final class Symphonys {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Symphonys.class);
 
     /**
      * Configurations.
@@ -92,6 +122,117 @@ public final class Symphonys {
             final String userName = userNames[i];
 
             RESERVED_USER_NAMES[i] = userName.trim();
+        }
+    }
+
+    static {
+        try {
+            final SSLContext ctx = SSLContext.getInstance("TLS");
+            ctx.init(new KeyManager[0], new TrustManager[]{new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(final X509Certificate[] arg0, final String arg1) {
+                }
+
+                @Override
+                public void checkServerTrusted(final X509Certificate[] arg0, final String arg1) {
+                }
+
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+            }}, new SecureRandom());
+            SSLContext.setDefault(ctx);
+        } catch (final Exception e) {
+            // ignore
+        }
+
+        // Reports status to Rhythm, I hope that everyone will be able to join in the SymHub plan :p
+        new Timer(true).schedule(new TimerTask() {
+            @Override
+            public void run() {
+                HttpURLConnection httpConn = null;
+                OutputStream outputStream = null;
+
+                try {
+                    final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                    final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+
+                    httpConn = (HttpURLConnection) new URL("https://rhythm.b3log.org/sym").openConnection();
+                    httpConn.setConnectTimeout(10000);
+                    httpConn.setReadTimeout(10000);
+                    httpConn.setDoOutput(true);
+                    httpConn.setRequestMethod("POST");
+                    httpConn.setRequestProperty("User-Agent", "B3log Symphony/" + SymphonyServletListener.VERSION);
+
+                    httpConn.connect();
+
+                    outputStream = httpConn.getOutputStream();
+                    final JSONObject sym = new JSONObject();
+                    sym.put("symURL", Latkes.getServePath());
+                    sym.put("symTitle", langPropsService.get("symphonyLabel", Latkes.getLocale()));
+
+                    IOUtils.write(sym.toString(), outputStream, "UTF-8");
+                    outputStream.flush();
+
+                    httpConn.getResponseCode();
+                } catch (final Exception e) {
+                    // ignore
+                } finally {
+                    IOUtils.closeQuietly(outputStream);
+
+                    if (null != httpConn) {
+                        try {
+                            httpConn.disconnect();
+                        } catch (final Exception e) {
+                            // ignore
+                        }
+                    }
+                }
+            }
+        }, 1000 * 60 * 60 * 2, 1000 * 60 * 60 * 2);
+    }
+
+    /**
+     * Gets all symphonies.
+     *
+     * @return a list of symphonies
+     */
+    public static List<JSONObject> getSyms() {
+        HttpURLConnection httpConn = null;
+        InputStream inputStream = null;
+
+        try {
+            httpConn = (HttpURLConnection) new URL("https://rhythm.b3log.org/syms").openConnection();
+            httpConn.setConnectTimeout(10000);
+            httpConn.setReadTimeout(10000);
+            httpConn.setRequestMethod("GET");
+            httpConn.setRequestProperty("User-Agent", "B3log Symphony/" + SymphonyServletListener.VERSION);
+
+            httpConn.connect();
+
+            inputStream = httpConn.getInputStream();
+            final String data = IOUtils.toString(inputStream, "UTF-8");
+            final JSONObject result = new JSONObject(data);
+            if (!result.optBoolean(Keys.STATUS_CODE)) {
+                return Collections.emptyList();
+            }
+
+            return CollectionUtils.jsonArrayToList(result.optJSONArray("syms"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets syms from Rhythm failed", e);
+
+            return Collections.emptyList();
+        } finally {
+            IOUtils.closeQuietly(inputStream);
+
+            if (null != httpConn) {
+                try {
+                    httpConn.disconnect();
+                } catch (final Exception e) {
+                    // ignore
+                }
+            }
         }
     }
 

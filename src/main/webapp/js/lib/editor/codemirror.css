@@ -572,7 +572,8 @@ span.CodeMirror-selectedtext { background: none; }
     text-indent: -10px;
     margin: 0 6px;
 }
-.editor-toolbar a.icon-fullscreen {
+.editor-toolbar a.icon-fullscreen,
+.editor-toolbar a.icon-contract {
     position: absolute;
     right: 0;
 }
@@ -615,4 +616,19 @@ span.CodeMirror-selectedtext { background: none; }
 }
 .editor-preview > p {
     margin-top: 0;
+}
+.CodeMirror-preview {
+    background-color: #FFF;
+    width: 50%;
+    top: 30px;
+    border: 1px solid #ccc;
+    border-radius: 0 0 3px;
+    border-top: 0;
+    overflow: hidden;
+    right: 0;
+    position: absolute;
+    box-shadow: 0 1px 2px rgba(0,0,0,.075) inset;
+    padding: 4px;
+    box-sizing: border-box;
+    overflow: auto;
 }

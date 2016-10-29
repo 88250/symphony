@@ -80,7 +80,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.17.6.16, Oct 27, 2016
+ * @version 2.17.7.16, Oct 29, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -196,6 +196,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
+        Locales.setLocale(Latkes.getLocale());
+
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
 
         httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
@@ -212,7 +214,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
                 || StringUtils.containsIgnoreCase(userAgentStr, "MQQBrowser")
                 || StringUtils.containsIgnoreCase(userAgentStr, "iphone")) {
             browserType = BrowserType.MOBILE_BROWSER;
-        } else if (StringUtils.containsIgnoreCase(userAgentStr, "Iframely")) {
+        } else if (StringUtils.containsIgnoreCase(userAgentStr, "Iframely")
+                || StringUtils.containsIgnoreCase(userAgentStr, "B3log")) {
             browserType = BrowserType.ROBOT;
         } else if (BrowserType.UNKNOWN == browserType) {
             if (!StringUtils.containsIgnoreCase(userAgentStr, "Java")
@@ -252,10 +255,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
+        Locales.setLocale(null);
+
         try {
             super.requestDestroyed(servletRequestEvent);
-
-            Locales.setLocale(null);
 
             final HttpServletRequest request = (HttpServletRequest) servletRequestEvent.getServletRequest();
             final boolean isStatic = (Boolean) request.getAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE);

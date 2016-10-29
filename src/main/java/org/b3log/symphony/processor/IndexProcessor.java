@@ -60,12 +60,13 @@ import org.json.JSONObject;
  * <li>Shows perfect articles (/perfect), GET</li>
  * <li>Shows about (/about), GET</li>
  * <li>Shows b3log (/b3log), GET</li>
+ * <li>Shows SymHub (/symhub), GET</li>
  * <li>Shows kill browser (/kill-browser), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.2.20, Oct 26, 2016
+ * @version 1.10.2.21, Oct 29, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -279,6 +280,43 @@ public class IndexProcessor {
 
         Stopwatchs.start("Fills");
         try {
+            filler.fillHeaderAndFooter(request, response, dataModel);
+            if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
+                filler.fillRandomArticles(avatarViewMode, dataModel);
+            }
+            filler.fillSideHotArticles(avatarViewMode, dataModel);
+            filler.fillSideTags(dataModel);
+            filler.fillLatestCmts(dataModel);
+        } finally {
+            Stopwatchs.end();
+        }
+    }
+
+    /**
+     * Shows SymHub page.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/symhub", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showSymHub(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("symhub.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final List<JSONObject> syms = Symphonys.getSyms();
+        dataModel.put("syms", (Object) syms);
+
+        Stopwatchs.start("Fills");
+        try {
+            final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
             filler.fillHeaderAndFooter(request, response, dataModel);
             if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
                 filler.fillRandomArticles(avatarViewMode, dataModel);
