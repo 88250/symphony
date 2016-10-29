@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -150,9 +152,8 @@ public class FileUploadServlet extends HttpServlet {
         }
 
         final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        fileName = name + "_" + uuid + "." + suffix;
 
-        fileName = StringUtils.replace(fileName, " ", "_");
+        fileName = uuid + '-' + name.replaceAll("\\W", "") + "." + suffix;
 
         final OutputStream output = new FileOutputStream(UPLOAD_DIR + fileName);
         IOUtils.copy(multipartRequestInputStream, output);
@@ -162,6 +163,7 @@ public class FileUploadServlet extends HttpServlet {
 
         final JSONObject data = new JSONObject();
         data.put("key", Latkes.getServePath() + "/upload/" + fileName);
+        data.put("name", fileName);
 
         resp.setContentType("application/json");
 
