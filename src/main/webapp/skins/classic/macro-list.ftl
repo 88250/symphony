@@ -6,6 +6,23 @@
         <#assign articleIds = articleIds + article.oId>
         <#if article_has_next><#assign articleIds = articleIds + ","></#if>
         <li>
+            <div class="fn-clear ft-smaller list-info ">
+                <span class="fn-left">
+                    <#list article.articleTagObjs as articleTag>
+                    <a rel="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> &nbsp; 
+                    </#list>
+                </span>
+                <span class="fn-right ft-fade">
+                    <#if article.articleCommentCount != 0>
+                    <a class="ft-gray" href="${servePath}${article.articlePermalink}#comments"><b class="level<#if article.articleCommentCount lt 80>${(article.articleCommentCount/20)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a> &nbsp;•&nbsp;
+                    </#if>   
+
+                    <#if article.articleViewCount != 0> 
+                    <a class="ft-gray" href="${servePath}${article.articlePermalink}"><span class="level<#if article.articleViewCount lt 800>${(article.articleViewCount/200)?int}<#else>4</#if>">${article.articleViewCount}</span> ${viewLabel}</a> &nbsp;•&nbsp;
+                    </#if>   
+                    <span class="ft-gray">${article.timeAgo} </span>
+                </span>
+            </div>
             <h2>
                 <#if 1 == article.articlePerfect>
                 <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" width="14" viewBox="3 2 11 12">${perfectIcon}</svg></span>
@@ -20,59 +37,42 @@
                 <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                 </a>
             </h2>
-            <a class="abstract" href="${servePath}${article.articlePermalink}">
-                ${article.articlePreviewContent}
-            </a>
-            <div class="ft-smaller ft-fade fn-clear list-info">
-                <span class="author"> 
-                    <#if article.articleAnonymous == 0>
-                    <a rel="nofollow" 
-                       href="${servePath}/member/${article.articleAuthorName}"></#if><div
-                       class="avatar-small"
-                       style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>&nbsp;
-                    <#if article.articleAnonymous == 0>
-                    <a rel="nofollow" class="user-name"
-                       href="${servePath}/member/${article.articleAuthorName}"></#if>
-                       ${article.articleAuthorName}
-                    <#if article.articleAnonymous == 0></a></#if>
-                    • ${article.timeAgo}
-                </span>
+            <div class="ft-smaller fn-clear list-info">
+                <#if article.articleAnonymous == 0>
+                <a rel="nofollow" 
+                   href="${servePath}/member/${article.articleAuthorName}"></#if><div
+                   class="avatar-small"
+                   style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>&nbsp;
+                <#if article.articleAnonymous == 0>
+                <a rel="nofollow" class="author"
+                   href="${servePath}/member/${article.articleAuthorName}"></#if>
+                   ${article.articleAuthorName}
+                <#if article.articleAnonymous == 0></a></#if>
+                <#if article.articleAuthor.userIntro != ''><span class="ft-gray"> - ${article.articleAuthor.userIntro}</span></a></#if>
 
-                <span class="fn-left">
-                    <#list article.articleTagObjs as articleTag>
-                    <a rel="tag" class="ft-fade" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> &nbsp; 
-                    </#list>
-                </span>
-
-                <span class="fn-right">
-                    <#if article.articleCommentCount != 0>
-                    <a class="ft-fade" href="${servePath}${article.articlePermalink}#comments"><b class="level<#if article.articleCommentCount lt 80>${(article.articleCommentCount/20)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a> &nbsp;•&nbsp;
-                    </#if>   
-
-                    <#if article.articleViewCount != 0> 
-                    <a class="ft-fade" href="${servePath}${article.articlePermalink}"><span class="level<#if article.articleViewCount lt 800>${(article.articleViewCount/200)?int}<#else>4</#if>">${article.articleViewCount}</span> ${viewLabel}</a>&nbsp;
-                    </#if>   
-
+                <span class="fn-right ft-fade">
                     <#if "" != article.articleLatestCmterName>
-                        •&nbsp; ${article.cmtTimeAgo} 
-                        <span class="ft-gray">
+                        ${article.cmtTimeAgo} 
                         <#if "" == article.articleLatestCmt.commentOriginalCommentId>
                             ${article.articleLatestCmterName}
                         <#else>
                             <#if article.articleLatestCmterName != 'someone'>
-                            <a rel="nofollow" class="user-name" href="${servePath}/member/${article.articleLatestCmterName}">
+                            <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}">
                             </#if>
                             ${article.articleLatestCmterName}
                             <#if article.articleLatestCmterName != 'someone'>
                             </a>
                             </#if>
                         </#if> 
-                        </span>
+                        ${cmtLabel}
                     </#if>
                 </span>
             </div>
-            
+            <a class="abstract" href="${servePath}${article.articlePermalink}">
+                ${article.articlePreviewContent}
+            </a>
             <span class="heat tooltipped tooltipped-n" aria-label="${postActivityLabel}" style="width:${article.articleHeat*3}px"></span>
+            
         </li>
         </#list>
     </ul>
