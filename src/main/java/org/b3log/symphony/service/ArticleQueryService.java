@@ -1988,6 +1988,15 @@ public class ArticleQueryService {
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, articleLatestCmterName);
         }
 
+        final Query query = new Query()
+                .setPageCount(1).setCurrentPageNum(1).setPageSize(1)
+                .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        final JSONArray cmts = commentRepository.get(query).optJSONArray(Keys.RESULTS);
+        if (cmts.length() > 0) {
+            article.put(Article.ARTICLE_T_LATEST_CMT, cmts.optJSONObject(0));
+        }
+
         // builds tag objects
         final String tagsStr = article.optString(Article.ARTICLE_TAGS);
         final String[] tagTitles = tagsStr.split(",");

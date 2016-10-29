@@ -56,7 +56,7 @@
                     <#if "" != article.articleLatestCmterName>
                         •&nbsp; ${article.cmtTimeAgo} 
                         <span class="ft-gray">
-                        <#if article.syncWithSymphonyClient>
+                        <#if "" == article.articleLatestCmt.commentOriginalCommentId>
                             ${article.articleLatestCmterName}
                         <#else>
                             <#if article.articleLatestCmterName != 'someone'>

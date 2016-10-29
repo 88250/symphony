@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.0.11, Oct 26, 2016
+ * @version 1.21.0.11, Oct 30, 2016
  * @since 0.2.0
  */
 public final class Article {
@@ -200,6 +200,11 @@ public final class Article {
     public static final String ARTICLE_ANONYMOUS_VIEW = "articleAnonymousView";
 
     //// Transient ////
+    /**
+     * Key of article latest comment.
+     */
+    public static final String ARTICLE_T_LATEST_CMT = "articleLatestCmt";
+
     /**
      * Key of previous article.
      */
