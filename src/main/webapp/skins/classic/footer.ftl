@@ -20,7 +20,6 @@
                 <a href="${servePath}/community">${communityDynamicLabel}</a>
                 <a href="https://hacpai.com/article/1460083956075">${adDeliveryLabel}</a>
                 <a href="${servePath}/statistic">${dataStatLabel}</a>
-                <a href="${servePath}/symhub">SymHub</a>
 
                 <div class="fn-right">
                     <span class="ft-gray">&COPY; ${year}</span>
