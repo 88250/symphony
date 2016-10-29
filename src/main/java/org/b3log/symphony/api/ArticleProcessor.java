@@ -58,7 +58,7 @@ public class ArticleProcessor {
     private ArticleQueryService articleQueryService;
 
     /**
-     * Gets articles.with the specified tags.
+     * Gets articles with the specified tags.
      *
      * @param context the specified context
      * @param request the specified request

@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -89,7 +90,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.16.32, Oct 28, 2016
+ * @version 2.24.17.32, Oct 29, 2016
  * @since 0.2.0
  */
 @Service
@@ -578,41 +579,67 @@ public class ArticleQueryService {
             if (!tagList.isEmpty()) {
                 final List<JSONObject> tagArticles
                         = getArticlesByTags(currentPageNum, pageSize, articleFields, tagList.toArray(new JSONObject[0]));
-                for (final JSONObject article : tagArticles) {
-                    article.remove(Article.ARTICLE_T_PARTICIPANTS);
-                    article.remove(Article.ARTICLE_T_PARTICIPANT_NAME);
-                    article.remove(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL);
-                    article.remove(Article.ARTICLE_LATEST_CMT_TIME);
-                    article.remove(Article.ARTICLE_LATEST_CMTER_NAME);
-                    article.remove(Article.ARTICLE_UPDATE_TIME);
-                    article.remove(Article.ARTICLE_T_HEAT);
-                    article.remove(Article.ARTICLE_T_TITLE_EMOJI);
-                    article.remove(Common.TIME_AGO);
-
-                    article.put(Article.ARTICLE_CREATE_TIME, ((Date) article.get(Article.ARTICLE_CREATE_TIME)).getTime());
-                }
 
                 ret.addAll(tagArticles);
             }
 
-            final List<Filter> filters = new ArrayList<>();
-            filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
-            filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
+            if (ret.size() < pageSize) {
+                final List<Filter> filters = new ArrayList<>();
+                filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+                filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
 
-            final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                    .setPageCount(currentPageNum).setPageSize(pageSize).setCurrentPageNum(1);
-            query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-            for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
-                query.addProjection(articleField.getKey(), articleField.getValue());
+                final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                        .setPageCount(currentPageNum).setPageSize(pageSize).setCurrentPageNum(1);
+                query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+                for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
+                    query.addProjection(articleField.getKey(), articleField.getValue());
+                }
+
+                final JSONObject result = articleRepository.get(query);
+
+                final List<JSONObject> recentArticles = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+                ret.addAll(recentArticles);
             }
 
-            final JSONObject result = articleRepository.get(query);
-
-            final List<JSONObject> recentArticles = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            ret.addAll(recentArticles);
-
-            for (final JSONObject article : ret) {
+            final Iterator<JSONObject> iterator = ret.iterator();
+            int i = 0;
+            while (iterator.hasNext()) {
+                final JSONObject article = iterator.next();
                 article.put(Article.ARTICLE_PERMALINK, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+
+                article.remove(Article.ARTICLE_T_AUTHOR);
+                article.remove(Article.ARTICLE_AUTHOR_ID);
+                article.remove(Article.ARTICLE_T_PARTICIPANTS);
+                article.remove(Article.ARTICLE_T_PARTICIPANT_NAME);
+                article.remove(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL);
+                article.remove(Article.ARTICLE_LATEST_CMT_TIME);
+                article.remove(Article.ARTICLE_LATEST_CMTER_NAME);
+                article.remove(Article.ARTICLE_UPDATE_TIME);
+                article.remove(Article.ARTICLE_T_HEAT);
+                article.remove(Article.ARTICLE_T_TITLE_EMOJI);
+                article.remove(Common.TIME_AGO);
+                article.remove(Common.CMT_TIME_AGO);
+                article.remove(Article.ARTICLE_T_TAG_OBJS);
+                article.remove(Article.ARTICLE_STICK);
+                article.remove(Article.ARTICLE_T_PREVIEW_CONTENT);
+                article.remove(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "20");
+                article.remove(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "48");
+                article.remove(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "210");
+                article.remove(Article.ARTICLE_T_STICK_REMAINS);
+
+                long createTime = 0;
+                final Object time = article.get(Article.ARTICLE_CREATE_TIME);
+                if (time instanceof Date) {
+                    createTime = ((Date) time).getTime();
+                } else {
+                    createTime = (Long) time;
+                }
+                article.put(Article.ARTICLE_CREATE_TIME, createTime);
+
+                i++;
+                if (i > pageSize) {
+                    iterator.remove();
+                }
             }
 
             return ret;
@@ -1990,9 +2017,9 @@ public class ArticleQueryService {
      * @param article the specified article
      */
     private void toArticleDate(final JSONObject article) {
-        article.put(Common.TIME_AGO, 
+        article.put(Common.TIME_AGO,
                 Times.getTimeAgo(article.optLong(Article.ARTICLE_CREATE_TIME), Locales.getLocale()));
-        article.put(Common.CMT_TIME_AGO, 
+        article.put(Common.CMT_TIME_AGO,
                 Times.getTimeAgo(article.optLong(Article.ARTICLE_LATEST_CMT_TIME), Locales.getLocale()));
 
         article.put(Article.ARTICLE_CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
