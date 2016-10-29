@@ -19,10 +19,10 @@
                             <ul class="module-list">
                                 <#list syms as sym>
                                 <li>
-                                    <a rel="nofollow" href="${sym.symURL}">
+                                    <a rel="nofollow" href="${sym.symURL}" target="_blank">
                                         <span class="avatar-small slogan" style="background-image:url('${sym.symIcon}')"></span>
                                     </a>
-                                    <a rel="friend" class="title" href="${sym.symURL}">${sym.symTitle} - 
+                                    <a rel="friend" class="title"  target="_blank" href="${sym.symURL}">${sym.symTitle} - 
                                         <span class="ft-gray">${sym.symDesc}</span>
                                     </a>
                                 </li>
