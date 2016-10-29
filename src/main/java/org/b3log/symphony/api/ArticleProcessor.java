@@ -144,7 +144,7 @@ public class ArticleProcessor {
         if (Strings.isNumeric(page)) {
             currentPage = Integer.parseInt(page);
         }
-        
+
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject ret = new JSONObject();
