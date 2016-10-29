@@ -25,7 +25,7 @@
 
                         <h1 class="article-title">
                             <#if 1 == article.articlePerfect>
-                            <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="20" viewBox="3 2 11 12" width="14">${perfectIcon}</svg></span>
+                            <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="24" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
                             </#if>
                             <#if 1 == article.articleType>
                             <span class="tooltipped tooltipped-n" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
