@@ -91,7 +91,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.6.10, Oct 20, 2016
+ * @version 1.9.7.10, Oct 30, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -168,10 +168,13 @@ public final class Markdowns {
             return "";
         }
 
+        String formated = formatMarkdown(markdownText, "**");
+        formated = formatMarkdown(formated, "_");
+
         final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS, 5000);
         // String ret = pegDownProcessor.markdownToHtml(markdownText);
 
-        final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
+        final RootNode node = pegDownProcessor.parseMarkdown(formated.toCharArray());
         String ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
                 Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
 
@@ -180,6 +183,28 @@ public final class Markdowns {
         }
 
         return ret;
+    }
+
+    /**
+     * See https://github.com/b3log/symphony/issues/306.
+     *
+     * @param markdownText
+     * @param tag
+     * @return
+     */
+    private static String formatMarkdown(final String markdownText, final String tag) {
+        final StringBuilder result = new StringBuilder();
+        final String[] mds = markdownText.split("\n");
+
+        for (String md : mds) {
+            final String change = StringUtils.substringBetween(md, tag);
+            final String replace = " " + tag + change + tag + " ";
+
+            md = StringUtils.replace(md, tag, "");
+            result.append("\n" + StringUtils.replace(md, change, replace));
+        }
+
+        return result.toString();
     }
 
     /**
