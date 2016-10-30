@@ -1,6 +1,8 @@
 # [Symphony](https://github.com/b3log/symphony) [![Build Status](https://img.shields.io/travis/b3log/symphony.svg?style=flat)](https://travis-ci.org/b3log/symphony)
 
-**[English](https://github.com/b3log/symphony/blob/master/README.md)** | **[中文](https://github.com/b3log/symphony/blob/master/README_zh_CN.md)**
+<p align = "center">
+<a href="https://github.com/b3log/symphony/blob/master/README.md">English</a> | <a href="https://github.com/b3log/symphony/blob/master/README_zh_CN.md">中文</a>
+</p>
 
 * [Introduction](#introduction)
   * [Motivation](#motivation)
