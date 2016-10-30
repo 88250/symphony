@@ -1,4 +1,4 @@
-#<img src="https://img.hacpai.com/file/2016/10/3bd743af24d642f2a0772d31ee85f5ef-symlogo.png">  
+#<img src="https://camo.githubusercontent.com/49596c07457ac6b32eae7ff9f9f1e941a1fe7c0e/687474703a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f33373730362d323762666338613432326432636539622e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430">  
 
 <p align = "center">
 <a href="https://github.com/b3log/symphony/blob/master/README.md">English</a> | <a href="https://github.com/b3log/symphony/blob/master/README_zh_CN.md">中文</a>
