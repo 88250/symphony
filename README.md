@@ -243,20 +243,20 @@ Maven3+、MySQL5.5+、Jetty9+/Tomcat9+
 
 ## 使用授权
 
-商用授权和开源授权在功能上没有任何区别，但商用授权后可以去除页脚版权部分。如果在未获得商用授权前私自去除版权部分，必将追究法律责任。
+商用授权和开源授权在功能上没有任何区别，你可以从以下两种授权方式中选择一种。
 
 ### 开源授权
 
-请仔细查看并遵循以下使用条款，尊重我们的劳动成果。
-
-* This software is open sourced under the Apache License 2.0 
-* You can not get rid of the "Powered by [B3log 开源](http://b3log.org) • [Sym](https://github.com/b3log/symphony)" from any page, even which you made
-* If you want to use this software for commercial purpose, please mail to support@liuyun.io for a commercial license request
-* Copyright &copy; b3log.org, all rights reserved
+Sym 是使用 GPL 作为开源协议的，如果你选择了开源授权，则必须完全遵守 GPL 的相关条款。
 
 ### 商用授权
 
-如果需要将 Sym 用于商用（比如公司搭建社区）则必须付费，价格为 ￥10000，请联系 QQ 845765 进行细节咨询。
+如果需要将 Sym 用于商用，包括但不限于如下场景：
+
+* 公司使用
+* 有盈利性质
+
+则必须付费，价格为 ￥10000，请联系 QQ 845765 进行细节咨询。
 
 ## 贡献
 
