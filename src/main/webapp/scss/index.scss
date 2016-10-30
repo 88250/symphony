@@ -445,7 +445,7 @@ label.cmt-anonymous {
 .article-list {
 
     ul > li {
-        padding: 20px;
+        padding: 10px;
     }
 
     .stick li:last-child {
@@ -461,11 +461,19 @@ label.cmt-anonymous {
     }
 
     ul > li > h2 {
+        margin: 5px 0;
+    }
+
+    ul > li > h2 > a {
         font-size: 18px;
     }
 
+    ul > li > h2 > a:visited {
+        color: #666;
+    }
+
     .abstract {
-        margin: 20px 0;
+        margin-top: 5px;
         color: #666;
         display: block;
         text-decoration: none;
@@ -474,16 +482,12 @@ label.cmt-anonymous {
     }
 
     .abstract:visited {
-        color: $fade;
+        color: $gray;
     }
 
     .author {
-        width: 30%;
-        float: left;
-    }
-
-    .user-name {
-        color: $gray;
+        color: #666;
+        font-weight: 600;
     }
 
     .list-info {
@@ -491,7 +495,7 @@ label.cmt-anonymous {
     }
 
     .level0 {
-        color: #ccc;
+        color: #999;
     }
     .level1 {
         color: #ffcc00;

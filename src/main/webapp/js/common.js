@@ -18,7 +18,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>g
  * @author Zephyr
  * @version 1.36.23.35, Oct 27, 2016
  */
@@ -1094,12 +1094,6 @@ var Util = {
                 url: Label.servePath + "/upload",
                 paramName: "file",
                 add: function (e, data) {
-                    filename = data.files[0].name;
-
-                    if (!filename) {
-                        ext = data.files[0].type.split("/")[1];
-                    }
-
                     if (window.File && window.FileReader && window.FileList && window.Blob) {
                         var reader = new FileReader();
                         reader.readAsArrayBuffer(data.files[0]);
@@ -1138,8 +1132,8 @@ var Util = {
                     }
                 },
                 done: function (e, data) {
-                    var qiniuKey = data.result.key;
-                    if (!qiniuKey) {
+                    var filePath = data.result.key;
+                    if (!filePath) {
                         alert("Upload error");
 
                         return;
@@ -1147,20 +1141,16 @@ var Util = {
 
                     if (obj.editor.replaceRange) {
                         var cursor = obj.editor.getCursor();
-
-                        if (!filename) {
-                            filename = new Date().getTime();
-                        }
-
+                        filename = data.result.name;
                         if (isImg) {
-                            obj.editor.replaceRange('![' + filename + '](' + qiniuKey + ') \n\n',
+                            obj.editor.replaceRange('![' + filename + '](' + filePath + ') \n\n',
                                     CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
                         } else {
-                            obj.editor.replaceRange('[' + filename + '](' + qiniuKey + ') \n\n',
+                            obj.editor.replaceRange('[' + filename + '](' + filePath + ') \n\n',
                                     CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
                         }
                     } else {
-                        obj.editor.$it.val(obj.editor.$it.val() + '![' + filename + '](' + qiniuKey + ') \n\n');
+                        obj.editor.$it.val(obj.editor.$it.val() + '![' + filename + '](' + filePath + ') \n\n');
                         $('#' + obj.id + ' input').prop('disabled', false);
                     }
                 },
@@ -1181,7 +1171,7 @@ var Util = {
                 }
             });
 
-            return;
+            return false;
         }
 
         $('#' + obj.id).fileupload({
@@ -1191,10 +1181,10 @@ var Util = {
             url: "https://up.qbox.me/",
             paramName: "file",
             add: function (e, data) {
-                filename = data.files[0].name;
+                filename = getUUID() + '-' + data.files[0].name.match(/[a-zA-Z0-9.]/g).join('');
 
                 if (!filename) {
-                    ext = data.files[0].type.split("/")[1];
+                    filename = getUUID() + '.' + data.files[0].type.split("/")[1];
                 }
 
                 if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -1225,13 +1215,9 @@ var Util = {
             formData: function (form) {
                 var data = form.serializeArray();
 
-                if (filename) {
-                    filename = filename.replace(/ /g, "_");
-                    data.push({name: 'key', value: "file/" + getUUID() + "/" + filename});
-                } else {
-                    data.push({name: 'key', value: getUUID() + "." + ext});
-                }
-
+                data.push({name: 'key', value: "file/" + (new Date()).getFullYear() + "/" 
+                    + ((new Date()).getMonth() + 1) + '/' + filename});
+                
                 data.push({name: 'token', value: obj.qiniuUploadToken});
 
                 return data;
@@ -1254,10 +1240,6 @@ var Util = {
 
                 if (obj.editor.replaceRange) {
                     var cursor = obj.editor.getCursor();
-
-                    if (!filename) {
-                        filename = new Date().getTime();
-                    }
 
                     if (isImg) {
                         obj.editor.replaceRange('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',

@@ -58,7 +58,7 @@ public class ArticleProcessor {
     private ArticleQueryService articleQueryService;
 
     /**
-     * Gets articles.with the specified tags.
+     * Gets articles with the specified tags.
      *
      * @param context the specified context
      * @param request the specified request
@@ -144,7 +144,7 @@ public class ArticleProcessor {
         if (Strings.isNumeric(page)) {
             currentPage = Integer.parseInt(page);
         }
-        
+
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject ret = new JSONObject();
