@@ -90,7 +90,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.17.33, Oct 30, 2016
+ * @version 2.24.18.33, Oct 30, 2016
  * @since 0.2.0
  */
 @Service
@@ -2509,6 +2509,16 @@ public class ArticleQueryService {
                 }
 
                 ret = StringUtils.replaceEach(ret, pics, picsRepl);
+            }
+
+            if (ret.length() >= length) {
+                ret = StringUtils.substring(ret, 0, length)
+                        + " ....";
+
+                ret = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
+                ret = ret.replaceAll("\"", "'");
+
+                return ret;
             }
 
             String[] urls = StringUtils.substringsBetween(ret, "[", ")");
