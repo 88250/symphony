@@ -2,7 +2,7 @@
 
 ## 简介
 
-[Symphony](https://github.com/b3log/symphony)（[ˈsɪmfəni]，n.交响乐，交响曲； 序曲，插曲； 〈古〉和谐，和谐的东西）是一个现代化的社区平台，因为它：
+[Symphony](https://github.com/b3log/symphony)（[ˈsɪmfəni]，n.交响乐）是一个现代化的社区平台，因为它：
 
 * 实现了面向内容讨论的论坛
 * 包含了面向用户分享、交友、游戏的社交网络
