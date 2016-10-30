@@ -90,7 +90,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.17.32, Oct 29, 2016
+ * @version 2.24.17.33, Oct 30, 2016
  * @since 0.2.0
  */
 @Service
@@ -2498,7 +2498,7 @@ public class ArticleQueryService {
 
                 final String[] picsRepl = new String[pics.length];
                 for (int i = 0; i < picsRepl.length; i++) {
-                    picsRepl[i] = "[pic]";
+                    picsRepl[i] = langPropsService.get("picTagLabel");
                     pics[i] = "![" + pics[i] + ")";
 
                     if (i > threshold) {
@@ -2517,7 +2517,7 @@ public class ArticleQueryService {
 
                 final String[] urlsRepl = new String[urls.length];
                 for (int i = 0; i < urlsRepl.length; i++) {
-                    urlsRepl[i] = "[url]";
+                    urlsRepl[i] = langPropsService.get("urlTagLabel");
                     urls[i] = "[" + urls[i] + ")";
                 }
 
