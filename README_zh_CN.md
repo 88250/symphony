@@ -1,4 +1,4 @@
-# [Symphony](https://github.com/b3log/symphony) [![Build Status](https://img.shields.io/travis/b3log/symphony.svg?style=flat)](https://travis-ci.org/b3log/symphony)
+#<img src="https://img.hacpai.com/file/2016/10/3bd743af24d642f2a0772d31ee85f5ef-symlogo.png">  
 
 <p align = "center">
 <a href="https://github.com/b3log/symphony/blob/master/README.md">English</a> | <a href="https://github.com/b3log/symphony/blob/master/README_zh_CN.md">中文</a>
