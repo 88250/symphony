@@ -1994,7 +1994,9 @@ public class ArticleQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         final JSONArray cmts = commentRepository.get(query).optJSONArray(Keys.RESULTS);
         if (cmts.length() > 0) {
-            article.put(Article.ARTICLE_T_LATEST_CMT, cmts.optJSONObject(0));
+            final JSONObject latestCmt = cmts.optJSONObject(0);
+            latestCmt.put(Comment.COMMENT_CLIENT_COMMENT_ID, latestCmt.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
+            article.put(Article.ARTICLE_T_LATEST_CMT, latestCmt);
         }
 
         // builds tag objects

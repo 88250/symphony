@@ -55,15 +55,11 @@
                 <span class="fn-right ft-gray fn-hidden">
                     <#if "" != article.articleLatestCmterName>
                         &nbsp; ${article.cmtTimeAgo} 
-                        <#if "" != article.articleLatestCmt.commentOriginalCommentId>
+                        <#if "" != article.articleLatestCmt.clientCommentId>
                             <span class="author">${article.articleLatestCmterName}</span>
                         <#else>
                             <#if article.articleLatestCmterName != 'someone'>
-                            <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}">
-                            </#if>
-                            <span class="author">${article.articleLatestCmterName}</span>
-                            <#if article.articleLatestCmterName != 'someone'>
-                            </a>
+                            <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"></#if><span class="author">${article.articleLatestCmterName}</span><#if article.articleLatestCmterName != 'someone'></a>
                             </#if>
                         </#if> 
                         ${cmtLabel}
