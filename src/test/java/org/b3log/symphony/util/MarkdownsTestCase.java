@@ -19,6 +19,7 @@ import java.io.FileReader;
 import java.net.URL;
 import org.testng.Assert;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.testng.annotations.Test;
 
@@ -26,7 +27,8 @@ import org.testng.annotations.Test;
  * Markdown utilities test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.1, Sep 17, 2016
+ * @author <a href="http://zephyrjung.github.io">Zephyr</a>
+ * @version 2.1.0.1, Oct 30, 2016
  * @since 0.1.6
  */
 public class MarkdownsTestCase {
@@ -77,10 +79,25 @@ public class MarkdownsTestCase {
      */
     @Test
     public void toHTML1() {
-        final String md = "Sym**是一个用Java写的实时论坛**";
+        final String md = "Sym**是一个用_Java_写的实时论坛**";
         final String html = Markdowns.toHTML(md);
-
-        System.out.println(html);
+        System.out.println(markdownFormat(md,"**"));
+        System.out.println(markdownFormat(md,"_"));
+        System.out.println(markdownFormat(markdownFormat(md,"_"),"**"));
+        System.out.println(Markdowns.toHTML(markdownFormat(markdownFormat(md,"_"),"**")));
+        System.out.println(md);
+    }
+    
+    private String markdownFormat(String markdownText,String escape){
+    	StringBuilder result=new StringBuilder();
+    	String[] mds=markdownText.split("\n");
+    	for(String md:mds){
+    		String change=StringUtils.substringBetween(md, escape);
+    		String replace=" "+escape+change+escape+" ";
+    		md=StringUtils.replace(md, escape, "");
+    		result.append(StringUtils.replace(md, change, replace)+"\n");
+    	}
+    	return result.toString();
     }
 
     /**

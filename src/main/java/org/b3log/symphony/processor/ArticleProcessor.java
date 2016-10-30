@@ -1452,7 +1452,6 @@ public class ArticleProcessor {
     public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         context.renderJSON(true);
-
         String markdownText = request.getParameter("markdownText");
         if (Strings.isEmptyOrNull(markdownText)) {
             context.renderJSONValue("html", "");
