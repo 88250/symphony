@@ -37,29 +37,31 @@
                 <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                 </a>
             </h2>
-            <div class="ft-smaller fn-clear list-info">
-                <#if article.articleAnonymous == 0>
-                <a rel="nofollow" 
-                   href="${servePath}/member/${article.articleAuthorName}"></#if><div
-                   class="avatar-small"
-                   style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>&nbsp;
-                <#if article.articleAnonymous == 0>
-                <a rel="nofollow" class="author"
-                   href="${servePath}/member/${article.articleAuthorName}"></#if>
-                   ${article.articleAuthorName}
-                <#if article.articleAnonymous == 0></a></#if>
-                <#if article.articleAuthor.userIntro != ''><span class="ft-gray"> - ${article.articleAuthor.userIntro}</span></a></#if>
+            <div class="ft-smaller fn-clear list-info fn-flex">
+                <span class="fn-ellipsis fn-flex-1">
+                    <#if article.articleAnonymous == 0>
+                    <a rel="nofollow" 
+                       href="${servePath}/member/${article.articleAuthorName}"></#if><div
+                       class="avatar-small"
+                       style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>&nbsp;
+                    <#if article.articleAnonymous == 0>
+                    <a rel="nofollow" class="author"
+                       href="${servePath}/member/${article.articleAuthorName}"></#if>
+                       ${article.articleAuthorName}
+                    <#if article.articleAnonymous == 0></a></#if>
+                    <#if article.articleAuthor.userIntro != ''><span class="ft-gray"> - ${article.articleAuthor.userIntro}</span></a></#if>
+                </span>
 
-                <span class="fn-right ft-fade">
+                <span class="fn-right ft-gray fn-hidden">
                     <#if "" != article.articleLatestCmterName>
-                        ${article.cmtTimeAgo} 
-                        <#if "" == article.articleLatestCmt.commentOriginalCommentId>
-                            ${article.articleLatestCmterName}
+                        &nbsp; ${article.cmtTimeAgo} 
+                        <#if "" != article.articleLatestCmt.commentOriginalCommentId>
+                            <span class="author">${article.articleLatestCmterName}</span>
                         <#else>
                             <#if article.articleLatestCmterName != 'someone'>
                             <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}">
                             </#if>
-                            ${article.articleLatestCmterName}
+                            <span class="author">${article.articleLatestCmterName}</span>
                             <#if article.articleLatestCmterName != 'someone'>
                             </a>
                             </#if>
