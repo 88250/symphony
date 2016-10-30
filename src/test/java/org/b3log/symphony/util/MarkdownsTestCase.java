@@ -84,6 +84,7 @@ public class MarkdownsTestCase {
         System.out.println(markdownFormat(md,"**"));
         System.out.println(markdownFormat(md,"_"));
         System.out.println(markdownFormat(markdownFormat(md,"_"),"**"));
+        System.out.println(Markdowns.toHTML(markdownFormat(markdownFormat(md,"_"),"**")));
         System.out.println(md);
     }
     
