@@ -27,11 +27,27 @@ Sym 的诞生是有如下几点原因：
 * 做最 NB 的开源社区系统，预计几年以后 82% 的社区都将是 Sym 搭建的
 * 作者技痒，炫技之作，Ruby/Python/Node.js/（特别是）PHP 怎么能比得过 Java
 
-### 功能特性
+### 案例
+
+个人维护：
+
+* [黑客派](https://hacpai.com)
+* [宽客网](http://www.cnq.net)
+* [贵州IT](http://www.gzit.info)
+* [超级产品经理](https://imspm.com)
+* [Titandb 学习主站](https://titandb.cn)
+
+公司维护：
+
+* [四方环视](http://bbs.ivrpano.com)
+
+如果你也搭建好了，欢迎通过 Pull Request 将你的站点加到这个列表中 :-p
+
+## 功能特性
 
 具体功能点细节可浏览 [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)，下面列出了 Sym 的主要特性，说明 **现代化** 的由来。
 
-#### 好用的编辑器
+### 好用的编辑器
 
 * Markdown：支持 GFM 语法以及一些扩展语法
 * 格式调整：粗体、斜体、超链接、引用、列表等可以通过工具栏按钮，同时也支持快捷键
@@ -42,14 +58,14 @@ Sym 的诞生是有如下几点原因：
 * 数学公式：支持  LaTex 数学公式渲染
 * 数据暂存：支持本地浏览器暂存数据，避免意外情况导致编辑内容丢失
 
-#### 智能、灵活的信息架构
+### 智能、灵活的信息架构
 
 传统的节点式社区要求帖子必须 **分类** 到某一个节点下，信息架构方式属于自上而下。Sym 不是自上而下的节点式信息架构，帖子不需要固定分类，通过标签 **聚合** 到某个领域下。
 
 * 标签：根据帖子内容智能抽取关键字进行标签自动补全，一篇帖子关联多个标签。标签和标签之间以带边权重的图结构进行描述，方便进行相关计算
 * 领域：一个领域下包含了多个标签，通过标签将帖子自动聚合到具体领域，随时可以通过增减关联标签从而达到调整领域范围，最终聚合出适合的帖子列表
 
-#### 满足多样化的发帖需求
+### 满足多样化的发帖需求
 
 目前支持 4 中帖子类型，满足不同用户的偏好：
 
@@ -62,14 +78,14 @@ Sym 的诞生是有如下几点原因：
 
 对于测试帖，可以使用 Sandbox 机制：带有 Sandbox 标签的帖子将视为测试帖，不会显示在首页或是某领域内，只会展现在发帖者自己的帖子列表中。
 
-#### 人性化的回帖交互
+### 人性化的回帖交互
 
 * 实时呈现：回帖提交后其他浏览者可以不刷新页面就实时看到你的回帖
 * 随时滚动：浮出式回帖编辑器方便回帖者随时滚动屏幕查看其他内容，不必担心焦点丢失
 * 真正的回复：回复是针对回帖而言的，而 @ 是针对用户而言的，@ 是提及不是回复，很多系统都没有考虑到这一点。回复/引用可以在当前位置进行展开浏览，也可以跳转到回帖处，并支持跨分页跳转
 * 智能机器人：回帖时可以让机器人也参与到讨论中来，活跃气氛的同时说不定机器人真的能解决一些问题呢
 
-#### 用户个性化设置
+### 用户个性化设置
 
 用户可以自己设置很多参数以满足个性化需求：
 
@@ -90,26 +106,26 @@ Sym 的诞生是有如下几点原因：
 
 另外，用户还可以完整导出数据，包括帖子和回帖。
 
-#### 编辑历史与匿名发布
+### 编辑历史与匿名发布
 
 发帖者可以进行该帖更新，但是每次更新都会产生编辑历史，浏览者可以看到并对比其内容变更。目前还不支持回帖更新，后续会加入，敬请期待。
 
 帖子和回帖都可以使用匿名身份进行发布，你懂的。
 
-#### 对搜索引擎友好
+### 对搜索引擎友好
 
 * 标签、领域可以自定义链接，并且可以单独配置 meta title/keywords/description
 * 后端 Markdown 渲染，输出爬虫可读的 HTML 
 * 管理员设置的浏览权限不影响爬虫抓取内容
 * 通过一些 HTML 细节属性（比如 canonical）进行 SEO
 
-#### 实时的消息通知
+### 实时的消息通知
 
 * 可按类别展示消息，标记已读
 * 详细的消息类别：收到的回帖、收到的回复、@我的、我关注的人、积分相关、同城、系统消息等
 * 友好的 Chrome 桌面提醒
 
-#### 好玩的活动
+### 好玩的活动
 
 * 领取签到奖励、领取昨日活跃奖励
 * 上证博彩
@@ -118,7 +134,7 @@ Sym 的诞生是有如下几点原因：
 
 后续还会继续加入一些好玩的在线小游戏。
 
-#### 强大的后台管理
+### 强大的后台管理
 
 * 后台首页：数据统计、版本检查
 * 用户管理：搜索用户、添加用户、用户数据维护（状态设置、积分等）
@@ -131,34 +147,38 @@ Sym 的诞生是有如下几点原因：
 * 广告管理：侧边栏独占展位维护
 * 其他管理：发帖/回帖开关；用户开放/关闭/邀请码注册开关
 
-#### 开放的内容 API
+### 开放的内容 API
 
 Sym 提供了 [API](https://hacpai.com/article/1457158841475) 进行帖子、回帖的同步（[B3log 构思](https://hacpai.com/b3log)），目前 [Solo](https://github.com/b3log/solo)、[Typecho](https://github.com/DT27/B3logForHacPai)、[Z-BlogPHP](https://github.com/zblogapp/hacpai)、[WordPress](https://github.com/zh-h/hacpai-sync-wordpress) 均已经提供插件来进行内容同步，欢迎大家进行接入！
 
 以后也会陆续加入新的接口，方便大家制作 APP 客户端或是一些有价值的应用。
 
-#### 集成云邮件服务
+### 集成云邮件服务
 
 通过配置即可集成 [SendCloud](http://sendcloud.sohu.com) 云邮件服务，送达率较为自己搭建邮件服务更为可靠。
 
 * 用户注册验证、密码重置通过触发类型发送
 * 每周优选订阅推送通过批量类型发送
 
-#### 集成云搜索服务
+### 集成云搜索服务
 
 * 通过配置即可集成 [Algolia](https://www.algolia.com/referrals/1faf0d17/join) 云搜索服务，可自定义搜索字段，并进行权重、排序调优
 * 也可以自己搭建 Elasticsearch 并通过配置进行集成
 
 后续会对搜索功能进行加强，实现条件过滤，结果高亮等，敬请期待。
 
-### 计划中的特性
+## 计划中的特性
 
 * 信任系统：通过历史数据对用户进行分级提权，让用户从浏览者逐步变为参与者、组织者、管理者，实现自治的社区生态系统
 * 徽章系统：记录下用户达成的成就以及对社区的贡献
 
 ## 安装
 
-需求：Maven3+、MySQL5.5+、Jetty9+/Tomcat9+
+### 需求
+
+Maven3+、MySQL5.5+、Jetty9+/Tomcat9+
+
+### 步骤
 
 1. [下载](https://github.com/b3log/symphony/archive/master.zip)源码
 2. 解压后修改 `src/main/resources/local.properties` 中的数据库配置，并创建数据库
@@ -174,7 +194,7 @@ Sym 提供了 [API](https://hacpai.com/article/1457158841475) 进行帖子、回
 * Tomcat 用 9 以上版本，最好是使用最新版本
 * 参考 [Latke 配置剖析](https://hacpai.com/article/1474087427032)
 
-## 配置
+### 配置
 
 * 图片上传默认是上传服务器本地，要使用[七牛](https://portal.qiniu.com/signup?code=3lewbghpvrqky)可配置 `symphony.properties` 中的 `qiniu.*` 属性
 * 将 WEB-INF/cron.xml 中注释掉的部分打开
@@ -183,39 +203,36 @@ Sym 提供了 [API](https://hacpai.com/article/1457158841475) 进行帖子、回
 
 如果遇到问题，可以参考一下这篇[帖子](https://hacpai.com/article/1468824093225)。
 
-## 参与讨论
-
-* 到 Sym 官方[讨论区](https://hacpai.com/tag/Sym)发帖（推荐做法）
-* 来一发 [issue](https://github.com/b3log/symphony/issues/new)
-* 加入 Sym 开发支持 Q 群 17370164
-
-## 案例
-
-个人维护：
-
-* [黑客派](https://hacpai.com)
-* [宽客网](http://www.cnq.net)
-* [贵州IT](http://www.gzit.info)
-* [超级产品经理](https://imspm.com)
-* [Titandb 学习主站](https://titandb.cn)
-
-公司维护：
-
-* [四方环视](http://bbs.ivrpano.com)
-
-如果你也搭建好了，欢迎通过 Pull Request 将你的站点加到这个列表中 :-p
-
 ## 使用授权
 
 商用授权和开源授权在功能上没有任何区别，但商用授权后可以去除页脚版权部分。如果在未获得商用授权前私自去除版权部分，必将追究法律责任。
+
+### 开源授权
+
+请仔细查看并遵循以下使用条款，尊重我们的劳动成果。
+
+* This software is open sourced under the Apache License 2.0 
+* You can not get rid of the "Powered by [B3log 开源](http://b3log.org) • [Sym](https://github.com/b3log/symphony)" from any page, even which you made
+* If you want to use this software for commercial purpose, please mail to support@liuyun.io for a commercial license request
+* Copyright &copy; b3log.org, all rights reserved
 
 ### 商用授权
 
 如果需要将 Sym 用于商用（比如公司搭建社区）则必须付费，价格为 ￥10000，请联系 QQ 845765 进行细节咨询。
 
-### 开源授权
+## 贡献
 
-请仔细查看并遵循[使用条款](https://github.com/b3log/symphony#terms)，尊重我们的劳动成果。
+### 作者
+
+Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/symphony/graphs/contributors)看到。
+
+我们非常期待你加入到这个项目中，无论是使用反馈还是代码补丁，都是对 Sym 一份满满的爱 :heart:
+
+### 讨论区
+
+* 到 Sym 官方[讨论区](https://hacpai.com/tag/Sym)发帖（推荐做法）
+* 来一发 [issue](https://github.com/b3log/symphony/issues/new)
+* 加入 Sym 开发支持 Q 群 17370164
 
 ## 感悟
 
@@ -229,19 +246,6 @@ Sym 提供了 [API](https://hacpai.com/article/1457158841475) 进行帖子、回
 * [如果你想做个程序员相关的论坛，请三思](https://hacpai.com/article/1471007706462)
 * [你怎么看待社群、社区这两个词？](https://hacpai.com/article/1465652829809)
 * [UGC 社区价值生态](https://hacpai.com/article/1462028669762)
-
-## 贡献
-
-Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/symphony/graphs/contributors)看到。
-
-我们非常期待你加入到这个项目中，无论是使用反馈还是代码补丁，都是对 Sym 一份满满的爱 :heart:
-
-## Terms
-
-* This software is open sourced under the Apache License 2.0 
-* You can not get rid of the "Powered by [B3log 开源](http://b3log.org) • [Sym](https://github.com/b3log/symphony)" from any page, even which you made
-* If you want to use this software for commercial purpose, please mail to support@liuyun.io for a commercial license request
-* Copyright &copy; b3log.org, all rights reserved
 
 ## 鸣谢
 
@@ -271,42 +275,6 @@ Sym 的诞生离不开以下开源项目：
 * [FreeMarker](http://freemarker.org)：好用的 Java 模版引擎
 * [Latke](https://github.com/b3log/latke)：Java Web 框架 
 * [NetBeans](https://netbeans.org)：全宇宙暂时排名第三的 IDE
-
-----
-
-## 功能图解
-
-**首页**
-
-![index](https://cloud.githubusercontent.com/assets/873584/19502589/a71b28ca-95e0-11e6-82da-2e2585f912d4.png)
-
-**帖子**
-
-![article](https://cloud.githubusercontent.com/assets/873584/19502600/b9a92172-95e0-11e6-9a39-402c08b87e6f.png)
-
-（右边红色回帖按钮的位置应该在右下角，截图软件不给力..）
-
-**个人设置**
-
-![settings](https://cloud.githubusercontent.com/assets/873584/19502605/c04f1e46-95e0-11e6-980f-a927bd774dc3.png)
-
-**发布编辑**
-
-* Markdown 编辑器，支持 GFM 语法
-* LaTeX 数学公式
-* 复制粘贴时自动转换为 Markdown 
-* Chrome 下可以直接粘贴图片，其他浏览器支持拖拽
-* 除了使用文字，也可以在帖子内进行录音
-* 支持 Emoji
-* 使用本地存储保障数据在未提交时不丢
-
-![post](https://cloud.githubusercontent.com/assets/873584/19502607/c290209c-95e0-11e6-8fca-484cdef94bd6.png)
-
-### 移动端
-
-移动端使用单独的模版进行渲染，解决通过一套模版自适应不能达成的效果和体验。
-
-![mobile](https://cloud.githubusercontent.com/assets/873584/19502609/c4b25502-95e0-11e6-9d6a-1ea18bfebf6f.png)
 
 ----
 
