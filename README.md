@@ -1,5 +1,40 @@
 # [Symphony](https://github.com/b3log/symphony) [![Build Status](https://img.shields.io/travis/b3log/symphony.svg?style=flat)](https://travis-ci.org/b3log/symphony)
-    
+
+[English](https://github.com/b3log/symphony/blob/master/README.md) | [中文](https://github.com/b3log/symphony/blob/master/README_zh_CN.md)
+
+* [Introduction](#introduction)
+  * [Motivation](#motivation)
+  * [Usecases](#usecases)
+* [Features](#features)
+  * [Good editors](#good-editors)
+  * [Intelligent and flexible information architecture](#intelligent-and-flexible-information-architecture)
+  * [To meet the diverse needs of post](#to-meet-the-diverse-needs-of-post)
+  * [Humanized interactive replies](#humanized-interactive-replies)
+  * [User personalization](#user-personalization)
+  * [Edit history and anonymous posting](#edit-history-and-anonymous-posting)
+  * [Search engine friendly](#search-engine-friendly)
+  * [Real\-time message notification](#real-time-message-notification)
+  * [Fun activities](#fun-activities)
+  * [Powered management background](#powered-management-background)
+  * [Open content API](#open-content-api)
+  * [Integrated cloud mail service](#integrated-cloud-mail-service)
+  * [Integrated cloud search service](#integrated-cloud-search-service)
+* [Roadmap](#roadmap)
+  * [trust system](#trust-system)
+  * [badge system](#badge-system)
+* [Installation](#installation)
+  * [Requirements](#requirements)
+  * [Steps](#steps)
+  * [Configuration](#configuration)
+* [License](#license)
+  * [Open source license](#open-source-license)
+  * [Commercial license](#commercial-license)
+* [Contribution](#contribution)
+  * [Authors](#authors)
+  * [Discussion area](#discussion-area)
+* [Feeling](#feeling)
+* [Credits](#credits)
+
 ## Introduction
 
 [Symphony](https://github.com/b3log/symphony) is a modern community platform, because it:
