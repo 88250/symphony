@@ -17,9 +17,9 @@ Sym was born with the following reasons:
 
 (genuine)
 
-* 很多系统界面上仍然保持着老式风格，远远没有跟上时代发展的脚步，它们没有创新、好玩的特性，缺少现代化的交互元素和用户体验
-* 大部分系统是从程序员的角度进行设计的，没有考虑实际的产品、运营需求，这类系统功能过于简陋、细节不够精致、缺乏长期维护 
-* 另外，我们正在探索新的社区模式，实现独奏（[Solo](https://github.com/b3log/solo)）与协奏（[Symphony](https://github.com/b3log/symphony)）相结合的[社区新体验](https://hacpai.com/b3log)
+* a lot of system interfaces still keep the old style, far from keeping up with the pace of development of the times, they do not have the characteristics of innovation, fun, lack of modern interactive elements and user experience
+* most systems are designed from the programmer's point of view, without considering the actual product, operational requirements, such systems function is too simple, the details are not refined enough, the lack of long-term maintenance
+* in addition, we are exploring a new community mode, to achieve [Solo](https://github.com/b3log/solo)) and [Symphony](https://github.com/b3log/symphony) combined with [community new experience](https://hacpai.com/b3log)
 
 (funny)
 
