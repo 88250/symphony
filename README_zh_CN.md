@@ -239,7 +239,6 @@ Maven3+、MySQL5.5+、Jetty9+/Tomcat9+
 ### 配置
 
 * 图片上传默认是上传服务器本地，要使用[七牛](https://portal.qiniu.com/signup?code=3lewbghpvrqky)可配置 `symphony.properties` 中的 `qiniu.*` 属性
-* 将 WEB-INF/cron.xml 中注释掉的部分打开
 * 邮件发送使用的是 [SendCloud](http://sendcloud.sohu.com)，需要配置 `symphony.properties` 中的 `sendcloud.*` 属性
 * 用户注册时需要验证邮箱的，所以必须先配置好 SendCloud
 

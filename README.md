@@ -242,7 +242,6 @@ Notice:
 ### Configuration
 
 * image upload the default is to upload the server locally, to use [七牛](https://portal.qiniu.com/signup?code=3lewbghpvrqky) can be configured in the `qiniu.*` attribute `symphony.properties`
-* open WEB-INF/cron.xml in the comments section.
 * mail is sent using [SendCloud](http://sendcloud.sohu.com), you need to configure the `sendcloud.*` attribute in `symphony.properties`
 * user registration required to verify the mailbox, so you must first configure the SendCloud
 
