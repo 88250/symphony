@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.35.24, Oct 27, 2016
+ * @version 1.25.36.24, Oct 31, 2016
  */
 
 /**
@@ -367,6 +367,13 @@ var Comment = {
                 });
             }
 
+            var cursor = cm.getCursor();
+            var token = cm.getTokenAt(cursor);
+            if (token.string.indexOf('@') === 0) {
+                cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
+                return CodeMirror.Pass;
+            }
+
             if ($('.article-comment-content .CodeMirror-preview').length === 0) {
                 return false;
             }
@@ -384,14 +391,6 @@ var Comment = {
                     hljs.initHighlighting();
                 }
             });
-
-
-            var cursor = cm.getCursor();
-            var token = cm.getTokenAt(cursor);
-            if (token.string.indexOf('@') === 0) {
-                cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
-                return CodeMirror.Pass;
-            }
         });
 
         Comment.editor.on('keypress', function (cm, evt) {

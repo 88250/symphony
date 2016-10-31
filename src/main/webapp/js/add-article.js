@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.12.11, Oct 29, 2016
+ * @version 2.18.13.11, Oct 31, 2016
  */
 
 /**
@@ -186,7 +186,7 @@ var AddArticle = {
             var username = Util.getParameterByName("at");
             $("#articleTitle").val("Hi, " + username);
 
-            var tagTitles = "小黑屋";
+            var tagTitles = Label.discussionLabel;
             var tags = Util.getParameterByName("tags");
             if ("" !== tags) {
                 tagTitles += "," + tags;
@@ -239,25 +239,6 @@ var AddArticle = {
                     return CodeMirror.Pass;
                 }
 
-                if ($('.article-content .CodeMirror-preview').length === 0) {
-                    return false;
-                }
-
-                $.ajax({
-                    url: Label.servePath + "/markdown",
-                    type: "POST",
-                    cache: false,
-                    data: {
-                        markdownText: cm.getValue()
-                    },
-                    success: function (result, textStatus) {
-                        $('.article-content .CodeMirror-preview').html(result.html);
-                        hljs.initHighlighting.called = false;
-                        hljs.initHighlighting();
-                    }
-                });
-
-
                 var change = "",
                         unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
                         time = (new Date()).getTime() - thoughtTime;
@@ -294,6 +275,24 @@ var AddArticle = {
                 }
 
                 window.localStorage.thoughtContent += change;
+
+                if ($('.article-content .CodeMirror-preview').length === 0) {
+                    return false;
+                }
+
+                $.ajax({
+                    url: Label.servePath + "/markdown",
+                    type: "POST",
+                    cache: false,
+                    data: {
+                        markdownText: cm.getValue()
+                    },
+                    success: function (result, textStatus) {
+                        $('.article-content .CodeMirror-preview').html(result.html);
+                        hljs.initHighlighting.called = false;
+                        hljs.initHighlighting();
+                    }
+                });
             });
         }
 

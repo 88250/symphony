@@ -126,6 +126,7 @@
                         Label.uploadLabel = "${uploadLabel}";
                         Label.audioRecordingLabel = '${audioRecordingLabel}';
                         Label.articleRewardPointErrorLabel = '${articleRewardPointErrorLabel}';
+                        Label.discussionLabel = '${discussionLabel}';
                         <#if article??>Label.articleOId = '${article.oId}' ;</#if>
         </script>
         <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
