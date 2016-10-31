@@ -80,7 +80,7 @@ public class MarkdownsTestCase {
      */
     @Test
     public void toHTML1() {
-        final String md = "Sym**是一个用_Java_写的实时论坛**";
+        final String md = "Sym**是一个用 _Java_ 写的实时论坛**";
         final String html = Markdowns.toHTML(md);
 
         Assert.assertEquals(html, "<p>Sym <strong>是一个用 <em>Java</em> 写的实时论坛</strong> </p>");
