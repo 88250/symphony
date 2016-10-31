@@ -93,7 +93,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.7.10, Oct 30, 2016
+ * @version 1.9.7.11, Oct 31, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -171,7 +171,7 @@ public final class Markdowns {
         }
 
         String formated = formatMarkdown(markdownText, "**");
-        formated = formatMarkdown(formated, "_");
+        // formated = formatMarkdown(formated, "_");
 
         final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS, 5000);
         // String ret = pegDownProcessor.markdownToHtml(markdownText);
