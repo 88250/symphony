@@ -34,11 +34,12 @@ import org.b3log.symphony.util.Symphonys;
  * <p>
  * <ul>
  * <li>Send email verifycode (/cron/verifycode/email), GET</li>
+ * <li>Send email verifycode (/cron/verifycode/remove-expired), GET</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Jan 2, 2016
+ * @version 1.0.0.3, Oct 31, 2016
  * @since 1.3.0
  */
 @RequestProcessor

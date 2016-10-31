@@ -20,7 +20,7 @@
 -->
 <!--
     Description: Cron job configurations. 
-    Version: 1.10.0.6, Aug 30, 2016
+    Version: 1.10.0.7, Oct 31, 2016
     Author: Liang Ding
 -->
 <cronentries>
@@ -73,8 +73,6 @@
         <schedule>every 5 minutes</schedule>
     </cron>
     
-    <!-- Disabled on Dev environment -->
-    <!--
     <cron>
         <url>/cron/status?key=dev_key</url>
         <description>Checks running status</description>
@@ -98,5 +96,5 @@
         <description>Resets unverified users</description>
         <schedule>every 24 hours</schedule>
     </cron>
-    -->
+
 </cronentries>
