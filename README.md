@@ -86,6 +86,8 @@ Specific function point details can be viewed at [Sym 功能点脑图](http://na
 
 ### Good editors
 
+![1](https://cloud.githubusercontent.com/assets/873584/19864450/4a031a7e-9fd3-11e6-9843-ea653f0cc376.gif)
+
 * Markdown: support GFM syntax and some extended syntax
 * format adjustment: bold, italics, hyperlinks, references, etc. the list toolbar button also supports shortcut keys
 * file upload: support for copy and paste or drag and drop to upload pictures; support for uploading ordinary files; MP3 will use the online player for rendering
@@ -97,12 +99,16 @@ Specific function point details can be viewed at [Sym 功能点脑图](http://na
 
 ### Intelligent and flexible information architecture
 
+![2](https://cloud.githubusercontent.com/assets/873584/19864460/4d9ab908-9fd3-11e6-8c39-aede183876ec.png)
+
 The traditional node type community requires the post must belong to a node, the information architecture is top-down. Sym is not a top-down node type information architecture, the post does not require a fixed classification, through the tag to **aggregate** into a domain.
 
 * tag: according to the content of the post intelligent extraction keyword tag automatic completion, a post to multiple tags. The structure of the graph with edge weight is described, which is convenient to calculate the correlation
 * domain: a domain contains multiple tags, tags will automatically by post polymerization to specific areas, at any time can increase and decrease the associated tags so as to adjust the scope of the domain, for the final polymerization card list
 
 ### To meet the diverse needs of post
+
+![3](https://cloud.githubusercontent.com/assets/873584/19864461/4ff804e4-9fd3-11e6-9a5c-4798ca945803.png)
 
 Currently supports 4 types of posts, to meet the different user preferences:
 
@@ -116,6 +122,8 @@ In addition, all posts can be set **playing area**, it can be placed some "treas
 For testing posts, you can use the Sandbox mechanism: with the Sandbox tag posts will be considered as a test post, will not show in the home or in a field, will only show in the post of their own posts list.
 
 ### Humanized interactive replies
+
+![4](https://cloud.githubusercontent.com/assets/873584/19864467/5406da42-9fd3-11e6-94c2-a865828cacba.gif)
 
 * in real time: replies submitted after the other readers can not refresh the page to see your reply in time
 * floating scroll: at any time at any time convenient reply editor replies to scroll the screen to see other content, do not have to worry about losing focus
