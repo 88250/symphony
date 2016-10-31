@@ -20,7 +20,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.10.14.17, Oct 26, 2016
+ * @version 1.10.14.18, Oct 31, 2016
  */
 
 /**
@@ -107,7 +107,7 @@ var ArticleChannel = {
                             template += '</a>';
                         }
                     } else {
-                        template += '<span class="ft-gray">' + data.commentAuthorName + '</span> <span class="ft-fade"> • </span> <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>';
+                        template += '<span class="ft-gray">' + data.commentAuthorName + '</span> <span class="ft-fade"> • </span> <a rel="nofollow" class="ft-green" href="https://hacpai.com/article/1457158841475">API</a>';
                     }
                     template += ' <span class="ft-fade"> • ' + data.timeAgo + '</span> <span class="comment-reward"></span>';
 
