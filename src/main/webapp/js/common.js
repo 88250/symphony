@@ -1180,9 +1180,9 @@ var Util = {
             url: "https://up.qbox.me/",
             paramName: "file",
             add: function (e, data) {
-                filename = getUUID() + '-' + data.files[0].name.match(/[a-zA-Z0-9.]/g).join('');
-
-                if (!filename) {
+                if (data.files[0].name) {
+                    filename = getUUID() + '-' + data.files[0].name.match(/[a-zA-Z0-9.]/g).join('');
+                } else {
                     filename = getUUID() + '.' + data.files[0].type.split("/")[1];
                 }
 
