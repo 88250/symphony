@@ -343,4 +343,6 @@ Sym 的诞生离不开以下开源项目：
 
 <p align = "center">
 <strong>下一代的社区系统，为未来而构建</strong>
+<br><br>
+<img src="https://cloud.githubusercontent.com/assets/873584/19897809/84c4ed56-a094-11e6-8498-43e9337c475f.png">
 </p>
