@@ -21,10 +21,15 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.46.1.11, Oct 27, 2016
+ * @version 1.47.1.11, Nov 1, 2016
  * @since 0.2.0
  */
 public final class Common {
+
+    /**
+     * Key of remember login.
+     */
+    public static final String REMEMBER_LOGIN = "rememberLogin";
 
     /**
      * Key of stick articles.

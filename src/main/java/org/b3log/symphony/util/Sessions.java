@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -34,7 +35,7 @@ import org.json.JSONObject;
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.2.1, Aug 27, 2015
+ * @version 2.0.2.2, Nov 1, 2015
  */
 public final class Sessions {
 
@@ -90,8 +91,11 @@ public final class Sessions {
      *     "userPassword": ""
      * }
      * </pre>
+     *
+     * @param rememberLogin remember login or not
      */
-    public static void login(final HttpServletRequest request, final HttpServletResponse response, final JSONObject user) {
+    public static void login(final HttpServletRequest request, final HttpServletResponse response,
+            final JSONObject user, final boolean rememberLogin) {
         final HttpSession session = request.getSession(false);
 
         if (null == session) {
@@ -107,14 +111,18 @@ public final class Sessions {
             final JSONObject cookieJSONObject = new JSONObject();
 
             cookieJSONObject.put(Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
-            cookieJSONObject.put(Common.TOKEN, user.optString(User.USER_PASSWORD));
+
+            final String random = RandomStringUtils.random(16);
+            cookieJSONObject.put(Common.TOKEN, user.optString(User.USER_PASSWORD) + ":" + random);
+            cookieJSONObject.put(Common.REMEMBER_LOGIN, rememberLogin);
 
             final String value = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.get("cookie.secret"));
             final Cookie cookie = new Cookie("b3log-latke", value);
 
             cookie.setPath("/");
-            cookie.setMaxAge(COOKIE_EXPIRY);
+            cookie.setMaxAge(rememberLogin ? COOKIE_EXPIRY : -1);
             cookie.setHttpOnly(true); // HTTP Only
+            cookie.setSecure(StringUtils.equalsIgnoreCase(Latkes.getServerScheme(), "https"));
 
             response.addCookie(cookie);
         } catch (final Exception e) {

@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>g
  * @author Zephyr
- * @version 1.36.24.35, Oct 31, 2016
+ * @version 1.36.24.36, Nov 1, 2016
  */
 
 /**
@@ -988,7 +988,7 @@ var Util = {
         }).mouseout(function () {
             $('.nav .person-list').hide();
         });
-        
+
         // 导航过长处理
         if ($('.nav-tabs a:last').length === 1 && $('.nav-tabs a:last').offset().top > 0) {
             $('.nav-tabs').mouseover(function () {
@@ -1015,8 +1015,10 @@ var Util = {
                 }]})) {
             var requestJSONObject = {
                 nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
-                userPassword: calcMD5($("#loginPassword").val())
+                userPassword: calcMD5($("#loginPassword").val()),
+                rememberLogin: $("#rememberLogin").prop("checked")
             };
+
             $.ajax({
                 url: Label.servePath + "/login",
                 type: "POST",
@@ -1214,9 +1216,9 @@ var Util = {
             formData: function (form) {
                 var data = form.serializeArray();
 
-                data.push({name: 'key', value: "file/" + (new Date()).getFullYear() + "/" 
-                    + ((new Date()).getMonth() + 1) + '/' + filename});
-                
+                data.push({name: 'key', value: "file/" + (new Date()).getFullYear() + "/"
+                            + ((new Date()).getMonth() + 1) + '/' + filename});
+
                 data.push({name: 'token', value: obj.qiniuUploadToken});
 
                 return data;

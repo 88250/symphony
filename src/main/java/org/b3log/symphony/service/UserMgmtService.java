@@ -29,7 +29,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -39,6 +38,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -81,7 +81,6 @@ import org.b3log.symphony.util.Geos;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -89,7 +88,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.14.19.17, Oct 19, 2016
+ * @version 1.14.19.18, Nov 1, 2016
  * @since 0.2.0
  */
 @Service
@@ -204,13 +203,15 @@ public class UserMgmtService {
                 }
 
                 final String userPassword = user.optString(User.USER_PASSWORD);
-                final String password = cookieJSONObject.optString(Common.TOKEN);
+                final String token = cookieJSONObject.optString(Common.TOKEN);
+                final String password = StringUtils.substringBeforeLast(token, ":");
+
                 if (userPassword.equals(password)) {
-                    Sessions.login(request, response, user);
+                    Sessions.login(request, response, user, cookieJSONObject.optBoolean(Common.REMEMBER_LOGIN));
 
                     updateOnlineStatus(userId, ip, true);
 
-                    LOGGER.log(Level.DEBUG, "Logged in with cookie[userId={0}]", userId);
+                    LOGGER.log(Level.TRACE, "Logged in with cookie[userId={0}]", userId);
 
                     return true;
                 }
