@@ -602,12 +602,6 @@ public class LoginProcessor {
             }
 
             final int wrongCount = wrong.optInt(Common.WRON_COUNT);
-            if (wrongCount > 2) {
-                context.renderJSONValue(Common.NEED_CAPTCHA, userId);
-
-                return;
-            }
-
             if (wrongCount > 3) {
                 final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
                 if (!StringUtils.equals(wrong.optString(CaptchaProcessor.CAPTCHA), captcha)) {
@@ -629,6 +623,10 @@ public class LoginProcessor {
                 WRONG_PWD_TRIES.remove(userId);
 
                 return;
+            }
+
+            if (wrongCount > 2) {
+                context.renderJSONValue(Common.NEED_CAPTCHA, userId);
             }
 
             wrong.put(Common.WRON_COUNT, wrongCount + 1);

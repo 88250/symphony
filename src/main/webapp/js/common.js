@@ -1021,7 +1021,8 @@ var Util = {
             var requestJSONObject = {
                 nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userPassword: calcMD5($("#loginPassword").val()),
-                rememberLogin: $("#rememberLogin").prop("checked")
+                rememberLogin: $("#rememberLogin").prop("checked"),
+                captcha: $('#captchaLogin').val().replace(/(^\s*)|(\s*$)/g, "")
             };
 
             $.ajax({
