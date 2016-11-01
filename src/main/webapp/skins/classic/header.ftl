@@ -73,8 +73,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="right">
+                    <td align="right">
                         <label>${rememberLoginStatusLabel}</label>
+                    </td>
+                    <td>
                         <input type="checkbox" id="rememberLogin" />
                     </td>
                 </tr>
