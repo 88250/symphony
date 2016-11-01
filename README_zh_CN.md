@@ -1,4 +1,4 @@
-#<img src="https://img.hacpai.com/file/2016/10/3bd743af24d642f2a0772d31ee85f5ef-symlogo.png">  
+<img src="https://cloud.githubusercontent.com/assets/873584/19897669/e6a6f5ce-a093-11e6-8cf3-8e5c2acea033.png">  
 
 <p align = "center">
 <a href="https://github.com/b3log/symphony/blob/master/README.md"><strong>English</strong></a> | <a href="https://github.com/b3log/symphony/blob/master/README_zh_CN.md"><strong>中文</strong></a>
