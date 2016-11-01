@@ -346,4 +346,7 @@ Sym's birth can not be separated from the following open source projects:
 
 <p align = "center">
 <strong>Next generation community system, build for the future</strong>
+<br><br>
+<img src="https://cloud.githubusercontent.com/assets/873584/19897809/84c4ed56-a094-11e6-8498-43e9337c475f.png">
 </p>
+
