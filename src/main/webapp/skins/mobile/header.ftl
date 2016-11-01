@@ -42,6 +42,22 @@
                         </td>
                     </tr>
                     <tr>
+                        <td align="right">
+                            <label>${rememberLoginStatusLabel}</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="rememberLogin" checked />
+                        </td>
+                    </tr>
+                    <tr class="fn-none">
+                        <td>
+                            <img id="captcha" class="fn-pointer" />
+                        </td>
+                        <td>
+                            <input type="text" id="captchaLogin" />
+                        </td>
+                    </tr>
+                    <tr>
                         <td colspan="2" align="right">
                             <div id="loginTip" class="tip"></div><br/>
                             <button class="info" onclick="window.location.href = '${servePath}/forget-pwd'">${forgetPwdLabel}</button>
