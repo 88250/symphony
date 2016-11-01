@@ -53,8 +53,8 @@
 
     <licenses>
         <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <name>GNU GENERAL PUBLIC LICENSE</name>
+            <url>https://www.gnu.org/licenses/gpl.txt</url>
         </license>
     </licenses>
 
@@ -296,8 +296,10 @@
                         <include>**/src/*/java/**/*.java</include>
                         <include>**/src/*/webapp/js/*.js</include>
                         <include>**/src/*/webapp/css/*.css</include>
+                        <include>**/src/*/webapp/scss/*.scss</include>
                         <include>**/src/*/resources/*.properties</include>
                         <include>**/src/*/webapp/WEB-INF/*.xml</include>
+                        <include>gulpfile.js</include>
                     </includes>
                     <excludes>
                         <exclude>**/src/main/java/**/package-info.java</exclude>
@@ -310,6 +312,7 @@
                     <useDefaultExcludes>true</useDefaultExcludes>
                     <mapping>
                         <java>SLASHSTAR_STYLE</java>
+                        <scss>SLASHSTAR_STYLE</scss>
                     </mapping>
                     <useDefaultMapping>true</useDefaultMapping>
                     <properties>

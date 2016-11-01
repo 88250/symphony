@@ -130,6 +130,7 @@
             Label.audioRecordingLabel = '${audioRecordingLabel}';
             Label.uploadingLabel = '${uploadingLabel}';
             Label.articleRewardPointErrorLabel = '${articleRewardPointErrorLabel}';
+            Label.discussionLabel = '${discussionLabel}';
             <#if article??>Label.articleOId = '${article.oId}' ;</#if>
             Util.uploadFile({
                 "id": "fileUpload",

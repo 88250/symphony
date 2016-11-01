@@ -1,17 +1,19 @@
 /*
- * Copyright (c) 2012-2016, b3log.org & hacpai.com
+ * Symphony - A modern community (forum/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-2016,  b3log.org & hacpai.com
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.b3log.symphony.service;
 
@@ -90,7 +92,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.17.32, Oct 29, 2016
+ * @version 2.24.18.33, Oct 30, 2016
  * @since 0.2.0
  */
 @Service
@@ -1994,7 +1996,9 @@ public class ArticleQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         final JSONArray cmts = commentRepository.get(query).optJSONArray(Keys.RESULTS);
         if (cmts.length() > 0) {
-            article.put(Article.ARTICLE_T_LATEST_CMT, cmts.optJSONObject(0));
+            final JSONObject latestCmt = cmts.optJSONObject(0);
+            latestCmt.put(Comment.COMMENT_CLIENT_COMMENT_ID, latestCmt.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
+            article.put(Article.ARTICLE_T_LATEST_CMT, latestCmt);
         }
 
         // builds tag objects
@@ -2498,7 +2502,7 @@ public class ArticleQueryService {
 
                 final String[] picsRepl = new String[pics.length];
                 for (int i = 0; i < picsRepl.length; i++) {
-                    picsRepl[i] = "[pic]";
+                    picsRepl[i] = langPropsService.get("picTagLabel");
                     pics[i] = "![" + pics[i] + ")";
 
                     if (i > threshold) {
@@ -2509,6 +2513,16 @@ public class ArticleQueryService {
                 ret = StringUtils.replaceEach(ret, pics, picsRepl);
             }
 
+            if (ret.length() >= length) {
+                ret = StringUtils.substring(ret, 0, length)
+                        + " ....";
+
+                ret = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
+                ret = ret.replaceAll("\"", "'");
+
+                return ret;
+            }
+
             String[] urls = StringUtils.substringsBetween(ret, "[", ")");
             if (null != urls) {
                 if (urls.length > threshold) {
@@ -2517,7 +2531,7 @@ public class ArticleQueryService {
 
                 final String[] urlsRepl = new String[urls.length];
                 for (int i = 0; i < urlsRepl.length; i++) {
-                    urlsRepl[i] = "[url]";
+                    urlsRepl[i] = langPropsService.get("urlTagLabel");
                     urls[i] = "[" + urls[i] + ")";
                 }
 

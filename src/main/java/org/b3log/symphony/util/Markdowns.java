@@ -1,17 +1,19 @@
 /*
- * Copyright (c) 2012-2016, b3log.org & hacpai.com
+ * Symphony - A modern community (forum/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-2016,  b3log.org & hacpai.com
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.b3log.symphony.util;
 
@@ -91,7 +93,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.6.10, Oct 20, 2016
+ * @version 1.9.7.11, Oct 31, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -168,10 +170,13 @@ public final class Markdowns {
             return "";
         }
 
+        String formated = formatMarkdown(markdownText, "**");
+        // formated = formatMarkdown(formated, "_");
+
         final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS, 5000);
         // String ret = pegDownProcessor.markdownToHtml(markdownText);
 
-        final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
+        final RootNode node = pegDownProcessor.parseMarkdown(formated.toCharArray());
         String ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
                 Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
 
@@ -180,6 +185,28 @@ public final class Markdowns {
         }
 
         return ret;
+    }
+
+    /**
+     * See https://github.com/b3log/symphony/issues/306.
+     *
+     * @param markdownText
+     * @param tag
+     * @return
+     */
+    private static String formatMarkdown(final String markdownText, final String tag) {
+        final StringBuilder result = new StringBuilder();
+        final String[] mds = markdownText.split("\n");
+
+        for (String md : mds) {
+            final String change = StringUtils.substringBetween(md, tag);
+            final String replace = " " + tag + change + tag + " ";
+
+            md = StringUtils.replace(md, tag, "");
+            result.append("\n" + StringUtils.replace(md, change, replace));
+        }
+
+        return result.toString();
     }
 
     /**

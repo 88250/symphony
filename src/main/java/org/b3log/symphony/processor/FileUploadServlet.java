@@ -1,17 +1,19 @@
 /*
- * Copyright (c) 2012-2016, b3log.org & hacpai.com
+ * Symphony - A modern community (forum/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-2016,  b3log.org & hacpai.com
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.b3log.symphony.processor;
 
@@ -22,8 +24,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,7 +47,8 @@ import org.json.JSONObject;
  * File upload to local.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.2, Oct 19, 2016
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.1.4.2, Nov 1, 2016
  * @since 1.4.0
  */
 @WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
@@ -138,7 +139,7 @@ public class FileUploadServlet extends HttpServlet {
         multipartRequestInputStream.readDataHeader("UTF-8");
 
         String fileName = multipartRequestInputStream.getLastHeader().getFileName();
-        final String name = StringUtils.substringBeforeLast(fileName, ".");
+
         String suffix = StringUtils.substringAfterLast(fileName, ".");
         if (StringUtils.isBlank(suffix)) {
             final String mimeType = multipartRequestInputStream.getLastHeader().getContentType();
@@ -151,9 +152,15 @@ public class FileUploadServlet extends HttpServlet {
             }
         }
 
+        final String name = StringUtils.substringBeforeLast(fileName, ".");
+        final String processName = name.replaceAll("\\W", "");
         final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
-        fileName = uuid + '-' + name.replaceAll("\\W", "") + "." + suffix;
+        if (StringUtils.isBlank(processName)) {
+            fileName = uuid + "." + suffix;
+        } else {
+            fileName = uuid + '-' + processName + "." + suffix;
+        }
 
         final OutputStream output = new FileOutputStream(UPLOAD_DIR + fileName);
         IOUtils.copy(multipartRequestInputStream, output);

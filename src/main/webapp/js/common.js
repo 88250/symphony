@@ -1,26 +1,27 @@
 /*
- * Copyright (c) 2012-2016, b3log.org & hacpai.com
+ * Symphony - A modern community (forum/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-2016,  b3log.org & hacpai.com
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 /**
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>g
  * @author Zephyr
- * @version 1.36.23.35, Oct 27, 2016
+ * @version 1.36.24.36, Nov 1, 2016
  */
 
 /**
@@ -185,22 +186,20 @@ var Util = {
             return false;
         }).bind('keyup', 'o', function (event) {
             // o/enter 打开选中项
-            var query = '.content .list:last > ul > ';
             if ($('#comments').length === 1) {
-                query = '#comments .list > ul > ';
+                return false;
             }
-            var href = $(query + 'li.focus .fn-flex-1 h2 > a').attr('href');
+            var href = $('.content .list:last > ul > li.focus > h2 > a').attr('href');
             if (href) {
                 window.location = href;
             }
             return false;
         }).bind('keyup', 'return', function (event) {
             // o/enter 打开选中项
-            var query = '.content .list:last > ul > ';
             if ($('#comments').length === 1) {
-                query = '#comments .list > ul > ';
+                return false;
             }
-            var href = $(query + 'li.focus .fn-flex-1 h2 > a').attr('href');
+            var href = $('.content .list:last > ul > li.focus > h2 > a').attr('href');
             if (href) {
                 window.location = href;
             }
@@ -323,11 +322,16 @@ var Util = {
     },
     /**
      * 粘贴中包含图片和文案时，需要处理为 markdown 语法
-     * @param {type} text
+     * @param {object} clipboardData
+     * @param {object} cm
      * @returns {String}
      */
-    processClipBoard: function (text, cm) {
-        var text = toMarkdown(text, {converters: [
+    processClipBoard: function (clipboardData, cm) {
+        if (clipboardData.getData("text/html") === '' && clipboardData.items.length === 2) {
+            return '';
+        }
+
+        var text = toMarkdown(clipboardData.getData("text/html"), {converters: [
                 {
                     filter: 'img',
                     replacement: function (innerHTML, node) {
@@ -989,7 +993,7 @@ var Util = {
         }).mouseout(function () {
             $('.nav .person-list').hide();
         });
-        
+
         // 导航过长处理
         if ($('.nav-tabs a:last').length === 1 && $('.nav-tabs a:last').offset().top > 0) {
             $('.nav-tabs').mouseover(function () {
@@ -1016,8 +1020,10 @@ var Util = {
                 }]})) {
             var requestJSONObject = {
                 nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
-                userPassword: calcMD5($("#loginPassword").val())
+                userPassword: calcMD5($("#loginPassword").val()),
+                rememberLogin: $("#rememberLogin").prop("checked")
             };
+
             $.ajax({
                 url: Label.servePath + "/login",
                 type: "POST",
@@ -1181,11 +1187,18 @@ var Util = {
             url: "https://up.qbox.me/",
             paramName: "file",
             add: function (e, data) {
-                filename = getUUID() + '-' + data.files[0].name.match(/[a-zA-Z0-9.]/g).join('');
+                 if (data.files[0].name) {
+                    var processName = data.files[0].name.match(/[a-zA-Z0-9.]/g).join('');
+                    filename = getUUID() + '-' + processName;
 
-                if (!filename) {
+                    // 文件名称全为中文时，移除 ‘-’
+                    if (processName.split('.')[0] === '') {
+                        filename = getUUID() + processName;
+                    }
+                } else {
                     filename = getUUID() + '.' + data.files[0].type.split("/")[1];
                 }
+
 
                 if (window.File && window.FileReader && window.FileList && window.Blob) {
                     var reader = new FileReader();
@@ -1215,9 +1228,9 @@ var Util = {
             formData: function (form) {
                 var data = form.serializeArray();
 
-                data.push({name: 'key', value: "file/" + (new Date()).getFullYear() + "/" 
-                    + ((new Date()).getMonth() + 1) + '/' + filename});
-                
+                data.push({name: 'key', value: "file/" + (new Date()).getFullYear() + "/"
+                            + ((new Date()).getMonth() + 1) + '/' + filename});
+
                 data.push({name: 'token', value: obj.qiniuUploadToken});
 
                 return data;

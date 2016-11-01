@@ -74,6 +74,12 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="right">
+                        <label>${rememberLoginStatusLabel}</label>
+                        <input type="checkbox" id="rememberLogin" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="right">
                         <div id="loginTip" class="tip"></div>
                         <div class="fn-hr5"></div>
                         <div class="fn-hr5"></div>

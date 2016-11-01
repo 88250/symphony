@@ -1,17 +1,19 @@
 /*
- * Copyright (c) 2012-2016, b3log.org & hacpai.com
+ * Symphony - A modern community (forum/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-2016,  b3log.org & hacpai.com
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.b3log.symphony.util;
 
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -32,7 +35,7 @@ import org.json.JSONObject;
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.2.1, Aug 27, 2015
+ * @version 2.0.2.2, Nov 1, 2015
  */
 public final class Sessions {
 
@@ -88,8 +91,11 @@ public final class Sessions {
      *     "userPassword": ""
      * }
      * </pre>
+     *
+     * @param rememberLogin remember login or not
      */
-    public static void login(final HttpServletRequest request, final HttpServletResponse response, final JSONObject user) {
+    public static void login(final HttpServletRequest request, final HttpServletResponse response,
+            final JSONObject user, final boolean rememberLogin) {
         final HttpSession session = request.getSession(false);
 
         if (null == session) {
@@ -105,14 +111,18 @@ public final class Sessions {
             final JSONObject cookieJSONObject = new JSONObject();
 
             cookieJSONObject.put(Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
-            cookieJSONObject.put(Common.TOKEN, user.optString(User.USER_PASSWORD));
+
+            final String random = RandomStringUtils.random(16);
+            cookieJSONObject.put(Common.TOKEN, user.optString(User.USER_PASSWORD) + ":" + random);
+            cookieJSONObject.put(Common.REMEMBER_LOGIN, rememberLogin);
 
             final String value = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.get("cookie.secret"));
             final Cookie cookie = new Cookie("b3log-latke", value);
 
             cookie.setPath("/");
-            cookie.setMaxAge(COOKIE_EXPIRY);
+            cookie.setMaxAge(rememberLogin ? COOKIE_EXPIRY : -1);
             cookie.setHttpOnly(true); // HTTP Only
+            cookie.setSecure(StringUtils.equalsIgnoreCase(Latkes.getServerScheme(), "https"));
 
             response.addCookie(cookie);
         } catch (final Exception e) {

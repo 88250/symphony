@@ -1,17 +1,19 @@
 /*
- * Copyright (c) 2012-2016, b3log.org & hacpai.com
+ * Symphony - A modern community (forum/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-2016,  b3log.org & hacpai.com
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.b3log.symphony.util;
 
@@ -19,7 +21,6 @@ import java.io.FileReader;
 import java.net.URL;
 import org.testng.Assert;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.testng.annotations.Test;
 
@@ -28,7 +29,7 @@ import org.testng.annotations.Test;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 2.1.0.1, Oct 30, 2016
+ * @version 2.1.0.2, Oct 30, 2016
  * @since 0.1.6
  */
 public class MarkdownsTestCase {
@@ -79,25 +80,10 @@ public class MarkdownsTestCase {
      */
     @Test
     public void toHTML1() {
-        final String md = "Sym**是一个用_Java_写的实时论坛**";
+        final String md = "Sym**是一个用 _Java_ 写的实时论坛**";
         final String html = Markdowns.toHTML(md);
-        System.out.println(markdownFormat(md,"**"));
-        System.out.println(markdownFormat(md,"_"));
-        System.out.println(markdownFormat(markdownFormat(md,"_"),"**"));
-        System.out.println(Markdowns.toHTML(markdownFormat(markdownFormat(md,"_"),"**")));
-        System.out.println(md);
-    }
-    
-    private String markdownFormat(String markdownText,String escape){
-    	StringBuilder result=new StringBuilder();
-    	String[] mds=markdownText.split("\n");
-    	for(String md:mds){
-    		String change=StringUtils.substringBetween(md, escape);
-    		String replace=" "+escape+change+escape+" ";
-    		md=StringUtils.replace(md, escape, "");
-    		result.append(StringUtils.replace(md, change, replace)+"\n");
-    	}
-    	return result.toString();
+
+        Assert.assertEquals(html, "<p>Sym <strong>是一个用 <em>Java</em> 写的实时论坛</strong> </p>");
     }
 
     /**
