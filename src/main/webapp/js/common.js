@@ -322,11 +322,16 @@ var Util = {
     },
     /**
      * 粘贴中包含图片和文案时，需要处理为 markdown 语法
-     * @param {type} text
+     * @param {object} clipboardData
+     * @param {object} cm
      * @returns {String}
      */
-    processClipBoard: function (text, cm) {
-        var text = toMarkdown(text, {converters: [
+    processClipBoard: function (clipboardData, cm) {
+        if (clipboardData.getData("text/html") === '' && clipboardData.items.length === 2) {
+            return '';
+        }
+
+        var text = toMarkdown(clipboardData.getData("text/html"), {converters: [
                 {
                     filter: 'img',
                     replacement: function (innerHTML, node) {
@@ -1189,11 +1194,18 @@ var Util = {
             url: "https://up.qbox.me/",
             paramName: "file",
             add: function (e, data) {
-                if (data.files[0].name) {
-                    filename = getUUID() + '-' + data.files[0].name.match(/[a-zA-Z0-9.]/g).join('');
+                 if (data.files[0].name) {
+                    var processName = data.files[0].name.match(/[a-zA-Z0-9.]/g).join('');
+                    filename = getUUID() + '-' + processName;
+
+                    // 文件名称全为中文时，移除 ‘-’
+                    if (processName.split('.')[0] === '') {
+                        filename = getUUID() + processName;
+                    }
                 } else {
                     filename = getUUID() + '.' + data.files[0].type.split("/")[1];
                 }
+
 
                 if (window.File && window.FileReader && window.FileList && window.Blob) {
                     var reader = new FileReader();
