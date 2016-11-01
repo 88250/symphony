@@ -341,4 +341,6 @@ Sym 的诞生离不开以下开源项目：
 
 ----
 
-Logo 征集中....
+<p align = "center">
+<strong>下一代的社区系统，为未来而构建</strong>
+</p>
