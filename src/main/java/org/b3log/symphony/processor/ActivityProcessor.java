@@ -77,7 +77,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.9.1.8, Oct 26, 2016
+ * @version 1.9.1.9, Nov 1, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -190,8 +190,6 @@ public class ActivityProcessor {
             final HttpServletRequest request, final HttpServletResponse response) {
         context.renderJSON().renderFalseResult();
 
-        final String recongnizeFailedMsg = langPropsService.get("activityCharacterRecognizeFailedLabel");
-
         JSONObject requestJSONObject;
         try {
             requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
@@ -199,7 +197,7 @@ public class ActivityProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Submits character failed", e);
 
-            context.renderJSON(false).renderMsg(recongnizeFailedMsg);
+            context.renderJSON(false).renderMsg(langPropsService.get("activityCharacterRecognizeFailedLabel"));
 
             return;
         }
