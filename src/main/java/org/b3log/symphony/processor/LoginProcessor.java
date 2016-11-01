@@ -597,10 +597,24 @@ public class LoginProcessor {
 
             final String userId = user.optString(Keys.OBJECT_ID);
             JSONObject wrong = WRONG_PWD_TRIES.get(userId);
-            if (null != wrong && wrong.optInt(Common.WRON_COUNT) > 2) {
+            if (null == wrong) {
+                wrong = new JSONObject();
+            }
+
+            final int wrongCount = wrong.optInt(Common.WRON_COUNT);
+            if (wrongCount > 2) {
                 context.renderJSONValue(Common.NEED_CAPTCHA, userId);
 
                 return;
+            }
+
+            if (wrongCount > 3) {
+                final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
+                if (!StringUtils.equals(wrong.optString(CaptchaProcessor.CAPTCHA), captcha)) {
+                    context.renderMsg(langPropsService.get("captchaErrorLabel"));
+
+                    return;
+                }
             }
 
             final String userPassword = user.optString(User.USER_PASSWORD);
@@ -612,16 +626,12 @@ public class LoginProcessor {
 
                 context.renderMsg("").renderTrueResult();
 
+                WRONG_PWD_TRIES.remove(userId);
+
                 return;
             }
 
-            if (null == wrong) {
-                wrong = new JSONObject();
-                wrong.put(Common.WRON_COUNT, 1);
-            } else {
-                wrong.put(Common.WRON_COUNT, wrong.optInt(Common.WRON_COUNT) + 1);
-            }
-
+            wrong.put(Common.WRON_COUNT, wrongCount + 1);
             WRONG_PWD_TRIES.put(userId, wrong);
 
             context.renderMsg(langPropsService.get("wrongPwdLabel"));
