@@ -73,16 +73,25 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="right">
+                    <td align="right">
                         <label>${rememberLoginStatusLabel}</label>
+                    </td>
+                    <td>
                         <input type="checkbox" id="rememberLogin" />
+                    </td>
+                </tr>
+                <tr class="fn-none">
+                    <td>
+                         <img id="captcha" class="fn-pointer" />
+                    </td>
+                    <td>
+                         <input type="text" id="captchaLogin" />
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" align="right">
                         <div id="loginTip" class="tip"></div>
-                        <div class="fn-hr5"></div>
-                        <div class="fn-hr5"></div>
+                        <div class="fn-hr5"></div><div class="fn-hr5"></div>
                         <button class="info" onclick="window.location.href = '${servePath}/forget-pwd'">${forgetPwdLabel}</button>
                         <button class="red" onclick="Util.login()">${loginLabel}</button>
                     </td>

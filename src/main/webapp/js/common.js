@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>g
  * @author Zephyr
- * @version 1.36.24.36, Nov 1, 2016
+ * @version 1.37.24.36, Nov 1, 2016
  */
 
 /**
@@ -1021,7 +1021,8 @@ var Util = {
             var requestJSONObject = {
                 nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userPassword: calcMD5($("#loginPassword").val()),
-                rememberLogin: $("#rememberLogin").prop("checked")
+                rememberLogin: $("#rememberLogin").prop("checked"),
+                captcha: $('#captchaLogin').val().replace(/(^\s*)|(\s*$)/g, "")
             };
 
             $.ajax({
@@ -1052,6 +1053,14 @@ var Util = {
                         }
                     } else {
                         $("#loginTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
+
+                        if (result.needCaptcha && "" !== result.needCaptcha) {
+                            $('#captcha').parent().parent().show();
+                            $("#captcha").attr("src", Label.servePath + "/captcha/login?needCaptcha="
+                                    + result.needCaptcha + "&t=" + Math.random())
+                                    .attr("onclick", "this.src='" + Label.servePath + "/captcha/login?needCaptcha="
+                                            + result.needCaptcha + "&t=" + Math.random() + "'").removeClass("fn-none");
+                        }
                     }
                 }
             });
