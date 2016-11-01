@@ -341,3 +341,9 @@ Sym's birth can not be separated from the following open source projects:
 * [FreeMarker](http://freemarker.org): popular Java template engine
 * [Latke](https://github.com/b3log/latke): full-stack Java Web framework
 * [NetBeans](https://netbeans.org): wonderful IDE
+
+----
+
+<p align = "center">
+<strong>Next generation community system, build for the future</strong>
+</p>
