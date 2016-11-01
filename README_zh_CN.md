@@ -1,7 +1,7 @@
 #<img src="https://img.hacpai.com/file/2016/10/3bd743af24d642f2a0772d31ee85f5ef-symlogo.png">  
 
 <p align = "center">
-<a href="https://github.com/b3log/symphony/blob/master/README.md">English</a> | <a href="https://github.com/b3log/symphony/blob/master/README_zh_CN.md">中文</a>
+<a href="https://github.com/b3log/symphony/blob/master/README.md"><strong>English</strong></a> | <a href="https://github.com/b3log/symphony/blob/master/README_zh_CN.md"><strong>中文</strong></a>
 </p>
 
 * [简介](#简介)
@@ -99,7 +99,7 @@ Sym 的诞生是有如下几点原因：
 
 ### 智能、灵活的信息架构
 
-![2](https://cloud.githubusercontent.com/assets/873584/19864460/4d9ab908-9fd3-11e6-8c39-aede183876ec.png)
+![2](https://cloud.githubusercontent.com/assets/873584/19887754/407a71ea-a065-11e6-9595-8f352115ed03.png)
 
 传统的节点式社区要求帖子必须 **分类** 到某一个节点下，信息架构方式属于自上而下。Sym 不是自上而下的节点式信息架构，帖子不需要固定分类，通过标签 **聚合** 到某个领域下。
 
