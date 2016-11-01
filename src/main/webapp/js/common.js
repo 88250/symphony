@@ -1054,6 +1054,7 @@ var Util = {
                         $("#loginTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
 
                         if (result.needCaptcha && "" !== result.needCaptcha) {
+                            $('#captcha').parent().parent().show();
                             $("#captcha").attr("src", Label.servePath + "/captcha/login?needCaptcha="
                                     + result.needCaptcha + "&t=" + Math.random())
                                     .attr("onclick", "this.src='" + Label.servePath + "/captcha/login?needCaptcha="
