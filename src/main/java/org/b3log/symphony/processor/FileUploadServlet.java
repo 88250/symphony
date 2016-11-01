@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,7 +47,8 @@ import org.json.JSONObject;
  * File upload to local.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.2, Oct 19, 2016
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.1.4.2, Nov 1, 2016
  * @since 1.4.0
  */
 @WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
@@ -140,7 +139,7 @@ public class FileUploadServlet extends HttpServlet {
         multipartRequestInputStream.readDataHeader("UTF-8");
 
         String fileName = multipartRequestInputStream.getLastHeader().getFileName();
-        final String name = StringUtils.substringBeforeLast(fileName, ".");
+
         String suffix = StringUtils.substringAfterLast(fileName, ".");
         if (StringUtils.isBlank(suffix)) {
             final String mimeType = multipartRequestInputStream.getLastHeader().getContentType();
@@ -153,9 +152,15 @@ public class FileUploadServlet extends HttpServlet {
             }
         }
 
+        final String name = StringUtils.substringBeforeLast(fileName, ".");
+        final String processName = name.replaceAll("\\W", "");
         final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
-        fileName = uuid + '-' + name.replaceAll("\\W", "") + "." + suffix;
+        if (StringUtils.isBlank(processName)) {
+            fileName = uuid + "." + suffix;
+        } else {
+            fileName = uuid + '-' + processName + "." + suffix;
+        }
 
         final OutputStream output = new FileOutputStream(UPLOAD_DIR + fileName);
         IOUtils.copy(multipartRequestInputStream, output);
