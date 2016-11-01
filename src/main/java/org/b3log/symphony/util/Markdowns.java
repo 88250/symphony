@@ -171,7 +171,7 @@ public final class Markdowns {
         }
 
         String formated = formatMarkdown(markdownText, "**");
-        // formated = formatMarkdown(formated, "_");
+        formated = formatMarkdown(formated, "_");
 
         final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS, 5000);
         // String ret = pegDownProcessor.markdownToHtml(markdownText);
@@ -183,7 +183,8 @@ public final class Markdowns {
         if (!StringUtils.startsWith(ret, "<p>")) {
             ret = "<p>" + ret + "</p>";
         }
-
+        ret=StringUtils.replace(ret, " _", "_");
+        ret=StringUtils.replace(ret, "_ ", "_");
         return ret;
     }
 
@@ -196,16 +197,14 @@ public final class Markdowns {
      */
     private static String formatMarkdown(final String markdownText, final String tag) {
         final StringBuilder result = new StringBuilder();
-        final String[] mds = markdownText.split("\n");
+        final String[] mds = markdownText.trim().split("\n");
 
         for (String md : mds) {
             final String change = StringUtils.substringBetween(md, tag);
             final String replace = " " + tag + change + tag + " ";
-
-            md = StringUtils.replace(md, tag, "");
-            result.append("\n" + StringUtils.replace(md, change, replace));
+            result.append(StringUtils.replace(md, tag+change+tag, replace)+"\n");
         }
-
+        result.deleteCharAt(result.lastIndexOf("\n"));
         return result.toString();
     }
 
