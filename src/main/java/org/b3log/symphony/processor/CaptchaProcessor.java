@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.image.Image;
@@ -44,6 +45,8 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.PNGRenderer;
 import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.model.Common;
+import org.json.JSONObject;
 
 /**
  * Captcha processor.
@@ -54,7 +57,7 @@ import org.b3log.symphony.SymphonyServletListener;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, May 29, 2013
+ * @version 1.2.0.5, Nov 1, 2016
  * @since 0.2.2
  */
 @RequestProcessor
@@ -115,6 +118,54 @@ public class CaptchaProcessor {
                 LOGGER.log(Level.DEBUG, "Captcha[{0}] for session[id={1}]", new Object[]{captcha, httpSession.getId()});
                 httpSession.setAttribute(CAPTCHA, captcha);
             }
+
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+
+            renderer.setImage(captchaImg);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Gets captcha for login.
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing(value = "/captcha/login", method = HTTPRequestMethod.GET)
+    public void getLoginCaptcha(final HTTPRequestContext context) {
+        if (null == captchas) {
+            loadCaptchas();
+        }
+
+        try {
+            final HttpServletRequest request = context.getRequest();
+            final HttpServletResponse response = context.getResponse();
+
+            final String userId = request.getParameter(Common.NEED_CAPTCHA);
+            if (StringUtils.isBlank(userId)) {
+                return;
+            }
+
+            final JSONObject wrong = LoginProcessor.WRONG_PWD_TRIES.get(userId);
+            if (null == wrong) {
+                return;
+            }
+
+            if (wrong.optInt(Common.WRON_COUNT) < 3) {
+                return;
+            }
+
+            final PNGRenderer renderer = new PNGRenderer();
+            context.setRenderer(renderer);
+
+            final Random random = new Random();
+            final int index = random.nextInt(CAPTCHA_COUNT);
+            final Image captchaImg = captchas[index];
+            final String captcha = captchaImg.getName();
+            wrong.put(CAPTCHA, captcha);
 
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Cache-Control", "no-cache");

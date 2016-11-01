@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -86,7 +87,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.6.14, Oct 27, 2016
+ * @version 1.10.6.15, Nov 1, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -168,6 +169,13 @@ public class LoginProcessor {
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
+
+    /**
+     * Wrong password tries.
+     *
+     * &lt;userId, {"wrongCount": int, "captcha": ""}&gt;
+     */
+    public static final Map<String, JSONObject> WRONG_PWD_TRIES = new ConcurrentHashMap<>();
 
     /**
      * Shows forget password page.
@@ -587,6 +595,14 @@ public class LoginProcessor {
                 return;
             }
 
+            final String userId = user.optString(Keys.OBJECT_ID);
+            JSONObject wrong = WRONG_PWD_TRIES.get(userId);
+            if (null != wrong && wrong.optInt(Common.WRON_COUNT) > 2) {
+                context.renderJSONValue(Common.NEED_CAPTCHA, userId);
+
+                return;
+            }
+
             final String userPassword = user.optString(User.USER_PASSWORD);
             if (userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
                 Sessions.login(request, response, user, requestJSONObject.optBoolean(Common.REMEMBER_LOGIN));
@@ -598,6 +614,15 @@ public class LoginProcessor {
 
                 return;
             }
+
+            if (null == wrong) {
+                wrong = new JSONObject();
+                wrong.put(Common.WRON_COUNT, 1);
+            } else {
+                wrong.put(Common.WRON_COUNT, wrong.optInt(Common.WRON_COUNT) + 1);
+            }
+
+            WRONG_PWD_TRIES.put(userId, wrong);
 
             context.renderMsg(langPropsService.get("wrongPwdLabel"));
         } catch (final ServiceException e) {

@@ -21,10 +21,20 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.47.1.11, Nov 1, 2016
+ * @version 1.48.1.11, Nov 1, 2016
  * @since 0.2.0
  */
 public final class Common {
+
+    /**
+     * Key of need captcha.
+     */
+    public static final String NEED_CAPTCHA = "needCaptcha";
+
+    /**
+     * Key of wrong count.
+     */
+    public static final String WRON_COUNT = "wrongCount";
 
     /**
      * Key of remember login.

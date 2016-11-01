@@ -83,6 +83,7 @@
                         <div id="loginTip" class="tip"></div>
                         <div class="fn-hr5"></div>
                         <div class="fn-hr5"></div>
+                        <img id="captcha" class="fn-pointer fn-none" />
                         <button class="info" onclick="window.location.href = '${servePath}/forget-pwd'">${forgetPwdLabel}</button>
                         <button class="red" onclick="Util.login()">${loginLabel}</button>
                     </td>
