@@ -77,7 +77,7 @@
                         <label>${rememberLoginStatusLabel}</label>
                     </td>
                     <td>
-                        <input type="checkbox" id="rememberLogin" />
+                        <input type="checkbox" id="rememberLogin" checked />
                     </td>
                 </tr>
                 <tr class="fn-none">
