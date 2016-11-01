@@ -86,7 +86,7 @@ Specific function point details can be viewed at [Sym 功能点脑图](http://na
 
 ### Good editors
 
-![1](https://cloud.githubusercontent.com/assets/873584/19864450/4a031a7e-9fd3-11e6-9843-ea653f0cc376.gif)
+![1](https://cloud.githubusercontent.com/assets/873584/19893287/afb9dc8a-a083-11e6-84d9-944d03550415.gif)
 
 * Markdown: support GFM syntax and some extended syntax
 * format adjustment: bold, italics, hyperlinks, references, etc. the list toolbar button also supports shortcut keys
@@ -108,7 +108,7 @@ The traditional node type community requires the post must belong to a node, the
 
 ### To meet the diverse needs of post
 
-![3](https://cloud.githubusercontent.com/assets/873584/19864461/4ff804e4-9fd3-11e6-9a5c-4798ca945803.png)
+![3](https://cloud.githubusercontent.com/assets/873584/19893288/afc3a74c-a083-11e6-8d1a-356fcb17e94a.png)
 
 Currently supports 4 types of posts, to meet the different user preferences:
 
@@ -123,7 +123,7 @@ For testing posts, you can use the Sandbox mechanism: with the Sandbox tag posts
 
 ### Humanized interactive replies
 
-![4](https://cloud.githubusercontent.com/assets/873584/19864467/5406da42-9fd3-11e6-94c2-a865828cacba.gif)
+![4](https://cloud.githubusercontent.com/assets/873584/19893286/afb61794-a083-11e6-80d7-032397e08cc5.gif)
 
 * in real time: replies submitted after the other readers can not refresh the page to see your reply in time
 * floating scroll: at any time at any time convenient reply editor replies to scroll the screen to see other content, do not have to worry about losing focus
@@ -132,9 +132,11 @@ For testing posts, you can use the Sandbox mechanism: with the Sandbox tag posts
 
 ### User personalization
 
+![5](https://cloud.githubusercontent.com/assets/873584/19893289/afc52176-a083-11e6-917d-8d01743e194f.gif)
+
 Users can set a lot of parameters to meet the individual needs:
 
-* post browse a list of entries per page page
+* customizes size of a list per page
 * replies: the traditional browsing mode (press release time ascending, real-time push refresh); real time (press release time DESC, real-time push new replies)
 * picture browse mode: original (GIF support graph); static map
 * Chrome notification / message subscription / keyboard shortcut switch
@@ -153,6 +155,8 @@ In addition, users can also complete export data, including posts and replies.
 
 ### Edit history and anonymous posting
 
+![6](https://cloud.githubusercontent.com/assets/873584/19893290/afca2270-a083-11e6-9755-9a779c6d91b9.png)
+
 Post can be updated, but each update will produce a history of editing, visitors can see and compare the changes in its content. There is no support for subsequent replies update, will join, please look forward to.
 
 Posts and replies can be used to publish anonymous identity, you know.
@@ -166,11 +170,15 @@ Posts and replies can be used to publish anonymous identity, you know.
 
 ### Real-time message notification
 
+![8](https://cloud.githubusercontent.com/assets/873584/19893304/b6c59b0e-a083-11e6-8349-e95947cca27d.png)
+
 * to display messages by category, mark has read
 * with the message type: receive replies, receive a reply, @ I, I pay attention to people, integral city, information systems and other related
 * friendly Chrome desktop alerts
 
 ### Fun activities
+
+![7](https://cloud.githubusercontent.com/assets/873584/19893531/7198983c-a084-11e6-9b12-8ff7f4f6b4d9.gif)
 
 * receive attendance awards, receive an active reward yesterday
 * Shanghai Lottery
@@ -179,7 +187,9 @@ Posts and replies can be used to publish anonymous identity, you know.
 
 Follow up will continue to add some fun online games.
 
-### Powered management background
+### Powered management console
+
+![9](https://cloud.githubusercontent.com/assets/873584/19893291/afeeda8e-a083-11e6-9232-620833f9d22e.png)
 
 * background: data statistics, version check
 * user management: search users, add users, user data maintenance (state settings, points, etc.)
@@ -200,12 +210,16 @@ In the future will be added to the new interface, to facilitate the production o
 
 ### Integrated cloud mail service
 
+![10](https://cloud.githubusercontent.com/assets/873584/19893292/aff5f918-a083-11e6-96be-8519149ff43f.png)
+
 Through the configuration can be integrated [SendCloud](http://sendcloud.sohu.com) cloud mail service, the service rate is more reliable to build their own mail service.
 
 * user login authentication, password reset by trigger type
 * weekly subscription push through batch type
 
 ### Integrated cloud search service
+
+![11](https://cloud.githubusercontent.com/assets/873584/19893293/b0014ba6-a083-11e6-9c9a-9debad14c826.png)
 
 * through the configuration can be integrated [Algolia](https://www.algolia.com/referrals/1faf0d17/join) cloud search service, can customize the search field, and the weight and ranking optimization
 * can also build their own Elasticsearch and integrated through the configuration
@@ -327,3 +341,9 @@ Sym's birth can not be separated from the following open source projects:
 * [FreeMarker](http://freemarker.org): popular Java template engine
 * [Latke](https://github.com/b3log/latke): full-stack Java Web framework
 * [NetBeans](https://netbeans.org): wonderful IDE
+
+----
+
+<p align = "center">
+<strong>Next generation community system, build for the future</strong>
+</p>

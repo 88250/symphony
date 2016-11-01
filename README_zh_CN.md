@@ -86,7 +86,7 @@ Sym 的诞生是有如下几点原因：
 
 ### 好用的编辑器
 
-![1](https://cloud.githubusercontent.com/assets/873584/19864450/4a031a7e-9fd3-11e6-9843-ea653f0cc376.gif)
+![1](https://cloud.githubusercontent.com/assets/873584/19893287/afb9dc8a-a083-11e6-84d9-944d03550415.gif)
 
 * Markdown：支持 GFM 语法以及一些扩展语法
 * 格式调整：粗体、斜体、超链接、引用、列表等可以通过工具栏按钮，同时也支持快捷键
@@ -108,7 +108,7 @@ Sym 的诞生是有如下几点原因：
 
 ### 满足多样化的发帖需求
 
-![3](https://cloud.githubusercontent.com/assets/873584/19864461/4ff804e4-9fd3-11e6-9a5c-4798ca945803.png)
+![3](https://cloud.githubusercontent.com/assets/873584/19893288/afc3a74c-a083-11e6-8d1a-356fcb17e94a.png)
 
 目前支持 4 中帖子类型，满足不同用户的偏好：
 
@@ -123,7 +123,7 @@ Sym 的诞生是有如下几点原因：
 
 ### 人性化的回帖交互
 
-![4](https://cloud.githubusercontent.com/assets/873584/19864467/5406da42-9fd3-11e6-94c2-a865828cacba.gif)
+![4](https://cloud.githubusercontent.com/assets/873584/19893286/afb61794-a083-11e6-80d7-032397e08cc5.gif)
 
 * 实时呈现：回帖提交后其他浏览者可以不刷新页面就实时看到你的回帖
 * 随时滚动：浮出式回帖编辑器方便回帖者随时滚动屏幕查看其他内容，不必担心焦点丢失
@@ -131,6 +131,8 @@ Sym 的诞生是有如下几点原因：
 * 智能机器人：回帖时可以让机器人也参与到讨论中来，活跃气氛的同时说不定机器人真的能解决一些问题呢
 
 ### 用户个性化设置
+
+![5](https://cloud.githubusercontent.com/assets/873584/19893289/afc52176-a083-11e6-917d-8d01743e194f.gif)
 
 用户可以自己设置很多参数以满足个性化需求：
 
@@ -153,6 +155,8 @@ Sym 的诞生是有如下几点原因：
 
 ### 编辑历史与匿名发布
 
+![6](https://cloud.githubusercontent.com/assets/873584/19893290/afca2270-a083-11e6-9755-9a779c6d91b9.png)
+
 发帖者可以进行该帖更新，但是每次更新都会产生编辑历史，浏览者可以看到并对比其内容变更。目前还不支持回帖更新，后续会加入，敬请期待。
 
 帖子和回帖都可以使用匿名身份进行发布，你懂的。
@@ -166,11 +170,15 @@ Sym 的诞生是有如下几点原因：
 
 ### 实时的消息通知
 
+![8](https://cloud.githubusercontent.com/assets/873584/19893304/b6c59b0e-a083-11e6-8349-e95947cca27d.png)
+
 * 可按类别展示消息，标记已读
 * 详细的消息类别：收到的回帖、收到的回复、@我的、我关注的人、积分相关、同城、系统消息等
 * 友好的 Chrome 桌面提醒
 
 ### 好玩的活动
+
+![7](https://cloud.githubusercontent.com/assets/873584/19893531/7198983c-a084-11e6-9b12-8ff7f4f6b4d9.gif)
 
 * 领取签到奖励、领取昨日活跃奖励
 * 上证博彩
@@ -180,6 +188,8 @@ Sym 的诞生是有如下几点原因：
 后续还会继续加入一些好玩的在线小游戏。
 
 ### 强大的后台管理
+
+![9](https://cloud.githubusercontent.com/assets/873584/19893291/afeeda8e-a083-11e6-9232-620833f9d22e.png)
 
 * 后台首页：数据统计、版本检查
 * 用户管理：搜索用户、添加用户、用户数据维护（状态设置、积分等）
@@ -200,12 +210,16 @@ Sym 提供了 [API](https://hacpai.com/article/1457158841475) 进行帖子、回
 
 ### 集成云邮件服务
 
+![10](https://cloud.githubusercontent.com/assets/873584/19893292/aff5f918-a083-11e6-96be-8519149ff43f.png)
+
 通过配置即可集成 [SendCloud](http://sendcloud.sohu.com) 云邮件服务，送达率较为自己搭建邮件服务更为可靠。
 
 * 用户注册验证、密码重置通过触发类型发送
 * 每周优选订阅推送通过批量类型发送
 
 ### 集成云搜索服务
+
+![11](https://cloud.githubusercontent.com/assets/873584/19893293/b0014ba6-a083-11e6-9c9a-9debad14c826.png)
 
 * 通过配置即可集成 [Algolia](https://www.algolia.com/referrals/1faf0d17/join) 云搜索服务，可自定义搜索字段，并进行权重、排序调优
 * 也可以自己搭建 Elasticsearch 并通过配置进行集成
@@ -327,4 +341,6 @@ Sym 的诞生离不开以下开源项目：
 
 ----
 
-Logo 征集中....
+<p align = "center">
+<strong>下一代的社区系统，为未来而构建</strong>
+</p>
