@@ -99,7 +99,7 @@ Specific function point details can be viewed at [Sym 功能点脑图](http://na
 
 ### Intelligent and flexible information architecture
 
-![2](https://cloud.githubusercontent.com/assets/873584/19864460/4d9ab908-9fd3-11e6-8c39-aede183876ec.png)
+![2](https://cloud.githubusercontent.com/assets/873584/19887754/407a71ea-a065-11e6-9595-8f352115ed03.png)
 
 The traditional node type community requires the post must belong to a node, the information architecture is top-down. Sym is not a top-down node type information architecture, the post does not require a fixed classification, through the tag to **aggregate** into a domain.
 
