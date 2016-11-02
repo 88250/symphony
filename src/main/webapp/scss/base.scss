@@ -1276,7 +1276,7 @@ a[class*=" icon-"]:hover {
     padding: 20px 0;
     background-image: url('../images/index-bg.svg');
     background-attachment: fixed;
-    min-height: 130px;
+    min-height: 280px;
 }
 
 .side {
@@ -1301,7 +1301,7 @@ a[class*=" icon-"]:hover {
     height: 48px;
     width: 100%;
     background-color: $blue;
-    z-index: 10;
+    z-index: 15;
     position: relative;
     box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
     box-sizing: border-box;
