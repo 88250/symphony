@@ -82,7 +82,7 @@
                 </tr>
                 <tr class="fn-none">
                     <td>
-                         <img id="captcha" class="fn-pointer" />
+                         <img id="captchaImg" class="fn-pointer" />
                     </td>
                     <td>
                          <input type="text" id="captchaLogin" />
