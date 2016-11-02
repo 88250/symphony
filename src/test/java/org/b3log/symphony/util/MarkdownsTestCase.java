@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 2.2.0.2, Nov 1, 2016
+ * @version 2.2.1.2, Nov 2, 2016
  * @since 0.1.6
  */
 public class MarkdownsTestCase {
@@ -83,11 +83,11 @@ public class MarkdownsTestCase {
         String md = "Sym**是一个用 _Java_ 写的实时论坛**";
         String html = Markdowns.toHTML(md);
 
-        Assert.assertEquals(html, "<p>Sym <strong>是一个用 <em>Java</em> 写的实时论坛</strong> </p>");
-        
+        Assert.assertEquals(html, "<p>Sym<strong>是一个用 <em>Java</em> 写的实时论坛</strong></p>");
+
         md = "[link](https://github.com/b3log/symphony/blob/master/README_zh_CN.md)";
         html = Markdowns.toHTML(md);
-        
+
         System.out.println(html);
     }
 

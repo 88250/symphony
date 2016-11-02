@@ -93,7 +93,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.7.11, Oct 31, 2016
+ * @version 1.9.7.12, Nov 2, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -192,44 +192,52 @@ public final class Markdowns {
      * @return
      */
     private static String formatMarkdown(final String markdownText) {
-    	String result=markdownText;
-    	Document doc = Jsoup.parse(markdownText, "", Parser.xmlParser());
-    	Document newDoc=Jsoup.parse(markdownText, "", Parser.xmlParser());
-    	Elements tag_a=doc.select("a");
-    	Elements tag_img=doc.select("img");
-    	for(int i=0;i<tag_a.size();i++){
-    		String search=tag_a.get(i).attr("href");
-    		String replace=StringUtils.replace(tag_a.get(i).attr("href"), "_", "[downline]");
-    		result=StringUtils.replace(result, search, replace);
-    	}
-    	newDoc=Jsoup.parse(result, "", Parser.xmlParser());
-    	for(int i=0;i<tag_img.size();i++){
-    		String search=tag_img.get(i).attr("src");
-    		String replace=StringUtils.replace(tag_img.get(i).attr("src"), "_", "[downline]");
-    		result=StringUtils.replace(result, search, replace);
-    	}
-    	newDoc=Jsoup.parse(result, "", Parser.xmlParser());
-    	Elements elements=newDoc.select("p");
-    	for(int i=0;i<elements.size();i++){
-    		if(elements.get(i).text().contains("**")){
-    			String search="**"+StringUtils.substringBetween(elements.get(i).html(), "**")+"**";
-    			String replace="<strong>"+StringUtils.substringBetween(elements.get(i).html(), "**")+"</strong>";
-    			result=StringUtils.replace(result, search, replace);
-    		}
-    	}
-    	newDoc=Jsoup.parse(result, "", Parser.xmlParser());
-    	elements=newDoc.select("p");
-    	for(int i=0;i<elements.size();i++){
-	    	if(elements.get(i).text().contains("_")){
-				String search="_"+StringUtils.substringBetween(elements.get(i).html(), "_")+"_";
-				String replace="<em>"+StringUtils.substringBetween(elements.get(i).html(), "_")+"</em>";
-				result=StringUtils.replace(result, search, replace);
-			}
-    	}
-    	result=StringUtils.replace(result, "[downline]", "_");
-        return result;
+        String ret = markdownText;
+
+        Document doc = Jsoup.parse(markdownText, "", Parser.xmlParser());
+        Document newDoc = Jsoup.parse(markdownText, "", Parser.xmlParser());
+
+        Elements tag_a = doc.select("a");
+        Elements tag_img = doc.select("img");
+
+        for (int i = 0; i < tag_a.size(); i++) {
+            String search = tag_a.get(i).attr("href");
+            String replace = StringUtils.replace(tag_a.get(i).attr("href"), "_", "[downline]");
+            ret = StringUtils.replace(ret, search, replace);
+        }
+
+        newDoc = Jsoup.parse(ret, "", Parser.xmlParser());
+        for (int i = 0; i < tag_img.size(); i++) {
+            String search = tag_img.get(i).attr("src");
+            String replace = StringUtils.replace(tag_img.get(i).attr("src"), "_", "[downline]");
+            ret = StringUtils.replace(ret, search, replace);
+        }
+
+        newDoc = Jsoup.parse(ret, "", Parser.xmlParser());
+        Elements elements = newDoc.select("p");
+        for (int i = 0; i < elements.size(); i++) {
+            if (elements.get(i).text().contains("**")) {
+                String search = "**" + StringUtils.substringBetween(elements.get(i).html(), "**") + "**";
+                String replace = "<strong>" + StringUtils.substringBetween(elements.get(i).html(), "**") + "</strong>";
+                ret = StringUtils.replace(ret, search, replace);
+            }
+        }
+
+        newDoc = Jsoup.parse(ret, "", Parser.xmlParser());
+        elements = newDoc.select("p");
+        for (int i = 0; i < elements.size(); i++) {
+            if (elements.get(i).text().contains("_")) {
+                String search = "_" + StringUtils.substringBetween(elements.get(i).html(), "_") + "_";
+                String replace = "<em>" + StringUtils.substringBetween(elements.get(i).html(), "_") + "</em>";
+                ret = StringUtils.replace(ret, search, replace);
+            }
+        }
+
+        ret = StringUtils.replace(ret, "[downline]", "_");
+
+        return ret;
     }
-    
+
     /**
      * Private constructor.
      */
