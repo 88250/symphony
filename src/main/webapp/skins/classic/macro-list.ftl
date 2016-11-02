@@ -14,11 +14,11 @@
                 </span>
                 <span class="fn-right ft-fade">
                     <#if article.articleCommentCount != 0>
-                    <a class="ft-gray" href="${servePath}${article.articlePermalink}#comments"><b class="level<#if article.articleCommentCount lt 80>${(article.articleCommentCount/20)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a> &nbsp;•&nbsp;
+                    <a class="ft-gray" href="${servePath}${article.articlePermalink}#comments"><b class="level<#if article.articleCommentCount lt 40>${(article.articleCommentCount/10)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a> &nbsp;•&nbsp;
                     </#if>   
 
                     <#if article.articleViewCount != 0> 
-                    <a class="ft-gray" href="${servePath}${article.articlePermalink}"><span class="level<#if article.articleViewCount lt 800>${(article.articleViewCount/200)?int}<#else>4</#if>">${article.articleViewCount}</span> ${viewLabel}</a> &nbsp;•&nbsp;
+                    <a class="ft-gray" href="${servePath}${article.articlePermalink}"><span class="level<#if article.articleViewCount lt 400>${(article.articleViewCount/100)?int}<#else>4</#if>">${article.articleViewCount}</span> ${viewLabel}</a> &nbsp;•&nbsp;
                     </#if>   
                     <span class="ft-gray">${article.timeAgo} </span>
                 </span>
