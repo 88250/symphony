@@ -87,7 +87,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.6.15, Nov 1, 2016
+ * @version 1.10.7.15, Nov 2, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -606,6 +606,7 @@ public class LoginProcessor {
                 final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
                 if (!StringUtils.equals(wrong.optString(CaptchaProcessor.CAPTCHA), captcha)) {
                     context.renderMsg(langPropsService.get("captchaErrorLabel"));
+                    context.renderJSONValue(Common.NEED_CAPTCHA, userId);
 
                     return;
                 }
