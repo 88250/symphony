@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 2.2.1.2, Nov 2, 2016
+ * @version 2.2.1.3, Nov 3, 2016
  * @since 0.1.6
  */
 public class MarkdownsTestCase {
@@ -87,7 +87,7 @@ public class MarkdownsTestCase {
         md = "[link](https://github.com/b3log/symphony/blob/master/README_zh_CN.md)";
         html = Markdowns.toHTML(md);
         Assert.assertEquals(html, "<p><a href=\"https://github.com/b3log/symphony/blob/master/README_zh_CN.md\">link</a></p>");
-        
+
         md = "* [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)：插件机制、处理流程";
         html = Markdowns.toHTML(md);
         Assert.assertEquals(html, "<p><ul>\n  <li><a href=\"https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1\">插件开发</a>：插件机制、处理流程</li>\n</ul></p>");
