@@ -37,10 +37,10 @@
                             <a href="${servePath}${article.articlePermalink}" rel="bookmark">
                                 ${article.articleTitleEmoj}
                             </a>
-                        </h1> 
+                        </h1>
                         <div class="article-info fn-flex">
                             <#if article.articleAnonymous == 0>
-                            <a rel="author" href="${servePath}/member/${article.articleAuthorName}"></#if><div 
+                            <a rel="author" href="${servePath}/member/${article.articleAuthorName}"></#if><div
                                class="avatar tooltipped tooltipped-se" aria-label="${article.articleAuthorName}" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
                             <div class="fn-flex-1">
                                 <#if article.articleAnonymous == 0>
@@ -50,7 +50,7 @@
                                     • <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
                                     </#if>
                                     •
-                                    ${article.timeAgo}   
+                                    ${article.timeAgo}
                                     •
                                     ${viewLabel}
                                     <#if article.articleViewCount < 1000>
@@ -62,7 +62,7 @@
                                 </span>
                                 <a rel="nofollow" class="ft-gray" href="#comments">
                                     ${cmtLabel} ${article.articleCommentCount}
-                                </a> 
+                                </a>
                                 <br/>
                                 <#list article.articleTagObjs as articleTag>
                                 <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a>&nbsp;
@@ -82,7 +82,7 @@
                                     <span class="tooltipped tooltipped-n" data-type="copy"
                                           aria-label="${copyLabel}"
                                           id="shareClipboard"
-                                          data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"><span 
+                                          data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"><span
                                             class="icon-link"></span></span>
                                 </span>
                                  &nbsp;
@@ -90,7 +90,7 @@
                                 <a rel="prev" href="${articlePrevious.articlePermalink}" class="tooltipped tooltipped-n" aria-label="${articlePrevious.articleTitle}"><</a>
                                 <#else>
                                 <span class="ft-fade"><</span>
-                                </#if> &nbsp; 
+                                </#if> &nbsp;
                                 <#if articleNext??>
                                 <a rel="next" href="${articleNext.articlePermalink}" class="tooltipped tooltipped-n" aria-label="${articleNext.articleTitle}">></a>
                                 <#else>
@@ -105,7 +105,7 @@
                         <div id="thoughtProgress"><span class="bar"></span><span class="icon-video"></span><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
                         <div class="content-reset article-content"></div>
                         </#if>
-                        
+
                         <#if 0 < article.articleRewardPoint>
                         <div class="content-reset<#if !article.rewarded> reward</#if>" id="articleRewardContent">
                              <#if !article.rewarded>
@@ -132,7 +132,7 @@
                                 <span class="tooltipped tooltipped-n has-cnt" aria-label="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span> ${article.articleCollectCnt}</span>
                                 </#if>
                             </span>
-                            
+
                             <span class="action-btns fn-right">
                                 <#if "" != article.articleToC>
                                 <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
@@ -141,11 +141,11 @@
                                 <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
                                       class="tooltipped tooltipped-n"><span class="icon-refresh"></span></span> &nbsp; &nbsp;
                                 <#if article.isMyArticle && 3 != article.articleType>
-                                <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" 
+                                <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"
                                    class="tooltipped tooltipped-n"><span class="icon-edit"></span></a> &nbsp; &nbsp;
                                 </#if>
                                 <#if article.isMyArticle>
-                                <a class="tooltipped tooltipped-n" aria-label="${stickLabel}" 
+                                <a class="tooltipped tooltipped-n" aria-label="${stickLabel}"
                                    href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a> &nbsp; &nbsp;
                                 </#if>
                                 <#if isAdminLoggedIn>
@@ -163,18 +163,18 @@
                             ${niceCommentsLabel}
                         </div>
                         <div class="module-panel list comments">
-                            <ul>              
+                            <ul>
                             <#list article.articleNiceComments as comment>
                             <li>
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
                                         <#if comment.commentAnonymous == 0>
                                         <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
-                                            <div class="avatar tooltipped tooltipped-se" 
+                                            <div class="avatar tooltipped tooltipped-se"
                                                  aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                         <#if comment.commentAnonymous == 0></a></#if>
                                         <#else>
-                                        <div class="avatar tooltipped tooltipped-se" 
+                                        <div class="avatar tooltipped tooltipped-se"
                                              aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                         </#if>
                                         <div class="fn-flex-1">
@@ -187,10 +187,10 @@
                                                     <a rel="nofollow" class="ft-green" href="https://hacpai.com/article/1457158841475">API</a>
                                                     </#if>
                                                     <span class="ft-fade">• ${comment.timeAgo}</span>
-                                                    
+
                                                     <#if comment.rewardedCnt gt 0>
                                                     <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
-                                                    <span aria-label="<#if hasRewarded>${thankedLabel}<#else>${thankLabel} ${comment.rewardedCnt}</#if>" 
+                                                    <span aria-label="<#if hasRewarded>${thankedLabel}<#else>${thankLabel} ${comment.rewardedCnt}</#if>"
                                                           class="tooltipped tooltipped-n rewarded-cnt <#if hasRewarded>ft-red<#else>ft-fade</#if>">
                                                         <span class="icon-heart"></span>${comment.rewardedCnt}
                                                     </span>
@@ -206,7 +206,7 @@
                                         </div>
                                     </div>
                                 </li>
-                            </#list>  
+                            </#list>
                         </ul>
                         </div>
                     </div>
@@ -220,31 +220,31 @@
                                    aria-label="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"><span class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if>"></span></a>&nbsp;
                                 <a class="tooltipped tooltipped-nw" href="#bottomComment" aria-label="${jumpToBottomCommentLabel}"><span class="icon-chevron-down"></span></a>
                             </span>
-                        </div> 
+                        </div>
                         <div class="list">
                             <ul>
                                 <#if article.articleComments?size == 0>
                                 <li class="ft-center fn-pointer"
                                     onclick="$('.article-actions .icon-reply-btn').click()">
-                                    <img src="${noCmtImg}">
+                                    <img src="${noCmtImg}" class="article-no-comment-img">
                                 </li>
                                 </#if>
                                 <#assign notificationCmtIds = "">
                                 <#list article.articleComments as comment>
                                 <#assign notificationCmtIds = notificationCmtIds + comment.oId>
                                 <#if comment_has_next><#assign notificationCmtIds = notificationCmtIds + ","></#if>
-                                <li id="${comment.oId}" 
+                                <li id="${comment.oId}"
                                     class="<#if comment.commentStatus == 1>cmt-shield</#if><#if comment.commentNice> cmt-perfect</#if><#if comment.commentReplyCnt != 0> cmt-selected</#if>">
                                     <#if !comment?has_next><div id="bottomComment"></div></#if>
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
                                         <#if comment.commentAnonymous == 0>
                                         <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
-                                            <div class="avatar tooltipped tooltipped-se" 
+                                            <div class="avatar tooltipped tooltipped-se"
                                                  aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                         <#if comment.commentAnonymous == 0></a></#if>
                                         <#else>
-                                        <div class="avatar tooltipped tooltipped-se" 
+                                        <div class="avatar tooltipped tooltipped-se"
                                              aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                         </#if>
                                         <div class="fn-flex-1">
@@ -262,13 +262,13 @@
                                                 </span>
                                                 <span class="fn-right">
                                                     <#if comment.commentOriginalCommentId != ''>
-                                                    <span class="fn-pointer ft-fade tooltipped tooltipped-nw" aria-label="${goCommentLabel}" 
+                                                    <span class="fn-pointer ft-fade tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
                                                        onclick="Comment.showReply('${comment.commentOriginalCommentId}', this, 'comment-get-comment')"><span class="icon-reply-to"></span>
                                                         <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
-                                                    </span> 
+                                                    </span>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
-                                                    <a class="tooltipped tooltipped-n ft-a-icon hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}" 
+                                                    <a class="tooltipped tooltipped-n ft-a-icon hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}"
                                                        aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                                     </#if>
                                                 </span>
@@ -291,10 +291,10 @@
                                                               aria-label="${upLabel}"
                                                               onclick="Article.voteUp('${comment.oId}', 'comment', this)"><span class="icon-thumbs-up"></span> ${comment.commentGoodCnt}</span> &nbsp;
                                                         <span class="tooltipped tooltipped-n<#if isLoggedIn && 1 == comment.commentVote> ft-red</#if>"
-                                                              aria-label="${downLabel}" 
+                                                              aria-label="${downLabel}"
                                                               onclick="Article.voteDown('${comment.oId}', 'comment', this)"><span class="icon-thumbs-down"></span> ${comment.commentBadCnt}</span> &nbsp;
                                                         <#if (isLoggedIn && comment.commentAuthorName != currentUser.userName) || !isLoggedIn>
-                                                        <span aria-label="${replyLabel}" class="icon-reply-btn tooltipped tooltipped-n" 
+                                                        <span aria-label="${replyLabel}" class="icon-reply-btn tooltipped tooltipped-n"
                                                               onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')"><span class="icon-reply"></span></span>
                                                         </#if>
                                                     </span>
@@ -304,20 +304,32 @@
                                         </div>
                                     </div>
                                 </li>
-                                </#list>  
+                                </#list>
                             </ul>
                         </div>
                         <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
                     </div>
+
+										<div class="module">
+											<div class="module-header">
+													${article.articleCommentCount} ${cmtLabel}
+											</div>
+											<#if article.articleComments?size != 0>
+											<div class="ft-center fn-pointer"
+													onclick="$('.article-actions .icon-reply-btn').click()">
+													<img src="${noCmtImg}" class="article-no-comment-img">
+											</div>
+											</#if>
+										</div>
                 </div>
                 <div class="side">
                     <#include 'common/person-info.ftl'/>
-                    
+
                     <#if ADLabel!="">
                     <div class="module">
                         <div class="module-header">
                             <h2>
-                                ${sponsorLabel} 
+                                ${sponsorLabel}
                                 <a href="https://hacpai.com/article/1460083956075" class="fn-right ft-13 ft-gray" target="_blank">${wantPutOnLabel}</a>
                             </h2>
                         </div>
@@ -339,7 +351,7 @@
                         </div>
                     </div>
                     </#if>
-                    
+
                     <#if sideRelevantArticles?size != 0>
                     <div class="module">
                         <div class="module-header">
@@ -352,7 +364,7 @@
                                 <#list sideRelevantArticles as relevantArticle>
                                 <li<#if !relevantArticle_has_next> class="last"</#if>>
                                     <#if "someone" != relevantArticle.articleAuthorName>
-                                    <a rel="nofollow" 
+                                    <a rel="nofollow"
                                    href="${servePath}/member/${relevantArticle.articleAuthorName}"></#if>
                                         <span class="avatar-small slogan tooltipped tooltipped-se" aria-label="${relevantArticle.articleAuthorName}"
                                    style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"
@@ -365,7 +377,7 @@
                         </div>
                     </div>
                     </#if>
-                    
+
                     <#if sideRandomArticles?size != 0>
                     <div class="module">
                         <div class="module-header">
@@ -404,7 +416,7 @@
             <#if discussionViewable && article.articleCommentable>
             <div class="form fn-clear comment-wrap">
                 <div class="fn-clear">
-                    <div id="replyUseName" class="fn-left"></div> 
+                    <div id="replyUseName" class="fn-left"></div>
                     <span class="tooltipped tooltipped-w fn-right fn-pointer editor-hide" aria-label="${hideLabel}"><span class="icon-chevron-down"></span></span>
                 </div>
                 <div class="article-comment-content">
@@ -470,7 +482,7 @@
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             $(document).ready(function () {
                 Comment.init();
-                
+
                  // jQuery File Upload
                 Util.uploadFile({
                     "type": "img",
