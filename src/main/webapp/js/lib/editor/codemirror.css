@@ -322,7 +322,7 @@ div.CodeMirror-dragcursors {
 
 .CodeMirror-hints {
     position: absolute;
-    z-index: 15;
+    z-index: 90;
     overflow: hidden;
     list-style: none;
 
@@ -621,7 +621,7 @@ span.CodeMirror-selectedtext { background: none; }
     background-color: #FFF;
     width: 50%;
     top: 30px;
-    border: 1px solid #ccc;
+    border-left: 1px solid #ccc;
     border-radius: 0 0 3px;
     border-top: 0;
     overflow: hidden;
