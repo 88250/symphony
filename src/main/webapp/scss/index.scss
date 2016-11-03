@@ -335,7 +335,7 @@ label.cmt-anonymous {
 
 #articleToC {
     top: 21px;
-    z-index: 12;
+    z-index: 60;
 }
 
 .article-toc li {
@@ -410,7 +410,7 @@ label.cmt-anonymous {
     padding: 5px 0 10px 0;
     position: fixed;
     width: 100%;
-    z-index: 12;
+    z-index: 80;
     bottom: -500px;
 }
 

@@ -999,7 +999,7 @@ a[class*=" icon-"]:hover {
     text-align: center;
     position: fixed;
     width: 56px;
-    z-index: 13;
+    z-index: 50;
     right: 20px;
     box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
     padding-top: 15px;
@@ -1301,7 +1301,7 @@ a[class*=" icon-"]:hover {
     height: 48px;
     width: 100%;
     background-color: $blue;
-    z-index: 15;
+    z-index: 70;
     position: relative;
     box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
     box-sizing: border-box;
@@ -1497,7 +1497,7 @@ a[class*=" icon-"]:hover {
     line-height: 24px;
     padding: 10px 0;
     position: relative;
-    z-index: 11;
+    z-index: 40;
     background-color: #FFF;
 }
 
