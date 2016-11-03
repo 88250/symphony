@@ -729,14 +729,19 @@ var Util = {
                     $("#aNotifications").after('<div id="notificationsPanel" class="module person-list"><ul>' +
                             notiHTML + '</ul></div>');
 
+										var hideTimeOut = undefined;
                     $('#aNotifications').mouseover(function () {
                         $('#notificationsPanel').show();
+												clearTimeout(hideTimeOut);
                     }).mouseout(function () {
-                        $('#notificationsPanel').hide();
+											hideTimeOut = setTimeout(function () {
+												$('#notificationsPanel').hide();
+											}, 600);
                     });
 
                     $('#notificationsPanel').mouseover(function () {
                         $('#notificationsPanel').show();
+												clearTimeout(hideTimeOut);
                     }).mouseout(function () {
                         $('#notificationsPanel').hide();
                     });
@@ -1045,14 +1050,19 @@ var Util = {
             }
         });
 
+				var hideTimeOut = undefined;
         $('.nav .avatar-small').parent().mouseover(function () {
             $('#personListPanel').show();
+						clearTimeout(hideTimeOut);
         }).mouseout(function () {
-            $('#personListPanel').hide();
+					hideTimeOut = setTimeout(function () {
+						  $('#personListPanel').hide();
+					}, 600);
         });
 
         $('#personListPanel').mouseover(function () {
             $('#personListPanel').show();
+						clearTimeout(hideTimeOut);
         }).mouseout(function () {
             $('#personListPanel').hide();
         });
