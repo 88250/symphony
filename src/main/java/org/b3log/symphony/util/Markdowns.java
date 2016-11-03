@@ -193,9 +193,7 @@ public final class Markdowns {
      */
     private static String formatMarkdown(final String markdownText) {
         String ret = markdownText;
-
         Document doc = Jsoup.parse(markdownText, "", Parser.xmlParser());
-        Document newDoc = Jsoup.parse(markdownText, "", Parser.xmlParser());
 
         Elements tag_a = doc.select("a");
         Elements tag_img = doc.select("img");
@@ -206,15 +204,14 @@ public final class Markdowns {
             ret = StringUtils.replace(ret, search, replace);
         }
 
-        newDoc = Jsoup.parse(ret, "", Parser.xmlParser());
         for (int i = 0; i < tag_img.size(); i++) {
             String search = tag_img.get(i).attr("src");
             String replace = StringUtils.replace(tag_img.get(i).attr("src"), "_", "[downline]");
             ret = StringUtils.replace(ret, search, replace);
         }
 
-        newDoc = Jsoup.parse(ret, "", Parser.xmlParser());
-        Elements elements = newDoc.select("p");
+        doc = Jsoup.parse(ret, "", Parser.xmlParser());
+        Elements elements = doc.select("p");
         for (int i = 0; i < elements.size(); i++) {
             if (elements.get(i).text().contains("**")) {
                 String search = "**" + StringUtils.substringBetween(elements.get(i).html(), "**") + "**";
@@ -223,8 +220,8 @@ public final class Markdowns {
             }
         }
 
-        newDoc = Jsoup.parse(ret, "", Parser.xmlParser());
-        elements = newDoc.select("p");
+        doc = Jsoup.parse(ret, "", Parser.xmlParser());
+        elements = doc.select("p");
         for (int i = 0; i < elements.size(); i++) {
             if (elements.get(i).text().contains("_")) {
                 String search = "_" + StringUtils.substringBetween(elements.get(i).html(), "_") + "_";
