@@ -79,7 +79,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.25.29, Oct 19, 2016
+ * @version 2.14.26.29, Nov 3, 2016
  * @since 0.2.0
  */
 @Service
@@ -586,6 +586,11 @@ public class ArticleMgmtService {
 
             transaction.commit();
 
+            try {
+                Thread.sleep(50); // wait for db write to avoid artitle duplication
+            } catch (final Exception e) {
+            }
+
             // Grows the tag graph
             tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
 
@@ -782,6 +787,11 @@ public class ArticleMgmtService {
             }
 
             transaction.commit();
+
+            try {
+                Thread.sleep(50); // wait for db write to avoid artitle duplication
+            } catch (final Exception e) {
+            }
 
             if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 if (currentTimeMillis - createTime > 1000 * 60 * 5) {
@@ -1252,7 +1262,7 @@ public class ArticleMgmtService {
                 newTag = new JSONObject();
                 newTag.put(Tag.TAG_TITLE, tagTitle);
             }
-            
+
             newTags.add(newTag);
         }
 
