@@ -28,6 +28,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
@@ -36,7 +37,11 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
+import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
+import static org.b3log.symphony.processor.channel.ArticleChannel.SESSIONS;
 import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONObject;
 
@@ -44,7 +49,7 @@ import org.json.JSONObject;
  * User channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Jul 22, 2016
+ * @version 1.0.1.0, Nov 3, 2016
  * @since 1.4.0
  */
 @ServerEndpoint(value = "/user-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -121,6 +126,37 @@ public class UserChannel {
     @OnError
     public void onError(final Session session, final Throwable error) {
         removeSession(session);
+    }
+
+    /**
+     * Sends command to browsers.
+     *
+     * @param message the specified message, for example      <pre>
+     * {
+     *     "userId": "",
+     *     "cmd": ""
+     * }
+     * </pre>
+     */
+    public static void sendCmd(final JSONObject message) {
+        final String recvUserId = message.optString(Common.USER_ID);
+        if (StringUtils.isBlank(recvUserId)) {
+            return;
+        }
+
+        final String msgStr = message.toString();
+
+        for (final String userId : SESSIONS.keySet()) {
+            if (userId.equals(recvUserId)) {
+                final Set<Session> sessions = SESSIONS.get(userId);
+
+                for (final Session session : sessions) {
+                    if (session.isOpen()) {
+                        session.getAsyncRemote().sendText(msgStr);
+                    }
+                }
+            }
+        }
     }
 
     /**

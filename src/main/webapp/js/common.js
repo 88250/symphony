@@ -683,7 +683,7 @@ var Util = {
                         Util.notifyMsg(count);
                         window.localStorage.hadNotificate = count;
                     }
-                    
+
                     var notiHTML = '';
                     // 收到的回帖 unreadCommentedNotificationCnt
                     if (result.unreadCommentedNotificationCnt > 0) {
@@ -724,9 +724,9 @@ var Util = {
                     if ($('#notificationsPanel').length === 1) {
                         $('#notificationsPanel ul').html(notiHTML);
                         return false;
-                    }       
+                    }
 
-                    $("#aNotifications").after('<div id="notificationsPanel" class="module person-list"><ul>' + 
+                    $("#aNotifications").after('<div id="notificationsPanel" class="module person-list"><ul>' +
                             notiHTML + '</ul></div>');
 
                     $('#aNotifications').mouseover(function () {
@@ -975,7 +975,7 @@ var Util = {
             // 定时获取并设置未读提醒计数
             setInterval(function () {
                 Util.setUnreadNotificationCount();
-            }, 60000);
+            }, 1000 * 60 * 10);
         }
 
         this._initCommonHotKey();
@@ -1011,6 +1011,14 @@ var Util = {
         };
 
         userChannel.onmessage = function (evt) {
+            var data = JSON.parse(evt.data);
+
+            switch (data.command) {
+                case "refreshNotification":
+                    Util.setUnreadNotificationCount();
+
+                    break;
+            }
         };
 
         userChannel.onclose = function () {
