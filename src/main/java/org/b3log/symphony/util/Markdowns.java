@@ -93,6 +93,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://zephyrjung.github.io">Zephyr</a>
  * @version 1.9.7.13, Nov 3, 2016
  * @since 0.2.0
  */
