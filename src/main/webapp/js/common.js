@@ -679,10 +679,71 @@ var Util = {
                 var count = result.unreadNotificationCnt;
                 if (0 < count) {
                     $("#aNotifications").removeClass("no-msg tooltipped tooltipped-w").addClass("msg").text(count);
+                    if (0 === result.userNotifyStatus && window.localStorage.hadNotificate !== count.toString()) {
                         Util.notifyMsg(count);
+                        window.localStorage.hadNotificate = count;
+                    }
+                    
+                    var notiHTML = '';
+                    // 收到的回帖 unreadCommentedNotificationCnt
+                    if (result.unreadCommentedNotificationCnt > 0) {
+                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/commented">' + Label.notificationCommentedLabel +
+                                '<span class="count fn-right">' + result.unreadCommentedNotificationCnt + '</span></a></li>';
+                    }
+                    // 收到的回复 unreadReplyNotificationCnt
+                    if (result.unreadReplyNotificationCnt > 0) {
+                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/reply">' + Label.notificationReplyLabel +
+                                '<span class="count fn-right">' + result.unreadReplyNotificationCnt + '</span></a></li>';
+                    }
+                    // @ 我的 unreadAtNotificationCnt
+                    if (result.unreadAtNotificationCnt > 0) {
+                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/at">' + Label.notificationAtLabel +
+                                '<span class="count fn-right">' + result.unreadAtNotificationCnt + '</span></a></li>';
+                    }
+                    // 我关注的人 unreadFollowingUserNotificationCnt
+                    if (result.unreadFollowingUserNotificationCnt > 0) {
+                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/following-user">' + Label.notificationFollowingUserLabel +
+                                '<span class="count fn-right">' + result.unreadFollowingUserNotificationCnt + '</span></a></li>';
+                    }
+                    // 积分 unreadPointNotificationCnt
+                    if (result.unreadPointNotificationCnt > 0) {
+                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/point">' + Label.pointLabel +
+                                '<span class="count fn-right">' + result.unreadPointNotificationCnt + '</span></a></li>';
+                    }
+                    // 同城 unreadBroadcastNotificationCnt
+                    if (result.unreadBroadcastNotificationCnt > 0) {
+                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/broadcast">' + Label.sameCityLabel +
+                                '<span class="count fn-right">' + result.unreadBroadcastNotificationCnt + '</span></a></li>';
+                    }
+                    // 系统 unreadSysAnnounceNotificationCnt
+                    if (result.unreadSysAnnounceNotificationCnt > 0) {
+                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/sys-announce">' + Label.systemLabel +
+                                '<span class="count fn-right">' + result.unreadSysAnnounceNotificationCnt + '</span></a></li>';
                     }
 
-                    }
+                    if ($('#notificationsPanel').length === 1) {
+                        $('#notificationsPanel ul').html(notiHTML);
+                        return false;
+                    }       
+
+                    $("#aNotifications").after('<div id="notificationsPanel" class="module person-list"><ul>' + 
+                            notiHTML + '</ul></div>');
+
+                    $('#aNotifications').mouseover(function () {
+                        $('#notificationsPanel').show();
+                    }).mouseout(function () {
+                        $('#notificationsPanel').hide();
+                    });
+
+                    $('#notificationsPanel').mouseover(function () {
+                        $('#notificationsPanel').show();
+                    }).mouseout(function () {
+                        $('#notificationsPanel').hide();
+                    });
+                } else {
+                    window.localStorage.hadNotificate = 'false';
+                    $("#notificationsPanel").remove();
+                    $("#aNotifications").removeClass("msg").addClass("no-msg tooltipped tooltipped-w").text(count);
                 }
             }
         });
@@ -776,12 +837,14 @@ var Util = {
         $('html, body').animate({scrollTop: 0}, 800);
     },
     /**
+     * @description 显示登录界面
      */
     showLogin: function () {
         $(".nav .form").show();
         $("#nameOrEmail").focus();
     },
     /**
+     *
      * @returns {undefined}
      */
     needLogin: function () {
@@ -903,6 +966,10 @@ var Util = {
         });
 
         if (isLoggedIn) { // 如果登录了
+            if (!window.localStorage.hadNotificate) {
+                window.localStorage.hadNotificate = 'false';
+            }
+
             Util.setUnreadNotificationCount();
 
             // 定时获取并设置未读提醒计数
@@ -971,10 +1038,15 @@ var Util = {
         });
 
         $('.nav .avatar-small').parent().mouseover(function () {
+            $('#personListPanel').show();
         }).mouseout(function () {
+            $('#personListPanel').hide();
         });
 
+        $('#personListPanel').mouseover(function () {
+            $('#personListPanel').show();
         }).mouseout(function () {
+            $('#personListPanel').hide();
         });
 
         // 导航过长处理
@@ -1030,6 +1102,8 @@ var Util = {
                                 window.localStorage.commentContent = "";
                             }
 
+                            if (!window.localStorage.hadNotificate) {
+                                window.localStorage.hadNotificate = 'false';
                             }
                         }
                     } else {
@@ -1040,9 +1114,9 @@ var Util = {
                             $("#captchaImg").attr("src", Label.servePath + "/captcha/login?needCaptcha="
                                     + result.needCaptcha + "&t=" + Math.random())
                                     .click(function () {
-                                                $(this).attr('src', Label.servePath + "/captcha/login?needCaptcha="
-                                    + result.needCaptcha + "&t=" + Math.random())
-                                            });
+                                        $(this).attr('src', Label.servePath + "/captcha/login?needCaptcha="
+                                                + result.needCaptcha + "&t=" + Math.random())
+                                    });
                         }
                     }
                 }
@@ -1056,10 +1130,12 @@ var Util = {
         if (window.localStorage) {
             // Clear localStorage
             window.localStorage.clear();
+            window.localStorage.hadNotificate = 'false';
         }
         window.location.href = Label.servePath + '/logout?goto=' + Label.servePath;
     },
     /**
+     * @description 获取字符串开始位置
      * @param {String} string 需要匹配的字符串
      * @param {String} prefix 匹配字符
      * @return {Integer} 以匹配字符开头的位置
@@ -1068,6 +1144,7 @@ var Util = {
         return (string.match("^" + prefix) == prefix);
     },
     /**
+     * @description 文件上传
      * @param {Obj} obj  文件上传参数
      * @param {String} obj.id 上传组件 id
      * @param {jQuery} obj.pasteZone 粘贴区域
@@ -1176,7 +1253,7 @@ var Util = {
             url: "https://up.qbox.me/",
             paramName: "file",
             add: function (e, data) {
-                 if (data.files[0].name) {
+                if (data.files[0].name) {
                     var processName = data.files[0].name.match(/[a-zA-Z0-9.]/g).join('');
                     filename = getUUID() + '-' + processName;
 
@@ -1338,6 +1415,7 @@ var Validate = {
     /**
      * @description 提交时对数据进行统一验证。
      * @param {array} data 验证数据
+     * @returns 验证通过返回 true，否则为 false。
      */
     goValidate: function (obj) {
         var tipHTML = '<ul>';
@@ -1361,6 +1439,10 @@ var Validate = {
      * @description 数据验证。
      * @param {object} data 验证数据
      * @param {string} data.type 验证类型
+     * @param {object} data.target 验证对象
+     * @param {number} [data.min] 最小值
+     * @param {number} [data.max] 最大值
+     * @returns 验证通过返回 true，否则为 false。
      */
     validate: function (data) {
         var isValidate = true,
