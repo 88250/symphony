@@ -1220,13 +1220,13 @@ a[class*=" icon-"]:hover {
     position: absolute;
     top: 0;
     width: 100%;
-    z-index: 90;
+    z-index: 200;
 }
 
 .dialog-panel {
     display: none;
     position: fixed;
-    z-index: 100;
+    z-index: 201;
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid rgba(0,0,0,0.25);
