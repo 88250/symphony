@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.19.46, Oct 27, 2016
+ * @version 2.25.19.46, Nov 3, 2016
  */
 
 @import "variables";
@@ -44,7 +44,7 @@ body {
     background: rgba(65,131,196,0.4);
 }
 
-::selection { 
+::selection {
     text-shadow: none;
     background: rgba(66, 133, 244,0.4)
 }
@@ -237,11 +237,11 @@ blockquote {
         margin-bottom: 16px;
     }
 
-    h1, 
-    h2, 
-    h3, 
-    h4, 
-    h5, 
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
     h6 {
         margin-top: 24px;
         margin-bottom: 16px;
@@ -296,11 +296,11 @@ blockquote {
     }
 
     table {
-        width: 100%; 
-        border: 1px solid #dedede; 
+        width: 100%;
+        border: 1px solid #dedede;
         margin: 15px auto;
-        border-collapse: collapse; 
-        empty-cells: show; 
+        border-collapse: collapse;
+        empty-cells: show;
     }
 
     thead {
@@ -309,23 +309,23 @@ blockquote {
 
     td,
     th {
-        height: 35px; 
-        border: 1px solid #dedede; 
-        padding: 0 10px; 
+        height: 35px;
+        border: 1px solid #dedede;
+        padding: 0 10px;
     }
 
     th {
-        font-weight: bold; 
-        text-align: center !important; 
-        background: rgba(158,188,226,0.2); 
+        font-weight: bold;
+        text-align: center !important;
+        background: rgba(158,188,226,0.2);
     }
 
     tbody tr:nth-child(2n) {
-        background: rgba(158,188,226,0.12); 
+        background: rgba(158,188,226,0.12);
     }
 
     tr:hover {
-        background: #efefef; 
+        background: #efefef;
     }
 
     code {
@@ -460,7 +460,7 @@ blockquote {
 .ft-a-icon {
     color: #ccc;
     text-decoration: none;
-} 
+}
 
 .ft-a-icon:hover {
     color: #999;
@@ -488,13 +488,13 @@ blockquote {
 
 .sub-head {
     padding: 5px 10px;
-    border-bottom: 1px solid #e5e5e5;  
+    border-bottom: 1px solid #e5e5e5;
     line-height: 31px;
 }
 /* end function */
 
 /* start common */
-.tag {   
+.tag {
     font-size: 12px;
     color: $fade;
     white-space: nowrap;
@@ -780,12 +780,12 @@ button.mid,
     -moz-osx-font-smoothing: grayscale;
 }
 
-a[class^="icon-"], 
+a[class^="icon-"],
 a[class*=" icon-"] {
     color: #333;
 }
 
-a[class^="icon-"]:hover, 
+a[class^="icon-"]:hover,
 a[class*=" icon-"]:hover {
     text-decoration: none;
     color: $blue;
@@ -1083,7 +1083,7 @@ a[class*=" icon-"]:hover {
 .status > li {
     overflow: hidden;
     flex: 1;
-    -webkit-box-flex: 1;  
+    -webkit-box-flex: 1;
     text-align: center;
 }
 
@@ -1417,10 +1417,10 @@ a[class*=" icon-"]:hover {
         z-index: 20;
         width: 250px;
         font-size: 14px;
-        line-height: 1.6;   
+        line-height: 1.6;
     }
 
-    .form input[type="text"], 
+    .form input[type="text"],
     .form input[type="password"] {
         margin: 10px 0;
     }
@@ -1469,6 +1469,10 @@ a[class*=" icon-"]:hover {
     .person-list a:hover {
         text-decoration: none;
         background-color: #f9f9f9;
+    }
+
+    #notificationsPanel:after {
+    		right: 92px;
     }
 }
 
@@ -1623,7 +1627,7 @@ ul.CodeMirror-hints {
 }
 
 .CodeMirror-hint {
-    padding-right: 18px;    
+    padding-right: 18px;
     max-width: none;
 }
 
@@ -1632,9 +1636,9 @@ ul.CodeMirror-hints {
     color: white;
 }
 
-.CodeMirror-scrollbar-filler, 
+.CodeMirror-scrollbar-filler,
 .CodeMirror-gutter-filler {
-    background-color: transparent;    
+    background-color: transparent;
 }
 
 .CodeMirror-empty.CodeMirror-focused { outline: none; }
@@ -1745,14 +1749,14 @@ ul.CodeMirror-hints {
 }
 
 .module-panel .tags {
-    padding: 0 0 10px 10px;    
+    padding: 0 0 10px 10px;
 }
 
 /* end side module */
 
 /* start side tags */
 .tag-desc.fn-clear {
-    margin: 10px 0 0px 10px;    
+    margin: 10px 0 0px 10px;
 }
 
 .tag-desc > li {
@@ -1869,7 +1873,7 @@ ul.CodeMirror-hints {
 
     .info button.red:hover {
         background-color: #c0372a;
-        background-image: none; 
+        background-image: none;
     }
 
     .info .fn-right {

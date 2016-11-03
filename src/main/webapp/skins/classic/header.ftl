@@ -1,4 +1,4 @@
-<div class="nav"> 
+<div class="nav">
     <h1>
         ${logoIcon}
     </h1>
@@ -35,7 +35,7 @@
         <a href="${servePath}/member/${currentUser.userName}">
             <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL20}')"></span>
         </a>
-        <div class="module person-list">
+        <div class="module person-list" id="personListPanel">
             <ul>
                 <li>
                     <a href="${servePath}/member/${currentUser.userName}">${goHomeLabel}</a>

@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.18.39, Oct 30, 2016
+ * @version 2.15.18.40, Nov 3, 2016
  */
 
 @import "variables";
@@ -165,7 +165,7 @@ h1.article-title > a:hover {
 #revision .pagination {
     margin-bottom: 10px;
     float: right;
-} 
+}
 
 label.cmt-anonymous {
     margin: 5px 20px 0 0;
@@ -190,20 +190,20 @@ label.cmt-anonymous {
     }
 }
 
-.action-btns > span, 
+.action-btns > span,
 .action-btns > a {
     color: $fade;
     text-decoration: none;
 }
 
-.action-btns > span:hover, 
+.action-btns > span:hover,
 .action-btns > a:hover {
     color: $gray;
 }
 
-.action-btns > span.ft-red, 
+.action-btns > span.ft-red,
 .action-btns > a.ft-red,
-.action-btns > span.ft-red:hover, 
+.action-btns > span.ft-red:hover,
 .action-btns > a.ft-red:hover {
     color: $red;
 }
@@ -324,7 +324,7 @@ label.cmt-anonymous {
     min-height: 88px;
 }
 
-#replyUseName { 
+#replyUseName {
     line-height: 20px;
     height: 20px;
 }
@@ -597,7 +597,7 @@ label.cmt-anonymous {
 }
 
 .register .form input[type="text"],
-.register .form input[type="password"], 
+.register .form input[type="password"],
 .register .form textarea {
     margin: 10px 0;
     width: 200px;
@@ -816,12 +816,12 @@ code .dec { color: initial; } /* decimal - blue */
     margin: 0 20px 15px 0;
 }
 
-.index .count {
+.index .item .count {
     position: absolute;
     right: 0;
     top: 50%;
     margin-top: -8px;
-} 
+}
 
 .timeline li a {
     color: #595959;

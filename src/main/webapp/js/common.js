@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>g
  * @author Zephyr
- * @version 1.37.24.36, Nov 1, 2016
+ * @version 1.38.24.36, Nov 3, 2016
  */
 
 /**
@@ -243,7 +243,7 @@ var Util = {
             });
         }
 
-        // At last, if the user already denied any notification, and you 
+        // At last, if the user already denied any notification, and you
         // want to be respectful there is no need to bother them any more.
     },
     /**
@@ -379,7 +379,7 @@ var Util = {
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     },
     /**
-     * 通过 UA 获取设备 
+     * 通过 UA 获取设备
      * @param {String} ua user agent
      * @returns {String} 设备
      */
@@ -676,22 +676,12 @@ var Util = {
             type: "GET",
             cache: false,
             success: function (result, textStatus) {
-                var count = result.unreadNotificationCount;
-
+                var count = result.unreadNotificationCnt;
                 if (0 < count) {
-                    $("#aNotifications").removeClass("no-msg").addClass("msg").text(count);
-
-                    if (window.localStorage) {
-                        if (count !== Number(window.localStorage.unreadNotificationCount) && 0 === result.userNotifyStatus) {
-                            Util.notifyMsg(count);
-                            window.localStorage.unreadNotificationCount = count;
-                        }
+                    $("#aNotifications").removeClass("no-msg tooltipped tooltipped-w").addClass("msg").text(count);
+                        Util.notifyMsg(count);
                     }
-                } else {
-                    $("#aNotifications").removeClass("msg").addClass("no-msg").text(count);
 
-                    if (window.localStorage) {
-                        window.localStorage.unreadNotificationCount = 0;
                     }
                 }
             }
@@ -786,14 +776,12 @@ var Util = {
         $('html, body').animate({scrollTop: 0}, 800);
     },
     /**
-     * @description 显示登录界面 
      */
     showLogin: function () {
         $(".nav .form").show();
         $("#nameOrEmail").focus();
     },
     /**
-     * 
      * @returns {undefined}
      */
     needLogin: function () {
@@ -983,15 +971,10 @@ var Util = {
         });
 
         $('.nav .avatar-small').parent().mouseover(function () {
-            $('.nav .person-list').show();
         }).mouseout(function () {
-            $('.nav .person-list').hide();
         });
 
-        $('.nav .person-list').mouseover(function () {
-            $('.nav .person-list').show();
         }).mouseout(function () {
-            $('.nav .person-list').hide();
         });
 
         // 导航过长处理
@@ -1047,8 +1030,6 @@ var Util = {
                                 window.localStorage.commentContent = "";
                             }
 
-                            if (!window.localStorage.unreadNotificationCount) {
-                                window.localStorage.unreadNotificationCount = 0;
                             }
                         }
                     } else {
@@ -1075,12 +1056,10 @@ var Util = {
         if (window.localStorage) {
             // Clear localStorage
             window.localStorage.clear();
-            window.localStorage.unreadNotificationCount = 0;
         }
         window.location.href = Label.servePath + '/logout?goto=' + Label.servePath;
     },
     /**
-     * @description 获取字符串开始位置     
      * @param {String} string 需要匹配的字符串
      * @param {String} prefix 匹配字符
      * @return {Integer} 以匹配字符开头的位置
@@ -1089,7 +1068,6 @@ var Util = {
         return (string.match("^" + prefix) == prefix);
     },
     /**
-     * @description 文件上传     
      * @param {Obj} obj  文件上传参数
      * @param {String} obj.id 上传组件 id
      * @param {jQuery} obj.pasteZone 粘贴区域
@@ -1360,7 +1338,6 @@ var Validate = {
     /**
      * @description 提交时对数据进行统一验证。
      * @param {array} data 验证数据
-     * @returns 验证通过返回 true，否则为 false。 
      */
     goValidate: function (obj) {
         var tipHTML = '<ul>';
@@ -1384,10 +1361,6 @@ var Validate = {
      * @description 数据验证。
      * @param {object} data 验证数据
      * @param {string} data.type 验证类型
-     * @param {object} data.target 验证对象 
-     * @param {number} [data.min] 最小值 
-     * @param {number} [data.max] 最大值 
-     * @returns 验证通过返回 true，否则为 false。 
      */
     validate: function (data) {
         var isValidate = true,

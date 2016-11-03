@@ -19,6 +19,7 @@ package org.b3log.symphony.processor;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -62,12 +63,14 @@ import org.json.JSONObject;
  * <li>Displays comments of my articles (/notifications/commented), GET</li>
  * <li>Displays replies of my comments (/notifications/reply), GET</li>
  * <li>Displays at me (/notifications/at), GET</li>
- * <li>Displays following user's articles (/notifications/following-user), GET</li>
+ * <li>Displays following user's articles (/notifications/following-user),
+ * GET</li>
  * <li>Makes article/comment read (/notification/read), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.6, Oct 26, 2016
+ * @author <a href="http://vanessa.b3log.org">Liyuan Lo</a>
+ * @version 1.8.1.6, Nov 3, 2016
  * @since 0.2.5
  */
 @RequestProcessor
@@ -791,8 +794,12 @@ public class NotificationProcessor {
             return;
         }
 
-        context.renderJSON(true).renderJSONValue(Notification.NOTIFICATION_T_UNREAD_COUNT,
-                notificationQueryService.getUnreadNotificationCount(currentUser.optString(Keys.OBJECT_ID))).
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+        final Map<String, Object> dataModel = new HashMap<>();
+
+        fillNotificationCount(userId, dataModel);
+
+        context.renderJSON(new JSONObject(dataModel)).renderTrueResult().
                 renderJSONValue(UserExt.USER_NOTIFY_STATUS, currentUser.optInt(UserExt.USER_NOTIFY_STATUS));
     }
 }
