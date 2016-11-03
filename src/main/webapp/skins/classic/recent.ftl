@@ -28,13 +28,13 @@
                                         </span>
                                         <span class="fn-right ft-fade">
                                             <#if article.articleCommentCount != 0>
-                                            <a class="ft-gray" href="${servePath}${article.articlePermalink}#comments"><b class="level<#if article.articleCommentCount lt 40>${(article.articleCommentCount/10)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a> &nbsp;•&nbsp;
+                                            <a class="ft-fade" href="${servePath}${article.articlePermalink}#comments"><b class="level<#if article.articleCommentCount lt 40>${(article.articleCommentCount/10)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a> &nbsp;•&nbsp;
                                             </#if>   
 
                                             <#if article.articleViewCount != 0> 
-                                            <a class="ft-gray" href="${servePath}${article.articlePermalink}"><span class="level<#if article.articleViewCount lt 400>${(article.articleViewCount/100)?int}<#else>4</#if>">${article.articleViewCount}</span> ${viewLabel}</a> &nbsp;•&nbsp;
+                                            <a class="ft-fade" href="${servePath}${article.articlePermalink}"><span class="level<#if article.articleViewCount lt 400>${(article.articleViewCount/100)?int}<#else>4</#if>">${article.articleViewCount}</span> ${viewLabel}</a> &nbsp;•&nbsp;
                                             </#if>   
-                                            <span class="ft-gray">${article.timeAgo} </span>
+                                            <span class="ft-fade">${article.timeAgo} </span>
                                         </span>
                                     </div>
                                     <h2>
@@ -50,10 +50,9 @@
                                         </#if>
                                         <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                                         </a>
-                                        <#if articleStickCheck??>
-                                        <#if article.articleStick < 9223372036854775807>
-                                        <span class="ft-smaller ft-red stick-remains fn-none">${stickLabel}${remainsLabel} ${article.articleStickRemains?c} ${minuteLabel}</span>
-                                        </#if>
+
+                                        <#if articleStickCheck?? && article.articleStick < 9223372036854775807>
+                                            <span class="ft-smaller ft-red stick-remains fn-none">${stickLabel}${remainsLabel} ${article.articleStickRemains?c} ${minuteLabel}</span>
                                         </#if>
                                     </h2>
                                     <div class="ft-smaller fn-clear list-info fn-flex">
@@ -68,10 +67,10 @@
                                                href="${servePath}/member/${article.articleAuthorName}"></#if>
                                                ${article.articleAuthorName}
                                             <#if article.articleAnonymous == 0></a></#if>
-                                            <#if article.articleAuthor.userIntro != ''><span class="ft-gray"> - ${article.articleAuthor.userIntro}</span></a></#if>
+                                            <#if article.articleAuthor.userIntro != ''><span class="ft-fade"> - ${article.articleAuthor.userIntro}</span></a></#if>
                                         </span>
 
-                                        <span class="fn-right ft-gray fn-hidden">
+                                        <span class="fn-right ft-fade fn-hidden">
                                             <#if "" != article.articleLatestCmterName>
                                                 &nbsp; ${article.cmtTimeAgo} 
                                                 <#if "" != article.articleLatestCmt.clientCommentId>
@@ -80,7 +79,7 @@
                                                     <#if article.articleLatestCmterName != 'someone'>
                                                     <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"></#if><span class="author">${article.articleLatestCmterName}</span><#if article.articleLatestCmterName != 'someone'></a>
                                                     </#if>
-                                                </#if>
+                                                </#if> 
                                                 ${cmtLabel}
                                             </#if>
                                         </span>
@@ -89,8 +88,6 @@
                                         ${article.articlePreviewContent}
                                     </a>
                                     <span class="heat tooltipped tooltipped-n" aria-label="${postActivityLabel}" style="width:${article.articleHeat*3}px"></span>
-                                    
-                                </li>
                                 </#list>
                             </ul>
                         </div>
