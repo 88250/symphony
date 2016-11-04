@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -2487,14 +2488,11 @@ public class ArticleQueryService {
             final int length = Integer.valueOf("150");
 
             String ret = article.optString(Article.ARTICLE_CONTENT);
-            ret = Jsoup.clean(ret, Whitelist.none());
-            ret = StringUtils.trim(ret);
-            ret = StringUtils.replaceEach(ret,
-                    new String[]{"&nbsp;", "#", "*", "-", "+", ">"},
-                    new String[]{"", "", "", "", "", ""});
-
+            ret = Markdowns.toHTML(ret);
+            ret = Jsoup.clean(ret, Whitelist.basicWithImages());
+            
             final int threshold = 20;
-            String[] pics = StringUtils.substringsBetween(ret, "![", ")");
+            String[] pics = StringUtils.substringsBetween(ret, "<img", "/>");
             if (null != pics) {
                 if (pics.length > threshold) {
                     pics = Arrays.copyOf(pics, threshold);
@@ -2503,7 +2501,7 @@ public class ArticleQueryService {
                 final String[] picsRepl = new String[pics.length];
                 for (int i = 0; i < picsRepl.length; i++) {
                     picsRepl[i] = langPropsService.get("picTagLabel");
-                    pics[i] = "![" + pics[i] + ")";
+                    pics[i] = "<img" + pics[i] + "/>";
 
                     if (i > threshold) {
                         break;
@@ -2513,7 +2511,7 @@ public class ArticleQueryService {
                 ret = StringUtils.replaceEach(ret, pics, picsRepl);
             }
 
-            if (ret.length() >= length) {
+            if (ret.length() >= length && null != pics) {
                 ret = StringUtils.substring(ret, 0, length)
                         + " ....";
 
@@ -2523,7 +2521,7 @@ public class ArticleQueryService {
                 return ret;
             }
 
-            String[] urls = StringUtils.substringsBetween(ret, "[", ")");
+            String[] urls = StringUtils.substringsBetween(ret, "<a", "</a>");
             if (null != urls) {
                 if (urls.length > threshold) {
                     urls = Arrays.copyOf(urls, threshold);
@@ -2532,7 +2530,7 @@ public class ArticleQueryService {
                 final String[] urlsRepl = new String[urls.length];
                 for (int i = 0; i < urlsRepl.length; i++) {
                     urlsRepl[i] = langPropsService.get("urlTagLabel");
-                    urls[i] = "[" + urls[i] + ")";
+                    urls[i] = "<a" + urls[i] + "</a>";
                 }
 
                 ret = StringUtils.replaceEach(ret, urls, urlsRepl);
