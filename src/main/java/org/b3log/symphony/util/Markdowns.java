@@ -224,8 +224,8 @@ public final class Markdowns {
         
         if(toEm != null && toEm.length > 0){
 	        for(String em : toEm){
-	        	String search = "**" + em + "**";
-	            String replace = "<strong>" + em + "</strong>";
+	        	String search = "_" + em + "_";
+	            String replace = "<em>" + em + "<em>";
 	            ret = StringUtils.replace(ret, search, replace);
 	        }
         }
