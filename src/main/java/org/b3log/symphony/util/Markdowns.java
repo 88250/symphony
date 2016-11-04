@@ -210,29 +210,27 @@ public final class Markdowns {
             String replace = StringUtils.replace(tag_img.get(i).attr("src"), "_", "[downline]");
             ret = StringUtils.replace(ret, search, replace);
         }
-
-        doc = Jsoup.parse(ret, "", Parser.xmlParser());
-        Elements elements = doc.select("p");
-        for (int i = 0; i < elements.size(); i++) {
-            if (elements.get(i).text().contains("**")) {
-                String search = "**" + StringUtils.substringBetween(elements.get(i).html(), "**") + "**";
-                String replace = "<strong>" + StringUtils.substringBetween(elements.get(i).html(), "**") + "</strong>";
-                ret = StringUtils.replace(ret, search, replace);
-            }
+        
+        String[] toStrong = StringUtils.substringsBetween(ret, "**", "**");
+        String[] toEm = StringUtils.substringsBetween(ret, "_", "_");
+        
+        if(toStrong != null && toStrong.length > 0){
+	        for(String strong : toStrong){
+	        	String search = "**" + strong + "**";
+	            String replace = "<strong>" + strong + "</strong>";
+	            ret = StringUtils.replace(ret, search, replace);
+	        }
         }
-
-        doc = Jsoup.parse(ret, "", Parser.xmlParser());
-        elements = doc.select("p");
-        for (int i = 0; i < elements.size(); i++) {
-            if (elements.get(i).text().contains("_")) {
-                String search = "_" + StringUtils.substringBetween(elements.get(i).html(), "_") + "_";
-                String replace = "<em>" + StringUtils.substringBetween(elements.get(i).html(), "_") + "</em>";
-                ret = StringUtils.replace(ret, search, replace);
-            }
+        
+        if(toEm != null && toEm.length > 0){
+	        for(String em : toEm){
+	        	String search = "_" + em + "_";
+	            String replace = "<em>" + em + "<em>";
+	            ret = StringUtils.replace(ret, search, replace);
+	        }
         }
-
+        
         ret = StringUtils.replace(ret, "[downline]", "_");
-
         return ret;
     }
 
