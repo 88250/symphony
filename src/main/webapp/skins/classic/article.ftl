@@ -309,18 +309,17 @@
                         </div>
                         <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
                     </div>
-
-										<div class="module">
-											<div class="module-header">
-													${article.articleCommentCount} ${cmtLabel}
-											</div>
-											<#if article.articleComments?size != 0>
-											<div class="ft-center fn-pointer"
-													onclick="$('.article-actions .icon-reply-btn').click()">
-													<img src="${noCmtImg}" class="article-no-comment-img">
-											</div>
-											</#if>
-										</div>
+                    <#if article.articleComments?size != 0>
+						<div class="module">
+							<div class="module-header">
+									${article.articleCommentCount} ${cmtLabel}
+							</div>
+							<div class="ft-center fn-pointer"
+									onclick="$('.article-actions .icon-reply-btn').click()">
+									<img src="${noCmtImg}" class="article-no-comment-img">
+							</div>
+						</div>
+                    </#if>
                 </div>
                 <div class="side">
                     <#include 'common/person-info.ftl'/>
