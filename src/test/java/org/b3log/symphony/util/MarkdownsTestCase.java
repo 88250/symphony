@@ -91,6 +91,10 @@ public class MarkdownsTestCase {
         md = "* [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)：插件机制、处理流程";
         html = Markdowns.toHTML(md);
         Assert.assertEquals(html, "<p><ul>\n  <li><a href=\"https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1\">插件开发</a>：插件机制、处理流程</li>\n</ul></p>");
+        
+        md = "<p>你好，黑客派</p>\n<ul>\n  <li>你好，**黑客派**</li>\n</ul>";
+        html = Markdowns.toHTML(md);
+        Assert.assertEquals(html, "<p>你好，黑客派</p>\n<ul>\n  <li>你好，<strong>黑客派</strong></li>\n</ul>");
     }
 
     /**
