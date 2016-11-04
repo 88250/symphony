@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -60,6 +59,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.cache.ArticleCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
@@ -93,7 +93,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.18.33, Oct 30, 2016
+ * @version 2.24.18.34, Nov 5, 2016
  * @since 0.2.0
  */
 @Service
@@ -175,6 +175,12 @@ public class ArticleQueryService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Article cache.
+     */
+    @Inject
+    private ArticleCache articleCache;
 
     /**
      * Count to fetch article tags for relevant articles.
@@ -2479,7 +2485,13 @@ public class ArticleQueryService {
     private String getArticleMetaDesc(final JSONObject article) {
         Stopwatchs.start("Meta Desc");
 
+        final String articleId = article.optString(Keys.OBJECT_ID);
         try {
+            String articleAbstract = articleCache.getArticleAbstract(articleId);
+            if (StringUtils.isNotBlank(articleAbstract)) {
+                return articleAbstract;
+            }
+
             final int articleType = article.optInt(Article.ARTICLE_TYPE);
             if (Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
                 return "....";
@@ -2490,7 +2502,7 @@ public class ArticleQueryService {
             String ret = article.optString(Article.ARTICLE_CONTENT);
             ret = Markdowns.toHTML(ret);
             ret = Jsoup.clean(ret, Whitelist.basicWithImages());
-            
+
             final int threshold = 20;
             String[] pics = StringUtils.substringsBetween(ret, "<img", "/>");
             if (null != pics) {
@@ -2518,6 +2530,8 @@ public class ArticleQueryService {
                 ret = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
                 ret = ret.replaceAll("\"", "'");
 
+                articleCache.putArticleAbstract(articleId, ret);
+
                 return ret;
             }
 
@@ -2543,6 +2557,8 @@ public class ArticleQueryService {
 
             ret = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
             ret = ret.replaceAll("\"", "'");
+
+            articleCache.putArticleAbstract(articleId, ret);
 
             return ret;
         } finally {
