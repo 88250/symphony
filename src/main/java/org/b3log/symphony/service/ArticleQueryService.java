@@ -2483,18 +2483,22 @@ public class ArticleQueryService {
      * @return meta description
      */
     private String getArticleMetaDesc(final JSONObject article) {
-        Stopwatchs.start("Meta Desc");
-
         final String articleId = article.optString(Keys.OBJECT_ID);
-        try {
-            String articleAbstract = articleCache.getArticleAbstract(articleId);
-            if (StringUtils.isNotBlank(articleAbstract)) {
-                return articleAbstract;
-            }
 
+        String articleAbstract = articleCache.getArticleAbstract(articleId);
+        if (StringUtils.isNotBlank(articleAbstract)) {
+            return articleAbstract;
+        }
+
+        Stopwatchs.start("Meta Desc");
+        try {
             final int articleType = article.optInt(Article.ARTICLE_TYPE);
             if (Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
                 return "....";
+            }
+            
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType) {
+                return langPropsService.get("articleAbstractDiscussionLabel", Latkes.getLocale());
             }
 
             final int length = Integer.valueOf("150");
