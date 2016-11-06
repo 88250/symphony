@@ -9,6 +9,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
+                <div class="fn-hr10"></div>
                 <div class="content activity">
                     <div class="content-reset">
                         ${activityCharacterTitleLabel}
