@@ -29,12 +29,11 @@
                             <a class="ft-gray" href="${servePath}/domain/${domain.domainURI}">${domain.domainTitle}</a>
                             </#list> 
 
-                            <span>
-                                <span class="fn-right action-btns">
-                                <span class="counts">
-                                    ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
-                                    ${cmtLabel} ${tag.tagCommentCount?c} 
-                                </span> &nbsp;
+                  
+                            <span class="fn-right action-btns ft-fade ft-smaller">
+                                <b class="article-level<#if tag.tagReferenceCount lt 40>${(tag.tagReferenceCount/1000)?int}<#else>4</#if>">${tag.tagReferenceCount?c}</b> ${referenceLabel}  &nbsp;•&nbsp;
+                                <b class="article-level<#if tag.tagCommentCount lt 400>${(tag.tagCommentCount/100)?int}<#else>4</#if>">${tag.tagCommentCount?c}</b> ${cmtLabel} 
+                                &nbsp;
                                 <#if isLoggedIn && isFollowing>
                                 <span class="tooltipped tooltipped-n ft-red" aria-label="${unfollowLabel} ${tag.tagFollowerCount}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"></span> ${tag.tagFollowerCount}</span>
                                 <#else>
@@ -43,7 +42,6 @@
                                 <#if isAdminLoggedIn> &nbsp;
                                 <a class="tooltipped tooltipped-n" href="${servePath}/admin/tag/${tag.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                 </#if>
-                                </span>
                             </span>
                         </div>
                         <#if tag.tagIconPath != "">
@@ -75,15 +73,15 @@
                     <div class="module">
                         <div class="module-header fn-clear">
                             <span class="fn-right ft-fade">
-                                <a class="<#if "" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}">${defaultLabel}</a>
+                                <a class="<#if "" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}">${defaultLabel}</a>
                                 /
-                                <a class="<#if "/hot" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/hot">${hotArticlesLabel}</a>
+                                <a class="<#if "/hot" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/hot">${hotArticlesLabel}</a>
                                 /
-                                <a class="<#if "/good" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/good">${goodCmtsLabel}</a>
+                                <a class="<#if "/good" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/good">${goodCmtsLabel}</a>
                                 /
-                                <a class="<#if "/perfect" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/perfect">${perfectLabel}</a>
+                                <a class="<#if "/perfect" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/perfect">${perfectLabel}</a>
                                 /
-                                <a class="<#if "/reply" == current>ft-fade<#else>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/reply">${recentCommentLabel}</a>
+                                <a class="<#if "/reply" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/reply">${recentCommentLabel}</a>
                             </span>
                         </div>
                         <@list listData=articles/>
