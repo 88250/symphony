@@ -5,7 +5,7 @@
 <div class="follow">
     <ol>
         <#list userHomeFollowingTags as followingTag>
-        <li class="fn-clear">
+        <li class="fn-flex">
             <#if "" != followingTag.tagIconPath>
             <a href="${servePath}/tag/${followingTag.tagURI}">
                 <div title="${followingTag.tagTitle}" class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
@@ -13,18 +13,18 @@
             <#else>
             <a class="icon-tags fn-left" href="${servePath}/tag/${followingTag.tagURI}"></a>
             </#if>
-            <div class="fn-left">
+            <div class="fn-flex-1">
                 <h3 class="fn-inline">
                     <a href="${servePath}/tag/${followingTag.tagURI}">${followingTag.tagTitle}</a>
                 </h3>
                 &nbsp;
                 <#if isLoggedIn> 
                 <#if followingTag.isFollowing>
-                <button class="red small" onclick="Util.unfollow(this, '${followingTag.oId}', 'tag')"> 
+                <button class="red small fn-right" onclick="Util.unfollow(this, '${followingTag.oId}', 'tag')"> 
                     ${unfollowLabel}
                 </button>
                 <#else>
-                <button class="green small" onclick="Util.follow(this, '${followingTag.oId}', 'tag')"> 
+                <button class="green small fn-right" onclick="Util.follow(this, '${followingTag.oId}', 'tag')"> 
                     ${followLabel}
                 </button>
                 </#if>

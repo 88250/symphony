@@ -34,7 +34,14 @@
         servePath: "${servePath}",
         staticServePath: "${staticServePath}",
         isLoggedIn: ${isLoggedIn?c},
-        funNeedLoginLabel: '${funNeedLoginLabel}'
+        funNeedLoginLabel: '${funNeedLoginLabel}',
+        notificationCommentedLabel: '${notificationCommentedLabel}',
+        notificationReplyLabel: '${notificationReplyLabel}',
+        notificationAtLabel: '${notificationAtLabel}',
+        notificationFollowingUserLabel: '${notificationFollowingUserLabel}',
+        pointLabel: '${pointLabel}',
+        sameCityLabel: '${sameCityLabel}',
+        systemLabel: '${systemLabel}'
     };
     Util.init(${isLoggedIn?c});
     

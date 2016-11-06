@@ -570,7 +570,7 @@ span.CodeMirror-selectedtext { background: none; }
     border-right: 1px solid white;
     color: transparent;
     text-indent: -10px;
-    margin: 0 6px;
+    margin: 0 5px;
 }
 .editor-toolbar a.icon-fullscreen,
 .editor-toolbar a.icon-contract {
