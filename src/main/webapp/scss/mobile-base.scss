@@ -1297,16 +1297,9 @@ label.anonymous-check {
     top: 40%;
 }
 
-.cmts a.count {
-    color: #FFF;
-    background-color: #b0b0b0;
-    padding: 0px 5px;
-    border-radius: 3px;
-    text-decoration: none;
-}
-
 .cmts a.count:visited {
-    background-color: #ddd;
+    background-color: #f6f6f6;
+    color: #999;
 }
 
 .cm-s-default.CodeMirror {
@@ -2454,7 +2447,8 @@ code .dec { color: initial; } /* decimal - blue */
 } 
 
 .index a.count:visited {
-    background-color: #ddd;
+    background-color: #f6f6f6;
+    color: #999;
 }
 
 .index .module-list .title {
