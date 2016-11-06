@@ -502,22 +502,6 @@ label.cmt-anonymous {
     .list-info {
         line-height: 20px;
     }
-
-    .level0 {
-        color: $fade;
-    }
-    .level1 {
-        color: #ffcc00;
-    }
-    .level2 {
-        color: #ffc1cc;
-    }
-    .level3 {
-        color: #ff6633;
-    }
-    .level4 {
-        color: $red;
-    }
 }
 
 .heat {
@@ -589,6 +573,22 @@ label.cmt-anonymous {
     100% {
         right: 0;
     }
+}
+
+.article-level0 {
+    color: $fade;
+}
+.article-level1 {
+    color: #ffcc00;
+}
+.article-level2 {
+    color: #ffc1cc;
+}
+.article-level3 {
+    color: #ff6633;
+}
+.article-level4 {
+    color: $red;
 }
 /* end article list */
 

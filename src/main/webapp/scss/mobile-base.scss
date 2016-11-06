@@ -475,7 +475,7 @@ a[class^="icon-"].ft-fade:hover {
 }
 
 .ft-red {
-    color: #911;
+    color: $red;
 }
 
 .ft-blue {
@@ -588,7 +588,7 @@ button.green:active {
 
 button.red,
 .btn.red {
-    color: #911;
+    color: $red;
 }
 
 button.red:hover,
@@ -865,7 +865,7 @@ a[class*=" icon-"]:hover {
 
 /* start tip */
 .tip.error {
-    color: #911;
+    color: $red;
     background-color: #fcdede;
     border: 1px solid #d2b2b2;
 }
@@ -1579,7 +1579,7 @@ ul.CodeMirror-hints {
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
     font-weight: bold;
-    color: #911;
+    color: $red;
     font-style: normal;
 }
 
@@ -1732,7 +1732,7 @@ h2.article-title > a:hover {
     top: -8px;
     left: 0;
     cursor: pointer;
-    color: #911;
+    color: $red;
 }
 
 .comment-submit {
@@ -2134,7 +2134,7 @@ label.cmt-anonymous {
 .heat {
     position: absolute;
     height: 5px;
-    background-color: #911;
+    background-color: $red;
     z-index: 1;
     bottom: -3px;
     right: 0;
@@ -2144,7 +2144,7 @@ label.cmt-anonymous {
 .point-remove {
     position: absolute;
     height: 5px;
-    background-color: #911;
+    background-color: $red;
     z-index: 1;
     bottom: -3px;
     right: 0px;
@@ -2200,6 +2200,22 @@ label.cmt-anonymous {
     100% {
         right: 0;
     }
+}
+
+.article-level0 {
+    color: $fade;
+}
+.article-level1 {
+    color: #ffcc00;
+}
+.article-level2 {
+    color: #ffc1cc;
+}
+.article-level3 {
+    color: #ff6633;
+}
+.article-level4 {
+    color: $red;
 }
 /* end article list */
 
