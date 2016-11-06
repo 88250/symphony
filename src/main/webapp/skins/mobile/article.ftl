@@ -22,10 +22,10 @@
                     <span class="fn-right">
                         <span id="thankArticle" aria-label="${thankLabel}"
                               class="tooltipped tooltipped-n has-cnt<#if article.thanked> ft-red</#if>"
-                              <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart"></span> ${article.thankedCnt}</span> &nbsp;
+                              <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart"></span> ${article.thankedCnt}</span> 
                         <span class="tooltipped tooltipped-n has-cnt<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>" aria-label="${upLabel}" onclick="Article.voteUp('${article.oId}', 'article', this)">
-                            <span class="icon-thumbs-up"></span> ${article.articleGoodCnt}</span> &nbsp;
-                        <span  class="tooltipped tooltipped-n has-cnt<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>" aria-label="${downLabel}" onclick="Article.voteDown('${article.oId}', 'article', this)"><span class="icon-thumbs-down"></span> ${article.articleBadCnt}</span> &nbsp;
+                            <span class="icon-thumbs-up"></span> ${article.articleGoodCnt}</span>
+                        <span  class="tooltipped tooltipped-n has-cnt<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>" aria-label="${downLabel}" onclick="Article.voteDown('${article.oId}', 'article', this)"><span class="icon-thumbs-down"></span> ${article.articleBadCnt}</span> 
                         <#if isLoggedIn && isFollowing>
                         <span class="tooltipped tooltipped-n has-cnt ft-red" aria-label="${uncollectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span> ${article.articleCollectCnt}</span>
                         <#else>
@@ -86,10 +86,14 @@
                         <a title="${cmtLabel}" rel="nofollow" class="ft-gray" href="#comments">
                             ${cmtLabel} ${article.articleCommentCount}
                         </a>
-                        <br/>
                         <#if 0 == article.articleAuthor.userUAStatus>
                         <span id="articltVia" class="ft-fade" data-ua="${article.articleUA}"></span>
                         </#if>
+                        <div class="article-tags">
+                        <#list article.articleTagObjs as articleTag>
+                        <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a>&nbsp;
+                        </#list>
+                        </div>
                     </div>
                 </div>
 
@@ -99,12 +103,6 @@
                 <div id="thoughtProgress"><span class="bar"></span><span class="icon-video"></span><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
                 <div class="content-reset article-content"></div>
                 </#if>
-
-                <div class="article-tags">
-                <#list article.articleTagObjs as articleTag>
-                <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a>&nbsp;
-                </#list>
-                </div>
 
                 <div class="fn-clear">
                     <div class="share fn-right">

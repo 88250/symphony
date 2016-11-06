@@ -1063,6 +1063,17 @@ a[class*=" icon-"]:hover {
 .pagination span.gap {
     color: #BBB;
 }
+
+.pagination select {
+    border: 0;
+    color: #777;
+    padding: 4px 5px;
+    white-space: nowrap;
+    float: left;
+    border-bottom: 1px solid #DADADA;
+    border-radius: 0;
+    background: linear-gradient(#fff, #EFEFEF);
+}
 /* end pagination */
 
 /* start dialog */
@@ -1675,7 +1686,7 @@ ul.CodeMirror-hints {
 
 .article-info > div.article-params {
     position: absolute;
-    top: 0;
+    top: -2px;
     left: 40px;
     font-size: 12px;
     min-height: 30px;
@@ -1882,8 +1893,9 @@ label.cmt-anonymous {
     width: 100%;
 }
 
-.article-tags {
-    margin: 5px 0 -5px;
+.article-tags .tag {
+    margin: 0;
+    padding: 0 3px;
 }
 
 .share {

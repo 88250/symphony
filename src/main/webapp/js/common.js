@@ -987,6 +987,16 @@ var Util = {
                 Util.login();
             }
         });
+        // 移动端分页
+        if ($('.pagination select').length === 1) {
+            $('.pagination select').change(function () {
+                var url = $(this).data('url') + '?p=' + $(this).val();
+                if ($(this).data('param')) {
+                    url += '&' + $(this).data('param');
+                }
+                window.location.href = url;
+            });
+        };
         // search input
         $(".nav .icon-search").click(function () {
             $(".nav input.search").focus();
