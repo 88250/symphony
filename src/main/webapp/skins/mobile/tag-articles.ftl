@@ -29,12 +29,12 @@
                     <span class="article-action">
                     <span class='fn-right'>
                         <#if isLoggedIn && isFollowing>
-                        <span class="tooltipped tooltipped-n fn-pointer" aria-label="${unfollowLabel} ${tag.tagFollowerCount}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="ft-red icon-star"></span></span>
+                        <span class="ft-red" onclick="Util.unfollow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"></span> ${tag.tagFollowerCount}</span>
                         <#else>
-                        <span class="tooltipped tooltipped-n fn-pointer" aria-label="${followLabel} ${tag.tagFollowerCount}" onclick="Util.follow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"></span></span>
+                        <span onclick="Util.follow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"></span> ${tag.tagFollowerCount}</span>
                         </#if>
                         <#if isAdminLoggedIn> &nbsp;
-                        <a class="ft-a-icon tooltipped tooltipped-n" href="${servePath}/admin/tag/${tag.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                        <a href="${servePath}/admin/tag/${tag.oId}"><span class="icon-setting"></span></a>
                         </#if>
                     </span>
                     </span>
