@@ -10,7 +10,7 @@
 <#if 0 == user.userFollowingArticleStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="list">
     <#if userHomeFollowingArticles?size == 0>
-        <p class="ft-center ft-gray home-invisible">${chickenEggLabel}</p>
+    <p class="ft-center ft-gray home-invisible">${chickenEggLabel}</p>
     </#if>
     <ul class="fn-clear">
         <#list userHomeFollowingArticles as article>
@@ -19,7 +19,7 @@
             <a aria-label="${article.articleAuthorName}" class="tooltipped tooltipped-s"
                target="_blank" rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
                 <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div>
-            <#if "someone" != article.articleAuthorName></a></#if>
+                <#if "someone" != article.articleAuthorName></a></#if>
             <div class="fn-flex-1">
                 <h2>
                     <#if 1 == article.articlePerfect>
@@ -42,7 +42,13 @@
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span> 
             </div>
+            <#if isLoggedIn>
+            <#if article.isFollowing>
             <button class="mid" onclick="Util.unfollow(this, '${article.oId}', 'article')">${uncollectLabel}</button>
+            <#else>
+            <button class="mid" onclick="Util.follow(this, '${article.oId}', 'article')">${followLabel}</button>
+            </#if>
+            </#if>
         </li>
         </#list>
     </ul>
