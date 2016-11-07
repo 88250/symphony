@@ -1121,7 +1121,7 @@
             $(editor.element.parentElement).css({
                 'position': 'fixed',
                 'top': '0',
-                'z-index': '100',
+                'z-index': '90',
                 'left': '0',
                 'margin-top': '0',
                 'right': '0'

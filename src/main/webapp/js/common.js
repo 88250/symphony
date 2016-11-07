@@ -19,9 +19,9 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @author <a href="http://88250.b3log.org">Liang Ding</a>g
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.38.25.36, Nov 6, 2016
+ * @version 1.38.25.36, Nov 7, 2016
  */
 
 /**
@@ -1174,7 +1174,7 @@ var Util = {
                         $("#loginTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
 
                         if (result.needCaptcha && "" !== result.needCaptcha) {
-                            $('#captchaImg').parent().parent().show();
+                            $('#captchaImg').parent().show();
                             $("#captchaImg").attr("src", Label.servePath + "/captcha/login?needCaptcha="
                                     + result.needCaptcha + "&t=" + Math.random())
                                     .click(function () {

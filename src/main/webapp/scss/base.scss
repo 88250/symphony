@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.19.46, Nov 3, 2016
+ * @version 2.25.19.47, Nov 6, 2016
  */
 
 @import "variables";
@@ -708,14 +708,14 @@ button.green,
     color: #fff;
     text-shadow: 0 -1px 0 rgba(0,0,0,0.15);
     background-color: #60b044;
-    background-image: linear-gradient(#8add6d, #60b044);
+    background-image: none;
     border-color: #5ca941;
 }
 
 button.green:hover,
 .btn.green:hover{
     background-color: #569e3d;
-    background: linear-gradient(#79d858, #569e3d);
+    background-image: none;
 }
 
 button.green:active {
@@ -1272,7 +1272,7 @@ a[class*=" icon-"]:hover {
 }
 
 .main {
-    background-color: #e5e5e5;
+    background-color: #f2f2f2;
     padding: 20px 0;
     background-image: url('../images/index-bg.svg');
     background-attachment: fixed;
@@ -1415,14 +1415,58 @@ a[class*=" icon-"]:hover {
         right: 0;
         top: 48px;
         z-index: 20;
-        width: 250px;
+        width: 220px;
         font-size: 14px;
         line-height: 1.6;
+
+        input[type="text"],
+        input[type="password"],
+        button {
+            margin: 10px 0;
+        }
+
+        button {
+            width: 100%;
+        }
+
+        .login-wrap {
+            position: relative;
+
+            input {
+                background-color: #FFF;
+                padding-left: 36px;
+            }
+
+            span {
+                color: #999;
+                position: absolute;
+                top: 16px;
+                font-size: 20px;
+                left: 10px;
+            }
+        }
+
+        #captchaImg {
+            top: 11px;
+            position: absolute;
+            height: 31px;
+            left: 1px;
+            border-radius: 3px 0 0 3px;
+        }
+
+        #captchaLogin {
+            padding-left: 91px;
+        }
     }
 
-    .form input[type="text"],
-    .form input[type="password"] {
-        margin: 10px 0;
+    .form:after {
+        top: -14px;
+        right: 74px;
+        left: auto;
+        position: absolute;
+        border: 7px solid transparent;
+        border-bottom-color: #fff;
+        content: " ";
     }
 
     .person-list {
