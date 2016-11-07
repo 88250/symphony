@@ -53,7 +53,8 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="tab-current fn-clear">
-                <div onclick="$(this).next().next().toggle()">
+                <div class="fn-hr5"></div>
+                <div onclick="$(this).next().next().slideToggle()">
                     <#if type == "index">
                     ${consoleIndexLabel}
                     <#elseif type == "users" || type == "addUser">

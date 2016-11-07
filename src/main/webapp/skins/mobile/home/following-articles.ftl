@@ -34,10 +34,12 @@
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span> 
             </div>
-            <#if article.articleCommentCount != 0>
-            <div class="cmts" title="${cmtLabel}">
-                <a class="count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleCommentCount}</a>
-            </div>
+            <#if isLoggedIn>
+            <#if article.isFollowing>
+            <button class="green small fn-right" onclick="Util.unfollow(this, '${article.oId}', 'article')">${uncollectLabel}</button>
+            <#else>
+            <button class="green small fn-right" onclick="Util.follow(this, '${article.oId}', 'article')">${followLabel}</button>
+            </#if>
             </#if>
         </li>
         </#list>

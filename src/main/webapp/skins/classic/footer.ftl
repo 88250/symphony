@@ -59,13 +59,13 @@
         staticServePath: "${staticServePath}",
         isLoggedIn: ${isLoggedIn?c},
         funNeedLoginLabel: '${funNeedLoginLabel}',
-				notificationCommentedLabel: '${notificationCommentedLabel}',
-				notificationReplyLabel: '${notificationReplyLabel}',
-				notificationAtLabel: '${notificationAtLabel}',
-				notificationFollowingUserLabel: '${notificationFollowingUserLabel}',
-				pointLabel: '${pointLabel}',
-				sameCityLabel: '${sameCityLabel}',
-				systemLabel: '${systemLabel}'
+		notificationCommentedLabel: '${notificationCommentedLabel}',
+		notificationReplyLabel: '${notificationReplyLabel}',
+		notificationAtLabel: '${notificationAtLabel}',
+		notificationFollowingUserLabel: '${notificationFollowingUserLabel}',
+		pointLabel: '${pointLabel}',
+		sameCityLabel: '${sameCityLabel}',
+		systemLabel: '${systemLabel}'
 
     };
 

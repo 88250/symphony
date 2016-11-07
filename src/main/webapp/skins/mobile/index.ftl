@@ -11,7 +11,7 @@
         <#include "header.ftl">     
         <@subNav '' ''/>
         <div class="main">
-            <div class="wrapper">
+            <div class="wrapper fn-clear">
                 <div class="item mid">
                     <a href="${servePath}/recent" class="item-header" style="background-image: url(${hotBgIcon});">${latestLabel}</a>
                     <div class="module-panel">

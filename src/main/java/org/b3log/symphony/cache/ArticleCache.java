@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Oct 13, 2016
+ * @version 1.1.1.1, Nov 5, 2016
  * @since 1.4.0
  */
 @Named
@@ -41,10 +41,37 @@ public class ArticleCache {
     /**
      * Article cache.
      */
-    private static final Cache CACHE = CacheFactory.getCache(Article.ARTICLES);
+    private static final Cache ARTICLE_CACHE = CacheFactory.getCache(Article.ARTICLES);
+
+    /**
+     * Article abstract cache.
+     */
+    private static final Cache ARTICLE_ABSTRACT_CACHE = CacheFactory.getCache(Article.ARTICLES + "_"
+            + Article.ARTICLE_T_PREVIEW_CONTENT);
 
     static {
-        CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
+        ARTICLE_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
+        ARTICLE_ABSTRACT_CACHE.setMaxCount(1024);
+    }
+
+    /**
+     * Gets an article abstract by the specified article id.
+     *
+     * @param articleId the specified article id
+     * @return article abstract, return {@code null} if not found
+     */
+    public String getArticleAbstract(final String articleId) {
+        return (String) ARTICLE_ABSTRACT_CACHE.get(articleId);
+    }
+
+    /**
+     * Puts an article abstract by the specified article id and article abstract.
+     *
+     * @param articleId the specified article id
+     * @param articleAbstract the specified article abstract
+     */
+    public void putArticleAbstract(final String articleId, final String articleAbstract) {
+        ARTICLE_ABSTRACT_CACHE.put(articleId, articleAbstract);
     }
 
     /**
@@ -54,7 +81,7 @@ public class ArticleCache {
      * @return article, returns {@code null} if not found
      */
     public JSONObject getArticle(final String id) {
-        final JSONObject article = (JSONObject) CACHE.get(id);
+        final JSONObject article = (JSONObject) ARTICLE_CACHE.get(id);
         if (null == article) {
             return null;
         }
@@ -68,7 +95,10 @@ public class ArticleCache {
      * @param article the specified article
      */
     public void putArticle(final JSONObject article) {
-        CACHE.put(article.optString(Keys.OBJECT_ID), JSONs.clone(article));
+        final String articleId = article.optString(Keys.OBJECT_ID);
+
+        ARTICLE_CACHE.put(articleId, JSONs.clone(article));
+        ARTICLE_ABSTRACT_CACHE.remove(articleId);
     }
 
     /**
@@ -77,6 +107,7 @@ public class ArticleCache {
      * @param id the specified article id
      */
     public void removeArticle(final String id) {
-        CACHE.remove(id);
+        ARTICLE_CACHE.remove(id);
+        ARTICLE_ABSTRACT_CACHE.remove(id);
     }
 }

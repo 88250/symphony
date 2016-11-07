@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Tag repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Oct 13, 2016
+ * @version 1.2.0.1, Nov 4, 2016
  * @since 0.2.0
  */
 @Repository
@@ -140,7 +140,9 @@ public class TagRepository extends AbstractRepository {
             LOGGER.log(Level.ERROR, "Encode tag URI [" + tagURI + "] failed", e);
         }
 
-        final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG_URI, FilterOperator.EQUAL, uri)).setPageCount(1);
+        final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG_URI, FilterOperator.EQUAL, uri))
+                .addSort(Tag.TAG_REFERENCE_CNT, SortDirection.DESCENDING)
+                .setPageCount(1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 

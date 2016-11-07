@@ -16,6 +16,8 @@
                 <div class="form fn-flex-1 fn-clear">
                     <input type="text" id="articleTitle" tabindex="1"
                            value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
+                    <div class="fn-hr10"></div>
+                    <div class="fn-hr10"></div>
                     <div class="article-content">
                         <textarea id="articleContent" tabindex="2"
                                   placeholder="<#if !article?? && 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if><#if at??>@${at}</#if></textarea>

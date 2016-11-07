@@ -59,6 +59,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.cache.ArticleCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
@@ -92,7 +93,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.18.33, Oct 30, 2016
+ * @version 2.24.18.35, Nov 5, 2016
  * @since 0.2.0
  */
 @Service
@@ -174,6 +175,12 @@ public class ArticleQueryService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Article cache.
+     */
+    @Inject
+    private ArticleCache articleCache;
 
     /**
      * Count to fetch article tags for relevant articles.
@@ -2476,25 +2483,32 @@ public class ArticleQueryService {
      * @return meta description
      */
     private String getArticleMetaDesc(final JSONObject article) {
-        Stopwatchs.start("Meta Desc");
+        final String articleId = article.optString(Keys.OBJECT_ID);
 
+        String articleAbstract = articleCache.getArticleAbstract(articleId);
+        if (StringUtils.isNotBlank(articleAbstract)) {
+            return articleAbstract;
+        }
+
+        Stopwatchs.start("Meta Desc");
         try {
             final int articleType = article.optInt(Article.ARTICLE_TYPE);
             if (Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
                 return "....";
             }
+            
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType) {
+                return langPropsService.get("articleAbstractDiscussionLabel", Latkes.getLocale());
+            }
 
             final int length = Integer.valueOf("150");
 
             String ret = article.optString(Article.ARTICLE_CONTENT);
-            ret = Jsoup.clean(ret, Whitelist.none());
-            ret = StringUtils.trim(ret);
-            ret = StringUtils.replaceEach(ret,
-                    new String[]{"&nbsp;", "#", "*", "-", "+", ">"},
-                    new String[]{"", "", "", "", "", ""});
+            ret = Markdowns.toHTML(ret);
+            ret = Jsoup.clean(ret, Whitelist.basicWithImages());
 
             final int threshold = 20;
-            String[] pics = StringUtils.substringsBetween(ret, "![", ")");
+            String[] pics = StringUtils.substringsBetween(ret, "<img", "/>");
             if (null != pics) {
                 if (pics.length > threshold) {
                     pics = Arrays.copyOf(pics, threshold);
@@ -2502,8 +2516,8 @@ public class ArticleQueryService {
 
                 final String[] picsRepl = new String[pics.length];
                 for (int i = 0; i < picsRepl.length; i++) {
-                    picsRepl[i] = langPropsService.get("picTagLabel");
-                    pics[i] = "![" + pics[i] + ")";
+                    picsRepl[i] = langPropsService.get("picTagLabel", Latkes.getLocale());
+                    pics[i] = "<img" + pics[i] + "/>";
 
                     if (i > threshold) {
                         break;
@@ -2513,17 +2527,19 @@ public class ArticleQueryService {
                 ret = StringUtils.replaceEach(ret, pics, picsRepl);
             }
 
-            if (ret.length() >= length) {
+            if (ret.length() >= length && null != pics) {
                 ret = StringUtils.substring(ret, 0, length)
                         + " ....";
 
                 ret = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
                 ret = ret.replaceAll("\"", "'");
 
+                articleCache.putArticleAbstract(articleId, ret);
+
                 return ret;
             }
 
-            String[] urls = StringUtils.substringsBetween(ret, "[", ")");
+            String[] urls = StringUtils.substringsBetween(ret, "<a", "</a>");
             if (null != urls) {
                 if (urls.length > threshold) {
                     urls = Arrays.copyOf(urls, threshold);
@@ -2531,8 +2547,8 @@ public class ArticleQueryService {
 
                 final String[] urlsRepl = new String[urls.length];
                 for (int i = 0; i < urlsRepl.length; i++) {
-                    urlsRepl[i] = langPropsService.get("urlTagLabel");
-                    urls[i] = "[" + urls[i] + ")";
+                    urlsRepl[i] = langPropsService.get("urlTagLabel", Latkes.getLocale());
+                    urls[i] = "<a" + urls[i] + "</a>";
                 }
 
                 ret = StringUtils.replaceEach(ret, urls, urlsRepl);
@@ -2545,6 +2561,8 @@ public class ArticleQueryService {
 
             ret = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
             ret = ret.replaceAll("\"", "'");
+
+            articleCache.putArticleAbstract(articleId, ret);
 
             return ret;
         } finally {

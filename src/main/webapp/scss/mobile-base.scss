@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.15, Oct 27, 2016
+ * @version 1.5.7.15, Nov 6, 2016
  */
 
 @import "variables";
@@ -250,139 +250,148 @@ blockquote {
 }
 
 .content-reset {
-    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+    font-family: $font-family-base;
     word-wrap: break-word;
     overflow: hidden;
     line-height: 1.5;
-    text-align: justify;
-}
 
-.content-reset ul,
-.content-reset ol {
-    padding-left: 2em;
-    margin-top: 0;
-    margin-bottom: 16px;
-}
+    ul,
+    ol {
+        padding-left: 2em;
+        margin-top: 0;
+        margin-bottom: 16px;
+    }
 
-.content-reset h1, 
-.content-reset h2, 
-.content-reset h3, 
-.content-reset h4, 
-.content-reset h5, 
-.content-reset h6 {
-    margin-top: 24px;
-    margin-bottom: 16px;
-    font-weight: 600;
-    line-height: 1.25;
-}
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin-top: 24px;
+        margin-bottom: 16px;
+        font-weight: 600;
+        line-height: 1.25;
+    }
 
-.content-reset h1 {
-    padding-bottom: 0.3em;
-    font-size: 2em;
-}
+    h1 {
+        padding-bottom: 0.3em;
+        font-size: 2em;
+    }
 
-.content-reset h2 {
-    padding-bottom: 0.3em;
-    font-size: 1.5em;
-}
+    h2 {
+        padding-bottom: 0.3em;
+        font-size: 1.5em;
+    }
 
-.content-reset h3 {
-    font-size: 1.25em;
-}
+    h3 {
+        font-size: 1.25em;
+    }
 
-.content-reset h4 {
-    font-size: 1em
-}
+    h4 {
+        font-size: 1em
+    }
 
-.content-reset h5 {
-    font-size: 0.875em;
-}
+    h5 {
+        font-size: 0.875em;
+    }
 
-.content-reset h6 {
-    font-size: 0.85em;
-}
+    h6 {
+        font-size: 0.85em;
+    }
 
-.content-reset p {
-    margin-top: 0;
-    margin-bottom: 16px;
-}
+    p {
+        margin-top: 0;
+        margin-bottom: 16px;
+    }
 
-.content-reset blockquote {
-    padding: 0 1em;
-    color: #777;
-    border-left: 0.25em solid #ddd;
-    margin-bottom: 16px;
-}
+    blockquote {
+        padding: 0 1em;
+        color: #777;
+        border-left: 0.25em solid #ddd;
+        margin-bottom: 16px;
+    }
 
-.content-reset blockquote p {
-    margin: 0;
-}
+    blockquote p {
+        margin: 0;
+    }
 
-.content-reset iframe {
-    border: 1px solid #ccc;
-}
+    iframe {
+        border: 1px solid #ccc;
+    }
 
-.content-reset table {
-    width: 100%; 
-    border: 1px solid #dedede; 
-    margin: 15px auto;
-    border-collapse: collapse; 
-    empty-cells: show; 
-}
+    table {
+        width: 100%;
+        border: 1px solid #dedede;
+        margin: 15px auto;
+        border-collapse: collapse;
+        empty-cells: show;
+    }
 
-.content-reset thead {
-    text-align: center;
-}
+    thead {
+        text-align: center;
+    }
 
-.content-reset td,
-.content-reset th {
-    height: 35px; 
-    border: 1px solid #dedede; 
-    padding: 0 10px; 
-}
+    td,
+    th {
+        height: 35px;
+        border: 1px solid #dedede;
+        padding: 0 10px;
+    }
 
-.content-reset th {
-    font-weight: bold; 
-    text-align: center !important; 
-    background: rgba(158,188,226,0.2); 
-}
+    th {
+        font-weight: bold;
+        text-align: center !important;
+        background: rgba(158,188,226,0.2);
+    }
 
-.content-reset tbody tr:nth-child(2n) {
-    background: rgba(158,188,226,0.12); 
-}
+    tbody tr:nth-child(2n) {
+        background: rgba(158,188,226,0.12);
+    }
 
-.content-reset tr:hover {
-    background: #efefef; 
-}
+    tr:hover {
+        background: #efefef;
+    }
 
-.content-reset code {
-    padding: 0;
-    padding-top: 0.2em;
-    padding-bottom: 0.2em;
-    margin: 0;
-    font-size: 85%;
-    background-color: rgba(0,0,0,0.04);
-    border-radius: 3px;
-    vertical-align: text-bottom;
+    code {
+        padding: 0.2em 0.4em;
+        margin: 0;
+        font-size: 85%;
+        background-color: rgba(252, 41, 41, 0.12);
+        border-radius: 3px;
+        color: $red;
+        font-family: $font-family-code;
+    }
 
-}
+    pre > code {
+        padding: 0.5em;
+        border-radius: 0;
+        color: #333;
+        background-color: rgba(0,0,0,0.04);
+        background-image: url(../images/code-bg.png);
+        background-size: 20px 20px;
+        border-radius: 5px;
+    }
 
-.content-reset code::before, 
-.content-reset code::after {
-    letter-spacing: -0.2em;
-    content: "\00a0";
-}
-
-.content-reset pre > code {
-    padding: 0.5em;
-    border-radius: 0;
+    kbd {
+        display: inline-block;
+        padding: 3px 5px;
+        font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        line-height: 10px;
+        color: #555;
+        vertical-align: middle;
+        background-color: #fcfcfc;
+        border: solid 1px #ccc;
+        border-bottom-color: #bbb;
+        border-radius: 3px;
+        box-shadow: inset 0 -1px 0 #bbb;
+    }
 }
 /* end reset */
 
 /* start function */
 .fn-flex {
     display: flex;
-    display: -webkit-box;
 }
 
 .fn-flex-1 {
@@ -466,7 +475,7 @@ a[class^="icon-"].ft-fade:hover {
 }
 
 .ft-red {
-    color: #911;
+    color: $red;
 }
 
 .ft-blue {
@@ -493,6 +502,17 @@ a[class^="icon-"].ft-fade:hover {
 
 .fn-inline {
     display: inline-block;
+}
+
+.count {
+    text-decoration: none;
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: #666;
+    background-color: #eee;
+    border-radius: 20px;
 }
 /* end function */
 
@@ -568,7 +588,7 @@ button.green:active {
 
 button.red,
 .btn.red {
-    color: #911;
+    color: $red;
 }
 
 button.red:hover,
@@ -845,7 +865,7 @@ a[class*=" icon-"]:hover {
 
 /* start tip */
 .tip.error {
-    color: #911;
+    color: $red;
     background-color: #fcdede;
     border: 1px solid #d2b2b2;
 }
@@ -1043,6 +1063,17 @@ a[class*=" icon-"]:hover {
 .pagination span.gap {
     color: #BBB;
 }
+
+.pagination select {
+    border: 0;
+    color: #777;
+    padding: 4px 5px;
+    white-space: nowrap;
+    float: left;
+    border-bottom: 1px solid #DADADA;
+    border-radius: 0;
+    background: linear-gradient(#fff, #EFEFEF);
+}
 /* end pagination */
 
 /* start dialog */
@@ -1091,7 +1122,6 @@ a[class*=" icon-"]:hover {
 .main {
     background-color: #FFF;
     padding-bottom: 10px;
-    padding-top: 1px;
 }
 /* end framework */
 
@@ -1102,7 +1132,6 @@ a[class*=" icon-"]:hover {
     padding: 5px 0;
     z-index: 99;
     background-color: $blue;
-    border-bottom: 1px solid #e5e5e5;
 }
 
 .nav .head-fn form {
@@ -1279,16 +1308,9 @@ label.anonymous-check {
     top: 40%;
 }
 
-.cmts a.count {
-    color: #FFF;
-    background-color: #b0b0b0;
-    padding: 0px 5px;
-    border-radius: 3px;
-    text-decoration: none;
-}
-
 .cmts a.count:visited {
-    background-color: #ddd;
+    background-color: #f6f6f6;
+    color: #999;
 }
 
 .cm-s-default.CodeMirror {
@@ -1557,7 +1579,7 @@ ul.CodeMirror-hints {
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
     font-weight: bold;
-    color: #911;
+    color: $red;
     font-style: normal;
 }
 
@@ -1655,12 +1677,6 @@ ul.CodeMirror-hints {
     float: left;
     text-decoration: none;
     margin-top: 10px;
-    color: #333;
-}
-
-.article-action .fn-right > a:hover,
-.article-action .fn-right > span:hover {
-    color: #4183C4;
 }
 
 .article-info {
@@ -1670,7 +1686,7 @@ ul.CodeMirror-hints {
 
 .article-info > div.article-params {
     position: absolute;
-    top: 0;
+    top: -2px;
     left: 40px;
     font-size: 12px;
     min-height: 30px;
@@ -1716,7 +1732,7 @@ h2.article-title > a:hover {
     top: -8px;
     left: 0;
     cursor: pointer;
-    color: #911;
+    color: $red;
 }
 
 .comment-submit {
@@ -1877,8 +1893,9 @@ label.cmt-anonymous {
     width: 100%;
 }
 
-.article-tags {
-    margin: 5px 0 -5px;
+.article-tags .tag {
+    margin: 0;
+    padding: 0 3px;
 }
 
 .share {
@@ -1998,8 +2015,7 @@ label.cmt-anonymous {
 
 /* start domains */
 .domains {
-    width: 288px;
-    margin: 0 auto;
+    border-bottom: 2px solid $red;
 }
 
 .domains svg {
@@ -2008,22 +2024,18 @@ label.cmt-anonymous {
 
 .domains a {
     height: 17px;
-    float: left;
-    padding: 4px 8px;
+    text-align: center;
+    padding: 10px 5px;
     color: #999;
     text-decoration: none;
-    border-radius: 2px;
-    margin: 10px 5px 0 5px;
-    background-color: #f7f7f7;
-    border: 1px solid #DDD;
     font-size: 12px;
     line-height: 16px;
+    display: block;
+    flex: 1;
 }
 
 .domains a.selected {
-    color: #fff;
-    background-color: #333;
-    border-color: #333;
+    color: $blue;
 }
 
 .domains-count {
@@ -2122,7 +2134,7 @@ label.cmt-anonymous {
 .heat {
     position: absolute;
     height: 5px;
-    background-color: #911;
+    background-color: $red;
     z-index: 1;
     bottom: -3px;
     right: 0;
@@ -2132,7 +2144,7 @@ label.cmt-anonymous {
 .point-remove {
     position: absolute;
     height: 5px;
-    background-color: #911;
+    background-color: $red;
     z-index: 1;
     bottom: -3px;
     right: 0px;
@@ -2188,6 +2200,22 @@ label.cmt-anonymous {
     100% {
         right: 0;
     }
+}
+
+.article-level0 {
+    color: $fade;
+}
+.article-level1 {
+    color: #ffcc00;
+}
+.article-level2 {
+    color: #ffc1cc;
+}
+.article-level3 {
+    color: #ff6633;
+}
+.article-level4 {
+    color: $red;
 }
 /* end article list */
 
@@ -2293,7 +2321,7 @@ label.cmt-anonymous {
 }
 
 .tag-articles .content {
-    margin-top: 10px;
+    padding-top: 10px;
 }
 
 .tag-articles h1.fn-inline {
@@ -2440,11 +2468,6 @@ code .dec { color: initial; } /* decimal - blue */
     z-index: 3;
 }
 .index a.count {
-    color: #FFF;
-    background-color: #b0b0b0;
-    padding: 0px 5px;
-    border-radius: 3px;
-    text-decoration: none;
     position: absolute;
     right: 0;
     top: 50%;
@@ -2452,7 +2475,8 @@ code .dec { color: initial; } /* decimal - blue */
 } 
 
 .index a.count:visited {
-    background-color: #ddd;
+    background-color: #f6f6f6;
+    color: #999;
 }
 
 .index .module-list .title {
@@ -2643,7 +2667,7 @@ code .dec { color: initial; } /* decimal - blue */
 .tab-current {
     background-color: #fafafa;
     border-bottom: 1px solid #eee;
-    padding: 10px 10px 5px;
+    padding: 5px 10px;
     font-size: 14px;
     font-weight: bold;
 }
@@ -2666,17 +2690,6 @@ code .dec { color: initial; } /* decimal - blue */
 /* start notifications */
 .notification-tab a:hover {
     text-decoration: none;
-}
-
-.notification-tab .counter {
-    background-color: #eee;
-    border-radius: 2px 2px 2px 2px;
-    box-shadow: 0 -1px 0 #e3e3e3 inset;
-    color: #999;
-    font-size: 11px;
-    font-weight: bold;
-    padding: 2px 5px;
-    margin-left: 5px;
 }
 
 .notification .read {
@@ -2706,10 +2719,6 @@ code .dec { color: initial; } /* decimal - blue */
     position: absolute;
     left: 45px;
     top: 45px;
-}
-
-.follow button {
-    margin-bottom: 7px;
 }
 
 .follow .icon-tags {
@@ -2835,3 +2844,8 @@ code .dec { color: initial; } /* decimal - blue */
     margin: 20px 10px;
 }
 /* end 403 */
+/* start editor */
+.editor-toolbar a.icon-fullscreen {
+    display: none;
+}
+/* end editor */

@@ -46,23 +46,24 @@
                                 <#if article.articleAnonymous == 0>
                                 <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-gray"></#if><strong class="ft-gray">${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
                                 <span class="ft-gray">
-                                    <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
-                                    • <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
-                                    </#if>
-                                    •
-                                    ${article.timeAgo}
-                                    •
-                                    ${viewLabel}
+                                    &nbsp;•&nbsp;
+                                    <a rel="nofollow" class="ft-gray" href="#comments">
+                                        <b class="article-level<#if article.articleCommentCount lt 40>${(article.articleCommentCount/10)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a>
+                                    &nbsp;•&nbsp;
+                                    <span class="article-level<#if article.articleViewCount lt 400>${(article.articleViewCount/100)?int}<#else>4</#if>">
                                     <#if article.articleViewCount < 1000>
                                     ${article.articleViewCount}
                                     <#else>
                                     ${article.articleViewCntDisplayFormat}
                                     </#if>
-                                    •
+                                    </span>
+                                    ${viewLabel}
+                                    &nbsp;•&nbsp;
+                                    ${article.timeAgo}
+                                    <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
+                                    &nbsp;•&nbsp; <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
+                                    </#if>
                                 </span>
-                                <a rel="nofollow" class="ft-gray" href="#comments">
-                                    ${cmtLabel} ${article.articleCommentCount}
-                                </a>
                                 <br/>
                                 <#list article.articleTagObjs as articleTag>
                                 <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a>&nbsp;

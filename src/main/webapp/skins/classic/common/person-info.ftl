@@ -28,7 +28,7 @@
         </ul>
 
         <div class="fn-clear ranking">
-            <span class="ft-red">♠</span> <a href=""><span class="ft-gray">${wealthRankLabel}</span></a>
+            <span class="ft-red">♠</span> <a href="${servePath}/top/balance"><span class="ft-gray">${wealthRankLabel}</span></a>
             <span class="ft-green">♥</span> <a href="${servePath}/top/consumption"><span class="ft-gray">${consumptionRankLabel}</span></a>
             <a href="${servePath}/member/${currentUser.userName}/points" class="ft-gray fn-right tooltipped tooltipped-w"
                aria-label="${pointLabel} ${currentUser.userPoint?c}">
