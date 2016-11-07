@@ -54,49 +54,27 @@
         <#else>
         <a href="javascript: Util.showLogin();" class="unlogin">${loginLabel}</a>
         <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin">${registerLabel}</a>
-        <div class="form fn-none module">
-            <table cellspacing="0" cellpadding="0">
-                <tr>
-                    <td width="80">
-                        <label for="nameOrEmail">${accountLabel}</label>
-                    </td>
-                    <td>
-                        <input id="nameOrEmail" type="text" placeholder="${nameOrEmailLabel}" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="loginPassword">${passwordLabel}</label>
-                    </td>
-                    <td>
-                        <input type="password" id="loginPassword" />
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">
-                        <label>${rememberLoginStatusLabel}</label>
-                    </td>
-                    <td>
-                        <input type="checkbox" id="rememberLogin" checked />
-                    </td>
-                </tr>
-                <tr class="fn-none">
-                    <td>
-                         <img id="captchaImg" class="fn-pointer" />
-                    </td>
-                    <td>
-                         <input type="text" id="captchaLogin" />
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="right">
-                        <div id="loginTip" class="tip"></div>
-                        <div class="fn-hr5"></div><div class="fn-hr5"></div>
-                        <button class="info" onclick="window.location.href = '${servePath}/forget-pwd'">${forgetPwdLabel}</button>
-                        <button class="red" onclick="Util.login()">${loginLabel}</button>
-                    </td>
-                </tr>
-            </table>
+        <div class="form module fn-none">
+            <div class="login-wrap">
+                <span class="icon-userrole"></span>
+                <input id="nameOrEmail" type="text" placeholder="${nameOrEmailLabel}" />
+            </div>
+            <div class="login-wrap">
+                <span class="icon-locked"></span>
+                <input type="password" id="loginPassword" placeholder="${passwordLabel}" />
+            </div>
+            <div class="fn-clear">
+                <div class="fn-hr5"></div>
+                <input type="checkbox" id="rememberLogin" checked /> ${rememberLoginStatusLabel}
+                <a href="${servePath}/forget-pwd" class="fn-right">${forgetPwdLabel}</a>
+                <div class="fn-hr5"></div>
+            </div>
+            <div class="fn-none login-wrap">
+                <img id="captchaImg" class="fn-pointer" />
+                <input type="text" id="captchaLogin" placeholder="${captchaLabel}" />
+            </div>
+            <div id="loginTip" class="tip"></div>
+            <button onclick="Util.login()">${loginLabel}</button>
         </div>
         </#if>
     </div>
