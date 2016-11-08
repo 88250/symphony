@@ -322,7 +322,7 @@ div.CodeMirror-dragcursors {
 
 .CodeMirror-hints {
     position: absolute;
-    z-index: 90;
+    z-index: 100;
     overflow: hidden;
     list-style: none;
 

@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 2.2.1.3, Nov 3, 2016
+ * @version 2.2.1.4, Nov 8, 2016
  * @since 0.1.6
  */
 public class MarkdownsTestCase {
@@ -91,10 +91,47 @@ public class MarkdownsTestCase {
         md = "* [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)：插件机制、处理流程";
         html = Markdowns.toHTML(md);
         Assert.assertEquals(html, "<p><ul>\n  <li><a href=\"https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1\">插件开发</a>：插件机制、处理流程</li>\n</ul></p>");
-        
+
         md = "<p>你好，黑客派</p>\n<ul>\n  <li>你好，**黑客派**</li>\n</ul>";
         html = Markdowns.toHTML(md);
         Assert.assertEquals(html, "<p>你好，黑客派</p>\n<ul>\n  <li>你好，<strong>黑客派</strong></li>\n</ul>");
+
+        md = "```\n"
+                + "server {\n"
+                + "    listen       443 ssl;\n"
+                + "    server_name  usb.dev;\n"
+                + "\n"
+                + "    access_log off;\n"
+                + "\n"
+                + "    ssl on;\n"
+                + "    ssl_certificate /etc/nginx/ssl/server.crt;\n"
+                + "    ssl_certificate_key /etc/nginx/ssl/server.key;\n"
+                + "    ssl_client_certificate /etc/nginx/ssl/ca.crt;\n"
+                + "    ssl_verify_client on;\n"
+                + "\n"
+                + "    location / {\n"
+                + "        proxy_pass http://backend$request_uri;\n"
+                + "    }\n"
+                + "}\n"
+                + "```";
+        html = Markdowns.toHTML(md);
+        Assert.assertEquals(html, "<p><pre><code>server {\n"
+                + "    listen       443 ssl;\n"
+                + "    server_name  usb.dev;\n"
+                + "\n"
+                + "    access_log off;\n"
+                + "\n"
+                + "    ssl on;\n"
+                + "    ssl_certificate /etc/nginx/ssl/server.crt;\n"
+                + "    ssl_certificate_key /etc/nginx/ssl/server.key;\n"
+                + "    ssl_client_certificate /etc/nginx/ssl/ca.crt;\n"
+                + "    ssl_verify_client on;\n"
+                + "\n"
+                + "    location / {\n"
+                + "        proxy_pass http://backend$request_uri;\n"
+                + "    }\n"
+                + "}\n"
+                + "</code></pre></p>");
     }
 
     /**
