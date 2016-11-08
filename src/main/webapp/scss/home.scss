@@ -150,6 +150,10 @@
     text-align: left;
 }
 
+#articleTitle {
+    margin-bottom: 20px;
+}
+
 #articleTitleTip {
     position: absolute;
     top: 32px;
@@ -185,7 +189,6 @@
 .article-content {
     width: 100%;
     position: relative;
-    margin-top: 20px;
 }
 
 #showReward {

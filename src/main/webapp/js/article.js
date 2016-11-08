@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.36.24, Oct 31, 2016
+ * @version 1.25.36.25, Nov 8, 2016
  */
 
 /**
@@ -297,6 +297,7 @@ var Comment = {
                 element: document.getElementById('commentContent'),
                 dragDrop: false,
                 lineWrapping: true,
+                htmlURL: Label.servePath + "/markdown",
                 toolbar: [
                     {name: 'bold'},
                     {name: 'italic'},

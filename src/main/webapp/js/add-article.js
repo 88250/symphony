@@ -136,6 +136,7 @@ var AddArticle = {
                 element: document.getElementById('articleContent'),
                 dragDrop: false,
                 lineWrapping: true,
+                htmlURL: Label.servePath + "/markdown",
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
                     "Ctrl-/": "autocompleteEmoji",
@@ -342,6 +343,7 @@ var AddArticle = {
                 element: document.getElementById('articleRewardContent'),
                 dragDrop: false,
                 lineWrapping: true,
+                htmlURL: Label.servePath + "/markdown",
                 toolbar: [
                     {name: 'bold'},
                     {name: 'italic'},

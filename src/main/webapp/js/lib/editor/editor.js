@@ -1123,7 +1123,6 @@
                 'top': '0',
                 'z-index': '90',
                 'left': '0',
-                'margin-top': '0',
                 'right': '0'
             });
 
@@ -1132,9 +1131,9 @@
             wrap.style.width = "50%";
             wrap.style.height = ($(window).height() - $('.editor-toolbar').outerHeight()) + 'px';
             cm.refresh();
-
+            
             $.ajax({
-                url: Label.servePath + "/markdown",
+                url: editor.options.htmlURL,
                 type: "POST",
                 cache: false,
                 data: {
@@ -1154,8 +1153,7 @@
         editor.toolbar.fullscreen.className = 'icon-fullscreen';
         editor.toolbar.preview.style.display = 'inline';
         $(editor.element.parentElement).css({
-            'position': 'inherit',
-            'margin-top': '20px'
+            'position': 'inherit'
         });
 
         $(editor.element.parentElement).find('.CodeMirror-preview').remove();    
@@ -1334,7 +1332,7 @@
         var text = cm.getValue();
 
         $.ajax({
-            url: Label.servePath + "/markdown",
+            url: editor.options.htmlURL,
             type: "POST",
             cache: false,
             data: {
