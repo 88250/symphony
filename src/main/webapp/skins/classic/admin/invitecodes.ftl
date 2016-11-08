@@ -5,7 +5,7 @@
     <div class="module list">
         <form method="POST" action="${servePath}/admin/invitecodes/generate" class="form">
             <input name="quantity" type="number" placeholder="${quantityLabel}" style="width: 30%" />
-            <input name="memo" type="text" placeholder="${memoLabel}"/>
+            <input name="memo" type="text" placeholder="${memoLabel}" autocomplete="off" />
             <button type="submit" class="green">${generateLabel}</button>
         </form>
         <ul>
