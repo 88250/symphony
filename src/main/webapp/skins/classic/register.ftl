@@ -14,9 +14,11 @@
             <div class="wrapper verify">
                 <div class="verify-wrap">
                     <div class="form">
+                        ${logoIcon2}
+
                         <div class="input-wrap">
                             <span class="icon-userrole"></span>
-                            <input id="registerUserName" type="text" placeholder="${userNamePlaceholderLabel}" autocomplete="off" />
+                            <input id="registerUserName" type="text" placeholder="${userNamePlaceholderLabel}" autocomplete="off" autofocus="autofocus" />
                         </div>
                         <div class="input-wrap">
                             <span class="icon-email"></span>
@@ -37,6 +39,7 @@
                         <div id="registerTip" class="tip"></div>
                         <input id="referral" type="hidden" value="${referral}">
                         <button id="registerBtn" onclick="Verify.register()">${registerLabel}</button>
+                        <button class="green" onclick="Util.goLogin()">${loginLabel}</button>
                     </div>
                 </div>
                 <div class="intro content-reset">
