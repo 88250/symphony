@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Nov 5, 2016
+ * @version 1.1.1.2, Nov 10, 2016
  * @since 1.4.0
  */
 @Named
@@ -51,7 +51,7 @@ public class ArticleCache {
 
     static {
         ARTICLE_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
-        ARTICLE_ABSTRACT_CACHE.setMaxCount(1024);
+        ARTICLE_ABSTRACT_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
     }
 
     /**
