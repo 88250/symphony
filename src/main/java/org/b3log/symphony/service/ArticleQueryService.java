@@ -93,7 +93,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.18.35, Nov 5, 2016
+ * @version 2.24.18.36, Nov 10, 2016
  * @since 0.2.0
  */
 @Service
@@ -2482,7 +2482,7 @@ public class ArticleQueryService {
      * @param article the specified article
      * @return meta description
      */
-    private String getArticleMetaDesc(final JSONObject article) {
+    public String getArticleMetaDesc(final JSONObject article) {
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         String articleAbstract = articleCache.getArticleAbstract(articleId);
