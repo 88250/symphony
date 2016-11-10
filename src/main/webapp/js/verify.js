@@ -31,7 +31,7 @@ var Verify = {
     /**
      * @description 登录
      */
-    login: function () {
+    login: function (goto) {
         if (Validate.goValidate({target: $('#loginTip'),
             data: [{
                     "target": $("#nameOrEmail"),
@@ -57,8 +57,7 @@ var Verify = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        // TODO: Daniel
-                        window.location.href = result.goto;
+                        window.location.href = goto;
                     } else {
                         $("#loginTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
 
@@ -123,23 +122,23 @@ var Verify = {
      * @description Register Step 2
      */
     register2: function () {
-        if (Validate.goValidate({target: $("#registerTip"),
+        if (Validate.goValidate({target: $("#registerTip2"),
             data: [{
-                    "target": $("#userPassword"),
+                    "target": $("#registerUserPassword2"),
                     "msg": Label.invalidPasswordLabel,
                     "type": 'password',
                     'max': 20
                 }, {
-                    "target": $("#confirmPassword"),
-                    "original": $("#userPassword"),
+                    "target": $("#registerConfirmPassword2"),
+                    "original": $("#registerUserPassword2"),
                     "msg": Label.confirmPwdErrorLabel,
                     "type": "confirmPassword"
                 }]})) {
             var requestJSONObject = {
                 userAppRole: $("input[name=userAppRole]:checked").val(),
-                userPassword: calcMD5($("#userPassword").val()),
-                referral: $("#referral").val(),
-                userId: $("#userId").val()
+                userPassword: calcMD5($("#registerUserPassword2").val()),
+                referral: $("#referral2").val(),
+                userId: $("#userId2").val()
             };
 
             $.ajax({
@@ -151,7 +150,7 @@ var Verify = {
                     if (result.sc) {
                         window.location.href = Label.servePath;
                     } else {
-                        $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
+                        $("#registerTip2").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                     }
                 }
             });
@@ -199,21 +198,21 @@ var Verify = {
      * @description Reset password
      */
     resetPwd: function () {
-        if (Validate.goValidate({target: $("#registerTip"),
+        if (Validate.goValidate({target: $("#rpwdTip"),
             data: [{
-                    "target": $("#userPassword"),
+                    "target": $("#rpwdUserPassword"),
                     "msg": Label.invalidPasswordLabel,
                     "type": 'password',
                     'max': 20
                 }, {
-                    "target": $("#confirmPassword"),
-                    "original": $("#userPassword"),
+                    "target": $("#rpwdConfirmPassword"),
+                    "original": $("#rpwdUserPassword"),
                     "msg": Label.confirmPwdErrorLabel,
                     "type": "confirmPassword"
                 }]})) {
             var requestJSONObject = {
-                userPassword: calcMD5($("#userPassword").val()),
-                userId: $("#userId").val()
+                userPassword: calcMD5($("#rpwdUserPassword").val()),
+                userId: $("#rpwdUserId").val()
             };
 
             $.ajax({
@@ -225,7 +224,7 @@ var Verify = {
                     if (result.sc) {
                         window.location.href = Label.servePath;
                     } else {
-                        $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
+                        $("#rpwdTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                     }
                 }
             });
@@ -250,6 +249,13 @@ var Verify = {
         $("#loginPassword, #captchaLogin").keyup(function (event) {
             if (event.keyCode === 13) {
                 Verify.login();
+            }
+        });
+
+        // 重置密码输入框回车事件
+        $("#rpwdConfirmPassword").keyup(function (event) {
+            if (event.keyCode === 13) {
+                Verify.resetPwd();
             }
         });
     }

@@ -17,7 +17,7 @@
 
                         <div class="input-wrap">
                             <span class="icon-userrole"></span>
-                            <input type="text" id="registerUserName2" value="${user.userName}" readonly="readonly" placeholder="${userNameLabel}" autocomplete="off" autofocus="autofocus" />
+                            <input type="text" id="registerUserName2" value="${user.userName}" readonly="readonly" placeholder="${userNameLabel}" autocomplete="off" />
                         </div>
                         <div class="input-wrap">
                             <span class="icon-email"></span>
@@ -25,13 +25,13 @@
                         </div>
                         <div class="input-wrap">
                             <span class="icon-locked"></span>
-                            <input type="password" id="registerUserPassword2" placeholder="${passwordLabel}" />
+                            <input type="password" autofocus="autofocus" id="registerUserPassword2" placeholder="${passwordLabel}" />
                         </div>
                          <div class="input-wrap">
                             <span class="icon-locked"></span>
                             <input type="password" id="registerConfirmPassword2" placeholder="${userPasswordLabel2}" />
                         </div>
-                        <div>
+                        <div class="fn-clear">
                             <label>${roleLabel}</label>
                             <label>&nbsp;&nbsp;&nbsp;&nbsp;<input name="userAppRole" type="radio" value="0" checked="checked" />&nbsp;&nbsp;${programmerLabel}</label>
                             <label style="float:right">&nbsp;&nbsp;<input name="userAppRole" type="radio" value="1" />&nbsp;&nbsp;${designerLabel}</label>
@@ -40,7 +40,7 @@
                         <div id="registerTip2" class="tip"></div>
                         <button class="green" onclick="Verify.register2()">${registerLabel}</button>
                         <input id="referral2" type="hidden" value="${referral}">
-                        <input id="userId" type="hidden" value="${user.oId}">
+                        <input id="userId2" type="hidden" value="${user.oId}">
 
                     </div>
                 </div>
