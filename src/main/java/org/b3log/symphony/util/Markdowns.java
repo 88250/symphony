@@ -94,7 +94,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 1.9.8.13, Nov 8, 2016
+ * @version 1.9.8.14, Nov 10, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -234,6 +234,8 @@ public final class Markdowns {
 
         if (toEm != null && toEm.length > 0) {
             for (final String em : toEm) {
+                if(em.contains("</")||em.contains("/>"))
+                    continue;
                 final String search = "_" + em + "_";
                 final String replace = "<em>" + em + "<em>";
 
