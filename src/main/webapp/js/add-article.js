@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.13.11, Oct 31, 2016
+ * @version 2.18.14.11, Nov 8, 2016
  */
 
 /**
@@ -136,6 +136,7 @@ var AddArticle = {
                 element: document.getElementById('articleContent'),
                 dragDrop: false,
                 lineWrapping: true,
+                htmlURL: Label.servePath + "/markdown",
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
                     "Ctrl-/": "autocompleteEmoji",
@@ -342,6 +343,7 @@ var AddArticle = {
                 element: document.getElementById('articleRewardContent'),
                 dragDrop: false,
                 lineWrapping: true,
+                htmlURL: Label.servePath + "/markdown",
                 toolbar: [
                     {name: 'bold'},
                     {name: 'italic'},
@@ -430,10 +432,8 @@ var AddArticle = {
                 return false;
             }
             var hasTag = false;
-
             text = text.replace(/\s/g, '');
-
-            $("#articleTags").val('').data('val', '');
+            $("#articleTags").val('');
 
             // 重复添加处理
             $('.tags-input .text').each(function () {
@@ -459,9 +459,6 @@ var AddArticle = {
 
             $('.post .tags-selected').append('<span class="tag"><span class="text">'
                     + text + '</span><span class="close">x</span></span>');
-            if ($.ua.device.type !== 'mobile') {
-                $('.post .domains-tags, #articleTagsSelectedPanel').css('left', $('.post .tags-selected').width() + 'px');
-            }
             $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
 
             if ($('.tags-input .tag').length >= 4) {
@@ -491,9 +488,6 @@ var AddArticle = {
         // 移除 tag
         $('.tags-input').on('click', '.tag > span.close', function () {
             $(this).parent().remove();
-            if ($.ua.device.type !== 'mobile') {
-                $('.post .domains-tags, #articleTagsSelectedPanel').css('left', $('.post .tags-selected').width() + 'px');
-            }
             $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
             $('#articleTags').prop('disabled', false);
         });
@@ -501,6 +495,9 @@ var AddArticle = {
         // 展现领域 tag 选择面板
         $('#articleTags').click(function () {
             $('.post .domains-tags').show();
+            if ($.ua.device.type !== 'mobile') {
+                $('.post .domains-tags').css('left', $('.post .tags-selected').width() + 'px');
+            }
             $('#articleTagsSelectedPanel').hide();
         }).blur(function () {
             $(this).val('').data('val', '');
@@ -551,17 +548,11 @@ var AddArticle = {
                 }
 
                 // 删除 tag
-                if (event.keyCode === 8 && ($("#articleTags").data('val') && $("#articleTags").data('val').length === 0 || !$("#articleTags").data('val'))) {
+                if (event.keyCode === 8 && event.data.settings.chinese === 8 
+                    && event.data.settings.keydownVal.replace(/\s/g, '') === '') {
                     $('.tags-input .tag .close:last').click();
                     return false;
                 }
-
-
-                if ($("#articleTags").data('val') === $("#articleTags").val()) {
-                    return false;
-                }
-                $("#articleTags").data('val', $("#articleTags").val());
-
 
                 if ($("#articleTags").val().replace(/\s/g, '') === '') {
                     return false;
@@ -574,6 +565,9 @@ var AddArticle = {
                     },
                     success: function (result, textStatus) {
                         if (result.sc) {
+                            if ($.ua.device.type !== 'mobile') {
+                                $('#articleTagsSelectedPanel').css('left', $('.post .tags-selected').width() + 'px');
+                            }
                             $("#articleTags").completed('updateData', result.tags);
                         } else {
                             console.log(result);

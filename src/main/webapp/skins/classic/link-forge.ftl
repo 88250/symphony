@@ -28,7 +28,7 @@
                                     ${tag.tagTitle}
                                 </a>
                             </h2>
-                            <a class="ft-gray fn-right" rel="nofollow" href="javascropt:void(0)">${tag.tagLinksCnt} Links</a>
+                            <a class="ft-gray fn-right" rel="nofollow" href="javascript:void(0)">${tag.tagLinksCnt} Links</a>
                         </div>
                         <div class="module-panel">
                             <ul class="module-list">

@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.11.20, Oct 27, 2016
+ * @version 2.9.11.21, Nov 8, 2016
  */
 
 @import "variables";
@@ -150,6 +150,10 @@
     text-align: left;
 }
 
+#articleTitle {
+    margin-bottom: 20px;
+}
+
 #articleTitleTip {
     position: absolute;
     top: 32px;
@@ -185,7 +189,6 @@
 .article-content {
     width: 100%;
     position: relative;
-    margin-top: 20px;
 }
 
 #showReward {
@@ -198,106 +201,108 @@ label.article-anonymous {
     margin: 7px 15px 0 0;
 }
 
-.post .tags-wrap {
-    position: relative;
-}
+.post {
+    .tags-wrap {
+        position: relative;
+    }
 
-.post .tags-input {
-    border: 1px solid #CCCCCC;
-    background-color: #FAFAFA;
-    border-radius: 3px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
-    padding: 5px 5px 3px 5px;
-    width: 100%;
-    line-height: 17px;
-    box-sizing: border-box;
-    height: 33px;
-}
+    .tags-input {
+        border: 1px solid #CCCCCC;
+        background-color: #FAFAFA;
+        border-radius: 3px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
+        padding: 5px 5px 3px 5px;
+        width: 100%;
+        line-height: 17px;
+        box-sizing: border-box;
+        height: 33px;
+    }
 
-.post .tags-input span.tag {
-    margin: 2px 5px 0 0px;
-    padding: 0 5px;
-    background: #eee;
-    color: #999;
-}
+    .tags-input span.tag {
+        margin: 2px 5px 0 0px;
+        padding: 0 5px;
+        background: #eee;
+        color: #999;
+    }
 
-.post .tags-input .tag > span.close {
-    cursor: pointer;
-    margin-left: 5px;
-    color: #999;
-}
+    .tags-input .tag > span.close {
+        cursor: pointer;
+        margin-left: 5px;
+        color: #999;
+    }
 
-.post .tags-input span.tag.haved {
-    color: #333;
-    background-color: #ccc;
-    transition: background 0.5s ease-in,color 0.3s ease-out;
-}
+    .tags-input span.tag.haved {
+        color: #333;
+        background-color: #ccc;
+        transition: background 0.5s ease-in,color 0.3s ease-out;
+    }
 
-.post .tags-input input {
-    border: 0;
-    outline: none;
-    box-shadow: 0 0 0 transparent;
-    border-radius: 0;
-    padding: 2px;
-}
+    .tags-input input {
+        border: 0;
+        outline: none;
+        box-shadow: 0 0 0 transparent;
+        border-radius: 0;
+        padding: 2px;
+    }
 
-.post .tags-input input:focus {
-    border: 0;
-    background-color: transparent;
-    box-shadow: 0 0 0 transparent;
-}
+    .tags-input input:focus {
+        border: 0;
+        background-color: transparent;
+        box-shadow: 0 0 0 transparent;
+    }
 
-.post .domains-tags,
-.post .completed-panel {
-    display: none;
-    position: absolute;
-    background-color: #FFF;
-    border: 1px solid #e5e5e5;
-    z-index: 10;
-    padding: 10px;
-    border-radius: 0 0 3px 3px;
-    width: 50%;
-    top: 32px;
-    box-sizing: border-box;
-}
+    .domains-tags,
+    .completed-panel {
+        display: none;
+        position: absolute;
+        background-color: #FFF;
+        border: 1px solid #e5e5e5;
+        z-index: 72;
+        padding: 10px;
+        border-radius: 0 0 3px 3px;
+        width: 50%;
+        top: 32px;
+        box-sizing: border-box;
+    }
 
-.post .domain-tags {
-    border-top: 1px solid #eee;
-    margin-top: 10px;
-    padding-top: 10px;
-}
+    .domain-tags {
+        border-top: 1px solid #eee;
+        margin-top: 10px;
+        padding-top: 10px;
+    }
 
-.post .domains-tags .tag {
-    cursor: pointer;
-    color: #999;
-    margin-right: 5px;
-    padding: 2px 5px;
-    border: 1px solid #DDDDDD;
-    background-color: #f7f7f7;
-    border-radius: 3px;
-}
+    .domains-tags .tag {
+        cursor: pointer;
+        color: #999;
+        margin: 0 5px 5px 0;
+        padding: 2px 5px;
+        border: 1px solid #DDDDDD;
+        background-color: #f7f7f7;
+        border-radius: 3px;
+    }
 
-.post .domains-tags .tag:hover {
-    opacity: 0.7;
-}
+    .domains-tags .tag:hover {
+        opacity: 0.7;
+    }
 
-.post .completed-panel {
-    padding: 0;
-    overflow: auto;
-    left: 0;
-}
+    .completed-panel {
+        padding: 0;
+        overflow: auto;
+        left: 0;
+    }
 
-.post .completed-panel a {
-    display: block;
-    padding: 3px;
-    text-decoration: none;
-    line-height: 18px;
-    height: 18px;
-}
+    .completed-panel a {
+        display: block;
+        padding: 3px;
+        text-decoration: none;
+        line-height: 18px;
+        height: 18px;
+    }
 
-.post .completed-panel a.selected,
-.post .completed-panel a:hover {
-    background-color: #F7F7F7;
+    .completed-panel a.selected,
+    .completed-panel a:hover {
+        background-color: #F7F7F7;
+    }
 }
 /* end add article */
 

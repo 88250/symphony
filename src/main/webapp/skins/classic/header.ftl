@@ -1,3 +1,6 @@
+<!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
+<input style="display:none" type="text" name="fakeusernameremembered"/>
+<input style="display:none" type="password" name="fakepasswordremembered"/>
 <div class="nav">
     <h1>
         ${logoIcon}
@@ -57,7 +60,7 @@
         <div class="form module fn-none">
             <div class="login-wrap">
                 <span class="icon-userrole"></span>
-                <input id="nameOrEmail" type="text" placeholder="${nameOrEmailLabel}" />
+                <input id="nameOrEmail" type="text" placeholder="${nameOrEmailLabel}" autocomplete="off" />
             </div>
             <div class="login-wrap">
                 <span class="icon-locked"></span>

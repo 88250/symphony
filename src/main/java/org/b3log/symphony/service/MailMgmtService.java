@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -47,14 +46,10 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.UserRepository;
-import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Mails;
-import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 /**
  * Mail management service.
@@ -196,16 +191,7 @@ public class MailMgmtService {
             String mailSubject = "";
             int goodCnt = 0;
             for (final JSONObject article : articles) {
-                String content = article.optString(Article.ARTICLE_CONTENT);
-
-                content = Emotions.convert(content);
-                content = Markdowns.toHTML(content);
-                content = Jsoup.clean(Jsoup.parse(content).text(), Whitelist.basic());
-                if (StringUtils.length(content) > 72) {
-                    content = StringUtils.substring(content, 0, 72) + "....";
-                }
-
-                article.put(Article.ARTICLE_CONTENT, content);
+                article.put(Article.ARTICLE_CONTENT, articleQueryService.getArticleMetaDesc(article));
 
                 final int gc = article.optInt(Article.ARTICLE_GOOD_CNT);
                 if (gc >= goodCnt) {
