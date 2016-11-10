@@ -27,8 +27,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.image.Image;
-import org.b3log.latke.image.ImageService;
-import org.b3log.latke.image.ImageServiceFactory;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -60,24 +58,9 @@ public class CaptchaProcessor {
     private static final Logger LOGGER = Logger.getLogger(CaptchaProcessor.class.getName());
 
     /**
-     * Images service.
-     */
-    private static final ImageService IMAGE_SERVICE = ImageServiceFactory.getImageService();
-
-    /**
      * Key of captcha.
      */
     public static final String CAPTCHA = "captcha";
-
-    /**
-     * Captchas.
-     */
-    private Image[] captchas;
-
-    /**
-     * Count of static captchas.
-     */
-    private static final int CAPTCHA_COUNT = 100;
 
     /**
      * Gets captcha.
