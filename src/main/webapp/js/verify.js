@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.4.2.9, Oct 19, 2016
+ * @version 2.5.2.9, Nov 11, 2016
  */
 
 /**
@@ -252,20 +252,5 @@ var Verify = {
                 Verify.login();
             }
         });
-    },
-    init2: function () {
-        // 注册回车事件
-        $("#confirmPassword").keyup(function (event) {
-            if (event.keyCode === 13) {
-                Verify.register();
-            }
-        });
-
-        // 表单错误状态
-        $("input[type=text], input[type=password], textarea").blur(function () {
-            $(this).removeClass("input-error");
-        });
-
-        $("#userPassword").focus();
     }
 };
