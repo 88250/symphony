@@ -234,8 +234,6 @@ public final class Markdowns {
 
         if (toEm != null && toEm.length > 0) {
             for (final String em : toEm) {
-                if(em.contains("</")||em.contains("/>"))
-                    continue;
                 final String search = "_" + em + "_";
                 final String replace = "<em>" + em + "<em>";
 
