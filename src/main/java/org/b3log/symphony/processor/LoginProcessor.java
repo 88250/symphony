@@ -87,7 +87,8 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.7.15, Nov 2, 2016
+ * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
+ * @version 1.11.7.15, Nov 10, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -176,6 +177,31 @@ public class LoginProcessor {
      * &lt;userId, {"wrongCount": int, "captcha": ""}&gt;
      */
     public static final Map<String, JSONObject> WRONG_PWD_TRIES = new ConcurrentHashMap<>();
+
+    /**
+     * Shows login page.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/login", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showLogin(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        // TODO: 登录后自动跳转到首页
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        
+        renderer.setTemplateName("login.ftl");
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        dataModel.put(Common.GOTO, request.getParameter(Common.GOTO));
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
 
     /**
      * Shows forget password page.

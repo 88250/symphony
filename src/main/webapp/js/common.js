@@ -768,11 +768,12 @@ var Util = {
 					var hideTimeOut = undefined;
                     $('#aNotifications').mouseover(function () {
                         $('#notificationsPanel').show();
-												clearTimeout(hideTimeOut);
+                        $('#personListPanel').hide();
+						clearTimeout(hideTimeOut);
                     }).mouseout(function () {
-											hideTimeOut = setTimeout(function () {
-												$('#notificationsPanel').hide();
-											}, 600);
+						hideTimeOut = setTimeout(function () {
+							$('#notificationsPanel').hide();
+						}, 600);
                     });
 
                     $('#notificationsPanel').mouseover(function () {
@@ -878,17 +879,25 @@ var Util = {
         $('html, body').animate({scrollTop: 0}, 800);
     },
     /**
-     * @description 显示登录界面
+     * @description 跳转到登录界面
      */
-    showLogin: function () {
-        $(".nav .form").show();
-        $("#nameOrEmail").focus();
+    goLogin: function () {
+         if (-1 !== location.href.indexOf("/login")) {
+            return;
+        }
+
+        var gotoURL = location.href;
+        if (location.search.indexOf('?goto') === 0) {
+            gotoURL = location.href.replace(location.search, '');
+        }
+        window.location.href = Label.servePath + "/login?goto=" + encodeURIComponent(gotoURL);
     },
     /**
      *
      * @returns {undefined}
      */
     needLogin: function () {
+        // todo
         alert(Label.funNeedLoginLabel);
     },
     /**
@@ -896,12 +905,13 @@ var Util = {
      */
     goRegister: function () {
         if (-1 !== location.href.indexOf("/register")) {
-            window.location.reload();
-
             return;
         }
-
-        window.location.href = Label.servePath + "/register?goto=" + encodeURIComponent(location.href);
+        var gotoURL = location.href;
+        if (location.search.indexOf('?goto') === 0) {
+            gotoURL = location.href.replace(location.search, '');
+        }
+        window.location.href = Label.servePath + "/register?goto=" + encodeURIComponent(gotoURL);
     },
     /**
      * @description 禁止 IE7 以下浏览器访问
@@ -981,12 +991,6 @@ var Util = {
         this._initNav();
         // 每日活跃
         this._initActivity();
-        // 登录密码输入框回车事件
-        $("#loginPassword").keyup(function (event) {
-            if (event.keyCode === 13) {
-                Util.login();
-            }
-        });
         // 移动端分页
         if ($('.pagination select').length === 1) {
             $('.pagination select').change(function () {
@@ -1090,7 +1094,10 @@ var Util = {
                 $(this).addClass("selected");
             } else if (location.pathname === "/register") {
                 // 注册没有使用 href，对其进行特殊处理
-                $("#aRegister").addClass("selected");
+                $(".user-nav a:last").addClass("selected");
+            } else if (location.pathname === "/login") {
+                // 登录没有使用 href，对其进行特殊处理
+                $(".user-nav a:first").addClass("selected");
             } else if (href.indexOf(Label.servePath + '/settings') === 0) {
                 $(".user-nav .nav-avatar").addClass("selected");
             }
@@ -1099,16 +1106,17 @@ var Util = {
 				var hideTimeOut = undefined;
         $('.nav .avatar-small').parent().mouseover(function () {
             $('#personListPanel').show();
-						clearTimeout(hideTimeOut);
+            $('#notificationsPanel').hide();
+			clearTimeout(hideTimeOut);
         }).mouseout(function () {
-					hideTimeOut = setTimeout(function () {
-						  $('#personListPanel').hide();
-					}, 600);
+			hideTimeOut = setTimeout(function () {
+				  $('#personListPanel').hide();
+			}, 600);
         });
 
         $('#personListPanel').mouseover(function () {
             $('#personListPanel').show();
-						clearTimeout(hideTimeOut);
+			clearTimeout(hideTimeOut);
         }).mouseout(function () {
             $('#personListPanel').hide();
         });
@@ -1119,71 +1127,6 @@ var Util = {
                 $('.user-nav').hide();
             }).mouseout(function () {
                 $('.user-nav').show();
-            });
-        }
-    },
-    /**
-     * @description 登录
-     */
-    login: function () {
-        if (Validate.goValidate({target: $('#loginTip'),
-            data: [{
-                    "target": $("#nameOrEmail"),
-                    "type": "string",
-                    "max": 256,
-                    "msg": Label.loginNameErrorLabel
-                }, {
-                    "target": $("#loginPassword"),
-                    "type": "password",
-                    "msg": Label.invalidPasswordLabel
-                }]})) {
-            var requestJSONObject = {
-                nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
-                userPassword: calcMD5($("#loginPassword").val()),
-                rememberLogin: $("#rememberLogin").prop("checked"),
-                captcha: $('#captchaLogin').val().replace(/(^\s*)|(\s*$)/g, "")
-            };
-
-            $.ajax({
-                url: Label.servePath + "/login",
-                type: "POST",
-                cache: false,
-                data: JSON.stringify(requestJSONObject),
-                success: function (result, textStatus) {
-                    if (result.sc) {
-                        if ("/register" === document.location.pathname) {
-                            window.location.href = "/";
-                        } else {
-                            window.location.reload();
-                        }
-
-                        if (window.localStorage) {
-                            if (!window.localStorage.articleContent) {
-                                window.localStorage.articleContent = "";
-                            }
-
-                            if (!window.localStorage.commentContent) {
-                                window.localStorage.commentContent = "";
-                            }
-
-                            if (!window.localStorage.hadNotificate) {
-                                window.localStorage.hadNotificate = 'false';
-                            }
-                        }
-                    } else {
-                        $("#loginTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
-
-                        if (result.needCaptcha && "" !== result.needCaptcha) {
-                            $('#captchaImg').parent().show();
-                            $("#captchaImg").attr("src", Label.servePath + "/captcha/login?needCaptcha="
-                                    + result.needCaptcha + "&t=" + Math.random())
-                                    .click(function () {
-                                        $(this).attr('src', Label.servePath + "/captcha/login?needCaptcha="
-                                                + result.needCaptcha + "&t=" + Math.random())
-                                    });
-                        }
-                    }
-                }
             });
         }
     },

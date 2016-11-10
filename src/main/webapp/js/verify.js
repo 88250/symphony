@@ -24,35 +24,78 @@
  */
 
 /**
- * @description Register
+ * @description Verify
  * @static
  */
-var Register = {
+var Verify = {  
+    /**
+     * @description 登录
+     */
+    login: function () {
+        if (Validate.goValidate({target: $('#loginTip'),
+            data: [{
+                    "target": $("#nameOrEmail"),
+                    "type": "string",
+                    "max": 256,
+                    "msg": Label.loginNameErrorLabel
+                }, {
+                    "target": $("#loginPassword"),
+                    "type": "password",
+                    "msg": Label.invalidPasswordLabel
+                }]})) {
+            var requestJSONObject = {
+                nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
+                userPassword: calcMD5($("#loginPassword").val()),
+                rememberLogin: $("#rememberLogin").prop("checked"),
+                captcha: $('#captchaLogin').val().replace(/(^\s*)|(\s*$)/g, "")
+            };
+
+            $.ajax({
+                url: Label.servePath + "/login",
+                type: "POST",
+                cache: false,
+                data: JSON.stringify(requestJSONObject),
+                success: function (result, textStatus) {
+                    if (result.sc) {
+                        // TODO: Daniel
+                        window.location.href = result.goto;
+                    } else {
+                        $("#loginTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
+
+                        if (result.needCaptcha && "" !== result.needCaptcha) {
+                            $('#captchaImg').parent().show();
+                            $("#captchaImg").attr("src", Label.servePath + "/captcha/login?needCaptcha="
+                                    + result.needCaptcha + "&t=" + Math.random())
+                                    .click(function () {
+                                        $(this).attr('src', Label.servePath + "/captcha/login?needCaptcha="
+                                                + result.needCaptcha + "&t=" + Math.random())
+                                    });
+                        }
+                    }
+                }
+            });
+        }
+    },
     /**
      * @description Register Step 1
      */
     register: function () {
         if (Validate.goValidate({target: $("#registerTip"),
             data: [{
-                    "target": $("#userName"),
+                    "target": $("#registerUserName"),
                     "msg": Label.userNameErrorLabel,
                     "type": 'string',
                     'max': 20
                 }, {
-                    "target": $("#userEmail"),
+                    "target": $("#registerUserEmail"),
                     "msg": Label.invalidEmailLabel,
                     "type": "email"
-                }, {
-                    "target": $("#securityCode"),
-                    "msg": Label.captchaErrorLabel,
-                    "type": 'string',
-                    'max': 4
                 }]})) {
             var requestJSONObject = {
-                userName: $("#userName").val().replace(/(^\s*)|(\s*$)/g, ""),
-                userEmail: $("#userEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
-                invitecode: $("#invitecode").val().replace(/(^\s*)|(\s*$)/g, ""),
-                captcha: $("#securityCode").val(),
+                userName: $("#registerUserName").val().replace(/(^\s*)|(\s*$)/g, ""),
+                userEmail: $("#registerUserEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
+                invitecode: $("#registerInviteCode").val().replace(/(^\s*)|(\s*$)/g, ""),
+                captcha: $("#registerCaptcha").val(),
                 referral: $("#referral").val()
             };
 
@@ -69,8 +112,8 @@ var Register = {
                     } else {
                         $("#registerTip").removeClass("tip-succ");
                         $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
-                        $("#captcha").attr("src", Label.servePath + "/captcha?code=" + Math.random());
-                        $("#securityCode").val("");
+                        $("#registerCaptchaImg").attr("src", Label.servePath + "/captcha?code=" + Math.random());
+                        $("#registerCaptcha").val("");
                     }
                 }
             });
@@ -118,20 +161,20 @@ var Register = {
      * @description Forget password
      */
     forgetPwd: function () {
-        if (Validate.goValidate({target: $("#registerTip"),
+        if (Validate.goValidate({target: $("#fpwdTip"),
             data: [{
-                    "target": $("#userEmail"),
+                    "target": $("#fpwdEmail"),
                     "msg": Label.invalidEmailLabel,
                     "type": "email"
                 }, {
-                    "target": $("#securityCode"),
+                    "target": $("#fpwdSecurityCode"),
                     "msg": Label.captchaErrorLabel,
                     "type": 'string',
                     'max': 4
                 }]})) {
             var requestJSONObject = {
-                userEmail: $("#userEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
-                captcha: $("#securityCode").val()
+                userEmail: $("#fpwdEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
+                captcha: $("#fpwdSecurityCode").val()
             };
 
             $.ajax({
@@ -141,12 +184,12 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        $("#registerTip").addClass('succ').removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
+                        $("#fpwdTip").addClass('succ').removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                     } else {
-                        $("#registerTip").removeClass("tip-succ");
-                        $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
-                        $("#captcha").attr("src", Label.servePath + "/captcha?code=" + Math.random());
-                        $("#securityCode").val("");
+                        $("#fpwdTip").removeClass("tip-succ");
+                        $("#fpwdTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
+                        $("#fpwdCaptcha").attr("src", Label.servePath + "/captcha?code=" + Math.random());
+                        $("#fpwdSecurityCode").val("");
                     }
                 }
             });
@@ -190,24 +233,31 @@ var Register = {
     },
     init: function () {
         // 注册回车事件
-        $("#securityCode").keyup(function (event) {
+        $("#registerCaptcha, #registerInviteCode").keyup(function (event) {
             if (event.keyCode === 13) {
-                Register.register();
+                Verify.register();
             }
         });
 
-        // 表单错误状态
-        $("input[type=text], input[type=password], textarea").blur(function () {
-            $(this).removeClass("input-error");
+        // 忘记密码回车事件
+        $("#fpwdSecurityCode").keyup(function (event) {
+            if (event.keyCode === 13) {
+                Verify.forgetPwd();
+            }
         });
 
-        $("#userName").focus();
+        // 登录密码输入框回车事件
+        $("#loginPassword, #captchaLogin").keyup(function (event) {
+            if (event.keyCode === 13) {
+                Verify.login();
+            }
+        });
     },
     init2: function () {
         // 注册回车事件
         $("#confirmPassword").keyup(function (event) {
             if (event.keyCode === 13) {
-                Register.register();
+                Verify.register();
             }
         });
 
