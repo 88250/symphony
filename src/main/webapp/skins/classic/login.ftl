@@ -36,7 +36,7 @@
                         </div>
                         
                         <div id="loginTip" class="tip"></div>
-                        <button onclick="Verify.login()">${loginLabel}</button>
+                        <button onclick="Verify.login('${goto}')">${loginLabel}</button>
                         <button class="green" onclick="Util.goRegister()">${registerLabel}</button>
                     </div>
                 </div>

@@ -191,14 +191,25 @@ public class LoginProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showLogin(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        // TODO: 登录后自动跳转到首页
+        if (null != userQueryService.getCurrentUser(request)
+                || userMgmtService.tryLogInWithCookie(request, response)) {
+            response.sendRedirect(Latkes.getServePath());
+
+            return;
+        }
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        
+
+        String referer = request.getParameter(Common.GOTO);
+        if (StringUtils.isBlank(referer)) {
+            referer = request.getHeader("referer");
+        }
+
         renderer.setTemplateName("login.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModel.put(Common.GOTO, request.getParameter(Common.GOTO));
+        dataModel.put(Common.GOTO, referer);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
@@ -359,6 +370,13 @@ public class LoginProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showRegister(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
+        if (null != userQueryService.getCurrentUser(request)
+                || userMgmtService.tryLogInWithCookie(request, response)) {
+            response.sendRedirect(Latkes.getServePath());
+
+            return;
+        }
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
