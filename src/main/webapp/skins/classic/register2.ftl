@@ -10,61 +10,39 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper register">
-                <div class="form">
-                    <table cellpadding="0" cellspacing="0">
-                        <tbody>
-                            <tr>
-                                <td width="70">
-                                    <label for="userName">${userNameLabel}</label>
-                                </td>
-                                <td width="165">
-                                    <input type="text" id="userName" value="${user.userName}" readonly="readonly" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="userEmail">${emailLabel}</label>
-                                </td>
-                                <td>
-                                    <input type="text" id="userEmail" value="${user.userEmail}" readonly="readonly" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="userPassword">${passwordLabel}</label>
-                                </td>
-                                <td>
-                                    <input id="userPassword"  type="password" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="confirmPassword">${userPasswordLabel2}</label>
-                                </td>
-                                <td>
-                                    <input id="confirmPassword" type="password" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for"userAppRole">${roleLabel}</label>
-                                </td>
-                                <td>
-                                    <label><input name="userAppRole" type="radio" value="0" checked="checked" />&nbsp;&nbsp;${programmerLabel}</label>
-                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;<input name="userAppRole" type="radio" value="1" />&nbsp;&nbsp;${designerLabel}</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" align="right"><br/>
-                                    <div id="registerTip" class="tip"></div><br/>
-                                    <button class="green" onclick="Register.register2()">${registerLabel}</button>
-                                    <input id="referral" type="hidden" value="${referral}">
-                                    <input id="userId" type="hidden" value="${user.oId}">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="wrapper verify">
+                <div class="verify-wrap">
+                    <div class="form">
+                        ${logoIcon2}
+
+                        <div class="input-wrap">
+                            <span class="icon-userrole"></span>
+                            <input type="text" id="registerUserName2" value="${user.userName}" readonly="readonly" placeholder="${userNameLabel}" autocomplete="off" />
+                        </div>
+                        <div class="input-wrap">
+                            <span class="icon-email"></span>
+                            <input type="text" id="registerUserEmail2" value="${user.userEmail}" readonly="readonly" placeholder="${emailLabel}" autocomplete="off" />
+                        </div>
+                        <div class="input-wrap">
+                            <span class="icon-locked"></span>
+                            <input type="password" autofocus="autofocus" id="registerUserPassword2" placeholder="${passwordLabel}" />
+                        </div>
+                         <div class="input-wrap">
+                            <span class="icon-locked"></span>
+                            <input type="password" id="registerConfirmPassword2" placeholder="${userPasswordLabel2}" />
+                        </div>
+                        <div class="fn-clear">
+                            <label>${roleLabel}</label>
+                            <label>&nbsp;&nbsp;&nbsp;&nbsp;<input name="userAppRole" type="radio" value="0" checked="checked" />&nbsp;&nbsp;${programmerLabel}</label>
+                            <label style="float:right">&nbsp;&nbsp;<input name="userAppRole" type="radio" value="1" />&nbsp;&nbsp;${designerLabel}</label>
+
+                        </div>
+                        <div id="registerTip2" class="tip"></div>
+                        <button class="green" onclick="Verify.register2()">${registerLabel}</button>
+                        <input id="referral2" type="hidden" value="${referral}">
+                        <input id="userId2" type="hidden" value="${user.oId}">
+
+                    </div>
                 </div>
                 <div class="intro fn-flex-1 content-reset">
                     ${introLabel}
@@ -72,10 +50,10 @@
             </div>
         </div>
         <#include "footer.ftl">
-        <script type="text/javascript" src="${staticServePath}/js/register${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                                        Register.init2();
-                                        Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
+            Verify.init();
+            Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
         </script>
     </body>
 </html>

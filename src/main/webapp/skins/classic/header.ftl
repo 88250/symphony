@@ -1,6 +1,3 @@
-<!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
-<input style="display:none" type="text" name="fakeusernameremembered"/>
-<input style="display:none" type="password" name="fakepasswordremembered"/>
 <div class="nav">
     <h1>
         ${logoIcon}
@@ -55,30 +52,8 @@
             </ul>
         </div>
         <#else>
-        <a href="javascript: Util.showLogin();" class="unlogin">${loginLabel}</a>
-        <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin">${registerLabel}</a>
-        <div class="form module fn-none">
-            <div class="login-wrap">
-                <span class="icon-userrole"></span>
-                <input id="nameOrEmail" type="text" placeholder="${nameOrEmailLabel}" autocomplete="off" />
-            </div>
-            <div class="login-wrap">
-                <span class="icon-locked"></span>
-                <input type="password" id="loginPassword" placeholder="${passwordLabel}" />
-            </div>
-            <div class="fn-clear">
-                <div class="fn-hr5"></div>
-                <input type="checkbox" id="rememberLogin" checked /> ${rememberLoginStatusLabel}
-                <a href="${servePath}/forget-pwd" class="fn-right">${forgetPwdLabel}</a>
-                <div class="fn-hr5"></div>
-            </div>
-            <div class="fn-none login-wrap">
-                <img id="captchaImg" class="fn-pointer" />
-                <input type="text" id="captchaLogin" placeholder="${captchaLabel}" />
-            </div>
-            <div id="loginTip" class="tip"></div>
-            <button onclick="Util.login()">${loginLabel}</button>
-        </div>
+        <a href="javascript: Util.goLogin();" class="unlogin">${loginLabel}</a>
+        <a href="javascript:Util.goRegister()" class="unlogin">${registerLabel}</a>
         </#if>
     </div>
 </div>

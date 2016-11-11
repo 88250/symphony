@@ -691,7 +691,7 @@ button:hover,
 .btn:hover {
     text-decoration: none;
     border-color: #ccc;
-    background-color: #0ca6dd;
+    background-color: #eee;
     background: linear-gradient(#eee, #ddd);
 }
 
@@ -1308,6 +1308,22 @@ a[class*=" icon-"]:hover {
     line-height: 38px;
     padding: 0 10px;
 
+    .nav-tabs {
+        flex: 1;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    .nav-tabs a svg {
+        color: #eee;
+        visibility: hidden;
+    }
+
+    .nav-tabs a:hover svg,
+    .nav-tabs a.selected svg {
+        visibility: visible;
+    }
+
     .nav-tabs > a,
     .user-nav > a {
         display: inline-block;
@@ -1408,66 +1424,6 @@ a[class*=" icon-"]:hover {
         font-size: 14px;
     }
 
-    .form {
-        padding: 10px;
-        position: absolute;
-        right: 0;
-        top: 48px;
-        z-index: 20;
-        width: 220px;
-        font-size: 14px;
-        line-height: 1.6;
-
-        input[type="text"],
-        input[type="password"],
-        button {
-            margin: 10px 0;
-        }
-
-        button {
-            width: 100%;
-        }
-
-        .login-wrap {
-            position: relative;
-
-            input {
-                background-color: #FFF;
-                padding-left: 36px;
-            }
-
-            span {
-                color: #999;
-                position: absolute;
-                top: 16px;
-                font-size: 20px;
-                left: 10px;
-            }
-        }
-
-        #captchaImg {
-            top: 11px;
-            position: absolute;
-            height: 31px;
-            left: 1px;
-            border-radius: 3px 0 0 3px;
-        }
-
-        #captchaLogin {
-            padding-left: 91px;
-        }
-    }
-
-    .form:after {
-        top: -14px;
-        right: 74px;
-        left: auto;
-        position: absolute;
-        border: 7px solid transparent;
-        border-bottom-color: #fff;
-        content: " ";
-    }
-
     .person-list {
         position: absolute;
         top: 48px;
@@ -1517,22 +1473,6 @@ a[class*=" icon-"]:hover {
     #notificationsPanel:after {
     		right: 92px;
     }
-}
-
-.nav-tabs {
-    flex: 1;
-    text-align: center;
-    overflow: hidden;
-}
-
-.nav-tabs a svg {
-    color: #eee;
-    visibility: hidden;
-}
-
-.nav-tabs a:hover svg,
-.nav-tabs a.selected svg {
-    visibility: visible;
 }
 /* end header */
 

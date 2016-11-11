@@ -94,6 +94,7 @@ import org.b3log.symphony.util.Languages;
 import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.TimeZones;
 import org.json.JSONObject;
 
 /**
@@ -134,7 +135,7 @@ import org.json.JSONObject;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.25.13.26, Oct 27, 2016
+ * @version 1.25.13.27, Nov 10, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -538,16 +539,12 @@ public class UserProcessor {
             dataModel.put(Common.LANGUAGES, Languages.getAvailableLanguages());
 
             final List<JSONObject> timezones = new ArrayList<>();
-            final String[] availableIDs = TimeZone.getAvailableIDs();
-
-            final String language = user.optString(UserExt.USER_LANGUAGE);
-            final Locale locale = new Locale(language);
-            for (final String timezoneId : availableIDs) {
-                final String timezoneName = TimeZone.getTimeZone(timezoneId).getDisplayName(locale);
-
+            final List<TimeZones.TimeZoneWithDisplayNames> timeZones = TimeZones.getInstance().getTimeZones();
+            for (final TimeZones.TimeZoneWithDisplayNames timeZone : timeZones) {
                 final JSONObject timezone = new JSONObject();
-                timezone.put(Common.ID, timezoneId);
-                timezone.put(Common.NAME, timezoneId + " (" + timezoneName + ")");
+
+                timezone.put(Common.ID, timeZone.getTimeZone().getID());
+                timezone.put(Common.NAME, timeZone.getDisplayName());
 
                 timezones.add(timezone);
             }

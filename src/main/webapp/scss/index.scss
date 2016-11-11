@@ -592,26 +592,73 @@ label.cmt-anonymous {
 }
 /* end article list */
 
-/* start register */
-.register .intro {
-    border-left: 1px dashed #C0C0C0;
-    margin-left: 50px;
-    min-height: 200px;
-    padding-left: 30px;
-}
+/* start verify */
+.verify {
+    background-color: #fff;
 
-.register .form input[type="text"],
-.register .form input[type="password"],
-.register .form textarea {
-    margin: 10px 0;
-    width: 200px;
-}
+    .intro {
+        padding: 100px 50px;
+        background-color: #f1f7fe;
+        width: 40%;
+        color: #666;
+    }
 
-#securityCode {
-    margin-right: 10px;
-    width: 131px;
+    .verify-wrap {
+        width: 60%;
+    }
+
+    /* start register & login form */
+    .form {
+        font-size: 14px;
+        line-height: 1.6;
+        width: 250px;
+        margin: 100px auto;
+
+        svg {
+            margin: 0 auto;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            margin: 10px 0;
+            width: 100%;
+            padding-left: 36px;
+            background-color: #FFF;
+        }
+
+        button {
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .input-wrap {
+            position: relative;
+
+            span {
+                color: #999;
+                position: absolute;
+                top: 16px;
+                font-size: 20px;
+                left: 10px;
+            }
+        }
+
+        .captcha-img {
+            top: 11px;
+            position: absolute;
+            height: 31px;
+            left: 1px;
+            border-radius: 3px 0 0 3px;
+        }
+
+        input.captcha-input {
+            padding-left: 91px;
+        }
+    }
+    /* end register & login form */
 }
-/* end register */
+/* end verify */
 
 /* start tags.html */
 .tags-cold li h2,

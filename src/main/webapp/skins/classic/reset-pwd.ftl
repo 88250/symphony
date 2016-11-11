@@ -10,51 +10,31 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper register">
-                <div class="form">
-                    <table cellpadding="0" cellspacing="0">
-                        <tbody>
-                            <tr>
-                                <td width="70">
-                                    <label for="userName">${userNameLabel}</label>
-                                </td>
-                                <td width="165">
-                                    <input type="text" id="userName" value="${user.userName}" readonly="readonly" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="userEmail">${emailLabel}</label>
-                                </td>
-                                <td>
-                                    <input type="text" id="userEmail" value="${user.userEmail}" readonly="readonly" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="userPassword">${passwordLabel}</label>
-                                </td>
-                                <td>
-                                    <input id="userPassword"  type="password" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="confirmPassword">${userPasswordLabel2}</label>
-                                </td>
-                                <td>
-                                    <input id="confirmPassword" type="password" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" align="right"><br/>
-                                    <div id="registerTip" class="tip"></div><br/>
-                                    <button class="green" onclick="Register.resetPwd()">${resetPwdLabel}</button>
-                                    <input id="userId" type="hidden" value="${user.oId}">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="wrapper verify">
+                <div class="verify-wrap">
+                    <div class="form">
+                        ${logoIcon2}
+
+                        <div class="input-wrap">
+                            <span class="icon-userrole"></span>
+                            <input type="text" id="rpwdrUserName" value="${user.userName}" readonly="readonly" placeholder="${userNameLabel}" autocomplete="off" />
+                        </div>
+                        <div class="input-wrap">
+                            <span class="icon-email"></span>
+                            <input type="text" id="rpwdUserEmail" value="${user.userEmail}" readonly="readonly" placeholder="${emailLabel}" autocomplete="off" />
+                        </div>
+                        <div class="input-wrap">
+                            <span class="icon-locked"></span>
+                            <input type="password" autofocus="autofocus" id="rpwdUserPassword" placeholder="${passwordLabel}" />
+                        </div>
+                         <div class="input-wrap">
+                            <span class="icon-locked"></span>
+                            <input type="password" id="rpwdConfirmPassword" placeholder="${userPasswordLabel2}" />
+                        </div>
+                         <div id="rpwdTip" class="tip"></div>
+                        <button class="green" onclick="Verify.resetPwd()">${resetPwdLabel}</button>
+                        <input id="rpwdUserId" type="hidden" value="${user.oId}">
+                    </div>
                 </div>
                 <div class="intro fn-flex-1 content-reset">
                     ${introLabel}
@@ -62,9 +42,9 @@
             </div>
         </div>
         <#include "footer.ftl">
-        <script type="text/javascript" src="${staticServePath}/js/register${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                                        Register.init2();
+                                        Verify.init();
                                         Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
         </script>
     </body>
