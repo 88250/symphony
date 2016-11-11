@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 2.2.1.4, Nov 10, 2016
+ * @version 2.2.1.4, Nov 11, 2016
  * @since 0.1.6
  */
 public class MarkdownsTestCase {

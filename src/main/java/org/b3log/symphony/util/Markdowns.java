@@ -94,7 +94,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 1.9.8.14, Nov 10, 2016
+ * @version 1.9.8.14, Nov 11, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
