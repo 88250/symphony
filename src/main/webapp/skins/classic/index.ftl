@@ -10,125 +10,126 @@
     </head>
     <body class="index">
         <#include "header.ftl">   
-        <div class="main first">
+        <div class="main">
             <div class="wrapper">
-                <div class="item first">
-                    <a href="${servePath}/recent" class="item-header" style="background-image: url(${hotBgIcon});">${latestLabel}</a>
-                    <div class="module-panel">
-                        <ul class="module-list">
-                            <#list recentArticles as article>
-                            <li<#if !article_has_next> class="last"</#if>>
-                                <#if "someone" != article.articleAuthorName>
-                                <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
-                                    <span class="avatar-small tooltipped tooltipped-se slogan"
-                                          aria-label="${article.articleAuthorName}"
-                                          style="background-image:url('${article.articleAuthorThumbnailURL20}')"></span>
-                                    <#if "someone" != article.articleAuthorName></a></#if>
-                                <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
-                                <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
+                <div class="index-main">
+                    <div class="index-tabs fn-flex">
+                        <span>${latestLabel} &nbsp; <span class="count">23</span></span>
+                        <span class="tags">${followingTagsLabel} &nbsp; <span class="count">23</span></span>
+                        <span class="users">${followingUsersLabel} &nbsp; <span class="count">23</span></span>
+                    </div>
+                    <div class="index-tabs-panels list article-list">
+                        <ul>
+                            <li>
+                                <div class="fn-clear ft-smaller list-info">
+                                    <span class="fn-left">
+                                        <a rel="tag" href="https://hacpai.com/tag/qiniu">七牛</a> &nbsp; 
+                                        <a rel="tag" href="https://hacpai.com/tag/%E6%8E%98%E9%87%91">掘金</a> &nbsp; 
+                                        <a rel="tag" href="https://hacpai.com/tag/CDN">CDN</a> &nbsp; 
+                                    </span>
+                                    <span class="fn-right ft-fade">
+                                        <a class="ft-fade" href="https://hacpai.com/article/1478836707886#comments"><b class="article-level0">4</b> 回帖</a> &nbsp;•&nbsp;
+
+                                        <a class="ft-fade" href="https://hacpai.com/article/1478836707886"><span class="article-level1">166</span> 浏览</a> &nbsp;•&nbsp;
+                                        <span class="ft-fade">2 天前 </span>
+                                    </span>
+                                </div>
+                                <h2>
+                                    <a data-id="1478836707886" data-type="0" rel="bookmark" href="https://hacpai.com/article/1478836707886">永不停更，永久免费的前端公开库 Staticfile 全新改版！
+                                    </a>
+
+                                </h2>
+                                <div class="ft-smaller fn-clear list-info fn-flex">
+                                    <span class="fn-ellipsis fn-flex-1">
+                                        <a rel="nofollow" href="https://hacpai.com/member/wulalala"><div class="avatar-small" style="background-image:url('https://img.hacpai.com/avatar/1471837009305_1472019457934.jpeg?imageView2/1/w/80/h/80/format/jpg/interlace/0/q/100')"></div></a>&nbsp;
+                                        <a rel="nofollow" class="author" href="https://hacpai.com/member/wulalala">
+                                           wulalala
+                                        </a>
+                                        
+                                    </span>
+
+                                    <span class="fn-right ft-fade fn-hidden">
+                                            &nbsp; 5 小时前 
+                                                <a rel="nofollow" class="author" href="https://hacpai.com/member/88250"><span class="author">88250</span></a>
+                                            回帖
+                                    </span>
+                                </div>
+                                <a class="abstract" href="https://hacpai.com/article/1478836707886">
+                                    各位前端童鞋， 七牛前端公开库 [链接] 全新改版！永久免费，永不停更！ Staticfile 致力于提供高质量、稳定的前端资源 CDN 服务，同步国外 [链接]，同时由国内开源贡献者提交其它有价值的库。感谢所有开源库作者和独家 ....
+                                </a>
+                                <span class="heat tooltipped tooltipped-n" aria-label="帖子活跃度" style="width:0px"></span>
                             </li>
-                            </#list>
+                            <li>
+                                <div class="fn-clear ft-smaller list-info">
+                                    <span class="fn-left">
+                                        <a rel="tag" href="https://hacpai.com/tag/qiniu">七牛</a> &nbsp; 
+                                        <a rel="tag" href="https://hacpai.com/tag/%E6%8E%98%E9%87%91">掘金</a> &nbsp; 
+                                        <a rel="tag" href="https://hacpai.com/tag/CDN">CDN</a> &nbsp; 
+                                    </span>
+                                    <span class="fn-right ft-fade">
+                                        <a class="ft-fade" href="https://hacpai.com/article/1478836707886#comments"><b class="article-level0">4</b> 回帖</a> &nbsp;•&nbsp;
+
+                                        <a class="ft-fade" href="https://hacpai.com/article/1478836707886"><span class="article-level1">166</span> 浏览</a> &nbsp;•&nbsp;
+                                        <span class="ft-fade">2 天前 </span>
+                                    </span>
+                                </div>
+                                <h2>
+                                    <a data-id="1478836707886" data-type="0" rel="bookmark" href="https://hacpai.com/article/1478836707886">永不停更，永久免费的前端公开库 Staticfile 全新改版！
+                                    </a>
+
+                                </h2>
+                                <div class="ft-smaller fn-clear list-info fn-flex">
+                                    <span class="fn-ellipsis fn-flex-1">
+                                        <a rel="nofollow" href="https://hacpai.com/member/wulalala"><div class="avatar-small" style="background-image:url('https://img.hacpai.com/avatar/1471837009305_1472019457934.jpeg?imageView2/1/w/80/h/80/format/jpg/interlace/0/q/100')"></div></a>&nbsp;
+                                        <a rel="nofollow" class="author" href="https://hacpai.com/member/wulalala">
+                                           wulalala
+                                        </a>
+                                        
+                                    </span>
+
+                                    <span class="fn-right ft-fade fn-hidden">
+                                            &nbsp; 5 小时前 
+                                                <a rel="nofollow" class="author" href="https://hacpai.com/member/88250"><span class="author">88250</span></a>
+                                            回帖
+                                    </span>
+                                </div>
+                                <a class="abstract" href="https://hacpai.com/article/1478836707886">
+                                    各位前端童鞋， 七牛前端公开库 [链接] 全新改版！永久免费，永不停更！ Staticfile 致力于提供高质量、稳定的前端资源 CDN 服务，同步国外 [链接]，同时由国内开源贡献者提交其它有价值的库。感谢所有开源库作者和独家 ....
+                                </a>
+                                <span class="heat tooltipped tooltipped-n" aria-label="帖子活跃度" style="width:0px"></span>
+                            </li>
                         </ul>
                     </div>
                 </div>
-                <div class="item">
-                    <a href="${servePath}/perfect" class="item-header" style="background-image: url(${perfectBgIcon});">${perfectLabel}</a>
-                    <div class="module-panel">
-                        <ul class="module-list">
-                            <#list perfectArticles as article>
-                            <li<#if !article_has_next> class="last"</#if>>
-                                <#if "someone" != article.articleAuthorName>
-                                <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
-                                    <span class="avatar-small tooltipped tooltipped-se slogan"
-                                          aria-label="${article.articleAuthorName}"
-                                          style="background-image:url('${article.articleAuthorThumbnailURL20}')"></span>
-                                    <#if "someone" != article.articleAuthorName></a></#if>
-                                <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
-                                <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
+                <div class="index-side">
+                    <div class="perfect-header">
+                        <a href="${servePath}/perfect"><svg height="16" viewBox="3 2 11 12" width="14">${perfectIcon}</svg> ${perfectLabel}</a>
+                        <span class="fn-right">
+                            <span class="check">${dailyCheckinLabel}</span>
+                            <span class="post">${postArticleLabel}</span>
+                        </span>
+                    </div>
+                    <div class="perfect-panel list">
+                        <ul>
+                            <li>
+                                <a rel="nofollow" href="https://hacpai.com/member/wulalala">
+                                    <span class="avatar-small tooltipped tooltipped-se" aria-label="wulalala" style="background-image:url('https://img.hacpai.com/avatar/1471837009305_1472019457934.jpeg?imageView2/1/w/52/h/52/format/jpg/interlace/0/q/100')"></span>
+                                    </a>
+                                <a rel="nofollow" class="fn-ellipsis" href="https://hacpai.com/article/1478836707886">永不停更，永久免费的前端公开库 Staticfile 全新改版！</a>
+                                <a class="fn-right count ft-gray ft-smaller" href="https://hacpai.com/article/1478836707886">146</a>
                             </li>
-                            </#list>
+                             <li>
+                                <a rel="nofollow" href="https://hacpai.com/member/wulalala">
+                                    <span class="avatar-small tooltipped tooltipped-se" aria-label="wulalala" style="background-image:url('https://img.hacpai.com/avatar/1471837009305_1472019457934.jpeg?imageView2/1/w/52/h/52/format/jpg/interlace/0/q/100')"></span>
+                                    </a>
+                                <a rel="nofollow" class="fn-ellipsis" href="https://hacpai.com/article/1478836707886">永不停更，永久免费的前端公开库 Staticfile 全新改版！</a>
+                                <a class="fn-right count ft-gray ft-smaller" href="https://hacpai.com/article/1478836707886">146</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <#if tags?size != 0>
-        <div class="index-wrap">
-            <div class="wrapper">
-                <ul class="tag-desc fn-clear">
-                    <#list tags as tag>
-                    <li>
-                        <a rel="nofollow" href="${servePath}/tag/${tag.tagURI}">
-                            <#if tag.tagIconPath!="">
-                            <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" />
-                            </#if>
-                            ${tag.tagTitle}
-                        </a>
-                    </li>
-                    </#list>
-                </ul>
-            </div>
-        </div>
-        </#if>
-        <div class="main<#if ADLabel == ''> first</#if>">
-            <div class="wrapper">
-                <div class="item<#if ADLabel == ''> first</#if>">
-                    <a href="${servePath}/timeline" class="item-header" style="background-image: url(${timelineBgIcon});">${timelineLabel}</a>
-                    <div class="module-panel">
-                        <#if timelines?size <= 0>
-                        <div id="emptyTimeline">${emptyTimelineLabel}</div>
-                        </#if>
-                        <ul class="module-list timeline ft-gray">
-                            <#list timelines as article>
-                            <#if article_index < 9>
-                            <li<#if !article_has_next> class="last"</#if>>
-                                ${article.content}
-                                </#if>
-                        </li>
-                        </#list>
-                    </ul>
-                </div>
-            </div>
-            <#if ADLabel != ''>
-            <div class="item mid">
-                <a class="item-header" style="background-image: url(${adBgIcon})" href="https://hacpai.com/article/1460083956075">${sponsorLabel}</a>
-                <div class="ad module-panel">
-                    ${ADLabel}
-                </div>
-            </div>
-            </#if>
-            <div class="item">
-                <a class="item-header" style="background-image: url(${activityBgIcon});" href="${servePath}/pre-post">${postArticleLabel}</a>
-                <div class="module-panel">
-                    <ul class="module-list">
-                        <li>
-                            <div class="avatar-small tooltipped tooltipped-ne slogan"
-                                 aria-label="${activityDailyCheckinLabel}" style="background-image:url('${staticServePath}/images/activities/checkin.png')"></div>
-                            <a class="title" href="<#if useCaptchaCheckin??>/activity/checkin<#else>/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a>
-                        </li>
-                        <li>
-                            <div class="avatar-small tooltipped tooltipped-ne slogan"
-                                 aria-label="${activityYesterdayLivenessRewardLabel}" style="background-image:url('${staticServePath}/images/activities/yesterday.png')"></div>
-                            <a class="title" href="${servePath}/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a></li>
-                        <li>
-                            <div class="avatar-small tooltipped tooltipped-ne slogan"
-                                 aria-label="${activity1A0001Label}" style="background-image:url('${staticServePath}/images/activities/1A0001.png')"></div>
-                            <a class="title" href="${servePath}/activity/1A0001">${activity1A0001Label}</a></li>
-                        <li>
-                            <div class="avatar-small tooltipped tooltipped-ne slogan"
-                                 aria-label="${characterLabel}" style="background-image:url('${staticServePath}/images/activities/char.png')"></div>
-                            <a class="title" href="${servePath}/activity/character">${characterLabel}</a>
-                        </li>
-                        <li>
-                            <div class="avatar-small tooltipped tooltipped-ne slogan"
-                                 aria-label="${eatingSnakeLabel}" style="background-image:url('${staticServePath}/images/activities/snak.png')"></div>
-                            <a class="title" href="${servePath}/activity/eating-snake">${eatingSnakeLabel}</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
     <#include "footer.ftl">     
     <script type="text/javascript">
         $('.main.first .item .module-panel').outerWidth(parseInt(($('.footer .wrapper').width() - 20) / 2) - 42);
