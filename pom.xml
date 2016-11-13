@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.14.4.44, Nov 11, 2016
+    Version: 2.14.5.44, Nov 13, 2016
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -341,6 +341,25 @@
                     -->
                 </executions>
             </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <webResources>
+                        <resource>  
+                            <directory>${project.basedir}/src/main/resources/lib/</directory>  
+                            <targetPath>WEB-INF/lib</targetPath>
+                            <filtering>false</filtering>
+                            <includes>
+                                <include>**/*.jar</include>  
+                            </includes>  
+                        </resource>  
+                    </webResources>  
+                </configuration>  
+            </plugin>
+            
         </plugins>
 
         <finalName>symphony</finalName>
