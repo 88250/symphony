@@ -429,16 +429,18 @@ var Comment = {
     _initMathJax: function () {
         var hasMathJax = false;
         $('.content-reset').each(function () {
-            if ($(this).text().indexOf('$/') > -1 || $(this).text().indexOf('$$') > -1) {
-                hasMathJax = true;
-                return false;
-            }
+            $(this).find('p').each(function () {
+                if ($(this).text().indexOf('$/') > -1 || $(this).text().indexOf('$$') > -1) {
+                    hasMathJax = true;
+                    return false;
+                }
+            });
         });
 
         if (hasMathJax) {
             $.ajax({
                 method: "GET",
-                url: "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&_=1473258780393",
+                url: "https://cdn.staticfile.org/MathJax/MathJax-2.6-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&_=1473258780393",
                 dataType: "script"
             }).done(function () {
                 MathJax.Hub.Config({
