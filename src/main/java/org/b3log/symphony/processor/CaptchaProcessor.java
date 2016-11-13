@@ -46,7 +46,7 @@ import org.patchca.word.RandomWordFactory;
  * Captcha processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.5, Nov 11, 2016
+ * @version 2.2.0.6, Nov 13, 2016
  * @since 0.2.2
  */
 @RequestProcessor
@@ -90,7 +90,7 @@ public class CaptchaProcessor {
             final HttpSession httpSession = request.getSession(false);
 
             if (null != httpSession) {
-                LOGGER.log(Level.DEBUG, "Captcha[{0}] for session[id={1}]", new Object[]{challenge, httpSession.getId()});
+                LOGGER.log(Level.TRACE, "Captcha[{0}] for session[id={1}]", new Object[]{challenge, httpSession.getId()});
                 httpSession.setAttribute(CAPTCHA, challenge);
             }
 
