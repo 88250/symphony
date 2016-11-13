@@ -129,6 +129,45 @@
                     </div>
                 </div>
             </div>
+            <div>
+                <br/><br/>
+            </div>
+            <div class="wrapper">
+                <div class="index-main">
+                    <div class="metro-line">
+                        <div class="metro-item">1</div>
+                        <div class="metro-item mid">2</div>
+                        <div class="metro-item">3</div>
+                    </div>
+                    <div class="metro-line">
+                        <div class="metro-item">1</div>
+                        <div class="metro-item mid">2</div>
+                        <div class="metro-item">3</div>
+                    </div>
+                    <div class="metro-line">
+                        <div class="metro-item">1</div>
+                        <div class="metro-item mid">2</div>
+                        <div class="metro-item">3</div>
+                    </div>
+                    <div class="metro-border fn-flex">
+                        <div></div>
+                        <div class="red"></div>
+                        <div class="green"></div>
+                    </div>
+                </div>
+                <div class="index-side">
+                    <div class="list">
+                        <ul>
+                            <li>
+                                    <a target="_blank" rel="nofollow" href="https://hacpai.com/member/cggs">cggs</a> 正在浏览 <a target="_blank" rel="nofollow" href="https://hacpai.com/article/1467011936362">如何正确地使用小薇 QQ 机器人</a>
+                            </li>
+                            <li>
+                                    <a target="_blank" rel="nofollow" href="https://hacpai.com/member/cggs">cggs</a> 正在浏览 <a target="_blank" rel="nofollow" href="https://hacpai.com/article/1467011936362">如何正确地使用小薇 QQ 机器人</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     <#include "footer.ftl">     
     <script type="text/javascript">

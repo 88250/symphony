@@ -768,6 +768,10 @@ code .dec { color: initial; } /* decimal - blue */
 
 /* start index */
 .index {
+    .main {
+        padding: 40px 0;
+    }
+
     .wrapper {
         background-color: #FFF;
     }
@@ -777,7 +781,7 @@ code .dec { color: initial; } /* decimal - blue */
     }
 
     .index-side {
-        margin-left: 2px;
+        border-left: 2px solid #f2f2f2;
         width: 40%;
     }
 
@@ -848,7 +852,7 @@ code .dec { color: initial; } /* decimal - blue */
 
     .perfect-header {
         line-height: 40px;
-        border-bottom: 8px solid #999;
+        border-bottom: 8px solid #f1f7fe;
         padding-left: 20px;
 
         .post,
@@ -888,6 +892,38 @@ code .dec { color: initial; } /* decimal - blue */
             right: 10px;
             top: 12px;
         }
+    }
+
+    .metro-line {
+        display: flex
+    }
+
+    .metro-item {
+        flex: 1;
+        border-bottom: 2px solid #f2f2f2;
+        height: 200px;
+        text-align: center;
+    }
+
+    .metro-item.mid {
+        border-left: 2px solid #f2f2f2;
+        border-right: 2px solid #f2f2f2;
+    }
+
+    .metro-border > div {
+        height: 8px;
+        flex: 1;
+        background-color: $blue;
+    }
+
+    .metro-border > div.red {
+        background-color: $red;
+        border-left: 2px solid #f2f2f2;
+        border-right: 2px solid #f2f2f2;
+    }
+
+    .metro-border > div.green {
+        background-color: $green;
     }
 }
 /* end index */
