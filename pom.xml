@@ -348,8 +348,8 @@
                 <version>3.0.0</version>
                 <configuration>
                     <webResources>
-                        <resource>  
-                            <directory>${project.basedir}/src/main/resources/lib/</directory>  
+                        <resource>
+                            <directory>${project.basedir}/src/main/resources/lib/net/pusuo</directory>  
                             <targetPath>WEB-INF/lib</targetPath>
                             <filtering>false</filtering>
                             <includes>
