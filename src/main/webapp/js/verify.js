@@ -248,7 +248,7 @@ var Verify = {
         // 登录密码输入框回车事件
         $("#loginPassword, #captchaLogin").keyup(function (event) {
             if (event.keyCode === 13) {
-                Verify.login();
+                $('#loginTip').next().click();
             }
         });
 

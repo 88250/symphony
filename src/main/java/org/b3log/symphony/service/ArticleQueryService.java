@@ -93,7 +93,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.18.36, Nov 10, 2016
+ * @version 2.24.18.37, Nov 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -2496,7 +2496,7 @@ public class ArticleQueryService {
             if (Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
                 return "....";
             }
-            
+
             if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType) {
                 return langPropsService.get("articleAbstractDiscussionLabel", Latkes.getLocale());
             }
@@ -2504,7 +2504,14 @@ public class ArticleQueryService {
             final int length = Integer.valueOf("150");
 
             String ret = article.optString(Article.ARTICLE_CONTENT);
-            ret = Markdowns.toHTML(ret);
+
+            try {
+                ret = Markdowns.toHTML(ret);
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Parses article abstract failed [id=" + articleId + ", md=" + ret + "]");
+                throw e;
+            }
+
             ret = Jsoup.clean(ret, Whitelist.basicWithImages());
 
             final int threshold = 20;

@@ -453,7 +453,7 @@ blockquote {
 }
 
 .ft-green {
-    color: #569e3d;
+    color: $green;
 }
 
 .ft-a-icon {
@@ -713,12 +713,12 @@ button.green,
 
 button.green:hover,
 .btn.green:hover{
-    background-color: #569e3d;
+    background-color: $green;
     background-image: none;
 }
 
 button.green:active {
-    background-color: #569e3d;
+    background-color: $green;
     background-image: none;
     border-color: #418737;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
