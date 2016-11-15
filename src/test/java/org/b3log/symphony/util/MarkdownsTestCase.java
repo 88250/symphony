@@ -76,6 +76,18 @@ public class MarkdownsTestCase {
     }
 
     /**
+     * email test
+     * not link to User page if the name is in email address
+     */
+    @Test
+    public void linkToHTML(){
+    	  String md = "test@test.com";
+          String html = Markdowns.linkToHtml(md);
+          System.out.println(html);
+          Assert.assertEquals(html, "<p><a href=\"mailto:&#116;e&#115;&#x74;&#x40;&#x74;&#x65;&#115;&#x74;&#x2e;c&#111;&#x6d;\">&#116;e&#115;&#x74;&#x40;&#x74;&#x65;&#115;&#x74;&#x2e;c&#111;&#x6d;</a></p>");
+    }
+    
+    /**
      * Workaround for https://github.com/sirthias/pegdown/issues/229.
      */
     @Test
@@ -137,7 +149,6 @@ public class MarkdownsTestCase {
              "github地址：https://github.com/Userwu/study[downline]react";
         html = Markdowns.toHTML(md);
         Assert.assertEquals(html, "<p>然后新建一个 study_1 文件夹，在文件夹下面新建一个 index.html 文件,*注意最后一个 js 代码的 type*<br/>github 地址：https://github.com/Userwu/study_react</p>");
-
     }
 
     /**
