@@ -30,7 +30,7 @@ import org.b3log.latke.util.Strings;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 24, 2016
+ * @version 1.0.1.0, Nov 15, 2016
  * @since 1.6.0
  */
 public final class Sitemap {
@@ -38,7 +38,7 @@ public final class Sitemap {
     /**
      * Start document.
      */
-    private static final String START_DOCUMENT = "<?xml version='1.0' encoding='UTF-8'?>";
+    private static final String START_DOCUMENT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
     /**
      * Start URL set element.

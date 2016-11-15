@@ -49,6 +49,7 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.event.ArticleBaiduSender;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
@@ -134,7 +135,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.22.5.17, Oct 27, 2016
+ * @version 2.23.5.17, Nov 15, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -2396,10 +2397,16 @@ public class AdminProcessor {
 
         if (Symphonys.getBoolean("algolia.enabled")) {
             searchMgmtService.updateAlgoliaDocument(article);
+
+            final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+            ArticleBaiduSender.sendToBaidu(articlePermalink);
         }
 
         if (Symphonys.getBoolean("es.enabled")) {
             searchMgmtService.updateESDocument(article, Article.ARTICLE);
+
+            final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+            ArticleBaiduSender.sendToBaidu(articlePermalink);
         }
 
         context.getResponse().sendRedirect(Latkes.getServePath() + "/admin/articles");
