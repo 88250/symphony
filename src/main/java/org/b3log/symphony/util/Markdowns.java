@@ -160,6 +160,27 @@ public final class Markdowns {
     }
 
     /**
+     * Converts the email or url text to HTML.
+     *
+     * @param markdownText the specified markdown text
+     * @return converted HTML, returns an empty string "" if the specified markdown text is "" or {@code null}, returns
+     * 'markdownErrorLabel' if exception
+     */
+    public static String linkToHtml(final String markdownText) {
+        if (Strings.isEmptyOrNull(markdownText)) {
+            return "";
+        }
+
+        final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.AUTOLINKS, 5000);
+        // String ret = pegDownProcessor.markdownToHtml(markdownText);
+
+        final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
+        String ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
+                Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+        return ret;
+    }
+    
+    /**
      * Converts the specified markdown text to HTML.
      *
      * @param markdownText the specified markdown text
