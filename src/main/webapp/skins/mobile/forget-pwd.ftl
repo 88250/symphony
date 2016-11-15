@@ -5,51 +5,39 @@
         <@head title="${forgetPwdLabel} - ${symphonyLabel}">
         <meta name="description" content="${forgetPwdLabel} ${symphonyLabel}"/>
         </@head>
+        <link rel="canonical" href="${servePath}/forget-pwd">
     </head>
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper register">
-                <div class="form">
-                    <table cellpadding="0" cellspacing="0">
-                        <tbody>
-                            <tr>
-                                <td width="70">
-                                    <label for="userEmail">${emailLabel}</label>
-                                </td>
-                                <td>
-                                    <input autofocus="autofocus" type="text" id="userEmail" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="securityCode">${captchaLabel}</label>
-                                </td>
-                                <td>
-                                    <input type="text" id="securityCode" />
-                                    <img id="captcha" class="fn-pointer" src="${servePath}/captcha" onclick="this.src = '${servePath}/captcha?' + (new Date()).getTime()" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" align="right">
-                                    <div id="registerTip" class="tip"></div><br/>
-                                    <button class="green" onclick="Register.forgetPwd()">${forgetPwdLabel}</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="wrapper verify">
+                <div class="verify-wrap">
+                    <div class="form">
+                        ${logoIcon2}
+                        <div class="input-wrap">
+                            <span class="icon-email"></span>
+                            <input id="fpwdEmail" type="text" placeholder="${emailLabel}" autocomplete="off" autofocus="autofocus" />
+                        </div>
+                        <div class="input-wrap">
+                            <img id="fpwdCaptcha" class="fn-pointer captcha-img" src="${servePath}/captcha" onclick="this.src = '${servePath}/captcha?' + (new Date()).getTime()" />
+                            <input type="text" id="fpwdSecurityCode" class="captcha-input" placeholder="${captchaLabel}" />
+                        </div>
+                        <div id="fpwdTip" class="tip"></div>
+                        <button onclick="Verify.forgetPwd()">${forgetPwdLabel}</button>
+                        <button class="green" onclick="Util.goLogin()">${loginLabel}</button>
+                    </div>
                 </div>
-                <br/>
-                <div class="intro fn-flex-1  content-reset">
+                <div class="intro content-reset">
                     ${introLabel}
                 </div>
             </div>
         </div>
         <#include "footer.ftl">
-        <script type="text/javascript" src="${staticServePath}/js/register${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                                        Label.invalidEmailLabel = "${invalidEmailLabel}";
-                                        Label.captchaErrorLabel = "${captchaErrorLabel}";
+            Verify.init();
+            Label.invalidEmailLabel = "${invalidEmailLabel}";
+            Label.captchaErrorLabel = "${captchaErrorLabel}";
         </script>
     </body>
 </html>

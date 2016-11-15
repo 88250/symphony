@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.38.25.37, Nov 10, 2016
+ * @version 1.38.25.38, Nov 13, 2016
  */
 
 /**
@@ -897,8 +897,7 @@ var Util = {
      * @returns {undefined}
      */
     needLogin: function () {
-        // todo
-        alert(Label.funNeedLoginLabel);
+        Util.goLogin();
     },
     /**
      * @description 跳转到注册页面

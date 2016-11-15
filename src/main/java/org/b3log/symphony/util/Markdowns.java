@@ -94,7 +94,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 1.9.8.13, Nov 8, 2016
+ * @version 1.9.8.14, Nov 11, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -195,54 +195,45 @@ public final class Markdowns {
     private static String formatMarkdown(final String markdownText) {
         String ret = markdownText;
         final Document doc = Jsoup.parse(markdownText, "", Parser.xmlParser());
-
         final Elements tagA = doc.select("a");
         for (int i = 0; i < tagA.size(); i++) {
             final String search = tagA.get(i).attr("href");
             final String replace = StringUtils.replace(search, "_", "[downline]");
-
             ret = StringUtils.replace(ret, search, replace);
         }
-
         final Elements tagImg = doc.select("img");
         for (int i = 0; i < tagImg.size(); i++) {
             final String search = tagImg.get(i).attr("src");
             final String replace = StringUtils.replace(search, "_", "[downline]");
-
             ret = StringUtils.replace(ret, search, replace);
         }
-
         final Elements tagCode = doc.select("code");
         for (int i = 0; i < tagCode.size(); i++) {
-            final String search = tagCode.get(i).text();
+            final String search = tagCode.get(i).html();
             final String replace = StringUtils.replace(search, "_", "[downline]");
-
             ret = StringUtils.replace(ret, search, replace);
         }
-
-        final String[] toStrong = StringUtils.substringsBetween(ret, "**", "**");
-        final String[] toEm = StringUtils.substringsBetween(ret, "_", "_");
-
-        if (toStrong != null && toStrong.length > 0) {
-            for (final String strong : toStrong) {
-                final String search = "**" + strong + "**";
-                final String replace = "<strong>" + strong + "</strong>";
-
-                ret = StringUtils.replace(ret, search, replace);
+        
+        String[] rets = ret.split("\n");
+        for(String temp : rets){
+        	final String[] toStrong = StringUtils.substringsBetween(temp, "**", "**");
+            final String[] toEm = StringUtils.substringsBetween(temp, "_", "_");
+            if (toStrong != null && toStrong.length > 0) {
+                for (final String strong : toStrong) {
+                    final String search = "**" + strong + "**";
+                    final String replace = "<strong>" + strong + "</strong>";
+                    ret = StringUtils.replace(ret, search, replace);
+                }
+            }
+            if (toEm != null && toEm.length > 0) {
+                for (final String em : toEm) {
+                    final String search = "_" + em + "_";
+                    final String replace = "<em>" + em + "<em>";
+                    ret = StringUtils.replace(ret, search, replace);
+                }
             }
         }
-
-        if (toEm != null && toEm.length > 0) {
-            for (final String em : toEm) {
-                final String search = "_" + em + "_";
-                final String replace = "<em>" + em + "<em>";
-
-                ret = StringUtils.replace(ret, search, replace);
-            }
-        }
-
         ret = StringUtils.replace(ret, "[downline]", "_");
-
         return ret;
     }
 

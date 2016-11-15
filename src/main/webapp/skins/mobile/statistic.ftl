@@ -4,7 +4,6 @@
     <head>
         <@head title="${dataStatLabel} - ${symphonyLabel}">
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">

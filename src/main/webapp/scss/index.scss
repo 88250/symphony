@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.18.40, Nov 3, 2016
+ * @version 2.16.18.40, Nov 13, 2016
  */
 
 @import "variables";
@@ -767,126 +767,167 @@ code .dec { color: initial; } /* decimal - blue */
 /* end chat room */
 
 /* start index */
-.index .index-wrap {
-    background-color: #fff;
-    border-bottom: 1px solid #eee;
-    border-top: 1px solid #eee;
-    padding: 10px 0;
-}
+.index {
+    .main {
+        padding: 40px 0;
+    }
 
-.index .domains a {
-    display: initial;
-    width: 20%;
-    color: #333;
-    text-align: center;
-}
+    .wrapper {
+        background-color: #FFF;
+    }
 
-.index .domains a:hover {
-    color: $blue;
-    text-decoration: none;
-}
+    .index-main {
+        width: 60%;
+    }
 
-.index .first .item.first {
-    margin-right: 20px;
-}
+    .index-side {
+        border-left: 2px solid #f2f2f2;
+        width: 40%;
+    }
 
-.index .item {
-    flex: 1;
-    width: 33.3%;
-    padding: 20px;
-    color: #555;
-    border: 1px solid rgba(0,0,0,0.075);
-    border-bottom-color: rgba(0,0,0,0.125);
-    border-radius: 4px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05),0 5px 10px rgba(0,0,0,0.05);
-    transition: border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
-    box-sizing: border-box;
-    background-color: #FFF;
-}
+    .index-tabs > span {
+        flex: 1;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 40px;
+        cursor: pointer;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        position: relative;
+        transition-property: color;
+        transition-duration: .3s;
+        text-align: center;
+        border-bottom: 8px solid $blue;
+    }
 
-.index .item.mid {
-    margin: 0 20px;
-}
+    .index-tabs > span.tags {
+        border-bottom-color: $red;
+        margin: 0 2px;
+    }
 
-.index .item:hover {
-    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.15);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05),0 8px 15px rgba(0,0,0,0.1)
-}
+    .index-tabs > span.users {
+        border-bottom-color: $green;
+    }
 
-.index .item-header {
-    height: 20px;
-    margin: -21px -21px 10px;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    opacity: 0.8;
-    transition: opacity 0.1s ease-in-out;
-    padding: 5px;
-    display: block;
-    text-align: right;
-    color: #F7F7F7;
-}
+    .index-tabs > span:hover {
+        color: #fff
+    }
 
-.index .item:hover .item-header  {
-    opacity: 1;
-}
+    .index-tabs > span:before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: $blue;
+        transform: scaleY(0);
+        transform-origin: 50% 100%;
+        transition-property: transform;
+        transition-duration: .3s;
+        transition-timing-function: ease-out
+    }
 
-.index .tag-desc > li:hover > span {
-    border-bottom-style: solid;
-    border-radius: 3px;
-    opacity: 0.7;
-    filter: alpha(opacity=70);
-    z-index: 3;
-}
+    .index-tabs > span.tags:before {
+        background-color: $red;
+    }
 
-.index .module-list .title {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    margin-right: 13px;
-    color: #595959;
-}
+    .index-tabs > span.users:before {
+        background-color: $green;
+    }
 
-.index .module-list .title:hover {
-    color: #333;
-}
+    .index-tabs > span:hover:before {
+        transform: scaleY(1)
+    }
 
-.index .module-list.timeline li {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    padding: 10px;
-    line-height: 20px;
-}
+    .index-tabs-panels {
+        padding: 15px;
+    }
 
-.index .tag-desc.fn-clear {
-    margin: 15px 0 0 0;
-}
+    .index-tabs-panels > ul > li:last-child,
+    .perfect-panel.list > ul > li:last-child {
+        border-bottom-width: 0;
+    }
 
-.index .tag-desc > li {
-    margin: 0 20px 15px 0;
-}
+    .perfect-header {
+        line-height: 40px;
+        border-bottom: 8px solid #f1f7fe;
+        padding-left: 20px;
 
-.index .item .count {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    margin-top: -8px;
-}
+        .post,
+        .check {
+            border: 0;
+            background-color: #d23f31;
+            color: #fff;
+            box-sizing: border-box;
+            float: left;
+            padding: 0 10px;
+        }
 
-.timeline li a {
-    color: #595959;
-    font-size: 14px;
-}
+        .check {
+            background-color: $blue;
+        }
+    }
 
-.timeline li a:hover {
-    color: #333;
-}
+    .perfect-panel {
+        background-color: #f1f7fe;
+        padding: 0 10px;
 
-.timeline li:last-child {
-    border-bottom-width: 0;
+        .avatar-small {
+            position: absolute;
+            left: 10px;
+        }
+
+        .fn-ellipsis {
+            padding: 0 50px 0 30px;
+            display: block;
+            box-sizing: border-box;
+            color: #666;
+            line-height: 20px;
+        }
+
+        .count {
+            position: absolute;
+            right: 10px;
+            top: 12px;
+        }
+    }
+
+    .metro-line {
+        display: flex
+    }
+
+    .metro-item {
+        flex: 1;
+        border-bottom: 2px solid #f2f2f2;
+        height: 200px;
+        text-align: center;
+    }
+
+    .metro-item.mid {
+        border-left: 2px solid #f2f2f2;
+        border-right: 2px solid #f2f2f2;
+    }
+
+    .metro-border > div {
+        height: 8px;
+        flex: 1;
+        background-color: $blue;
+    }
+
+    .metro-border > div.red {
+        background-color: $red;
+        border-left: 2px solid #f2f2f2;
+        border-right: 2px solid #f2f2f2;
+    }
+
+    .metro-border > div.green {
+        background-color: $green;
+    }
 }
 /* end index */
+
 /* start symhub */
 .symhub {
 

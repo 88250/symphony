@@ -20,7 +20,7 @@
  * @file frontend tool.
  * 
  * @author <a href="mailto:liliyuan@fangstar.net">Liyuan Li</a>
- * @version 1.3.2.0, Oct 8, 2016 
+ * @version 1.3.3.0, Nov 13, 2016 
  */
 
 'use strict';
@@ -43,14 +43,14 @@ gulp.task('sass:watch', function () {
     gulp.watch('./src/main/webapp/scss/*.scss', ['sass']);
 });
 
-gulp.task('clean', ['sass'] function () {
+gulp.task('clean', ['sass'], function () {
     // remove min js
     return gulp.src('./src/main/webapp/js/*.min.js', {read: false})
             .pipe(clean());
 });
 
 
-gulp.task('build', ['sass', 'clean'] function () {
+gulp.task('build', ['sass', 'clean'], function () {
     // min css
     gulp.src('./src/main/webapp/js/lib/editor/codemirror.css')
             .pipe(cleanCSS())

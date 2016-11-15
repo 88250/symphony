@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 2.2.1.4, Nov 8, 2016
+ * @version 2.2.1.4, Nov 11, 2016
  * @since 0.1.6
  */
 public class MarkdownsTestCase {
@@ -132,6 +132,12 @@ public class MarkdownsTestCase {
                 + "    }\n"
                 + "}\n"
                 + "</code></pre></p>");
+        
+        md = "然后新建一个study[downline]1文件夹，在文件夹下面新建一个index.html文件,*注意最后一个js代码的type*\n" +
+             "github地址：https://github.com/Userwu/study[downline]react";
+        html = Markdowns.toHTML(md);
+        Assert.assertEquals(html, "<p>然后新建一个 study_1 文件夹，在文件夹下面新建一个 index.html 文件,*注意最后一个 js 代码的 type*<br/>github 地址：https://github.com/Userwu/study_react</p>");
+
     }
 
     /**
