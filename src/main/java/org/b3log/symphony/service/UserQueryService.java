@@ -53,6 +53,7 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.FollowRepository;
 import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Times;
 import org.json.JSONArray;
@@ -435,15 +436,16 @@ public class UserQueryService {
      */
     public Set<String> getUserNames(final String text) throws ServiceException {
         final Set<String> ret = new HashSet<>();
-
-        int idx = text.indexOf('@');
+        final String mdtext=Markdowns.linkToHtml(text);
+        int idx = mdtext.indexOf('@');
 
         if (-1 == idx) {
             return ret;
         }
 
-        String copy = text.trim();
+        String copy = mdtext.trim();
         copy = copy.replaceAll("\\n", " ");
+        //(?=\\pP)匹配标点符号-http://www.cnblogs.com/qixuejia/p/4211428.html
         copy = copy.replaceAll("(?=\\pP)[^@]", " ");
         String[] uNames = StringUtils.substringsBetween(copy, "@", " ");
         String tail = StringUtils.substringAfterLast(copy, "@");
