@@ -114,7 +114,7 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
                     request.setPayload(urlsStr.getBytes());
 
                     final HTTPResponse response = urlFetchService.fetch(request);
-                    LOGGER.info(response.toString());
+                    LOGGER.info(new String(response.getContent(), "UTF-8"));
 
                     LOGGER.debug("Sent [" + urlsStr + "] to Baidu");
                 } catch (final Exception e) {
