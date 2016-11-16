@@ -214,7 +214,18 @@ public class ArticleQueryService {
         final Query query = new Query()
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageSize(pageSize).setCurrentPageNum(currentPageNum);
-        query.setFilter(makeArticleShowingFilter());
+
+        final List<String> followingUserIds = new ArrayList<>();
+        for (final JSONObject user : users) {
+            followingUserIds.add(user.optString(Keys.OBJECT_ID));
+        }
+
+        final List<Filter> filters = new ArrayList<>();
+        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+        filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
+        filters.add(new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.IN, followingUserIds));
+        query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
         query.addProjection(Keys.OBJECT_ID, String.class).
                 addProjection(Article.ARTICLE_STICK, Long.class).
                 addProjection(Article.ARTICLE_CREATE_TIME, Long.class).

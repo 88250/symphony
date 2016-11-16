@@ -18,6 +18,7 @@
 package org.b3log.symphony.processor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -145,17 +146,23 @@ public class IndexProcessor {
         }
 
         currentUser = userQueryService.getCurrentUser(request);
-        final String userId = currentUser.optString(Keys.OBJECT_ID);
 
-        final int pageSize = Symphonys.getInt("indexArticlesCnt");
+        if (null != currentUser) {
+            final String userId = currentUser.optString(Keys.OBJECT_ID);
 
-        final List<JSONObject> followingTagArticles = articleQueryService.getFollowingTagArticles(
-                avatarViewMode, userId, 1, pageSize);
-        dataModel.put(Common.FOLLOWING_TAG_ARTICLES, followingTagArticles);
+            final int pageSize = Symphonys.getInt("indexArticlesCnt");
 
-        final List<JSONObject> followingUserArticles = articleQueryService.getFollowingUserArticles(
-                avatarViewMode, userId, 1, pageSize);
-        dataModel.put(Common.FOLLOWING_USER_ARTICLES, followingUserArticles);
+            final List<JSONObject> followingTagArticles = articleQueryService.getFollowingTagArticles(
+                    avatarViewMode, userId, 1, pageSize);
+            dataModel.put(Common.FOLLOWING_TAG_ARTICLES, followingTagArticles);
+
+            final List<JSONObject> followingUserArticles = articleQueryService.getFollowingUserArticles(
+                    avatarViewMode, userId, 1, pageSize);
+            dataModel.put(Common.FOLLOWING_USER_ARTICLES, followingUserArticles);
+        } else {
+            dataModel.put(Common.FOLLOWING_TAG_ARTICLES, Collections.emptyList());
+            dataModel.put(Common.FOLLOWING_USER_ARTICLES, Collections.emptyList());
+        }
 
         final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles(avatarViewMode);
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
