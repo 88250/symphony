@@ -992,7 +992,13 @@ code .dec { color: initial; } /* decimal - blue */
             height: 402px;
             background-color: #FFF;
             padding: 15px;
+            overflow: hidden;
             box-sizing: border-box;
+
+            li {
+                white-space: nowrap;
+                word-wrap: normal;
+            }
         }
     }
 }
