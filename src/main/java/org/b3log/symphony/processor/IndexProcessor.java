@@ -47,6 +47,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.TimelineMgmtService;
+import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
@@ -68,7 +69,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.10.2.21, Oct 29, 2016
+ * @version 1.11.2.21, Nov 16, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -90,6 +91,12 @@ public class IndexProcessor {
      */
     @Inject
     private UserQueryService userQueryService;
+
+    /**
+     * User management service.
+     */
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Filler.
@@ -133,6 +140,24 @@ public class IndexProcessor {
 //        dataModel.put(Common.HOT_ARTICLES, hotArticles);
         final List<JSONObject> recentArticles = articleQueryService.getIndexRecentArticles(avatarViewMode);
         dataModel.put(Common.RECENT_ARTICLES, recentArticles);
+
+        JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            userMgmtService.tryLogInWithCookie(request, context.getResponse());
+        }
+
+        currentUser = userQueryService.getCurrentUser(request);
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        final int pageSize = Symphonys.getInt("indexArticlesCnt");
+
+        final List<JSONObject> followingTagArticles = articleQueryService.getFollowingTagArticles(
+                avatarViewMode, userId, 1, pageSize);
+        dataModel.put(Common.FOLLOWING_TAG_ARTICLES, followingTagArticles);
+
+        final List<JSONObject> followingUserArticles = articleQueryService.getFollowingUserArticles(
+                avatarViewMode, userId, 1, pageSize);
+        dataModel.put(Common.FOLLOWING_USER_ARTICLES, followingUserArticles);
 
         final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles(avatarViewMode);
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
