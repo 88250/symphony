@@ -353,7 +353,7 @@
                     <div class="metro-item"> ${ADLabel}</div>
                     <div class="metro-item last">
                         <a class="preview" href="https://hacpai.com/article/1460083956075">
-                            <img width="44px" src="${staticServePath}/emoji/graphics/emojis/heart.png" alt="${sponsorLabel}">
+                            <img width="44px" src="${staticServePath}/js/lib/emojify.js-1.1.0/images/basic/heart.png" alt="${sponsorLabel}">
                             <b>${wantPutOnLabel}</b>
                         </a>
                     </div>
