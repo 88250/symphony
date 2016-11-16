@@ -258,7 +258,7 @@ public class Filler {
                 tag.put(Tag.TAG_URI, "");
                 tag.put(Tag.TAG_ICON_PATH, "");
                 tag.put(Tag.TAG_TITLE, "");
-                
+
                 dataModel.put(Tag.TAG + i, tag);
             }
 
@@ -266,6 +266,8 @@ public class Filler {
             for (int i = 0; i < tags.size(); i++) {
                 dataModel.put(Tag.TAG + i, tags.get(i));
             }
+
+            dataModel.put(Tag.TAGS, tags);
         } finally {
             Stopwatchs.end();
         }
