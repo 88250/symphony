@@ -89,6 +89,146 @@
                             </li>
                             </#list>
                         </ul>
+                        <ul class="fn-none">
+                            <#list followingTagArticles as article>
+                            <li>
+                                <div class="fn-clear ft-smaller list-info">
+                                    <span class="fn-left">
+                                        <#list article.articleTagObjs as articleTag>
+                                        <a rel="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> &nbsp; 
+                                        </#list>
+                                    </span>
+                                    <span class="fn-right ft-fade">
+                                        <#if article.articleCommentCount != 0>
+                                        <a class="ft-fade" href="${servePath}${article.articlePermalink}#comments"><b class="article-level<#if article.articleCommentCount lt 40>${(article.articleCommentCount/10)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a> &nbsp;•&nbsp;
+                                        </#if>   
+
+                                        <#if article.articleViewCount != 0> 
+                                        <a class="ft-fade" href="${servePath}${article.articlePermalink}"><span class="article-level<#if article.articleViewCount lt 400>${(article.articleViewCount/100)?int}<#else>4</#if>">${article.articleViewCount}</span> ${viewLabel}</a> &nbsp;•&nbsp;
+                                        </#if>
+                                        <span class="ft-fade">${article.timeAgo} </span>
+                                    </span>
+                                </div>
+                                <h2>
+                                    <#if 1 == article.articlePerfect>
+                                    <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" width="14" viewBox="3 2 11 12">${perfectIcon}</svg></span>
+                                    </#if>
+                                    <#if 1 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
+                                    <#elseif 2 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
+                                    <#elseif 3 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
+                                    </#if>
+                                    <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
+                                    </a>
+                                </h2>
+                                <div class="ft-smaller fn-clear list-info fn-flex">
+                                    <span class="fn-ellipsis fn-flex-1">
+                                        <#if article.articleAnonymous == 0>
+                                        <a rel="nofollow" 
+                                           href="${servePath}/member/${article.articleAuthorName}"></#if><div
+                                                class="avatar-small"
+                                                style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>&nbsp;
+                                        <#if article.articleAnonymous == 0>
+                                        <a rel="nofollow" class="author"
+                                           href="${servePath}/member/${article.articleAuthorName}"></#if>
+                                            ${article.articleAuthorName}
+                                            <#if article.articleAnonymous == 0></a></#if>
+                                        <#if article.articleAuthor.userIntro != ''><span class="ft-fade"> - ${article.articleAuthor.userIntro}</span></a></#if>
+                                    </span>
+
+                                    <span class="fn-right ft-fade fn-hidden">
+                                        <#if "" != article.articleLatestCmterName>
+                                        &nbsp; ${article.cmtTimeAgo} 
+                                        <#if "" != article.articleLatestCmt.clientCommentId>
+                                        <span class="author">${article.articleLatestCmterName}</span>
+                                        <#else>
+                                        <#if article.articleLatestCmterName != 'someone'>
+                                        <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"></#if><span class="author">${article.articleLatestCmterName}</span><#if article.articleLatestCmterName != 'someone'></a>
+                                        </#if>
+                                        </#if> 
+                                        ${cmtLabel}
+                                        </#if>
+                                    </span>
+                                </div>
+                                <a class="abstract" href="${servePath}${article.articlePermalink}">
+                                    ${article.articlePreviewContent}
+                                </a>
+                                <span class="heat tooltipped tooltipped-n" aria-label="${postActivityLabel}" style="width:${article.articleHeat*3}px"></span>
+                            </li>
+                            </#list>
+                        </ul>
+                        <ul class="fn-none">
+                            <#list followingUserArticles as article>
+                            <li>
+                                <div class="fn-clear ft-smaller list-info">
+                                    <span class="fn-left">
+                                        <#list article.articleTagObjs as articleTag>
+                                        <a rel="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> &nbsp; 
+                                        </#list>
+                                    </span>
+                                    <span class="fn-right ft-fade">
+                                        <#if article.articleCommentCount != 0>
+                                        <a class="ft-fade" href="${servePath}${article.articlePermalink}#comments"><b class="article-level<#if article.articleCommentCount lt 40>${(article.articleCommentCount/10)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a> &nbsp;•&nbsp;
+                                        </#if>   
+
+                                        <#if article.articleViewCount != 0> 
+                                        <a class="ft-fade" href="${servePath}${article.articlePermalink}"><span class="article-level<#if article.articleViewCount lt 400>${(article.articleViewCount/100)?int}<#else>4</#if>">${article.articleViewCount}</span> ${viewLabel}</a> &nbsp;•&nbsp;
+                                        </#if>
+                                        <span class="ft-fade">${article.timeAgo} </span>
+                                    </span>
+                                </div>
+                                <h2>
+                                    <#if 1 == article.articlePerfect>
+                                    <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" width="14" viewBox="3 2 11 12">${perfectIcon}</svg></span>
+                                    </#if>
+                                    <#if 1 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
+                                    <#elseif 2 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
+                                    <#elseif 3 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
+                                    </#if>
+                                    <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
+                                    </a>
+                                </h2>
+                                <div class="ft-smaller fn-clear list-info fn-flex">
+                                    <span class="fn-ellipsis fn-flex-1">
+                                        <#if article.articleAnonymous == 0>
+                                        <a rel="nofollow" 
+                                           href="${servePath}/member/${article.articleAuthorName}"></#if><div
+                                                class="avatar-small"
+                                                style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>&nbsp;
+                                        <#if article.articleAnonymous == 0>
+                                        <a rel="nofollow" class="author"
+                                           href="${servePath}/member/${article.articleAuthorName}"></#if>
+                                            ${article.articleAuthorName}
+                                            <#if article.articleAnonymous == 0></a></#if>
+                                        <#if article.articleAuthor.userIntro != ''><span class="ft-fade"> - ${article.articleAuthor.userIntro}</span></a></#if>
+                                    </span>
+
+                                    <span class="fn-right ft-fade fn-hidden">
+                                        <#if "" != article.articleLatestCmterName>
+                                        &nbsp; ${article.cmtTimeAgo} 
+                                        <#if "" != article.articleLatestCmt.clientCommentId>
+                                        <span class="author">${article.articleLatestCmterName}</span>
+                                        <#else>
+                                        <#if article.articleLatestCmterName != 'someone'>
+                                        <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"></#if><span class="author">${article.articleLatestCmterName}</span><#if article.articleLatestCmterName != 'someone'></a>
+                                        </#if>
+                                        </#if> 
+                                        ${cmtLabel}
+                                        </#if>
+                                    </span>
+                                </div>
+                                <a class="abstract" href="${servePath}${article.articlePermalink}">
+                                    ${article.articlePreviewContent}
+                                </a>
+                                <span class="heat tooltipped tooltipped-n" aria-label="${postActivityLabel}" style="width:${article.articleHeat*3}px"></span>
+                            </li>
+                            </#list>
+                        </ul>
                     </div>
                 </div>
                 <div class="index-side">
@@ -129,24 +269,64 @@
             <div class="wrapper">
                 <div class="index-main">
                     <div class="metro-line fn-flex">
-                        <div class="metro-item">1</div>
-                        <div class="metro-item mid">2</div>
-                        <div class="metro-item">3</div>
+                        <div class="metro-item">
+                            <a class="preview" href="${servePath}/tag/${tag0.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag0.tagIconPath}" alt="${tag0.tagTitle}">
+                                <b>${tag0.tagTitle}</b>
+                            </a>
+                        </div>
+                        <div class="metro-item mid">
+                            <a class="preview" href="${servePath}/tag/${tag1.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag1.tagIconPath}" alt="${tag1.tagTitle}">
+                                <b>${tag1.tagTitle}</b>
+                            </a>
+                        </div>
+                        <div class="metro-item">
+                            <a class="preview" href="${servePath}/tag/${tag2.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag2.tagIconPath}" alt="${tag2.tagTitle}">
+                                <b>${tag2.tagTitle}</b>
+                            </a>
+                        </div>
                     </div>
                     <div class="metro-line fn-flex">
                         <div class="metro-item">
-                            <a class="preview">
-                                <img src="http://localhost:8080/images/tags/java.png" alt="Java">
-                                <b>Java</b>
+                            <a class="preview" href="${servePath}/tag/${tag3.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag3.tagIconPath}" alt="${tag3.tagTitle}">
+                                <b>${tag3.tagTitle}</b>
                             </a>
                         </div>
-                        <div class="metro-item mid">2</div>
-                        <div class="metro-item">3</div>
+                        <div class="metro-item mid">
+                            <a class="preview" href="${servePath}/tag/${tag4.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag4.tagIconPath}" alt="${tag4.tagTitle}">
+                                <b>${tag4.tagTitle}</b>
+                            </a>
+                        </div>
+                        <div class="metro-item">
+                            <a class="preview" href="${servePath}/tag/${tag5.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag5.tagIconPath}" alt="${tag5.tagTitle}">
+                                <b>${tag5.tagTitle}</b>
+                            </a>
+                        </div>
                     </div>
                     <div class="metro-line fn-flex">
-                        <div class="metro-item">1</div>
-                        <div class="metro-item mid">2</div>
-                        <div class="metro-item">3</div>
+                        <div class="metro-item">
+                            <a class="preview" href="${servePath}/tag/${tag6.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag6.tagIconPath}" alt="${tag6.tagTitle}">
+                                <b>${tag6.tagTitle}</b>
+                            </a>
+                        </div>
+                        <div class="metro-item mid">
+                            <a class="preview" href="${servePath}/tag/${tag7.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag7.tagIconPath}" alt="${tag7.tagTitle}">
+                                <b>${tag7.tagTitle}</b>
+                            </a>
+                        </div>
+                        <div class="metro-item">
+                            <a class="preview" href="${servePath}/tag/${tag8.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag8.tagIconPath}" alt="${tag8.tagTitle}">
+                                <b>${tag8.tagTitle}</b>
+                            </a>
+                        </div>
                     </div>
                     <div class="metro-border fn-flex">
                         <div></div>
@@ -158,14 +338,14 @@
                     <div class="list timeline">
                         <ul>
                             <li>
-                                    <a target="_blank" rel="nofollow" href="https://hacpai.com/member/cggs">cggs</a> 正在浏览 <a target="_blank" rel="nofollow" href="https://hacpai.com/article/1467011936362">如何正确地使用小薇 QQ 机器人</a>
+                                <a target="_blank" rel="nofollow" href="https://hacpai.com/member/cggs">cggs</a> 正在浏览 <a target="_blank" rel="nofollow" href="https://hacpai.com/article/1467011936362">如何正确地使用小薇 QQ 机器人</a>
                             </li>
                             <li>
-                                    <a target="_blank" rel="nofollow" href="https://hacpai.com/member/cggs">cggs</a> 正在浏览 <a target="_blank" rel="nofollow" href="https://hacpai.com/article/1467011936362">如何正确地使用小薇 QQ 机器人</a>
+                                <a target="_blank" rel="nofollow" href="https://hacpai.com/member/cggs">cggs</a> 正在浏览 <a target="_blank" rel="nofollow" href="https://hacpai.com/article/1467011936362">如何正确地使用小薇 QQ 机器人</a>
                             </li>
                         </ul>
                     </div>
-                     <div class="metro-line fn-flex">
+                    <div class="metro-line fn-flex">
                         <div class="metro-item"> ${ADLabel}</div>
                         <div class="metro-item last">3</div>
                     </div>
@@ -176,38 +356,38 @@
                 </div>
             </div>
         </div>
-    <#include "footer.ftl">     
-    <script type="text/javascript">
-        $('.metro-item').height($('.metro-item').width());
-        $('.timeline').outerHeight($('.metro-item').width() * 2 + 2);
+        <#include "footer.ftl">     
+        <script type="text/javascript">
+            $('.metro-item').height($('.metro-item').width());
+            $('.timeline').outerHeight($('.metro-item').width() * 2 + 2);
 
-        $('#articles span').click(function () {
-            var $it = $(this);
-            $('#articles span').removeClass('current');
-            $it.addClass('current');
+            $('#articles span').click(function () {
+                var $it = $(this);
+                $('#articles span').removeClass('current');
+                $it.addClass('current');
 
-            $(".index-tabs-panels.article-list ul").hide();
-            if ($it.hasClass('tags')) {
-                $(".index-tabs-panels.article-list ul:eq(1)").show();
-            } else if ($it.hasClass('users')) {
-                $(".index-tabs-panels.article-list ul:eq(2)").show();
-            } else {
-                $(".index-tabs-panels.article-list ul:eq(0)").show();
-            }
-        });
+                $(".index-tabs-panels.article-list ul").hide();
+                if ($it.hasClass('tags')) {
+                    $(".index-tabs-panels.article-list ul:eq(1)").show();
+                } else if ($it.hasClass('users')) {
+                    $(".index-tabs-panels.article-list ul:eq(2)").show();
+                } else {
+                    $(".index-tabs-panels.article-list ul:eq(0)").show();
+                }
+            });
 
-        var $perfectList = $('.perfect-panel'),
-        pTop = $perfectList.offset().top + $perfectList.outerHeight();
-        $(window).scroll(function () {
-            if ($(window).scrollTop() > pTop) {
-                $perfectList.parent().hide();
-                $(".index-tabs-panels.article-list").parent().css('width', '100%');
-            } 
-            if ($(window).scrollTop() < 200) {
-                $perfectList.parent().show();
-                $(".index-tabs-panels.article-list").parent().css('width', '60%');
-            }
-        });
-    </script>
-</body>
+            var $perfectList = $('.perfect-panel'),
+                    pTop = $perfectList.offset().top + $perfectList.outerHeight();
+            $(window).scroll(function () {
+                if ($(window).scrollTop() > pTop) {
+                    $perfectList.parent().hide();
+                    $(".index-tabs-panels.article-list").parent().css('width', '100%');
+                }
+                if ($(window).scrollTop() < 200) {
+                    $perfectList.parent().show();
+                    $(".index-tabs-panels.article-list").parent().css('width', '60%');
+                }
+            });
+        </script>
+    </body>
 </html>

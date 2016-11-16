@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javax.inject.Inject;
@@ -252,7 +253,10 @@ public class Filler {
     public void fillIndexTags(final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills index tags");
         try {
-            dataModel.put(Tag.TAGS, tagQueryService.getTags(Symphonys.getInt("sideTagsCnt")));
+            final List<JSONObject> tags = tagQueryService.getTags(Symphonys.getInt("sideTagsCnt"));
+            for (int i = 0; i < tags.size(); i++) {
+                dataModel.put(Tag.TAG + i, tags.get(i));
+            }
         } finally {
             Stopwatchs.end();
         }
