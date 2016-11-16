@@ -341,11 +341,11 @@
                         </#if>
                         <ul>
                             <#list timelines as article>
-                            <#if article_index < 6>
-                            <li<#if !article_has_next> class="last"</#if>>
+                            <#if article_index < 15>
+                            <li class="fn-ellipsis">
                                 ${article.content}
-                                </#if>
-                        </li>
+                            </li>
+                            </#if>
                         </#list>
                     </ul>
                 </div>
