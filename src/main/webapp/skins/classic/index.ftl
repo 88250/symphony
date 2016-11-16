@@ -336,58 +336,67 @@
                 </div>
                 <div class="index-side down">
                     <div class="list timeline">
+                        <#if timelines?size <= 0>
+                        <div id="emptyTimeline">${emptyTimelineLabel}</div>
+                        </#if>
                         <ul>
-                            <li>
-                                <a target="_blank" rel="nofollow" href="https://hacpai.com/member/cggs">cggs</a> 正在浏览 <a target="_blank" rel="nofollow" href="https://hacpai.com/article/1467011936362">如何正确地使用小薇 QQ 机器人</a>
-                            </li>
-                            <li>
-                                <a target="_blank" rel="nofollow" href="https://hacpai.com/member/cggs">cggs</a> 正在浏览 <a target="_blank" rel="nofollow" href="https://hacpai.com/article/1467011936362">如何正确地使用小薇 QQ 机器人</a>
-                            </li>
-                        </ul>
+                            <#list timelines as article>
+                            <#if article_index < 6>
+                            <li<#if !article_has_next> class="last"</#if>>
+                                ${article.content}
+                                </#if>
+                        </li>
+                        </#list>
+                    </ul>
+                </div>
+                <div class="metro-line fn-flex">
+                    <div class="metro-item"> ${ADLabel}</div>
+                    <div class="metro-item last">
+                        <a class="preview" href="https://hacpai.com/article/1460083956075">
+                            <img width="44px" src="${staticServePath}/emoji/graphics/emojis/heart.png" alt="${sponsorLabel}">
+                            <b>${wantPutOnLabel}</b>
+                        </a>
                     </div>
-                    <div class="metro-line fn-flex">
-                        <div class="metro-item"> ${ADLabel}</div>
-                        <div class="metro-item last">3</div>
-                    </div>
-                    <div class="metro-border fn-flex">
-                        <div></div>
-                        <div class="yellow"></div>
-                    </div>
+                </div>
+                <div class="metro-border fn-flex">
+                    <div></div>
+                    <div class="yellow"></div>
                 </div>
             </div>
         </div>
-        <#include "footer.ftl">     
-        <script type="text/javascript">
-            $('.metro-item').height($('.metro-item').width());
-            $('.timeline').outerHeight($('.metro-item').width() * 2 + 2);
+    </div>
+    <#include "footer.ftl">     
+    <script type="text/javascript">
+        $('.metro-item').height($('.metro-item').width());
+        $('.timeline').outerHeight($('.metro-item').width() * 2 + 2);
 
-            $('#articles span').click(function () {
-                var $it = $(this);
-                $('#articles span').removeClass('current');
-                $it.addClass('current');
+        $('#articles span').click(function () {
+            var $it = $(this);
+            $('#articles span').removeClass('current');
+            $it.addClass('current');
 
-                $(".index-tabs-panels.article-list ul").hide();
-                if ($it.hasClass('tags')) {
-                    $(".index-tabs-panels.article-list ul:eq(1)").show();
-                } else if ($it.hasClass('users')) {
-                    $(".index-tabs-panels.article-list ul:eq(2)").show();
-                } else {
-                    $(".index-tabs-panels.article-list ul:eq(0)").show();
-                }
-            });
+            $(".index-tabs-panels.article-list ul").hide();
+            if ($it.hasClass('tags')) {
+                $(".index-tabs-panels.article-list ul:eq(1)").show();
+            } else if ($it.hasClass('users')) {
+                $(".index-tabs-panels.article-list ul:eq(2)").show();
+            } else {
+                $(".index-tabs-panels.article-list ul:eq(0)").show();
+            }
+        });
 
-            var $perfectList = $('.perfect-panel'),
-                    pTop = $perfectList.offset().top + $perfectList.outerHeight();
-            $(window).scroll(function () {
-                if ($(window).scrollTop() > pTop) {
-                    $perfectList.parent().hide();
-                    $(".index-tabs-panels.article-list").parent().css('width', '100%');
-                }
-                if ($(window).scrollTop() < 200) {
-                    $perfectList.parent().show();
-                    $(".index-tabs-panels.article-list").parent().css('width', '60%');
-                }
-            });
-        </script>
-    </body>
+        var $perfectList = $('.perfect-panel'),
+                pTop = $perfectList.offset().top + $perfectList.outerHeight();
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > pTop) {
+                $perfectList.parent().hide();
+                $(".index-tabs-panels.article-list").parent().css('width', '100%');
+            }
+            if ($(window).scrollTop() < 200) {
+                $perfectList.parent().show();
+                $(".index-tabs-panels.article-list").parent().css('width', '60%');
+            }
+        });
+    </script>
+</body>
 </html>
