@@ -253,6 +253,15 @@ public class Filler {
     public void fillIndexTags(final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills index tags");
         try {
+            for (int i = 0; i < 9; i++) {
+                final JSONObject tag = new JSONObject();
+                tag.put(Tag.TAG_URI, "");
+                tag.put(Tag.TAG_ICON_PATH, "");
+                tag.put(Tag.TAG_TITLE, "");
+                
+                dataModel.put(Tag.TAG + i, tag);
+            }
+
             final List<JSONObject> tags = tagQueryService.getTags(Symphonys.getInt("sideTagsCnt"));
             for (int i = 0; i < tags.size(); i++) {
                 dataModel.put(Tag.TAG + i, tags.get(i));
