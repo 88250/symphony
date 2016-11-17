@@ -34,7 +34,7 @@
                 <#elseif 3 == article.articleType>
                 <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
                 </#if>
-                <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
+                <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}" class="ft-a-title">${article.articleTitleEmoj}
                 </a>
             </h2>
             <div class="ft-smaller fn-clear list-info fn-flex">

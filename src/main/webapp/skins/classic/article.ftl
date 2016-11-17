@@ -34,7 +34,7 @@
                             <#elseif 3 == article.articleType>
                             <span class="tooltipped tooltipped-n" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
                             </#if>
-                            <a href="${servePath}${article.articlePermalink}" rel="bookmark">
+                            <a class="ft-a-title" href="${servePath}${article.articlePermalink}" rel="bookmark">
                                 ${article.articleTitleEmoj}
                             </a>
                         </h1>
@@ -198,7 +198,7 @@
                                                     </#if>
                                                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade" data-ua="${comment.commentUA}"></span></#if>
                                                 </span>
-                                                <a class="ft-a-icon fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
+                                                <a class="ft-a-title fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
                                                    href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}')"><span class="icon-down"></span></a>
                                             </div>
                                             <div class="content-reset comment">
@@ -269,7 +269,7 @@
                                                     </span>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
-                                                    <a class="tooltipped tooltipped-n ft-a-icon hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}"
+                                                    <a class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}"
                                                        aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                                     </#if>
                                                 </span>

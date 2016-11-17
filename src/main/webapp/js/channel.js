@@ -122,7 +122,7 @@ var ArticleChannel = {
                                 + data.commentOriginalAuthorThumbnailURL + '\')"></div></span> ';
                     }
                     if (Label.isAdminLoggedIn) {
-                        template += '<a class="hover-show fn-hidden tooltipped tooltipped-n ft-a-icon" href="/admin/comment/' + data.commentId
+                        template += '<a class="hover-show fn-hidden tooltipped tooltipped-n ft-a-title" href="/admin/comment/' + data.commentId
                                 + '" aria-label="' + Label.adminLabel + '"><span class="icon-setting"></span></a> ';
                     }
                     template += '</span></div><div class="content-reset comment">'

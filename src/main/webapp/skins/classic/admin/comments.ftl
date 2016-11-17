@@ -15,7 +15,7 @@
                     <#else>
                     <font class="ft-red">${banLabel}</font>
                     </#if>
-                    <a href="${servePath}/admin/comment/${item.oId}" class="fn-right tooltipped tooltipped-e ft-a-icon" aria-label="${editLabel}"><span class="icon-edit"></span></a>
+                    <a href="${servePath}/admin/comment/${item.oId}" class="fn-right tooltipped tooltipped-e ft-a-title" aria-label="${editLabel}"><span class="icon-edit"></span></a>
                     <span class="fn-right ft-gray tooltipped tooltipped-w" aria-label="${createTimeLabel}"> 
                         <span class="icon-date"></span>
                         ${item.commentCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;</span>
