@@ -13,118 +13,259 @@
         <div class="main">
             <div class="wrapper">
                 <div class="index-main">
-                    <div class="index-tabs fn-flex">
-                        <span>${latestLabel} &nbsp; <span class="count">23</span></span>
-                        <span class="tags">${followingTagsLabel} &nbsp; <span class="count">23</span></span>
-                        <span class="users">${followingUsersLabel} &nbsp; <span class="count">23</span></span>
+                    <div class="index-tabs fn-flex" id="articles">
+                        <span class="current">
+                            <svg height="16" viewBox="0 0 14 16" width="14">${timeIcon}</svg> ${latestLabel}</span>
+                        <span class="tags">
+                            <span class="icon-clock"></span>
+                            ${followingTagsLabel}
+                        </span>
+                        <span class="users">
+                            <span class="icon-userrole"></span>
+                            ${followingUsersLabel}
+                        </span>
                     </div>
                     <div class="index-tabs-panels list article-list">
                         <ul>
+                            <#list recentArticles as article>
                             <li>
                                 <div class="fn-clear ft-smaller list-info">
                                     <span class="fn-left">
-                                        <a rel="tag" href="https://hacpai.com/tag/qiniu">七牛</a> &nbsp; 
-                                        <a rel="tag" href="https://hacpai.com/tag/%E6%8E%98%E9%87%91">掘金</a> &nbsp; 
-                                        <a rel="tag" href="https://hacpai.com/tag/CDN">CDN</a> &nbsp; 
+                                        <#list article.articleTagObjs as articleTag>
+                                        <a rel="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> &nbsp; 
+                                        </#list>
                                     </span>
                                     <span class="fn-right ft-fade">
-                                        <a class="ft-fade" href="https://hacpai.com/article/1478836707886#comments"><b class="article-level0">4</b> 回帖</a> &nbsp;•&nbsp;
+                                        <#if article.articleCommentCount != 0>
+                                        <a class="ft-fade" href="${servePath}${article.articlePermalink}#comments"><b class="article-level<#if article.articleCommentCount lt 40>${(article.articleCommentCount/10)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a> &nbsp;•&nbsp;
+                                        </#if>   
 
-                                        <a class="ft-fade" href="https://hacpai.com/article/1478836707886"><span class="article-level1">166</span> 浏览</a> &nbsp;•&nbsp;
-                                        <span class="ft-fade">2 天前 </span>
+                                        <#if article.articleViewCount != 0> 
+                                        <a class="ft-fade" href="${servePath}${article.articlePermalink}"><span class="article-level<#if article.articleViewCount lt 400>${(article.articleViewCount/100)?int}<#else>4</#if>">${article.articleViewCount}</span> ${viewLabel}</a> &nbsp;•&nbsp;
+                                        </#if>
+                                        <span class="ft-fade">${article.timeAgo} </span>
                                     </span>
                                 </div>
                                 <h2>
-                                    <a data-id="1478836707886" data-type="0" rel="bookmark" href="https://hacpai.com/article/1478836707886">永不停更，永久免费的前端公开库 Staticfile 全新改版！
+                                    <#if 1 == article.articlePerfect>
+                                    <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" width="14" viewBox="3 2 11 12">${perfectIcon}</svg></span>
+                                    </#if>
+                                    <#if 1 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
+                                    <#elseif 2 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
+                                    <#elseif 3 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
+                                    </#if>
+                                    <a class="ft-a-title" data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                                     </a>
-
                                 </h2>
                                 <div class="ft-smaller fn-clear list-info fn-flex">
                                     <span class="fn-ellipsis fn-flex-1">
-                                        <a rel="nofollow" href="https://hacpai.com/member/wulalala"><div class="avatar-small" style="background-image:url('https://img.hacpai.com/avatar/1471837009305_1472019457934.jpeg?imageView2/1/w/80/h/80/format/jpg/interlace/0/q/100')"></div></a>&nbsp;
-                                        <a rel="nofollow" class="author" href="https://hacpai.com/member/wulalala">
-                                           wulalala
-                                        </a>
-                                        
+                                        <#if article.articleAnonymous == 0>
+                                        <a rel="nofollow" 
+                                           href="${servePath}/member/${article.articleAuthorName}"></#if><div
+                                                class="avatar-small"
+                                                style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>&nbsp;
+                                        <#if article.articleAnonymous == 0>
+                                        <a rel="nofollow" class="author"
+                                           href="${servePath}/member/${article.articleAuthorName}"></#if>
+                                            ${article.articleAuthorName}
+                                            <#if article.articleAnonymous == 0></a></#if>
+                                        <#if article.articleAuthor.userIntro != ''><span class="ft-fade"> - ${article.articleAuthor.userIntro}</span></a></#if>
                                     </span>
 
                                     <span class="fn-right ft-fade fn-hidden">
-                                            &nbsp; 5 小时前 
-                                                <a rel="nofollow" class="author" href="https://hacpai.com/member/88250"><span class="author">88250</span></a>
-                                            回帖
+                                        <#if "" != article.articleLatestCmterName>
+                                        &nbsp; ${article.cmtTimeAgo} 
+                                        <#if "" != article.articleLatestCmt.clientCommentId>
+                                        <span class="author">${article.articleLatestCmterName}</span>
+                                        <#else>
+                                        <#if article.articleLatestCmterName != 'someone'>
+                                        <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"></#if><span class="author">${article.articleLatestCmterName}</span><#if article.articleLatestCmterName != 'someone'></a>
+                                        </#if>
+                                        </#if> 
+                                        ${cmtLabel}
+                                        </#if>
                                     </span>
                                 </div>
-                                <a class="abstract" href="https://hacpai.com/article/1478836707886">
-                                    各位前端童鞋， 七牛前端公开库 [链接] 全新改版！永久免费，永不停更！ Staticfile 致力于提供高质量、稳定的前端资源 CDN 服务，同步国外 [链接]，同时由国内开源贡献者提交其它有价值的库。感谢所有开源库作者和独家 ....
+                                <a class="abstract" href="${servePath}${article.articlePermalink}">
+                                    ${article.articlePreviewContent}
                                 </a>
-                                <span class="heat tooltipped tooltipped-n" aria-label="帖子活跃度" style="width:0px"></span>
+                                <span class="heat tooltipped tooltipped-n" aria-label="${postActivityLabel}" style="width:${article.articleHeat*3}px"></span>
                             </li>
+                            </#list>
+                        </ul>
+                        <ul class="fn-none">
+                            <#list followingTagArticles as article>
                             <li>
                                 <div class="fn-clear ft-smaller list-info">
                                     <span class="fn-left">
-                                        <a rel="tag" href="https://hacpai.com/tag/qiniu">七牛</a> &nbsp; 
-                                        <a rel="tag" href="https://hacpai.com/tag/%E6%8E%98%E9%87%91">掘金</a> &nbsp; 
-                                        <a rel="tag" href="https://hacpai.com/tag/CDN">CDN</a> &nbsp; 
+                                        <#list article.articleTagObjs as articleTag>
+                                        <a rel="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> &nbsp; 
+                                        </#list>
                                     </span>
                                     <span class="fn-right ft-fade">
-                                        <a class="ft-fade" href="https://hacpai.com/article/1478836707886#comments"><b class="article-level0">4</b> 回帖</a> &nbsp;•&nbsp;
+                                        <#if article.articleCommentCount != 0>
+                                        <a class="ft-fade" href="${servePath}${article.articlePermalink}#comments"><b class="article-level<#if article.articleCommentCount lt 40>${(article.articleCommentCount/10)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a> &nbsp;•&nbsp;
+                                        </#if>   
 
-                                        <a class="ft-fade" href="https://hacpai.com/article/1478836707886"><span class="article-level1">166</span> 浏览</a> &nbsp;•&nbsp;
-                                        <span class="ft-fade">2 天前 </span>
+                                        <#if article.articleViewCount != 0> 
+                                        <a class="ft-fade" href="${servePath}${article.articlePermalink}"><span class="article-level<#if article.articleViewCount lt 400>${(article.articleViewCount/100)?int}<#else>4</#if>">${article.articleViewCount}</span> ${viewLabel}</a> &nbsp;•&nbsp;
+                                        </#if>
+                                        <span class="ft-fade">${article.timeAgo} </span>
                                     </span>
                                 </div>
                                 <h2>
-                                    <a data-id="1478836707886" data-type="0" rel="bookmark" href="https://hacpai.com/article/1478836707886">永不停更，永久免费的前端公开库 Staticfile 全新改版！
+                                    <#if 1 == article.articlePerfect>
+                                    <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" width="14" viewBox="3 2 11 12">${perfectIcon}</svg></span>
+                                    </#if>
+                                    <#if 1 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
+                                    <#elseif 2 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
+                                    <#elseif 3 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
+                                    </#if>
+                                    <a class="ft-a-title" data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                                     </a>
-
                                 </h2>
                                 <div class="ft-smaller fn-clear list-info fn-flex">
                                     <span class="fn-ellipsis fn-flex-1">
-                                        <a rel="nofollow" href="https://hacpai.com/member/wulalala"><div class="avatar-small" style="background-image:url('https://img.hacpai.com/avatar/1471837009305_1472019457934.jpeg?imageView2/1/w/80/h/80/format/jpg/interlace/0/q/100')"></div></a>&nbsp;
-                                        <a rel="nofollow" class="author" href="https://hacpai.com/member/wulalala">
-                                           wulalala
-                                        </a>
-                                        
+                                        <#if article.articleAnonymous == 0>
+                                        <a rel="nofollow" 
+                                           href="${servePath}/member/${article.articleAuthorName}"></#if><div
+                                                class="avatar-small"
+                                                style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>&nbsp;
+                                        <#if article.articleAnonymous == 0>
+                                        <a rel="nofollow" class="author"
+                                           href="${servePath}/member/${article.articleAuthorName}"></#if>
+                                            ${article.articleAuthorName}
+                                            <#if article.articleAnonymous == 0></a></#if>
+                                        <#if article.articleAuthor.userIntro != ''><span class="ft-fade"> - ${article.articleAuthor.userIntro}</span></a></#if>
                                     </span>
 
                                     <span class="fn-right ft-fade fn-hidden">
-                                            &nbsp; 5 小时前 
-                                                <a rel="nofollow" class="author" href="https://hacpai.com/member/88250"><span class="author">88250</span></a>
-                                            回帖
+                                        <#if "" != article.articleLatestCmterName>
+                                        &nbsp; ${article.cmtTimeAgo} 
+                                        <#if "" != article.articleLatestCmt.clientCommentId>
+                                        <span class="author">${article.articleLatestCmterName}</span>
+                                        <#else>
+                                        <#if article.articleLatestCmterName != 'someone'>
+                                        <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"></#if><span class="author">${article.articleLatestCmterName}</span><#if article.articleLatestCmterName != 'someone'></a>
+                                        </#if>
+                                        </#if> 
+                                        ${cmtLabel}
+                                        </#if>
                                     </span>
                                 </div>
-                                <a class="abstract" href="https://hacpai.com/article/1478836707886">
-                                    各位前端童鞋， 七牛前端公开库 [链接] 全新改版！永久免费，永不停更！ Staticfile 致力于提供高质量、稳定的前端资源 CDN 服务，同步国外 [链接]，同时由国内开源贡献者提交其它有价值的库。感谢所有开源库作者和独家 ....
+                                <a class="abstract" href="${servePath}${article.articlePermalink}">
+                                    ${article.articlePreviewContent}
                                 </a>
-                                <span class="heat tooltipped tooltipped-n" aria-label="帖子活跃度" style="width:0px"></span>
+                                <span class="heat tooltipped tooltipped-n" aria-label="${postActivityLabel}" style="width:${article.articleHeat*3}px"></span>
                             </li>
+                            </#list>
+                        </ul>
+                        <ul class="fn-none">
+                            <#list followingUserArticles as article>
+                            <li>
+                                <div class="fn-clear ft-smaller list-info">
+                                    <span class="fn-left">
+                                        <#list article.articleTagObjs as articleTag>
+                                        <a rel="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> &nbsp; 
+                                        </#list>
+                                    </span>
+                                    <span class="fn-right ft-fade">
+                                        <#if article.articleCommentCount != 0>
+                                        <a class="ft-fade" href="${servePath}${article.articlePermalink}#comments"><b class="article-level<#if article.articleCommentCount lt 40>${(article.articleCommentCount/10)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a> &nbsp;•&nbsp;
+                                        </#if>   
+
+                                        <#if article.articleViewCount != 0> 
+                                        <a class="ft-fade" href="${servePath}${article.articlePermalink}"><span class="article-level<#if article.articleViewCount lt 400>${(article.articleViewCount/100)?int}<#else>4</#if>">${article.articleViewCount}</span> ${viewLabel}</a> &nbsp;•&nbsp;
+                                        </#if>
+                                        <span class="ft-fade">${article.timeAgo} </span>
+                                    </span>
+                                </div>
+                                <h2>
+                                    <#if 1 == article.articlePerfect>
+                                    <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" width="14" viewBox="3 2 11 12">${perfectIcon}</svg></span>
+                                    </#if>
+                                    <#if 1 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
+                                    <#elseif 2 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
+                                    <#elseif 3 == article.articleType>
+                                    <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
+                                    </#if>
+                                    <a class="ft-a-title" data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
+                                    </a>
+                                </h2>
+                                <div class="ft-smaller fn-clear list-info fn-flex">
+                                    <span class="fn-ellipsis fn-flex-1">
+                                        <#if article.articleAnonymous == 0>
+                                        <a rel="nofollow" 
+                                           href="${servePath}/member/${article.articleAuthorName}"></#if><div
+                                                class="avatar-small"
+                                                style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>&nbsp;
+                                        <#if article.articleAnonymous == 0>
+                                        <a rel="nofollow" class="author"
+                                           href="${servePath}/member/${article.articleAuthorName}"></#if>
+                                            ${article.articleAuthorName}
+                                            <#if article.articleAnonymous == 0></a></#if>
+                                        <#if article.articleAuthor.userIntro != ''><span class="ft-fade"> - ${article.articleAuthor.userIntro}</span></a></#if>
+                                    </span>
+
+                                    <span class="fn-right ft-fade fn-hidden">
+                                        <#if "" != article.articleLatestCmterName>
+                                        &nbsp; ${article.cmtTimeAgo} 
+                                        <#if "" != article.articleLatestCmt.clientCommentId>
+                                        <span class="author">${article.articleLatestCmterName}</span>
+                                        <#else>
+                                        <#if article.articleLatestCmterName != 'someone'>
+                                        <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"></#if><span class="author">${article.articleLatestCmterName}</span><#if article.articleLatestCmterName != 'someone'></a>
+                                        </#if>
+                                        </#if> 
+                                        ${cmtLabel}
+                                        </#if>
+                                    </span>
+                                </div>
+                                <a class="abstract" href="${servePath}${article.articlePermalink}">
+                                    ${article.articlePreviewContent}
+                                </a>
+                                <span class="heat tooltipped tooltipped-n" aria-label="${postActivityLabel}" style="width:${article.articleHeat*3}px"></span>
+                            </li>
+                            </#list>
                         </ul>
                     </div>
                 </div>
                 <div class="index-side">
-                    <div class="perfect-header">
-                        <a href="${servePath}/perfect"><svg height="16" viewBox="3 2 11 12" width="14">${perfectIcon}</svg> ${perfectLabel}</a>
-                        <span class="fn-right">
-                            <span class="check">${dailyCheckinLabel}</span>
-                            <span class="post">${postArticleLabel}</span>
+                    <div class="index-tabs fn-flex">
+                        <span class="perfect current">
+                            <svg height="16" viewBox="3 2 11 12" width="14">${perfectIcon}</svg>
+                            ${perfectLabel}
                         </span>
+                        <span class="check">
+                            <#if isLoggedIn && !isDailyCheckin>
+                            <a href="<#if useCaptchaCheckin>${servePath}/activity/checkin<#else>${servePath}/activity/daily-checkin</#if>">${dailyCheckinLabel}</a>
+                            <#else>
+                            <a href="${servePath}/activities">
+                                ${activityLabel}
+                            </a>
+                            </#if>
+                        </span>
+                        <span class="post"><a href="${servePath}/post?type=0">${postArticleLabel}</a></span>
                     </div>
                     <div class="perfect-panel list">
                         <ul>
+                            <#list perfectArticles as article>
                             <li>
-                                <a rel="nofollow" href="https://hacpai.com/member/wulalala">
-                                    <span class="avatar-small tooltipped tooltipped-se" aria-label="wulalala" style="background-image:url('https://img.hacpai.com/avatar/1471837009305_1472019457934.jpeg?imageView2/1/w/52/h/52/format/jpg/interlace/0/q/100')"></span>
-                                    </a>
-                                <a rel="nofollow" class="fn-ellipsis" href="https://hacpai.com/article/1478836707886">永不停更，永久免费的前端公开库 Staticfile 全新改版！</a>
-                                <a class="fn-right count ft-gray ft-smaller" href="https://hacpai.com/article/1478836707886">146</a>
+                                <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}">
+                                    <span class="avatar-small tooltipped tooltipped-se" aria-label="wulalala" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></span>
+                                </a>
+                                <a rel="nofollow" class="fn-ellipsis ft-a-title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                                <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
                             </li>
-                             <li>
-                                <a rel="nofollow" href="https://hacpai.com/member/wulalala">
-                                    <span class="avatar-small tooltipped tooltipped-se" aria-label="wulalala" style="background-image:url('https://img.hacpai.com/avatar/1471837009305_1472019457934.jpeg?imageView2/1/w/52/h/52/format/jpg/interlace/0/q/100')"></span>
-                                    </a>
-                                <a rel="nofollow" class="fn-ellipsis" href="https://hacpai.com/article/1478836707886">永不停更，永久免费的前端公开库 Staticfile 全新改版！</a>
-                                <a class="fn-right count ft-gray ft-smaller" href="https://hacpai.com/article/1478836707886">146</a>
-                            </li>
+                            </#list>
                         </ul>
                     </div>
                 </div>
@@ -134,20 +275,65 @@
             </div>
             <div class="wrapper">
                 <div class="index-main">
-                    <div class="metro-line">
-                        <div class="metro-item">1</div>
-                        <div class="metro-item mid">2</div>
-                        <div class="metro-item">3</div>
+                    <div class="metro-line fn-flex">
+                        <div class="metro-item">
+                            <a class="preview" href="${servePath}/tag/${tag0.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag0.tagIconPath}" alt="${tag0.tagTitle}">
+                                <b>${tag0.tagTitle}</b>
+                            </a>
+                        </div>
+                        <div class="metro-item mid">
+                            <a class="preview" href="${servePath}/tag/${tag1.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag1.tagIconPath}" alt="${tag1.tagTitle}">
+                                <b>${tag1.tagTitle}</b>
+                            </a>
+                        </div>
+                        <div class="metro-item">
+                            <a class="preview" href="${servePath}/tag/${tag2.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag2.tagIconPath}" alt="${tag2.tagTitle}">
+                                <b>${tag2.tagTitle}</b>
+                            </a>
+                        </div>
                     </div>
-                    <div class="metro-line">
-                        <div class="metro-item">1</div>
-                        <div class="metro-item mid">2</div>
-                        <div class="metro-item">3</div>
+                    <div class="metro-line fn-flex">
+                        <div class="metro-item">
+                            <a class="preview" href="${servePath}/tag/${tag3.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag3.tagIconPath}" alt="${tag3.tagTitle}">
+                                <b>${tag3.tagTitle}</b>
+                            </a>
+                        </div>
+                        <div class="metro-item mid">
+                            <a class="preview" href="${servePath}/tag/${tag4.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag4.tagIconPath}" alt="${tag4.tagTitle}">
+                                <b>${tag4.tagTitle}</b>
+                            </a>
+                        </div>
+                        <div class="metro-item">
+                            <a class="preview" href="${servePath}/tag/${tag5.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag5.tagIconPath}" alt="${tag5.tagTitle}">
+                                <b>${tag5.tagTitle}</b>
+                            </a>
+                        </div>
                     </div>
-                    <div class="metro-line">
-                        <div class="metro-item">1</div>
-                        <div class="metro-item mid">2</div>
-                        <div class="metro-item">3</div>
+                    <div class="metro-line fn-flex">
+                        <div class="metro-item">
+                            <a class="preview" href="${servePath}/tag/${tag6.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag6.tagIconPath}" alt="${tag6.tagTitle}">
+                                <b>${tag6.tagTitle}</b>
+                            </a>
+                        </div>
+                        <div class="metro-item mid">
+                            <a class="preview" href="${servePath}/tag/${tag7.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag7.tagIconPath}" alt="${tag7.tagTitle}">
+                                <b>${tag7.tagTitle}</b>
+                            </a>
+                        </div>
+                        <div class="metro-item">
+                            <a class="preview" href="${servePath}/tag/${tag8.tagURI}">
+                                <img src="${staticServePath}/images/tags/${tag8.tagIconPath}" alt="${tag8.tagTitle}">
+                                <b>${tag8.tagTitle}</b>
+                            </a>
+                        </div>
                     </div>
                     <div class="metro-border fn-flex">
                         <div></div>
@@ -155,24 +341,56 @@
                         <div class="green"></div>
                     </div>
                 </div>
-                <div class="index-side">
-                    <div class="list">
+                <div class="index-side down">
+                    <div class="list timeline ft-gray single-line">
+                        <#if timelines?size <= 0>
+                        <div id="emptyTimeline">${emptyTimelineLabel}</div>
+                        </#if>
                         <ul>
+                            <#list timelines as article>
+                            <#if article_index < 15>
                             <li>
-                                    <a target="_blank" rel="nofollow" href="https://hacpai.com/member/cggs">cggs</a> 正在浏览 <a target="_blank" rel="nofollow" href="https://hacpai.com/article/1467011936362">如何正确地使用小薇 QQ 机器人</a>
+                                ${article.content}
                             </li>
-                            <li>
-                                    <a target="_blank" rel="nofollow" href="https://hacpai.com/member/cggs">cggs</a> 正在浏览 <a target="_blank" rel="nofollow" href="https://hacpai.com/article/1467011936362">如何正确地使用小薇 QQ 机器人</a>
-                            </li>
-                        </ul>
+                            </#if>
+                        </#list>
+                    </ul>
+                </div>
+                <div class="metro-line fn-flex">
+                    <div class="metro-item"> ${ADLabel}</div>
+                    <div class="metro-item last">
+                        <a class="preview" href="https://hacpai.com/article/1460083956075">
+                            <img width="44px" src="${staticServePath}/js/lib/emojify.js-1.1.0/images/basic/heart.png" alt="${sponsorLabel}">
+                            <b>${wantPutOnLabel}</b>
+                        </a>
                     </div>
+                </div>
+                <div class="metro-border fn-flex">
+                    <div></div>
+                    <div class="yellow"></div>
                 </div>
             </div>
         </div>
+    </div>
     <#include "footer.ftl">     
     <script type="text/javascript">
-        $('.main.first .item .module-panel').outerWidth(parseInt(($('.footer .wrapper').width() - 20) / 2) - 42);
-        $('.main:last .item .module-panel').outerWidth(parseInt(($('.footer .wrapper').width() - 40) / 3) - 42);
+        $('.metro-item').height($('.metro-item').width());
+        $('.timeline ul').outerHeight($('.metro-item').width() * 2 + 2 - 30);
+
+        $('#articles span').click(function () {
+            var $it = $(this);
+            $('#articles span').removeClass('current');
+            $it.addClass('current');
+
+            $(".index-tabs-panels.article-list ul").hide();
+            if ($it.hasClass('tags')) {
+                $(".index-tabs-panels.article-list ul:eq(1)").show();
+            } else if ($it.hasClass('users')) {
+                $(".index-tabs-panels.article-list ul:eq(2)").show();
+            } else {
+                $(".index-tabs-panels.article-list ul:eq(0)").show();
+            }
+        });
     </script>
 </body>
 </html>

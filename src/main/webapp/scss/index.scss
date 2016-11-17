@@ -77,14 +77,6 @@ h1.article-title {
     line-height: 36px;
 }
 
-h1.article-title > a {
-    color: #595959;
-}
-
-h1.article-title > a:hover {
-    color: #333;
-}
-
 .article-info {
     margin-bottom: 10px;
     border-bottom: 1px solid #eee;
@@ -431,7 +423,7 @@ label.cmt-anonymous {
 }
 
 .editor-panel .editor-hide:hover {
-    color: #999;
+    color: $gray;
 }
 
 .article-charge-point {
@@ -473,10 +465,6 @@ label.cmt-anonymous {
         font-size: 18px;
     }
 
-    ul > li > h2 > a:visited {
-        color: #666;
-    }
-
     ul > li:hover .fn-hidden {
         visibility: visible;
     }
@@ -490,6 +478,7 @@ label.cmt-anonymous {
         line-height: 1.6;
     }
 
+    ul > li > h2 > a:visited,
     .abstract:visited {
         color: $gray;
     }
@@ -636,7 +625,7 @@ label.cmt-anonymous {
             position: relative;
 
             span {
-                color: #999;
+                color: $gray;
                 position: absolute;
                 top: 16px;
                 font-size: 20px;
@@ -768,12 +757,12 @@ code .dec { color: initial; } /* decimal - blue */
 
 /* start index */
 .index {
-    .main {
-        padding: 40px 0;
+    .wrapper {
+        width: 90%;
     }
 
-    .wrapper {
-        background-color: #FFF;
+    .main {
+        padding: 40px 0;
     }
 
     .index-main {
@@ -781,7 +770,7 @@ code .dec { color: initial; } /* decimal - blue */
     }
 
     .index-side {
-        border-left: 2px solid #f2f2f2;
+        margin-left: 2px;
         width: 40%;
     }
 
@@ -798,18 +787,46 @@ code .dec { color: initial; } /* decimal - blue */
         transition-duration: .3s;
         text-align: center;
         border-bottom: 8px solid $blue;
+        background-color: #FFF;
+        color: $gray;
+    }
+
+    .index-tabs > span a {
+        color: #333;
+        text-decoration: none;
+        display: block;
+    }
+
+    .index-tabs > span.current {
+        color: #333;
+        background-color: #f8f8f8;
     }
 
     .index-tabs > span.tags {
-        border-bottom-color: $red;
+        border-bottom-color: $green;
         margin: 0 2px;
     }
 
     .index-tabs > span.users {
-        border-bottom-color: $green;
+        border-bottom-color: #f1e05a;
     }
 
-    .index-tabs > span:hover {
+    .index-tabs > span.perfect {
+        border-bottom-color: $red;
+        flex: 2;
+    }
+
+    .index-tabs > span.check {
+        border-bottom-color: #563d7c;
+        margin: 0 2px;
+    }
+
+    .index-tabs > span.post {
+        border-bottom-color: #244776;
+    }
+
+    .index-tabs > span:hover,
+    .index-tabs > span:hover a {
         color: #fff
     }
 
@@ -830,44 +847,45 @@ code .dec { color: initial; } /* decimal - blue */
     }
 
     .index-tabs > span.tags:before {
-        background-color: $red;
+        background-color: $green;
     }
 
     .index-tabs > span.users:before {
-        background-color: $green;
+        background-color: #f1e05a;
+    }
+
+    .index-tabs > span.perfect:before {
+        background-color: $red;
+    }
+    
+    .index-tabs > span.check:before {
+        background-color: #563d7c;
+    }
+
+    .index-tabs > span.post:before {
+        background-color: #244776;
     }
 
     .index-tabs > span:hover:before {
         transform: scaleY(1)
     }
 
+    .index-tabs > span > span {
+        display: none;
+    }
+
+    .index-tabs > span.current > span {
+        display: inline-block;
+    }
+
     .index-tabs-panels {
+        background-color: #FFF;
         padding: 15px;
     }
 
     .index-tabs-panels > ul > li:last-child,
     .perfect-panel.list > ul > li:last-child {
         border-bottom-width: 0;
-    }
-
-    .perfect-header {
-        line-height: 40px;
-        border-bottom: 8px solid #f1f7fe;
-        padding-left: 20px;
-
-        .post,
-        .check {
-            border: 0;
-            background-color: #d23f31;
-            color: #fff;
-            box-sizing: border-box;
-            float: left;
-            padding: 0 10px;
-        }
-
-        .check {
-            background-color: $blue;
-        }
     }
 
     .perfect-panel {
@@ -883,7 +901,6 @@ code .dec { color: initial; } /* decimal - blue */
             padding: 0 50px 0 30px;
             display: block;
             box-sizing: border-box;
-            color: #666;
             line-height: 20px;
         }
 
@@ -894,39 +911,105 @@ code .dec { color: initial; } /* decimal - blue */
         }
     }
 
-    .metro-line {
-        display: flex
-    }
-
     .metro-item {
         flex: 1;
-        border-bottom: 2px solid #f2f2f2;
+        margin-bottom: 2px;
+        background-color: #FFF;
         height: 200px;
         text-align: center;
+        overflow: hidden;
+
+        .preview {
+            height: 100%;
+            width: 100%;
+            padding-top: 25%;
+            position: relative;
+            box-sizing: border-box;
+            display: block;
+            transition: all 0.2s ease-out 0s;
+            color: $gray;
+            text-decoration: none;
+        }
+
+        .preview:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+            color: #333;
+        }
+
+        .preview img {
+            transition: all 0.2s ease-out 0s;
+        }
+
+        .preview:hover > img {
+            border-radius: 30px;
+        }
+
+        .preview > b {
+            display: block;
+            margin-top: 20px;
+            font-weight: normal;
+        }
     }
 
     .metro-item.mid {
-        border-left: 2px solid #f2f2f2;
-        border-right: 2px solid #f2f2f2;
+        margin: 0 2px 2px;
     }
 
     .metro-border > div {
         height: 8px;
         flex: 1;
         background-color: $blue;
+        margin-top: -2px;
     }
 
     .metro-border > div.red {
         background-color: $red;
-        border-left: 2px solid #f2f2f2;
-        border-right: 2px solid #f2f2f2;
+        margin: -2px 2px 2px 2px;
     }
 
     .metro-border > div.green {
         background-color: $green;
     }
+
+    .index-side.down {
+        .metro-line {
+            margin-top: 2px;
+
+            .last {
+                margin-left: 2px;
+            }
+        }
+
+        .metro-border div {
+            background-color: #563d7c;
+        }
+
+        .metro-border div.yellow {
+            background-color: #f1e05a;
+            margin-left: 2px;
+        }
+
+        .list {
+            background-color: #FFF;
+            padding: 15px;
+
+            ul {
+                overflow: hidden;
+            }
+        }
+    }
 }
 /* end index */
+
+/* start timeline */
+.timeline a {
+    color: #666;
+}
+
+.timeline a:hover {
+    color: #333;
+}
+/* end timeline */
 
 /* start symhub */
 .symhub {
