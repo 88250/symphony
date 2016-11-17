@@ -15,7 +15,7 @@
                     <div class="avatar-small tooltipped tooltipped-se" aria-label="${item.userName}" 
                          style="background-image:url('${item.userAvatarURL}')"></div> &nbsp;
                     <a href="${servePath}/member/${item.userName}">${item.userName}</a>
-                    <a href="${servePath}/admin/user/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-icon" aria-label="${editLabel}"><span class="icon-edit"></span></a> &nbsp;
+                    <a href="${servePath}/admin/user/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-title" aria-label="${editLabel}"><span class="icon-edit"></span></a> &nbsp;
                     <#if item.userStatus == 0>
                     <span class="ft-gray">${validLabel}</span>
                     <#elseif item.userStatus == 2>

@@ -14,9 +14,16 @@
             <div class="wrapper">
                 <div class="index-main">
                     <div class="index-tabs fn-flex" id="articles">
-                        <span class="current">${latestLabel}</span>
-                        <span class="tags">${followingTagsLabel}</span>
-                        <span class="users">${followingUsersLabel}</span>
+                        <span class="current">
+                            <svg height="16" viewBox="0 0 14 16" width="14">${timeIcon}</svg> ${latestLabel}</span>
+                        <span class="tags">
+                            <span class="icon-clock"></span>
+                            ${followingTagsLabel}
+                        </span>
+                        <span class="users">
+                            <span class="icon-userrole"></span>
+                            ${followingUsersLabel}
+                        </span>
                     </div>
                     <div class="index-tabs-panels list article-list">
                         <ul>
@@ -50,7 +57,7 @@
                                     <#elseif 3 == article.articleType>
                                     <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
                                     </#if>
-                                    <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
+                                    <a class="ft-a-title" data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                                     </a>
                                 </h2>
                                 <div class="ft-smaller fn-clear list-info fn-flex">
@@ -120,7 +127,7 @@
                                     <#elseif 3 == article.articleType>
                                     <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
                                     </#if>
-                                    <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
+                                    <a class="ft-a-title" data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                                     </a>
                                 </h2>
                                 <div class="ft-smaller fn-clear list-info fn-flex">
@@ -190,7 +197,7 @@
                                     <#elseif 3 == article.articleType>
                                     <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
                                     </#if>
-                                    <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
+                                    <a class="ft-a-title" data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                                     </a>
                                 </h2>
                                 <div class="ft-smaller fn-clear list-info fn-flex">
@@ -246,7 +253,7 @@
                             </a>
                             </#if>
                         </span>
-                        <span class="post"><a href="${servePath}/pre-post">${postArticleLabel}</a></span>
+                        <span class="post"><a href="${servePath}/post?type=0">${postArticleLabel}</a></span>
                     </div>
                     <div class="perfect-panel list">
                         <ul>
@@ -255,7 +262,7 @@
                                 <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}">
                                     <span class="avatar-small tooltipped tooltipped-se" aria-label="wulalala" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></span>
                                 </a>
-                                <a rel="nofollow" class="fn-ellipsis" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                                <a rel="nofollow" class="fn-ellipsis ft-a-title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                                 <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
                             </li>
                             </#list>
@@ -335,14 +342,14 @@
                     </div>
                 </div>
                 <div class="index-side down">
-                    <div class="list timeline">
+                    <div class="list timeline ft-gray single-line">
                         <#if timelines?size <= 0>
                         <div id="emptyTimeline">${emptyTimelineLabel}</div>
                         </#if>
                         <ul>
                             <#list timelines as article>
                             <#if article_index < 15>
-                            <li class="fn-ellipsis">
+                            <li>
                                 ${article.content}
                             </li>
                             </#if>
@@ -368,7 +375,7 @@
     <#include "footer.ftl">     
     <script type="text/javascript">
         $('.metro-item').height($('.metro-item').width());
-        $('.timeline').outerHeight($('.metro-item').width() * 2 + 2);
+        $('.timeline ul').outerHeight($('.metro-item').width() * 2 + 2 - 30);
 
         $('#articles span').click(function () {
             var $it = $(this);
@@ -382,19 +389,6 @@
                 $(".index-tabs-panels.article-list ul:eq(2)").show();
             } else {
                 $(".index-tabs-panels.article-list ul:eq(0)").show();
-            }
-        });
-
-        var $perfectList = $('.perfect-panel'),
-                pTop = $perfectList.offset().top + $perfectList.outerHeight();
-        $(window).scroll(function () {
-            if ($(window).scrollTop() > pTop) {
-                $perfectList.parent().hide();
-                $(".index-tabs-panels.article-list").parent().css('width', '100%');
-            }
-            if ($(window).scrollTop() < 200) {
-                $perfectList.parent().show();
-                $(".index-tabs-panels.article-list").parent().css('width', '60%');
             }
         });
     </script>

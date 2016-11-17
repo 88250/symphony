@@ -77,14 +77,6 @@ h1.article-title {
     line-height: 36px;
 }
 
-h1.article-title > a {
-    color: #595959;
-}
-
-h1.article-title > a:hover {
-    color: #333;
-}
-
 .article-info {
     margin-bottom: 10px;
     border-bottom: 1px solid #eee;
@@ -431,7 +423,7 @@ label.cmt-anonymous {
 }
 
 .editor-panel .editor-hide:hover {
-    color: #999;
+    color: $gray;
 }
 
 .article-charge-point {
@@ -473,10 +465,6 @@ label.cmt-anonymous {
         font-size: 18px;
     }
 
-    ul > li > h2 > a:visited {
-        color: #666;
-    }
-
     ul > li:hover .fn-hidden {
         visibility: visible;
     }
@@ -490,6 +478,7 @@ label.cmt-anonymous {
         line-height: 1.6;
     }
 
+    ul > li > h2 > a:visited,
     .abstract:visited {
         color: $gray;
     }
@@ -636,7 +625,7 @@ label.cmt-anonymous {
             position: relative;
 
             span {
-                color: #999;
+                color: $gray;
                 position: absolute;
                 top: 16px;
                 font-size: 20px;
@@ -768,6 +757,10 @@ code .dec { color: initial; } /* decimal - blue */
 
 /* start index */
 .index {
+    .wrapper {
+        width: 90%;
+    }
+
     .main {
         padding: 40px 0;
     }
@@ -795,17 +788,18 @@ code .dec { color: initial; } /* decimal - blue */
         text-align: center;
         border-bottom: 8px solid $blue;
         background-color: #FFF;
-        color: #999;
+        color: $gray;
     }
 
     .index-tabs > span a {
         color: #333;
         text-decoration: none;
+        display: block;
     }
 
     .index-tabs > span.current {
         color: #333;
-        font-weight: 500;
+        background-color: #f8f8f8;
     }
 
     .index-tabs > span.tags {
@@ -876,6 +870,14 @@ code .dec { color: initial; } /* decimal - blue */
         transform: scaleY(1)
     }
 
+    .index-tabs > span > span {
+        display: none;
+    }
+
+    .index-tabs > span.current > span {
+        display: inline-block;
+    }
+
     .index-tabs-panels {
         background-color: #FFF;
         padding: 15px;
@@ -899,7 +901,6 @@ code .dec { color: initial; } /* decimal - blue */
             padding: 0 50px 0 30px;
             display: block;
             box-sizing: border-box;
-            color: #666;
             line-height: 20px;
         }
 
@@ -989,20 +990,26 @@ code .dec { color: initial; } /* decimal - blue */
         }
 
         .list {
-            height: 402px;
             background-color: #FFF;
             padding: 15px;
-            overflow: hidden;
-            box-sizing: border-box;
 
-            li {
-                white-space: nowrap;
-                word-wrap: normal;
+            ul {
+                overflow: hidden;
             }
         }
     }
 }
 /* end index */
+
+/* start timeline */
+.timeline a {
+    color: #666;
+}
+
+.timeline a:hover {
+    color: #333;
+}
+/* end timeline */
 
 /* start symhub */
 .symhub {
