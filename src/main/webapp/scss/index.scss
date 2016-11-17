@@ -729,8 +729,18 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .snak-rank {
-    display: flex;
-    margin-bottom: 10px;
+    margin: 20px;
+
+    .module:last-child {
+        margin-left: 20px;
+        margin-bottom: 20px;
+    }
+
+    .count {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
 }
 
 .sub-head .avatar-small {
@@ -789,6 +799,7 @@ code .dec { color: initial; } /* decimal - blue */
         border-bottom: 8px solid $blue;
         background-color: #FFF;
         color: $gray;
+        overflow: hidden;
     }
 
     .index-tabs > span a {
@@ -918,6 +929,7 @@ code .dec { color: initial; } /* decimal - blue */
         height: 200px;
         text-align: center;
         overflow: hidden;
+        position: relative;
 
         .preview {
             height: 100%;
@@ -995,9 +1007,28 @@ code .dec { color: initial; } /* decimal - blue */
 
             ul {
                 overflow: hidden;
+                height: 402px;
             }
         }
     }
+}
+@keyframes ripple {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.ripple {
+    position: absolute;
+    background: rgba(0,0,0,.15);
+    border-radius: 100%;
+    transform: scale(0);
+    pointer-events: none;
+    animation: ripple .75s ease-out;
+    content: " ";
+    width: 100%;
+    height: 100%;
 }
 /* end index */
 
