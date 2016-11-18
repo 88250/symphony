@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.16.18.40, Nov 13, 2016
+ * @version 2.17.18.40, Nov 18, 2016
  */
 
 @import "variables";
@@ -256,6 +256,10 @@ label.cmt-anonymous {
 
     .comment-info .icon-heart {
         vertical-align: text-bottom;
+    }
+
+    .comment-info a:hover {
+        text-decoration: none;
     }
 }
 
@@ -729,8 +733,18 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .snak-rank {
-    display: flex;
-    margin-bottom: 10px;
+    margin: 20px;
+
+    .module:last-child {
+        margin-left: 20px;
+        margin-bottom: 20px;
+    }
+
+    .count {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
 }
 
 .sub-head .avatar-small {
@@ -789,15 +803,18 @@ code .dec { color: initial; } /* decimal - blue */
         border-bottom: 8px solid $blue;
         background-color: #FFF;
         color: $gray;
+        overflow: hidden;
     }
 
     .index-tabs > span a {
         color: #333;
         text-decoration: none;
         display: block;
+        cursor: auto;
     }
 
-    .index-tabs > span.current {
+    .index-tabs > span.current,
+    .index-tabs > span.current:hover {
         color: #333;
         background-color: #f8f8f8;
     }
@@ -867,7 +884,11 @@ code .dec { color: initial; } /* decimal - blue */
     }
 
     .index-tabs > span:hover:before {
-        transform: scaleY(1)
+        transform: scaleY(1);
+    }
+
+    .index-tabs > span.current:hover:before {
+        transform: scaleY(0);
     }
 
     .index-tabs > span > span {
@@ -918,6 +939,7 @@ code .dec { color: initial; } /* decimal - blue */
         height: 200px;
         text-align: center;
         overflow: hidden;
+        position: relative;
 
         .preview {
             height: 100%;
@@ -995,21 +1017,30 @@ code .dec { color: initial; } /* decimal - blue */
 
             ul {
                 overflow: hidden;
+                height: 402px;
             }
         }
     }
 }
+@keyframes ripple {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.ripple {
+    position: absolute;
+    background: rgba(0,0,0,.15);
+    border-radius: 100%;
+    transform: scale(0);
+    pointer-events: none;
+    animation: ripple .75s ease-out;
+    content: " ";
+    width: 100%;
+    height: 100%;
+}
 /* end index */
-
-/* start timeline */
-.timeline a {
-    color: #666;
-}
-
-.timeline a:hover {
-    color: #333;
-}
-/* end timeline */
 
 /* start symhub */
 .symhub {

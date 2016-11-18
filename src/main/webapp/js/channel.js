@@ -20,7 +20,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.10.15.18, Nov 14, 2016
+ * @version 1.10.15.19, Nov 18, 2016
  */
 
 /**
@@ -69,6 +69,8 @@ var ArticleChannel = {
                         $('.comments-header > .fn-none').show();
                         // 移除没有评论的提示
                         $('#comments .list > ul > li.ft-center').remove();
+                        // 显示评论大图
+                        $('#comments').next().show();
                     }
 
                     // ua
@@ -309,12 +311,12 @@ var TimelineChannel = {
                 case 'activity':
                     var time = new Date().getTime();
                     var template = "<li class=\"fn-none\" id=" + time + ">" + data.content + "</li>";
-                    $("#ul").prepend(template);
-                    $("#" + time).fadeIn(2000);
+                    $(".timeline > ul").prepend(template);
+                    $(".timeline > ul > li:first").fadeIn(2000);
 
-                    var length = $("#ul > li").length;
+                    var length = $(".timeline > ul > li").length;
                     if (length > timelineCnt) {
-                        $("#ul > li:last").remove();
+                        $(".timeline > ul  > li:last").remove();
                     }
 
                     break;

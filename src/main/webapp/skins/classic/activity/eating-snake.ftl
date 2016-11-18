@@ -25,37 +25,35 @@
                             <button class="green fn-right" onclick="Activity.startSnake('${csrfToken}')">${gameStartLabel}</button>
                         </div>
                         <div id="yard"><canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
-                        <div class="index fn-m10 fn-clear">
-                            <div class="first snak-rank">
-                                <div class="item first">
-                                    <span class="item-header" style="background-image: url(${hotBgIcon});">${totalRankLabel}</span>
-                                    <div class="module-panel">
-                                        <ul class="module-list">
-                                            <#list sumUsers as user>
-                                            <li>
-                                                <div class="avatar-small tooltipped tooltipped-ne slogan"
-                                                     aria-label="${activityDailyCheckinLabel}" style="background-image:url('${user.userAvatarURL48}')"></div>
-                                                <a class="title" href="${servePath}/member/${user.userName}">${user.userName}</a>
-                                                <span class="fn-right count ft-gray ft-smaller">${user.point}</span>
-                                            </li>
-                                            </#list>
-                                        </ul>
-                                    </div>
+                        <div class="fn-flex snak-rank">
+                            <div class="module">
+                                <div class="module-header" style="background-image: url(${hotBgIcon});">${totalRankLabel}</div>
+                                <div class="module-panel">
+                                    <ul class="module-list">
+                                        <#list sumUsers as user>
+                                        <li>
+                                            <div class="avatar-small tooltipped tooltipped-ne slogan"
+                                                 aria-label="${activityDailyCheckinLabel}" style="background-image:url('${user.userAvatarURL48}')"></div>
+                                            <a class="title" href="${servePath}/member/${user.userName}">${user.userName}</a>
+                                            <span class="fn-right count ft-gray ft-smaller">${user.point}</span>
+                                        </li>
+                                        </#list>
+                                    </ul>
                                 </div>
-                                <div class="item">
-                                    <span class="item-header" style="background-image: url(${perfectBgIcon});">${eachRankLabel}</span>
-                                    <div class="module-panel">
-                                        <ul class="module-list">
-                                            <#list maxUsers as user>
-                                            <li>
-                                                <div class="avatar-small tooltipped tooltipped-ne slogan"
-                                                     aria-label="${activityDailyCheckinLabel}" style="background-image:url('${user.userAvatarURL48}')"></div>
-                                                <a class="title" href="${servePath}/member/${user.userName}">${user.userName}</a>
-                                                <span class="fn-right count ft-gray ft-smaller">${user.point}</span>
-                                            </li>
-                                            </#list>
-                                        </ul>
-                                    </div>
+                            </div>
+                            <div class="module">
+                                <div class="module-header" style="background-image: url(${perfectBgIcon});">${eachRankLabel}</div>
+                                <div class="module-panel">
+                                    <ul class="module-list">
+                                        <#list maxUsers as user>
+                                        <li>
+                                            <div class="avatar-small tooltipped tooltipped-ne slogan"
+                                                 aria-label="${activityDailyCheckinLabel}" style="background-image:url('${user.userAvatarURL48}')"></div>
+                                            <a class="title" href="${servePath}/member/${user.userName}">${user.userName}</a>
+                                            <span class="fn-right count ft-gray ft-smaller">${user.point}</span>
+                                        </li>
+                                        </#list>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -70,8 +68,8 @@
         <script type="text/javascript" src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/eating-snake${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                                Label.activityStartEatingSnakeTipLabel = '${activityStartEatingSnakeTipLabel}';
-                                Activity.initSnake();
+            Label.activityStartEatingSnakeTipLabel = '${activityStartEatingSnakeTipLabel}';
+            Activity.initSnake();
         </script>
     </body>
 </html>

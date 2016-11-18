@@ -333,6 +333,10 @@ label.article-anonymous {
 .tabs a:hover {
     background-color: rgba(0,0,0,.03);
 }
+
+.tabs-sub > a > .count {
+    transform: scale(0.8);
+}
 /* end home */
 
 /* start notifications */

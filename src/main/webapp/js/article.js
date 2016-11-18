@@ -92,7 +92,7 @@ var Comment = {
                 return false;
             }
             $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
-            $('#replyUseName').html('<a href="javascript:void(0)" onclick="Util.goTop();Comment._bgFade($(\'.article-module\'))" class="ft-a-icon"><span class="icon-reply-to"></span>' 
+            $('#replyUseName').html('<a href="javascript:void(0)" onclick="Util.goTop();Comment._bgFade($(\'.article-module\'))" class="ft-a-title"><span class="icon-reply-to"></span>' 
                 + $('.article-title').text() + '</a>').removeData();
 
             // 如果 hide 初始化， focus 无效
@@ -615,7 +615,7 @@ var Comment = {
 
                     template += ' ' + Util.getDeviceByUa(data.commentUA) + '</span>';
 
-                    template += '<a class="tooltipped tooltipped-nw ft-a-icon fn-right" aria-label="' + Label.referenceLabel + '" href="javascript:Comment.goComment(\''
+                    template += '<a class="tooltipped tooltipped-nw ft-a-title fn-right" aria-label="' + Label.referenceLabel + '" href="javascript:Comment.goComment(\''
                             + Label.servePath + '/article/' + Label.articleOId + '?p=' + data.paginationCurrentPageNum
                             + '&m=' + Label.userCommentViewMode + '#' + data.oId
                             + '\')"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
@@ -753,11 +753,11 @@ var Comment = {
             $avatar = $('#' + id).find('>.fn-flex>.avatar').clone();
             $avatar.removeClass('avatar').addClass('avatar-small');
             replyUserHTML = '<a rel="nofollow" href="#' + id
-                    + '" class="ft-a-icon" onclick="Comment._bgFade($(\'#' + id
+                    + '" class="ft-a-title" onclick="Comment._bgFade($(\'#' + id
                     + '\'))"><span class="icon-reply-to"></span> '
                     + $avatar[0].outerHTML + ' ' + userName + '</a>';
         } else {
-            $avatar.addClass('ft-a-icon').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
+            $avatar.addClass('ft-a-title').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
             $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<span class="icon-reply-to"></span> ');
             replyUserHTML = $avatar[0].outerHTML;
         }
