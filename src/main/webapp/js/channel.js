@@ -69,6 +69,8 @@ var ArticleChannel = {
                         $('.comments-header > .fn-none').show();
                         // 移除没有评论的提示
                         $('#comments .list > ul > li.ft-center').remove();
+                        // 显示评论大图
+                        $('#comments').next().show();
                     }
 
                     // ua
