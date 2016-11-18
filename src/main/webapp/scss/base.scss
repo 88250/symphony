@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.19.47, Nov 6, 2016
+ * @version 2.25.19.48, Nov 18, 2016
  */
 
 @import "variables";
@@ -493,6 +493,18 @@ blockquote {
 /* end function */
 
 /* start common */
+.timeline a {
+    color: #666;
+}
+
+.timeline a:hover {
+    color: #333;
+}
+
+.timeline li:last-child {
+    border-bottom: 0;
+}
+
 .tag {
     font-size: 12px;
     color: $fade;

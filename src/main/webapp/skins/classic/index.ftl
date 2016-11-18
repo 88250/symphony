@@ -31,16 +31,47 @@
                             <#list recentArticles as article>
                                 <#include "common/list-item.ftl">
                             </#list>
+                            <#if recentArticles?size == 0>
+                            系统被掏空~<br>
+                            马上去<a href="${servePath}/post?type=0">发文</a>，写你想写！<br> 
+                            <img src="${staticServePath}/images/404/5.gif"/>          
+                            </#if>
                         </ul>
                         <ul class="fn-none">
                             <#list followingTagArticles as article>
                                 <#include "common/list-item.ftl">
                             </#list>
+                            <#if isLoggedIn && followingTagArticles?size == 0>
+                                <li class="ft-center">
+                                    你还没有关注标签哦~<br>
+                                    马上去<a href="${servePath}/tags">关注</a>，看你想看！<br> 
+                                    <img src="${staticServePath}/images/404/6.gif"/>     
+                                </li>  
+                            <#else>
+                                <li class="ft-center">
+                                    你还没有登录哦~<br>
+                                    马上去<a href="javascript:Util.goLogin()">登录</a>，看你想看！<br> 
+                                    <img src="${staticServePath}/images/404/6.gif"/>     
+                                </li>  
+                            </#if>
                         </ul>
                         <ul class="fn-none">
                             <#list followingUserArticles as article>
                                 <#include "common/list-item.ftl">
                             </#list>
+                             <#if isLoggedIn && followingTagArticles?size == 0>
+                                <li class="ft-center">
+                                    你还没有关注用户哦~<br>
+                                    马上去<a href="${servePath}/top/balance">关注</a>，知你想知！<br> 
+                                    <img src="${staticServePath}/images/404/2.gif"/>     
+                                </li> 
+                            <#else>
+                                <li class="ft-center">
+                                    你还没有登录哦~<br>
+                                    马上去<a href="javascript:Util.goLogin()">登录</a>，知你想知！<br> 
+                                    <img src="${staticServePath}/images/404/2.gif"/>     
+                                </li>   
+                            </#if>
                         </ul>
                     </div>
                 </div>
