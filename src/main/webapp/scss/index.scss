@@ -257,6 +257,10 @@ label.cmt-anonymous {
     .comment-info .icon-heart {
         vertical-align: text-bottom;
     }
+
+    .comment-info a:hover {
+        text-decoration: none;
+    }
 }
 
 .nice .comments > ul > li:last-child {
