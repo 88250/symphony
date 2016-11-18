@@ -93,7 +93,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.18.37, Nov 16, 2016
+ * @version 2.25.19.37, Nov 18, 2016
  * @since 0.2.0
  */
 @Service
@@ -308,6 +308,7 @@ public class ArticleQueryService {
         articleFields.put(Article.ARTICLE_COMMENT_CNT, Integer.class);
         articleFields.put(Article.ARTICLE_ANONYMOUS, Integer.class);
         articleFields.put(Article.ARTICLE_PERFECT, Integer.class);
+        articleFields.put(Article.ARTICLE_CONTENT, String.class);
 
         return getArticlesByTags(avatarViewMode, currentPageNum, pageSize, articleFields, tags.toArray(new JSONObject[0]));
     }
@@ -1668,7 +1669,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class);
+                addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                addProjection(Article.ARTICLE_CONTENT, String.class);
 
         try {
             List<JSONObject> ret;
