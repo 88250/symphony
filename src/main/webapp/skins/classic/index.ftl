@@ -32,9 +32,9 @@
                                 <#include "common/list-item.ftl">
                             </#list>
                             <#if recentArticles?size == 0>
-                            ${systemEmptyLabel}<br>
-                            ${systemEmptyTipLabel}<br> 
-                            <img src="${staticServePath}/images/404/5.gif"/>          
+                                ${systemEmptyLabel}<br>
+                                ${systemEmptyTipLabel}<br> 
+                                <img src="${staticServePath}/images/404/5.gif"/>          
                             </#if>
                         </ul>
                         <ul class="fn-none">
@@ -47,7 +47,8 @@
                                     ${noFollowingTagTipLabel}<br> 
                                     <img src="${staticServePath}/images/404/6.gif"/>     
                                 </li>  
-                            <#else>
+                            </#if>
+                            <#if !isLoggedIn>
                                 <li class="ft-center">
                                     ${noLoginLabel}<br>
                                     ${noLoginTipLabel}<br> 
@@ -59,13 +60,14 @@
                             <#list followingUserArticles as article>
                                 <#include "common/list-item.ftl">
                             </#list>
-                             <#if isLoggedIn && followingUserArticles?size == 0>
+                            <#if isLoggedIn && followingUserArticles?size == 0>
                                 <li class="ft-center">
                                     ${noFollowingUserLabel}<br>
                                     ${noFollowingUserTipLabel}<br> 
                                     <img src="${staticServePath}/images/404/2.gif"/>     
                                 </li> 
-                            <#else>
+                            </#if>
+                            <#if !isLoggedIn>
                                 <li class="ft-center">
                                     ${noLoginLabel}<br>
                                     ${noLoginTipLabel}<br> 
