@@ -55,7 +55,7 @@ import org.jsoup.Jsoup;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.4.0, Oct 25, 2016
+ * @version 1.5.4.0, Nov 18, 2016
  * @since 1.4.0
  */
 @Named
@@ -188,6 +188,15 @@ public class TagCache {
         }
 
         return new ArrayList<>(TAGS);
+    }
+
+    /**
+     * Loads all tags.
+     */
+    public void loadTags() {
+        loadAllTags();
+        loadIconTags();
+        loadNewTags();
     }
 
     /**

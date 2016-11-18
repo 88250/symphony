@@ -82,7 +82,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.17.7.16, Oct 29, 2016
+ * @version 2.17.7.17, Nov 18, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -148,11 +148,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final ArticleSearchUpdater articleSearchUpdater = beanManager.getReference(ArticleSearchUpdater.class);
         eventManager.registerListener(articleSearchUpdater);
 
-        // Load icon tags to cache
         final TagCache tagCache = beanManager.getReference(TagCache.class);
-        tagCache.loadIconTags();
+        tagCache.loadTags();
 
-        // Load domains to cache
         final DomainCache domainCache = beanManager.getReference(DomainCache.class);
         domainCache.loadDomains();
 
