@@ -18,7 +18,7 @@
                     <div id="emptyTimeline" class="no-list">${emptyTimelineLabel}</div>
                     </#if>
                     <div class="list single-line ft-gray timeline">
-                        <ul id="ul">
+                        <ul>
                             <#list timelines as timeline>
                             <li>${timeline.content}</li>
                             </#list>

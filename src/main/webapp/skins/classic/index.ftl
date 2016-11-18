@@ -17,7 +17,7 @@
                         <span class="current">
                             <svg height="16" viewBox="0 0 14 16" width="14">${timeIcon}</svg> ${latestLabel}</span>
                         <span class="tags">
-                            <span class="icon-clock"></span>
+                            <span class="icon-tags"></span>
                             ${followingTagsLabel}
                         </span>
                         <span class="users">
@@ -343,12 +343,12 @@
                 </div>
                 <div class="index-side down">
                     <div class="list timeline ft-gray single-line">
-                        <#if timelines?size <= 0>
-                        <div id="emptyTimeline">${emptyTimelineLabel}</div>
-                        </#if>
                         <ul>
+                            <#if timelines?size <= 0>
+                            <li id="emptyTimeline">${emptyTimelineLabel}</li>
+                            </#if>
                             <#list timelines as article>
-                            <#if article_index < 15>
+                            <#if article_index < 20>
                             <li>
                                 ${article.content}
                             </li>
@@ -372,7 +372,8 @@
             </div>
         </div>
     </div>
-    <#include "footer.ftl">     
+    <#include "footer.ftl">   
+    <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script> 
     <script type="text/javascript">
         $('.metro-item').height($('.metro-item').width());
         $('.timeline ul').outerHeight($('.metro-item').width() * 2 + 2 - 30);
@@ -405,6 +406,9 @@
                 $it.find('.ripple').remove();
             }, 800);
         });
+
+        // Init [Timeline] channel
+        TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/timeline-channel", 20);
     </script>
 </body>
 </html>
