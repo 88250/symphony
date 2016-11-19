@@ -14,6 +14,7 @@
         <div class="main">
             <@subNav 'recent' ''/>
             <div class="content fn-clear">
+                <@list listData=stickArticles/>
                 <@list listData=latestArticles/>
                 <@pagination url="${servePath}/recent"/>
                 <#if domains?size != 0>

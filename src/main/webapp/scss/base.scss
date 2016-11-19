@@ -492,6 +492,24 @@ blockquote {
 }
 /* end function */
 
+/* start common business */
+.article-list .cb-stick {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-width: 10px 15px 10px 15px;
+    border-color: #999 transparent transparent #999;
+    border-style: solid;
+
+    .icon-pin {
+        position: absolute;
+        top: -9px;
+        left: -14px;
+        color: #FFF;
+    }
+}
+/* end common business */
+
 /* start common */
 .timeline a {
     color: #666;
@@ -802,6 +820,21 @@ a[class*=" icon-"]:hover {
     color: $blue;
 }
 
+.icon-pin:before {
+  content: "\e90e";
+}
+.icon-upload:before {
+  content: "\f0ee";
+}
+.icon-time:before {
+  content: "\e906";
+}
+.icon-sortasc:before {
+  content: "\e905";
+}
+.icon-locked:before {
+  content: "\e61e";
+}
 .icon-weibo:before {
   content: "\e908";
 }
@@ -972,18 +1005,6 @@ a[class*=" icon-"]:hover {
 }
 .icon-wechat:before {
   content: "\e907";
-}
-.icon-upload:before {
-  content: "\f0ee";
-}
-.icon-time:before {
-  content: "\e906";
-}
-.icon-sortasc:before {
-  content: "\e905";
-}
-.icon-locked:before {
-  content: "\e61e";
 }
 .icon-close:before {
   content: "\e909";
