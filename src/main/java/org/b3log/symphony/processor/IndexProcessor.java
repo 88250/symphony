@@ -234,7 +234,6 @@ public class IndexProcessor {
         final JSONObject result = articleQueryService.getRecentArticles(avatarViewMode, sortMode, pageNum, pageSize);
         final List<JSONObject> allArticles = (List<JSONObject>) result.get(Article.ARTICLES);
 
-        dataModel.put(Article.ARTICLE_T_STICK_CHECK, true);
         dataModel.put(Common.SELECTED, Common.RECENT);
 
         final List<JSONObject> stickArticles = new ArrayList<>();
