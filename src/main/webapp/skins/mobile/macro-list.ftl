@@ -26,10 +26,8 @@
                         <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark"
                            href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                         </a>
-                        <#if articleStickCheck??>
-                        <#if article.articleStick < 9223372036854775807>
+                        <#if article.articleStick gt 0 && article.articleStick < 9223372036854775807>
                         <span class="ft-smaller ft-red stick-remains fn-none">${stickLabel}${remainsLabel} ${article.articleStickRemains?c} ${minuteLabel}</span>
-                        </#if>
                         </#if>
                     </h2>
                     <#list article.articleTagObjs as articleTag>

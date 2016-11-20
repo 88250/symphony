@@ -47,15 +47,15 @@
 
         <span class="fn-right ft-fade fn-hidden">
             <#if "" != article.articleLatestCmterName>
-            &nbsp; ${article.cmtTimeAgo} 
-            <#if "" != article.articleLatestCmt.clientCommentId>
-            <span class="author">${article.articleLatestCmterName}</span>
-            <#else>
-            <#if article.articleLatestCmterName != 'someone'>
-            <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"></#if><span class="author">${article.articleLatestCmterName}</span><#if article.articleLatestCmterName != 'someone'></a>
-            </#if>
-            </#if> 
-            ${cmtLabel}
+                &nbsp; ${article.cmtTimeAgo} 
+                <#if "" != article.articleLatestCmt.clientCommentId>
+                <span class="author">${article.articleLatestCmterName}</span>
+                <#else>
+                    <#if article.articleLatestCmterName != 'someone'>
+                    <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"></#if><span class="author">${article.articleLatestCmterName}</span><#if article.articleLatestCmterName != 'someone'></a>
+                    </#if>
+                </#if> 
+                ${cmtLabel}
             </#if>
         </span>
     </div>
@@ -63,4 +63,8 @@
         ${article.articlePreviewContent}
     </a>
     <span class="heat tooltipped tooltipped-n" aria-label="${postActivityLabel}" style="width:${article.articleHeat*3}px"></span>
+
+    <#if article.articleStick gt 0>
+        <span class="cb-stick tooltipped tooltipped-e" aria-label="<#if article.articleStick < 9223372036854775807>${stickLabel}${remainsLabel} ${article.articleStickRemains?c} ${minuteLabel}<#else>${adminLabel}${stickLabel}</#if>"><span class="icon-pin"></span></span>
+    </#if>
 </li>
