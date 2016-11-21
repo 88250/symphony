@@ -494,6 +494,8 @@ public class ArticleProcessor {
                     continue;
                 }
 
+               
+                
                 tagBuilder.append(tagTitle).append(",");
             }
             if (tagBuilder.length() > 0) {
@@ -539,6 +541,14 @@ public class ArticleProcessor {
         articleContentErrorLabel = articleContentErrorLabel.replace("{maxArticleContentLength}",
                 String.valueOf(ArticleAddValidation.MAX_ARTICLE_CONTENT_LENGTH));
         dataModel.put("articleContentErrorLabel", articleContentErrorLabel);
+        
+        System.out.println((request.getAttribute(UserExt.USER_B3_KEY)));
+       
+//        if (clientB3Key != null) {
+//        	dataModel.put(Article.ARTICLE_SYNC_TO_CLIENT, true);
+//        }else{
+//        	dataModel.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
+//        }
     }
 
     /**
@@ -838,7 +848,8 @@ public class ArticleProcessor {
         final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
         final int articleAnonymous = isAnonymous
                 ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;
-
+        final boolean syncWithSymphonyClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT,false); 
+        
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_CONTENT, articleContent);
@@ -856,6 +867,7 @@ public class ArticleProcessor {
             article.put(Article.ARTICLE_UA, ua);
         }
         article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
+        article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncWithSymphonyClient);
 
         try {
             final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);

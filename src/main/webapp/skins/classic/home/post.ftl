@@ -104,6 +104,8 @@
                             <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
                         </#if>
                         <div class="fn-right">
+                        	<label class="article-anonymous">${syncLabel}<input
+                                    type="checkbox" id="syncWithSymphonyClient"></label>
                             <label class="article-anonymous">${anonymousLabel}<input
                                     <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
                                     type="checkbox" id="articleAnonymous"></label>

@@ -68,7 +68,8 @@ var AddArticle = {
                 articleType: $("input[type='radio'][name='articleType']:checked").val(),
                 articleRewardContent: this.rewardEditor.getValue(),
                 articleRewardPoint: $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, ""),
-                articleAnonymous: $('#articleAnonymous').prop('checked')
+                articleAnonymous: $('#articleAnonymous').prop('checked'),
+                syncWithSymphonyClient: $('#syncWithSymphonyClient').prop('checked')
             },
             url = Label.servePath + "/article", type = "POST";
 

@@ -77,6 +77,10 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             if (data.optBoolean(Common.FROM_CLIENT)) {
                 return;
             }
+            
+            if (!data.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)) {
+            	return;
+            }
 
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
