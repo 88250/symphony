@@ -458,6 +458,8 @@ public class ArticleProcessor {
         fillDomainsWithTags(dataModel);
 
         String tags = request.getParameter(Tag.TAGS);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        
         if (StringUtils.isBlank(tags)) {
             tags = "";
 
@@ -488,14 +490,11 @@ public class ArticleProcessor {
                     continue;
                 }
 
-                final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
                 if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                     continue;
                 }
 
-               
-                
                 tagBuilder.append(tagTitle).append(",");
             }
             if (tagBuilder.length() > 0) {
@@ -542,13 +541,12 @@ public class ArticleProcessor {
                 String.valueOf(ArticleAddValidation.MAX_ARTICLE_CONTENT_LENGTH));
         dataModel.put("articleContentErrorLabel", articleContentErrorLabel);
         
-        System.out.println((request.getAttribute(UserExt.USER_B3_KEY)));
-       
-//        if (clientB3Key != null) {
-//        	dataModel.put(Article.ARTICLE_SYNC_TO_CLIENT, true);
-//        }else{
-//        	dataModel.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
-//        }
+        final String b3logKey=currentUser.optString(UserExt.USER_B3_KEY);
+        if (!Strings.isEmptyOrNull(b3logKey)) {
+        		dataModel.put("hasB3Key", true);
+        }else{
+        		dataModel.put("hasB3Key", false);
+        }
     }
 
     /**
