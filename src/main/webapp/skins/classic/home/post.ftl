@@ -104,6 +104,11 @@
                             <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
                         </#if>
                         <div class="fn-right">
+                        	<#if hasB3Key>
+                        	<label class="article-anonymous">${syncLabel}<input
+                                    <#if article??> disabled="disabled"<#if 1 == article.syncWithSymphonyClient> checked</#if></#if>
+                                    type="checkbox" id="syncWithSymphonyClient"></label>
+                        	</#if>
                             <label class="article-anonymous">${anonymousLabel}<input
                                     <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
                                     type="checkbox" id="articleAnonymous"></label>

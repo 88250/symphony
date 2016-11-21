@@ -376,6 +376,8 @@ public class ArticleMgmtService {
         }
 
         final int articleAnonymous = requestJSONObject.optInt(Article.ARTICLE_ANONYMOUS);
+        
+        final boolean syncWithSymphonyClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
 
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         articleTitle = StringUtils.trim(articleTitle);
@@ -495,6 +497,7 @@ public class ArticleMgmtService {
             }
             article.put(Article.ARTICLE_CITY, city);
             article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
+            article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncWithSymphonyClient);
             article.put(Article.ARTICLE_PERFECT, Article.ARTICLE_PERFECT_C_NOT_PERFECT);
             article.put(Article.ARTICLE_ANONYMOUS_VIEW, Article.ARTICLE_ANONYMOUS_VIEW_C_USE_GLOBAL);
 

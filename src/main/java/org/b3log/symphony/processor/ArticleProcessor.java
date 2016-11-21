@@ -458,6 +458,8 @@ public class ArticleProcessor {
         fillDomainsWithTags(dataModel);
 
         String tags = request.getParameter(Tag.TAGS);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        
         if (StringUtils.isBlank(tags)) {
             tags = "";
 
@@ -488,7 +490,6 @@ public class ArticleProcessor {
                     continue;
                 }
 
-                final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
                 if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                     continue;
@@ -539,6 +540,13 @@ public class ArticleProcessor {
         articleContentErrorLabel = articleContentErrorLabel.replace("{maxArticleContentLength}",
                 String.valueOf(ArticleAddValidation.MAX_ARTICLE_CONTENT_LENGTH));
         dataModel.put("articleContentErrorLabel", articleContentErrorLabel);
+        
+        final String b3logKey=currentUser.optString(UserExt.USER_B3_KEY);
+        if (!Strings.isEmptyOrNull(b3logKey)) {
+        		dataModel.put("hasB3Key", true);
+        }else{
+        		dataModel.put("hasB3Key", false);
+        }
     }
 
     /**
@@ -838,7 +846,8 @@ public class ArticleProcessor {
         final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
         final int articleAnonymous = isAnonymous
                 ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;
-
+        final boolean syncWithSymphonyClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT,false); 
+        
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_CONTENT, articleContent);
@@ -856,6 +865,7 @@ public class ArticleProcessor {
             article.put(Article.ARTICLE_UA, ua);
         }
         article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
+        article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncWithSymphonyClient);
 
         try {
             final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);

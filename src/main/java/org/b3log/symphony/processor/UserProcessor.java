@@ -660,7 +660,7 @@ public class UserProcessor {
             final HttpServletResponse response, final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/comments.ftl");
+        renderer.setTemplateName("/home/home.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         filler.fillHeaderAndFooter(request, response, dataModel);
 
@@ -688,8 +688,6 @@ public class UserProcessor {
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
-
-        renderer.setTemplateName("/home/home.ftl");
 
         dataModel.put(User.USER, user);
         fillHomeUser(dataModel, user);
