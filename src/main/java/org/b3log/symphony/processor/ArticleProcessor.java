@@ -129,7 +129,8 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.19.33, Oct 26, 2016
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.24.19.34, Nov 21, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -459,7 +460,7 @@ public class ArticleProcessor {
 
         String tags = request.getParameter(Tag.TAGS);
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
-        
+
         if (StringUtils.isBlank(tags)) {
             tags = "";
 
@@ -540,13 +541,9 @@ public class ArticleProcessor {
         articleContentErrorLabel = articleContentErrorLabel.replace("{maxArticleContentLength}",
                 String.valueOf(ArticleAddValidation.MAX_ARTICLE_CONTENT_LENGTH));
         dataModel.put("articleContentErrorLabel", articleContentErrorLabel);
-        
-        final String b3logKey=currentUser.optString(UserExt.USER_B3_KEY);
-        if (!Strings.isEmptyOrNull(b3logKey)) {
-        		dataModel.put("hasB3Key", true);
-        }else{
-        		dataModel.put("hasB3Key", false);
-        }
+
+        final String b3logKey = currentUser.optString(UserExt.USER_B3_KEY);
+        dataModel.put("hasB3Key", !Strings.isEmptyOrNull(b3logKey));
     }
 
     /**
@@ -846,8 +843,8 @@ public class ArticleProcessor {
         final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
         final int articleAnonymous = isAnonymous
                 ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;
-        final boolean syncWithSymphonyClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT,false); 
-        
+        final boolean syncWithSymphonyClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT, false);
+
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_CONTENT, articleContent);

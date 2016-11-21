@@ -45,7 +45,8 @@ import org.json.JSONObject;
  * Sends article to client.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Dec 4, 2015
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.0.1.3, Nov 21, 2016
  * @since 0.2.0
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -77,9 +78,9 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             if (data.optBoolean(Common.FROM_CLIENT)) {
                 return;
             }
-            
+
             if (!data.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)) {
-            	return;
+                return;
             }
 
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);

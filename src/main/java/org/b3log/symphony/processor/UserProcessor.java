@@ -133,9 +133,9 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author Zephyr
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.13.27, Nov 13, 2016
+ * @version 1.26.13.28, Nov 21, 2016
  * @since 0.2.0
  */
 @RequestProcessor

@@ -80,7 +80,8 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.26.29, Nov 3, 2016
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 2.14.26.30, Nov 21, 2016
  * @since 0.2.0
  */
 @Service
@@ -376,7 +377,7 @@ public class ArticleMgmtService {
         }
 
         final int articleAnonymous = requestJSONObject.optInt(Article.ARTICLE_ANONYMOUS);
-        
+
         final boolean syncWithSymphonyClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
 
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);

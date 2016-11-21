@@ -20,7 +20,8 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.14.11, Nov 8, 2016
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 2.18.14.12, Nov 21, 2016
  */
 
 /**
@@ -71,7 +72,7 @@ var AddArticle = {
                 articleAnonymous: $('#articleAnonymous').prop('checked'),
                 syncWithSymphonyClient: $('#syncWithSymphonyClient').prop('checked')
             },
-            url = Label.servePath + "/article", type = "POST";
+                    url = Label.servePath + "/article", type = "POST";
 
             if (3 === parseInt(requestJSONObject.articleType)) { // 如果是“思绪”
                 requestJSONObject.articleContent = window.localStorage.thoughtContent;
@@ -549,8 +550,8 @@ var AddArticle = {
                 }
 
                 // 删除 tag
-                if (event.keyCode === 8 && event.data.settings.chinese === 8 
-                    && event.data.settings.keydownVal.replace(/\s/g, '') === '') {
+                if (event.keyCode === 8 && event.data.settings.chinese === 8
+                        && event.data.settings.keydownVal.replace(/\s/g, '') === '') {
                     $('.tags-input .tag .close:last').click();
                     return false;
                 }
