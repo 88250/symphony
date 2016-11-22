@@ -106,7 +106,7 @@
                         <div class="fn-right">
                         	<#if hasB3Key>
                         	<label class="article-anonymous">${syncLabel}<input
-                                    <#if article??> disabled="disabled"<#if 1 == article.syncWithSymphonyClient> checked</#if></#if>
+                                    <#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked</#if></#if>
                                     type="checkbox" id="syncWithSymphonyClient"></label>
                         	</#if>
                             <label class="article-anonymous">${anonymousLabel}<input

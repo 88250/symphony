@@ -130,7 +130,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.19.34, Nov 21, 2016
+ * @version 1.24.20.34, Nov 22, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -967,6 +967,9 @@ public class ArticleProcessor {
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD));
         dataModel.put("rewardEditorPlaceholderLabel", rewardEditorPlaceholderLabel);
         dataModel.put(Common.BROADCAST_POINT, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST);
+
+        final String b3logKey = currentUser.optString(UserExt.USER_B3_KEY);
+        dataModel.put("hasB3Key", !Strings.isEmptyOrNull(b3logKey));
     }
 
     /**
