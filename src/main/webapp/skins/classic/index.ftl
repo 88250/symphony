@@ -99,7 +99,7 @@
                             <#list perfectArticles as article>
                             <li>
                                 <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}">
-                                    <span class="avatar-small tooltipped tooltipped-se" aria-label="wulalala" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></span>
+                                    <span class="avatar-small tooltipped tooltipped-se" aria-label="${article.articleAuthorName}" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></span>
                                 </a>
                                 <a rel="nofollow" class="fn-ellipsis ft-a-title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                                 <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
