@@ -46,7 +46,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.0.1.3, Nov 21, 2016
+ * @version 1.0.2.3, Nov 22, 2016
  * @since 0.2.0
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -76,10 +76,6 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
         try {
             if (data.optBoolean(Common.FROM_CLIENT)) {
-                return;
-            }
-
-            if (!data.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)) {
                 return;
             }
 
