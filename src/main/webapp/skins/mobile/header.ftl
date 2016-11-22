@@ -22,50 +22,7 @@
             <#else>
             <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin" 
                title="${registerLabel}">${registerLabel}</a>
-            <a href="javascript: Util.showLogin();" title="${loginLabel}" class="unlogin">${loginLabel}</a>
-            <div class="form fn-none">
-                <table cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="80">
-                            <label for="nameOrEmail">${accountLabel}</label>
-                        </td>
-                        <td>
-                            <input id="nameOrEmail" type="text" placeholder="${nameOrEmailLabel}" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="loginPassword">${passwordLabel}</label>
-                        </td>
-                        <td>
-                            <input type="password" id="loginPassword" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right">
-                            <label>${rememberLoginStatusLabel}</label>
-                        </td>
-                        <td>
-                            <input type="checkbox" id="rememberLogin" checked />
-                        </td>
-                    </tr>
-                    <tr class="fn-none">
-                        <td>
-                            <img id="captcha" class="fn-pointer" />
-                        </td>
-                        <td>
-                            <input type="text" id="captchaLogin" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="right">
-                            <div id="loginTip" class="tip"></div><br/>
-                            <button class="info" onclick="window.location.href = '${servePath}/forget-pwd'">${forgetPwdLabel}</button>
-                            <button class="red" onclick="Util.login()">${loginLabel}</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+            <a href="javascript: Util.goLogin();" title="${loginLabel}" class="unlogin">${loginLabel}</a>
             </#if>
         </div>
     </div>
