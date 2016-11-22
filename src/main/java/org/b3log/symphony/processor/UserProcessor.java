@@ -1903,7 +1903,9 @@ public class UserProcessor {
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser) {
-            return "";
+            context.renderJSONValue("emotions", "");
+
+            return;
         }
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
