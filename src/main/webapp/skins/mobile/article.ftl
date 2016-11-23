@@ -224,11 +224,13 @@
                                     <#if !comment?has_next><div id="bottomComment"></div></#if>
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
+                                        <div>
                                         <#if comment.commentAnonymous == 0>
                                         <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
                                             <div class="avatar tooltipped tooltipped-se" 
                                                  aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                         <#if comment.commentAnonymous == 0></a></#if>
+                                        </div>
                                         <#else>
                                         <div class="avatar tooltipped tooltipped-se" 
                                              aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>

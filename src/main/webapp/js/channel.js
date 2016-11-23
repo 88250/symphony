@@ -83,6 +83,7 @@ var ArticleChannel = {
                             + bottomCmt + '<div class="fn-flex">';
 
                     if (!data.fromClient) {
+                        template += '<div>';
                         if (data.commentAuthorName !== 'someone') {
                             template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
                         }
@@ -91,6 +92,7 @@ var ArticleChannel = {
                         if (data.commentAuthorName !== 'someone') {
                             template += '</a>';
                         }
+                        template += '</div>';
                     } else {
                         template += '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.commentAuthorName + '" style="background-image:url('
                                 + data.commentAuthorThumbnailURL + ')"></div>';
