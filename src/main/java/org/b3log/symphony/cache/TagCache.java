@@ -55,7 +55,7 @@ import org.jsoup.Jsoup;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.4.0, Nov 18, 2016
+ * @version 1.5.5.0, Nov 24, 2016
  * @since 1.4.0
  */
 @Named
@@ -172,7 +172,7 @@ public class TagCache {
             return Collections.emptyList();
         }
 
-        final int end = fetchSize >= ICON_TAGS.size() ? ICON_TAGS.size() - 1 : fetchSize;
+        final int end = fetchSize >= ICON_TAGS.size() ? ICON_TAGS.size() : fetchSize;
 
         return new ArrayList<>(ICON_TAGS.subList(0, end));
     }
