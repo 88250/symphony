@@ -105,6 +105,9 @@
                                 <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
                             </li>
                             </#list>
+                            <#if perfectArticles?size == 0>
+                                <li>${chickenEggLabel}</li>
+                            </#if>
                         </ul>
                     </div>
                 </div>

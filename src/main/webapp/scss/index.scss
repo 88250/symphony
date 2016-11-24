@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.18.41, Nov 22, 2016
+ * @version 2.18.18.42, Nov 24, 2016
  */
 
 @import "variables";
@@ -285,7 +285,7 @@ label.cmt-anonymous {
 }
 
 .article-no-comment-img {
-	animation: spaceboots 0.5s infinite;
+	animation: spaceboots 1s infinite;
 }
 
 #articleRewardContent {
@@ -782,6 +782,10 @@ code .dec { color: initial; } /* decimal - blue */
     .index-side {
         margin-left: 2px;
         width: 40%;
+    }
+
+    .article-list .heat {
+        display: none;
     }
 
     .index-tabs > span {
