@@ -74,6 +74,7 @@ import org.b3log.symphony.service.TagMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Crypts;
+import org.b3log.symphony.util.Languages;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -82,7 +83,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.17.7.17, Nov 18, 2016
+ * @version 2.17.7.18, Nov 24, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -395,7 +396,15 @@ public final class SymphonyServletListener extends AbstractServletListener {
             admin.put(User.USER_EMAIL, init.getString("admin.email"));
             admin.put(User.USER_NAME, init.getString("admin.name"));
             admin.put(User.USER_PASSWORD, MD5.hash(init.getString("admin.password")));
-            admin.put(UserExt.USER_LANGUAGE, "en_US");
+
+            final Locale defaultLocale = Locale.getDefault();
+            String lang = Locales.getLanguage(defaultLocale.toString());
+            String country = Locales.getCountry(defaultLocale.toString());
+            String language = lang + "_" + country;
+            if (!Languages.getAvailableLanguages().contains(language)) {
+                language = "en_US";
+            }
+            admin.put(UserExt.USER_LANGUAGE, language);
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             admin.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             final String adminId = userMgmtService.addUser(admin);
