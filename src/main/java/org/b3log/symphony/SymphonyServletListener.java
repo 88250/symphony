@@ -398,8 +398,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
             admin.put(User.USER_PASSWORD, MD5.hash(init.getString("admin.password")));
 
             final Locale defaultLocale = Locale.getDefault();
-            String lang = Locales.getLanguage(defaultLocale.toString());
-            String country = Locales.getCountry(defaultLocale.toString());
+            final String lang = Locales.getLanguage(defaultLocale.toString());
+            final String country = Locales.getCountry(defaultLocale.toString());
             String language = lang + "_" + country;
             if (!Languages.getAvailableLanguages().contains(language)) {
                 language = "en_US";
