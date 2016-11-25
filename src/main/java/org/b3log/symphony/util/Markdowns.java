@@ -22,10 +22,19 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Strings;
@@ -94,16 +103,26 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 1.9.8.14, Nov 11, 2016
+ * @version 1.9.9.14, Nov 25, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Markdowns.class);
 
     /**
      * Language service.
      */
     public static final LangPropsService LANG_PROPS_SERVICE
             = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
+
+    /**
+     * Markdown to HTML timeout.
+     */
+    private static final int MD_TIMEOUT = 500;
 
     /**
      * Gets the safe HTML content of the specified content.
@@ -167,19 +186,53 @@ public final class Markdowns {
      * 'markdownErrorLabel' if exception
      */
     public static String linkToHtml(final String markdownText) {
-        if (Strings.isEmptyOrNull(markdownText)) {
-            return "";
+        final ExecutorService pool = Executors.newSingleThreadExecutor();
+
+        final long[] threadId = new long[1];
+
+        final Callable<String> call = new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                threadId[0] = Thread.currentThread().getId();
+
+                if (Strings.isEmptyOrNull(markdownText)) {
+                    return "";
+                }
+
+                final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.AUTOLINKS);
+
+                final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
+                String ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
+                        Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+
+                return ret;
+            }
+        };
+
+        try {
+            final Future<String> future = pool.submit(call);
+
+            return future.get(MD_TIMEOUT, TimeUnit.MILLISECONDS);
+        } catch (final TimeoutException e) {
+            LOGGER.log(Level.ERROR, "Markdown timeout [md=" + markdownText + "]");
+
+            final Set<Thread> threads = Thread.getAllStackTraces().keySet();
+            for (final Thread thread : threads) {
+                if (thread.getId() == threadId[0]) {
+                    thread.stop();
+
+                    break;
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Markdown failed [md=" + markdownText + "]", e);
+        } finally {
+            pool.shutdownNow();
         }
 
-        final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.AUTOLINKS, 5000);
-        // String ret = pegDownProcessor.markdownToHtml(markdownText);
-
-        final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
-        String ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
-                Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
-        return ret;
+        return "";
     }
-    
+
     /**
      * Converts the specified markdown text to HTML.
      *
@@ -188,22 +241,56 @@ public final class Markdowns {
      * 'markdownErrorLabel' if exception
      */
     public static String toHTML(final String markdownText) {
-        if (Strings.isEmptyOrNull(markdownText)) {
-            return "";
+        final ExecutorService pool = Executors.newSingleThreadExecutor();
+
+        final long[] threadId = new long[1];
+
+        final Callable<String> call = new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                threadId[0] = Thread.currentThread().getId();
+
+                if (Strings.isEmptyOrNull(markdownText)) {
+                    return "";
+                }
+
+                final PegDownProcessor pegDownProcessor
+                        = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
+
+                final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
+                String ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
+                        Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+
+                if (!StringUtils.startsWith(ret, "<p>")) {
+                    ret = "<p>" + ret + "</p>";
+                }
+
+                return formatMarkdown(ret);
+            }
+        };
+
+        try {
+            final Future<String> future = pool.submit(call);
+
+            return future.get(MD_TIMEOUT, TimeUnit.MILLISECONDS);
+        } catch (final TimeoutException e) {
+            LOGGER.log(Level.ERROR, "Markdown timeout [md=" + markdownText + "]");
+
+            final Set<Thread> threads = Thread.getAllStackTraces().keySet();
+            for (final Thread thread : threads) {
+                if (thread.getId() == threadId[0]) {
+                    thread.stop();
+
+                    break;
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Markdown failed [md=" + markdownText + "]", e);
+        } finally {
+            pool.shutdownNow();
         }
 
-        final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS, 5000);
-        // String ret = pegDownProcessor.markdownToHtml(markdownText);
-
-        final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
-        String ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
-                Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
-
-        if (!StringUtils.startsWith(ret, "<p>")) {
-            ret = "<p>" + ret + "</p>";
-        }
-
-        return formatMarkdown(ret);
+        return LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
     }
 
     /**
@@ -234,10 +321,10 @@ public final class Markdowns {
             final String replace = StringUtils.replace(search, "_", "[downline]");
             ret = StringUtils.replace(ret, search, replace);
         }
-        
+
         String[] rets = ret.split("\n");
-        for(String temp : rets){
-        	final String[] toStrong = StringUtils.substringsBetween(temp, "**", "**");
+        for (String temp : rets) {
+            final String[] toStrong = StringUtils.substringsBetween(temp, "**", "**");
             final String[] toEm = StringUtils.substringsBetween(temp, "_", "_");
             if (toStrong != null && toStrong.length > 0) {
                 for (final String strong : toStrong) {

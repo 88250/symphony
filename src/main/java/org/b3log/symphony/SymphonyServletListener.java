@@ -83,7 +83,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.17.7.18, Nov 24, 2016
+ * @version 2.17.7.19, Nov 25, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -167,6 +167,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
     @Override
     public void contextDestroyed(final ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
+
+        Symphonys.EXECUTOR_SERVICE.shutdown();
 
         LOGGER.info("Destroyed the context");
     }
