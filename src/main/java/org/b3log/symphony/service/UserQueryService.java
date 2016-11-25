@@ -65,7 +65,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyrjung.github.io">Zephyr</a>
- * @version 1.7.4.8, Oct 24, 2016
+ * @version 1.7.4.9, Nov 25, 2016
  * @since 0.2.0
  */
 @Service
@@ -436,7 +436,7 @@ public class UserQueryService {
      */
     public Set<String> getUserNames(final String text) throws ServiceException {
         final Set<String> ret = new HashSet<>();
-        final String mdtext=Markdowns.linkToHtml(text);
+        final String mdtext = Markdowns.linkToHtml(text);
         int idx = mdtext.indexOf('@');
 
         if (-1 == idx) {
