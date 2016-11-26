@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.util;
 
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -106,8 +107,9 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  *
  * <p>
- * Uses the <a href="https://github.com/chjj/marked">marked</a> as the processor, if not found this command, try
- * built-in <a href="https://github.com/sirthias/pegdown">pegdown</a> instead.
+ * Uses the <a href="https://github.com/chjj/marked">marked</a> as the
+ * processor, if not found this command, try built-in
+ * <a href="https://github.com/sirthias/pegdown">pegdown</a> instead.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -156,12 +158,21 @@ public final class Markdowns {
         try {
             Process p;
             if (SystemUtils.IS_OS_WINDOWS) {
-                p = Runtime.getRuntime().exec("cmd /C echo symphony|marked");
+                p = Runtime.getRuntime().exec("marked");
             } else {
-                p = Runtime.getRuntime().exec("/bin/sh -c echo symphony|marked");
+                p = Runtime.getRuntime().exec("marked");
             }
 
-            MARKED_AVAILABLE = 0 == p.waitFor();
+            final OutputStream outputStream = p.getOutputStream();
+            IOUtils.write("symphony", outputStream);
+            IOUtils.closeQuietly(outputStream);
+
+            //final String stderr = IOUtils.toString(p.getErrorStream());
+            //LOGGER.info("stderr: " + stderr);
+            final String stdout = IOUtils.toString(p.getInputStream());
+            //LOGGER.info("stdout: " + stdout);
+
+            MARKED_AVAILABLE = StringUtils.contains(stdout, "<p>symphony</p>");
 
             if (MARKED_AVAILABLE) {
                 LOGGER.log(Level.INFO, "[marked] is available, uses it for markdown processing");
@@ -177,7 +188,8 @@ public final class Markdowns {
      * Gets the safe HTML content of the specified content.
      *
      * @param content the specified content
-     * @param baseURI the specified base URI, the relative path value of href will starts with this URL
+     * @param baseURI the specified base URI, the relative path value of href
+     * will starts with this URL
      * @return safe HTML content
      */
     public static String clean(final String content, final String baseURI) {
@@ -231,8 +243,9 @@ public final class Markdowns {
      * Converts the email or url text to HTML.
      *
      * @param markdownText the specified markdown text
-     * @return converted HTML, returns an empty string "" if the specified markdown text is "" or {@code null}, returns
-     * 'markdownErrorLabel' if exception
+     * @return converted HTML, returns an empty string "" if the specified
+     * markdown text is "" or {@code null}, returns 'markdownErrorLabel' if
+     * exception
      */
     public static String linkToHtml(final String markdownText) {
         if (Strings.isEmptyOrNull(markdownText)) {
@@ -307,8 +320,9 @@ public final class Markdowns {
      * Converts the specified markdown text to HTML.
      *
      * @param markdownText the specified markdown text
-     * @return converted HTML, returns an empty string "" if the specified markdown text is "" or {@code null}, returns
-     * 'markdownErrorLabel' if exception
+     * @return converted HTML, returns an empty string "" if the specified
+     * markdown text is "" or {@code null}, returns 'markdownErrorLabel' if
+     * exception
      */
     public static String toHTML(final String markdownText) {
         if (Strings.isEmptyOrNull(markdownText)) {
@@ -382,17 +396,22 @@ public final class Markdowns {
     private static String toHtmlByMarked(final String markdownText) throws Exception {
         String ret;
 
+        final Process p = Runtime.getRuntime().exec("marked " + MARKED_OPTIONS);
+        final OutputStream outputStream = p.getOutputStream();
+
+        String input = markdownText;
+
         if (SystemUtils.IS_OS_WINDOWS) {
             final Locale locale = Locale.getDefault();
             if (locale.getLanguage().equals(new Locale("zh").getLanguage())) {
-                ret = Execs.exec("cmd /C echo " + new String(markdownText.getBytes("UTF-8"), "GBK") + "|marked "
-                        + MARKED_OPTIONS);
-            } else {
-                ret = Execs.exec("cmd /C echo " + markdownText + "|marked " + MARKED_OPTIONS);
+                input = new String(markdownText.getBytes("UTF-8"), "GBK");
             }
-        } else {
-            ret = Execs.exec("/bin/sh -c echo " + markdownText + "|marked " + MARKED_OPTIONS);
         }
+
+        IOUtils.write(input, outputStream);
+        IOUtils.closeQuietly(outputStream);
+
+        ret = IOUtils.toString(p.getInputStream());
 
         // Pangu space
         final Document doc = Jsoup.parse(ret);
