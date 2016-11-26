@@ -1747,24 +1747,24 @@ label.cmt-anonymous {
     color: #4183C4;
 }
 
-.comments > .comment-header {
-    padding-bottom: 5px;
+.comments > .comments-header {
     border-bottom: 1px solid #CCCCCC;
     margin: 20px 0 0;
+    padding: 10px 5px 5px 10px;
 }
 
-.comments > div.comment-header .icon-chevron-down {
+.comments > div.comments-header .icon-chevron-down {
     margin: 0px 10px 0 0;
     font-size: 24px;
 }
 
-.comments > div.comment-header a {
+.comments > div.comments-header a {
     text-decoration: none;
     color: #333;
 }
 
-.comments > div.comment-header .icon-sortasc,
-.comments > div.comment-header .icon-time {
+.comments > div.comments-header .icon-sortasc,
+.comments > div.comments-header .icon-time {
     font-size: 16px;
     font-weight: bold;
     margin: 4px 10px 0 0;
@@ -1832,16 +1832,6 @@ label.cmt-anonymous {
 
 .comments.nice > ul > li:last-child {
     border-bottom-width: 0;
-}
-
-#comments > .comment-header {
-    border-bottom: 1px solid #CCCCCC;
-    margin: 10px 0 0;
-    padding: 10px 5px 5px 10px
-}
-
-#comments .comment-header > h2 {
-    margin-top: 5px;
 }
 
 .comment-login {
