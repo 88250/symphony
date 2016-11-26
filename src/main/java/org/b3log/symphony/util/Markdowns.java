@@ -111,7 +111,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="http://zephyrjung.github.io">Zephyr</a>
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @version 1.9.9.14, Nov 25, 2016
  * @since 0.2.0
  */
@@ -134,13 +134,13 @@ public final class Markdowns {
     private static final Cache MD_CACHE = CacheFactory.getCache("markdown");
 
     static {
-        MD_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt") + Symphonys.getInt("cache.commentCnt"));
+        MD_CACHE.setMaxCount(1024 * 10 * 4);
     }
 
     /**
      * Markdown to HTML timeout.
      */
-    private static final int MD_TIMEOUT = 5000;
+    private static final int MD_TIMEOUT = 500;
 
     /**
      * Whether marked is available.
@@ -161,14 +161,15 @@ public final class Markdowns {
                 p = Runtime.getRuntime().exec("/bin/sh -c echo symphony|marked");
             }
 
-            final String md = IOUtils.toString(p.getInputStream());
-            p.destroy();
+            MARKED_AVAILABLE = 0 == p.waitFor();
 
-            MARKED_AVAILABLE = StringUtils.equals(md, "<p>symphony</p>\n\n");
-
-            LOGGER.log(Level.INFO, "[marked] is available, uses it for markdown processing");
+            if (MARKED_AVAILABLE) {
+                LOGGER.log(Level.INFO, "[marked] is available, uses it for markdown processing");
+            } else {
+                LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing");
+            }
         } catch (final Exception e) {
-            LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing");
+            LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing", e);
         }
     }
 
@@ -185,7 +186,7 @@ public final class Markdowns {
 
         final String tmp = Jsoup.clean(content, baseURI, Whitelist.relaxed().
                 addAttributes(":all", "id", "target", "class").
-                addTags("span", "hr", "kbd", "samp", "tt").
+                addTags("span", "hr", "kbd", "samp", "tt", "del", "s", "strike", "u").
                 addAttributes("iframe", "src", "width", "height", "border", "marginwidth", "marginheight").
                 addAttributes("audio", "controls", "src").
                 addAttributes("video", "controls", "src", "width", "height").
@@ -234,6 +235,10 @@ public final class Markdowns {
      * 'markdownErrorLabel' if exception
      */
     public static String linkToHtml(final String markdownText) {
+        if (Strings.isEmptyOrNull(markdownText)) {
+            return "";
+        }
+
         String ret = getHTML(markdownText);
         if (null != ret) {
             return ret;
@@ -248,15 +253,24 @@ public final class Markdowns {
             public String call() throws Exception {
                 threadId[0] = Thread.currentThread().getId();
 
-                if (Strings.isEmptyOrNull(markdownText)) {
-                    return "";
+                String ret = LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
+
+                if (MARKED_AVAILABLE) {
+                    ret = toHtmlByMarked(markdownText);
+                } else {
+                    final PegDownProcessor pegDownProcessor
+                            = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
+
+                    final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
+                    ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
+                            Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+
+                    if (!StringUtils.startsWith(ret, "<p>")) {
+                        ret = "<p>" + ret + "</p>";
+                    }
                 }
 
-                final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.AUTOLINKS);
-
-                final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
-                String ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
-                        Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+                ret = formatMarkdown(ret);
 
                 // cache it
                 putHTML(markdownText, ret);
@@ -289,45 +303,6 @@ public final class Markdowns {
         return "";
     }
 
-    private static String toHtmlByMarked(final String markdownText) throws Exception {
-        String ret;
-
-        if (SystemUtils.IS_OS_WINDOWS) {
-            final Locale locale = Locale.getDefault();
-            if (locale.getLanguage().equals(new Locale("zh").getLanguage())) {
-                ret = Execs.exec("cmd /C echo " + new String(markdownText.getBytes("UTF-8"), "GBK") + "|marked "
-                        + MARKED_OPTIONS);
-            } else {
-                ret = Execs.exec("cmd /C echo " + markdownText + "|marked " + MARKED_OPTIONS);
-            }
-        } else {
-            ret = Execs.exec("/bin/sh -c echo " + markdownText + "|marked " + MARKED_OPTIONS);
-        }
-
-        // Pangu space
-        final Document doc = Jsoup.parse(ret);
-        doc.traverse(new NodeVisitor() {
-            @Override
-            public void head(final org.jsoup.nodes.Node node, int depth) {
-                if (node instanceof org.jsoup.nodes.TextNode) {
-                    final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
-                    textNode.text(Pangu.spacingText(textNode.text()));
-                }
-            }
-
-            @Override
-            public void tail(org.jsoup.nodes.Node node, int depth) {
-            }
-        });
-
-        doc.outputSettings().indentAmount(0);
-
-        ret = doc.html();
-        ret = StringUtils.substringBetween(ret, "<body>\n", "\n</body>");
-
-        return ret;
-    }
-
     /**
      * Converts the specified markdown text to HTML.
      *
@@ -336,6 +311,10 @@ public final class Markdowns {
      * 'markdownErrorLabel' if exception
      */
     public static String toHTML(final String markdownText) {
+        if (Strings.isEmptyOrNull(markdownText)) {
+            return "";
+        }
+
         String ret = getHTML(markdownText);
         if (null != ret) {
             return ret;
@@ -350,11 +329,7 @@ public final class Markdowns {
             public String call() throws Exception {
                 threadId[0] = Thread.currentThread().getId();
 
-                if (Strings.isEmptyOrNull(markdownText)) {
-                    return "";
-                }
-
-                String ret;
+                String ret = LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
 
                 if (MARKED_AVAILABLE) {
                     ret = toHtmlByMarked(markdownText);
@@ -402,6 +377,45 @@ public final class Markdowns {
         }
 
         return LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
+    }
+
+    private static String toHtmlByMarked(final String markdownText) throws Exception {
+        String ret;
+
+        if (SystemUtils.IS_OS_WINDOWS) {
+            final Locale locale = Locale.getDefault();
+            if (locale.getLanguage().equals(new Locale("zh").getLanguage())) {
+                ret = Execs.exec("cmd /C echo " + new String(markdownText.getBytes("UTF-8"), "GBK") + "|marked "
+                        + MARKED_OPTIONS);
+            } else {
+                ret = Execs.exec("cmd /C echo " + markdownText + "|marked " + MARKED_OPTIONS);
+            }
+        } else {
+            ret = Execs.exec("/bin/sh -c echo " + markdownText + "|marked " + MARKED_OPTIONS);
+        }
+
+        // Pangu space
+        final Document doc = Jsoup.parse(ret);
+        doc.traverse(new NodeVisitor() {
+            @Override
+            public void head(final org.jsoup.nodes.Node node, int depth) {
+                if (node instanceof org.jsoup.nodes.TextNode) {
+                    final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
+                    textNode.text(Pangu.spacingText(textNode.text()));
+                }
+            }
+
+            @Override
+            public void tail(org.jsoup.nodes.Node node, int depth) {
+            }
+        });
+
+        doc.outputSettings().indentAmount(0);
+
+        ret = doc.html();
+        ret = StringUtils.substringBetween(ret, "<body>\n", "\n</body>");
+
+        return ret;
     }
 
     /**
