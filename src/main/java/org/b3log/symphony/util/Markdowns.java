@@ -180,7 +180,7 @@ public final class Markdowns {
                 LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing", e);
+            LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing");
         }
     }
 
