@@ -35,12 +35,15 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Execs;
+import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -124,6 +127,15 @@ public final class Markdowns {
      */
     public static final LangPropsService LANG_PROPS_SERVICE
             = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
+
+    /**
+     * Markdown cache.
+     */
+    private static final Cache MD_CACHE = CacheFactory.getCache("markdown");
+
+    static {
+        MD_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt") + Symphonys.getInt("cache.commentCnt"));
+    }
 
     /**
      * Markdown to HTML timeout.
@@ -222,6 +234,11 @@ public final class Markdowns {
      * 'markdownErrorLabel' if exception
      */
     public static String linkToHtml(final String markdownText) {
+        String ret = getHTML(markdownText);
+        if (null != ret) {
+            return ret;
+        }
+
         final ExecutorService pool = Executors.newSingleThreadExecutor();
 
         final long[] threadId = new long[1];
@@ -240,6 +257,9 @@ public final class Markdowns {
                 final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
                 String ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
                         Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+
+                // cache it
+                putHTML(markdownText, ret);
 
                 return ret;
             }
@@ -316,6 +336,11 @@ public final class Markdowns {
      * 'markdownErrorLabel' if exception
      */
     public static String toHTML(final String markdownText) {
+        String ret = getHTML(markdownText);
+        if (null != ret) {
+            return ret;
+        }
+
         final ExecutorService pool = Executors.newSingleThreadExecutor();
 
         final long[] threadId = new long[1];
@@ -346,7 +371,12 @@ public final class Markdowns {
                     }
                 }
 
-                return formatMarkdown(ret);
+                ret = formatMarkdown(ret);
+
+                // cache it
+                putHTML(markdownText, ret);
+
+                return ret;
             }
         };
 
@@ -974,6 +1004,30 @@ public final class Markdowns {
                 printer.print(string);
             }
         }
+    }
+
+    /**
+     * Gets HTML for the specified markdown text.
+     *
+     * @param markdownText the specified markdown text
+     * @return HTML
+     */
+    private static String getHTML(final String markdownText) {
+        final String hash = MD5.hash(markdownText);
+
+        return (String) MD_CACHE.get(hash);
+    }
+
+    /**
+     * Puts the specified HTML into cache.
+     *
+     * @param markdownText the specified markdown text
+     * @param html the specified HTML
+     */
+    private static void putHTML(final String markdownText, final String html) {
+        final String hash = MD5.hash(markdownText);
+
+        MD_CACHE.put(hash, html);
     }
 
     /**
