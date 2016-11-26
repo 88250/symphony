@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -30,13 +31,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
+import org.b3log.latke.util.Execs;
 import org.b3log.latke.util.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -44,6 +48,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
+import org.jsoup.select.NodeVisitor;
 import static org.parboiled.common.Preconditions.checkArgNotNull;
 import org.pegdown.DefaultVerbatimSerializer;
 import org.pegdown.Extensions;
@@ -98,7 +103,8 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  *
  * <p>
- * Uses the <a href="https://github.com/sirthias/pegdown">pegdown</a> as the converter.
+ * Uses the <a href="https://github.com/chjj/marked">marked</a> as the processor, if not found this command, try
+ * built-in <a href="https://github.com/sirthias/pegdown">pegdown</a> instead.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -122,7 +128,37 @@ public final class Markdowns {
     /**
      * Markdown to HTML timeout.
      */
-    private static final int MD_TIMEOUT = 500;
+    private static final int MD_TIMEOUT = 5000;
+
+    /**
+     * Whether marked is available.
+     */
+    private static boolean MARKED_AVAILABLE;
+
+    /**
+     * marked options.
+     */
+    private static final String MARKED_OPTIONS = "--gfm --breaks --tables --smart-lists";
+
+    static {
+        try {
+            Process p;
+            if (SystemUtils.IS_OS_WINDOWS) {
+                p = Runtime.getRuntime().exec("cmd /C echo symphony|marked");
+            } else {
+                p = Runtime.getRuntime().exec("/bin/sh -c echo symphony|marked");
+            }
+
+            final String md = IOUtils.toString(p.getInputStream());
+            p.destroy();
+
+            MARKED_AVAILABLE = StringUtils.equals(md, "<p>symphony</p>\n\n");
+
+            LOGGER.log(Level.INFO, "[marked] is available, uses it for markdown processing");
+        } catch (final Exception e) {
+            LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing");
+        }
+    }
 
     /**
      * Gets the safe HTML content of the specified content.
@@ -233,6 +269,45 @@ public final class Markdowns {
         return "";
     }
 
+    private static String toHtmlByMarked(final String markdownText) throws Exception {
+        String ret;
+
+        if (SystemUtils.IS_OS_WINDOWS) {
+            final Locale locale = Locale.getDefault();
+            if (locale.getLanguage().equals(new Locale("zh").getLanguage())) {
+                ret = Execs.exec("cmd /C echo " + new String(markdownText.getBytes("UTF-8"), "GBK") + "|marked "
+                        + MARKED_OPTIONS);
+            } else {
+                ret = Execs.exec("cmd /C echo " + markdownText + "|marked " + MARKED_OPTIONS);
+            }
+        } else {
+            ret = Execs.exec("/bin/sh -c echo " + markdownText + "|marked " + MARKED_OPTIONS);
+        }
+
+        // Pangu space
+        final Document doc = Jsoup.parse(ret);
+        doc.traverse(new NodeVisitor() {
+            @Override
+            public void head(final org.jsoup.nodes.Node node, int depth) {
+                if (node instanceof org.jsoup.nodes.TextNode) {
+                    final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
+                    textNode.text(Pangu.spacingText(textNode.text()));
+                }
+            }
+
+            @Override
+            public void tail(org.jsoup.nodes.Node node, int depth) {
+            }
+        });
+
+        doc.outputSettings().indentAmount(0);
+
+        ret = doc.html();
+        ret = StringUtils.substringBetween(ret, "<body>\n", "\n</body>");
+
+        return ret;
+    }
+
     /**
      * Converts the specified markdown text to HTML.
      *
@@ -254,15 +329,21 @@ public final class Markdowns {
                     return "";
                 }
 
-                final PegDownProcessor pegDownProcessor
-                        = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
+                String ret;
 
-                final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
-                String ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
-                        Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+                if (MARKED_AVAILABLE) {
+                    ret = toHtmlByMarked(markdownText);
+                } else {
+                    final PegDownProcessor pegDownProcessor
+                            = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
 
-                if (!StringUtils.startsWith(ret, "<p>")) {
-                    ret = "<p>" + ret + "</p>";
+                    final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
+                    ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
+                            Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+
+                    if (!StringUtils.startsWith(ret, "<p>")) {
+                        ret = "<p>" + ret + "</p>";
+                    }
                 }
 
                 return formatMarkdown(ret);
@@ -343,12 +424,6 @@ public final class Markdowns {
         }
         ret = StringUtils.replace(ret, "[downline]", "_");
         return ret;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Markdowns() {
     }
 
     /**
@@ -899,5 +974,11 @@ public final class Markdowns {
                 printer.print(string);
             }
         }
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Markdowns() {
     }
 }
