@@ -145,7 +145,7 @@ public final class Markdowns {
     /**
      * Whether marked is available.
      */
-    private static boolean MARKED_AVAILABLE;
+    public static boolean MARKED_AVAILABLE;
 
     /**
      * marked options.
@@ -172,7 +172,7 @@ public final class Markdowns {
 
             p.destroy();
 
-            MARKED_AVAILABLE = StringUtils.contains(stdout, "<p>symphony</p>");
+            MARKED_AVAILABLE = StringUtils.contains(stdout, "<p>Symphony 大法好</p>");
 
             if (MARKED_AVAILABLE) {
                 LOGGER.log(Level.INFO, "[marked] is available, uses it for markdown processing");
@@ -269,6 +269,10 @@ public final class Markdowns {
 
                 if (MARKED_AVAILABLE) {
                     ret = toHtmlByMarked(markdownText);
+
+                    if (!StringUtils.startsWith(ret, "<p>")) {
+                        ret = "<p>" + ret + "</p>";
+                    }
                 } else {
                     final PegDownProcessor pegDownProcessor
                             = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
@@ -280,9 +284,9 @@ public final class Markdowns {
                     if (!StringUtils.startsWith(ret, "<p>")) {
                         ret = "<p>" + ret + "</p>";
                     }
-                }
 
-                ret = formatMarkdown(ret);
+                    ret = formatMarkdown(ret);
+                }
 
                 // cache it
                 putHTML(markdownText, ret);
@@ -345,6 +349,10 @@ public final class Markdowns {
 
                 if (MARKED_AVAILABLE) {
                     ret = toHtmlByMarked(markdownText);
+
+                    if (!StringUtils.startsWith(ret, "<p>")) {
+                        ret = "<p>" + ret + "</p>";
+                    }
                 } else {
                     final PegDownProcessor pegDownProcessor
                             = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
@@ -356,9 +364,9 @@ public final class Markdowns {
                     if (!StringUtils.startsWith(ret, "<p>")) {
                         ret = "<p>" + ret + "</p>";
                     }
-                }
 
-                ret = formatMarkdown(ret);
+                    ret = formatMarkdown(ret);
+                }
 
                 // cache it
                 putHTML(markdownText, ret);
@@ -414,8 +422,10 @@ public final class Markdowns {
             @Override
             public void head(final org.jsoup.nodes.Node node, int depth) {
                 if (node instanceof org.jsoup.nodes.TextNode) {
-                    final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
-                    textNode.text(Pangu.spacingText(textNode.text()));
+                   // final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
+                    
+                   // textNode.text(Pangu.spacingText(textNode.getWholeText()));
+                   // FIXME: Pangu space
                 }
             }
 
@@ -424,10 +434,11 @@ public final class Markdowns {
             }
         });
 
-        doc.outputSettings().indentAmount(0);
+        doc.outputSettings().prettyPrint(false);
 
         ret = doc.html();
-        ret = StringUtils.substringBetween(ret, "<body>\n", "\n</body>");
+        ret = StringUtils.substringBetween(ret, "<body>", "</body>");
+        ret = StringUtils.trim(ret);
 
         return ret;
     }
