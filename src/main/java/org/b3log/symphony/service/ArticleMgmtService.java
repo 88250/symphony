@@ -81,7 +81,7 @@ import org.jsoup.Jsoup;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.14.26.30, Nov 21, 2016
+ * @version 2.14.27.30, Nov 27, 2016
  * @since 0.2.0
  */
 @Service
@@ -458,7 +458,7 @@ public class ArticleMgmtService {
 
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
             articleContent = Emotions.toAliases(articleContent);
-            articleContent = StringUtils.trim(articleContent);
+            articleContent = StringUtils.trim(articleContent) + " ";
             articleContent = StringUtils.replace(articleContent, langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             articleContent = StringUtils.replace(articleContent, langPropsService.get("uploadingLabel", Locale.US), "");
             article.put(Article.ARTICLE_CONTENT, articleContent);
@@ -748,6 +748,7 @@ public class ArticleMgmtService {
 
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
             articleContent = Emotions.toAliases(articleContent);
+            articleContent = StringUtils.trim(articleContent) + " ";
             articleContent = articleContent.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             articleContent = articleContent.replace(langPropsService.get("uploadingLabel", Locale.US), "");
             oldArticle.put(Article.ARTICLE_CONTENT, articleContent);
