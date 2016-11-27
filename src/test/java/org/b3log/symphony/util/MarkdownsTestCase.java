@@ -41,7 +41,7 @@ public class MarkdownsTestCase {
     /**
      * Tag test.
      */
-    @Test
+    //@Test
     public void tag() {
         final String kbd = "<kbd>DV</kbd>";
 
@@ -54,7 +54,7 @@ public class MarkdownsTestCase {
     /**
      * XSS test.
      */
-    @Test
+    //@Test
     public void clean() {
         final String md = "<a href='data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4K'>a link</a>";
 
@@ -67,7 +67,7 @@ public class MarkdownsTestCase {
     /**
      * Auto space test.
      */
-    @Test
+    //@Test
     public void space() {
         final String md = "Sym是一个用Java写的实时论坛，欢迎来[体验Sym](https://hacpai.com)！";
         final String html = Markdowns.toHTML(md);
@@ -78,7 +78,7 @@ public class MarkdownsTestCase {
     /**
      * email test not link to User page if the name is in email address
      */
-    @Test
+    //@Test
     public void linkToHTML() {
         String md = "test@test.com";
         String html = Markdowns.linkToHtml(md);
@@ -89,7 +89,7 @@ public class MarkdownsTestCase {
     /**
      * Workaround for https://github.com/sirthias/pegdown/issues/229.
      */
-    @Test
+    //@Test
     public void toHTML1() {
         String md = "Sym**是一个用 _Java_ 写的实时论坛**";
         String html = Markdowns.toHTML(md);
@@ -153,7 +153,7 @@ public class MarkdownsTestCase {
     /**
      * Link test.
      */
-    @Test
+    //@Test
     public void toHTML() {
         String md = "[b3log](http://b3log.org)";
         String html = Markdowns.toHTML(md);
@@ -169,7 +169,7 @@ public class MarkdownsTestCase {
      *
      * @throws java.lang.Exception exception
      */
-    @Test
+    //@Test
     public void toHtml0() throws Exception {
         final URL mdResource = MarkdownsTestCase.class.getResource("/markdown_syntax.text");
         final String md = IOUtils.toString(new FileReader(mdResource.getPath()));
@@ -178,7 +178,7 @@ public class MarkdownsTestCase {
         //System.out.println(html);
     }
 
-    @Test
+    //@Test
     public void timeout() throws Exception {
         final String md = "win8和win8.1以及win10自带虚拟机，无需再装第三方虚拟机软件。\n"
                 + "首先需要在“启用或关闭windows功能”中，启用Hyper-V\n"

@@ -17,10 +17,12 @@
  */
 package org.b3log.symphony.util;
 
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -30,13 +32,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
+import org.b3log.latke.util.Execs;
+import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -44,6 +52,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
+import org.jsoup.select.NodeVisitor;
 import static org.parboiled.common.Preconditions.checkArgNotNull;
 import org.pegdown.DefaultVerbatimSerializer;
 import org.pegdown.Extensions;
@@ -98,11 +107,13 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  *
  * <p>
- * Uses the <a href="https://github.com/sirthias/pegdown">pegdown</a> as the converter.
+ * Uses the <a href="https://github.com/chjj/marked">marked</a> as the
+ * processor, if not found this command, try built-in
+ * <a href="https://github.com/sirthias/pegdown">pegdown</a> instead.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="http://zephyrjung.github.io">Zephyr</a>
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @version 1.9.9.14, Nov 25, 2016
  * @since 0.2.0
  */
@@ -120,15 +131,65 @@ public final class Markdowns {
             = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
 
     /**
+     * Markdown cache.
+     */
+    private static final Cache MD_CACHE = CacheFactory.getCache("markdown");
+
+    static {
+        MD_CACHE.setMaxCount(1024 * 10 * 4);
+    }
+
+    /**
      * Markdown to HTML timeout.
      */
     private static final int MD_TIMEOUT = 500;
 
     /**
+     * Whether marked is available.
+     */
+    private static boolean MARKED_AVAILABLE;
+
+    /**
+     * marked options.
+     */
+    private static final String MARKED_OPTIONS = "--gfm --breaks --tables --smart-lists";
+
+    static {
+        try {
+            Process p;
+            if (SystemUtils.IS_OS_WINDOWS) {
+                p = Runtime.getRuntime().exec("marked");
+            } else {
+                p = Runtime.getRuntime().exec("marked");
+            }
+
+            final OutputStream outputStream = p.getOutputStream();
+            IOUtils.write("symphony", outputStream);
+            IOUtils.closeQuietly(outputStream);
+
+            //final String stderr = IOUtils.toString(p.getErrorStream());
+            //LOGGER.info("stderr: " + stderr);
+            final String stdout = IOUtils.toString(p.getInputStream());
+            //LOGGER.info("stdout: " + stdout);
+
+            MARKED_AVAILABLE = StringUtils.contains(stdout, "<p>symphony</p>");
+
+            if (MARKED_AVAILABLE) {
+                LOGGER.log(Level.INFO, "[marked] is available, uses it for markdown processing");
+            } else {
+                LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing");
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing");
+        }
+    }
+
+    /**
      * Gets the safe HTML content of the specified content.
      *
      * @param content the specified content
-     * @param baseURI the specified base URI, the relative path value of href will starts with this URL
+     * @param baseURI the specified base URI, the relative path value of href
+     * will starts with this URL
      * @return safe HTML content
      */
     public static String clean(final String content, final String baseURI) {
@@ -137,7 +198,7 @@ public final class Markdowns {
 
         final String tmp = Jsoup.clean(content, baseURI, Whitelist.relaxed().
                 addAttributes(":all", "id", "target", "class").
-                addTags("span", "hr", "kbd", "samp", "tt").
+                addTags("span", "hr", "kbd", "samp", "tt", "del", "s", "strike", "u").
                 addAttributes("iframe", "src", "width", "height", "border", "marginwidth", "marginheight").
                 addAttributes("audio", "controls", "src").
                 addAttributes("video", "controls", "src", "width", "height").
@@ -182,10 +243,20 @@ public final class Markdowns {
      * Converts the email or url text to HTML.
      *
      * @param markdownText the specified markdown text
-     * @return converted HTML, returns an empty string "" if the specified markdown text is "" or {@code null}, returns
-     * 'markdownErrorLabel' if exception
+     * @return converted HTML, returns an empty string "" if the specified
+     * markdown text is "" or {@code null}, returns 'markdownErrorLabel' if
+     * exception
      */
     public static String linkToHtml(final String markdownText) {
+        if (Strings.isEmptyOrNull(markdownText)) {
+            return "";
+        }
+
+        String ret = getHTML(markdownText);
+        if (null != ret) {
+            return ret;
+        }
+
         final ExecutorService pool = Executors.newSingleThreadExecutor();
 
         final long[] threadId = new long[1];
@@ -195,15 +266,27 @@ public final class Markdowns {
             public String call() throws Exception {
                 threadId[0] = Thread.currentThread().getId();
 
-                if (Strings.isEmptyOrNull(markdownText)) {
-                    return "";
+                String ret = LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
+
+                if (MARKED_AVAILABLE) {
+                    ret = toHtmlByMarked(markdownText);
+                } else {
+                    final PegDownProcessor pegDownProcessor
+                            = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
+
+                    final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
+                    ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
+                            Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+
+                    if (!StringUtils.startsWith(ret, "<p>")) {
+                        ret = "<p>" + ret + "</p>";
+                    }
                 }
 
-                final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.AUTOLINKS);
+                ret = formatMarkdown(ret);
 
-                final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
-                String ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
-                        Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+                // cache it
+                putHTML(markdownText, ret);
 
                 return ret;
             }
@@ -237,10 +320,20 @@ public final class Markdowns {
      * Converts the specified markdown text to HTML.
      *
      * @param markdownText the specified markdown text
-     * @return converted HTML, returns an empty string "" if the specified markdown text is "" or {@code null}, returns
-     * 'markdownErrorLabel' if exception
+     * @return converted HTML, returns an empty string "" if the specified
+     * markdown text is "" or {@code null}, returns 'markdownErrorLabel' if
+     * exception
      */
     public static String toHTML(final String markdownText) {
+        if (Strings.isEmptyOrNull(markdownText)) {
+            return "";
+        }
+
+        String ret = getHTML(markdownText);
+        if (null != ret) {
+            return ret;
+        }
+
         final ExecutorService pool = Executors.newSingleThreadExecutor();
 
         final long[] threadId = new long[1];
@@ -250,22 +343,29 @@ public final class Markdowns {
             public String call() throws Exception {
                 threadId[0] = Thread.currentThread().getId();
 
-                if (Strings.isEmptyOrNull(markdownText)) {
-                    return "";
+                String ret = LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
+
+                if (MARKED_AVAILABLE) {
+                    ret = toHtmlByMarked(markdownText);
+                } else {
+                    final PegDownProcessor pegDownProcessor
+                            = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
+
+                    final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
+                    ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
+                            Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+
+                    if (!StringUtils.startsWith(ret, "<p>")) {
+                        ret = "<p>" + ret + "</p>";
+                    }
                 }
 
-                final PegDownProcessor pegDownProcessor
-                        = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
+                ret = formatMarkdown(ret);
 
-                final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
-                String ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
-                        Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+                // cache it
+                putHTML(markdownText, ret);
 
-                if (!StringUtils.startsWith(ret, "<p>")) {
-                    ret = "<p>" + ret + "</p>";
-                }
-
-                return formatMarkdown(ret);
+                return ret;
             }
         };
 
@@ -291,6 +391,50 @@ public final class Markdowns {
         }
 
         return LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
+    }
+
+    private static String toHtmlByMarked(final String markdownText) throws Exception {
+        String ret;
+
+        final Process p = Runtime.getRuntime().exec("marked " + MARKED_OPTIONS);
+        final OutputStream outputStream = p.getOutputStream();
+
+        String input = markdownText;
+
+        if (SystemUtils.IS_OS_WINDOWS) {
+            final Locale locale = Locale.getDefault();
+            if (locale.getLanguage().equals(new Locale("zh").getLanguage())) {
+                input = new String(markdownText.getBytes("UTF-8"), "GBK");
+            }
+        }
+
+        IOUtils.write(input, outputStream);
+        IOUtils.closeQuietly(outputStream);
+
+        ret = IOUtils.toString(p.getInputStream());
+
+        // Pangu space
+        final Document doc = Jsoup.parse(ret);
+        doc.traverse(new NodeVisitor() {
+            @Override
+            public void head(final org.jsoup.nodes.Node node, int depth) {
+                if (node instanceof org.jsoup.nodes.TextNode) {
+                    final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
+                    textNode.text(Pangu.spacingText(textNode.text()));
+                }
+            }
+
+            @Override
+            public void tail(org.jsoup.nodes.Node node, int depth) {
+            }
+        });
+
+        doc.outputSettings().indentAmount(0);
+
+        ret = doc.html();
+        ret = StringUtils.substringBetween(ret, "<body>\n", "\n</body>");
+
+        return ret;
     }
 
     /**
@@ -343,12 +487,6 @@ public final class Markdowns {
         }
         ret = StringUtils.replace(ret, "[downline]", "_");
         return ret;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Markdowns() {
     }
 
     /**
@@ -899,5 +1037,35 @@ public final class Markdowns {
                 printer.print(string);
             }
         }
+    }
+
+    /**
+     * Gets HTML for the specified markdown text.
+     *
+     * @param markdownText the specified markdown text
+     * @return HTML
+     */
+    private static String getHTML(final String markdownText) {
+        final String hash = MD5.hash(markdownText);
+
+        return (String) MD_CACHE.get(hash);
+    }
+
+    /**
+     * Puts the specified HTML into cache.
+     *
+     * @param markdownText the specified markdown text
+     * @param html the specified HTML
+     */
+    private static void putHTML(final String markdownText, final String html) {
+        final String hash = MD5.hash(markdownText);
+
+        MD_CACHE.put(hash, html);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Markdowns() {
     }
 }

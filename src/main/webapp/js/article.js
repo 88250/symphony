@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.36.25, Nov 8, 2016
+ * @version 1.25.37.25, Nov 25, 2016
  */
 
 /**
@@ -748,9 +748,9 @@ var Comment = {
 
         // 帖子作者 clone 到编辑器左上角
         var replyUserHTML = '',
-                $avatar = $('#' + id).find('>.fn-flex>a').clone();
+                $avatar = $('#' + id).find('>.fn-flex>div>a').clone();
         if ($avatar.length === 0) {
-            $avatar = $('#' + id).find('>.fn-flex>.avatar').clone();
+            $avatar = $('#' + id).find('>.fn-flex .avatar').clone();
             $avatar.removeClass('avatar').addClass('avatar-small');
             replyUserHTML = '<a rel="nofollow" href="#' + id
                     + '" class="ft-a-title" onclick="Comment._bgFade($(\'#' + id

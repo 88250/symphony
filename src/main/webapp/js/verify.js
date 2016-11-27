@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.5.2.9, Nov 11, 2016
+ * @version 2.5.2.10, Nov 26, 2016
  */
 
 /**
@@ -98,6 +98,8 @@ var Verify = {
                 referral: $("#referral").val()
             };
 
+            $("#registerBtn").attr('disabled', 'disabled');
+
             $.ajax({
                 url: Label.servePath + "/register",
                 type: "POST",
@@ -106,13 +108,12 @@ var Verify = {
                 success: function (result, textStatus) {
                     if (result.sc) {
                         $("#registerTip").addClass('succ').removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
-
                         $("#registerBtn").attr('disabled', 'disabled');
                     } else {
-                        $("#registerTip").removeClass("tip-succ");
                         $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                         $("#registerCaptchaImg").attr("src", Label.servePath + "/captcha?code=" + Math.random());
                         $("#registerCaptcha").val("");
+                        $("#registerBtn").removeAttr('disabled');
                     }
                 }
             });
