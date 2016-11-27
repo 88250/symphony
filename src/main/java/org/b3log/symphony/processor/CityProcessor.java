@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="http://zephyrjung.github.io">Zephyr</a>
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @version 1.3.1.7, Oct 28, 2016
  * @since 1.3.0
  */
