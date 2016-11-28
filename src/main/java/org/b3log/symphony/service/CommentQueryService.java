@@ -68,7 +68,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.10.7.21, Sep 1, 2016
+ * @version 2.10.8.21, Nov 28, 2016
  * @since 0.2.0
  */
 @Service
@@ -891,7 +891,7 @@ public class CommentQueryService {
         final String commentId = comment.optString(Keys.OBJECT_ID);
         // MP3 player render
         final StringBuffer contentBuilder = new StringBuffer();
-        final String MP3_URL_REGEX = "<p><a href.*\\.mp3.*</a>( )*</p>";
+        final String MP3_URL_REGEX = "<p>( )*<a href.*\\.mp3.*</a>( )*</p>";
         final Pattern p = Pattern.compile(MP3_URL_REGEX);
         final Matcher m = p.matcher(commentContent);
 

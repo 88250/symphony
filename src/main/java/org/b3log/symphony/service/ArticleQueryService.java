@@ -93,7 +93,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.19.37, Nov 18, 2016
+ * @version 2.25.20.37, Nov 28, 2016
  * @since 0.2.0
  */
 @Service
@@ -2429,7 +2429,7 @@ public class ArticleQueryService {
             // MP3 player render
             final StringBuffer contentBuilder = new StringBuffer();
             articleContent = article.optString(Article.ARTICLE_CONTENT);
-            final String MP3_URL_REGEX = "<p><a href.*\\.mp3.*</a>( )*</p>";
+            final String MP3_URL_REGEX = "<p>( )*<a href.*\\.mp3.*</a>( )*</p>";
             final Pattern p = Pattern.compile(MP3_URL_REGEX);
             final Matcher m = p.matcher(articleContent);
 
