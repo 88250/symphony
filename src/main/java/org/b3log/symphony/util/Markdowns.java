@@ -43,6 +43,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.MD5;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -58,47 +59,7 @@ import org.pegdown.LinkRenderer;
 import org.pegdown.PegDownProcessor;
 import org.pegdown.Printer;
 import org.pegdown.VerbatimSerializer;
-import org.pegdown.ast.AbbreviationNode;
-import org.pegdown.ast.AnchorLinkNode;
-import org.pegdown.ast.AutoLinkNode;
-import org.pegdown.ast.BlockQuoteNode;
-import org.pegdown.ast.BulletListNode;
-import org.pegdown.ast.CodeNode;
-import org.pegdown.ast.DefinitionListNode;
-import org.pegdown.ast.DefinitionNode;
-import org.pegdown.ast.DefinitionTermNode;
-import org.pegdown.ast.ExpImageNode;
-import org.pegdown.ast.ExpLinkNode;
-import org.pegdown.ast.HeaderNode;
-import org.pegdown.ast.HtmlBlockNode;
-import org.pegdown.ast.InlineHtmlNode;
-import org.pegdown.ast.ListItemNode;
-import org.pegdown.ast.MailLinkNode;
-import org.pegdown.ast.Node;
-import org.pegdown.ast.OrderedListNode;
-import org.pegdown.ast.ParaNode;
-import org.pegdown.ast.QuotedNode;
-import org.pegdown.ast.RefImageNode;
-import org.pegdown.ast.RefLinkNode;
-import org.pegdown.ast.ReferenceNode;
-import org.pegdown.ast.RootNode;
-import org.pegdown.ast.SimpleNode;
-import org.pegdown.ast.SpecialTextNode;
-import org.pegdown.ast.StrikeNode;
-import org.pegdown.ast.StrongEmphSuperNode;
-import org.pegdown.ast.SuperNode;
-import org.pegdown.ast.TableBodyNode;
-import org.pegdown.ast.TableCaptionNode;
-import org.pegdown.ast.TableCellNode;
-import org.pegdown.ast.TableColumnNode;
-import org.pegdown.ast.TableHeaderNode;
-import org.pegdown.ast.TableNode;
-import org.pegdown.ast.TableRowNode;
-import org.pegdown.ast.TaskListNode;
-import org.pegdown.ast.TextNode;
-import org.pegdown.ast.VerbatimNode;
-import org.pegdown.ast.Visitor;
-import org.pegdown.ast.WikiLinkNode;
+import org.pegdown.ast.*;
 import org.pegdown.plugins.ToHtmlSerializerPlugin;
 
 /**
@@ -112,7 +73,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.9.9.15, Nov 27, 2016
+ * @version 1.9.9.16, Nov 28, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -375,6 +336,7 @@ public final class Markdowns {
             }
         };
 
+        Stopwatchs.start("Md to HTML");
         try {
             final Future<String> future = pool.submit(call);
 
@@ -394,6 +356,8 @@ public final class Markdowns {
             LOGGER.log(Level.ERROR, "Markdown failed [md=" + markdownText + "]", e);
         } finally {
             pool.shutdownNow();
+
+            Stopwatchs.end();
         }
 
         return LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
@@ -422,10 +386,10 @@ public final class Markdowns {
             @Override
             public void head(final org.jsoup.nodes.Node node, int depth) {
                 if (node instanceof org.jsoup.nodes.TextNode) {
-                   // final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
-                    
-                   // textNode.text(Pangu.spacingText(textNode.getWholeText()));
-                   // FIXME: Pangu space
+                    // final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
+
+                    // textNode.text(Pangu.spacingText(textNode.getWholeText()));
+                    // FIXME: Pangu space
                 }
             }
 
