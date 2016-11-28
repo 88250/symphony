@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -43,7 +42,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
-import org.b3log.latke.util.Execs;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.jsoup.Jsoup;
@@ -107,14 +105,14 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  *
  * <p>
- * Uses the <a href="https://github.com/chjj/marked">marked</a> as the
- * processor, if not found this command, try built-in
+ * Uses the <a href="https://github.com/chjj/marked">marked</a> as the processor, if not found this command, try
+ * built-in
  * <a href="https://github.com/sirthias/pegdown">pegdown</a> instead.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.9.9.14, Nov 25, 2016
+ * @version 1.9.9.15, Nov 27, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -147,7 +145,7 @@ public final class Markdowns {
     /**
      * Whether marked is available.
      */
-    private static boolean MARKED_AVAILABLE;
+    public static boolean MARKED_AVAILABLE;
 
     /**
      * marked options.
@@ -158,21 +156,23 @@ public final class Markdowns {
         try {
             Process p;
             if (SystemUtils.IS_OS_WINDOWS) {
-                p = Runtime.getRuntime().exec("marked");
+                p = Runtime.getRuntime().exec("marked.cmd");
             } else {
                 p = Runtime.getRuntime().exec("marked");
             }
 
             final OutputStream outputStream = p.getOutputStream();
-            IOUtils.write("symphony", outputStream);
+            IOUtils.write("Symphony 大法好", outputStream, "UTF-8");
             IOUtils.closeQuietly(outputStream);
 
             //final String stderr = IOUtils.toString(p.getErrorStream());
             //LOGGER.info("stderr: " + stderr);
-            final String stdout = IOUtils.toString(p.getInputStream());
+            final String stdout = IOUtils.toString(p.getInputStream(), "UTF-8");
             //LOGGER.info("stdout: " + stdout);
 
-            MARKED_AVAILABLE = StringUtils.contains(stdout, "<p>symphony</p>");
+            p.destroy();
+
+            MARKED_AVAILABLE = StringUtils.contains(stdout, "<p>Symphony 大法好</p>");
 
             if (MARKED_AVAILABLE) {
                 LOGGER.log(Level.INFO, "[marked] is available, uses it for markdown processing");
@@ -180,7 +180,8 @@ public final class Markdowns {
                 LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing");
+            LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing: "
+                    + e.getMessage());
         }
     }
 
@@ -188,8 +189,7 @@ public final class Markdowns {
      * Gets the safe HTML content of the specified content.
      *
      * @param content the specified content
-     * @param baseURI the specified base URI, the relative path value of href
-     * will starts with this URL
+     * @param baseURI the specified base URI, the relative path value of href will starts with this URL
      * @return safe HTML content
      */
     public static String clean(final String content, final String baseURI) {
@@ -243,9 +243,8 @@ public final class Markdowns {
      * Converts the email or url text to HTML.
      *
      * @param markdownText the specified markdown text
-     * @return converted HTML, returns an empty string "" if the specified
-     * markdown text is "" or {@code null}, returns 'markdownErrorLabel' if
-     * exception
+     * @return converted HTML, returns an empty string "" if the specified markdown text is "" or {@code null}, returns
+     * 'markdownErrorLabel' if exception
      */
     public static String linkToHtml(final String markdownText) {
         if (Strings.isEmptyOrNull(markdownText)) {
@@ -270,6 +269,10 @@ public final class Markdowns {
 
                 if (MARKED_AVAILABLE) {
                     ret = toHtmlByMarked(markdownText);
+
+                    if (!StringUtils.startsWith(ret, "<p>")) {
+                        ret = "<p>" + ret + "</p>";
+                    }
                 } else {
                     final PegDownProcessor pegDownProcessor
                             = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
@@ -281,9 +284,9 @@ public final class Markdowns {
                     if (!StringUtils.startsWith(ret, "<p>")) {
                         ret = "<p>" + ret + "</p>";
                     }
-                }
 
-                ret = formatMarkdown(ret);
+                    ret = formatMarkdown(ret);
+                }
 
                 // cache it
                 putHTML(markdownText, ret);
@@ -320,9 +323,8 @@ public final class Markdowns {
      * Converts the specified markdown text to HTML.
      *
      * @param markdownText the specified markdown text
-     * @return converted HTML, returns an empty string "" if the specified
-     * markdown text is "" or {@code null}, returns 'markdownErrorLabel' if
-     * exception
+     * @return converted HTML, returns an empty string "" if the specified markdown text is "" or {@code null}, returns
+     * 'markdownErrorLabel' if exception
      */
     public static String toHTML(final String markdownText) {
         if (Strings.isEmptyOrNull(markdownText)) {
@@ -347,6 +349,10 @@ public final class Markdowns {
 
                 if (MARKED_AVAILABLE) {
                     ret = toHtmlByMarked(markdownText);
+
+                    if (!StringUtils.startsWith(ret, "<p>")) {
+                        ret = "<p>" + ret + "</p>";
+                    }
                 } else {
                     final PegDownProcessor pegDownProcessor
                             = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
@@ -358,9 +364,9 @@ public final class Markdowns {
                     if (!StringUtils.startsWith(ret, "<p>")) {
                         ret = "<p>" + ret + "</p>";
                     }
-                }
 
-                ret = formatMarkdown(ret);
+                    ret = formatMarkdown(ret);
+                }
 
                 // cache it
                 putHTML(markdownText, ret);
@@ -394,24 +400,21 @@ public final class Markdowns {
     }
 
     private static String toHtmlByMarked(final String markdownText) throws Exception {
-        String ret;
-
-        final Process p = Runtime.getRuntime().exec("marked " + MARKED_OPTIONS);
-        final OutputStream outputStream = p.getOutputStream();
-
-        String input = markdownText;
-
+        final Process p;
         if (SystemUtils.IS_OS_WINDOWS) {
-            final Locale locale = Locale.getDefault();
-            if (locale.getLanguage().equals(new Locale("zh").getLanguage())) {
-                input = new String(markdownText.getBytes("UTF-8"), "GBK");
-            }
+            p = Runtime.getRuntime().exec("marked.cmd " + MARKED_OPTIONS);
+        } else {
+            p = Runtime.getRuntime().exec("marked " + MARKED_OPTIONS);
         }
 
-        IOUtils.write(input, outputStream);
+        final OutputStream outputStream = p.getOutputStream();
+
+        IOUtils.write(markdownText, outputStream, "UTF-8");
         IOUtils.closeQuietly(outputStream);
 
-        ret = IOUtils.toString(p.getInputStream());
+        String ret = IOUtils.toString(p.getInputStream(), "UTF-8");
+
+        p.destroy();
 
         // Pangu space
         final Document doc = Jsoup.parse(ret);
@@ -419,8 +422,10 @@ public final class Markdowns {
             @Override
             public void head(final org.jsoup.nodes.Node node, int depth) {
                 if (node instanceof org.jsoup.nodes.TextNode) {
-                    final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
-                    textNode.text(Pangu.spacingText(textNode.text()));
+                   // final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
+                    
+                   // textNode.text(Pangu.spacingText(textNode.getWholeText()));
+                   // FIXME: Pangu space
                 }
             }
 
@@ -429,10 +434,11 @@ public final class Markdowns {
             }
         });
 
-        doc.outputSettings().indentAmount(0);
+        doc.outputSettings().prettyPrint(false);
 
         ret = doc.html();
-        ret = StringUtils.substringBetween(ret, "<body>\n", "\n</body>");
+        ret = StringUtils.substringBetween(ret, "<body>", "</body>");
+        ret = StringUtils.trim(ret);
 
         return ret;
     }

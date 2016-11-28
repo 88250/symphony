@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="http://zephyrjung.github.io">Zephyr</a>
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @version 1.7.4.9, Nov 25, 2016
  * @since 0.2.0
  */

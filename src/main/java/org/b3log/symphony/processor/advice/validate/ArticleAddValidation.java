@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.9, Jul 28, 2016
+ * @version 1.3.4.10, Nov 27, 2016
  * @since 0.2.0
  */
 @Named
@@ -182,7 +182,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         }
 
         String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
-        articleContent = StringUtils.strip(articleContent);
+        articleContent = StringUtils.trim(articleContent);
         if (Strings.isEmptyOrNull(articleContent) || articleContent.length() > MAX_ARTICLE_CONTENT_LENGTH
                 || articleContent.length() < MIN_ARTICLE_CONTENT_LENGTH) {
             String msg = langPropsService.get("articleContentErrorLabel");

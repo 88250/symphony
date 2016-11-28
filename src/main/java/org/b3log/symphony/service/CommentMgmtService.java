@@ -18,6 +18,7 @@
 package org.b3log.symphony.service;
 
 import java.util.List;
+import java.util.Locale;
 import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -61,7 +62,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.7.18, Oct 11, 2016
+ * @version 2.12.8.18, Nov 27, 2016
  * @since 0.2.0
  */
 @Service
@@ -398,6 +399,9 @@ public class CommentMgmtService {
             }
 
             content = Emotions.toAliases(content);
+            content = StringUtils.trim(content) + " ";
+            content = content.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
+            content = content.replace(langPropsService.get("uploadingLabel", Locale.US), "");
 
             comment.put(Comment.COMMENT_CONTENT, content);
             comment.put(Comment.COMMENT_CREATE_TIME, System.currentTimeMillis());
@@ -510,6 +514,9 @@ public class CommentMgmtService {
         try {
             String content = comment.optString(Comment.COMMENT_CONTENT);
             content = Emotions.toAliases(content);
+            content = StringUtils.trim(content) + " ";
+            content = content.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
+            content = content.replace(langPropsService.get("uploadingLabel", Locale.US), "");
             comment.put(Comment.COMMENT_CONTENT, content);
 
             commentRepository.update(commentId, comment);
