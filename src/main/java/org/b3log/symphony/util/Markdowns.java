@@ -103,7 +103,7 @@ public final class Markdowns {
     /**
      * Markdown to HTML timeout.
      */
-    private static final int MD_TIMEOUT = 500;
+    private static final int MD_TIMEOUT = 800;
 
     /**
      * Whether marked is available.
