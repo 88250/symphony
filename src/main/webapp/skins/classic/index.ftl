@@ -14,14 +14,14 @@
             <div class="wrapper">
                 <div class="index-main">
                     <div class="index-tabs fn-flex" id="articles">
-                        <span class="current">
+                        <span class="current" data-index="0">
                             <span class="icon-clock"></span> ${latestLabel}
                         </span>
-                        <span class="tags">
+                        <span class="tags" data-index="1">
                             <span class="icon-tags"></span>
                             ${followingTagsLabel}
                         </span>
-                        <span class="users">
+                        <span class="users" data-index="2">
                             <span class="icon-userrole"></span>
                             ${followingUsersLabel}
                         </span>
@@ -234,6 +234,8 @@
             } else {
                 $(".index-tabs-panels.article-list ul:eq(0)").show();
             }
+
+            localStorage.setItem('indexTab', $it.data('index'));
         });
 
         // tag click
@@ -242,12 +244,19 @@
             maxLen = Math.max($it.width(), $it.height());
             $it.prepend('<span class="ripple" style="top: ' + (event.offsetY - $it.height() / 2)
                 + 'px;left:' + (event.offsetX - $it.width() / 2) + 'px;height:' + maxLen + 'px;width:' + maxLen + 'px"></span>');
-            console.log(event)
 
             setTimeout(function () {
                 $it.find('.ripple').remove();
             }, 800);
         });
+
+        // set tab
+        if (typeof(localStorage.indexTab) === 'string') {
+            $('.index-tabs:first > span:eq(' + localStorage.indexTab + ')').click();
+        } else {
+            localStorage.setItem('indexTab', 0);
+        }
+        
 
         // Init [Timeline] channel
         TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/timeline-channel", 20);
