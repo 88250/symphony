@@ -93,7 +93,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.20.38, Nov 28, 2016
+ * @version 2.25.20.39, Dec 2, 2016
  * @since 0.2.0
  */
 @Service
@@ -1650,7 +1650,7 @@ public class ArticleQueryService {
     public List<JSONObject> getIndexRecentArticles(final int avatarViewMode) throws ServiceException {
         final Query query = new Query()
                 .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
                 .setPageSize(Symphonys.getInt("indexListCnt")).setCurrentPageNum(1).setPageCount(1);
         query.setFilter(makeRecentArticleShowingFilter());
         query.addProjection(Keys.OBJECT_ID, String.class).
