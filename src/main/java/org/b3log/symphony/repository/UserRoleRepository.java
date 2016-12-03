@@ -15,35 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.model;
+package org.b3log.symphony.repository;
+
+import org.b3log.latke.model.User;
+import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.annotation.Repository;
+import org.b3log.symphony.model.Role;
 
 /**
- * This class defines all role model relevant keys.
+ * User-Role repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Dec 3, 2016
  * @since 1.8.0
  */
-public final class Role {
+@Repository
+public class UserRoleRepository extends AbstractRepository {
 
     /**
-     * Role.
+     * Public constructor.
      */
-    public static final String ROLE = "role";
-
-    /**
-     * Roles.
-     */
-    public static final String ROLES = "roles";
-
-    /**
-     * Role name.
-     */
-    public static final String ROLE_NAME = "roleName";
-
-    /**
-     * Private constructor.
-     */
-    private Role() {
+    public UserRoleRepository() {
+        super(User.USER + "_" + Role.ROLE);
     }
 }
