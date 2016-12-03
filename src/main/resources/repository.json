@@ -12,7 +12,7 @@
                 {
                     "name": "oId",
                     "type": "String",
-                    "length": 19
+                    "length": 32
                 },
                 {
                     "name": "permissionCategory",
@@ -26,12 +26,17 @@
                 {
                     "name": "oId",
                     "type": "String",
-                    "length": 19
+                    "length": 32
                 },
                 {
-                    "name": "name",
+                    "name": "roleName",
                     "type": "String",
                     "length": 32
+                },
+                {
+                    "name": "roleDescription",
+                    "type": "String",
+                    "length": 2048
                 }
             ]
         },
@@ -46,12 +51,12 @@
                 {
                     "name": "roleId",
                     "type": "String",
-                    "length": 19
+                    "length": 32
                 },
                 {
                     "name": "permissionId",
                     "type": "String",
-                    "length": 19
+                    "length": 32
                 }
             ]
         },

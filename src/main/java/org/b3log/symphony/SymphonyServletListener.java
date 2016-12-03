@@ -37,13 +37,13 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
+import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
@@ -64,9 +64,14 @@ import org.b3log.symphony.event.solo.CommentSender;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.Permission;
+import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
+import org.b3log.symphony.repository.PermissionRepository;
+import org.b3log.symphony.repository.RolePermissionRepository;
+import org.b3log.symphony.repository.RoleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.ArticleMgmtService;
@@ -83,7 +88,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.17.7.19, Nov 25, 2016
+ * @version 3.17.7.19, Dec 4, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -297,8 +302,11 @@ public final class SymphonyServletListener extends AbstractServletListener {
             System.exit(0);
         }
 
-        LOGGER.info("Initializing Sym....");
+        LOGGER.info("It's your first time setup Sym, initializes DB....");
 
+        final PermissionRepository permissionRepository = beanManager.getReference(PermissionRepository.class);
+        final RoleRepository roleRepository = beanManager.getReference(RoleRepository.class);
+        final RolePermissionRepository rolePermissionRepository = beanManager.getReference(RolePermissionRepository.class);
         final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
         final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
         final TagMgmtService tagMgmtService = beanManager.getReference(TagMgmtService.class);
@@ -314,7 +322,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
                         new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
             }
 
-            final Transaction transaction = optionRepository.beginTransaction();
+            Transaction transaction = optionRepository.beginTransaction();
 
             // Init statistic
             JSONObject option = new JSONObject();
@@ -392,6 +400,420 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
             transaction.commit();
 
+            transaction = permissionRepository.beginTransaction();
+
+            // Init permissions
+            final JSONObject permission = new JSONObject();
+
+            // ad management permissions
+            permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_AD);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_AD_UPDATE_SIDE);
+            permissionRepository.add(permission);
+
+            // article management permissions
+            permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_ARTICLE);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_ARTICLE_CANCEL_STICK_ARTICLE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_ARTICLE_REINDEX_ARTICLE_INDEX);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_ARTICLE_REMOVE_ARTICLE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_ARTICLE_STICK_ARTICLE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_ARTICLE_UPDATE_ARTICLE_BASIC);
+            permissionRepository.add(permission);
+
+            // comment management permissions
+            permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_COMMENT);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMENT_REMOVE_COMMENT);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMENT_UPDATE_COMMENT_BASIC);
+            permissionRepository.add(permission);
+
+            // common permissions
+            permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_COMMON);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_AT_USER);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_BAD_ARTICLE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_BAD_COMMENT);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_EXCHANGE_INVITATION_CODE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_FOLLOW_ARTICLE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_GOOD_ARTICLE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_GOOD_COMMENT);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_STICK_ARTICLE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_THANK_ARTICLE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_THANK_COMMENT);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_USE_INVITATION_LINK);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_VIEW_ARTICLE_HISTORY);
+            permissionRepository.add(permission);
+
+            // domain management permissions
+            permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_DOMAIN);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_DOMAIN_ADD_DOMAIN);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_DOMAIN_ADD_DOMAIN_TAG);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN_TAG);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_DOMAIN_UPDATE_DOMAIN_BASIC);
+            permissionRepository.add(permission);
+
+            // misc management permissions
+            permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_MISC);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MISC_ALLOW_ADD_ARTICLE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MISC_ALLOW_ADD_COMMENT);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MISC_LANGUAGE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MISC_REGISTER_METHOD);
+            permissionRepository.add(permission);
+
+            // reserved word management permissions
+            permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_RESERVED_WORD);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_RW_ADD_RW);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_RW_REMOVE_RW);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_RW_UPDATE_RW_BASIC);
+            permissionRepository.add(permission);
+
+            // tag management permissions
+            permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_TAG);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_TAG_UPDATE_TAG_BASIC);
+            permissionRepository.add(permission);
+
+            // user management permissions
+            permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_USER);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_USER_ADD_POINT);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_USER_ADD_USER);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_USER_DEDUCT_POINT);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_USER_EXCHANGE_POINT);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_USER_UPDATE_USER_ADVANCED);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_USER_UPDATE_USER_BASIC);
+            permissionRepository.add(permission);
+
+            transaction.commit();
+
+            transaction = roleRepository.beginTransaction();
+
+            // Init roles
+            final JSONObject role = new JSONObject();
+
+            role.put(Keys.OBJECT_ID, Role.ROLE_ID_C_ADMIN);
+            role.put(Role.ROLE_NAME, "Admin");
+            role.put(Role.ROLE_DESCRIPTION, "");
+            roleRepository.add(role);
+
+            role.put(Keys.OBJECT_ID, Role.ROLE_ID_C_BASIC);
+            role.put(Role.ROLE_NAME, "Basic");
+            role.put(Role.ROLE_DESCRIPTION, "");
+            roleRepository.add(role);
+
+            role.put(Keys.OBJECT_ID, Role.ROLE_ID_C_DEFAULT);
+            role.put(Role.ROLE_NAME, "Default");
+            role.put(Role.ROLE_DESCRIPTION, "");
+            roleRepository.add(role);
+
+            role.put(Keys.OBJECT_ID, Role.ROLE_ID_C_LEADER);
+            role.put(Role.ROLE_NAME, "Leader");
+            role.put(Role.ROLE_DESCRIPTION, "");
+            roleRepository.add(role);
+
+            role.put(Keys.OBJECT_ID, Role.ROLE_ID_C_MEMBER);
+            role.put(Role.ROLE_NAME, "Member");
+            role.put(Role.ROLE_DESCRIPTION, "");
+            roleRepository.add(role);
+
+            role.put(Keys.OBJECT_ID, Role.ROLE_ID_C_REGULAR);
+            role.put(Role.ROLE_NAME, "Regular");
+            role.put(Role.ROLE_DESCRIPTION, "");
+            roleRepository.add(role);
+
+            role.put(Keys.OBJECT_ID, Role.ROLE_ID_C_VISITOR);
+            role.put(Role.ROLE_NAME, "Visitor");
+            role.put(Role.ROLE_DESCRIPTION, "");
+            roleRepository.add(role);
+
+            transaction.commit();
+
+            transaction = rolePermissionRepository.beginTransaction();
+
+            // Init Role-Permission
+            final JSONObject rolePermission = new JSONObject();
+
+            // default role's permissions
+            rolePermission.put(Role.ROLE_ID, Role.ROLE_ID_C_DEFAULT);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_AT_USER);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_BAD_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_BAD_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_EXCHANGE_INVITATION_CODE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_FOLLOW_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_GOOD_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_GOOD_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_STICK_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_THANK_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_THANK_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_USE_INVITATION_LINK);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_VIEW_ARTICLE_HISTORY);
+            rolePermissionRepository.add(rolePermission);
+
+            // admin role's permissions
+            rolePermission.put(Role.ROLE_ID, Role.ROLE_ID_C_ADMIN);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_AD_UPDATE_SIDE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_ARTICLE_CANCEL_STICK_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_ARTICLE_REINDEX_ARTICLE_INDEX);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_ARTICLE_REMOVE_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_ARTICLE_STICK_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_ARTICLE_UPDATE_ARTICLE_BASIC);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMENT_REMOVE_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMENT_UPDATE_COMMENT_BASIC);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_AT_USER);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_BAD_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_BAD_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_EXCHANGE_INVITATION_CODE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_FOLLOW_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_GOOD_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_GOOD_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_STICK_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_THANK_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_THANK_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_USE_INVITATION_LINK);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_VIEW_ARTICLE_HISTORY);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_DOMAIN_ADD_DOMAIN);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_DOMAIN_ADD_DOMAIN_TAG);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN_TAG);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_DOMAIN_UPDATE_DOMAIN_BASIC);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_IC_GEN_IC);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_IC_UPDATE_IC_BASIC);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_MISC_ALLOW_ADD_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_MISC_ALLOW_ADD_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_MISC_LANGUAGE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_MISC_REGISTER_METHOD);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_RW_ADD_RW);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_RW_REMOVE_RW);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_RW_UPDATE_RW_BASIC);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_TAG_UPDATE_TAG_BASIC);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_USER_ADD_POINT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_USER_ADD_USER);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_USER_DEDUCT_POINT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_USER_EXCHANGE_POINT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_USER_UPDATE_USER_ADVANCED);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_USER_UPDATE_USER_BASIC);
+            rolePermissionRepository.add(rolePermission);
+
+            transaction.commit();
+
             // Init admin
             final ResourceBundle init = ResourceBundle.getBundle("init");
             final JSONObject admin = new JSONObject();
@@ -407,7 +829,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
                 language = "en_US";
             }
             admin.put(UserExt.USER_LANGUAGE, language);
-            admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+            admin.put(User.USER_ROLE, Role.ROLE_ID_C_ADMIN);
             admin.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             final String adminId = userMgmtService.addUser(admin);
             admin.put(Keys.OBJECT_ID, adminId);
@@ -440,7 +862,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
             articleMgmtService.addArticle(article);
 
-            LOGGER.info("Initialized Sym");
+            LOGGER.info("Initialized DB");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Creates database tables failed", e);
 

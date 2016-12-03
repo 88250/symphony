@@ -32,7 +32,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.CompositeFilterOperator;
 import org.b3log.latke.repository.FilterOperator;
@@ -50,6 +49,7 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.ArticleRepository;
@@ -575,7 +575,7 @@ public class CommentQueryService {
                         final String viewerUserName = viewer.optString(User.USER_NAME);
                         final String viewerRole = viewer.optString(User.USER_ROLE);
 
-                        if (!commenterName.equals(viewerUserName) && !Role.ADMIN_ROLE.equals(viewerRole)) {
+                        if (!commenterName.equals(viewerUserName) && !Role.ROLE_ID_C_ADMIN.equals(viewerRole)) {
                             final String articleContent = article.optString(Article.ARTICLE_CONTENT);
                             final Set<String> userNames = userQueryService.getUserNames(articleContent);
 

@@ -36,7 +36,6 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
@@ -45,6 +44,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Role;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -278,7 +278,7 @@ public class ArticleChannel {
                             }
                         }
 
-                        if (Role.ADMIN_ROLE.equals(userRole)) {
+                        if (Role.ROLE_ID_C_ADMIN.equals(userRole)) {
                             invited = true;
                         }
 

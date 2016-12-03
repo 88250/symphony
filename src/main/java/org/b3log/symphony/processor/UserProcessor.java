@@ -34,7 +34,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -58,6 +57,7 @@ import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Invitecode;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
@@ -583,7 +583,7 @@ public class UserProcessor {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         if (null == currentUser || (!currentUser.optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID)))
-                && !Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
+                && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
@@ -673,7 +673,7 @@ public class UserProcessor {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         if (null == currentUser || (!currentUser.optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID)))
-                && !Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
+                && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;

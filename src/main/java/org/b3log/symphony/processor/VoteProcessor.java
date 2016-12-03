@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -32,6 +31,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Vote;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.service.VoteMgmtService;
@@ -107,7 +107,7 @@ public class VoteProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
-        if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
+        if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_COMMENT)) {
             context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
 
@@ -153,7 +153,7 @@ public class VoteProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
-        if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
+        if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_COMMENT)) {
             context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
 
@@ -199,7 +199,7 @@ public class VoteProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
-        if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
+        if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
             context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
 
@@ -245,7 +245,7 @@ public class VoteProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
-        if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
+        if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
             context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
 

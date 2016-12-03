@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all role model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 3, 2016
+ * @version 1.0.0.1, Dec 4, 2016
  * @since 1.8.0
  */
 public final class Role {
@@ -37,9 +37,57 @@ public final class Role {
     public static final String ROLES = "roles";
 
     /**
-     * Role name.
+     * Key of role name.
      */
     public static final String ROLE_NAME = "roleName";
+
+    /**
+     * Key of role description.
+     */
+    public static final String ROLE_DESCRIPTION = "roleDescription";
+
+    /**
+     * Key of role id.
+     */
+    public static final String ROLE_ID = "roleId";
+
+    // Role name constants
+    /**
+     * Role name - default.
+     *
+     * @deprecated change it to basic in 1.9.0 , #259: https://github.com/b3log/symphony/issues/259
+     */
+    public static final String ROLE_ID_C_DEFAULT = "defaultRole";
+
+    /**
+     * Role name - admin.
+     */
+    public static final String ROLE_ID_C_ADMIN = "adminRole";
+
+    /**
+     * Role name - leader.
+     */
+    public static final String ROLE_ID_C_LEADER = "leaderRole";
+
+    /**
+     * Role name - regular.
+     */
+    public static final String ROLE_ID_C_REGULAR = "regularRole";
+
+    /**
+     * Role name - member.
+     */
+    public static final String ROLE_ID_C_MEMBER = "memberRole";
+
+    /**
+     * Role name - basic.
+     */
+    public static final String ROLE_ID_C_BASIC = "basicRole";
+
+    /**
+     * Role name - visitor.
+     */
+    public static final String ROLE_ID_C_VISITOR = "visitorRole";
 
     /**
      * Private constructor.
