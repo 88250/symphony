@@ -28,6 +28,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -90,7 +91,7 @@ import org.json.JSONObject;
 
 /**
  * Admin processor.
- *
+ * <p>
  * <ul>
  * <li>Shows admin index (/admin/index), GET</li>
  * <li>Shows users (/admin/users), GET</li>
@@ -277,11 +278,34 @@ public class AdminProcessor {
     private static final int PAGE_SIZE = 20;
 
     /**
+     * Shows roles.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/roles", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showRoles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/roles.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        dataModel.put("sideFullAd", "");
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
      * Updates ad.
      *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
+     * @param context      the specified context
+     * @param request      the specified request
+     * @param response     the specified response
      * @param invitecodeId the specified invitecode id
      * @throws Exception exception
      */
@@ -289,7 +313,7 @@ public class AdminProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateAd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String invitecodeId) throws Exception {
+                         final String invitecodeId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/ad.ftl");
@@ -318,8 +342,8 @@ public class AdminProcessor {
     /**
      * Shows ad.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -346,8 +370,8 @@ public class AdminProcessor {
     /**
      * Shows add tag.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -367,8 +391,8 @@ public class AdminProcessor {
     /**
      * Adds a tag.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -431,7 +455,7 @@ public class AdminProcessor {
     /**
      * Sticks an article.
      *
-     * @param request the specified request
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -449,7 +473,7 @@ public class AdminProcessor {
     /**
      * Cancels stick an article.
      *
-     * @param request the specified request
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -467,7 +491,7 @@ public class AdminProcessor {
     /**
      * Generates invitecodes.
      *
-     * @param request the specified request
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -495,8 +519,8 @@ public class AdminProcessor {
     /**
      * Shows admin invitecodes.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -542,9 +566,9 @@ public class AdminProcessor {
     /**
      * Shows an invitecode.
      *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
+     * @param context      the specified context
+     * @param request      the specified request
+     * @param response     the specified response
      * @param invitecodeId the specified invitecode id
      * @throws Exception exception
      */
@@ -552,7 +576,7 @@ public class AdminProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showInvitecode(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String invitecodeId) throws Exception {
+                               final String invitecodeId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/invitecode.ftl");
@@ -567,9 +591,9 @@ public class AdminProcessor {
     /**
      * Updates an invitecode.
      *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
+     * @param context      the specified context
+     * @param request      the specified request
+     * @param response     the specified response
      * @param invitecodeId the specified invitecode id
      * @throws Exception exception
      */
@@ -577,7 +601,7 @@ public class AdminProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateInvitecode(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String invitecodeId) throws Exception {
+                                 final String invitecodeId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/invitecode.ftl");
@@ -604,8 +628,8 @@ public class AdminProcessor {
     /**
      * Shows add article.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -625,8 +649,8 @@ public class AdminProcessor {
     /**
      * Adds an article.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -697,8 +721,8 @@ public class AdminProcessor {
     /**
      * Adds a reserved word.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -751,8 +775,8 @@ public class AdminProcessor {
     /**
      * Shows add reserved word.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -772,17 +796,17 @@ public class AdminProcessor {
     /**
      * Updates a reserved word.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param id the specified reserved wordid
+     * @param id       the specified reserved wordid
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/reserved-word/{id}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String id) throws Exception {
+                                   final String id) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/reserved-word.ftl");
@@ -807,8 +831,8 @@ public class AdminProcessor {
     /**
      * Shows reserved words.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -830,17 +854,17 @@ public class AdminProcessor {
     /**
      * Shows a reserved word.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param id the specified reserved word id
+     * @param id       the specified reserved word id
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/reserved-word/{id}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String id) throws Exception {
+                                 final String id) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/reserved-word.ftl");
@@ -855,8 +879,8 @@ public class AdminProcessor {
     /**
      * Removes a reserved word.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -874,8 +898,8 @@ public class AdminProcessor {
     /**
      * Removes a comment.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -893,8 +917,8 @@ public class AdminProcessor {
     /**
      * Removes an article.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -912,8 +936,8 @@ public class AdminProcessor {
     /**
      * Shows admin index.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -940,8 +964,8 @@ public class AdminProcessor {
     /**
      * Shows admin users.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -993,17 +1017,17 @@ public class AdminProcessor {
     /**
      * Shows a user.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param userId the specified user id
+     * @param userId   the specified user id
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userId) throws Exception {
+                         final String userId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/user.ftl");
@@ -1018,8 +1042,8 @@ public class AdminProcessor {
     /**
      * Shows add user.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1039,8 +1063,8 @@ public class AdminProcessor {
     /**
      * Adds a user.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1108,17 +1132,17 @@ public class AdminProcessor {
     /**
      * Updates a user.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param userId the specified user id
+     * @param userId   the specified user id
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userId) throws Exception {
+                           final String userId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/user.ftl");
@@ -1185,17 +1209,17 @@ public class AdminProcessor {
     /**
      * Updates a user's email.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param userId the specified user id
+     * @param userId   the specified user id
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/email", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateUserEmail(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userId) throws Exception {
+                                final String userId) throws Exception {
         final JSONObject user = userQueryService.getUser(userId);
         final String oldEmail = user.optString(User.USER_EMAIL);
         final String newEmail = request.getParameter(User.USER_EMAIL);
@@ -1228,17 +1252,17 @@ public class AdminProcessor {
     /**
      * Updates a user's username.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param userId the specified user id
+     * @param userId   the specified user id
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/username", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateUserName(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userId) throws Exception {
+                               final String userId) throws Exception {
         final JSONObject user = userQueryService.getUser(userId);
         final String oldUserName = user.optString(User.USER_NAME);
         final String newUserName = request.getParameter(User.USER_NAME);
@@ -1271,17 +1295,17 @@ public class AdminProcessor {
     /**
      * Charges a user's point.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param userId the specified user id
+     * @param userId   the specified user id
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/charge-point", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void chargePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userId) throws Exception {
+                            final String userId) throws Exception {
         final String pointStr = request.getParameter(Common.POINT);
         final String memo = request.getParameter("memo");
 
@@ -1322,17 +1346,17 @@ public class AdminProcessor {
     /**
      * Deducts a user's abuse point.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param userId the specified user id
+     * @param userId   the specified user id
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/abuse-point", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void abusePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userId) throws Exception {
+                           final String userId) throws Exception {
         final String pointStr = request.getParameter(Common.POINT);
 
         try {
@@ -1381,17 +1405,17 @@ public class AdminProcessor {
     /**
      * Compensates a user's initial point.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param userId the specified user id
+     * @param userId   the specified user id
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/init-point", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void initPoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userId) throws Exception {
+                          final String userId) throws Exception {
         try {
             final JSONObject user = userQueryService.getUser(userId);
             if (null == user
@@ -1426,17 +1450,17 @@ public class AdminProcessor {
     /**
      * Exchanges a user's point.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param userId the specified user id
+     * @param userId   the specified user id
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/exchange-point", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void exchangePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userId) throws Exception {
+                              final String userId) throws Exception {
         final String pointStr = request.getParameter(Common.POINT);
 
         try {
@@ -1485,8 +1509,8 @@ public class AdminProcessor {
     /**
      * Shows admin articles.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1552,9 +1576,9 @@ public class AdminProcessor {
     /**
      * Shows an article.
      *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
+     * @param context   the specified context
+     * @param request   the specified request
+     * @param response  the specified response
      * @param articleId the specified article id
      * @throws Exception exception
      */
@@ -1562,7 +1586,7 @@ public class AdminProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String articleId) throws Exception {
+                            final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/article.ftl");
@@ -1577,9 +1601,9 @@ public class AdminProcessor {
     /**
      * Updates an article.
      *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
+     * @param context   the specified context
+     * @param request   the specified request
+     * @param response  the specified response
      * @param articleId the specified article id
      * @throws Exception exception
      */
@@ -1587,7 +1611,7 @@ public class AdminProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String articleId) throws Exception {
+                              final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/article.ftl");
@@ -1627,8 +1651,8 @@ public class AdminProcessor {
     /**
      * Shows admin comments.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1685,9 +1709,9 @@ public class AdminProcessor {
     /**
      * Shows a comment.
      *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
+     * @param context   the specified context
+     * @param request   the specified request
+     * @param response  the specified response
      * @param commentId the specified comment id
      * @throws Exception exception
      */
@@ -1695,7 +1719,7 @@ public class AdminProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String commentId) throws Exception {
+                            final String commentId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/comment.ftl");
@@ -1710,9 +1734,9 @@ public class AdminProcessor {
     /**
      * Updates a comment.
      *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
+     * @param context   the specified context
+     * @param request   the specified request
+     * @param response  the specified response
      * @param commentId the specified comment id
      * @throws Exception exception
      */
@@ -1720,7 +1744,7 @@ public class AdminProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String commentId) throws Exception {
+                              final String commentId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/comment.ftl");
@@ -1753,8 +1777,8 @@ public class AdminProcessor {
     /**
      * Shows admin miscellaneous.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1777,8 +1801,8 @@ public class AdminProcessor {
     /**
      * Updates admin miscellaneous.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1820,8 +1844,8 @@ public class AdminProcessor {
     /**
      * Shows admin tags.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1886,17 +1910,17 @@ public class AdminProcessor {
     /**
      * Shows a tag.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param tagId the specified tag id
+     * @param tagId    the specified tag id
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String tagId) throws Exception {
+                        final String tagId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/tag.ftl");
@@ -1911,17 +1935,17 @@ public class AdminProcessor {
     /**
      * Updates a tag.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param tagId the specified tag id
+     * @param tagId    the specified tag id
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String tagId) throws Exception {
+                          final String tagId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/tag.ftl");
@@ -1964,8 +1988,8 @@ public class AdminProcessor {
     /**
      * Shows admin domains.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -2024,8 +2048,8 @@ public class AdminProcessor {
     /**
      * Shows a domain.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param domainId the specified domain id
      * @throws Exception exception
@@ -2034,7 +2058,7 @@ public class AdminProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String domainId) throws Exception {
+                           final String domainId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/domain.ftl");
@@ -2050,8 +2074,8 @@ public class AdminProcessor {
     /**
      * Updates a domain.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param domainId the specified domain id
      * @throws Exception exception
@@ -2060,7 +2084,7 @@ public class AdminProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String domainId) throws Exception {
+                             final String domainId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/domain.ftl");
@@ -2098,8 +2122,8 @@ public class AdminProcessor {
     /**
      * Shows add domain.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -2119,8 +2143,8 @@ public class AdminProcessor {
     /**
      * Adds a domain.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -2184,8 +2208,8 @@ public class AdminProcessor {
     /**
      * Removes a domain.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -2203,8 +2227,8 @@ public class AdminProcessor {
     /**
      * Adds a tag into a domain.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param domainId the specified domain id
      * @throws Exception exception
@@ -2213,7 +2237,7 @@ public class AdminProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void addDomainTag(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response, final String domainId)
+                             final HttpServletRequest request, final HttpServletResponse response, final String domainId)
             throws Exception {
         String tagTitle = request.getParameter(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
@@ -2297,8 +2321,8 @@ public class AdminProcessor {
     /**
      * Removes a tag from a domain.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param domainId the specified domain id
      * @throws Exception exception
@@ -2307,7 +2331,7 @@ public class AdminProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void removeDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String domainId)
+                             final String domainId)
             throws Exception {
         final String tagTitle = request.getParameter(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
