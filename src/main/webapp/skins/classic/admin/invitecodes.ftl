@@ -11,7 +11,7 @@
         <ul>
             <#list invitecodes as item>
             <li>
-                <div class="fn-clear first">
+                <div class="fn-clear">
                     <span class="content-reset"><kbd>${item.code}</kbd></span>&nbsp;
                     <#if 0 == item.status>
                     <span class="ft-blue">${usedLabel}</span>
