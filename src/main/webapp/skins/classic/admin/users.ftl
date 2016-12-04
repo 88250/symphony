@@ -11,7 +11,7 @@
         <ul>
             <#list users as item>
             <li>
-                <div class="fn-clear first">
+                <div class="fn-clear">
                     <div class="avatar-small tooltipped tooltipped-se" aria-label="${item.userName}" 
                          style="background-image:url('${item.userAvatarURL}')"></div> &nbsp;
                     <a href="${servePath}/member/${item.userName}">${item.userName}</a>

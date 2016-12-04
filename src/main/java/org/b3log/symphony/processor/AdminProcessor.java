@@ -136,7 +136,8 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.23.5.17, Nov 15, 2016
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 2.24.5.17, Dec 4, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -276,6 +277,52 @@ public class AdminProcessor {
      * Pagination page size.
      */
     private static final int PAGE_SIZE = 20;
+
+    /**
+     * Shows roles - manager user.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/roles/users", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showRolesUsers(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/roles-users.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        dataModel.put("sideFullAd", "");
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows roles - manager permission.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/roles/permissions", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showRolesPermissions(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/roles-permissions.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        dataModel.put("sideFullAd", "");
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
 
     /**
      * Shows roles.
