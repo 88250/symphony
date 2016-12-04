@@ -62,7 +62,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.8.18, Nov 27, 2016
+ * @version 2.12.9.18, Dec 3, 2016
  * @since 0.2.0
  */
 @Service
@@ -173,6 +173,9 @@ public class CommentMgmtService {
             final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
             final JSONObject article = articleRepository.get(articleId);
             article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) - 1);
+            // Just clear latest time and commenter name, do not get the real latest comment to update
+            article.put(Article.ARTICLE_LATEST_CMT_TIME, 0);
+            article.put(Article.ARTICLE_LATEST_CMTER_NAME, "");
             articleRepository.update(articleId, article);
 
             final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);

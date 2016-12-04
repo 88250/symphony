@@ -93,7 +93,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.20.38, Nov 28, 2016
+ * @version 2.25.21.39, Dec 3, 2016
  * @since 0.2.0
  */
 @Service
@@ -1648,36 +1648,41 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getIndexRecentArticles(final int avatarViewMode) throws ServiceException {
-        final Query query = new Query()
-                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageSize(Symphonys.getInt("indexListCnt")).setCurrentPageNum(1).setPageCount(1);
-        query.setFilter(makeRecentArticleShowingFilter());
-        query.addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Article.ARTICLE_STICK, Long.class).
-                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
-                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_STATUS, Integer.class).
-                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
-                addProjection(Article.ARTICLE_TYPE, Integer.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_TAGS, String.class).
-                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
-                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class);
-
         try {
             List<JSONObject> ret;
             Stopwatchs.start("Query index recent articles");
             try {
-                final JSONObject result = articleRepository.get(query);
-                ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+                ret = articleRepository.select("SELECT\n"
+                        + "	oId,\n"
+                        + "	articleStick,\n"
+                        + "	articleCreateTime,\n"
+                        + "	articleUpdateTime,\n"
+                        + "	articleLatestCmtTime,\n"
+                        + "	articleAuthorId,\n"
+                        + "	articleTitle,\n"
+                        + "	articleStatus,\n"
+                        + "	articleViewCount,\n"
+                        + "	articleType,\n"
+                        + "	articlePermalink,\n"
+                        + "	articleTags,\n"
+                        + "	articleLatestCmterName,\n"
+                        + "	syncWithSymphonyClient,\n"
+                        + "	articleCommentCount,\n"
+                        + "	articleAnonymous,\n"
+                        + "	articlePerfect,\n"
+                        + "	articleContent,\n"
+                        + "	CASE\n"
+                        + "WHEN articleLatestCmtTime = 0 THEN\n"
+                        + "	oId\n"
+                        + "ELSE\n"
+                        + "	articleLatestCmtTime\n"
+                        + "END AS flag\n"
+                        + "FROM\n"
+                        + "	`symphony_article`\n"
+                        + "ORDER BY\n"
+                        + "	articleStick DESC,\n"
+                        + "	flag DESC\n"
+                        + "LIMIT ?", Symphonys.getInt("indexListCnt"));
             } finally {
                 Stopwatchs.end();
             }
