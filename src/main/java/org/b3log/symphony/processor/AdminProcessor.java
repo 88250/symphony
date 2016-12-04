@@ -17,18 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -51,43 +39,24 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.ArticleBaiduSender;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Domain;
-import org.b3log.symphony.model.Invitecode;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.Option;
-import org.b3log.symphony.model.Pointtransfer;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.AdminCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
-import org.b3log.symphony.service.ArticleMgmtService;
-import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.CommentMgmtService;
-import org.b3log.symphony.service.CommentQueryService;
-import org.b3log.symphony.service.DomainMgmtService;
-import org.b3log.symphony.service.DomainQueryService;
-import org.b3log.symphony.service.InvitecodeMgmtService;
-import org.b3log.symphony.service.InvitecodeQueryService;
-import org.b3log.symphony.service.NotificationMgmtService;
-import org.b3log.symphony.service.OptionMgmtService;
-import org.b3log.symphony.service.OptionQueryService;
-import org.b3log.symphony.service.PointtransferMgmtService;
-import org.b3log.symphony.service.PointtransferQueryService;
-import org.b3log.symphony.service.SearchMgmtService;
-import org.b3log.symphony.service.TagMgmtService;
-import org.b3log.symphony.service.TagQueryService;
-import org.b3log.symphony.service.UserMgmtService;
-import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * Admin processor.
@@ -133,6 +102,7 @@ import org.json.JSONObject;
  * <li>Shows ad (/admin/ad), GET</li>
  * <li>Updates ad (/admin/ad), POST</li>
  * </ul>
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
@@ -146,137 +116,115 @@ public class AdminProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(AdminProcessor.class.getName());
-
+    private static final Logger LOGGER = Logger.getLogger(AdminProcessor.class);
+    /**
+     * Pagination window size.
+     */
+    private static final int WINDOW_SIZE = 15;
+    /**
+     * Pagination page size.
+     */
+    private static final int PAGE_SIZE = 20;
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
-
     /**
      * User query service.
      */
     @Inject
     private UserQueryService userQueryService;
-
     /**
      * User management service.
      */
     @Inject
     private UserMgmtService userMgmtService;
-
     /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
-
     /**
      * Article management service.
      */
     @Inject
     private ArticleMgmtService articleMgmtService;
-
     /**
      * Comment query service.
      */
     @Inject
     private CommentQueryService commentQueryService;
-
     /**
      * Comment management service.
      */
     @Inject
     private CommentMgmtService commentMgmtService;
-
     /**
      * Option query service.
      */
     @Inject
     private OptionQueryService optionQueryService;
-
     /**
      * Option management service.
      */
     @Inject
     private OptionMgmtService optionMgmtService;
-
     /**
      * Domain query service.
      */
     @Inject
     private DomainQueryService domainQueryService;
-
     /**
      * Tag query service.
      */
     @Inject
     private TagQueryService tagQueryService;
-
     /**
      * Domain management service.
      */
     @Inject
     private DomainMgmtService domainMgmtService;
-
     /**
      * Tag management service.
      */
     @Inject
     private TagMgmtService tagMgmtService;
-
     /**
      * Pointtransfer management service.
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
-
     /**
      * Pointtransfer query service.
      */
     @Inject
     private PointtransferQueryService pointtransferQueryService;
-
     /**
      * Notification management service.
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
-
     /**
      * Search management service.
      */
     @Inject
     private SearchMgmtService searchMgmtService;
-
     /**
      * Invitecode query service.
      */
     @Inject
     private InvitecodeQueryService invitecodeQueryService;
-
     /**
      * Invitecode management service.
      */
     @Inject
     private InvitecodeMgmtService invitecodeMgmtService;
-
     /**
      * Filler.
      */
     @Inject
     private Filler filler;
-
-    /**
-     * Pagination window size.
-     */
-    private static final int WINDOW_SIZE = 15;
-
-    /**
-     * Pagination page size.
-     */
-    private static final int PAGE_SIZE = 20;
 
     /**
      * Shows roles - manager user.
@@ -296,7 +244,8 @@ public class AdminProcessor {
         renderer.setTemplateName("admin/roles-users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModel.put("sideFullAd", "");
+
+
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
