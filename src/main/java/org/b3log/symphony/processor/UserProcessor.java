@@ -91,6 +91,7 @@ import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Languages;
+import org.b3log.symphony.util.Networks;
 import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
@@ -135,7 +136,7 @@ import org.json.JSONObject;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.14.28, Nov 23, 2016
+ * @version 1.26.14.29, Dec 4, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1753,13 +1754,14 @@ public class UserProcessor {
             return;
         }
 
-//        final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
-//        if (isIPv4(maybeIP)) {
-//            LOGGER.log(Level.WARN, "Sync add user[name={0}, host={1}] error, caused by the client host is invalid",
-//                    name, clientHost);
-//
-//            return;
-//        }
+        final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
+        if (Networks.isIPv4(maybeIP)) {
+            LOGGER.log(Level.WARN, "Sync add user[name={0}, host={1}] error, caused by the client host is IPv4",
+                    name, clientHost);
+
+            return;
+        }
+
         JSONObject user = userQueryService.getUserByEmail(email);
         if (null == user) {
             user = new JSONObject();
@@ -1783,7 +1785,8 @@ public class UserProcessor {
 
                 context.renderTrueResult();
             } catch (final ServiceException e) {
-                LOGGER.log(Level.ERROR, "Sync add user[name={0}, host={1}] error: " + e.getMessage(), name, clientHost);
+                LOGGER.log(Level.ERROR, "Sync add user[name={0}, email={1}, host={2}] error: {3}",
+                         name, email, clientHost, e.getMessage());
             }
 
             return;
