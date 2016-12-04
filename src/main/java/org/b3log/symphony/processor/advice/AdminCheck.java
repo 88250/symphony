@@ -26,12 +26,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.logging.Level;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
+import org.b3log.symphony.model.Role;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
@@ -81,7 +81,7 @@ public class AdminCheck extends BeforeRequestProcessAdvice {
             currentUser = userQueryService.getCurrentUser(request);
 
             final String role = currentUser.optString(User.USER_ROLE);
-            if (!Role.ADMIN_ROLE.equals(role)) {
+            if (!Role.ROLE_ID_C_ADMIN.equals(role)) {
                 throw new RequestProcessAdviceException(exception);
             }
 

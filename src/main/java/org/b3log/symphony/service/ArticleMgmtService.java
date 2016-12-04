@@ -34,7 +34,6 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
@@ -57,6 +56,7 @@ import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Revision;
 import org.b3log.symphony.model.Reward;
+import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
@@ -394,7 +394,7 @@ public class ArticleMgmtService {
             author = userRepository.get(authorId);
 
             if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.getLong("minStepArticleTime")
-                    && !Role.ADMIN_ROLE.equals(author.optString(User.USER_ROLE))) {
+                    && !Role.ROLE_ID_C_ADMIN.equals(author.optString(User.USER_ROLE))) {
 
                 LOGGER.log(Level.WARN, "Adds article too frequent [userName={0}]", author.optString(User.USER_NAME));
                 throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));

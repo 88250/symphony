@@ -27,7 +27,6 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
@@ -45,6 +44,7 @@ import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Reward;
+import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
@@ -62,7 +62,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.8.18, Nov 27, 2016
+ * @version 2.12.9.18, Dec 3, 2016
  * @since 0.2.0
  */
 @Service
@@ -173,6 +173,9 @@ public class CommentMgmtService {
             final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
             final JSONObject article = articleRepository.get(articleId);
             article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) - 1);
+            // Just clear latest time and commenter name, do not get the real latest comment to update
+            article.put(Article.ARTICLE_LATEST_CMT_TIME, 0);
+            article.put(Article.ARTICLE_LATEST_CMTER_NAME, "");
             articleRepository.update(articleId, article);
 
             final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
@@ -310,7 +313,7 @@ public class CommentMgmtService {
         final int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
 
         if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")
-                && !Role.ADMIN_ROLE.equals(commenter.optString(User.USER_ROLE))
+                && !Role.ROLE_ID_C_ADMIN.equals(commenter.optString(User.USER_ROLE))
                 && !UserExt.DEFAULT_CMTER_ROLE.equals(commenter.optString(User.USER_ROLE))) {
             LOGGER.log(Level.WARN, "Adds comment too frequent [userName={0}]", commenter.optString(User.USER_NAME));
             throw new ServiceException(langPropsService.get("tooFrequentCmtLabel"));

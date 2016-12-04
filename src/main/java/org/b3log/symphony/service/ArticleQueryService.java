@@ -41,7 +41,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.CompositeFilter;
 import org.b3log.latke.repository.CompositeFilterOperator;
@@ -64,6 +63,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Revision;
+import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
@@ -93,7 +93,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.19.37, Nov 18, 2016
+ * @version 2.25.21.39, Dec 3, 2016
  * @since 0.2.0
  */
 @Service
@@ -1648,36 +1648,41 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getIndexRecentArticles(final int avatarViewMode) throws ServiceException {
-        final Query query = new Query()
-                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageSize(Symphonys.getInt("indexListCnt")).setCurrentPageNum(1).setPageCount(1);
-        query.setFilter(makeRecentArticleShowingFilter());
-        query.addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Article.ARTICLE_STICK, Long.class).
-                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
-                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_STATUS, Integer.class).
-                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
-                addProjection(Article.ARTICLE_TYPE, Integer.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_TAGS, String.class).
-                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
-                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class);
-
         try {
             List<JSONObject> ret;
             Stopwatchs.start("Query index recent articles");
             try {
-                final JSONObject result = articleRepository.get(query);
-                ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+                ret = articleRepository.select("SELECT\n"
+                        + "	oId,\n"
+                        + "	articleStick,\n"
+                        + "	articleCreateTime,\n"
+                        + "	articleUpdateTime,\n"
+                        + "	articleLatestCmtTime,\n"
+                        + "	articleAuthorId,\n"
+                        + "	articleTitle,\n"
+                        + "	articleStatus,\n"
+                        + "	articleViewCount,\n"
+                        + "	articleType,\n"
+                        + "	articlePermalink,\n"
+                        + "	articleTags,\n"
+                        + "	articleLatestCmterName,\n"
+                        + "	syncWithSymphonyClient,\n"
+                        + "	articleCommentCount,\n"
+                        + "	articleAnonymous,\n"
+                        + "	articlePerfect,\n"
+                        + "	articleContent,\n"
+                        + "	CASE\n"
+                        + "WHEN articleLatestCmtTime = 0 THEN\n"
+                        + "	oId\n"
+                        + "ELSE\n"
+                        + "	articleLatestCmtTime\n"
+                        + "END AS flag\n"
+                        + "FROM\n"
+                        + "	`symphony_article`\n"
+                        + "ORDER BY\n"
+                        + "	articleStick DESC,\n"
+                        + "	flag DESC\n"
+                        + "LIMIT ?", Symphonys.getInt("indexListCnt"));
             } finally {
                 Stopwatchs.end();
             }
@@ -2371,7 +2376,7 @@ public class ArticleQueryService {
             final String currentRole = null == currentUser ? "" : currentUser.optString(User.USER_ROLE);
             final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
             if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
-                    && !authorName.equals(currentUserName) && !Role.ADMIN_ROLE.equals(currentRole)) {
+                    && !authorName.equals(currentUserName) && !Role.ROLE_ID_C_ADMIN.equals(currentRole)) {
                 boolean invited = false;
                 for (final String userName : userNames) {
                     if (userName.equals(currentUserName)) {
@@ -2429,7 +2434,7 @@ public class ArticleQueryService {
             // MP3 player render
             final StringBuffer contentBuilder = new StringBuffer();
             articleContent = article.optString(Article.ARTICLE_CONTENT);
-            final String MP3_URL_REGEX = "<p><a href.*\\.mp3.*</a>( )*</p>";
+            final String MP3_URL_REGEX = "<p>( )*<a href.*\\.mp3.*</a>( )*</p>";
             final Pattern p = Pattern.compile(MP3_URL_REGEX);
             final Matcher m = p.matcher(articleContent);
 
@@ -2569,39 +2574,33 @@ public class ArticleQueryService {
      * @param article the specified article content
      */
     private void markdown(final JSONObject article) {
-        Stopwatchs.start("Markdown");
+        String content = article.optString(Article.ARTICLE_CONTENT);
 
-        try {
-            String content = article.optString(Article.ARTICLE_CONTENT);
+        final int articleType = article.optInt(Article.ARTICLE_TYPE);
+        if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+            content = Markdowns.toHTML(content);
+            content = Markdowns.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+        } else {
+            final Document.OutputSettings outputSettings = new Document.OutputSettings();
+            outputSettings.prettyPrint(false);
 
-            final int articleType = article.optInt(Article.ARTICLE_TYPE);
-            if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
-                content = Markdowns.toHTML(content);
-                content = Markdowns.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
-            } else {
-                final Document.OutputSettings outputSettings = new Document.OutputSettings();
-                outputSettings.prettyPrint(false);
+            content = Jsoup.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK),
+                    Whitelist.relaxed().addAttributes(":all", "id", "target", "class").
+                            addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
+                            .addAttributes("audio", "controls", "src"), outputSettings);
 
-                content = Jsoup.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK),
-                        Whitelist.relaxed().addAttributes(":all", "id", "target", "class").
-                                addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
-                                .addAttributes("audio", "controls", "src"), outputSettings);
+            content = content.replace("\n", "\\n").replace("'", "\\'")
+                    .replace("\"", "\\\"");
+        }
 
-                content = content.replace("\n", "\\n").replace("'", "\\'")
-                        .replace("\"", "\\\"");
-            }
+        article.put(Article.ARTICLE_CONTENT, content);
 
-            article.put(Article.ARTICLE_CONTENT, content);
-
-            if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {
-                String rewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
-                rewardContent = Markdowns.toHTML(rewardContent);
-                rewardContent = Markdowns.clean(rewardContent,
-                        Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
-                article.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
-            }
-        } finally {
-            Stopwatchs.end();
+        if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {
+            String rewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
+            rewardContent = Markdowns.toHTML(rewardContent);
+            rewardContent = Markdowns.clean(rewardContent,
+                    Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+            article.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
         }
     }
 

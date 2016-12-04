@@ -17,7 +17,10 @@
  */
 package org.b3log.symphony.util;
 
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,7 +36,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
@@ -43,6 +45,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.MD5;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -58,47 +61,7 @@ import org.pegdown.LinkRenderer;
 import org.pegdown.PegDownProcessor;
 import org.pegdown.Printer;
 import org.pegdown.VerbatimSerializer;
-import org.pegdown.ast.AbbreviationNode;
-import org.pegdown.ast.AnchorLinkNode;
-import org.pegdown.ast.AutoLinkNode;
-import org.pegdown.ast.BlockQuoteNode;
-import org.pegdown.ast.BulletListNode;
-import org.pegdown.ast.CodeNode;
-import org.pegdown.ast.DefinitionListNode;
-import org.pegdown.ast.DefinitionNode;
-import org.pegdown.ast.DefinitionTermNode;
-import org.pegdown.ast.ExpImageNode;
-import org.pegdown.ast.ExpLinkNode;
-import org.pegdown.ast.HeaderNode;
-import org.pegdown.ast.HtmlBlockNode;
-import org.pegdown.ast.InlineHtmlNode;
-import org.pegdown.ast.ListItemNode;
-import org.pegdown.ast.MailLinkNode;
-import org.pegdown.ast.Node;
-import org.pegdown.ast.OrderedListNode;
-import org.pegdown.ast.ParaNode;
-import org.pegdown.ast.QuotedNode;
-import org.pegdown.ast.RefImageNode;
-import org.pegdown.ast.RefLinkNode;
-import org.pegdown.ast.ReferenceNode;
-import org.pegdown.ast.RootNode;
-import org.pegdown.ast.SimpleNode;
-import org.pegdown.ast.SpecialTextNode;
-import org.pegdown.ast.StrikeNode;
-import org.pegdown.ast.StrongEmphSuperNode;
-import org.pegdown.ast.SuperNode;
-import org.pegdown.ast.TableBodyNode;
-import org.pegdown.ast.TableCaptionNode;
-import org.pegdown.ast.TableCellNode;
-import org.pegdown.ast.TableColumnNode;
-import org.pegdown.ast.TableHeaderNode;
-import org.pegdown.ast.TableNode;
-import org.pegdown.ast.TableRowNode;
-import org.pegdown.ast.TaskListNode;
-import org.pegdown.ast.TextNode;
-import org.pegdown.ast.VerbatimNode;
-import org.pegdown.ast.Visitor;
-import org.pegdown.ast.WikiLinkNode;
+import org.pegdown.ast.*;
 import org.pegdown.plugins.ToHtmlSerializerPlugin;
 
 /**
@@ -112,7 +75,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.9.9.15, Nov 27, 2016
+ * @version 1.10.9.16, Nov 29, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -140,39 +103,32 @@ public final class Markdowns {
     /**
      * Markdown to HTML timeout.
      */
-    private static final int MD_TIMEOUT = 500;
+    private static final int MD_TIMEOUT = 800;
 
     /**
      * Whether marked is available.
      */
     public static boolean MARKED_AVAILABLE;
 
-    /**
-     * marked options.
-     */
-    private static final String MARKED_OPTIONS = "--gfm --breaks --tables --smart-lists";
+    private static final String MARKED_ENGINE_URL = "http://localhost:8250";
 
     static {
         try {
-            Process p;
-            if (SystemUtils.IS_OS_WINDOWS) {
-                p = Runtime.getRuntime().exec("marked.cmd");
-            } else {
-                p = Runtime.getRuntime().exec("marked");
-            }
+            final URL url = new URL(MARKED_ENGINE_URL);
+            final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
 
-            final OutputStream outputStream = p.getOutputStream();
+            final OutputStream outputStream = conn.getOutputStream();
             IOUtils.write("Symphony 大法好", outputStream, "UTF-8");
             IOUtils.closeQuietly(outputStream);
 
-            //final String stderr = IOUtils.toString(p.getErrorStream());
-            //LOGGER.info("stderr: " + stderr);
-            final String stdout = IOUtils.toString(p.getInputStream(), "UTF-8");
-            //LOGGER.info("stdout: " + stdout);
+            final InputStream inputStream = conn.getInputStream();
+            final String html = IOUtils.toString(inputStream, "UTF-8");
+            IOUtils.closeQuietly(inputStream);
 
-            p.destroy();
+            conn.disconnect();
 
-            MARKED_AVAILABLE = StringUtils.contains(stdout, "<p>Symphony 大法好</p>");
+            MARKED_AVAILABLE = StringUtils.contains(html, "<p>Symphony 大法好</p>");
 
             if (MARKED_AVAILABLE) {
                 LOGGER.log(Level.INFO, "[marked] is available, uses it for markdown processing");
@@ -375,6 +331,7 @@ public final class Markdowns {
             }
         };
 
+        Stopwatchs.start("Md to HTML");
         try {
             final Future<String> future = pool.submit(call);
 
@@ -394,38 +351,38 @@ public final class Markdowns {
             LOGGER.log(Level.ERROR, "Markdown failed [md=" + markdownText + "]", e);
         } finally {
             pool.shutdownNow();
+
+            Stopwatchs.end();
         }
 
         return LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
     }
 
     private static String toHtmlByMarked(final String markdownText) throws Exception {
-        final Process p;
-        if (SystemUtils.IS_OS_WINDOWS) {
-            p = Runtime.getRuntime().exec("marked.cmd " + MARKED_OPTIONS);
-        } else {
-            p = Runtime.getRuntime().exec("marked " + MARKED_OPTIONS);
-        }
+        final URL url = new URL(MARKED_ENGINE_URL);
+        final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setDoOutput(true);
 
-        final OutputStream outputStream = p.getOutputStream();
-
+        final OutputStream outputStream = conn.getOutputStream();
         IOUtils.write(markdownText, outputStream, "UTF-8");
         IOUtils.closeQuietly(outputStream);
 
-        String ret = IOUtils.toString(p.getInputStream(), "UTF-8");
+        final InputStream inputStream = conn.getInputStream();
+        final String html = IOUtils.toString(inputStream, "UTF-8");
+        IOUtils.closeQuietly(inputStream);
 
-        p.destroy();
+        conn.disconnect();
 
         // Pangu space
-        final Document doc = Jsoup.parse(ret);
+        final Document doc = Jsoup.parse(html);
         doc.traverse(new NodeVisitor() {
             @Override
             public void head(final org.jsoup.nodes.Node node, int depth) {
                 if (node instanceof org.jsoup.nodes.TextNode) {
-                   // final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
-                    
-                   // textNode.text(Pangu.spacingText(textNode.getWholeText()));
-                   // FIXME: Pangu space
+                    // final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
+
+                    // textNode.text(Pangu.spacingText(textNode.getWholeText()));
+                    // FIXME: Pangu space
                 }
             }
 
@@ -436,7 +393,7 @@ public final class Markdowns {
 
         doc.outputSettings().prettyPrint(false);
 
-        ret = doc.html();
+        String ret = doc.html();
         ret = StringUtils.substringBetween(ret, "<body>", "</body>");
         ret = StringUtils.trim(ret);
 

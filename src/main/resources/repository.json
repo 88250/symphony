@@ -1,11 +1,85 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.32.7.17, Oct 26, 2016",
+    "version": "4.32.7.17, Dec 3, 2016",
     "authors": [
         "Liang Ding", "Zephyr", "Bill Ho"
     ],
     "since": "0.2.0",
     "repositories": [
+        {
+            "name": "permission",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "permissionCategory",
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "name": "role",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "roleName",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "roleDescription",
+                    "type": "String",
+                    "length": 2048
+                }
+            ]
+        },
+        {
+            "name": "role_permission",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "roleId",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "permissionId",
+                    "type": "String",
+                    "length": 32
+                }
+            ]
+        },
+        {
+            "name": "user_role",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "roleId",
+                    "type": "String",
+                    "length": 19
+                }
+            ]
+        },
         {
             "name": "link",
             "keys": [
