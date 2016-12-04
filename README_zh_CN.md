@@ -340,6 +340,7 @@ Sym 的诞生离不开以下开源项目：
 * [FreeMarker](http://freemarker.org)：好用的 Java 模版引擎
 * [Latke](https://github.com/b3log/latke)：Java Web 框架 
 * [NetBeans](https://netbeans.org)：全宇宙暂时排名第三的 IDE
+* [IntelliJ IDEA](https://www.jetbrains.com/idea)：全宇宙暂时排名第二的 IDE
 
 ----
 
