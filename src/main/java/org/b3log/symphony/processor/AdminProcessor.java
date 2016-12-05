@@ -117,109 +117,137 @@ public class AdminProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AdminProcessor.class);
+
     /**
      * Pagination window size.
      */
     private static final int WINDOW_SIZE = 15;
+
     /**
      * Pagination page size.
      */
     private static final int PAGE_SIZE = 20;
+
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
+
     /**
      * User query service.
      */
     @Inject
     private UserQueryService userQueryService;
+
     /**
      * User management service.
      */
     @Inject
     private UserMgmtService userMgmtService;
+
     /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
     /**
      * Article management service.
      */
     @Inject
     private ArticleMgmtService articleMgmtService;
+
     /**
      * Comment query service.
      */
     @Inject
     private CommentQueryService commentQueryService;
+
     /**
      * Comment management service.
      */
     @Inject
     private CommentMgmtService commentMgmtService;
+
     /**
      * Option query service.
      */
     @Inject
     private OptionQueryService optionQueryService;
+
     /**
      * Option management service.
      */
     @Inject
     private OptionMgmtService optionMgmtService;
+
     /**
      * Domain query service.
      */
     @Inject
     private DomainQueryService domainQueryService;
+
     /**
      * Tag query service.
      */
     @Inject
     private TagQueryService tagQueryService;
+
     /**
      * Domain management service.
      */
     @Inject
     private DomainMgmtService domainMgmtService;
+
     /**
      * Tag management service.
      */
     @Inject
     private TagMgmtService tagMgmtService;
+
     /**
      * Pointtransfer management service.
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
+
     /**
      * Pointtransfer query service.
      */
     @Inject
     private PointtransferQueryService pointtransferQueryService;
+
     /**
      * Notification management service.
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
+
     /**
      * Search management service.
      */
     @Inject
     private SearchMgmtService searchMgmtService;
+
     /**
      * Invitecode query service.
      */
     @Inject
     private InvitecodeQueryService invitecodeQueryService;
+
     /**
      * Invitecode management service.
      */
     @Inject
     private InvitecodeMgmtService invitecodeMgmtService;
+
+    /**
+     * Role query service.
+     */
+    @Inject
+    private RoleQueryService roleQueryService;
+
     /**
      * Filler.
      */
@@ -243,9 +271,6 @@ public class AdminProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/roles-users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
-
-
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
@@ -291,7 +316,8 @@ public class AdminProcessor {
         renderer.setTemplateName("admin/roles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModel.put("sideFullAd", "");
+        final JSONObject result = roleQueryService.getRoles(1, Integer.MAX_VALUE, 10);
+        dataModel.put(Role.ROLES, result.opt(Role.ROLES));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
