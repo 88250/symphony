@@ -17,12 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -49,15 +43,23 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Search processor.
- *
+ * <p>
  * <ul>
  * <li>Searches keyword (/search), GET</li>
  * </ul>
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Oct 26, 2016
+ * @version 1.1.1.3, Dec 6, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -95,8 +97,8 @@ public class SearchProcessor {
     /**
      * Searches.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -118,7 +120,11 @@ public class SearchProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final String keyword = request.getParameter("key");
+        String keyword = request.getParameter("key");
+        if (StringUtils.isBlank(keyword)) {
+            keyword = "";
+        }
+
         dataModel.put(Common.KEY, keyword);
 
         final String p = request.getParameter("p");
