@@ -255,45 +255,22 @@ public class AdminProcessor {
     private Filler filler;
 
     /**
-     * Shows roles - manager user.
+     * Shows role permissions.
      *
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/admin/roles/users", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/admin/role/permissions", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void showRolesUsers(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    public void showRolePermissions(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("admin/roles-users.ftl");
+        renderer.setTemplateName("admin/role-permissions.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
-        filler.fillHeaderAndFooter(request, response, dataModel);
-    }
-
-    /**
-     * Shows roles - manager permission.
-     *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/admin/roles/permissions", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
-    public void showRolesPermissions(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("admin/roles-permissions.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        dataModel.put("sideFullAd", "");
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
