@@ -1679,7 +1679,8 @@ public class ArticleQueryService {
                         + "END AS flag\n"
                         + "FROM\n"
                         + "	`symphony_article`\n"
-                        + "ORDER BY\n"
+                        + " WHERE `articleType` != 1 AND `articleStatus` = 0 AND `articleTags` != 'Sandbox'\n"
+                        + " ORDER BY\n"
                         + "	articleStick DESC,\n"
                         + "	flag DESC\n"
                         + "LIMIT ?", Symphonys.getInt("indexListCnt"));
