@@ -46,7 +46,7 @@ import java.util.List;
  * Role query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 5, 2016
+ * @version 1.1.0.0, Dec 7, 2016
  * @since 1.8.0
  */
 @Service
@@ -74,6 +74,30 @@ public class RoleQueryService {
      */
     @Inject
     private PermissionRepository permissionRepository;
+
+    /**
+     * Gets permissions of an role specified by the given role id.
+     *
+     * @param roleId the given role id
+     * @return a list of permissions, returns an empty list if not found
+     */
+    public List<JSONObject> getPermissions(final String roleId) {
+        final List<JSONObject> ret = new ArrayList<>();
+
+        try {
+            final List<JSONObject> rolePermissions = rolePermissionRepository.getByRoleId(roleId);
+            for (final JSONObject rolePermission : rolePermissions) {
+                final String permissionId = rolePermission.optString(Permission.PERMISSION_ID);
+                final JSONObject permission = permissionRepository.get(permissionId);
+
+                ret.add(permission);
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets permissions of role [id=" + roleId + "] failed", e);
+        }
+
+        return ret;
+    }
 
     /**
      * Gets roles by the specified request json object.

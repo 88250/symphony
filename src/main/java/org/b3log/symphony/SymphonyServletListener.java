@@ -19,16 +19,6 @@ package org.b3log.symphony;
 
 import eu.bitwalker.useragentutils.BrowserType;
 import eu.bitwalker.useragentutils.UserAgent;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-import java.util.ResourceBundle;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -43,37 +33,15 @@ import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
-import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.MD5;
-import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.StaticResources;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.Strings;
+import org.b3log.latke.util.*;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.cache.TagCache;
-import org.b3log.symphony.event.ArticleBaiduSender;
-import org.b3log.symphony.event.ArticleNotifier;
-import org.b3log.symphony.event.ArticleQQSender;
-import org.b3log.symphony.event.ArticleSearchAdder;
-import org.b3log.symphony.event.ArticleSearchUpdater;
-import org.b3log.symphony.event.CommentNotifier;
+import org.b3log.symphony.event.*;
 import org.b3log.symphony.event.solo.ArticleSender;
 import org.b3log.symphony.event.solo.ArticleUpdater;
 import org.b3log.symphony.event.solo.CommentSender;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Option;
-import org.b3log.symphony.model.Permission;
-import org.b3log.symphony.model.Role;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.repository.OptionRepository;
-import org.b3log.symphony.repository.PermissionRepository;
-import org.b3log.symphony.repository.RolePermissionRepository;
-import org.b3log.symphony.repository.RoleRepository;
-import org.b3log.symphony.repository.TagRepository;
-import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.model.*;
+import org.b3log.symphony.repository.*;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.TagMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -83,12 +51,23 @@ import org.b3log.symphony.util.Languages;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+import java.util.ResourceBundle;
+
 /**
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.17.7.19, Dec 4, 2016
+ * @version 3.17.8.19, Dec 7, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -97,17 +76,14 @@ public final class SymphonyServletListener extends AbstractServletListener {
      * Symphony version.
      */
     public static final String VERSION = "1.6.0";
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(SymphonyServletListener.class.getName());
-
     /**
      * JSONO print indent factor.
      */
     public static final int JSON_PRINT_INDENT_FACTOR = 4;
-
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(SymphonyServletListener.class.getName());
     /**
      * Bean manager.
      */
@@ -256,7 +232,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final HttpSession session = httpServletRequest.getSession();
         LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
                 new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
-                    session.isNew()});
+                        session.isNew()});
 
         resolveSkinDir(httpServletRequest);
     }
@@ -477,6 +453,14 @@ public final class SymphonyServletListener extends AbstractServletListener {
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN_TAG);
             permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_DOMAIN_UPDATE_DOMAIN_BASIC);
+            permissionRepository.add(permission);
+
+            // invitecode management permissions
+            permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_IC);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_IC_GEN_IC);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_IC_UPDATE_IC_BASIC);
             permissionRepository.add(permission);
 
             // misc management permissions
