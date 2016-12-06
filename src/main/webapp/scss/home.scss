@@ -367,44 +367,43 @@ label.article-anonymous {
 /* end follow */
 
 /* start admin */
-.admin .form {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-}
+.admin {
+    .form {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
 
-.admin .avatar {
-    height: 17px;
-    width: 17px;
-    vertical-align: top;
-    margin-right: 5px;
-}
+    .tags {
+        display: inline-block;
+        width: 50%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        vertical-align: bottom;
+    }
 
-.admin .tags {
-    display: inline-block; 
-    width: 50%; 
-    text-overflow: ellipsis; 
-    white-space: nowrap; 
-    overflow: hidden;
-    vertical-align: bottom;
-}
+    .domains {
+        display: inline-block;
+        width: 50%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        vertical-align: bottom;
+    }
 
-.admin .domains {
-    display: inline-block; 
-    width: 50%; 
-    text-overflow: ellipsis; 
-    white-space: nowrap; 
-    overflow: hidden;
-    vertical-align: bottom;
-}
+    .form input[type=text],
+    .form input[type=number] {
+        width: 50%;
+        margin-right: 10px;
+    }
 
-.admin .form input[type=text],
-.admin .form input[type=number] {
-    width: 50%;
-    margin-right: 10px;
-}
+    #rolesTitle {
+        width: 150px;
+    }
 
-.admin li > div.first {
-    margin-bottom: 6px;
+    #rolesDesc {
+        width: 250px;
+    }
 }
 /* end admin */
 

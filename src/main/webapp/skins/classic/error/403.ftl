@@ -14,7 +14,7 @@
                 <div class="module">
                     <h2 class="sub-head">${reloginLabel}</h2>
                     <div class="slogan">
-                        <button onclick="Util.goLogin()" class="red">${nowLabel}${loginLabel}</button> &nbsp;
+                        <button onclick="Util.goLogin()" class="red">${loginLabel}</button> &nbsp;
                         <button onclick="Util.goRegister()" class="green">${nowLabel}${registerLabel}</button>
                         &nbsp; &nbsp; &nbsp; &nbsp;
                         ${indexIntroLabel} &nbsp; &nbsp;
