@@ -17,10 +17,16 @@
  */
 package org.b3log.symphony.repository;
 
-import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.Keys;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.Role;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Role-Permission repository.
@@ -37,5 +43,29 @@ public class RolePermissionRepository extends AbstractRepository {
      */
     public RolePermissionRepository() {
         super(Role.ROLE + "_" + Permission.PERMISSION);
+    }
+
+    /**
+     * Gets role-permission relations by the specified role id.
+     *
+     * @param roleId the specified role id
+     * @return for example      <pre>
+     * [{
+     *         "oId": "",
+     *         "roleId": roleId,
+     *         "permissionId": ""
+     * }, ....], returns an empty list if not found
+     * </pre>
+     * @throws RepositoryException repository exception
+     */
+    public List<JSONObject> getByRoleId(final String roleId) throws RepositoryException {
+        final Query query = new Query().setFilter(
+                new PropertyFilter(Role.ROLE_ID, FilterOperator.EQUAL, roleId)).
+                setPageCount(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        return CollectionUtils.jsonArrayToList(array);
     }
 }
