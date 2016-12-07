@@ -19,16 +19,6 @@ package org.b3log.symphony;
 
 import eu.bitwalker.useragentutils.BrowserType;
 import eu.bitwalker.useragentutils.UserAgent;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-import java.util.ResourceBundle;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -44,28 +34,14 @@ import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
-import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.MD5;
-import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.StaticResources;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.Strings;
+import org.b3log.latke.util.*;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.cache.TagCache;
-import org.b3log.symphony.event.ArticleBaiduSender;
-import org.b3log.symphony.event.ArticleNotifier;
-import org.b3log.symphony.event.ArticleQQSender;
-import org.b3log.symphony.event.ArticleSearchAdder;
-import org.b3log.symphony.event.ArticleSearchUpdater;
-import org.b3log.symphony.event.CommentNotifier;
+import org.b3log.symphony.event.*;
 import org.b3log.symphony.event.solo.ArticleSender;
 import org.b3log.symphony.event.solo.ArticleUpdater;
 import org.b3log.symphony.event.solo.CommentSender;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Option;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -78,12 +54,23 @@ import org.b3log.symphony.util.Languages;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+import java.util.ResourceBundle;
+
 /**
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.17.7.19, Nov 25, 2016
+ * @version 2.17.7.20, Dec 7, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -91,7 +78,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     /**
      * Symphony version.
      */
-    public static final String VERSION = "1.6.0";
+    public static final String VERSION = "1.7.0";
 
     /**
      * Logger.
@@ -251,7 +238,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final HttpSession session = httpServletRequest.getSession();
         LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
                 new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
-                    session.isNew()});
+                        session.isNew()});
 
         resolveSkinDir(httpServletRequest);
     }
