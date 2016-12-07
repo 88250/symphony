@@ -43,7 +43,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -69,6 +68,7 @@ import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Referral;
 import org.b3log.symphony.model.Revision;
 import org.b3log.symphony.model.Reward;
+import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
@@ -491,7 +491,7 @@ public class ArticleProcessor {
                     continue;
                 }
 
-                if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
+                if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                     continue;
                 }
@@ -872,7 +872,7 @@ public class ArticleProcessor {
             final String authorEmail = currentUser.optString(User.USER_EMAIL);
             article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
 
-            if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
+            if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
                 articleTags = articleMgmtService.filterReservedTags(articleTags);
             }
 
@@ -1062,7 +1062,7 @@ public class ArticleProcessor {
         final String authorEmail = currentUser.optString(User.USER_EMAIL);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
 
-        if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
+        if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
             articleTags = articleMgmtService.filterReservedTags(articleTags);
         }
 
@@ -1225,7 +1225,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_CONTENT, articleContent);
         article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, clientHost + permalink);
 
-        if (!Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE))) {
+        if (!Role.ROLE_ID_C_ADMIN.equals(user.optString(User.USER_ROLE))) {
             articleTags = articleMgmtService.filterReservedTags(articleTags);
         }
 
@@ -1397,7 +1397,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_T_IS_BROADCAST, false);
         article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, clientHost + permalink);
 
-        if (!Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE))) {
+        if (!Role.ROLE_ID_C_ADMIN.equals(user.optString(User.USER_ROLE))) {
             articleTags = articleMgmtService.filterReservedTags(articleTags);
         }
 

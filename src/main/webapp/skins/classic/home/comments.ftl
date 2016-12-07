@@ -17,13 +17,15 @@
     <ul>
         <#list userHomeComments as comment>
         <li class="fn-flex comment-list-item">
+            <div>
             <#if comment.commentArticleAuthorName != "someone">
-            <a target="_blank" class="tooltipped tooltipped-s" rel="nofollow" href="${servePath}/member/${comment.commentArticleAuthorName}" 
+            <a target="_blank" class="tooltipped tooltipped-n" rel="nofollow" href="${servePath}/member/${comment.commentArticleAuthorName}"
                aria-label="${comment.commentArticleAuthorName}"></#if>
                 <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}')"></div>
             <#if comment.commentArticleAuthorName != "someone">
             </a>
             </#if>
+            </div>
             <div class="fn-flex-1">
                 <div class="fn-flex">
                     <h2 class="fn-flex-1">
