@@ -75,7 +75,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     /**
      * Symphony version.
      */
-    public static final String VERSION = "1.6.0";
+    public static final String VERSION = "1.7.0";
     /**
      * JSONO print indent factor.
      */
@@ -83,7 +83,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SymphonyServletListener.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SymphonyServletListener.class);
     /**
      * Bean manager.
      */
