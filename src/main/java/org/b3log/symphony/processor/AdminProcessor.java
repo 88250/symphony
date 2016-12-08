@@ -249,10 +249,38 @@ public class AdminProcessor {
     private RoleQueryService roleQueryService;
 
     /**
+     * Role management service.
+     */
+    @Inject
+    private RoleMgmtService roleMgmtService;
+
+    /**
      * Filler.
      */
     @Inject
     private Filler filler;
+
+    /**
+     * Updates role permissions.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/role/{roleId}/permissions", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void updateRolePermissions(final HTTPRequestContext context,
+                                      final HttpServletRequest request, final HttpServletResponse response,
+                                      final String roleId) throws Exception {
+        final Map<String, String[]> parameterMap = request.getParameterMap();
+        final Set<String> permissionIds = parameterMap.keySet();
+
+        roleMgmtService.updateRolePermissions(roleId, permissionIds);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/role/" + roleId + "/permissions");
+    }
 
     /**
      * Shows role permissions.
@@ -273,6 +301,9 @@ public class AdminProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/role-permissions.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject role = roleQueryService.getRole(roleId);
+        dataModel.put(Role.ROLE, role);
 
         final Map<String, List<JSONObject>> categories = new TreeMap<>();
 
@@ -325,17 +356,16 @@ public class AdminProcessor {
     /**
      * Updates ad.
      *
-     * @param context      the specified context
-     * @param request      the specified request
-     * @param response     the specified response
-     * @param invitecodeId the specified invitecode id
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/ad", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void updateAd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                         final String invitecodeId) throws Exception {
+    public void updateAd(final HTTPRequestContext context,
+                         final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/ad.ftl");

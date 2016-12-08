@@ -76,6 +76,22 @@ public class RoleQueryService {
     private PermissionRepository permissionRepository;
 
     /**
+     * Gets an role specified by the given role id.
+     *
+     * @param roleId the given role id
+     * @return an role, returns {@code null} if not found
+     */
+    public JSONObject getRole(final String roleId) {
+        try {
+            return roleRepository.get(roleId);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets role failed", e);
+
+            return null;
+        }
+    }
+
+    /**
      * Gets all permissions and marks grant of an role specified by the given role id.
      *
      * @param roleId the given role id
