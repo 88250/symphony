@@ -17,7 +17,7 @@
                             </div>
                         </div>
                         <#list permissionCategories[category] as permission>
-                            <label><input type="checkbox">${permission.permissionLabel}</label><br>
+                            <label><input type="checkbox" <#if permission.permissionGrant>checked</#if>>${permission.permissionLabel}</label><br>
                         </#list>
                     </li>
                 </#list>
