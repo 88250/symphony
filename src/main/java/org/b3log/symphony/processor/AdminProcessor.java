@@ -107,7 +107,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.24.5.18, Dec 7, 2016
+ * @version 2.24.5.19, Dec 8, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -276,7 +276,7 @@ public class AdminProcessor {
 
         final Map<String, List<JSONObject>> categories = new TreeMap<>();
 
-        final List<JSONObject> permissions = roleQueryService.getPermissions(roleId);
+        final List<JSONObject> permissions = roleQueryService.getPermissionsGrant(roleId);
         for (final JSONObject permission : permissions) {
             final String label = permission.optString(Keys.OBJECT_ID) + "PermissionLabel";
             permission.put(Permission.PERMISSION_T_LABEL, langPropsService.get(label));

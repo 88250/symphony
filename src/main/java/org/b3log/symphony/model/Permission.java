@@ -23,7 +23,7 @@ package org.b3log.symphony.model;
  * See <a href="https://github.com/b3log/symphony/issues/337">#337</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Dec 7, 2016
+ * @version 1.1.1.0, Dec 8, 2016
  * @since 1.8.0
  */
 public final class Permission {
@@ -57,6 +57,11 @@ public final class Permission {
      * Key of permission label.
      */
     public static final String PERMISSION_T_LABEL = "permissionLabel";
+
+    /**
+     * Key of permission grant.
+     */
+    public static final String PERMISSION_T_GRANT = "permissionGrant";
 
     // oId constants
     /**
