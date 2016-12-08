@@ -23,7 +23,7 @@ package org.b3log.symphony.model;
  * See <a href="https://github.com/b3log/symphony/issues/337">#337</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 3, 2016
+ * @version 1.0.1.0, Dec 7, 2016
  * @since 1.8.0
  */
 public final class Permission {
@@ -47,6 +47,16 @@ public final class Permission {
      * Key of permission id.
      */
     public static final String PERMISSION_ID = "permissionId";
+
+    /**
+     * Key of permission categories.
+     */
+    public static final String PERMISSION_T_CATEGORIES = "permissionCategories";
+
+    /**
+     * Key of permission label.
+     */
+    public static final String PERMISSION_T_LABEL = "permissionLabel";
 
     // oId constants
     /**
@@ -147,7 +157,7 @@ public final class Permission {
     /**
      * Id - user - deduct point.
      */
-    public static final String PERMISSION_ID_C_USER_DEDUCT_POINT = "userDeductoPint";
+    public static final String PERMISSION_ID_C_USER_DEDUCT_POINT = "userDeductPoint";
 
     /**
      * Id - article - update article basic.
@@ -187,27 +197,27 @@ public final class Permission {
     /**
      * Id - domain - add domain.
      */
-    public static final String PERMISSION_ID_C_DOMAIN_ADD_DOMAIN = "dommainAddDomain";
+    public static final String PERMISSION_ID_C_DOMAIN_ADD_DOMAIN = "domainAddDomain";
 
     /**
      * Id - domain - add domain tag.
      */
-    public static final String PERMISSION_ID_C_DOMAIN_ADD_DOMAIN_TAG = "dommainAddDomainTag";
+    public static final String PERMISSION_ID_C_DOMAIN_ADD_DOMAIN_TAG = "domainAddDomainTag";
 
     /**
      * Id - domain - remove domain tag.
      */
-    public static final String PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN_TAG = "dommainRemoveDomainTag";
+    public static final String PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN_TAG = "domainRemoveDomainTag";
 
     /**
      * Id - domain - update domain basic.
      */
-    public static final String PERMISSION_ID_C_DOMAIN_UPDATE_DOMAIN_BASIC = "dommainUpdateDomainBasic";
+    public static final String PERMISSION_ID_C_DOMAIN_UPDATE_DOMAIN_BASIC = "domainUpdateDomainBasic";
 
     /**
      * Id - domain - remove domain.
      */
-    public static final String PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN = "dommainRemoveDomain";
+    public static final String PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN = "domainRemoveDomain";
 
     /**
      * Id - tag - update tag basic.
@@ -306,14 +316,19 @@ public final class Permission {
     public static final int PERMISSION_CATEGORY_C_RESERVED_WORD = 6;
 
     /**
+     * Category - invitecode management.
+     */
+    public static final int PERMISSION_CATEGORY_C_IC = 7;
+
+    /**
      * Category - advertise management.
      */
-    public static final int PERMISSION_CATEGORY_C_AD = 7;
+    public static final int PERMISSION_CATEGORY_C_AD = 8;
 
     /**
      * Category - misc management.
      */
-    public static final int PERMISSION_CATEGORY_C_MISC = 8;
+    public static final int PERMISSION_CATEGORY_C_MISC = 9;
 
     /**
      * Private constructor.

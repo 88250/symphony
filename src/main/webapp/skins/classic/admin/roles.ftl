@@ -14,8 +14,7 @@
                             <h2 class="fn-flex-1"><a href="#">${role.roleName}</a></h2>
                             <div class="">${role.permissions?size}</div>
                             <div class="">
-                                <a class="mid btn" href="${servePath}/admin/roles/users">${userRoleLabel}</a>
-                                <a class="mid btn" href="${servePath}/admin/roles/permissions">${rolePermissionLabel}</a>
+                                <a class="mid btn" href="${servePath}/admin/role/${role.oId}/permissions">${permissionLabel}</a>
                             </div>
                         </div>
                         <div class="ft-gray">${role.roleDescription}</div>

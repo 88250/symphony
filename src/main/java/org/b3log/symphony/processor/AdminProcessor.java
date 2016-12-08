@@ -107,7 +107,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.24.5.17, Dec 4, 2016
+ * @version 2.24.5.18, Dec 7, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -255,45 +255,45 @@ public class AdminProcessor {
     private Filler filler;
 
     /**
-     * Shows roles - manager user.
+     * Shows role permissions.
      *
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
+     * @param roleId   the specified role id
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/admin/roles/users", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/admin/role/{roleId}/permissions", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void showRolesUsers(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    public void showRolePermissions(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                                    final String roleId)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("admin/roles-users.ftl");
+        renderer.setTemplateName("admin/role-permissions.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
-    }
+        final Map<String, List<JSONObject>> categories = new TreeMap<>();
 
-    /**
-     * Shows roles - manager permission.
-     *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/admin/roles/permissions", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
-    public void showRolesPermissions(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("admin/roles-permissions.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
+        final List<JSONObject> permissions = roleQueryService.getPermissions(roleId);
+        for (final JSONObject permission : permissions) {
+            final String label = permission.optString(Keys.OBJECT_ID) + "PermissionLabel";
+            permission.put(Permission.PERMISSION_T_LABEL, langPropsService.get(label));
 
-        dataModel.put("sideFullAd", "");
+            String category = permission.optString(Permission.PERMISSION_CATEGORY);
+            category = langPropsService.get(category + "PermissionLabel");
+
+            List<JSONObject> categoryPermissions = categories.get(category);
+            if (null == categoryPermissions) {
+                categoryPermissions = new ArrayList<>();
+                categories.put(category, categoryPermissions);
+            }
+
+            categoryPermissions.add(permission);
+        }
+
+        dataModel.put(Permission.PERMISSION_T_CATEGORIES, categories);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
