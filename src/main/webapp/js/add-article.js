@@ -115,7 +115,7 @@ var AddArticle = {
         }
     },
     /**
-     * @description 初识化发文
+     * @description 初始化发文
      */
     init: function () {
         $.ua.set(navigator.userAgent);

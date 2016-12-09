@@ -136,6 +136,8 @@
             Label.uploadingLabel = '${uploadingLabel}';
             Label.articleRewardPointErrorLabel = '${articleRewardPointErrorLabel}';
             Label.discussionLabel = '${discussionLabel}';
+            Label.qiniuDomain = '${qiniuDomain}';
+            Label.qiniuUploadToken = '${qiniuUploadToken}';
             <#if article??>Label.articleOId = '${article.oId}' ;</#if>
             Util.uploadFile({
                 "id": "fileUpload",
