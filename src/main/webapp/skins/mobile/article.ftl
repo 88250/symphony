@@ -191,6 +191,7 @@
                     <br/>
                     <div id="replyUseName"> </div>
                     <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
+                    <br><br>
                     <div class="tip" id="addCommentTip"></div>
 
                     <div class="fn-clear comment-submit">
@@ -209,6 +210,7 @@
             <div>
                 <div class="fn-clear" id="comments">
                     <div class="list comments">
+                            <span id="replyUseName" class="fn-none"></span>
                             <div class="comments-header fn-clear">
                             <span class="article-cmt-cnt">${article.articleCommentCount} ${cmtLabel}</span>
                             <span class="fn-right<#if article.articleComments?size == 0> fn-none</#if>">
