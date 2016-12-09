@@ -19,6 +19,9 @@ package org.b3log.symphony.service;
 
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.annotation.Service;
@@ -57,6 +60,28 @@ public class RoleMgmtService {
      */
     @Inject
     private RolePermissionRepository rolePermissionRepository;
+
+    /**
+     * Adds the specified role.
+     *
+     * @param role the specified role
+     */
+    @Transactional
+    public void addRole(final JSONObject role) {
+        try {
+            final String roleName = role.optString(Role.ROLE_NAME);
+
+            final Query query = new Query().
+                    setFilter(new PropertyFilter(Role.ROLE_NAME, FilterOperator.EQUAL, roleName));
+            if (roleRepository.count(query) > 0) {
+                return;
+            }
+
+            roleRepository.add(role);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Adds role failed", e);
+        }
+    }
 
     /**
      * Updates role permissions.

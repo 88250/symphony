@@ -261,6 +261,38 @@ public class AdminProcessor {
     private Filler filler;
 
     /**
+     * Adds an role.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/role", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void addRole(final HTTPRequestContext context,
+                        final HttpServletRequest request, final HttpServletResponse response,
+                        final String roleId) throws Exception {
+        final String roleName = request.getParameter(Role.ROLE_NAME);
+        if (StringUtils.isBlank(roleName)) {
+            response.sendRedirect(Latkes.getServePath() + "/admin/roles");
+
+            return;
+        }
+
+        final String roleDesc = request.getParameter(Role.ROLE_DESCRIPTION);
+
+        final JSONObject role = new JSONObject();
+        role.put(Role.ROLE_NAME, roleName);
+        role.put(Role.ROLE_DESCRIPTION, roleDesc);
+
+        roleMgmtService.addRole(role);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/roles");
+    }
+
+    /**
      * Updates role permissions.
      *
      * @param context  the specified context
@@ -304,6 +336,9 @@ public class AdminProcessor {
 
         final JSONObject role = roleQueryService.getRole(roleId);
         dataModel.put(Role.ROLE, role);
+        if (!Strings.isNumeric(roleId)) {
+            role.put(Role.ROLE_NAME, langPropsService.get(roleId + "NameLabel"));
+        }
 
         final Map<String, List<JSONObject>> categories = new TreeMap<>();
 
@@ -348,7 +383,32 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject result = roleQueryService.getRoles(1, Integer.MAX_VALUE, 10);
-        dataModel.put(Role.ROLES, result.opt(Role.ROLES));
+        final List<JSONObject> roles = (List) result.opt(Role.ROLES);
+        for (final JSONObject role : roles) {
+            final String roleId = role.optString(Keys.OBJECT_ID);
+            if (Strings.isNumeric(roleId)) {
+                continue;
+            }
+
+            String roleName = role.optString(Role.ROLE_NAME);
+            try {
+                roleName = langPropsService.get(roleId + "NameLabel");
+            } catch (final Exception e) {
+                // ignored
+            }
+
+            String roleDesc = role.optString(Role.ROLE_DESCRIPTION);
+            try {
+                roleDesc = langPropsService.get(roleId + "DescLabel");
+            } catch (final Exception e) {
+                // ignored
+            }
+
+            role.put(Role.ROLE_NAME, roleName);
+            role.put(Role.ROLE_DESCRIPTION, roleDesc);
+        }
+
+        dataModel.put(Role.ROLES, roles);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
