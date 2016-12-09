@@ -107,7 +107,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.24.5.18, Dec 7, 2016
+ * @version 2.24.5.19, Dec 8, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -249,10 +249,38 @@ public class AdminProcessor {
     private RoleQueryService roleQueryService;
 
     /**
+     * Role management service.
+     */
+    @Inject
+    private RoleMgmtService roleMgmtService;
+
+    /**
      * Filler.
      */
     @Inject
     private Filler filler;
+
+    /**
+     * Updates role permissions.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/role/{roleId}/permissions", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void updateRolePermissions(final HTTPRequestContext context,
+                                      final HttpServletRequest request, final HttpServletResponse response,
+                                      final String roleId) throws Exception {
+        final Map<String, String[]> parameterMap = request.getParameterMap();
+        final Set<String> permissionIds = parameterMap.keySet();
+
+        roleMgmtService.updateRolePermissions(roleId, permissionIds);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/role/" + roleId + "/permissions");
+    }
 
     /**
      * Shows role permissions.
@@ -274,9 +302,12 @@ public class AdminProcessor {
         renderer.setTemplateName("admin/role-permissions.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
+        final JSONObject role = roleQueryService.getRole(roleId);
+        dataModel.put(Role.ROLE, role);
+
         final Map<String, List<JSONObject>> categories = new TreeMap<>();
 
-        final List<JSONObject> permissions = roleQueryService.getPermissions(roleId);
+        final List<JSONObject> permissions = roleQueryService.getPermissionsGrant(roleId);
         for (final JSONObject permission : permissions) {
             final String label = permission.optString(Keys.OBJECT_ID) + "PermissionLabel";
             permission.put(Permission.PERMISSION_T_LABEL, langPropsService.get(label));
@@ -325,17 +356,16 @@ public class AdminProcessor {
     /**
      * Updates ad.
      *
-     * @param context      the specified context
-     * @param request      the specified request
-     * @param response     the specified response
-     * @param invitecodeId the specified invitecode id
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/ad", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void updateAd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                         final String invitecodeId) throws Exception {
+    public void updateAd(final HTTPRequestContext context,
+                         final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/ad.ftl");

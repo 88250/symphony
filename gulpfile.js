@@ -19,8 +19,8 @@
 /**
  * @file frontend tool.
  * 
- * @author <a href="mailto:liliyuan@fangstar.net">Liyuan Li</a>
- * @version 1.3.3.0, Nov 13, 2016 
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.3.3.1, Dec 8, 2016
  */
 
 'use strict';
