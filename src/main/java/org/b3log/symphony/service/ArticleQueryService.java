@@ -93,7 +93,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.21.39, Dec 3, 2016
+ * @version 2.25.22.39, Dec 10, 2016
  * @since 0.2.0
  */
 @Service
@@ -2713,40 +2713,45 @@ public class ArticleQueryService {
      * @return ToC
      */
     private String getArticleToC(final JSONObject article) {
-        String content = article.optString(Article.ARTICLE_CONTENT);
+        Stopwatchs.start("ToC");
 
-        if (!StringUtils.contains(content, "#")
-                || Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
-            return "";
+        try {
+            String content = article.optString(Article.ARTICLE_CONTENT);
+
+            if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
+                return "";
+            }
+
+            final Document doc = Jsoup.parse(content, StringUtils.EMPTY, Parser.htmlParser());
+            doc.outputSettings().prettyPrint(false);
+
+            final StringBuilder listBuilder = new StringBuilder();
+
+            final Elements hs = doc.select("h1, h2, h3, h4, h5");
+
+            if (hs.isEmpty()) {
+                return "";
+            }
+
+            listBuilder.append("<ul class=\"article-toc\">");
+            for (int i = 0; i < hs.size(); i++) {
+                final Element element = hs.get(i);
+                final String tagName = element.tagName().toLowerCase();
+                final String text = element.text();
+                final String id = "toc_" + tagName + "_" + i;
+
+                element.before("<span id='" + id + "'></span>");
+
+                listBuilder.append("<li class='toc-").append(tagName).append("'><a href='#").append(id).append("'>").append(text).append(
+                        "</a></li>");
+            }
+            listBuilder.append("</ul>");
+
+            article.put(Article.ARTICLE_CONTENT, doc.select("body").html());
+
+            return listBuilder.toString();
+        } finally {
+            Stopwatchs.end();
         }
-
-        final Document doc = Jsoup.parse(content, StringUtils.EMPTY, Parser.htmlParser());
-        doc.outputSettings().prettyPrint(false);
-
-        final StringBuilder listBuilder = new StringBuilder();
-
-        final Elements hs = doc.select("h1, h2, h3, h4, h5");
-
-        if (hs.isEmpty()) {
-            return "";
-        }
-
-        listBuilder.append("<ul class=\"article-toc\">");
-        for (int i = 0; i < hs.size(); i++) {
-            final Element element = hs.get(i);
-            final String tagName = element.tagName().toLowerCase();
-            final String text = element.text();
-            final String id = "toc_" + tagName + "_" + i;
-
-            element.before("<span id='" + id + "'></span>");
-
-            listBuilder.append("<li class='toc-").append(tagName).append("'><a href='#").append(id).append("'>").append(text).append(
-                    "</a></li>");
-        }
-        listBuilder.append("</ul>");
-
-        article.put(Article.ARTICLE_CONTENT, doc.select("body").html());
-
-        return listBuilder.toString();
     }
 }
