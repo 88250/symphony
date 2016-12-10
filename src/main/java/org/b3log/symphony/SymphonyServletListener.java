@@ -67,7 +67,7 @@ import java.util.ResourceBundle;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.17.8.19, Dec 7, 2016
+ * @version 3.17.8.20, Dec 10, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -518,11 +518,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
             role.put(Keys.OBJECT_ID, Role.ROLE_ID_C_ADMIN);
             role.put(Role.ROLE_NAME, "Admin");
-            role.put(Role.ROLE_DESCRIPTION, "");
-            roleRepository.add(role);
-
-            role.put(Keys.OBJECT_ID, Role.ROLE_ID_C_BASIC);
-            role.put(Role.ROLE_NAME, "Basic");
             role.put(Role.ROLE_DESCRIPTION, "");
             roleRepository.add(role);
 
