@@ -67,7 +67,7 @@ import java.util.ResourceBundle;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.17.8.20, Dec 10, 2016
+ * @version 3.17.8.21, Dec 10, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -414,6 +414,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE);
             permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_UPDATE_ARTICLE);
+            permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
             permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_AT_USER);
@@ -561,6 +563,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
             rolePermissionRepository.add(rolePermission);
 
             rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_UPDATE_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
             rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
             rolePermissionRepository.add(rolePermission);
 
@@ -649,6 +655,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
             rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
             rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_UPDATE_ARTICLE);
             rolePermissionRepository.add(rolePermission);
 
             rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());

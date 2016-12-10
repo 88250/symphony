@@ -17,18 +17,7 @@
  */
 package org.b3log.symphony.processor.channel;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.websocket.CloseReason;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.ServerEndpoint;
+import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -40,43 +29,170 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
+import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Role;
+import org.b3log.symphony.model.*;
+import org.b3log.symphony.processor.SkinRenderer;
 import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.service.RoleQueryService;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
+import javax.websocket.*;
+import javax.websocket.server.ServerEndpoint;
+import java.io.StringWriter;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.8.6, Aug 1, 2016
+ * @version 2.3.8.6, Dec 10, 2016
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/article-channel", configurator = Channels.WebSocketConfigurator.class)
 public class ArticleChannel {
 
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ArticleChannel.class.getName());
-
-    /**
      * Session set.
      */
     public static final Set<Session> SESSIONS = Collections.newSetFromMap(new ConcurrentHashMap());
-
     /**
      * Article viewing map &lt;articleId, count&gt;.
      */
     public static final Map<String, Integer> ARTICLE_VIEWS
             = Collections.synchronizedMap(new HashMap<String, Integer>());
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ArticleChannel.class.getName());
+
+    /**
+     * Notifies the specified article heat message to browsers.
+     *
+     * @param message the specified message, for example      <pre>
+     *                                                             {
+     *                                                                 "articleId": "",
+     *                                                                 "operation": "" // "+"/"-"
+     *                                                             }
+     *                                                             </pre>
+     */
+    public static void notifyHeat(final JSONObject message) {
+        message.put(Common.TYPE, Article.ARTICLE_T_HEAT);
+
+        final String msgStr = message.toString();
+
+        for (final Session session : SESSIONS) {
+            final String viewingArticleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
+            if (Strings.isEmptyOrNull(viewingArticleId)
+                    || !viewingArticleId.equals(message.optString(Article.ARTICLE_T_ID))) {
+                continue;
+            }
+
+            if (session.isOpen()) {
+                session.getAsyncRemote().sendText(msgStr);
+            }
+        }
+    }
+
+    /**
+     * Notifies the specified comment message to browsers.
+     *
+     * @param message the specified message
+     */
+    public static void notifyComment(final JSONObject message) {
+        message.put(Common.TYPE, Comment.COMMENT);
+
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
+        final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
+        final RoleQueryService roleQueryService = beanManager.getReference(RoleQueryService.class);
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+
+        for (final Session session : SESSIONS) {
+            final String viewingArticleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
+            if (Strings.isEmptyOrNull(viewingArticleId)
+                    || !viewingArticleId.equals(message.optString(Article.ARTICLE_T_ID))) {
+                continue;
+            }
+
+            final int articleType = Integer.valueOf(Channels.getHttpParameter(session, Article.ARTICLE_TYPE));
+            final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
+            if (null == user) {
+                continue;
+            }
+
+            final String userId = user.optString(Keys.OBJECT_ID);
+
+            try {
+                if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType) {
+                    final String userName = user.optString(User.USER_NAME);
+                    final String userRole = user.optString(User.USER_ROLE);
+
+                    final JSONObject article = articleRepository.get(viewingArticleId);
+                    if (null == article) {
+                        continue;
+                    }
+
+                    final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                    if (!userId.equals(articleAuthorId)) {
+                        final String articleContent = article.optString(Article.ARTICLE_CONTENT);
+                        final Set<String> userNames = userQueryService.getUserNames(articleContent);
+
+                        boolean invited = false;
+                        for (final String inviteUserName : userNames) {
+                            if (inviteUserName.equals(userName)) {
+                                invited = true;
+
+                                break;
+                            }
+                        }
+
+                        if (Role.ROLE_ID_C_ADMIN.equals(userRole)) {
+                            invited = true;
+                        }
+
+                        if (!invited) {
+                            continue; // next session
+                        }
+                    }
+                }
+
+                final Map dataModel = new HashMap();
+                message.put(Comment.COMMENT_T_NICE, false);
+                Keys.fillServer(dataModel);
+                dataModel.put(Comment.COMMENT, message);
+                dataModel.putAll(langPropsService.getAll(Locales.getLocale(user.optString(UserExt.USER_LANGUAGE))));
+
+                final Map<String, JSONObject> permissions = roleQueryService.getUserPermissionsGrantMap(userId);
+                dataModel.put(Permission.PERMISSIONS, permissions);
+
+                final String templateDirName = user.optString(UserExt.USER_SKIN);
+                final Template template = SkinRenderer.getTemplate(templateDirName, "common/comment.ftl",
+                        false, user);
+                final StringWriter stringWriter = new StringWriter();
+                template.process(dataModel, stringWriter);
+                stringWriter.close();
+
+                message.put("cmtTpl", stringWriter.toString());
+                final String msgStr = message.toString();
+                if (session.isOpen()) {
+                    session.getAsyncRemote().sendText(msgStr);
+                }
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Notify comment error", e);
+            } finally {
+                JdbcRepository.dispose();
+            }
+        }
+    }
 
     /**
      * Called when the socket connection with the browser is established.
@@ -153,7 +269,7 @@ public class ArticleChannel {
     /**
      * Called when the connection closed.
      *
-     * @param session session
+     * @param session     session
      * @param closeReason close reason
      */
     @OnClose
@@ -174,129 +290,11 @@ public class ArticleChannel {
      * Called in case of an error.
      *
      * @param session session
-     * @param error error
+     * @param error   error
      */
     @OnError
     public void onError(final Session session, final Throwable error) {
         removeSession(session);
-    }
-
-    /**
-     * Notifies the specified article heat message to browsers.
-     *
-     * @param message the specified message, for example      <pre>
-     * {
-     *     "articleId": "",
-     *     "operation": "" // "+"/"-"
-     * }
-     * </pre>
-     */
-    public static void notifyHeat(final JSONObject message) {
-        message.put(Common.TYPE, Article.ARTICLE_T_HEAT);
-
-        final String msgStr = message.toString();
-
-        for (final Session session : SESSIONS) {
-            final String viewingArticleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
-            if (Strings.isEmptyOrNull(viewingArticleId)
-                    || !viewingArticleId.equals(message.optString(Article.ARTICLE_T_ID))) {
-                continue;
-            }
-
-            if (session.isOpen()) {
-                session.getAsyncRemote().sendText(msgStr);
-            }
-        }
-    }
-
-    /**
-     * Notifies the specified comment message to browsers.
-     *
-     * @param message the specified message, for example      <pre>
-     * {
-     *     "articleId": "",
-     *     "commentId": "",
-     *     "commentAuthorName": "",
-     *     "commentAuthorThumbnailURL": "",
-     *     "thumbnailUpdateTime": long,
-     *     "commentContent": "",
-     *     "commentThankLabel": "",
-     *     "thankLabel": "",
-     *     "thankedLabel": "",
-     *     "timeAgo": "",
-     *     "commentUA": "",
-     *     "fromClient": boolean,
-     *     "userUAStatus": int
-     * }
-     * </pre>
-     */
-    public static void notifyComment(final JSONObject message) {
-        message.put(Common.TYPE, Comment.COMMENT);
-
-        final String msgStr = message.toString();
-
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
-        final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
-        final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
-
-        for (final Session session : SESSIONS) {
-            final String viewingArticleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
-            if (Strings.isEmptyOrNull(viewingArticleId)
-                    || !viewingArticleId.equals(message.optString(Article.ARTICLE_T_ID))) {
-                continue;
-            }
-
-            final int articleType = Integer.valueOf(Channels.getHttpParameter(session, Article.ARTICLE_TYPE));
-
-            try {
-                if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType) {
-                    final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
-                    if (null == user) {
-                        continue;
-                    }
-
-                    final String userName = user.optString(User.USER_NAME);
-                    final String userId = user.optString(Keys.OBJECT_ID);
-                    final String userRole = user.optString(User.USER_ROLE);
-
-                    final JSONObject article = articleRepository.get(viewingArticleId);
-                    if (null == article) {
-                        continue;
-                    }
-
-                    final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-                    if (!userId.equals(articleAuthorId)) {
-                        final String articleContent = article.optString(Article.ARTICLE_CONTENT);
-                        final Set<String> userNames = userQueryService.getUserNames(articleContent);
-
-                        boolean invited = false;
-                        for (final String inviteUserName : userNames) {
-                            if (inviteUserName.equals(userName)) {
-                                invited = true;
-
-                                break;
-                            }
-                        }
-
-                        if (Role.ROLE_ID_C_ADMIN.equals(userRole)) {
-                            invited = true;
-                        }
-
-                        if (!invited) {
-                            continue; // next session
-                        }
-                    }
-                }
-
-                if (session.isOpen()) {
-                    session.getAsyncRemote().sendText(msgStr);
-                }
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Notify comment error", e);
-            } finally {
-                JdbcRepository.dispose();
-            }
-        }
     }
 
     /**
