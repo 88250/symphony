@@ -38,6 +38,7 @@ import org.b3log.symphony.service.RoleQueryService;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
@@ -78,11 +79,11 @@ public class ArticleChannel {
      * Notifies the specified article heat message to browsers.
      *
      * @param message the specified message, for example      <pre>
-     *                                                             {
-     *                                                                 "articleId": "",
-     *                                                                 "operation": "" // "+"/"-"
-     *                                                             }
-     *                                                             </pre>
+     *                                                                            {
+     *                                                                                "articleId": "",
+     *                                                                                "operation": "" // "+"/"-"
+     *                                                                            }
+     *                                                                            </pre>
      */
     public static void notifyHeat(final JSONObject message) {
         message.put(Common.TYPE, Article.ARTICLE_T_HEAT);
@@ -125,14 +126,14 @@ public class ArticleChannel {
 
             final int articleType = Integer.valueOf(Channels.getHttpParameter(session, Article.ARTICLE_TYPE));
             final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
-            if (null == user) {
-                continue;
-            }
-
-            final String userId = user.optString(Keys.OBJECT_ID);
+            final boolean isLoggedIn = null != user;
 
             try {
                 if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType) {
+                    if (!isLoggedIn) {
+                        continue;
+                    }
+
                     final String userName = user.optString(User.USER_NAME);
                     final String userRole = user.optString(User.USER_ROLE);
 
@@ -142,6 +143,7 @@ public class ArticleChannel {
                     }
 
                     final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                    final String userId = user.optString(Keys.OBJECT_ID);
                     if (!userId.equals(articleAuthorId)) {
                         final String articleContent = article.optString(Article.ARTICLE_CONTENT);
                         final Set<String> userNames = userQueryService.getUserNames(articleContent);
@@ -165,16 +167,33 @@ public class ArticleChannel {
                     }
                 }
 
-                final Map dataModel = new HashMap();
                 message.put(Comment.COMMENT_T_NICE, false);
+                message.put(Common.REWARED_COUNT, 0);
+                message.put(Comment.COMMENT_T_VOTE, -1);
+
+                final Map dataModel = new HashMap();
+                dataModel.put(Common.IS_LOGGED_IN, isLoggedIn);
+                dataModel.put(Common.CURRENT_USER, user);
+                dataModel.put(Common.CSRF_TOKEN, Channels.getHttpSessionAttribute(session, Common.CSRF_TOKEN));
                 Keys.fillServer(dataModel);
                 dataModel.put(Comment.COMMENT, message);
-                dataModel.putAll(langPropsService.getAll(Locales.getLocale(user.optString(UserExt.USER_LANGUAGE))));
 
-                final Map<String, JSONObject> permissions = roleQueryService.getUserPermissionsGrantMap(userId);
-                dataModel.put(Permission.PERMISSIONS, permissions);
+                String templateDirName = Symphonys.get("skinDirName");
+                if (isLoggedIn) {
+                    dataModel.putAll(langPropsService.getAll(Locales.getLocale(user.optString(UserExt.USER_LANGUAGE))));
+                    final String userId = user.optString(Keys.OBJECT_ID);
+                    final Map<String, JSONObject> permissions
+                            = roleQueryService.getUserPermissionsGrantMap(userId);
+                    dataModel.put(Permission.PERMISSIONS, permissions);
 
-                final String templateDirName = user.optString(UserExt.USER_SKIN);
+                    templateDirName = user.optString(UserExt.USER_SKIN);
+                } else {
+                    dataModel.putAll(langPropsService.getAll(Locales.getLocale()));
+                    final Map<String, JSONObject> permissions
+                            = roleQueryService.getPermissionsGrantMap(Role.ROLE_ID_C_VISITOR);
+                    dataModel.put(Permission.PERMISSIONS, permissions);
+                }
+
                 final Template template = SkinRenderer.getTemplate(templateDirName, "common/comment.ftl",
                         false, user);
                 final StringWriter stringWriter = new StringWriter();
