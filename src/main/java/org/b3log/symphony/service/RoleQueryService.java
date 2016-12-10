@@ -21,6 +21,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
@@ -33,6 +34,7 @@ import org.b3log.symphony.model.Role;
 import org.b3log.symphony.repository.PermissionRepository;
 import org.b3log.symphony.repository.RolePermissionRepository;
 import org.b3log.symphony.repository.RoleRepository;
+import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -46,7 +48,7 @@ import java.util.List;
  * Role query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Dec 8, 2016
+ * @version 1.3.0.0, Dec 10, 2016
  * @since 1.8.0
  */
 @Service
@@ -76,6 +78,12 @@ public class RoleQueryService {
     private PermissionRepository permissionRepository;
 
     /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
+
+    /**
      * Gets an role specified by the given role id.
      *
      * @param roleId the given role id
@@ -88,6 +96,29 @@ public class RoleQueryService {
             LOGGER.log(Level.ERROR, "Gets role failed", e);
 
             return null;
+        }
+    }
+
+    /**
+     * Gets all permissions and marks grant of a user specified by the given user id.
+     *
+     * @param userId the given user id
+     * @return a list of permissions, returns an empty list if not found
+     */
+    public List<JSONObject> getUserPermissionsGrant(final String userId) {
+        try {
+            final JSONObject user = userRepository.get(userId);
+            if (null == user) {
+                return getPermissionsGrant(Role.ROLE_ID_C_VISITOR);
+            }
+
+            final String roleId = user.optString(User.USER_ROLE);
+
+            return getPermissionsGrant(roleId);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets user permissions grant failed", e);
+
+            return getPermissionsGrant(Role.ROLE_ID_C_VISITOR);
         }
     }
 
