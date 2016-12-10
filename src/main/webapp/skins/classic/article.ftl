@@ -156,18 +156,20 @@
                                 <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
                                       class="tooltipped tooltipped-n"><span class="icon-refresh"></span></span> &nbsp; &nbsp;
                                 </#if>
-                                <#if article.isMyArticle && 3 != article.articleType>
+                                <#if article.isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
                                 <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"
                                    class="tooltipped tooltipped-n"><span class="icon-edit"></span></a> &nbsp; &nbsp;
                                 </#if>
-                                <#if article.isMyArticle && permissions["articleUpdateArticleBasic"].permissionGrant>
+                                <#if article.isMyArticle && permissions["commonStickArticle"].permissionGrant>
                                 <a class="tooltipped tooltipped-n" aria-label="${stickLabel}"
                                    href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a> &nbsp; &nbsp;
                                 </#if>
-                                <#if isAdminLoggedIn>
+                                <#if permissions["articleUpdateArticleBasic"].permissionGrant>
                                 <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a> &nbsp; &nbsp;
                                 </#if>
+                                <#if permissions["commonAddComment"].permissionGrant>
                                 <span class="tooltipped tooltipped-n icon-reply-btn" aria-label="${cmtLabel}"><span class="icon-reply"></span>${cmtLabel}</span>
+                                </#if>
                             </span>
                         </div>
                     </div>
@@ -241,7 +243,8 @@
                             <ul>
                                 <#if article.articleComments?size == 0>
                                 <li class="ft-center fn-pointer"
-                                    onclick="$('.article-actions .icon-reply-btn').click()">
+                                    <#if permissions["commonAddComment"].permissionGrant>
+                                        onclick="$('.article-actions .icon-reply-btn').click()"</#if>>
                                     <img src="${noCmtImg}" class="article-no-comment-img">
                                 </li>
                                 </#if>
@@ -257,7 +260,8 @@
                     </div>
                    
 					<div class="ft-center fn-pointer <#if article.articleComments?size == 0> fn-none</#if>" title="${cmtLabel}"
-							onclick="$('.article-actions .icon-reply-btn').click()">
+                    <#if permissions["commonAddComment"].permissionGrant>
+                        onclick="$('.article-actions .icon-reply-btn').click()"</#if>>
 							<img src="${noCmtImg}" class="article-no-comment-img">
 					</div>
                     
