@@ -364,7 +364,8 @@ public class DataModelService {
             if (null == Sessions.currentUser(request) && !userMgmtService.tryLogInWithCookie(request, response)) {
                 dataModel.put("loginLabel", langPropsService.get("loginLabel"));
 
-                final List<JSONObject> permissions = roleQueryService.getPermissionsGrant(Role.ROLE_ID_C_VISITOR);
+                final Map<String, JSONObject> permissions =
+                        roleQueryService.getPermissionsGrantMap(Role.ROLE_ID_C_VISITOR);
                 dataModel.put(Permission.PERMISSIONS, permissions);
 
                 return;
@@ -417,7 +418,7 @@ public class DataModelService {
             dataModel.put(Common.CURRENT_USER, curUser);
 
             // permissions
-            final List<JSONObject> permissions = roleQueryService.getUserPermissionsGrant(userId);
+            final Map<String, JSONObject> permissions = roleQueryService.getUserPermissionsGrantMap(userId);
             dataModel.put(Permission.PERMISSIONS, permissions);
 
             // final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.optString(Keys.OBJECT_ID));

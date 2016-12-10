@@ -1,9 +1,9 @@
 <li id="${comment.oId}"
     class="<#if comment.commentStatus == 1>cmt-shield</#if><#if comment.commentNice> cmt-perfect</#if><#if comment.commentReplyCnt != 0> cmt-selected</#if>">
     <div class="fn-flex">
-        <#list permissions as p>
-            ${p}
-        </#list>
+            <#if permissions["commonGoodComment"].permissionGrant>
+                可以点赞
+            </#if>
         <#if !comment.fromClient>
             <div>
                 <#if comment.commentAnonymous == 0>
