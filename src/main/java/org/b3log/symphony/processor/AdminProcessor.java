@@ -46,7 +46,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -255,10 +255,10 @@ public class AdminProcessor {
     private RoleMgmtService roleMgmtService;
 
     /**
-     * Filler.
+     * Data model service.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Adds an role.
@@ -361,7 +361,7 @@ public class AdminProcessor {
 
         dataModel.put(Permission.PERMISSION_T_CATEGORIES, categories);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -410,7 +410,7 @@ public class AdminProcessor {
 
         dataModel.put(Role.ROLES, roles);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -448,7 +448,7 @@ public class AdminProcessor {
             optionMgmtService.updateOption(Option.ID_C_SIDE_FULL_AD, adOption);
         }
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -476,7 +476,7 @@ public class AdminProcessor {
             dataModel.put("sideFullAd", adOption.optString(Option.OPTION_VALUE));
         }
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -497,7 +497,7 @@ public class AdminProcessor {
         renderer.setTemplateName("admin/add-tag.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -538,7 +538,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
 
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -556,7 +556,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, e.getMessage());
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -672,7 +672,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -697,7 +697,7 @@ public class AdminProcessor {
         final JSONObject invitecode = invitecodeQueryService.getInvitecodeById(invitecodeId);
         dataModel.put(Invitecode.INVITECODE, invitecode);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -734,7 +734,7 @@ public class AdminProcessor {
         invitecode = invitecodeQueryService.getInvitecodeById(invitecodeId);
         dataModel.put(Invitecode.INVITECODE, invitecode);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -755,7 +755,7 @@ public class AdminProcessor {
         renderer.setTemplateName("admin/add-article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -780,7 +780,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, langPropsService.get("notFoundUserLabel"));
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -822,7 +822,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, e.getMessage());
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -852,7 +852,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, langPropsService.get("invalidReservedWordLabel"));
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -876,7 +876,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, e.getMessage());
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -902,7 +902,7 @@ public class AdminProcessor {
         renderer.setTemplateName("admin/add-reserved-word.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -937,7 +937,7 @@ public class AdminProcessor {
 
         optionMgmtService.updateOption(id, word);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -960,7 +960,7 @@ public class AdminProcessor {
 
         dataModel.put(Common.WORDS, optionQueryService.getReservedWords());
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -985,7 +985,7 @@ public class AdminProcessor {
         final JSONObject word = optionQueryService.getOption(id);
         dataModel.put(Common.WORD, word);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -1063,7 +1063,7 @@ public class AdminProcessor {
         renderer.setTemplateName("admin/index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         dataModel.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
         dataModel.put(Common.ONLINE_MEMBER_CNT, optionQueryService.getOnlineMemberCount());
@@ -1123,7 +1123,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -1148,7 +1148,7 @@ public class AdminProcessor {
         final JSONObject user = userQueryService.getUser(userId);
         dataModel.put(User.USER, user);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -1169,7 +1169,7 @@ public class AdminProcessor {
         renderer.setTemplateName("admin/add-user.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -1208,7 +1208,7 @@ public class AdminProcessor {
                 dataModel.put(Keys.MSG, langPropsService.get("invalidPasswordLabel"));
             }
 
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -1233,7 +1233,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, e.getMessage());
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -1315,7 +1315,7 @@ public class AdminProcessor {
 
         userMgmtService.updateUser(userId, user);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -1353,7 +1353,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, e.getMessage());
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -1396,7 +1396,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, e.getMessage());
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -1447,7 +1447,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, e.getMessage());
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -1484,7 +1484,7 @@ public class AdminProcessor {
                 final Map<String, Object> dataModel = renderer.getDataModel();
 
                 dataModel.put(Keys.MSG, langPropsService.get("insufficientBalanceLabel"));
-                filler.fillHeaderAndFooter(request, response, dataModel);
+                dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
                 return;
             }
@@ -1506,7 +1506,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, e.getMessage());
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -1551,7 +1551,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, e.getMessage());
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -1588,7 +1588,7 @@ public class AdminProcessor {
                 final Map<String, Object> dataModel = renderer.getDataModel();
 
                 dataModel.put(Keys.MSG, langPropsService.get("insufficientBalanceLabel"));
-                filler.fillHeaderAndFooter(request, response, dataModel);
+                dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
                 return;
             }
@@ -1610,7 +1610,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, e.getMessage());
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -1682,7 +1682,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -1707,7 +1707,7 @@ public class AdminProcessor {
         final JSONObject article = articleQueryService.getArticle(articleId);
         dataModel.put(Article.ARTICLE, article);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -1757,7 +1757,7 @@ public class AdminProcessor {
         article = articleQueryService.getArticle(articleId);
         dataModel.put(Article.ARTICLE, article);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -1815,7 +1815,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -1840,7 +1840,7 @@ public class AdminProcessor {
         final JSONObject comment = commentQueryService.getComment(commentId);
         dataModel.put(Comment.COMMENT, comment);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -1883,7 +1883,7 @@ public class AdminProcessor {
         comment = commentQueryService.getComment(commentId);
         dataModel.put(Comment.COMMENT, comment);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -1907,7 +1907,7 @@ public class AdminProcessor {
         final List<JSONObject> misc = optionQueryService.getMisc();
         dataModel.put(Option.OPTIONS, misc);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -1950,7 +1950,7 @@ public class AdminProcessor {
         misc = optionQueryService.getMisc();
         dataModel.put(Option.OPTIONS, misc);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -2016,7 +2016,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -2041,7 +2041,7 @@ public class AdminProcessor {
         final JSONObject tag = tagQueryService.getTag(tagId);
         dataModel.put(Tag.TAG, tag);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -2094,7 +2094,7 @@ public class AdminProcessor {
         tag = tagQueryService.getTag(tagId);
         dataModel.put(Tag.TAG, tag);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -2154,7 +2154,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -2179,7 +2179,7 @@ public class AdminProcessor {
         final JSONObject domain = domainQueryService.getDomain(domainId);
         dataModel.put(Domain.DOMAIN, domain);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
     }
 
@@ -2228,7 +2228,7 @@ public class AdminProcessor {
         domain = domainQueryService.getDomain(domainId);
         dataModel.put(Domain.DOMAIN, domain);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -2249,7 +2249,7 @@ public class AdminProcessor {
         renderer.setTemplateName("admin/add-domain.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -2275,7 +2275,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, langPropsService.get("invalidDomainTitleLabel"));
 
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -2288,7 +2288,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, langPropsService.get("duplicatedDomainLabel"));
 
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -2309,7 +2309,7 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             dataModel.put(Keys.MSG, e.getMessage());
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -2382,7 +2382,7 @@ public class AdminProcessor {
 
                 dataModel.put(Keys.MSG, e.getMessage());
 
-                filler.fillHeaderAndFooter(request, response, dataModel);
+                dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
                 return;
             }
@@ -2399,7 +2399,7 @@ public class AdminProcessor {
                 final Map<String, Object> dataModel = renderer.getDataModel();
 
                 dataModel.put(Keys.MSG, e.getMessage());
-                filler.fillHeaderAndFooter(request, response, dataModel);
+                dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
                 return;
             }
@@ -2416,7 +2416,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, msg);
 
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }
@@ -2456,7 +2456,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, langPropsService.get("invalidTagLabel"));
 
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
             return;
         }

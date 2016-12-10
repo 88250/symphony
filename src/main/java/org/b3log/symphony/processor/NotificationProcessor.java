@@ -52,7 +52,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -100,10 +100,10 @@ public class NotificationProcessor {
     private NotificationMgmtService notificationMgmtService;
 
     /**
-     * Filler.
+     * Data model service.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Shows [sysAnnounce] notifications.
@@ -162,7 +162,7 @@ public class NotificationProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -421,7 +421,7 @@ public class NotificationProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -522,7 +522,7 @@ public class NotificationProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -584,7 +584,7 @@ public class NotificationProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -647,7 +647,7 @@ public class NotificationProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -710,7 +710,7 @@ public class NotificationProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -773,7 +773,7 @@ public class NotificationProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**

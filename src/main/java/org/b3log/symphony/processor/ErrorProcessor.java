@@ -38,7 +38,7 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.TimelineMgmtService;
-import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.service.DataModelService;
 
 /**
  * Error processor.
@@ -68,10 +68,10 @@ public class ErrorProcessor {
     private TimelineMgmtService timelineMgmtService;
 
     /**
-     * Filler.
+     * Data model service.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Handles the error.
@@ -99,12 +99,12 @@ public class ErrorProcessor {
 
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.putAll(langPropsService.getAll(Locales.getLocale()));
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
             if (HttpServletResponse.SC_FORBIDDEN == Integer.valueOf(statusCode)) {
                 dataModel.put(Common.TIMELINES, timelineMgmtService.getTimelines());
-                filler.fillSideHotArticles(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, dataModel);
-                filler.fillRandomArticles(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, dataModel);
-                filler.fillSideTags(dataModel);
+                dataModelService.fillSideHotArticles(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, dataModel);
+                dataModelService.fillRandomArticles(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, dataModel);
+                dataModelService.fillSideTags(dataModel);
             }
         } else {
             context.renderJSON().renderMsg(statusCode);

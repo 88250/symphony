@@ -48,7 +48,7 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -95,10 +95,10 @@ public class TagProcessor {
     private UserQueryService userQueryService;
 
     /**
-     * Filler.
+     * Data model service.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Tag cache.
@@ -194,7 +194,7 @@ public class TagProcessor {
         dataModel.put(Common.TREND_TAGS, trendTags);
         dataModel.put(Common.COLD_TAGS, coldTags);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -217,7 +217,7 @@ public class TagProcessor {
 
         renderer.setTemplateName("tag-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -312,10 +312,10 @@ public class TagProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
 
         dataModel.put(Common.CURRENT, StringUtils.substringAfter(URLDecoder.decode(request.getRequestURI()),
                 "/tag/" + tagURI));

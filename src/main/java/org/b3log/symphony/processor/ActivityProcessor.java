@@ -53,7 +53,7 @@ import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.CharacterQueryService;
 import org.b3log.symphony.service.PointtransferQueryService;
-import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -113,10 +113,10 @@ public class ActivityProcessor {
     private PointtransferQueryService pointtransferQueryService;
 
     /**
-     * Filler.
+     * Data model service.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Language service.
@@ -142,14 +142,14 @@ public class ActivityProcessor {
         renderer.setTemplateName("/activity/character.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         final String userId = user.optString(Keys.OBJECT_ID);
@@ -230,14 +230,14 @@ public class ActivityProcessor {
         renderer.setTemplateName("/home/activities.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
 
         dataModel.put("pointActivityCheckinMin", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN);
         dataModel.put("pointActivityCheckinMax", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MAX);
@@ -272,14 +272,14 @@ public class ActivityProcessor {
         renderer.setTemplateName("/activity/checkin.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
     }
 
     /**
@@ -432,14 +432,14 @@ public class ActivityProcessor {
             break;
         }
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
     }
 
     /**
@@ -518,12 +518,12 @@ public class ActivityProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
 
         final List<JSONObject> maxUsers = activityQueryService.getTopEatingSnakeUsersMax(avatarViewMode, 10);
         dataModel.put("maxUsers", (Object) maxUsers);
@@ -581,12 +581,12 @@ public class ActivityProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
 
         JSONObject requestJSONObject;
         try {

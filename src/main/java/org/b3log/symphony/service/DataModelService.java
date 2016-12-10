@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.util;
+package org.b3log.symphony.service;
 
 import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
@@ -31,7 +31,8 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.service.*;
+import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
@@ -40,19 +41,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
- * Filler utilities.
+ * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.10.2.23, Dec 10, 2016
  * @since 0.2.0
  */
 @Service
-public class Filler {
+public class DataModelService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Filler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DataModelService.class.getName());
 
     /**
      * Icon configuration.

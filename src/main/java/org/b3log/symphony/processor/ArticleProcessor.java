@@ -96,7 +96,7 @@ import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.service.VoteQueryService;
 import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
@@ -244,10 +244,10 @@ public class ArticleProcessor {
     private DomainCache domainCache;
 
     /**
-     * Filler.
+     * Data model service.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Checks article title.
@@ -402,7 +402,7 @@ public class ArticleProcessor {
 
         dataModel.put(Common.BROADCAST_POINT, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -529,7 +529,7 @@ public class ArticleProcessor {
             dataModel.put(Common.AT, at);
         }
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         String rewardEditorPlaceholderLabel = langPropsService.get("rewardEditorPlaceholderLabel");
         rewardEditorPlaceholderLabel = rewardEditorPlaceholderLabel.replace("{point}",
@@ -580,7 +580,7 @@ public class ArticleProcessor {
             session.setAttribute(Article.ARTICLE_T_ID, articleId);
         }
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
         final JSONObject author = userQueryService.getUser(authorId);
@@ -649,9 +649,9 @@ public class ArticleProcessor {
             livenessMgmtService.incLiveness(viewer.optString(Keys.OBJECT_ID), Liveness.LIVENESS_PV);
         }
 
-        filler.fillRelevantArticles(avatarViewMode, dataModel, article);
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillRelevantArticles(avatarViewMode, dataModel, article);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
 
         // Qiniu file upload authenticate
         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
@@ -943,7 +943,7 @@ public class ArticleProcessor {
 
         dataModel.put(Article.ARTICLE, article);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         // Qiniu file upload authenticate
         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));

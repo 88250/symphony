@@ -89,7 +89,7 @@ import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.service.PostExportService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Languages;
 import org.b3log.symphony.util.Networks;
 import org.b3log.symphony.util.Results;
@@ -196,10 +196,10 @@ public class UserProcessor {
     private EmotionMgmtService emotionMgmtService;
 
     /**
-     * Filler.
+     * Data model service.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Avatar query service.
@@ -319,7 +319,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/link-forge.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
@@ -496,7 +496,7 @@ public class UserProcessor {
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
         dataModel.put("fileMaxSize", fileMaxSize);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         String inviteTipLabel = (String) dataModel.get("inviteTipLabel");
         inviteTipLabel = inviteTipLabel.replace("{point}", String.valueOf(Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER));
@@ -573,7 +573,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         JSONObject currentUser = null;
@@ -663,7 +663,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/home.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         JSONObject currentUser = null;
@@ -787,7 +787,7 @@ public class UserProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -862,7 +862,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -935,7 +935,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/following-users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -1014,7 +1014,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/following-tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -1092,7 +1092,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/following-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -1171,7 +1171,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/followers.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -1251,7 +1251,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/points.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
