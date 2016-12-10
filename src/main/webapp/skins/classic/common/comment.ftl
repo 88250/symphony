@@ -64,12 +64,11 @@
                           aria-label="${downLabel}"
                     <#if permissions["commonBadComment"].permissionGrant>
                           onclick="Article.voteDown('${comment.oId}', 'comment', this)"
-                    </#if><span class="icon-thumbs-down"></span> ${comment.commentBadCnt}</span> &nbsp;
-                    <#if (isLoggedIn && comment.commentAuthorName != currentUser.userName) || !isLoggedIn>
+                    </#if>><span class="icon-thumbs-down"></span> ${comment.commentBadCnt}</span> &nbsp;
+                    <#if comment.commentAuthorName != currentUser.userName && permissions["commonAddComment"].permissionGrant>
                         <span aria-label="${replyLabel}" class="icon-reply-btn tooltipped tooltipped-n"
-                        <#if permissions["commonBadComment"].permissionGrant>
-                              onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')"
-                        </#if><span class="icon-reply"></span></span>
+                              onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')">
+                        <span class="icon-reply"></span></span>
                     </#if>
                     </span>
                 </div>
