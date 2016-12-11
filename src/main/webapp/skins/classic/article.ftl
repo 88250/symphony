@@ -413,8 +413,9 @@
             Label.replyLabel = '${replyLabel}';
             Label.referenceLabel = '${referenceLabel}';
             Label.goCommentLabel = '${goCommentLabel}';
-            qiniuToken = "${qiniuUploadToken}";
-            qiniuDomain = "${qiniuDomain}";
+            Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
+            Label.qiniuDomain = '${qiniuDomain}';
+            Label.qiniuUploadToken = '${qiniuUploadToken}';
             <#if isLoggedIn>
                 Label.currentUserName = '${currentUser.userName}';
                 Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');

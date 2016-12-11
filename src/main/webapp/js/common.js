@@ -501,56 +501,58 @@ var Util = {
             });
         }
 
-        CodeMirror.registerHelper("hint", "userName", function (cm) {
-            var word = /[\w$]+/;
-            var cur = cm.getCursor(), curLine = cm.getLine(cur.line);
-            var start = cur.ch, end = start;
-            while (end < curLine.length && word.test(curLine.charAt(end))) {
-                ++end;
-            }
-            while (start && word.test(curLine.charAt(start - 1))) {
-                --start;
-            }
-            var tok = cm.getTokenAt(cur);
-            var autocompleteHints = [];
-
-            if (tok.string.indexOf('@') !== 0) {
-                return false;
-            }
-
-            $.ajax({
-                async: false,
-                url: Label.servePath + "/users/names?name=" + tok.string.substring(1),
-                type: "GET",
-                success: function (result) {
-                    if (!result.sc || !result.userNames) {
-                        return;
-                    }
-
-                    for (var i = 0; i < result.userNames.length; i++) {
-                        var user = result.userNames[i];
-                        var name = user.userName;
-                        var avatar = user.userAvatarURL;
-
-                        autocompleteHints.push({
-                            displayText: "<span style='font-size: 1rem;line-height:22px'><img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='" + avatar
-                                    + "'> " + name + "</span>",
-                            text: name + " "
-                        });
-                    }
-
-                    if ('comment' === cm['for']) {
-                        autocompleteHints.push({
-                            displayText: "<span style='font-size: 1rem;line-height:22px'>"
-                                    + "<img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='/images/user-thumbnail.png'> @参与者</span>",
-                            text: "participants "
-                        });
-                    }
+        if (Label.commonAtUser && Label.commonAtUser === 'true') {
+            CodeMirror.registerHelper("hint", "userName", function (cm) {
+                var word = /[\w$]+/;
+                var cur = cm.getCursor(), curLine = cm.getLine(cur.line);
+                var start = cur.ch, end = start;
+                while (end < curLine.length && word.test(curLine.charAt(end))) {
+                    ++end;
                 }
-            });
+                while (start && word.test(curLine.charAt(start - 1))) {
+                    --start;
+                }
+                var tok = cm.getTokenAt(cur);
+                var autocompleteHints = [];
 
-            return {list: autocompleteHints, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
-        });
+                if (tok.string.indexOf('@') !== 0) {
+                    return false;
+                }
+
+                $.ajax({
+                    async: false,
+                    url: Label.servePath + "/users/names?name=" + tok.string.substring(1),
+                    type: "GET",
+                    success: function (result) {
+                        if (!result.sc || !result.userNames) {
+                            return;
+                        }
+
+                        for (var i = 0; i < result.userNames.length; i++) {
+                            var user = result.userNames[i];
+                            var name = user.userName;
+                            var avatar = user.userAvatarURL;
+
+                            autocompleteHints.push({
+                                displayText: "<span style='font-size: 1rem;line-height:22px'><img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='" + avatar
+                                        + "'> " + name + "</span>",
+                                text: name + " "
+                            });
+                        }
+
+                        if ('comment' === cm['for']) {
+                            autocompleteHints.push({
+                                displayText: "<span style='font-size: 1rem;line-height:22px'>"
+                                        + "<img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='/images/user-thumbnail.png'> @参与者</span>",
+                                text: "participants "
+                            });
+                        }
+                    }
+                });
+
+                return {list: autocompleteHints, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
+            });
+        }
 
         CodeMirror.registerHelper("hint", "emoji", function (cm) {
             var word = /[\w$]+/;
