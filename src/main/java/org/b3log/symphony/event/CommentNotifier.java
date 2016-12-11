@@ -56,7 +56,7 @@ import java.util.Set;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.9.19, Sep 30, 2016
+ * @version 1.6.9.20, Dec 11, 2016
  * @since 0.2.0
  */
 @Named
@@ -213,10 +213,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             }
 
             chData.put(Common.THUMBNAIL_UPDATE_TIME, commenter.optLong(UserExt.USER_UPDATE_TIME));
-
             chData.put(Common.TIME_AGO, langPropsService.get("justNowLabel"));
-            chData.put("thankLabel", langPropsService.get("thankLabel"));
-            chData.put("thankedLabel", langPropsService.get("thankedLabel"));
             String thankTemplate = langPropsService.get("thankConfirmLabel");
             thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
                     .replace("{user}", commenterName);
@@ -255,7 +252,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             chData.put(Comment.COMMENT_CONTENT, cc);
             chData.put(Comment.COMMENT_UA, originalComment.optString(Comment.COMMENT_UA));
             chData.put(Common.FROM_CLIENT, fromClient);
-            chData.put(UserExt.USER_UA_STATUS, commenter.optInt(UserExt.USER_UA_STATUS));
 
             ArticleChannel.notifyComment(chData);
 
