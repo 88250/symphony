@@ -571,11 +571,27 @@ public final class SymphonyServletListener extends AbstractServletListener {
             rolePermissionRepository.add(rolePermission);
 
             rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE_ANONYMOUS);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
             rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_UPDATE_ARTICLE);
             rolePermissionRepository.add(rolePermission);
 
             rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
             rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT_ANONYMOUS);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_UPDATE_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_VIEW_COMMENT_HISTORY);
             rolePermissionRepository.add(rolePermission);
 
             rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
@@ -666,11 +682,27 @@ public final class SymphonyServletListener extends AbstractServletListener {
             rolePermissionRepository.add(rolePermission);
 
             rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE_ANONYMOUS);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
             rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_UPDATE_ARTICLE);
             rolePermissionRepository.add(rolePermission);
 
             rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
             rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT_ANONYMOUS);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_UPDATE_COMMENT);
+            rolePermissionRepository.add(rolePermission);
+
+            rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
+            rolePermission.put(Permission.PERMISSION_ID, Permission.PERMISSION_ID_C_COMMON_VIEW_COMMENT_HISTORY);
             rolePermissionRepository.add(rolePermission);
 
             rolePermission.put(Keys.OBJECT_ID, Ids.genTimeMillisId());
