@@ -1,7 +1,6 @@
 <#include "macro-admin.ftl">
 <@admin "domains">
 <div class="wrapper">
-    <div class="fn-hr10"></div>
     <div class="module">
         <div class="module-header">
             <h2>${unmodifiableLabel}</h2>
@@ -17,11 +16,11 @@
             <h2>${tagLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <br/>
             <#list domain.domainTags as tag>
             <a class="tag" target="_blank" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
             </#list>
 
+            <#if permissions["domainAddDomainTag"].permissionGrant>
             <form method="POST" action="${servePath}/admin/domain/${domain.oId}/add-tag" class="fn-clear">
                 <label form="addTag">${addTagLabel}</label>
                 <input type="text" name="tagTitle" />
@@ -29,7 +28,9 @@
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
+            </#if>
 
+            <#if permissions["domainRemoveDomainTag"].permissionGrant>
             <form method="POST" action="${servePath}/admin/domain/${domain.oId}/remove-tag">
                 <label form="addTag">${removeTagLabel}</label>
                 <input type="text" name="tagTitle" />
@@ -37,9 +38,11 @@
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
+            </#if>
         </div>
     </div>
 
+    <#if permissions["domainUpdateDomainBasic"].permissionGrant>
     <div class="module">
         <div class="module-header">
             <h2>${modifiableLabel}</h2>
@@ -80,14 +83,16 @@
                 <input type="text" id="domainSeoDesc" name="domainSeoDesc" value="${domain.domainSeoDesc}" />
 
                 <label for="domainCSS">CSS</label>
-                <textarea type="text" rows="20" id="domainCSS" name="domainCSS">${domain.domainCSS}</textarea>
+                <textarea rows="20" id="domainCSS" name="domainCSS">${domain.domainCSS}</textarea>
 
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
         </div>
     </div>
+    </#if>
 
+    <#if permissions["domainRemoveDomain"].permissionGrant>
     <div class="module">
         <div class="module-header">
             <h2 class="ft-red">${removeLabel}</h2>
@@ -102,5 +107,6 @@
             </form>
         </div>
     </div>
+    </#if>
 </div>
 </@admin>

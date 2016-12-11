@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.7.17, Dec 10, 2016
+ * @version 1.5.7.18, Dec 11, 2016
  */
 
 @import "variables";
@@ -2773,9 +2773,11 @@ code .dec { color: initial; } /* decimal - blue */
     vertical-align: bottom;
 }
 
-.admin .form input[type=text] {
-    width: 50%;
+.admin .form input[type=text],
+.admin .form input[type=number] {
+    width: 30%;
     margin-right: 10px;
+    height: 27px;
 }
 /* end admin */
 
