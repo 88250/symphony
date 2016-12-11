@@ -3,9 +3,11 @@
 <@admin "reservedWords">
 <div class="content admin">
     <div class="module list">
+        <#if permissions["rwAddReservedWord"].permissionGrant>
         <div class="form">
             <button type="button" class="btn red" onclick="window.location = '${servePath}/admin/add-reserved-word'">${allReservedWordLabel}</button>
         </div>
+        </#if>
         <ul>
             <#list words as item>
             <li>

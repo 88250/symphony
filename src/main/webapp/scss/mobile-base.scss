@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.7.16, Nov 19, 2016
+ * @version 1.5.7.17, Dec 10, 2016
  */
 
 @import "variables";
@@ -1838,10 +1838,9 @@ label.cmt-anonymous {
     border: 1px solid #D9D9D9;
     border-top-color: #C0C0C0;
     border-left-color: #C0C0C0;
-    margin: 10px 0;
-    padding: 3px;
-    background-color: #FAFAFA;
     box-sizing: border-box;
+    margin: 10px;
+    background-color: #fafafa;
 }
 
 .comment-login > a {

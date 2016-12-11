@@ -17,12 +17,6 @@
  */
 package org.b3log.symphony.event;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -33,44 +27,36 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.Pointtransfer;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
-import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.AvatarQueryService;
-import org.b3log.symphony.service.CommentQueryService;
-import org.b3log.symphony.service.NotificationMgmtService;
-import org.b3log.symphony.service.PointtransferMgmtService;
-import org.b3log.symphony.service.ShortLinkQueryService;
-import org.b3log.symphony.service.TimelineMgmtService;
-import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.9.19, Sep 30, 2016
+ * @version 1.6.9.20, Dec 11, 2016
  * @since 0.2.0
  */
 @Named
@@ -170,7 +156,9 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final String commenterName = commenter.optString(User.USER_NAME);
 
             // 0. Data channel (WebSocket)
-            final JSONObject chData = new JSONObject();
+            final JSONObject chData = JSONs.clone(originalComment);
+            chData.put(Comment.COMMENT_T_COMMENTER, commenter);
+            chData.put(Keys.OBJECT_ID, commentId);
             chData.put(Article.ARTICLE_T_ID, articleId);
             chData.put(Comment.COMMENT_T_ID, commentId);
             chData.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCmtId);
@@ -225,10 +213,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             }
 
             chData.put(Common.THUMBNAIL_UPDATE_TIME, commenter.optLong(UserExt.USER_UPDATE_TIME));
-
             chData.put(Common.TIME_AGO, langPropsService.get("justNowLabel"));
-            chData.put("thankLabel", langPropsService.get("thankLabel"));
-            chData.put("thankedLabel", langPropsService.get("thankedLabel"));
             String thankTemplate = langPropsService.get("thankConfirmLabel");
             thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
                     .replace("{user}", commenterName);
@@ -267,7 +252,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             chData.put(Comment.COMMENT_CONTENT, cc);
             chData.put(Comment.COMMENT_UA, originalComment.optString(Comment.COMMENT_UA));
             chData.put(Common.FROM_CLIENT, fromClient);
-            chData.put(UserExt.USER_UA_STATUS, commenter.optInt(UserExt.USER_UA_STATUS));
 
             ArticleChannel.notifyComment(chData);
 

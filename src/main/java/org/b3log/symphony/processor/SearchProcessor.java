@@ -36,9 +36,9 @@ import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.SearchQueryService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -89,10 +89,10 @@ public class SearchProcessor {
     private UserQueryService userQueryService;
 
     /**
-     * Filler.
+     * Data model service.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Searches.
@@ -197,10 +197,10 @@ public class SearchProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
     }
 }

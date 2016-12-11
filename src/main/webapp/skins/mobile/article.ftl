@@ -202,7 +202,7 @@
                 </#if>
                 <#else>
                 <div class="comment-login">
-                    <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
+                    <a rel="nofollow" href="javascript:Util.needLogin();">${loginDiscussLabel}</a>
                 </div>
                 </#if>
                 </#if>
@@ -327,7 +327,7 @@
                 </#if>
                 <#else>
                 <div class="comment-login wrapper">
-                    <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
+                    <a rel="nofollow" href="javascript:Util.needLogin();">${loginDiscussLabel}</a>
                 </div>
                 <div class="fn-hr10"></div>
                 </#if>

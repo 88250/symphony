@@ -46,11 +46,8 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.TimelineMgmtService;
-import org.b3log.symphony.service.UserMgmtService;
-import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.service.*;
+import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -100,10 +97,10 @@ public class IndexProcessor {
     private UserMgmtService userMgmtService;
 
     /**
-     * Filler.
+     * Data model service.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Language service.
@@ -172,8 +169,8 @@ public class IndexProcessor {
 
         dataModel.put(Common.SELECTED, Common.INDEX);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillIndexTags(dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillIndexTags(dataModel);
     }
 
     /**
@@ -267,12 +264,12 @@ public class IndexProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
 
         dataModel.put(Common.CURRENT, StringUtils.substringAfter(request.getRequestURI(), "/recent"));
     }
@@ -311,13 +308,13 @@ public class IndexProcessor {
 
         Stopwatchs.start("Fills");
         try {
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
             if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
-                filler.fillRandomArticles(avatarViewMode, dataModel);
+                dataModelService.fillRandomArticles(avatarViewMode, dataModel);
             }
-            filler.fillSideHotArticles(avatarViewMode, dataModel);
-            filler.fillSideTags(dataModel);
-            filler.fillLatestCmts(dataModel);
+            dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+            dataModelService.fillSideTags(dataModel);
+            dataModelService.fillLatestCmts(dataModel);
         } finally {
             Stopwatchs.end();
         }
@@ -348,13 +345,13 @@ public class IndexProcessor {
         try {
             final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-            filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
             if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
-                filler.fillRandomArticles(avatarViewMode, dataModel);
+                dataModelService.fillRandomArticles(avatarViewMode, dataModel);
             }
-            filler.fillSideHotArticles(avatarViewMode, dataModel);
-            filler.fillSideTags(dataModel);
-            filler.fillLatestCmts(dataModel);
+            dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+            dataModelService.fillSideTags(dataModel);
+            dataModelService.fillLatestCmts(dataModel);
         } finally {
             Stopwatchs.end();
         }
@@ -411,11 +408,11 @@ public class IndexProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
     }
 
     /**
@@ -451,14 +448,14 @@ public class IndexProcessor {
         renderer.setTemplateName("b3log.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
     }
 
     /**
@@ -482,6 +479,6 @@ public class IndexProcessor {
 
         dataModel.putAll(langs);
         Keys.fillRuntime(dataModel);
-        filler.fillMinified(dataModel);
+        dataModelService.fillMinified(dataModel);
     }
 }
