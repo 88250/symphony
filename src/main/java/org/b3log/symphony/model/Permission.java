@@ -17,13 +17,17 @@
  */
 package org.b3log.symphony.model;
 
+import java.util.Set;
+
 /**
  * This class defines all permission model relevant keys.
  * <p>
+ * <p>
  * See <a href="https://github.com/b3log/symphony/issues/337">#337</a> for more details.
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.0, Dec 10, 2016
+ * @version 1.4.1.0, Dec 11, 2016
  * @since 1.8.0
  */
 public final class Permission {
@@ -360,9 +364,28 @@ public final class Permission {
      */
     public static final int PERMISSION_CATEGORY_C_MISC = 9;
 
+
     /**
      * Private constructor.
      */
     private Permission() {
+    }
+
+    /**
+     * Checks whether the specified grant permissions contains the specified requisite permissions.
+     *
+     * @param requisitePermissions the specified requisite permissions
+     * @param grantPermissions     the specified grant permissions
+     * @return {@code true} if the specified grant permissions contains the specified requisite permissions, returns
+     * {@code false} otherwise
+     */
+    public static boolean hasPermission(final Set<String> requisitePermissions, final Set<String> grantPermissions) {
+        for (final String requisitePermission : requisitePermissions) {
+            if (!grantPermissions.contains(requisitePermission)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
