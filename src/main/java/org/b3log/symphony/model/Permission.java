@@ -19,11 +19,11 @@ package org.b3log.symphony.model;
 
 /**
  * This class defines all permission model relevant keys.
- *
+ * <p>
  * See <a href="https://github.com/b3log/symphony/issues/337">#337</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.0, Dec 10, 2016
+ * @version 1.3.1.0, Dec 10, 2016
  * @since 1.8.0
  */
 public final class Permission {
@@ -70,6 +70,11 @@ public final class Permission {
     public static final String PERMISSION_ID_C_COMMON_ADD_ARTICLE = "commonAddArticle";
 
     /**
+     * Id - common - add article anonymous.
+     */
+    public static final String PERMISSION_ID_C_COMMON_ADD_ARTICLE_ANONYMOUS = "commonAddArticleAnonymous";
+
+    /**
      * Id - common - update article.
      */
     public static final String PERMISSION_ID_C_COMMON_UPDATE_ARTICLE = "commonUpdateArticle";
@@ -78,6 +83,21 @@ public final class Permission {
      * Id - common - add comment.
      */
     public static final String PERMISSION_ID_C_COMMON_ADD_COMMENT = "commonAddComment";
+
+    /**
+     * Id - common add comment anonymous.
+     */
+    public static final String PERMISSION_ID_C_COMMON_ADD_COMMENT_ANONYMOUS = "commonAddCommentAnonymous";
+
+    /**
+     * Id - common - update comment.
+     */
+    public static final String PERMISSION_ID_C_COMMON_UPDATE_COMMENT = "commonUpdateComment";
+
+    /**
+     * Id - common - view comment history.
+     */
+    public static final String PERMISSION_ID_C_COMMON_VIEW_COMMENT_HISTORY = "commonViewCommentHistory";
 
     /**
      * Id - common - stick article.
