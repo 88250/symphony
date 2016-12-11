@@ -255,6 +255,7 @@
                                 <#include 'common/comment.ftl' />
                                 </#list>
                             </ul>
+                            <div id="bottomComment"></div>
                         </div>
                         <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
                     </div>
