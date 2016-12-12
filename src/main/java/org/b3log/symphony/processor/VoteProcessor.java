@@ -17,9 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -38,18 +35,23 @@ import org.b3log.symphony.service.VoteMgmtService;
 import org.b3log.symphony.service.VoteQueryService;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Vote processor.
- *
+ * <p>
  * <ul>
  * <li>Votes up an article (/vote/up/article), POST</li>
  * <li>Votes down an article (/vote/down/article), POST</li>
  * <li>Votes up a comment (/vote/up/comment), POST</li>
  * <li>Votes down a comment (/vote/down/comment), POST</li>
  * </ul>
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Jul 31, 2016
+ * @version 1.2.0.2, Dec 12, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -80,7 +82,6 @@ public class VoteProcessor {
 
     /**
      * Votes up a comment.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -90,15 +91,15 @@ public class VoteProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/vote/up/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void voteUpComment(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response) throws Exception {
+                              final HttpServletResponse response) throws Exception {
         context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
@@ -126,7 +127,6 @@ public class VoteProcessor {
 
     /**
      * Votes down a comment.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -136,15 +136,15 @@ public class VoteProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/vote/down/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void voteDownComment(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response) throws Exception {
+                                final HttpServletResponse response) throws Exception {
         context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
@@ -172,7 +172,6 @@ public class VoteProcessor {
 
     /**
      * Votes up an article.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -182,15 +181,15 @@ public class VoteProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/vote/up/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void voteUpArticle(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response) throws Exception {
+                              final HttpServletResponse response) throws Exception {
         context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
@@ -218,7 +217,6 @@ public class VoteProcessor {
 
     /**
      * Votes down an article.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -228,15 +226,15 @@ public class VoteProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/vote/down/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void voteDownArticle(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response) throws Exception {
+                                final HttpServletResponse response) throws Exception {
         context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
