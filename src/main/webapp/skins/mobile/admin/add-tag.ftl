@@ -1,6 +1,6 @@
 <#include "macro-admin.ftl">
 <@admin "addTag">
-<div class="content">
+<div class="wrapper">
     <div class="module">
         <div class="module-header">
             <h2>${addTagLabel}</h2>

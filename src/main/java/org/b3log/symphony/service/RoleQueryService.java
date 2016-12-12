@@ -45,7 +45,7 @@ import java.util.*;
  * Role query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Dec 10, 2016
+ * @version 1.4.0.0, Dec 11, 2016
  * @since 1.8.0
  */
 @Service
@@ -140,6 +140,29 @@ public class RoleQueryService {
     }
 
     /**
+     * Gets grant permissions of a user specified by the given user id.
+     *
+     * @param userId the given user id
+     * @return a list of permissions, returns an empty set if not found
+     */
+    public Set<String> getUserPermissions(final String userId) {
+        try {
+            final JSONObject user = userRepository.get(userId);
+            if (null == user) {
+                return Collections.emptySet();
+            }
+
+            final String roleId = user.optString(User.USER_ROLE);
+
+            return getPermissions(roleId);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets grant permissions of user [id=" + userId + "] failed", e);
+
+            return Collections.emptySet();
+        }
+    }
+
+    /**
      * Gets all permissions and marks grant of an role specified by the given role id.
      *
      * @param roleId the given role id
@@ -201,22 +224,23 @@ public class RoleQueryService {
      * @param roleId the given role id
      * @return a list of permissions, returns an empty list if not found
      */
-    public List<JSONObject> getPermissions(final String roleId) {
-        final List<JSONObject> ret = new ArrayList<>();
+    public Set<String> getPermissions(final String roleId) {
+        final Set<String> ret = new HashSet<>();
 
         try {
             final List<JSONObject> rolePermissions = rolePermissionRepository.getByRoleId(roleId);
             for (final JSONObject rolePermission : rolePermissions) {
                 final String permissionId = rolePermission.optString(Permission.PERMISSION_ID);
-                final JSONObject permission = permissionRepository.get(permissionId);
 
-                ret.add(permission);
+                ret.add(permissionId);
             }
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets permissions of role [id=" + roleId + "] failed", e);
-        }
 
-        return ret;
+            return Collections.emptySet();
+        }
     }
 
     /**

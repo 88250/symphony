@@ -1,7 +1,6 @@
 <#include "macro-admin.ftl">
 <@admin "invitecodes">
 <div class="wrapper">
-    <div class="fn-hr10"></div>
     <div class="module">
         <div class="module-header">
             <h2>${unmodifiableLabel}</h2>
@@ -20,6 +19,7 @@
             <input type="text" id="useTime" name="useTime" value="${invitecode.useTime}" readonly="readonly" />
         </div>
     </div>
+    <#if permissions["icUpdateICBasic"].permissionGrant>
     <div class="module">
         <div class="module-header">
             <h2>${modifiableLabel}</h2>
@@ -41,5 +41,6 @@
             </form>
         </div>
     </div>
+    </#if>
 </div>
 </@admin>
