@@ -18,8 +18,9 @@
 package org.b3log.symphony.util;
 
 import com.vdurmont.emoji.EmojiParser;
-import java.util.regex.Pattern;
 import org.b3log.latke.Latkes;
+
+import java.util.regex.Pattern;
 
 /**
  * Emotions utilities.
@@ -121,8 +122,9 @@ public final class Emotions {
 
         for (final String emojiCode : EMOJIS) {
             final String emoji = ":" + emojiCode + ":";
+            final String codepoint = Integer.toHexString(emojiCode.codePointAt(0));
             ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
-                    + staticServePath + "/js/lib/emojify.js-1.1.0/images/basic/" + emojiCode
+                    + staticServePath + "/emoji/graphics/" + emojiCode
                     + ".png\" title=\"" + emoji + "\"></img>");
         }
 

@@ -62,6 +62,11 @@ public final class Emotion {
      */
     public static final int EMOTION_TYPE_C_EMOJI = 0;
 
+    /**
+     * A short list of all emojis used in setting
+     */
+    public static final String SHORT_LIST = "shortLists";
+
     private Emotion() {
     }
 }
