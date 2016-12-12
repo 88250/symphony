@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.22.39, Dec 10, 2016
+ * @version 2.25.23.39, Dec 12, 2016
  * @since 0.2.0
  */
 @Service
@@ -1630,7 +1630,7 @@ public class ArticleQueryService {
                         + "	articleLatestCmtTime\n"
                         + "END AS flag\n"
                         + "FROM\n"
-                        + "	`symphony_article`\n"
+                        + "	`" + articleRepository.getName() + "`\n"
                         + " WHERE `articleType` != 1 AND `articleStatus` = 0 AND `articleTags` != 'Sandbox'\n"
                         + " ORDER BY\n"
                         + "	articleStick DESC,\n"
