@@ -1,8 +1,8 @@
 <#include "macro-admin.ftl">
     <@admin "roles">
-    <div class="content admin">
-        <div class="module list">
-            <form class="form" action="${servePath}/admin/role" method="POST">
+    <div class="admin">
+        <div class="list">
+            <form class="form wrapper" action="${servePath}/admin/role" method="POST">
                 <input name="roleName" type="text" id="rolesTitle" placeholder="${roleNameLabel}">
                 <input name="roleDescription" type="text" id="rolesDesc" placeholder="${roleDescLabel}">
                 <button class="red">${createLabel}</button>

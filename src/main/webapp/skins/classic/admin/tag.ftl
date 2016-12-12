@@ -19,6 +19,7 @@
             <input type="text" id="tagFollowerCount" name="tagFollowerCount" value="${tag.tagFollowerCount}" />
         </div>
     </div>
+    <#if permissions["tagUpdateTagBasic"].permissionGrant>
     <div class="module">
         <div class="module-header">
             <h2>${modifiableLabel}</h2>
@@ -66,5 +67,6 @@
             </form>
         </div>
     </div>
+    </#if>
 </div>
 </@admin>

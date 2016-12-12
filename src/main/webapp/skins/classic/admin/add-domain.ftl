@@ -1,6 +1,7 @@
 <#include "macro-admin.ftl">
 <@admin "addDomain">
 <div class="content">
+    <#if permissions["domainAddDomain"].permissionGrant>
     <div class="module">
         <div class="module-header">
             <h2>${addDomainLabel}</h2>
@@ -14,6 +15,7 @@
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
         </div>
-    </div>   
+    </div>
+    </#if>
 </div>
 </@admin>

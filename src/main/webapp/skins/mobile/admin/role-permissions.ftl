@@ -1,6 +1,6 @@
 <#include "macro-admin.ftl">
     <@admin "roles">
-    <div class="content admin">
+    <div class="wrapper">
         <div class="module">
             <form action="${servePath}/admin/role/${role.oId}/permissions" method="POST">
                 <div class="module-header fn-clear">

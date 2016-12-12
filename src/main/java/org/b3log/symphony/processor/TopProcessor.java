@@ -35,8 +35,8 @@ import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ActivityQueryService;
+import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.PointtransferQueryService;
-import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -57,10 +57,10 @@ import org.json.JSONObject;
 public class TopProcessor {
 
     /**
-     * Filler.
+     * Data model service.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Pointtransfer query service.
@@ -100,11 +100,11 @@ public class TopProcessor {
                 avatarViewMode, Symphonys.getInt("topBalanceCnt"));
         dataModel.put(Common.TOP_BALANCE_USERS, users);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
     }
 
     /**
@@ -133,11 +133,11 @@ public class TopProcessor {
                 avatarViewMode, Symphonys.getInt("topConsumptionCnt"));
         dataModel.put(Common.TOP_CONSUMPTION_USERS, users);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
     }
 
     /**
@@ -166,10 +166,10 @@ public class TopProcessor {
                 avatarViewMode, Symphonys.getInt("topCheckinCnt"));
         dataModel.put(Common.TOP_CHECKIN_USERS, users);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
     }
 }

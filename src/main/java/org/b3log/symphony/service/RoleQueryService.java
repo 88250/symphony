@@ -21,6 +21,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
@@ -33,20 +34,18 @@ import org.b3log.symphony.model.Role;
 import org.b3log.symphony.repository.PermissionRepository;
 import org.b3log.symphony.repository.RolePermissionRepository;
 import org.b3log.symphony.repository.RoleRepository;
+import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Role query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Dec 8, 2016
+ * @version 1.4.0.0, Dec 11, 2016
  * @since 1.8.0
  */
 @Service
@@ -76,6 +75,12 @@ public class RoleQueryService {
     private PermissionRepository permissionRepository;
 
     /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
+
+    /**
      * Gets an role specified by the given role id.
      *
      * @param roleId the given role id
@@ -89,6 +94,92 @@ public class RoleQueryService {
 
             return null;
         }
+    }
+
+    /**
+     * Gets all permissions and marks grant of a user specified by the given user id.
+     *
+     * @param userId the given user id
+     * @return a map of permissions&lt;permissionId, permission&gt;, returns an empty map if not found
+     */
+    public Map<String, JSONObject> getUserPermissionsGrantMap(final String userId) {
+        final List<JSONObject> permissions = getUserPermissionsGrant(userId);
+        if (permissions.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        final Map<String, JSONObject> ret = new HashMap<>();
+        for (final JSONObject permission : permissions) {
+            ret.put(permission.optString(Keys.OBJECT_ID), permission);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets all permissions and marks grant of a user specified by the given user id.
+     *
+     * @param userId the given user id
+     * @return a list of permissions, returns an empty list if not found
+     */
+    public List<JSONObject> getUserPermissionsGrant(final String userId) {
+        try {
+            final JSONObject user = userRepository.get(userId);
+            if (null == user) {
+                return getPermissionsGrant(Role.ROLE_ID_C_VISITOR);
+            }
+
+            final String roleId = user.optString(User.USER_ROLE);
+
+            return getPermissionsGrant(roleId);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets user permissions grant failed", e);
+
+            return getPermissionsGrant(Role.ROLE_ID_C_VISITOR);
+        }
+    }
+
+    /**
+     * Gets grant permissions of a user specified by the given user id.
+     *
+     * @param userId the given user id
+     * @return a list of permissions, returns an empty set if not found
+     */
+    public Set<String> getUserPermissions(final String userId) {
+        try {
+            final JSONObject user = userRepository.get(userId);
+            if (null == user) {
+                return Collections.emptySet();
+            }
+
+            final String roleId = user.optString(User.USER_ROLE);
+
+            return getPermissions(roleId);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets grant permissions of user [id=" + userId + "] failed", e);
+
+            return Collections.emptySet();
+        }
+    }
+
+    /**
+     * Gets all permissions and marks grant of an role specified by the given role id.
+     *
+     * @param roleId the given role id
+     * @return a map of permissions&lt;permissionId, permission&gt;, returns an empty map if not found
+     */
+    public Map<String, JSONObject> getPermissionsGrantMap(final String roleId) {
+        final List<JSONObject> permissions = getPermissionsGrant(roleId);
+        if (permissions.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        final Map<String, JSONObject> ret = new HashMap<>();
+        for (final JSONObject permission : permissions) {
+            ret.put(permission.optString(Keys.OBJECT_ID), permission);
+        }
+
+        return ret;
     }
 
     /**
@@ -133,22 +224,23 @@ public class RoleQueryService {
      * @param roleId the given role id
      * @return a list of permissions, returns an empty list if not found
      */
-    public List<JSONObject> getPermissions(final String roleId) {
-        final List<JSONObject> ret = new ArrayList<>();
+    public Set<String> getPermissions(final String roleId) {
+        final Set<String> ret = new HashSet<>();
 
         try {
             final List<JSONObject> rolePermissions = rolePermissionRepository.getByRoleId(roleId);
             for (final JSONObject rolePermission : rolePermissions) {
                 final String permissionId = rolePermission.optString(Permission.PERMISSION_ID);
-                final JSONObject permission = permissionRepository.get(permissionId);
 
-                ret.add(permission);
+                ret.add(permissionId);
             }
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets permissions of role [id=" + roleId + "] failed", e);
-        }
 
-        return ret;
+            return Collections.emptySet();
+        }
     }
 
     /**

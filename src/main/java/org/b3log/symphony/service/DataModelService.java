@@ -15,19 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.util;
+package org.b3log.symphony.service;
 
-import org.b3log.symphony.service.AvatarQueryService;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -41,39 +30,30 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.cache.DomainCache;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Domain;
-import org.b3log.symphony.model.Follow;
-import org.b3log.symphony.model.Liveness;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.Option;
-import org.b3log.symphony.model.Role;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.service.ActivityQueryService;
-import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.FollowQueryService;
-import org.b3log.symphony.service.LivenessQueryService;
-import org.b3log.symphony.service.OptionQueryService;
-import org.b3log.symphony.service.TagQueryService;
-import org.b3log.symphony.service.UserMgmtService;
-import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.model.*;
+import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+
 /**
- * Filler utilities.
+ * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.2.22, Oct 11, 2016
+ * @version 1.10.2.23, Dec 10, 2016
  * @since 0.2.0
  */
 @Service
-public class Filler {
+public class DataModelService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Filler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DataModelService.class.getName());
 
     /**
      * Icon configuration.
@@ -152,15 +132,21 @@ public class Filler {
     private DomainCache domainCache;
 
     /**
+     * Role query service.
+     */
+    @Inject
+    private RoleQueryService roleQueryService;
+
+    /**
      * Fills relevant articles.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param dataModel the specified data model
-     * @param article the specified article
+     * @param dataModel      the specified data model
+     * @param article        the specified article
      * @throws Exception exception
      */
     public void fillRelevantArticles(final int avatarViewMode,
-            final Map<String, Object> dataModel, final JSONObject article) throws Exception {
+                                     final Map<String, Object> dataModel, final JSONObject article) throws Exception {
         Stopwatchs.start("Fills relevant articles");
         try {
             dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
@@ -191,7 +177,7 @@ public class Filler {
      * Fills random articles.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param dataModel the specified data model
+     * @param dataModel      the specified data model
      * @throws Exception exception
      */
     public void fillRandomArticles(final int avatarViewMode, final Map<String, Object> dataModel) throws Exception {
@@ -212,7 +198,7 @@ public class Filler {
      * Fills side hot articles.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param dataModel the specified data model
+     * @param dataModel      the specified data model
      * @throws Exception exception
      */
     public void fillSideHotArticles(final int avatarViewMode, final Map<String, Object> dataModel) throws Exception {
@@ -276,13 +262,13 @@ public class Filler {
     /**
      * Fills header.
      *
-     * @param request the specified request
-     * @param response the specified response
+     * @param request   the specified request
+     * @param response  the specified response
      * @param dataModel the specified data model
      * @throws Exception exception
      */
     private void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) throws Exception {
+                            final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put("esEnabled", Symphonys.getBoolean("es.enabled"));
@@ -332,13 +318,13 @@ public class Filler {
     /**
      * Fills header and footer.
      *
-     * @param request the specified request
-     * @param response the specified response
+     * @param request   the specified request
+     * @param response  the specified response
      * @param dataModel the specified data model
      * @throws Exception exception
      */
     public void fillHeaderAndFooter(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) throws Exception {
+                                    final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills header");
         try {
             final boolean isMobile = (Boolean) request.getAttribute(Common.IS_MOBILE);
@@ -357,17 +343,19 @@ public class Filler {
         }
 
         dataModel.put(Common.WEBSOCKET_SCHEME, Symphonys.get("websocket.scheme"));
+
+
     }
 
     /**
      * Fills personal navigation.
      *
-     * @param request the specified request
-     * @param response the specified response
+     * @param request   the specified request
+     * @param response  the specified response
      * @param dataModel the specified data model
      */
     private void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) {
+                                 final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills personal nav");
         try {
             dataModel.put(Common.IS_LOGGED_IN, false);
@@ -375,6 +363,10 @@ public class Filler {
 
             if (null == Sessions.currentUser(request) && !userMgmtService.tryLogInWithCookie(request, response)) {
                 dataModel.put("loginLabel", langPropsService.get("loginLabel"));
+
+                final Map<String, JSONObject> permissions =
+                        roleQueryService.getPermissionsGrantMap(Role.ROLE_ID_C_VISITOR);
+                dataModel.put(Permission.PERMISSIONS, permissions);
 
                 return;
             }
@@ -425,6 +417,10 @@ public class Filler {
 
             dataModel.put(Common.CURRENT_USER, curUser);
 
+            // permissions
+            final Map<String, JSONObject> permissions = roleQueryService.getUserPermissionsGrantMap(userId);
+            dataModel.put(Permission.PERMISSIONS, permissions);
+
             // final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.optString(Keys.OBJECT_ID));
             dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, 0); // AJAX polling 
 
@@ -461,7 +457,7 @@ public class Filler {
      * Fills the all language labels.
      *
      * @param dataModel the specified data model
-     * @param request the specified HTTP servlet request
+     * @param request   the specified HTTP servlet request
      */
     private void fillLangs(final Map<String, Object> dataModel, final HttpServletRequest request) {
         Stopwatchs.start("Fills lang");
