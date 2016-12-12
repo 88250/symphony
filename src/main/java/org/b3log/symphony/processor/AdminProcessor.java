@@ -41,6 +41,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.ArticleBaiduSender;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.AdminCheck;
+import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
@@ -106,7 +107,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.24.5.19, Dec 8, 2016
+ * @version 2.24.5.20, Dec 12, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -324,7 +325,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/role/{roleId}/permissions", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showRolePermissions(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                     final String roleId)
             throws Exception {
@@ -373,7 +374,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/roles", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showRoles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -422,7 +423,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/ad", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateAd(final HTTPRequestContext context,
                          final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -460,7 +461,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/ad", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -488,7 +489,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/add-tag", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -637,7 +638,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/invitecodes", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showInvitecodes(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -685,7 +686,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/invitecode/{invitecodeId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showInvitecode(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                final String invitecodeId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -710,7 +711,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/invitecode/{invitecodeId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateInvitecode(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                  final String invitecodeId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -746,7 +747,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/add-article", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -893,7 +894,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/add-reserved-word", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -915,7 +916,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/reserved-word/{id}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                    final String id) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -949,7 +950,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/reserved-words", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showReservedWords(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -973,7 +974,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/reserved-word/{id}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                  final String id) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1054,7 +1055,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1082,7 +1083,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/users", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showUsers(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1136,7 +1137,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                          final String userId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1160,7 +1161,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/add-user", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1251,7 +1252,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                            final String userId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1627,7 +1628,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/articles", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1695,7 +1696,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/article/{articleId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                             final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1720,7 +1721,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/article/{articleId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                               final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1769,7 +1770,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/comments", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1828,7 +1829,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/comment/{commentId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                             final String commentId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1853,7 +1854,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/comment/{commentId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                               final String commentId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1895,7 +1896,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/misc", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1919,7 +1920,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/misc", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1962,7 +1963,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/tags", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -2029,7 +2030,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                         final String tagId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -2054,7 +2055,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                           final String tagId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -2106,7 +2107,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/domains", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDomains(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -2167,7 +2168,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/domain/{domainId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                            final String domainId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -2193,7 +2194,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/domain/{domainId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                              final String domainId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -2240,7 +2241,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/add-domain", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);

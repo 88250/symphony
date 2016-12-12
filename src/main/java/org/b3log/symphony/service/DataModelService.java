@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.2.23, Dec 10, 2016
+ * @version 1.10.2.24, Dec 12, 2016
  * @since 0.2.0
  */
 @Service
@@ -130,12 +130,6 @@ public class DataModelService {
      */
     @Inject
     private DomainCache domainCache;
-
-    /**
-     * Role query service.
-     */
-    @Inject
-    private RoleQueryService roleQueryService;
 
     /**
      * Fills relevant articles.
@@ -364,10 +358,6 @@ public class DataModelService {
             if (null == Sessions.currentUser(request) && !userMgmtService.tryLogInWithCookie(request, response)) {
                 dataModel.put("loginLabel", langPropsService.get("loginLabel"));
 
-                final Map<String, JSONObject> permissions =
-                        roleQueryService.getPermissionsGrantMap(Role.ROLE_ID_C_VISITOR);
-                dataModel.put(Permission.PERMISSIONS, permissions);
-
                 return;
             }
 
@@ -416,10 +406,6 @@ public class DataModelService {
             }
 
             dataModel.put(Common.CURRENT_USER, curUser);
-
-            // permissions
-            final Map<String, JSONObject> permissions = roleQueryService.getUserPermissionsGrantMap(userId);
-            dataModel.put(Permission.PERMISSIONS, permissions);
 
             // final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.optString(Keys.OBJECT_ID));
             dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, 0); // AJAX polling 

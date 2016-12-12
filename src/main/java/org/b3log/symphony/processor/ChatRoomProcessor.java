@@ -44,6 +44,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
+import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
@@ -325,7 +326,7 @@ public class ChatRoomProcessor {
      */
     @RequestProcessing(value = {"/cr", "/chat-room", "/community"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showChatRoom(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);

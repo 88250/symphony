@@ -31,6 +31,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
+import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
@@ -70,7 +71,7 @@ public class ChargeProcessor {
      */
     @RequestProcessing(value = "/charge/point", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showChargePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);

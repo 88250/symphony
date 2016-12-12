@@ -17,12 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import jodd.util.URLDecoder;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -42,25 +36,30 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
+import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.FollowQueryService;
-import org.b3log.symphony.service.TagQueryService;
-import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.service.DataModelService;
+import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Tag processor.
- *
+ * <p>
  * <ul>
  * <li>Shows tags wall (/tags), GET</li>
  * <li>Shows tag articles (/tag/{tagTitle}), GET</li>
  * <li>Query tags (/tags/query), GET</li>
  * </ul>
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
@@ -109,8 +108,8 @@ public class TagProcessor {
     /**
      * Queries tags.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -147,9 +146,9 @@ public class TagProcessor {
     /**
      * Caches tags.
      *
-     * @param request the specified HTTP servlet request
+     * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @param context the specified HTTP request context
+     * @param context  the specified HTTP request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/cron/tag/cache-tags", method = HTTPRequestMethod.GET)
@@ -172,17 +171,18 @@ public class TagProcessor {
     /**
      * Shows tags wall.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/tags", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTagsWall(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);;
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        ;
         context.setRenderer(renderer);
 
         renderer.setTemplateName("tags.ftl");
@@ -200,18 +200,18 @@ public class TagProcessor {
     /**
      * Shows tag articles.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param tagURI the specified tag URI
+     * @param tagURI   the specified tag URI
      * @throws Exception exception
      */
     @RequestProcessing(value = {"/tag/{tagURI}", "/tag/{tagURI}/hot", "/tag/{tagURI}/good", "/tag/{tagURI}/reply",
-        "/tag/{tagURI}/perfect"}, method = HTTPRequestMethod.GET)
+            "/tag/{tagURI}/perfect"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTagArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String tagURI) throws Exception {
+                                final String tagURI) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
