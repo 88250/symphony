@@ -67,11 +67,10 @@ public class PermissionCheck extends BeforeRequestProcessAdvice {
         final Set<String> keys = Symphonys.CFG.keySet();
         for (final String key : keys) {
             if (key.startsWith(prefix)) {
-                final String urlMethod = key.substring(prefix.length());
                 final String value = Symphonys.CFG.getString(key);
                 final Set<String> permissions = new HashSet<>(Arrays.asList(value.split(",")));
 
-                URL_PERMISSION_RULES.put(urlMethod, permissions);
+                URL_PERMISSION_RULES.put(key, permissions);
             }
         }
     }
@@ -93,9 +92,12 @@ public class PermissionCheck extends BeforeRequestProcessAdvice {
         final String prefix = "permission.rule.url.";
         final String requestURI = request.getRequestURI();
         final String method = request.getMethod();
-        final String rule = prefix + requestURI + ":" + method;
+        final String rule = prefix + requestURI + "." + method;
 
         final Set<String> requisitePermissions = URL_PERMISSION_RULES.get(rule);
+        if (null == requisitePermissions) {
+            return;
+        }
 
         Set<String> grantPermissions;
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);

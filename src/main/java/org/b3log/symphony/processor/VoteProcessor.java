@@ -31,6 +31,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Vote;
 import org.b3log.symphony.processor.advice.LoginCheck;
+import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.service.VoteMgmtService;
 import org.b3log.symphony.service.VoteQueryService;
 import org.json.JSONObject;
@@ -97,7 +98,7 @@ public class VoteProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/vote/up/comment", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = LoginCheck.class)
+    @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
     public void voteUpComment(final HTTPRequestContext context, final HttpServletRequest request,
                               final HttpServletResponse response) throws Exception {
         context.renderJSON();
@@ -142,7 +143,7 @@ public class VoteProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/vote/down/comment", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = LoginCheck.class)
+    @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
     public void voteDownComment(final HTTPRequestContext context, final HttpServletRequest request,
                                 final HttpServletResponse response) throws Exception {
         context.renderJSON();
@@ -187,7 +188,7 @@ public class VoteProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/vote/up/article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = LoginCheck.class)
+    @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
     public void voteUpArticle(final HTTPRequestContext context, final HttpServletRequest request,
                               final HttpServletResponse response) throws Exception {
         context.renderJSON();
@@ -232,7 +233,7 @@ public class VoteProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/vote/down/article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = LoginCheck.class)
+    @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
     public void voteDownArticle(final HTTPRequestContext context, final HttpServletRequest request,
                                 final HttpServletResponse response) throws Exception {
         context.renderJSON();
