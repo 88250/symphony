@@ -9,7 +9,9 @@
             <#if (esEnabled || algoliaEnabled) && permissions["articleReindexArticle"].permissionGrant>
             <button type="button" class="btn red" onclick="searchIndex();">${searchIndexLabel}</button>
             </#if>
+            <#if permissions["articleAddArticle".permissionGrant>
             <button type="button" class="btn red" onclick="window.location = '${servePath}/admin/add-article'">${addArticleLabel}</button>
+            </#if>
         </form>
         <ul>
             <#list articles as item>
