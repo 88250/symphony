@@ -366,7 +366,7 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/point/buy-invitecode", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     public void pointBuy(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONObject ret = Results.falseResult();
