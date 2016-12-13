@@ -33,7 +33,7 @@
                         <#else>
                         <span onclick="Util.follow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"></span> ${tag.tagFollowerCount}</span>
                         </#if>
-                        <#if isAdminLoggedIn> &nbsp;
+                        <#if permissions["tagUpdateTagBasic"].permissionGrant> &nbsp;
                         <a href="${servePath}/admin/tag/${tag.oId}"><span class="icon-setting"></span></a>
                         </#if>
                     </span>

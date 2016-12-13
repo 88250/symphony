@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.19.48, Nov 18, 2016
+ * @version 2.25.19.49, Dec 13, 2016
  */
 
 @import "variables";
@@ -1285,6 +1285,8 @@ a[class*=" icon-"]:hover {
 }
 
 .dialog-main {
+    min-width: 300px;
+    min-height: 60px;
     padding: 10px;
     box-sizing: content-box;
 }
