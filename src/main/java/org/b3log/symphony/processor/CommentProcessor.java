@@ -45,6 +45,7 @@ import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.LoginCheck;
+import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.processor.advice.validate.ClientCommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentAddValidation;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -228,7 +229,7 @@ public class CommentProcessor {
      * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/comment", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {CSRFCheck.class, CommentAddValidation.class})
+    @Before(adviceClass = {CSRFCheck.class, CommentAddValidation.class, PermissionCheck.class})
     public void addComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
         context.renderJSON();
@@ -327,7 +328,7 @@ public class CommentProcessor {
      * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/comment/thank", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     public void thankComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
         context.renderJSON();
