@@ -67,6 +67,11 @@ public final class Emotion {
      */
     public static final String SHORT_LIST = "shortLists";
 
+    /**
+     * End flag of emoji short list
+     */
+    public static final String EOF_EMOJI = "endOfEmoji";
+
     private Emotion() {
     }
 }
