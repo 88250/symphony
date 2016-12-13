@@ -18,16 +18,6 @@
 package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -70,11 +60,12 @@ import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.EmotionMgmtService;
 import org.b3log.symphony.service.EmotionQueryService;
 import org.b3log.symphony.service.FollowQueryService;
-import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.InvitecodeMgmtService;
 import org.b3log.symphony.service.InvitecodeQueryService;
 import org.b3log.symphony.service.LinkForgeQueryService;
@@ -85,7 +76,6 @@ import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.service.PostExportService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Languages;
 import org.b3log.symphony.util.Networks;
 import org.b3log.symphony.util.Results;
@@ -93,6 +83,17 @@ import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.b3log.symphony.util.TimeZones;
 import org.json.JSONObject;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * User processor.
@@ -106,8 +107,7 @@ import org.json.JSONObject;
  * <li>User following tags (/member/{userName}/following/tags), GET</li>
  * <li>User following articles (/member/{userName}/following/articles), GET</li>
  * <li>User followers (/member/{userName}/followers), GET</li>
- * <li>User points (/member/{userName}/points), GET</li>
- * <li>Shows settings (/settings), GET</li>
+ * <li>User points (/member/{userName}/points), GET</li> * <li>Shows settings (/settings), GET</li>
  * <li>Shows settings pages (/settings/*), GET</li>
  * <li>Updates profiles (/settings/profiles), POST</li>
  * <li>Updates user avatar (/settings/avatar), POST</li>
@@ -529,7 +529,194 @@ public class UserProcessor {
 
         if (requestURI.contains("function")) {
             final String emojis = emotionQueryService.getEmojis(userId);
+            final String[][] emojiLists = {
+                    {
+                        "smile",
+                        "laughing",
+                        "smirk",
+                        "heart_eyes",
+                        "kissing_heart",
+                        "flushed",
+                        "grin",
+                        "stuck_out_tongue_closed_eyes",
+                        "kissing",
+                        "sleeping",
+                        "anguished",
+                        "open_mouth",
+                        "expressionless",
+                        "unamused",
+                        "sweat_smile",
+                        "weary",
+                        "sob",
+                        "joy",
+                        "astonished",
+                        "scream"
+                    },{
+                        "tired_face",
+                        "rage",
+                        "triumph",
+                        "yum",
+                        "mask",
+                        "sunglasses",
+                        "dizzy_face",
+                        "imp",
+                        "smiling_imp",
+                        "innocent",
+                        "alien",
+                        "yellow_heart",
+                        "blue_heart",
+                        "purple_heart",
+                        "heart",
+                        "green_heart",
+                        "broken_heart",
+                        "dizzy",
+                        "anger",
+                        "exclamation"
+                    },{
+                        "question",
+                        "zzz",
+                        "notes",
+                        "shit",
+                        "+1",
+                        "-1",
+                        "ok_hand",
+                        "punch",
+                        "v",
+                        "hand",
+                        "point_up",
+                        "point_down",
+                        "pray",
+                        "clap",
+                        "muscle",
+                        "ok_woman",
+                        "no_good",
+                        "raising_hand",
+                        "massage",
+                        "haircut"
+                    },{
+                        "nail_care",
+                        "see_no_evil",
+                        "feet",
+                        "kiss",
+                        "eyes",
+                        "trollface",
+                        "snowman",
+                        "zap",
+                        "cat",
+                        "dog",
+                        "mouse",
+                        "hamster",
+                        "rabbit",
+                        "frog",
+                        "koala",
+                        "pig",
+                        "monkey",
+                        "racehorse",
+                        "camel",
+                        "sheep"
+                    },{
+                        "elephant",
+                        "panda_face",
+                        "snake",
+                        "hatched_chick",
+                        "hatching_chick",
+                        "turtle",
+                        "bug",
+                        "honeybee",
+                        "beetle",
+                        "snail",
+                        "octopus",
+                        "whale",
+                        "dolphin",
+                        "dragon",
+                        "goat",
+                        "paw_prints",
+                        "tulip",
+                        "four_leaf_clover",
+                        "rose",
+                        "mushroom"
+                    },{
+                        "seedling",
+                        "shell",
+                        "crescent_moon",
+                        "partly_sunny",
+                        "octocat",
+                        "jack_o_lantern",
+                        "ghost",
+                        "santa",
+                        "tada",
+                        "camera",
+                        "loudspeaker",
+                        "hourglass",
+                        "lock",
+                        "key",
+                        "bulb",
+                        "hammer",
+                        "moneybag",
+                        "smoking",
+                        "bomb",
+                        "gun"
+                    },{
+                        "hocho",
+                        "pill",
+                        "syringe",
+                        "scissors",
+                        "swimmer",
+                        "black_joker",
+                        "coffee",
+                        "tea",
+                        "sake",
+                        "beer",
+                        "wine_glass",
+                        "pizza",
+                        "hamburger",
+                        "poultry_leg",
+                        "meat_on_bone",
+                        "dango",
+                        "doughnut",
+                        "icecream",
+                        "shaved_ice",
+                        "cake"
+                    },{
+                        "cookie",
+                        "lollipop",
+                        "apple",
+                        "green_apple",
+                        "tangerine",
+                        "lemon",
+                        "cherries",
+                        "grapes",
+                        "watermelon",
+                        "strawberry",
+                        "peach",
+                        "melon",
+                        "banana",
+                        "pear",
+                        "pineapple",
+                        "sweet_potato",
+                        "eggplant",
+                        "tomato",
+                        Emotion.EOF_EMOJI //标记结束以便在function.ftl中处理
+                    }
+            };
+            /**
+             * 设置处暂不启用新版本
+             * 别名问题尚未解决（考虑直接显示图片而非文字）
+             * 可参考Emotions.java中的处理，即在此处生成html代码返回
+             */
+            for(int i = 0;i<emojiLists.length;i++){
+                for(int j=0; j<emojiLists[i].length;j++){
+//                    String unicode = EmojiParser.parseToUnicode(":"+emojiLists[i][j]+":");
+//                    String emojiCode=emojiLists[i][j];
+//                    emojiLists[i][j]=Integer.toHexString(unicode.codePointAt(0));
+//                    if(emojiLists[i][j].equals("3a")){
+//                        emojiLists[i][j]=emojiCode;
+                        emojiLists[i][j]=emojiLists[i][j];
+//                    }
+                }
+            }
             dataModel.put(Emotion.EMOTIONS, emojis);
+            dataModel.put(Emotion.SHORT_LIST,emojiLists);
         }
 
         if (requestURI.contains("i18n")) {
