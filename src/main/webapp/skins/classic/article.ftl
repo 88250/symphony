@@ -369,7 +369,9 @@
                     <div class="fn-clear comment-submit">
                         <div class="tip fn-left" id="addCommentTip"></div>
                         <div class="fn-right">
-                            <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                            <#if permissions["commonAddCommentAnonymous"].permissionGrant>
+                                <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                            </#if>
                             <button class="red mid" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
                         </div>
                     </div>

@@ -208,7 +208,9 @@
                     <div class="tip" id="addCommentTip"></div>
 
                     <div class="fn-clear comment-submit">
+                        <#if permissions["commonAddCommentAnonymous"].permissionGrant>
                         <label class="anonymous-check">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                        </#if>
                         <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
                     </div>
                 </div>
@@ -260,7 +262,9 @@
                     <div class="tip" id="addCommentTip"></div>
 
                     <div class="fn-clear comment-submit">
+                        <#if permissions["commonAddCommentAnonymous"].permissionGrant>
                         <label class="anonymous-check">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                        </#if>
                         <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
                     </div>
                     <div class="fn-hr10"></div>

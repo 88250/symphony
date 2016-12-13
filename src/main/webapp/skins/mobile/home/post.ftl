@@ -87,19 +87,29 @@
                         <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/> 
                         </#if>
                     </div>
-                    <label class="anonymous-check">${anonymousLabel}<input
-                                    <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
-                                    type="checkbox" id="articleAnonymous"></label>
-                    <#if article??>
-                        <#if permissions["commonAddArticle"].permissionGrant>
-                            <button class="red fn-right" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
+                    <div class="fn-clear">
+                        <#if hasB3Key>
+                            <label class="article-anonymous">${syncLabel}<input
+                                <#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked</#if></#if>
+                                type="checkbox" id="syncWithSymphonyClient"></label>
                         </#if>
-                    <#else>
-                        <#if permissions["commonUpdateArticle"].permissionGrant>
-                            <button class="red fn-right" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${postLabel}</button>
+                        <#if permissions["commonAddArticleAnonymous"].permissionGrant>
+                            <label class="article-anonymous">&nbsp;  ${anonymousLabel}<input
+                                <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
+                                type="checkbox" id="articleAnonymous"></label>
                         </#if>
-                    </#if>
-                    <br/><br/>
+
+                        <#if article??>
+                            <#if permissions["commonAddArticle"].permissionGrant>
+                                <button class="red fn-right" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
+                            </#if>
+                        <#else>
+                            <#if permissions["commonUpdateArticle"].permissionGrant>
+                                <button class="red fn-right" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${postLabel}</button>
+                            </#if>
+                        </#if>
+                    </div>
+                    <br/>
                     <div class="fn-clear">
                             <#if !articleType??>
                             <#assign articleType=article.articleType>
