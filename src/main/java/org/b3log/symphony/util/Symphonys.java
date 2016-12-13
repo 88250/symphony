@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.5, Oct 29, 2016
+ * @version 1.6.0.6, Dec 12, 2016
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -65,7 +65,7 @@ public final class Symphonys {
     /**
      * Configurations.
      */
-    private static final ResourceBundle CFG = ResourceBundle.getBundle("symphony");
+    public static final ResourceBundle CFG = ResourceBundle.getBundle("symphony");
 
     /**
      * HacPai bot User-Agent.
