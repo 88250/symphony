@@ -963,7 +963,8 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{id}", method = HTTPRequestMethod.PUT)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleUpdateValidation.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleUpdateValidation.class,
+            PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                               final String id) throws Exception {
