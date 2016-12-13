@@ -109,19 +109,22 @@
                                     <#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked</#if></#if>
                                     type="checkbox" id="syncWithSymphonyClient"></label>
                         	</#if>
+                            <#if permissions["commonAddArticleAnonymous"].permissionGrant>
                             <label class="article-anonymous">${anonymousLabel}<input
                                     <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
                                     type="checkbox" id="articleAnonymous"></label>
+                            </#if>
+
+                            <#if article??>
+                                <#if permissions["commonAddArticle"].permissionGrant>
+                                <button class="red" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
+                                </#if>
+                            <#else>
+                                <#if permissions["commonUpdateArticle"].permissionGrant>
+                                <button class="red" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${postLabel}</button>
+                                </#if>
+                            </#if>
                         </div>
-                        <#if article??>
-                            <#if permissions["commonAddArticle"].permissionGrant>
-                            <button class="red" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
-                            </#if>
-                        <#else>
-                            <#if permissions["commonUpdateArticle"].permissionGrant>
-                            <button class="red" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${postLabel}</button>
-                            </#if>
-                        </#if>
                     </div>
                 </div>
             </div>

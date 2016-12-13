@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.38.27.38, Dec 10, 2016
+ * @version 1.39.27.38, Dec 13, 2016
  */
 
 /**
@@ -30,6 +30,30 @@
  */
 var Util = {
     prevKey: undefined,
+    closeAlert: function (it) {
+        var $alert = $(it).parent().parent();
+        if ($alert.prev().hasClass('dialog-background')) {
+            $alert.prev().remove();
+        }
+        $alert.remove();
+    },
+    alert: function (content) {
+        var alertHTML = '',
+         alertBgHTML = '<div style="height: ' +  document.documentElement.scrollHeight
+         + 'px;display: block;" class="dialog-background"></div>',
+         alertContentHTML = '<div class="dialog-panel" id="alertDialogPanel">'
+         + '<div class="fn-clear dialog-header-bg"><a href="javascript:void(0);" onclick="Util.closeAlert(this)" class="icon-close"></a></div>'
+         + '<div class="dialog-main" style="padding-top:30px;text-align:center">' + content + '</div></div>';
+
+         alertHTML = alertBgHTML + alertContentHTML;
+
+        $('body').append(alertHTML);
+
+        $('#alertDialogPanel').css({
+            "top": ($(window).height() - $('#alertDialogPanel').height()) / 2 + "px",
+            "left": ($(window).width() - $('#alertDialogPanel').width()) / 2 + "px"
+        }).show();
+    },
     /**
      * 初始化全局快捷键
      * @returns {undefined}

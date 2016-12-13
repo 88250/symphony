@@ -31,6 +31,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.processor.advice.LoginCheck;
+import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.service.FollowMgmtService;
 import org.json.JSONObject;
 
@@ -218,7 +219,7 @@ public class FollowProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/follow/article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = LoginCheck.class)
+    @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
     public void followArticle(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
         context.renderJSON();

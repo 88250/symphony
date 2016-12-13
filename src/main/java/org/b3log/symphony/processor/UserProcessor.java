@@ -18,16 +18,6 @@
 package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -48,55 +38,22 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Client;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Emotion;
-import org.b3log.symphony.model.Follow;
-import org.b3log.symphony.model.Invitecode;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.Pointtransfer;
-import org.b3log.symphony.model.Role;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.*;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.advice.validate.PointTransferValidation;
-import org.b3log.symphony.processor.advice.validate.UpdateEmotionListValidation;
-import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
-import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
-import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
-import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
-import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.CommentQueryService;
-import org.b3log.symphony.service.EmotionMgmtService;
-import org.b3log.symphony.service.EmotionQueryService;
-import org.b3log.symphony.service.FollowQueryService;
-import org.b3log.symphony.service.AvatarQueryService;
-import org.b3log.symphony.service.InvitecodeMgmtService;
-import org.b3log.symphony.service.InvitecodeQueryService;
-import org.b3log.symphony.service.LinkForgeQueryService;
-import org.b3log.symphony.service.NotificationMgmtService;
-import org.b3log.symphony.service.OptionQueryService;
-import org.b3log.symphony.service.PointtransferMgmtService;
-import org.b3log.symphony.service.PointtransferQueryService;
-import org.b3log.symphony.service.PostExportService;
-import org.b3log.symphony.service.UserMgmtService;
-import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.service.DataModelService;
-import org.b3log.symphony.util.Languages;
-import org.b3log.symphony.util.Networks;
-import org.b3log.symphony.util.Results;
-import org.b3log.symphony.util.Sessions;
-import org.b3log.symphony.util.Symphonys;
-import org.b3log.symphony.util.TimeZones;
+import org.b3log.symphony.processor.advice.validate.*;
+import org.b3log.symphony.service.*;
+import org.b3log.symphony.util.*;
 import org.json.JSONObject;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * User processor.
- *
  * <p>
  * For user
  * <ul>
@@ -132,7 +89,7 @@ import org.json.JSONObject;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.14.29, Dec 4, 2016
+ * @version 1.26.14.30, Dec 13, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -254,14 +211,14 @@ public class UserProcessor {
     /**
      * Updates user i18n.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      */
     @RequestProcessing(value = "/settings/i18n", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
     public void updateI18n(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) {
+                           final HttpServletRequest request, final HttpServletResponse response) {
         context.renderJSON();
 
         JSONObject requestJSONObject;
@@ -300,8 +257,8 @@ public class UserProcessor {
     /**
      * Shows user link forge.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
      * @throws Exception exception
@@ -310,7 +267,7 @@ public class UserProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showLinkForge(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response, final String userName) throws Exception {
+                              final HttpServletResponse response, final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/link-forge.ftl");
@@ -345,8 +302,8 @@ public class UserProcessor {
     /**
      * Queries invitecode state.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -403,13 +360,13 @@ public class UserProcessor {
     /**
      * Point buy invitecode.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/point/buy-invitecode", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     public void pointBuy(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONObject ret = Results.falseResult();
@@ -444,8 +401,8 @@ public class UserProcessor {
     /**
      * Shows settings pages.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -529,7 +486,194 @@ public class UserProcessor {
 
         if (requestURI.contains("function")) {
             final String emojis = emotionQueryService.getEmojis(userId);
+            final String[][] emojiLists = {
+                    {
+                            "smile",
+                            "laughing",
+                            "smirk",
+                            "heart_eyes",
+                            "kissing_heart",
+                            "flushed",
+                            "grin",
+                            "stuck_out_tongue_closed_eyes",
+                            "kissing",
+                            "sleeping",
+                            "anguished",
+                            "open_mouth",
+                            "expressionless",
+                            "unamused",
+                            "sweat_smile",
+                            "weary",
+                            "sob",
+                            "joy",
+                            "astonished",
+                            "scream"
+                    }, {
+                    "tired_face",
+                    "rage",
+                    "triumph",
+                    "yum",
+                    "mask",
+                    "sunglasses",
+                    "dizzy_face",
+                    "imp",
+                    "smiling_imp",
+                    "innocent",
+                    "alien",
+                    "yellow_heart",
+                    "blue_heart",
+                    "purple_heart",
+                    "heart",
+                    "green_heart",
+                    "broken_heart",
+                    "dizzy",
+                    "anger",
+                    "exclamation"
+            }, {
+                    "question",
+                    "zzz",
+                    "notes",
+                    "shit",
+                    "+1",
+                    "-1",
+                    "ok_hand",
+                    "punch",
+                    "v",
+                    "hand",
+                    "point_up",
+                    "point_down",
+                    "pray",
+                    "clap",
+                    "muscle",
+                    "ok_woman",
+                    "no_good",
+                    "raising_hand",
+                    "massage",
+                    "haircut"
+            }, {
+                    "nail_care",
+                    "see_no_evil",
+                    "feet",
+                    "kiss",
+                    "eyes",
+                    "trollface",
+                    "snowman",
+                    "zap",
+                    "cat",
+                    "dog",
+                    "mouse",
+                    "hamster",
+                    "rabbit",
+                    "frog",
+                    "koala",
+                    "pig",
+                    "monkey",
+                    "racehorse",
+                    "camel",
+                    "sheep"
+            }, {
+                    "elephant",
+                    "panda_face",
+                    "snake",
+                    "hatched_chick",
+                    "hatching_chick",
+                    "turtle",
+                    "bug",
+                    "honeybee",
+                    "beetle",
+                    "snail",
+                    "octopus",
+                    "whale",
+                    "dolphin",
+                    "dragon",
+                    "goat",
+                    "paw_prints",
+                    "tulip",
+                    "four_leaf_clover",
+                    "rose",
+                    "mushroom"
+            }, {
+                    "seedling",
+                    "shell",
+                    "crescent_moon",
+                    "partly_sunny",
+                    "octocat",
+                    "jack_o_lantern",
+                    "ghost",
+                    "santa",
+                    "tada",
+                    "camera",
+                    "loudspeaker",
+                    "hourglass",
+                    "lock",
+                    "key",
+                    "bulb",
+                    "hammer",
+                    "moneybag",
+                    "smoking",
+                    "bomb",
+                    "gun"
+            }, {
+                    "hocho",
+                    "pill",
+                    "syringe",
+                    "scissors",
+                    "swimmer",
+                    "black_joker",
+                    "coffee",
+                    "tea",
+                    "sake",
+                    "beer",
+                    "wine_glass",
+                    "pizza",
+                    "hamburger",
+                    "poultry_leg",
+                    "meat_on_bone",
+                    "dango",
+                    "doughnut",
+                    "icecream",
+                    "shaved_ice",
+                    "cake"
+            }, {
+                    "cookie",
+                    "lollipop",
+                    "apple",
+                    "green_apple",
+                    "tangerine",
+                    "lemon",
+                    "cherries",
+                    "grapes",
+                    "watermelon",
+                    "strawberry",
+                    "peach",
+                    "melon",
+                    "banana",
+                    "pear",
+                    "pineapple",
+                    "sweet_potato",
+                    "eggplant",
+                    "tomato",
+                    Emotion.EOF_EMOJI //标记结束以便在function.ftl中处理
+            }
+            };
+            /**
+             * 设置处暂不启用新版本
+             * 别名问题尚未解决（考虑直接显示图片而非文字）
+             * 可参考Emotions.java中的处理，即在此处生成html代码返回
+             */
+            for (int i = 0; i < emojiLists.length; i++) {
+                for (int j = 0; j < emojiLists[i].length; j++) {
+//                    String unicode = EmojiParser.parseToUnicode(":"+emojiLists[i][j]+":");
+//                    String emojiCode=emojiLists[i][j];
+//                    emojiLists[i][j]=Integer.toHexString(unicode.codePointAt(0));
+//                    if(emojiLists[i][j].equals("3a")){
+//                        emojiLists[i][j]=emojiCode;
+                    emojiLists[i][j] = emojiLists[i][j];
+//                    }
+                }
+            }
             dataModel.put(Emotion.EMOTIONS, emojis);
+            dataModel.put(Emotion.SHORT_T_LIST, emojiLists);
         }
 
         if (requestURI.contains("i18n")) {
@@ -554,8 +698,8 @@ public class UserProcessor {
     /**
      * Shows user home anonymous comments page.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
      * @throws Exception exception
@@ -564,7 +708,7 @@ public class UserProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeAnonymousComments(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response, final String userName) throws Exception {
+                                          final HttpServletResponse response, final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
@@ -644,8 +788,8 @@ public class UserProcessor {
     /**
      * Shows user home anonymous articles page.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
      * @throws Exception exception
@@ -654,7 +798,7 @@ public class UserProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAnonymousArticles(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response, final String userName) throws Exception {
+                                      final HttpServletResponse response, final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/home.ftl");
@@ -760,8 +904,8 @@ public class UserProcessor {
     /**
      * Shows user home page.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
      * @throws Exception exception
@@ -770,7 +914,7 @@ public class UserProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userName) throws Exception {
+                         final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         String pageNumStr = request.getParameter("p");
@@ -841,8 +985,8 @@ public class UserProcessor {
     /**
      * Shows user home comments page.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
      * @throws Exception exception
@@ -851,7 +995,7 @@ public class UserProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userName) throws Exception {
+                                 final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -914,8 +1058,8 @@ public class UserProcessor {
     /**
      * Shows user home following users page.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
      * @throws Exception exception
@@ -924,7 +1068,7 @@ public class UserProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingUsers(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response, final String userName) throws Exception {
+                                       final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -993,8 +1137,8 @@ public class UserProcessor {
     /**
      * Shows user home following tags page.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
      * @throws Exception exception
@@ -1003,7 +1147,7 @@ public class UserProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingTags(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response, final String userName) throws Exception {
+                                      final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1071,8 +1215,8 @@ public class UserProcessor {
     /**
      * Shows user home following articles page.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
      * @throws Exception exception
@@ -1081,7 +1225,7 @@ public class UserProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingArticles(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response, final String userName) throws Exception {
+                                          final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1150,8 +1294,8 @@ public class UserProcessor {
     /**
      * Shows user home follower users page.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
      * @throws Exception exception
@@ -1160,7 +1304,7 @@ public class UserProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowers(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response, final String userName) throws Exception {
+                                  final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1230,8 +1374,8 @@ public class UserProcessor {
     /**
      * Shows user home points page.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
      * @throws Exception exception
@@ -1240,7 +1384,7 @@ public class UserProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomePoints(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response, final String userName) throws Exception {
+                               final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1303,14 +1447,14 @@ public class UserProcessor {
     /**
      * Updates user geo status.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      */
     @RequestProcessing(value = "/settings/geo/status", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
     public void updateGeoStatus(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) {
+                                final HttpServletRequest request, final HttpServletResponse response) {
         context.renderJSON();
 
         JSONObject requestJSONObject;
@@ -1343,8 +1487,8 @@ public class UserProcessor {
     /**
      * Updates user privacy.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1419,8 +1563,8 @@ public class UserProcessor {
     /**
      * Updates user function.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1486,8 +1630,8 @@ public class UserProcessor {
     /**
      * Updates user profiles.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1526,8 +1670,8 @@ public class UserProcessor {
     /**
      * Updates user avatar.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1571,8 +1715,8 @@ public class UserProcessor {
     /**
      * Point transfer.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1610,8 +1754,8 @@ public class UserProcessor {
     /**
      * Updates user B3log sync.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1651,8 +1795,8 @@ public class UserProcessor {
     /**
      * Updates user password.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1691,8 +1835,8 @@ public class UserProcessor {
     /**
      * Updates user emotions.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1722,8 +1866,8 @@ public class UserProcessor {
     /**
      * Sync user. Experimental API.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1782,7 +1926,7 @@ public class UserProcessor {
                 context.renderTrueResult();
             } catch (final ServiceException e) {
                 LOGGER.log(Level.ERROR, "Sync add user[name={0}, email={1}, host={2}] error: {3}",
-                         name, email, clientHost, e.getMessage());
+                        name, email, clientHost, e.getMessage());
             }
 
             return;
@@ -1822,14 +1966,14 @@ public class UserProcessor {
     /**
      * Resets unverified users.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/cron/users/reset-unverified", method = HTTPRequestMethod.GET)
     public void resetUnverifiedUsers(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                                     final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String key = Symphonys.get("keyOfSymphony");
         if (!key.equals(request.getParameter("key"))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -1845,8 +1989,8 @@ public class UserProcessor {
     /**
      * Lists usernames.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1890,14 +2034,14 @@ public class UserProcessor {
     /**
      * Lists emotions.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/users/emotions", method = HTTPRequestMethod.GET)
     public void getEmotions(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response) throws Exception {
+                            final HttpServletResponse response) throws Exception {
         context.renderJSON();
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
@@ -1916,8 +2060,8 @@ public class UserProcessor {
     /**
      * Loads usernames.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -1940,7 +2084,7 @@ public class UserProcessor {
      * Fills home user.
      *
      * @param dataModel the specified data model
-     * @param user the specified user
+     * @param user      the specified user
      */
     private void fillHomeUser(final Map<String, Object> dataModel, final JSONObject user) {
         dataModel.put(User.USER, user);
