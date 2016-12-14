@@ -41,6 +41,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.ArticleBaiduSender;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.AdminCheck;
+import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
@@ -422,7 +423,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/ad", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateAd(final HTTPRequestContext context,
                          final HttpServletRequest request, final HttpServletResponse response) throws Exception {
@@ -572,7 +573,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/stick-article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void stickArticle(final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -590,7 +591,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/cancel-stick-article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void stickCancelArticle(final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -608,7 +609,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/invitecodes/generate", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void generateInvitecodes(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String quantityStr = request.getParameter("quantity");
@@ -710,7 +711,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/invitecode/{invitecodeId}", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateInvitecode(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                  final String invitecodeId) throws Exception {
@@ -767,7 +768,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/add-article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -839,7 +840,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/add-reserved-word", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void addReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -915,7 +916,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/reserved-word/{id}", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                    final String id) throws Exception {
@@ -997,7 +998,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/remove-reserved-word", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void removeReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -1016,7 +1017,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/remove-comment", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void removeComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -1035,7 +1036,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/remove-article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -1161,7 +1162,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/add-user", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1181,7 +1182,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/add-user", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void addUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -1251,7 +1252,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                            final String userId) throws Exception {
@@ -1328,7 +1329,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/email", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateUserEmail(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                 final String userId) throws Exception {
@@ -1371,7 +1372,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/username", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateUserName(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                final String userId) throws Exception {
@@ -1414,7 +1415,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/charge-point", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void chargePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                             final String userId) throws Exception {
@@ -1465,7 +1466,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/abuse-point", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void abusePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                            final String userId) throws Exception {
@@ -1569,7 +1570,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/exchange-point", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void exchangePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                               final String userId) throws Exception {
@@ -1628,7 +1629,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/articles", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1696,7 +1697,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/article/{articleId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                             final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1720,7 +1721,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/article/{articleId}", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                               final String articleId) throws Exception {
@@ -1770,7 +1771,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/comments", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1829,7 +1830,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/comment/{commentId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                             final String commentId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1853,7 +1854,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/comment/{commentId}", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                               final String commentId) throws Exception {
@@ -1896,7 +1897,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/misc", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1919,7 +1920,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/misc", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -1963,7 +1964,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/tags", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -2030,7 +2031,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                         final String tagId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -2054,7 +2055,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                           final String tagId) throws Exception {
@@ -2107,7 +2108,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/domains", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDomains(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -2193,7 +2194,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/domain/{domainId}", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                              final String domainId) throws Exception {
@@ -2241,7 +2242,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/add-domain", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
-    @After(adviceClass =  {PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -2261,7 +2262,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/add-domain", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void addDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -2326,7 +2327,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/remove-domain", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void removeDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -2346,7 +2347,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/domain/{domainId}/add-tag", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void addDomainTag(final HTTPRequestContext context,
                              final HttpServletRequest request, final HttpServletResponse response, final String domainId)
@@ -2440,7 +2441,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/domain/{domainId}/remove-tag", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void removeDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                              final String domainId)
@@ -2477,7 +2478,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/search/index", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void searchIndex(final HTTPRequestContext context) throws Exception {
         context.renderJSON(true);
@@ -2520,7 +2521,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/search-index-article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void searchIndexArticle(final HTTPRequestContext context) throws Exception {
         final String articleId = context.getRequest().getParameter(Article.ARTICLE_T_ID);

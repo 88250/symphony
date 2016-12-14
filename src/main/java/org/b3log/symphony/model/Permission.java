@@ -27,7 +27,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.0, Dec 11, 2016
+ * @version 1.5.1.0, Dec 13, 2016
  * @since 1.8.0
  */
 public final class Permission {
@@ -209,9 +209,19 @@ public final class Permission {
     public static final String PERMISSION_ID_C_ARTICLE_CANCEL_STICK_ARTICLE = "articleCancelStickArticle";
 
     /**
+     * Id - article - rebuild all articles index.
+     */
+    public static final String PERMISSION_ID_C_ARTICLE_REINDEX_ARTICLES_INDEX = "articleReindexArticles";
+
+    /**
      * Id - article - rebuild article index.
      */
     public static final String PERMISSION_ID_C_ARTICLE_REINDEX_ARTICLE_INDEX = "articleReindexArticle";
+
+    /**
+     * Id - article - add article.
+     */
+    public static final String PERMISSION_ID_C_ARTICLE_ADD_ARTICLE = "articleAddArticle";
 
     /**
      * Id - article - remove article.

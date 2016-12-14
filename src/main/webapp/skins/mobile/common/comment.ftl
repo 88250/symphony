@@ -54,16 +54,22 @@
                         <span class="tooltipped tooltipped-n <#if hasRewarded>ft-red</#if>" aria-label="${thankLabel}"
                         <#if !hasRewarded && permissions["commonThankComment"].permissionGrant>
                             onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', ${comment.commentAnonymous}, this)"
+                        <#else>
+                              onclick="Util.alert('${noPermissionLabel}')"
                         </#if>><span class="icon-heart"></span> ${comment.rewardedCnt}</span> &nbsp;
                     <span class="tooltipped tooltipped-n<#if isLoggedIn && 0 == comment.commentVote> ft-red</#if>"
                           aria-label="${upLabel}"
                     <#if permissions["commonGoodComment"].permissionGrant>
-                          onclick="Article.voteUp('${comment.oId}', 'comment', this)"
+                        onclick="Article.voteUp('${comment.oId}', 'comment', this)"
+                        <#else>
+                            onclick="Util.alert('${noPermissionLabel}')"
                     </#if>><span class="icon-thumbs-up"></span> ${comment.commentGoodCnt}</span> &nbsp;
                     <span class="tooltipped tooltipped-n<#if isLoggedIn && 1 == comment.commentVote> ft-red</#if>"
                           aria-label="${downLabel}"
                     <#if permissions["commonBadComment"].permissionGrant>
-                          onclick="Article.voteDown('${comment.oId}', 'comment', this)"
+                        onclick="Article.voteDown('${comment.oId}', 'comment', this)"
+                        <#else>
+                            onclick="Util.alert('${noPermissionLabel}')"
                     </#if>><span class="icon-thumbs-down"></span> ${comment.commentBadCnt}</span> &nbsp;
                     <#if comment.commentAuthorName != currentUser.userName && permissions["commonAddComment"].permissionGrant>
                         <span aria-label="${replyLabel}" class="icon-reply-btn tooltipped tooltipped-n"
