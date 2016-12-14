@@ -26,7 +26,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.1, Dec 14, 2016
+ * @version 1.6.1.1, Dec 15, 2016
  * @since 1.8.0
  */
 public final class Permission {
@@ -152,6 +152,11 @@ public final class Permission {
      * Id - common - at user.
      */
     public static final String PERMISSION_ID_C_COMMON_AT_USER = "commonAtUser";
+
+    /**
+     * Id - common - at participants.
+     */
+    public static final String PERMISSION_ID_C_COMMON_AT_PARTICIPANTS = "commonAtParticipants";
 
     /**
      * Id - common - exchange invitation code.
