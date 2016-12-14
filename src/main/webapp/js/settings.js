@@ -651,7 +651,6 @@ $("#emojiGrid img").click(function () {
     if ($("#emotionList").val().indexOf(emoji) !== -1) {
         return;
     }
-
     if ($("#emotionList").val() !== "") {
         $("#emotionList").val($("#emotionList").val() + "," + emoji);
     } else {
