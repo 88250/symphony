@@ -22,15 +22,14 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.Role;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.PermissionRepository;
 import org.b3log.symphony.repository.RolePermissionRepository;
 import org.b3log.symphony.repository.RoleRepository;
@@ -259,6 +258,7 @@ public class RoleQueryService {
      *         "oId": "",
      *         "roleName": "",
      *         "roleDescription": "",
+     *         "roleUserCount": int,
      *         "permissions": [
      *             {
      *                 "oId": "adUpdateADSide",
@@ -312,6 +312,11 @@ public class RoleQueryService {
 
                     permissions.add(permission);
                 }
+
+                final Query userCountQuery = new Query().
+                        setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, roleId));
+                final int count = (int)userRepository.count(userCountQuery);
+                role.put(Role.ROLE_T_USER_COUNT, count);
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets role permissions failed", e);
