@@ -123,12 +123,8 @@ public final class Emotions {
         }
 
         for (final String emojiCode : EMOJIS) {
-            final String emoji = ":" + emojiCode + ":";
-            final String unicode = EmojiParser.parseToUnicode(emoji);
-            final String codepoint = Integer.toHexString(unicode.codePointAt(0));
-            final String path = codepoint.equalsIgnoreCase("3A") ? emojiCode : codepoint;
-            ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emojiCode + "\" class=\"emoji\" src=\""
-                    + staticServePath + "/emoji/graphics/" + path
+            ret = ret.replace(":"+emojiCode+":", "<img align=\"absmiddle\" alt=\"" + emojiCode + "\" class=\"emoji\" src=\""
+                    + staticServePath + "/emoji/graphics/" + emojiCode
                     + ".png\" title=\"" + emojiCode + "\"></img>");
         }
 
