@@ -58,7 +58,7 @@
                     <#if emoji != "endOfEmoji">
                         <td><img alt="${emoji}" src="${servePath}/emoji/graphics/${emoji}.png"></td>
                     <#else>
-                        <td colspan="2"><a href="${servePath}/emoji/twemoji.html">${moreLabel}</a></td>
+                        <td colspan="2"><a href="${servePath}/emoji/index.html">${moreLabel}</a></td>
                     </#if>
                 </#list>
             </tr>

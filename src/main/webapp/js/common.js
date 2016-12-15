@@ -520,7 +520,7 @@ var Util = {
             var text = emojis[i];
             emojiAutocompleteHints.push({
                 displayText: "<span>" + displayText +
-                        '&nbsp;<img style="width: 16px" src="' + Label.staticServePath + '/js/lib/emojify.js-1.1.0/images/basic/' + text + '.png"></span>',
+                        '&nbsp;<img style="width: 16px" src="' + Label.staticServePath + '/emoji/graphics/emojis/' + text + '.png"></span>',
                 text: text + ": "
             });
         }
@@ -597,7 +597,7 @@ var Util = {
                 var text = emojis[i];
                 if (Util.startsWith(text, input)) {
                     autocompleteHints.push({
-                        displayText: '<span style="font-size: 1rem;line-height:22px"><img style="width: 1rem;margin:3px 0;float:left" src="' + Label.staticServePath + '/js/lib/emojify.js-1.1.0/images/basic/' + text + '.png"> ' +
+                        displayText: '<span style="font-size: 1rem;line-height:22px"><img style="width: 1rem;margin:3px 0;float:left" src="' + Label.staticServePath + '/emoji/graphics/emojis/' + text + '.png"> ' +
                                 displayText.toString() + '</span>',
                         text: ":" + text + ": "
                     });

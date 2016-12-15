@@ -444,7 +444,7 @@ var Settings = {
                         $('#userTagsDom').text(requestJSONObject.userTags);
                         $('#userURLDom').text(requestJSONObject.userURL).attr('href', requestJSONObject.userURL);
                         $('#userIntroDom').text(requestJSONObject.userIntro);
-                        
+
                         return;
                     }
 

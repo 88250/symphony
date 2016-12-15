@@ -18,7 +18,6 @@
 package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
-import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -583,7 +582,7 @@ public class UserProcessor {
                     "question",
                     "zzz",
                     "notes",
-                    "shit",
+                    "poop",
                     "+1",
                     "-1",
                     "ok_hand",
@@ -706,19 +705,6 @@ public class UserProcessor {
                     Emotion.EOF_EMOJI //标记结束以便在function.ftl中处理
             }
             };
-            /**
-             * 设置处暂不启用新版本
-             * 别名问题尚未解决（考虑直接显示图片而非文字）
-             * 可参考Emotions.java中的处理，即在此处生成html代码返回
-             */
-            for (int i = 0; i < emojiLists.length; i++) {
-                for (int j = 0; j < emojiLists[i].length; j++) {
-                    String codePoint=Integer.toHexString((EmojiParser.parseToUnicode(":"+emojiLists[i][j]+":")).codePointAt(0));
-                    if(codePoint.equals("3a")==false){
-                        emojiLists[i][j]=codePoint;
-                    }
-                }
-            }
             dataModel.put(Emotion.EMOTIONS, emojis);
             dataModel.put(Emotion.SHORT_T_LIST, emojiLists);
         }
