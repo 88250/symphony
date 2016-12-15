@@ -23,7 +23,9 @@ import freemarker.template.TemplateExceptionHandler;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.json.JSONObject;
@@ -32,14 +34,14 @@ import java.io.File;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Mail utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.4.5, Oct 31, 2016
+ * @author <a href="http://blog.thinkjava.top">VirutalPier</a>
+ * @version 1.1.4.6, Dec 15, 2016
  * @since 1.3.0
  */
 public final class Mails {
@@ -50,57 +52,57 @@ public final class Mails {
     private static final Logger LOGGER = Logger.getLogger(Mails.class.getName());
 
     /**
-     * send Mail Type
+     * Mail channel.
      */
-    private static final String USE_SEND_MAIL_TYPE = Symphonys.get("use.Send.Mail.Type");
+    private static final String MAIL_CHANNEL = Symphonys.get("mail.channel");
 
     /**
-     * API user.
+     * SendCloud API user.
      */
-    private static final String API_USER = Symphonys.get("sendcloud.apiUser");
+    private static final String SENDCLOUD_API_USER = Symphonys.get("mail.sendcloud.apiUser");
 
     /**
-     * API key.
+     * SendCloud API key.
      */
-    private static final String API_KEY = Symphonys.get("sendcloud.apiKey");
+    private static final String SENDCLOUD_API_KEY = Symphonys.get("mail.sendcloud.apiKey");
 
     /**
-     * Sender email.
+     * SendCloud from.
      */
-    private static final String FROM = Symphonys.get("sendcloud.from");
+    private static final String SENDCLOUD_FROM = Symphonys.get("mail.sendcloud.from");
 
     /**
-     * Aliyun Accesskey.
+     * SendCloud batch API User.
      */
-    private static final String ALIYUN_ACCESSKEY = Symphonys.get("aliyun.accessKey");
+    private static final String SENDCLOUD_BATCH_API_USER = Symphonys.get("mail.sendcloud.batch.apiUser");
 
     /**
-     * Aliyun AccessSecret.
+     * SendCloud batch API key.
      */
-    private static final String ALIYUN_ACCESSSECRET = Symphonys.get("aliyun.accessSecret");
+    private static final String SENDCLOUD_BATCH_API_KEY = Symphonys.get("mail.sendcloud.batch.apiKey");
 
     /**
-     * ALIYUN FROM.
+     * SendCloud batch sender email.
      */
-    private static final String ALIYUN_FROM = Symphonys.get("aliyun.from");
+    private static final String SENDCLOUD_BATCH_FROM = Symphonys.get("mail.sendcloud.batch.from");
 
     /**
-     * Batch API User.
+     * Aliyun accesskey.
      */
-    private static final String BATCH_API_USER = Symphonys.get("sendcloud.batch.apiUser");
+    private static final String ALIYUN_ACCESSKEY = Symphonys.get("mail.aliyun.accessKey");
 
     /**
-     * Batch API key.
+     * Aliyun access secret.
      */
-    private static final String BATCH_API_KEY = Symphonys.get("sendcloud.batch.apiKey");
+    private static final String ALIYUN_ACCESSSECRET = Symphonys.get("mail.aliyun.accessSecret");
 
     /**
-     * Batch sender email.
+     * Aliyun from.
      */
-    private static final String BATCH_FROM = Symphonys.get("sendcloud.batch.from");
+    private static final String ALIYUN_FROM = Symphonys.get("mail.aliyun.from");
 
     /**
-     * Batch sender email.
+     * Aliyun batch from.
      */
     private static final String ALIYUN_BATCH_FROM = Symphonys.get("aliyun.batch.from");
 
@@ -119,11 +121,6 @@ public final class Mails {
      */
     public static final String TEMPLATE_NAME_WEEKLY = "sym_weekly";
 
-    /**
-     * ISO8601 Time
-     */
-    private final static String FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-
     static {
         try {
             TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(Mails.class.getResource("/mail_tpl").toURI()));
@@ -138,14 +135,14 @@ public final class Mails {
     /**
      * Sends a HTML mail.
      *
-     * @param fromName the specified from name
-     * @param subject the specified subject
-     * @param toMail the specified receiver mail
+     * @param fromName     the specified from name
+     * @param subject      the specified subject
+     * @param toMail       the specified receiver mail
      * @param templateName the specified template name
-     * @param dataModel the specified data model
+     * @param dataModel    the specified data model
      */
     public static void sendHTML(final String fromName, final String subject, final String toMail,
-            final String templateName, final Map<String, Object> dataModel) {
+                                final String templateName, final Map<String, Object> dataModel) {
 
 
         Keys.fillServer(dataModel);
@@ -160,20 +157,20 @@ public final class Mails {
             stringWriter.close();
             final String html = stringWriter.toString();
 
-            if ("aliyun".equals(USE_SEND_MAIL_TYPE)) {
+            if ("aliyun".equals(MAIL_CHANNEL)) {
                 aliSendHtml(ALIYUN_FROM, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
                 return;
             }
 
-            if (StringUtils.isBlank(API_USER) || StringUtils.isBlank(API_KEY)) {
+            if (StringUtils.isBlank(SENDCLOUD_API_USER) || StringUtils.isBlank(SENDCLOUD_API_KEY)) {
                 LOGGER.warn("Please configure [#### SendCloud Mail ####] section in symphony.properties for sending mail");
 
                 return;
             }
 
-            formData.put("apiUser", API_USER);
-            formData.put("apiKey", API_KEY);
-            formData.put("from", FROM);
+            formData.put("apiUser", SENDCLOUD_API_USER);
+            formData.put("apiKey", SENDCLOUD_API_KEY);
+            formData.put("from", SENDCLOUD_FROM);
             formData.put("fromName", fromName);
             formData.put("subject", subject);
             formData.put("to", toMail);
@@ -188,15 +185,16 @@ public final class Mails {
     }
 
     /**
-     * Sends a HTML mail, By aliyun.
+     * Sends a HTML mail via Aliyun.
+     *
      * @param fromName the specified from name
-     * @param subject the specified subject
-     * @param toMail the specified receiver mail
-     * @param html send html
+     * @param subject  the specified subject
+     * @param toMail   the specified receiver mail
+     * @param html     send html
      */
-    public static void aliSendHtml(final String fromName, final String subject, final String toMail,
-                                   final String html, final String accessKey, final String accessSecret) throws Exception {
-        if(StringUtils.isBlank(accessKey) || StringUtils.isBlank(accessSecret)){
+    private static void aliSendHtml(final String fromName, final String subject, final String toMail,
+                                    final String html, final String accessKey, final String accessSecret) throws Exception {
+        if (StringUtils.isBlank(accessKey) || StringUtils.isBlank(accessSecret)) {
             LOGGER.warn("Please configure [#### Aliyun Mail ####] section in symphony.properties for sending mail");
 
             return;
@@ -208,7 +206,8 @@ public final class Mails {
         map.put("Version", "2015-11-23");
         map.put("AccessKeyId", accessKey);
         map.put("SignatureMethod", "HMAC-SHA1");
-        map.put("Timestamp", Mails.getISO8601Time());
+        map.put("Timestamp", DateFormatUtils.format(System.currentTimeMillis(),
+                "yyyy-MM-dd'T'HH:mm:ss'Z'", Latkes.getLocale()));
         map.put("SignatureVersion", "1.0");
         map.put("SignatureNonce", String.valueOf(System.currentTimeMillis()));
         map.put("AccountName", fromName);
@@ -222,7 +221,7 @@ public final class Mails {
         Arrays.sort(sortedKeys);
         final StringBuilder canonicalizedQueryString = new StringBuilder();
         try {
-            for(String key : sortedKeys) {
+            for (String key : sortedKeys) {
                 canonicalizedQueryString.append("&")
                         .append(Mails.percentEncode(key)).append("=")
                         .append(Mails.percentEncode(map.get(key).toString()));
@@ -234,7 +233,7 @@ public final class Mails {
             stringToSign.append("&");
             stringToSign.append(Mails.percentEncode(canonicalizedQueryString.toString().substring(1)));
 
-            map.put("Signature",HmacSHA1.signString(stringToSign.toString(), accessSecret+"&"));
+            map.put("Signature", HmacSHA1.signString(stringToSign.toString(), accessSecret + "&"));
         } catch (UnsupportedEncodingException exp) {
             throw new RuntimeException("UTF-8 encoding is not supported.");
         }
@@ -243,35 +242,23 @@ public final class Mails {
         response.close();
     }
 
-    public static String percentEncode(String value) throws UnsupportedEncodingException{
+    private static String percentEncode(final String value) throws UnsupportedEncodingException {
         return value != null ? URLEncoder.encode(value, "UTF-8").replace("+", "%20")
                 .replace("*", "%2A").replace("%7E", "~") : null;
     }
 
     /**
-     * Get Time
-     * @return
-     */
-    public static String getISO8601Time() {
-        final Date nowDate = new Date();
-        final SimpleDateFormat df = new SimpleDateFormat(FORMAT_ISO8601);
-        df.setTimeZone(new SimpleTimeZone(0, "GMT"));
-
-        return df.format(nowDate);
-    }
-
-    /**
      * Batch send HTML mails.
      *
-     * @param fromName the specified from name
-     * @param subject the specified subject
-     * @param toMails the specified receiver mails
+     * @param fromName     the specified from name
+     * @param subject      the specified subject
+     * @param toMails      the specified receiver mails
      * @param templateName the specified template name
-     * @param dataModel the specified data model
+     * @param dataModel    the specified data model
      */
     public static void batchSendHTML(final String fromName, final String subject, final List<String> toMails,
-            final String templateName, final Map<String, Object> dataModel) {
-        if (StringUtils.isBlank(BATCH_API_USER) || StringUtils.isBlank(BATCH_API_KEY)) {
+                                     final String templateName, final Map<String, Object> dataModel) {
+        if (StringUtils.isBlank(SENDCLOUD_BATCH_API_USER) || StringUtils.isBlank(SENDCLOUD_BATCH_API_KEY)) {
             LOGGER.warn("Please configure [#### SendCloud Mail ####] section in symphony.properties form sending mail");
 
             return;
@@ -282,9 +269,9 @@ public final class Mails {
         try {
             final Map<String, Object> formData = new HashMap<>();
 
-            formData.put("apiUser", BATCH_API_USER);
-            formData.put("apiKey", BATCH_API_KEY);
-            formData.put("from", BATCH_FROM);
+            formData.put("apiUser", SENDCLOUD_BATCH_API_USER);
+            formData.put("apiKey", SENDCLOUD_BATCH_API_KEY);
+            formData.put("from", SENDCLOUD_BATCH_FROM);
             formData.put("fromName", fromName);
             formData.put("subject", subject);
             formData.put("templateInvokeName", templateName);
@@ -296,7 +283,7 @@ public final class Mails {
             final String html = stringWriter.toString();
 
             // Creates or updates the SendCloud email template
-            if ("sendcloud".equals(USE_SEND_MAIL_TYPE)) {
+            if ("sendcloud".equals(MAIL_CHANNEL)) {
                 refreshWeeklyTemplate(html);
             }
 
@@ -310,11 +297,11 @@ public final class Mails {
                 index++;
 
                 if (batch.size() > 99) {
-                    if ("aliyun".equals(USE_SEND_MAIL_TYPE)) {
+                    if ("aliyun".equals(MAIL_CHANNEL)) {
                         final String toMail = getStringToMailByList(batch);
                         aliSendHtml(ALIYUN_BATCH_FROM, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
                         LOGGER.info("Sent [" + batch.size() + "] mails");
-                    }else{
+                    } else {
                         try {
                             final JSONObject xsmtpapi = new JSONObject();
                             xsmtpapi.put("to", batch);
@@ -336,11 +323,11 @@ public final class Mails {
             }
 
             if (!batch.isEmpty()) { // Process remains
-                if ("aliyun".equals(USE_SEND_MAIL_TYPE)) {
+                if ("aliyun".equals(MAIL_CHANNEL)) {
                     final String toMail = getStringToMailByList(batch);
                     aliSendHtml(ALIYUN_FROM, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
                     LOGGER.info("Sent [" + batch.size() + "] mails");
-                }else {
+                } else {
                     try {
                         final JSONObject xsmtpapi = new JSONObject();
                         xsmtpapi.put("to", batch);
@@ -362,19 +349,19 @@ public final class Mails {
         }
     }
 
-    private static String getStringToMailByList(final List<String> toMails){
+    private static String getStringToMailByList(final List<String> toMails) {
         final StringBuffer mails = new StringBuffer();
-        for (String mail: toMails) {
+        for (String mail : toMails) {
             mails.append(mail + ",");
         }
-        mails.deleteCharAt(mails.length() -1);
+        mails.deleteCharAt(mails.length() - 1);
         return mails.toString();
     }
 
     private static void refreshWeeklyTemplate(final String html) {
         final Map<String, Object> addData = new HashMap<>();
-        addData.put("apiUser", BATCH_API_USER);
-        addData.put("apiKey", BATCH_API_KEY);
+        addData.put("apiUser", SENDCLOUD_BATCH_API_USER);
+        addData.put("apiKey", SENDCLOUD_BATCH_API_KEY);
         addData.put("invokeName", TEMPLATE_NAME_WEEKLY);
         addData.put("name", "Weekly Newsletter");
         addData.put("subject", "Weekly Newsletter");
@@ -384,8 +371,8 @@ public final class Mails {
         HttpRequest.post("http://api.sendcloud.net/apiv2/template/add").form(addData).send();
 
         final Map<String, Object> updateData = new HashMap<>();
-        updateData.put("apiUser", BATCH_API_USER);
-        updateData.put("apiKey", BATCH_API_KEY);
+        updateData.put("apiUser", SENDCLOUD_BATCH_API_USER);
+        updateData.put("apiKey", SENDCLOUD_BATCH_API_KEY);
         updateData.put("invokeName", TEMPLATE_NAME_WEEKLY);
 
         updateData.put("html", html);
