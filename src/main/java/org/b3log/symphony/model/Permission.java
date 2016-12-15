@@ -17,13 +17,16 @@
  */
 package org.b3log.symphony.model;
 
+import java.util.Set;
+
 /**
  * This class defines all permission model relevant keys.
- *
+ * <p>
  * See <a href="https://github.com/b3log/symphony/issues/337">#337</a> for more details.
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Dec 7, 2016
+ * @version 1.6.1.1, Dec 15, 2016
  * @since 1.8.0
  */
 public final class Permission {
@@ -48,6 +51,7 @@ public final class Permission {
      */
     public static final String PERMISSION_ID = "permissionId";
 
+    //// Transient ////
     /**
      * Key of permission categories.
      */
@@ -58,6 +62,11 @@ public final class Permission {
      */
     public static final String PERMISSION_T_LABEL = "permissionLabel";
 
+    /**
+     * Key of permission grant.
+     */
+    public static final String PERMISSION_T_GRANT = "permissionGrant";
+
     // oId constants
     /**
      * Id - common - add article.
@@ -65,9 +74,34 @@ public final class Permission {
     public static final String PERMISSION_ID_C_COMMON_ADD_ARTICLE = "commonAddArticle";
 
     /**
-     * Id - common - add article.
+     * Id - common - add article anonymous.
+     */
+    public static final String PERMISSION_ID_C_COMMON_ADD_ARTICLE_ANONYMOUS = "commonAddArticleAnonymous";
+
+    /**
+     * Id - common - update article.
+     */
+    public static final String PERMISSION_ID_C_COMMON_UPDATE_ARTICLE = "commonUpdateArticle";
+
+    /**
+     * Id - common - add comment.
      */
     public static final String PERMISSION_ID_C_COMMON_ADD_COMMENT = "commonAddComment";
+
+    /**
+     * Id - common add comment anonymous.
+     */
+    public static final String PERMISSION_ID_C_COMMON_ADD_COMMENT_ANONYMOUS = "commonAddCommentAnonymous";
+
+    /**
+     * Id - common - update comment.
+     */
+    public static final String PERMISSION_ID_C_COMMON_UPDATE_COMMENT = "commonUpdateComment";
+
+    /**
+     * Id - common - view comment history.
+     */
+    public static final String PERMISSION_ID_C_COMMON_VIEW_COMMENT_HISTORY = "commonViewCommentHistory";
 
     /**
      * Id - common - stick article.
@@ -118,6 +152,11 @@ public final class Permission {
      * Id - common - at user.
      */
     public static final String PERMISSION_ID_C_COMMON_AT_USER = "commonAtUser";
+
+    /**
+     * Id - common - at participants.
+     */
+    public static final String PERMISSION_ID_C_COMMON_AT_PARTICIPANTS = "commonAtParticipants";
 
     /**
      * Id - common - exchange invitation code.
@@ -175,9 +214,19 @@ public final class Permission {
     public static final String PERMISSION_ID_C_ARTICLE_CANCEL_STICK_ARTICLE = "articleCancelStickArticle";
 
     /**
+     * Id - article - rebuild all articles index.
+     */
+    public static final String PERMISSION_ID_C_ARTICLE_REINDEX_ARTICLES_INDEX = "articleReindexArticles";
+
+    /**
      * Id - article - rebuild article index.
      */
     public static final String PERMISSION_ID_C_ARTICLE_REINDEX_ARTICLE_INDEX = "articleReindexArticle";
+
+    /**
+     * Id - article - add article.
+     */
+    public static final String PERMISSION_ID_C_ARTICLE_ADD_ARTICLE = "articleAddArticle";
 
     /**
      * Id - article - remove article.
@@ -330,9 +379,28 @@ public final class Permission {
      */
     public static final int PERMISSION_CATEGORY_C_MISC = 9;
 
+
     /**
      * Private constructor.
      */
     private Permission() {
+    }
+
+    /**
+     * Checks whether the specified grant permissions contains the specified requisite permissions.
+     *
+     * @param requisitePermissions the specified requisite permissions
+     * @param grantPermissions     the specified grant permissions
+     * @return {@code true} if the specified grant permissions contains the specified requisite permissions, returns
+     * {@code false} otherwise
+     */
+    public static boolean hasPermission(final Set<String> requisitePermissions, final Set<String> grantPermissions) {
+        for (final String requisitePermission : requisitePermissions) {
+            if (!grantPermissions.contains(requisitePermission)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

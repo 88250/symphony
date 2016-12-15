@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all role model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Dec 4, 2016
+ * @version 1.1.0.2, Dec 14, 2016
  * @since 1.8.0
  */
 public final class Role {
@@ -51,11 +51,15 @@ public final class Role {
      */
     public static final String ROLE_ID = "roleId";
 
+    //// Transient ////
+    /**
+     * Key of user count.
+     */
+    public static final String ROLE_T_USER_COUNT = "roleUserCount";
+
     // Role name constants
     /**
      * Role name - default.
-     *
-     * @deprecated change it to basic in 1.9.0 , #259: https://github.com/b3log/symphony/issues/259
      */
     public static final String ROLE_ID_C_DEFAULT = "defaultRole";
 
@@ -78,11 +82,6 @@ public final class Role {
      * Role name - member.
      */
     public static final String ROLE_ID_C_MEMBER = "memberRole";
-
-    /**
-     * Role name - basic.
-     */
-    public static final String ROLE_ID_C_BASIC = "basicRole";
 
     /**
      * Role name - visitor.

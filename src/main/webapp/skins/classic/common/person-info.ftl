@@ -1,8 +1,10 @@
 <#if isLoggedIn>
 <div class="module person-info" data-percent="${liveness}">
     <div class="info fn-clear">
+        <#if permissions["commonAddArticle"].permissionGrant>
         <button class="btn red tooltipped tooltipped-e" aria-label="${addArticleLabel}"
                 onclick="window.location = '${servePath}/pre-post'">${postArticleLabel}</button>
+        </#if>
         <#if !isDailyCheckin>
         <a class="fn-right" href="<#if useCaptchaCheckin>${servePath}/activity/checkin<#else>${servePath}/activity/daily-checkin</#if>">${dailyCheckinLabel}</a>
         <#else>

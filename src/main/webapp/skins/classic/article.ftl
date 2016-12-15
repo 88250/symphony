@@ -123,14 +123,37 @@
                             <span class="action-btns fn-left">
                                 <span id="thankArticle" aria-label="${thankLabel}"
                                       class="tooltipped tooltipped-n has-cnt<#if article.thanked> ft-red</#if>"
-                                      <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart"></span> ${article.thankedCnt}</span> &nbsp;
-                                <span class="tooltipped tooltipped-n has-cnt<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>" aria-label="${upLabel}" onclick="Article.voteUp('${article.oId}', 'article', this)">
-                                    <span class="icon-thumbs-up"></span> ${article.articleGoodCnt}</span> &nbsp;
-                                <span  class="tooltipped tooltipped-n has-cnt<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>" aria-label="${downLabel}" onclick="Article.voteDown('${article.oId}', 'article', this)"><span class="icon-thumbs-down"></span> ${article.articleBadCnt}</span> &nbsp;
+                                      <#if !article.thanked && permissions["commonThankArticle"].permissionGrant>
+                                          onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"
+                                      <#else>
+                                          onclick="Util.alert('${noPermissionLabel}')"
+                                      </#if>><span class="icon-heart"></span> ${article.thankedCnt}</span> &nbsp;
+                                <span class="tooltipped tooltipped-n has-cnt<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>" aria-label="${upLabel}"
+                                     <#if permissions["commonGoodArticle"].permissionGrant>
+                                          onclick="Article.voteUp('${article.oId}', 'article', this)"
+                                      <#else>
+                                          onclick="Util.alert('${noPermissionLabel}')"
+                                     </#if>><span class="icon-thumbs-up"></span> ${article.articleGoodCnt}</span> &nbsp;
+                                <span  class="tooltipped tooltipped-n has-cnt<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>" aria-label="${downLabel}"
+                                    <#if permissions["commonBadArticle"].permissionGrant>
+                                       onclick="Article.voteDown('${article.oId}', 'article', this)"
+                                    <#else>
+                                        onclick="Util.alert('${noPermissionLabel}')"
+                                </#if>><span class="icon-thumbs-down"></span> ${article.articleBadCnt}</span> &nbsp;
                                 <#if isLoggedIn && isFollowing>
-                                <span class="tooltipped tooltipped-n has-cnt ft-red" aria-label="${uncollectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                                <span class="tooltipped tooltipped-n has-cnt ft-red" aria-label="${uncollectLabel}"
+                                    <#if permissions["commonFollowArticle"].permissionGrant>
+                                      onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
+                                    <#else>
+                                        onclick="Util.alert('${noPermissionLabel}')"
+                                    </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
                                 <#else>
-                                <span class="tooltipped tooltipped-n has-cnt" aria-label="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                                <span class="tooltipped tooltipped-n has-cnt" aria-label="${collectLabel}"
+                                    <#if permissions["commonFollowArticle"].permissionGrant>
+                                      onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
+                                    <#else>
+                                        onclick="Util.alert('${noPermissionLabel}')"
+                                    </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
                                 </#if>
                             </span>
 
@@ -139,20 +162,24 @@
                                 <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
                                       class="tooltipped tooltipped-n"><span class="icon-unordered-list ft-red"></span></span> &nbsp; &nbsp;
                                 </#if>
+                                 <#if permissions["commonViewArticleHistory"].permissionGrant>
                                 <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
                                       class="tooltipped tooltipped-n"><span class="icon-refresh"></span></span> &nbsp; &nbsp;
-                                <#if article.isMyArticle && 3 != article.articleType>
+                                </#if>
+                                <#if article.isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
                                 <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"
                                    class="tooltipped tooltipped-n"><span class="icon-edit"></span></a> &nbsp; &nbsp;
                                 </#if>
-                                <#if article.isMyArticle>
+                                <#if article.isMyArticle && permissions["commonStickArticle"].permissionGrant>
                                 <a class="tooltipped tooltipped-n" aria-label="${stickLabel}"
                                    href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a> &nbsp; &nbsp;
                                 </#if>
-                                <#if isAdminLoggedIn>
+                                <#if permissions["articleUpdateArticleBasic"].permissionGrant>
                                 <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a> &nbsp; &nbsp;
                                 </#if>
+                                <#if permissions["commonAddComment"].permissionGrant>
                                 <span class="tooltipped tooltipped-n icon-reply-btn" aria-label="${cmtLabel}"><span class="icon-reply"></span>${cmtLabel}</span>
+                                </#if>
                             </span>
                         </div>
                     </div>
@@ -226,7 +253,11 @@
                             <ul>
                                 <#if article.articleComments?size == 0>
                                 <li class="ft-center fn-pointer"
-                                    onclick="$('.article-actions .icon-reply-btn').click()">
+                                    <#if permissions["commonAddComment"].permissionGrant>
+                                        onclick="$('.article-actions .icon-reply-btn').click()"
+                                    <#else>
+                                        onclick="Util.alert('${noPermissionLabel}')"
+                                    </#if>>
                                     <img src="${noCmtImg}" class="article-no-comment-img">
                                 </li>
                                 </#if>
@@ -234,88 +265,21 @@
                                 <#list article.articleComments as comment>
                                 <#assign notificationCmtIds = notificationCmtIds + comment.oId>
                                 <#if comment_has_next><#assign notificationCmtIds = notificationCmtIds + ","></#if>
-                                <li id="${comment.oId}"
-                                    class="<#if comment.commentStatus == 1>cmt-shield</#if><#if comment.commentNice> cmt-perfect</#if><#if comment.commentReplyCnt != 0> cmt-selected</#if>">
-                                    <#if !comment?has_next><div id="bottomComment"></div></#if>
-                                    <div class="fn-flex">
-                                        <#if !comment.fromClient>
-                                        <div>
-                                        <#if comment.commentAnonymous == 0>
-                                        <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
-                                            <div class="avatar tooltipped tooltipped-se"
-                                                 aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
-                                        <#if comment.commentAnonymous == 0></a></#if>
-                                        </div>
-                                        <#else>
-                                        <div class="avatar tooltipped tooltipped-se"
-                                             aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
-                                        </#if>
-                                        <div class="fn-flex-1">
-                                            <div class="comment-get-comment list"></div>
-                                            <div class="fn-clear comment-info ft-smaller">
-                                                <span class="fn-left">
-                                                    <#if !comment.fromClient>
-                                                    <#if comment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${comment.commentAuthorName}</span><#if comment.commentAnonymous == 0></a></#if>
-                                                    <#else><span class="ft-gray">${comment.commentAuthorName}</span>
-                                                    <span class="ft-fade"> • </span>
-                                                    <a rel="nofollow" class="ft-green" href="https://hacpai.com/article/1457158841475">API</a>
-                                                    </#if>
-                                                    <span class="ft-fade">• ${comment.timeAgo}</span>
-                                                    <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade hover-show fn-hidden" data-ua="${comment.commentUA}"></span></#if>
-                                                </span>
-                                                <span class="fn-right">
-                                                    <#if comment.commentOriginalCommentId != ''>
-                                                    <span class="fn-pointer ft-fade tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
-                                                       onclick="Comment.showReply('${comment.commentOriginalCommentId}', this, 'comment-get-comment')"><span class="icon-reply-to"></span>
-                                                        <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
-                                                    </span>
-                                                    </#if>
-                                                    <#if isAdminLoggedIn>
-                                                    <a class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}"
-                                                       aria-label="${adminLabel}"><span class="icon-setting"></span></a>
-                                                    </#if>
-                                                </span>
-                                            </div>
-                                            <div class="content-reset comment">
-                                                ${comment.commentContent}
-                                            </div>
-                                            <div class="comment-action">
-                                                <div class="ft-fade fn-clear">
-                                                    <#if comment.commentReplyCnt != 0>
-                                                    <span class="fn-pointer ft-smaller fn-left" onclick="Comment.showReply('${comment.oId}', this, 'comment-replies')">
-                                                        ${comment.commentReplyCnt} ${replyLabel} <span class="icon-chevron-down"></span>
-                                                    </span>
-                                                    </#if>
-                                                     <span class="fn-right fn-hidden hover-show action-btns">
-                                                         <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
-                                                        <span class="tooltipped tooltipped-n <#if hasRewarded>ft-red</#if>" aria-label="${thankLabel}"
-                                                              <#if !hasRewarded>onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', ${comment.commentAnonymous}, this)"</#if>><span class="icon-heart"></span> ${comment.rewardedCnt}</span> &nbsp;
-                                                        <span class="tooltipped tooltipped-n<#if isLoggedIn && 0 == comment.commentVote> ft-red</#if>"
-                                                              aria-label="${upLabel}"
-                                                              onclick="Article.voteUp('${comment.oId}', 'comment', this)"><span class="icon-thumbs-up"></span> ${comment.commentGoodCnt}</span> &nbsp;
-                                                        <span class="tooltipped tooltipped-n<#if isLoggedIn && 1 == comment.commentVote> ft-red</#if>"
-                                                              aria-label="${downLabel}"
-                                                              onclick="Article.voteDown('${comment.oId}', 'comment', this)"><span class="icon-thumbs-down"></span> ${comment.commentBadCnt}</span> &nbsp;
-                                                        <#if (isLoggedIn && comment.commentAuthorName != currentUser.userName) || !isLoggedIn>
-                                                        <span aria-label="${replyLabel}" class="icon-reply-btn tooltipped tooltipped-n"
-                                                              onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')"><span class="icon-reply"></span></span>
-                                                        </#if>
-                                                    </span>
-                                                </div>
-                                                <div class="comment-replies list"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+                                <#include 'common/comment.ftl' />
                                 </#list>
                             </ul>
+                            <div id="bottomComment"></div>
                         </div>
                         <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
                     </div>
                    
 					<div class="ft-center fn-pointer <#if article.articleComments?size == 0> fn-none</#if>" title="${cmtLabel}"
-							onclick="$('.article-actions .icon-reply-btn').click()">
-							<img src="${noCmtImg}" class="article-no-comment-img">
+                        <#if permissions["commonAddComment"].permissionGrant>
+                            onclick="$('.article-actions .icon-reply-btn').click()"
+                        <#else>
+                            onclick="Util.alert('${noPermissionLabel}')"
+                        </#if>>
+                        <img src="${noCmtImg}" class="article-no-comment-img">
 					</div>
                     
                 </div>
@@ -421,7 +385,9 @@
                     <div class="fn-clear comment-submit">
                         <div class="tip fn-left" id="addCommentTip"></div>
                         <div class="fn-right">
-                            <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                            <#if permissions["commonAddCommentAnonymous"].permissionGrant>
+                                <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                            </#if>
                             <button class="red mid" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
                         </div>
                     </div>
@@ -465,8 +431,9 @@
             Label.replyLabel = '${replyLabel}';
             Label.referenceLabel = '${referenceLabel}';
             Label.goCommentLabel = '${goCommentLabel}';
-            qiniuToken = "${qiniuUploadToken}";
-            qiniuDomain = "${qiniuDomain}";
+            Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
+            Label.qiniuDomain = '${qiniuDomain}';
+            Label.qiniuUploadToken = '${qiniuUploadToken}';
             <#if isLoggedIn>
                 Label.currentUserName = '${currentUser.userName}';
                 Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');

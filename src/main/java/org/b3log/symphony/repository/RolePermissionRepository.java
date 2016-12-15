@@ -46,6 +46,19 @@ public class RolePermissionRepository extends AbstractRepository {
     }
 
     /**
+     * Removes role-permission relations by the specified role id.
+     *
+     * @param roleId the specified role id
+     * @throws RepositoryException repository exception
+     */
+    public void removeByRoleId(final String roleId) throws RepositoryException {
+        final List<JSONObject> toRemoves = getByRoleId(roleId);
+        for (final JSONObject toRemove : toRemoves) {
+            remove(toRemove.optString(Keys.OBJECT_ID));
+        }
+    }
+
+    /**
      * Gets role-permission relations by the specified role id.
      *
      * @param roleId the specified role id

@@ -109,21 +109,31 @@
                                     <#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked</#if></#if>
                                     type="checkbox" id="syncWithSymphonyClient"></label>
                         	</#if>
+                            <#if permissions["commonAddArticleAnonymous"].permissionGrant>
                             <label class="article-anonymous">${anonymousLabel}<input
                                     <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
                                     type="checkbox" id="articleAnonymous"></label>
-                            <button class="red" tabindex="10" onclick="AddArticle.add('${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button>
+                            </#if>
+
+                            <#if article??>
+                                <#if permissions["commonAddArticle"].permissionGrant>
+                                <button class="red" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
+                                </#if>
+                            <#else>
+                                <#if permissions["commonUpdateArticle"].permissionGrant>
+                                <button class="red" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${postLabel}</button>
+                                </#if>
+                            </#if>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <#include "../footer.ftl">
-        <script src="${staticServePath}/js/lib/editor/codemirror.min.js?4.13"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/editor/codemirror.min.js?4.13"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-9.6.0/highlight.pack.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
-        <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
             Label.articleContentErrorLabel = "${articleContentErrorLabel}";
@@ -136,7 +146,13 @@
             Label.uploadingLabel = '${uploadingLabel}';
             Label.articleRewardPointErrorLabel = '${articleRewardPointErrorLabel}';
             Label.discussionLabel = '${discussionLabel}';
+            Label.qiniuDomain = '${qiniuDomain}';
+            Label.qiniuUploadToken = '${qiniuUploadToken}';
+            Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
             <#if article??>Label.articleOId = '${article.oId}' ;</#if>
+        </script>
+        <script type="text/javascript" src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script>
             Util.uploadFile({
                 "id": "fileUpload",
                 "pasteZone": $("#articleContent").next().next(),

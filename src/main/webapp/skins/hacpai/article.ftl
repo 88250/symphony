@@ -131,39 +131,7 @@
                             <h2>${article.articleCommentCount} ${cmtLabel}</h2>
                             <ul>
                                 <#list article.articleComments as comment>
-                                <li id="${comment.oId}">
-                                    <div class="fn-flex">
-                                        <a class="responsive-hide" rel="nofollow" href="/member/${comment.commentAuthorName}">
-                                            <img class="avatar" 
-                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80" />
-                                        </a>
-                                        <div class="fn-flex-1 comment-content">
-                                            <div class="fn-clear comment-info">
-                                                <span class="fn-left">
-                                                    <#if "adminRole" == comment.commenter.userRole>
-                                                    <span class="icon icon-userrole" title="${administratorLabel}"></span>
-                                                    </#if>
-                                                    <a rel="nofollow" href="/member/${comment.commentAuthorName}"
-                                                       title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
-                                                    &nbsp;<span class="icon icon-date ft-small"></span>
-                                                    <span class="ft-small">${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}</span> 
-                                                </span>
-                                                <span class="fn-right">
-                                                    <#if isAdminLoggedIn>
-                                                    <a class="icon icon-setting" href="/admin/comment/${comment.oId}" title="${adminLabel}"></a>
-                                                    </#if>
-                                                    <#if isLoggedIn> 
-                                                    <span class="icon icon-cmt" onclick="Comment.reply('@${comment.commentAuthorName} ')"></span>
-                                                    </#if>
-                                                    #<i>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</i>
-                                                </span>    
-                                            </div>
-                                            <div class="content-reset comment">
-                                                ${comment.commentContent}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+                                    <#include 'common/comment.ftl' />
                                 </#list>  
                             </ul>
                         </div>

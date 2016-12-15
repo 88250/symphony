@@ -18,6 +18,7 @@
 package org.b3log.symphony.repository;
 
 import java.util.List;
+
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.AbstractRepository;
@@ -30,7 +31,7 @@ import org.json.JSONObject;
  * Pointtransfer repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Sep 23, 2015
+ * @version 1.1.1.0, Dec 12, 2016
  * @since 1.3.0
  */
 @Repository
@@ -55,7 +56,7 @@ public class PointtransferRepository extends AbstractRepository {
             final List<JSONObject> result = select("SELECT\n"
                     + "	AVG(sum) AS point\n"
                     + "FROM\n"
-                    + "	`symphony_pointtransfer`\n"
+                    + "	`" + getName() + "`\n"
                     + "WHERE\n"
                     + "	type = 27\n"
                     + "AND toId = ?\n"

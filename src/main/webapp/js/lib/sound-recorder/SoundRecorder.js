@@ -103,9 +103,9 @@ function WavFileBlob(desiredDataView)
 
         var url  = (window.URL || window.webkitURL).createObjectURL(this.dataBlob);
 		var fileName = this.generateFileName();
-		console.log("WavFileBlob->downloadLocally(): The URL is: "+url);
-		console.log("WavFileBlob->downloadLocally(): The file name is: "+url);
-		
+//		console.log("WavFileBlob->downloadLocally(): The URL is: "+url);
+//		console.log("WavFileBlob->downloadLocally(): The file name is: "+url);
+
         var link = window.document.createElement('a');
 		
 		
@@ -148,26 +148,26 @@ function WavFileBlob(desiredDataView)
     
     this.sendToURL = function(desiredURL, desiredSuccessCallback, desiredFailureCallback, desiredProgressBarValueSetterCallback)
     {
-        console.log("WavFileBlob.sendToUrl(): Checking required values...");
+//        console.log("WavFileBlob.sendToUrl(): Checking required values...");
         if(!desiredURL)
         {
-            console.log("WavFileBlob.sendToUrl(): Desired url is null.  Cannot continue.");
+//            console.log("WavFileBlob.sendToUrl(): Desired url is null.  Cannot continue.");
             return;
         }
         
         if(typeof(desiredURL)!='string')
         {
-            console.log("WavFileBlob.sendToUrl(): Desired url is not a string.  Cannot continue.");
+//            console.log("WavFileBlob.sendToUrl(): Desired url is not a string.  Cannot continue.");
             return;
         }
         
         if(desiredURL==="")
         {
-            console.log("WavFileBlob.sendToUrl(): Desired url is an empty string.  Cannot continue.");
+//            console.log("WavFileBlob.sendToUrl(): Desired url is an empty string.  Cannot continue.");
             return;
         }
         
-        console.log("WavFileBlob.sendToUrl(): ...Finished!");
+//        console.log("WavFileBlob.sendToUrl(): ...Finished!");
                                        
         var url = (window.URL || window.webkitURL).createObjectURL(this.dataBlob);
         
@@ -176,7 +176,7 @@ function WavFileBlob(desiredDataView)
         data.append('file_name',this.generateFileNameWithoutExtension());
         data.append('file_extension',this.EXTENSION);
         
-        console.log("WavFileBlob.sendToUrl(): Sending AJAX query...");
+//        console.log("WavFileBlob.sendToUrl(): Sending AJAX query...");
         $.ajax({
             url :  desiredURL,
             type: 'POST',
@@ -184,31 +184,31 @@ function WavFileBlob(desiredDataView)
             contentType: false,
             processData: false,
             success: function(data) {
-                console.log("WavFileBlob.sendToUrl()->success(): Send to server successful!");
+//                console.log("WavFileBlob.sendToUrl()->success(): Send to server successful!");
 
                 if(desiredSuccessCallback)
                 {
-                    console.log("WavFileBlob.sendToUrl()->success(): Executing success callback function.");
+//                    console.log("WavFileBlob.sendToUrl()->success(): Executing success callback function.");
                 	desiredSuccessCallback(data);
                 }
                 else
                 {
-                    console.log("WavFileBlob.sendToUrl()->success(): No success callback function specified.");
+//                    console.log("WavFileBlob.sendToUrl()->success(): No success callback function specified.");
                 }
 
             },    
             error: function(e) {
-                console.log("WavFileBlob.sendToUrl()->error(): Send to server unsuccessful!");
-                console.log(e);
+//                console.log("WavFileBlob.sendToUrl()->error(): Send to server unsuccessful!");
+//                console.log(e);
                 
                 if(desiredFailureCallback)
                 {
-                    console.log("WavFileBlob.sendToUrl()->error(): Executing failure callback function.");
+//                    console.log("WavFileBlob.sendToUrl()->error(): Executing failure callback function.");
                 	desiredFailureCallback(e);
                 }
                 else
                 {
-                    console.log("WavFileBlob.sendToUrl()->error(): No failure callback function specified.");
+//                    console.log("WavFileBlob.sendToUrl()->error(): No failure callback function specified.");
                 }
                 
             },
@@ -226,7 +226,7 @@ function WavFileBlob(desiredDataView)
                             desiredProgressBarValueSetterCallback(percentComplete);
                         }
 
-                        console.log("Upload Raw Percentage: " + percentComplete);
+//                        console.log("Upload Raw Percentage: " + percentComplete);
                     }
                 }, false);
                 //Download progress
@@ -239,7 +239,7 @@ function WavFileBlob(desiredDataView)
                             desiredProgressBarValueSetterCallback(percentComplete);
                         }
 
-                        console.log("Download Raw Percentage: " + percentComplete);
+//                        console.log("Download Raw Percentage: " + percentComplete);
                     }
                 }, false);
                 return xhr;
@@ -281,7 +281,7 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
     
     this.init = function(e)
     {	
-        console.log('SoundRecorder.init(): Internal recorder initialization started.');
+//        console.log('SoundRecorder.init(): Internal recorder initialization started.');
         readyFlag = false;
         
         if(isNaN(SAMPLE_RATE))
@@ -303,8 +303,8 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
         // creates the audio context
         context = new AudioContext();
         DEFAULT_SAMPLE_RATE=context.sampleRate;    
-        console.log("SoundRecorder.init(): The browser's default sample rate is: "+DEFAULT_SAMPLE_RATE);
-        console.log("SoundRecorder.init(): The desired sample rate is: "+SAMPLE_RATE);
+//        console.log("SoundRecorder.init(): The browser's default sample rate is: "+DEFAULT_SAMPLE_RATE);
+//        console.log("SoundRecorder.init(): The desired sample rate is: "+SAMPLE_RATE);
         
         // creates a gain node
         volume = context.createGain();
@@ -329,8 +329,8 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
         this.recorder.connect (context.destination);      
 
         readyFlag = true;
-        console.log('SoundRecorder.init(): Internal recorder initialization finished!');
-        console.log('SoundRecorder.init(): Recorder should be ready so long as the onaudioprocess event has been set.');
+//        console.log('SoundRecorder.init(): Internal recorder initialization finished!');
+//        console.log('SoundRecorder.init(): Recorder should be ready so long as the onaudioprocess event has been set.');
         
     };
     
@@ -348,7 +348,7 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
         }
         else
         {
-            console.log("SoundRecorder.startRecordingNewWavFile(): Recorder object not ready!");
+//            console.log("SoundRecorder.startRecordingNewWavFile(): Recorder object not ready!");
         }
     };
     
@@ -363,7 +363,7 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
         else
         {            
             eventSet = false;
-            console.log("SoundRecorder.isReady(): Recorder onaudioprocess event not set!");
+//            console.log("SoundRecorder.isReady(): Recorder onaudioprocess event not set!");
         }
         
         return (readyFlag && eventSet);
@@ -376,7 +376,7 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
     
     this.buildWavFileBlob = function()
     {
-    	console.log("SoundRecorder.buildWavFileBlob(): Building WAV file...");
+//    	console.log("SoundRecorder.buildWavFileBlob(): Building WAV file...");
     	var BITS_PER_BYTE      = 8;
     	var BYTES_PER_SAMPLE   = 2;
         var NUMBER_OF_CHANNELS = (OUTPUT_CHANNEL_COUNT==1)?1:2;
@@ -409,30 +409,30 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
         var FORMAT_VALUE      = 'WAVE';
 
 
-    	console.log("SoundRecorder.buildWavFileBlob(): Flattening channels...");
+    	// console.log("SoundRecorder.buildWavFileBlob(): Flattening channels...");
         // we flat the left and right channels down
         var leftBuffer  = mergeBuffers (leftChannel);
         var rightBuffer = mergeBuffers (rightChannel);
-        console.log("SoundRecorder.buildWavFileBlob(): ...Finished!");
+        // console.log("SoundRecorder.buildWavFileBlob(): ...Finished!");
 
 
         // Interleave the left and right channels together:
-        console.log("SoundRecorder.buildWavFileBlob(): Interleaving channels...");
-        console.log("SoundRecorder.buildWavFileBlob(): ...The desired number of output channels is "+OUTPUT_CHANNEL_COUNT);
+        // console.log("SoundRecorder.buildWavFileBlob(): Interleaving channels...");
+        // console.log("SoundRecorder.buildWavFileBlob(): ...The desired number of output channels is "+OUTPUT_CHANNEL_COUNT);
         var interleaved = (OUTPUT_CHANNEL_COUNT==1)?interleaveToMono ( leftBuffer, rightBuffer ):interleaveToStereo ( leftBuffer, rightBuffer );
-        console.log("SoundRecorder.buildWavFileBlob(): ...Finished!");
+        // console.log("SoundRecorder.buildWavFileBlob(): ...Finished!");
 
         //Downsample the audio data if necessary:
-        console.log("SoundRecorder.buildWavFileBlob(): Determining if downsampling is necessary...");
+        // console.log("SoundRecorder.buildWavFileBlob(): Determining if downsampling is necessary...");
         if(DEFAULT_SAMPLE_RATE > SAMPLE_RATE)
         {
-        	console.log("SoundRecorder.buildWavFileBlob(): ...The desired sample rate is less than the default sample rate.  Downsampling needed.");
+        	// console.log("SoundRecorder.buildWavFileBlob(): ...The desired sample rate is less than the default sample rate.  Downsampling needed.");
 			interleaved = downsampleBuffer(interleaved,SAMPLE_RATE);
-			console.log("SoundRecorder.buildWavFileBlob(): ...Downsampling Finished!");
+			// console.log("SoundRecorder.buildWavFileBlob(): ...Downsampling Finished!");
 		}
 		else
 		{
-			console.log("SoundRecorder.buildWavFileBlob(): ...The desired sample rate is greater than or equal to the default sample rate.  No downsampling needed.");	
+			// console.log("SoundRecorder.buildWavFileBlob(): ...The desired sample rate is greater than or equal to the default sample rate.  No downsampling needed.");
 		}
 
         // Now that the data is ready, build the wav file:
@@ -445,16 +445,16 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
         var view           = new DataView(buffer);
 
         // Build the RIFF chunk descriptor:
-        console.log("SoundRecorder.buildWavFileBlob(): Writing RIFF chunk descriptor to  view...");
+        // console.log("SoundRecorder.buildWavFileBlob(): Writing RIFF chunk descriptor to  view...");
 
         writeUTFBytes(view, BYTE_INDEX_CHUNK_ID, CHUNK_ID_VALUE);
         view.setUint32(BYTE_INDEX_CHUNK_SIZE, totalByteCount, true);
         writeUTFBytes(view, BYTE_INDEX_FORMAT, FORMAT_VALUE);
 
-        console.log("SoundRecorder.buildWavFileBlob(): ...Finished!");
+        // console.log("SoundRecorder.buildWavFileBlob(): ...Finished!");
 
         // Build the FMT sub-chunk:
-        console.log("SoundRecorder.buildWavFileBlob(): Writing FMT sub-chunk to  view...");
+        // console.log("SoundRecorder.buildWavFileBlob(): Writing FMT sub-chunk to  view...");
 
         writeUTFBytes(view, BYTE_INDEX_SUBCHUNK_1_ID, 'fmt '); //subchunk1 ID is format
         view.setUint32(BYTE_INDEX_SUBCHUNK_1_SIZE, SUBCHUNK_1_SIZE,    true);//The sub-chunk size is 16.
@@ -465,11 +465,11 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
         view.setUint16(BYTE_INDEX_BLOCK_ALIGN,     BLOCK_ALIGN,        true);//Block align
         view.setUint16(BYTE_INDEX_BITS_PER_SAMPLE, BITS_PER_SAMPLE,    true);//Bits per sample.
 
-        console.log("SoundRecorder.buildWavFileBlob(): ...Finished!");
+        // console.log("SoundRecorder.buildWavFileBlob(): ...Finished!");
 
 
         // Build the data sub-chunk:
-        console.log("SoundRecorder.buildWavFileBlob(): Writing data sub-chunk to view...");
+        // console.log("SoundRecorder.buildWavFileBlob(): Writing data sub-chunk to view...");
 
         var subChunk2ByteCount = interleaved.length * 2;
         writeUTFBytes(view, BYTE_INDEX_SUBCHUNK_2_ID, 'data');
@@ -485,14 +485,14 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
             index += 2;
         }
 
-        console.log("SoundRecorder.buildWavFileBlob(): ...Finished!");
+        // console.log("SoundRecorder.buildWavFileBlob(): ...Finished!");
         
-        console.log("SoundRecorder.buildWavFileBlob(): Converting view to blob...");
+        // console.log("SoundRecorder.buildWavFileBlob(): Converting view to blob...");
 
         // our final binary blob
         var blob = new WavFileBlob(view);
 
-        console.log("SoundRecorder.buildWavFileBlob(): ...Finished!");
+        // console.log("SoundRecorder.buildWavFileBlob(): ...Finished!");
 
         return blob;
     };
@@ -505,13 +505,13 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
         var left = e.inputBuffer.getChannelData (0);
         var right = e.inputBuffer.getChannelData (1);
         this.cloneChannelData(left, right);            
-        console.log("SoundRecorder.recordingEventHandler(): Saving audio data...");
+        // console.log("SoundRecorder.recordingEventHandler(): Saving audio data...");
     };
     
     //Private methods:    
     var interleaveToStereo = function (leftBuffer, rightBuffer)
     {
-    	console.log("SoundRecorder.interleaveToStereo(): Begin interleaving stereo channels...");
+    	// console.log("SoundRecorder.interleaveToStereo(): Begin interleaving stereo channels...");
         var length = leftBuffer.length + rightBuffer.length;
         var result = new Float32Array(length);
         var inputIndex = 0;
@@ -522,30 +522,30 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
             result[index++] = rightBuffer[inputIndex];
             inputIndex++;
         }
-        console.log("SoundRecorder.interleaveToStereo(): ...Finished!");
+        // console.log("SoundRecorder.interleaveToStereo(): ...Finished!");
         return result;
     };
     
     var interleaveToMono = function(leftBuffer, rightBuffer)
     {
-    	console.log("SoundRecorder.interleaveToStereo(): Begin interleaving stereo channels to mono...");
+    	// console.log("SoundRecorder.interleaveToStereo(): Begin interleaving stereo channels to mono...");
         var result = new Float32Array(leftBuffer.length);
         
         for (var index = 0; index < leftBuffer.length; ++index)
         {
            result[index] = 0.5 * (leftBuffer[index] + rightBuffer[index]);
         }
-        console.log("SoundRecorder.interleaveToStereo(): ...Finished!");
+        // console.log("SoundRecorder.interleaveToStereo(): ...Finished!");
         return result;
     };
     
     var downsampleBuffer = function (buffer, rate)
     {
-    	console.log("SoundRecorder.downsampleBuffer(): Begin downsampling audio...");
+    	// console.log("SoundRecorder.downsampleBuffer(): Begin downsampling audio...");
         if (rate == DEFAULT_SAMPLE_RATE)
         {
-        	console.log("SoundRecorder.downsampleBuffer(): ...The new rate is the same as the browser's default rate.  No need to downsample.");
-            console.log("SoundRecorder.downsampleBuffer(): ...Finished!");
+        	// console.log("SoundRecorder.downsampleBuffer(): ...The new rate is the same as the browser's default rate.  No need to downsample.");
+            // console.log("SoundRecorder.downsampleBuffer(): ...Finished!");
             return buffer;
             
         }
@@ -554,13 +554,13 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
         {
         	
             //throw "downsampling rate show be smaller than original sample rate";
-            console.log("SoundRecorder.downsampleBuffer(): ...The new rate is greater than the browser's default rate.  No need to downsample.");
-            console.log("SoundRecorder.downsampleBuffer(): ...Finished!");
+            // console.log("SoundRecorder.downsampleBuffer(): ...The new rate is greater than the browser's default rate.  No need to downsample.");
+            // console.log("SoundRecorder.downsampleBuffer(): ...Finished!");
             return buffer;
         }
         
         
-        console.log("SoundRecorder.downsampleBuffer(): ...The desired rate is less than the browser's default rate.  Downsampling...");
+        // console.log("SoundRecorder.downsampleBuffer(): ...The desired rate is less than the browser's default rate.  Downsampling...");
         var sampleRateRatio = DEFAULT_SAMPLE_RATE / rate;
         var newLength = Math.round(buffer.length / sampleRateRatio);
         var result = new Float32Array(newLength);
@@ -581,13 +581,13 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
             offsetBuffer = nextOffsetBuffer;
         }
         
-        console.log("SoundRecorder.downsampleBuffer(): ...Finished!");
+        // console.log("SoundRecorder.downsampleBuffer(): ...Finished!");
         return result;
     };
     
     var mergeBuffers = function(desiredChannelBuffer)
     {
-    	console.log("SoundRecorder.mergeBuffers(): Merging buffers...");
+    	// console.log("SoundRecorder.mergeBuffers(): Merging buffers...");
         var result = new Float32Array(recordingLength);
         var offset = 0;
         var lng = desiredChannelBuffer.length;
@@ -597,41 +597,41 @@ function SoundRecorder(desiredAudioContext, desiredBufferSize, desiredSampleRate
             result.set(buffer, offset);
             offset += buffer.length;
         }
-        console.log("SoundRecorder.mergeBuffers(): ...Finished!");
+        // console.log("SoundRecorder.mergeBuffers(): ...Finished!");
         return result;
     };
     
     var writeUTFBytes = function(view, offset, string)
     { 
-    	console.log("SoundRecorder.writeUTFBytes(): Writing UTF bytes to view...");
+    	// console.log("SoundRecorder.writeUTFBytes(): Writing UTF bytes to view...");
 		var lng = string.length;
 		for (var i = 0; i < lng; i++)
 		{
 			view.setUint8(offset + i, string.charCodeAt(i));
 		}
-		console.log("SoundRecorder.writeUTFBytes(): ...Finished!");
+		// console.log("SoundRecorder.writeUTFBytes(): ...Finished!");
     };    
     
     var setRecordingFlag = function()
     {
-    	console.log("SoundRecorder.setRecordingFlag(): Setting recording flag...");
+    	// console.log("SoundRecorder.setRecordingFlag(): Setting recording flag...");
         recordingFlag = true;
-        console.log("SoundRecorder.setRecordingFlag(): ...Finished!");
+        // console.log("SoundRecorder.setRecordingFlag(): ...Finished!");
     };
     
     var clearRecordingFlag = function()
     {
-    	console.log("SoundRecorder.clearRecordingFlag(): Clearing recording flag...");
+    	// console.log("SoundRecorder.clearRecordingFlag(): Clearing recording flag...");
         recordingFlag = false;
-        console.log("SoundRecorder.clearRecordingFlag(): ...Finished!");
+        // console.log("SoundRecorder.clearRecordingFlag(): ...Finished!");
     };
     
     var resetBuffers = function()
     {
-    	console.log("SoundRecorder.resetBuffers(): Resetting buffers...");
+    	// console.log("SoundRecorder.resetBuffers(): Resetting buffers...");
         leftChannel.length = rightChannel.length = 0;
         recordingLength = 0;
-        console.log("SoundRecorder.resetBuffers(): ...Finished!");
+        // console.log("SoundRecorder.resetBuffers(): ...Finished!");
     };
 }
 

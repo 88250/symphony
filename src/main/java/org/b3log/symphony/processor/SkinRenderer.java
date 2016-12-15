@@ -19,9 +19,6 @@ package org.b3log.symphony.processor;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import java.io.IOException;
-import java.util.TimeZone;
-import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -34,11 +31,15 @@ import org.b3log.symphony.util.Skins;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.TimeZone;
+
 /**
  * Skin user-switchable FreeMarker Renderer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Oct 26, 2016
+ * @version 1.2.0.0, Dec 10, 2016
  * @since 1.3.0
  */
 public final class SkinRenderer extends AbstractFreeMarkerRenderer {
@@ -63,14 +64,16 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     }
 
     /**
-     * Gets a template with the specified template directory name and template name.
+     * Gets a templat with the specified template directory name, template name, search engine bot flag and user.
      *
-     * @param templateDirName the specified template directory name
-     * @param templateName the specified template name
-     * @return template
+     * @param templateDirName  the specified template directory name
+     * @param templateName     the specified template name
+     * @param isSearchEnginBot the specified search engine bot flag
+     * @param user             the specified user
+     * @return
      */
-    @Override
-    protected Template getTemplate(final String templateDirName, final String templateName) {
+    public static Template getTemplate(final String templateDirName, final String templateName,
+                                       final boolean isSearchEnginBot, final JSONObject user) {
         Configuration cfg = Skins.TEMPLATE_HOLDER.get(templateDirName);
 
         try {
@@ -82,13 +85,12 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
 
             final Template ret = cfg.getTemplate(templateName);
 
-            if ((Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
+            if (isSearchEnginBot) {
                 return ret;
             }
 
             ret.setLocale(Locales.getLocale());
 
-            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
             if (null != user) {
                 ret.setTimeZone(TimeZone.getTimeZone(user.optString(UserExt.USER_TIMEZONE)));
             } else {
@@ -101,6 +103,21 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
 
             return null;
         }
+    }
+
+    /**
+     * Gets a template with the specified template directory name and template name.
+     *
+     * @param templateDirName the specified template directory name
+     * @param templateName    the specified template name
+     * @return template
+     */
+    @Override
+    protected Template getTemplate(final String templateDirName, final String templateName) {
+        final boolean isSearchEngineBot = (Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+
+        return getTemplate(templateDirName, templateName, isSearchEngineBot, user);
     }
 
     @Override

@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.37.25, Nov 25, 2016
+ * @version 1.25.39.25, Dec 10, 2016
  */
 
 /**
@@ -494,6 +494,7 @@ var Comment = {
             },
             success: function (result, textStatus) {
                 if (result.sc) {
+                    $(it).removeAttr('onclick');
                     var $heart = $("<i class='icon-heart ft-red'></i>"),
                             y = $(it).offset().top,
                             x = $(it).offset().left;
@@ -729,6 +730,14 @@ var Comment = {
             Util.needLogin();
             return false;
         }
+
+        $.ua.set(navigator.userAgent);
+        if ($.ua.device.type === 'mobile') {
+            $('#replyUseName').data('commentOriginalCommentId', id);
+            Comment.editor.focus();
+            return false;
+        }
+
         $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
 
         // 如果 hide 初始化， focus 无效

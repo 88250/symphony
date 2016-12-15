@@ -73,7 +73,9 @@
                                 <a href="${servePath}/admin/tags"<#if type == "tags" || type == "addTag"> class="current"</#if>>${tagAdminLabel}</a>
                                 <a href="${servePath}/admin/reserved-words"<#if type == "reservedWords" || type == "addReservedWord"> class="current"</#if>>${reservedWordAdminLabel}</a>
                                 <a href="${servePath}/admin/invitecodes"<#if type == "invitecodes"> class="current"</#if>>${invitecodeAdminLabel}</a>
+                                <#if permissions["adUpdateADSide"].permissionGrant>
                                 <a href="${servePath}/admin/ad"<#if type == "ad"> class="current"</#if>>${adAdminLabel}</a>
+                                </#if>
                                 <a href="${servePath}/admin/roles"<#if type == "roles"> class="current"</#if>>${rolesAdminLabel}</a>
                                 <a href="${servePath}/admin/misc"<#if type == "misc"> class="current"</#if>>${miscAdminLabel}</a>
                             </nav>

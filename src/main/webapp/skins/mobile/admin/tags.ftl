@@ -2,7 +2,6 @@
 <#include "../macro-pagination.ftl">
 <@admin "tags">
 <div class="list content admin">
-    <div class="fn-hr10"></div>
     <form method="GET" action="tags" class="form wrapper">
         <input name="title" type="text" placeholder="${tagLabel}"/>
         <button type="submit" class="green">${searchLabel}</button>

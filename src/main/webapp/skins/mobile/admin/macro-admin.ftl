@@ -48,6 +48,9 @@
         <#if type == "misc">
         <@head title="${miscAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "roles">
+            <@head title="${rolesAdminLabel} - ${symphonyLabel}"></@head>
+        </#if>
     </head>
     <body>
         <#include "../header.ftl">
@@ -73,6 +76,8 @@
                     ${invitecodeAdminLabel}
                     <#elseif type == "ad">
                     ${adAdminLabel}
+                    <#elseif type == "roles">
+                    ${rolesAdminLabel}
                     <#elseif type == "misc">
                     ${miscAdminLabel}
                     </#if>
@@ -88,10 +93,14 @@
                     <li<#if type == "tags" || type == "addTag"> class="current"</#if>><a href="${servePath}/admin/tags">${tagAdminLabel}</a></li>
                     <li<#if type == "reservedWords" || type == "addReservedWord"> class="fn-none"</#if>><a href="${servePath}/admin/reserved-words">${reservedWordAdminLabel}</a></li>
                     <li<#if type == "invitecodes"> class="current"</#if>><a href="${servePath}/admin/invitecodes">${invitecodeAdminLabel}</a></li>
-                    <li<#if type == "ad"> class="current"</#if>><a href="${servePath}/admin/ad">${adAdminLabel}</a></li>
+                    <#if permissions["adUpdateADSide"].permissionGrant>
+                        <li<#if type == "ad"> class="current"</#if>><a href="${servePath}/admin/ad">${adAdminLabel}</a></li>
+                    </#if>
+                    <li<#if type == "roles"> class="fn-none"</#if>><a href="${servePath}/admin/roles">${rolesAdminLabel}</a></li>
                     <li<#if type == "misc"> class="fn-none"</#if>><a href="${servePath}/admin/misc">${miscAdminLabel}</a></li>
                 </ul>
             </div>
+            <div class="fn-hr10"></div>
             <#nested>
         </div>
         <#include "../footer.ftl">

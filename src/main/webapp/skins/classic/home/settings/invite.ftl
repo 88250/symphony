@@ -1,35 +1,39 @@
 <#include "macro-settings.ftl">
 <@home "invite">
-<div class="module">
-    <div class="module-header">
-        <h2>${inviteTipLabel}</h2>
-    </div>
-    <div class="module-panel form">
-        <br/>
-        <input readonly="readonly" type="text" value="${serverScheme}://${serverHost}/register?r=${currentUser.userName}" onclick="this.select()"/>
-        <button class="red btn" id="shareClipboard"
-                data-clipboard-text="${serverScheme}://${serverHost}/register?r=${currentUser.userName}">${copyLabel}</button>
-    </div>
-</div>
+    <#if permissions["commonUseIL"].permissionGrant>
+        <div class="module">
+            <div class="module-header">
+                <h2>${inviteTipLabel}</h2>
+            </div>
+            <div class="module-panel form">
+                <br/>
+                <input readonly="readonly" type="text" value="${serverScheme}://${serverHost}/register?r=${currentUser.userName}" onclick="this.select()"/>
+                <button class="red btn" id="shareClipboard"
+                        data-clipboard-text="${serverScheme}://${serverHost}/register?r=${currentUser.userName}">${copyLabel}</button>
+            </div>
+        </div>
+    </#if>
 <#if "2" == allowRegister>
-<div class="module">
-    <div class="module-header">
-        <h2>${buyInvitecodeLabel}</h2>
-    </div>
-    <div class="module-panel form">
-        <div id="pointBuyInvitecodeTip" class="tip"></div> <br/>
-        <div class="fn-clear">
-            <button class="red fn-right" onclick="Settings.pointBuyInvitecode('${csrfToken}')">${confirmExchangeLabel}</button>
+    <#if permissions["commonExchangeIC"].permissionGrant>
+        <div class="module">
+            <div class="module-header">
+                <h2>${buyInvitecodeLabel}</h2>
+            </div>
+            <div class="module-panel form">
+                <div id="pointBuyInvitecodeTip" class="tip"></div> <br/>
+                <div class="fn-clear">
+                    <button class="red fn-right" onclick="Settings.pointBuyInvitecode('${csrfToken}')">${confirmExchangeLabel}</button>
+                </div>
+                <div class="list content-reset">
+                    <ul>
+                        <#list invitecodes as invitecode>
+                        <li><code>${invitecode.code}</code> ${invitecode.memo}</li>
+                        </#list>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="list content-reset">
-            <ul>
-                <#list invitecodes as invitecode>
-                <li><code>${invitecode.code}</code> ${invitecode.memo}</li>
-                </#list>
-            </ul>
-        </div>
-    </div>
-</div>
+    </#if>
 <div class="module">
     <div class="module-header">
         <h2>${queryInvitecodeStateLabel}</h2> 
