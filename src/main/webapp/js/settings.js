@@ -444,7 +444,7 @@ var Settings = {
                         $('#userTagsDom').text(requestJSONObject.userTags);
                         $('#userURLDom').text(requestJSONObject.userURL).attr('href', requestJSONObject.userURL);
                         $('#userIntroDom').text(requestJSONObject.userIntro);
-                        
+
                         return;
                     }
 
@@ -651,7 +651,6 @@ $("#emojiGrid img").click(function () {
     if ($("#emotionList").val().indexOf(emoji) !== -1) {
         return;
     }
-
     if ($("#emotionList").val() !== "") {
         $("#emotionList").val($("#emotionList").val() + "," + emoji);
     } else {

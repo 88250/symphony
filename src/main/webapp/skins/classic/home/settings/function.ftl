@@ -56,7 +56,7 @@
             <tr>
                 <#list shortlist as emoji>
                     <#if emoji != "endOfEmoji">
-                        <td><img alt="${emoji}" src="${servePath}/emoji/graphics/emojis/${emoji}.png"></td>
+                        <td><img alt="${emoji}" src="${servePath}/emoji/graphics/${emoji}.png"></td>
                     <#else>
                         <td colspan="2"><a href="${servePath}/emoji/index.html">${moreLabel}</a></td>
                     </#if>
