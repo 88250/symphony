@@ -23,10 +23,12 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.UserExt;
@@ -44,7 +46,7 @@ import java.util.*;
  * Role query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.0, Dec 11, 2016
+ * @version 1.4.0.1, Dec 16, 2016
  * @since 1.8.0
  */
 @Service
@@ -80,14 +82,35 @@ public class RoleQueryService {
     private UserRepository userRepository;
 
     /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
      * Gets an role specified by the given role id.
      *
      * @param roleId the given role id
      * @return an role, returns {@code null} if not found
      */
     public JSONObject getRole(final String roleId) {
+        if (UserExt.DEFAULT_CMTER_ROLE.equals(roleId)) { // virtual role
+            final JSONObject ret = new JSONObject();
+
+            ret.put(Role.ROLE_NAME, langPropsService.get(UserExt.DEFAULT_CMTER_ROLE+ "NameLabel"));
+            ret.put(Role.ROLE_DESCRIPTION, langPropsService.get(UserExt.DEFAULT_CMTER_ROLE + "DescLabel"));
+
+            return ret;
+        }
+
         try {
-            return roleRepository.get(roleId);
+            final JSONObject ret = roleRepository.get(roleId);
+
+            if (!Strings.isNumeric(roleId)) {
+                ret.put(Role.ROLE_NAME, langPropsService.get(roleId + "NameLabel"));
+            }
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets role failed", e);
 
@@ -315,8 +338,30 @@ public class RoleQueryService {
 
                 final Query userCountQuery = new Query().
                         setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, roleId));
-                final int count = (int)userRepository.count(userCountQuery);
+                final int count = (int) userRepository.count(userCountQuery);
                 role.put(Role.ROLE_T_USER_COUNT, count);
+
+                // fill description
+                if (Strings.isNumeric(roleId)) {
+                    continue;
+                }
+
+                String roleName = role.optString(Role.ROLE_NAME);
+                try {
+                    roleName = langPropsService.get(roleId + "NameLabel");
+                } catch (final Exception e) {
+                    // ignored
+                }
+
+                String roleDesc = role.optString(Role.ROLE_DESCRIPTION);
+                try {
+                    roleDesc = langPropsService.get(roleId + "DescLabel");
+                } catch (final Exception e) {
+                    // ignored
+                }
+
+                role.put(Role.ROLE_NAME, roleName);
+                role.put(Role.ROLE_DESCRIPTION, roleDesc);
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets role permissions failed", e);

@@ -328,6 +328,61 @@ public final class Permission {
      */
     public static final String PERMISSION_ID_C_MISC_LANGUAGE = "miscLanguage";
 
+    /**
+     * Id - menu - admin.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN = "menuAdmin";
+
+    /**
+     * Id - menu - admin - users.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_USERS = "menuAdminUsers";
+
+    /**
+     * Id - menu - admin - articles.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_ARTICLES = "menuAdminArticles";
+
+    /**
+     * Id - menu - admin - comments.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_COMMENTS = "menuAdminComments";
+
+    /**
+     * Id - menu - admin - domains.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_DOMAINS = "menuAdminDomains";
+
+    /**
+     * Id - menu - admin - tags.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_TAGS = "menuAdminTags";
+
+    /**
+     * Id - menu - admin - reserved words.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_RWS = "menuAdminRWs";
+
+    /**
+     * Id - menu - admin - invitecodes.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_ICS = "menuAdminIcs";
+
+    /**
+     * Id - menu - admin - ad.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_AD = "menuAdminAD";
+
+    /**
+     * Id - menu - admin - roles.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_ROLES = "menuAdminRoles";
+
+    /**
+     * Id - menu - admin - misc.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_MISC = "menuAdminMisc";
+
     // Category constants
     /**
      * Category - common function.
@@ -378,6 +433,11 @@ public final class Permission {
      * Category - misc management.
      */
     public static final int PERMISSION_CATEGORY_C_MISC = 9;
+
+    /**
+     * Category - menu.
+     */
+    public static final int PERMISSION_CATEGORY_C_MENU = 10;
 
 
     /**

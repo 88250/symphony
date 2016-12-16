@@ -17,18 +17,6 @@
  */
 package org.b3log.symphony.service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -36,19 +24,13 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.CompositeFilter;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.Filter;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.FollowRepository;
 import org.b3log.symphony.repository.PointtransferRepository;
@@ -59,6 +41,12 @@ import org.b3log.symphony.util.Times;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.*;
 
 /**
  * User query service.
@@ -75,35 +63,35 @@ public class UserQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserQueryService.class.getName());
-
+    /**
+     * All usernames.
+     */
+    private final List<JSONObject> userNames = Collections.synchronizedList(new ArrayList<JSONObject>());
     /**
      * User repository.
      */
     @Inject
     private UserRepository userRepository;
-
     /**
      * Follow repository.
      */
     @Inject
     private FollowRepository followRepository;
-
     /**
      * Avatar query service.
      */
     @Inject
     private AvatarQueryService avatarQueryService;
-
     /**
      * Pointtransfer repository.
      */
     @Inject
     private PointtransferRepository pointtransferRepository;
-
     /**
-     * All usernames.
+     * Role query service.
      */
-    private final List<JSONObject> userNames = Collections.synchronizedList(new ArrayList<JSONObject>());
+    @Inject
+    private RoleQueryService roleQueryService;
 
     /**
      * Gets invite user count of a user specified by the given user id.
@@ -133,10 +121,10 @@ public class UserQueryService {
     /**
      * Gets latest logged in users by the specified time.
      *
-     * @param time the specified start time
+     * @param time           the specified start time
      * @param currentPageNum the specified current page number
-     * @param pageSize the specified page size
-     * @param windowSize the specified window size
+     * @param pageSize       the specified page size
+     * @param windowSize     the specified window size
      * @return for example,      <pre>
      * {
      *     "pagination": {
@@ -153,12 +141,11 @@ public class UserQueryService {
      *      }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      * @see Pagination
      */
     public JSONObject getLatestLoggedInUsers(final long time, final int currentPageNum, final int pageSize,
-            final int windowSize) throws ServiceException {
+                                             final int windowSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
 
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
@@ -423,7 +410,7 @@ public class UserQueryService {
 
     /**
      * Gets user names from the specified text.
-     *
+     * <p>
      * <p>
      * A user name is between &#64; and a punctuation, a blank or a line break (\n). For example, the specified text is
      * <pre>&#64;88250 It is a nice day. &#64;Vanessa, we are on the way.</pre> There are two user names in the text,
@@ -518,14 +505,13 @@ public class UserQueryService {
      * Gets users by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userNameOrEmail": "", // optional
-     *     "paginationCurrentPageNum": 1,
-     *     "paginationPageSize": 20,
-     *     "paginationWindowSize": 10,
-     * }, see {@link Pagination} for more details
-     * </pre>
-     *
+     *                          {
+     *                              "userNameOrEmail": "", // optional
+     *                              "paginationCurrentPageNum": 1,
+     *                              "paginationPageSize": 20,
+     *                              "paginationWindowSize": 10,
+     *                          }, see {@link Pagination} for more details
+     *                          </pre>
      * @return for example,      <pre>
      * {
      *     "pagination": {
@@ -542,7 +528,6 @@ public class UserQueryService {
      *      }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      * @see Pagination
      */
@@ -590,6 +575,9 @@ public class UserQueryService {
             user.put(UserExt.USER_T_CREATE_TIME, new Date(user.optLong(Keys.OBJECT_ID)));
 
             avatarQueryService.fillUserAvatarURL(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, user);
+
+            final JSONObject role = roleQueryService.getRole(user.optString(User.USER_ROLE));
+            user.put(Role.ROLE_NAME, role.optString(Role.ROLE_NAME));
         }
 
         return ret;
@@ -599,15 +587,14 @@ public class UserQueryService {
      * Gets users by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userCity": "",
-     *     "userLatestLoginTime": long, // optional, default to 0
-     *     "paginationCurrentPageNum": 1,
-     *     "paginationPageSize": 20,
-     *     "paginationWindowSize": 10,
-     * }, see {@link Pagination} for more details
-     * </pre>
-     *
+     *                          {
+     *                              "userCity": "",
+     *                              "userLatestLoginTime": long, // optional, default to 0
+     *                              "paginationCurrentPageNum": 1,
+     *                              "paginationPageSize": 20,
+     *                              "paginationWindowSize": 10,
+     *                          }, see {@link Pagination} for more details
+     *                          </pre>
      * @return for example,      <pre>
      * {
      *     "pagination": {
@@ -624,7 +611,6 @@ public class UserQueryService {
      *      }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      * @see Pagination
      */
@@ -688,7 +674,6 @@ public class UserQueryService {
      *     ....
      * }
      * </pre>, returns {@code null} if not found
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getUser(final String userId) throws ServiceException {
