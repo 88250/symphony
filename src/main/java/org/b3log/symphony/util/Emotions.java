@@ -153,7 +153,6 @@ public final class Emotions {
             "-1",
             "100",
             "1234",
-            "263a",
             "8ball",
             "a",
             "ab",
