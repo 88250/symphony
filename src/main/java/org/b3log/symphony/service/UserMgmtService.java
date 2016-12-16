@@ -19,24 +19,6 @@ package org.b3log.symphony.service;
 
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.UUID;
-import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -45,14 +27,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.CompositeFilter;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.Filter;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -61,21 +36,8 @@ import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.Option;
-import org.b3log.symphony.model.Pointtransfer;
-import org.b3log.symphony.model.Role;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.repository.ArticleRepository;
-import org.b3log.symphony.repository.CommentRepository;
-import org.b3log.symphony.repository.OptionRepository;
-import org.b3log.symphony.repository.TagRepository;
-import org.b3log.symphony.repository.UserRepository;
-import org.b3log.symphony.repository.UserTagRepository;
+import org.b3log.symphony.model.*;
+import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Crypts;
 import org.b3log.symphony.util.Geos;
 import org.b3log.symphony.util.Sessions;
@@ -83,12 +45,23 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.regex.Pattern;
+
 /**
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.14.19.18, Nov 1, 2016
+ * @version 1.14.19.19, Dec 16, 2016
  * @since 0.2.0
  */
 @Service
@@ -162,7 +135,7 @@ public class UserMgmtService {
     /**
      * Tries to login with cookie.
      *
-     * @param request the specified request
+     * @param request  the specified request
      * @param response the specified response
      * @return returns {@code true} if logged in, returns {@code false} otherwise
      */
@@ -232,8 +205,8 @@ public class UserMgmtService {
     /**
      * Updates a user's online status and saves the login time and IP.
      *
-     * @param userId the specified user id
-     * @param ip the specified IP, could be "" if the {@code onlineFlag} is {@code false}
+     * @param userId     the specified user id
+     * @param ip         the specified IP, could be "" if the {@code onlineFlag} is {@code false}
      * @param onlineFlag the specified online flag
      * @throws ServiceException service exception
      */
@@ -284,20 +257,16 @@ public class UserMgmtService {
     /**
      * Updates a user's profiles by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object (user), for example,      <pre>
-     * {
-     *     "oId": "",
-     *     "userNickname": "",
-     *     "userTags": "",
-     *     "userURL": "",
-     *     "userQQ": "",
-     *     "userIntro": "",
-     *     "userAvatarType": int,
-     *     "userAvatarURL": "",
-     *     "userCommentViewMode": int
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object (user), for example,
+     *                          "oId": "",
+     *                          "userNickname": "",
+     *                          "userTags": "",
+     *                          "userURL": "",
+     *                          "userQQ": "",
+     *                          "userIntro": "",
+     *                          "userAvatarType": int,
+     *                          "userAvatarURL": "",
+     *                          "userCommentViewMode": int
      * @throws ServiceException service exception
      */
     public void updateProfiles(final JSONObject requestJSONObject) throws ServiceException {
@@ -344,17 +313,13 @@ public class UserMgmtService {
     /**
      * Updates a user's sync B3log settings by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object (user), for example,      <pre>
-     * {
-     *     "oId": "",
-     *     "userB3Key": "",
-     *     "userB3ClientAddArticleURL": "",
-     *     "userB3ClientUpdateArticleURL": "",
-     *     "userB3ClientAddCommentURL": "",
-     *     "syncWithSymphonyClient": boolean // optional, default to false
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object (user), for example,
+     *                          "oId": "",
+     *                          "userB3Key": "",
+     *                          "userB3ClientAddArticleURL": "",
+     *                          "userB3ClientUpdateArticleURL": "",
+     *                          "userB3ClientAddCommentURL": "",
+     *                          "syncWithSymphonyClient": boolean // optional, default to false
      * @throws ServiceException service exception
      */
     public void updateSyncB3(final JSONObject requestJSONObject) throws ServiceException {
@@ -390,13 +355,9 @@ public class UserMgmtService {
     /**
      * Updates a user's password by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object (user), for example,      <pre>
-     * {
-     *     "oId": "",
-     *     "userPassword": "", // Hashed
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object (user), for example,
+     *                          "oId": "",
+     *                          "userPassword": "", // Hashed
      * @throws ServiceException service exception
      */
     public void updatePassword(final JSONObject requestJSONObject) throws ServiceException {
@@ -428,18 +389,15 @@ public class UserMgmtService {
     /**
      * Adds a user with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userName": "",
-     *     "userEmail": "",
-     *     "userPassword": "", // Hashed
-     *     "userLanguage": "",
-     *     "userAppRole": int, // optional, default to 0
-     *     "userRole": "", // optional, uses {@value Role#DEFAULT_ROLE} instead if not specified
-     *     "userStatus": int, // optional, uses {@value UserExt#USER_STATUS_C_NOT_VERIFIED} instead if not specified
-     * }
-     * </pre>,see {@link User} for more details
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userName": "",
+     *                          "userEmail": "",
+     *                          "userPassword": "", // Hashed
+     *                          "userLanguage": "",
+     *                          "userAppRole": int, // optional, default to 0
+     *                          "userRole": "", // optional, uses {@value Role#ROLE_ID_C_DEFAULT} instead if not specified
+     *                          "userStatus": int, // optional, uses {@value UserExt#USER_STATUS_C_NOT_VERIFIED} instead if not specified
+     *                          ,see {@link User} for more details
      * @return generated user id
      * @throws ServiceException if user name or email duplicated, or repository exception
      */
@@ -556,14 +514,17 @@ public class UserMgmtService {
 
             if (toUpdate) {
                 user.put(UserExt.USER_NO, userNo);
-                if (Symphonys.getBoolean("qiniu.enabled")) {
-                    user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
-                            + new Date().getTime());
-                } else {
-                    user.put(UserExt.USER_AVATAR_URL, avatarURL + "?" + new Date().getTime());
-                }
 
-                userRepository.update(ret, user);
+                if (!Symphonys.get("defaultThumbnailURL").equals(avatarURL)) { // generate/upload avatar succ
+                    if (Symphonys.getBoolean("qiniu.enabled")) {
+                        user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
+                                + new Date().getTime());
+                    } else {
+                        user.put(UserExt.USER_AVATAR_URL, avatarURL + "?" + new Date().getTime());
+                    }
+
+                    userRepository.update(ret, user);
+                }
             } else {
                 ret = Ids.genTimeMillisId();
                 user.put(Keys.OBJECT_ID, ret);
@@ -594,7 +555,7 @@ public class UserMgmtService {
                         user.put(UserExt.USER_AVATAR_URL, Latkes.getServePath() + "/upload/" + fileName);
                     }
                 } catch (final IOException e) {
-                    LOGGER.log(Level.ERROR, "Generates avatar error", e);
+                    LOGGER.log(Level.ERROR, "Generates avatar error, using default thumbnail instead", e);
 
                     user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
                 }
@@ -692,7 +653,7 @@ public class UserMgmtService {
      * Updates the specified user by the given user id.
      *
      * @param userId the given user id
-     * @param user the specified user
+     * @param user   the specified user
      * @throws ServiceException service exception
      */
     public void updateUser(final String userId, final JSONObject user) throws ServiceException {
@@ -716,7 +677,7 @@ public class UserMgmtService {
      * Updates the specified user's email by the given user id.
      *
      * @param userId the given user id
-     * @param user the specified user, contains the new email
+     * @param user   the specified user, contains the new email
      * @throws ServiceException service exception
      */
     public void updateUserEmail(final String userId, final JSONObject user) throws ServiceException {
@@ -769,7 +730,7 @@ public class UserMgmtService {
      * Updates the specified user's username by the given user id.
      *
      * @param userId the given user id
-     * @param user the specified user, contains the new username
+     * @param user   the specified user, contains the new username
      * @throws ServiceException service exception
      */
     public void updateUserName(final String userId, final JSONObject user) throws ServiceException {
@@ -907,8 +868,7 @@ public class UserMgmtService {
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in user[name={2}]",
-                        new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
-                            user.optString(User.USER_NAME)});
+                        tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID), user.optString(User.USER_NAME));
 
                 tagTitleStr = tagTitleStr.replaceAll("(?i)" + Pattern.quote(tagTitle), tag.optString(Tag.TAG_TITLE));
             }
