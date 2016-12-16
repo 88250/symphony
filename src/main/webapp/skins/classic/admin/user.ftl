@@ -211,8 +211,9 @@
 
                 <label>${roleLabel}</label>
                 <select id="userRole" name="userRole">
-                    <option value="adminRole"<#if "adminRole" == user.userRole> selected</#if>>${administratorLabel}</option>
-                    <option value="defaultRole"<#if "defaultRole" == user.userRole> selected</#if>>${defaultUserLabel}</option>
+                    <#list roles as role>
+                        <option value=${role.oId}<#if role.oId == user.userRole> selected</#if>>${role.roleName}</option>
+                    </#list>
                 </select>
 
                 <label>${appRoleLabel}</label>

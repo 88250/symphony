@@ -58,46 +58,76 @@
             <div class="tab-current fn-clear">
                 <div class="fn-hr5"></div>
                 <div onclick="$(this).next().next().slideToggle()">
-                    <#if type == "index">
+                    <#if type == "index" && permissions["menuAdmin"].permissionGrant>
                     ${consoleIndexLabel}
-                    <#elseif type == "users" || type == "addUser">
+                    </#if>
+                    <#if (type == "users" || type == "addUser") && permissions["menuAdminUsers"].permissionGrant>
                     ${userAdminLabel}
-                    <#elseif type == "articles" || type == "addArticle">
+                    </#if>
+                    <#if (type == "articles" || type == "addArticle") && permissions["menuAdminArticles"].permissionGrant>
                     ${articleAdminLabel}
-                    <#elseif type == "comments">
+                    </#if>
+                    <#if type == "comments" && permissions["menuAdminComments"].permissionGrant>
                     ${commentAdminLabel}
-                    <#elseif type == "domains" || type == "addDomain">
+                    </#if>
+                    <#if (type == "domains" || type == "addDomain") && permissions["menuAdminDomains"].permissionGrant>
                     ${domainAdminLabel}
-                    <#elseif type == "tags" || type == "addTag">
+                    </#if>
+                    <#if (type == "tags" || type == "addTag") && permissions["menuAdminTags"].permissionGrant>
                     ${tagAdminLabel}
-                    <#elseif type == "reservedWords" || type == "addReservedWord">
+                    </#if>
+                    <#if (type == "reservedWords" || type == "addReservedWord") && permissions["menuAdminRWs"].permissionGrant>
                     ${reservedWordAdminLabel}
-                    <#elseif type == "invitecodes">
+                    </#if>
+                    <#if type == "invitecodes" && permissions["menuAdminIcs"].permissionGrant>
                     ${invitecodeAdminLabel}
-                    <#elseif type == "ad">
+                    </#if>
+                    <#if type == "ad" && permissions["menuAdminAD"].permissionGrant>
                     ${adAdminLabel}
-                    <#elseif type == "roles">
+                    </#if>
+                    <#if type == "roles" && permissions["menuAdminRoles"].permissionGrant>
                     ${rolesAdminLabel}
-                    <#elseif type == "misc">
+                    </#if>
+                    <#if type == "misc"  && permissions["menuAdminMisc"].permissionGrant>
                     ${miscAdminLabel}
                     </#if>
                     <span class="icon-chevron-down fn-right"></span>
                 </div>
                 <div class="fn-hr5"></div>
                 <ul class="tab fn-clear fn-none">
+                    <#if permissions["menuAdmin"].permissionGrant>
                     <li<#if type == "index"> class="fn-none"</#if>><a href="${servePath}/admin">${consoleIndexLabel}</a></li>
-                    <li<#if type == "users" || type == "addUser"> class="fn-none"</#if>><a href="${servePath}/admin/users">${userAdminLabel}</a></li>
-                    <li<#if type == "articles" || type == "addArticle"> class="fn-none"</#if>><a href="${servePath}/admin/articles">${articleAdminLabel}</a></li>
-                    <li<#if type == "comments"> class="fn-none"</#if>><a href="${servePath}/admin/comments">${commentAdminLabel}</a></li>
-                    <li<#if type == "domains" || type == "addDomain"> class="fn-none"</#if>><a href="${servePath}/admin/domains">${domainAdminLabel}</a></li>
-                    <li<#if type == "tags" || type == "addTag"> class="current"</#if>><a href="${servePath}/admin/tags">${tagAdminLabel}</a></li>
-                    <li<#if type == "reservedWords" || type == "addReservedWord"> class="fn-none"</#if>><a href="${servePath}/admin/reserved-words">${reservedWordAdminLabel}</a></li>
-                    <li<#if type == "invitecodes"> class="current"</#if>><a href="${servePath}/admin/invitecodes">${invitecodeAdminLabel}</a></li>
-                    <#if permissions["adUpdateADSide"].permissionGrant>
-                        <li<#if type == "ad"> class="current"</#if>><a href="${servePath}/admin/ad">${adAdminLabel}</a></li>
                     </#if>
+                    <#if permissions["menuAdminUsers"].permissionGrant>
+                    <li<#if type == "users" || type == "addUser"> class="fn-none"</#if>><a href="${servePath}/admin/users">${userAdminLabel}</a></li>
+                    </#if>
+                    <#if permissions["menuAdminArticles"].permissionGrant>
+                    <li<#if type == "articles" || type == "addArticle"> class="fn-none"</#if>><a href="${servePath}/admin/articles">${articleAdminLabel}</a></li>
+                    </#if>
+                    <#if permissions["menuAdminComments"].permissionGrant>
+                    <li<#if type == "comments"> class="fn-none"</#if>><a href="${servePath}/admin/comments">${commentAdminLabel}</a></li>
+                    </#if>
+                    <#if permissions["menuAdminDomains"].permissionGrant>
+                    <li<#if type == "domains" || type == "addDomain"> class="fn-none"</#if>><a href="${servePath}/admin/domains">${domainAdminLabel}</a></li>
+                    </#if>
+                    <#if permissions["menuAdminTags"].permissionGrant>
+                    <li<#if type == "tags" || type == "addTag"> class="current"</#if>><a href="${servePath}/admin/tags">${tagAdminLabel}</a></li>
+                    </#if>
+                    <#if permissions["menuAdminRWs"].permissionGrant>
+                    <li<#if type == "reservedWords" || type == "addReservedWord"> class="fn-none"</#if>><a href="${servePath}/admin/reserved-words">${reservedWordAdminLabel}</a></li>
+                    </#if>
+                    <#if permissions["menuAdminIcs"].permissionGrant>
+                    <li<#if type == "invitecodes"> class="current"</#if>><a href="${servePath}/admin/invitecodes">${invitecodeAdminLabel}</a></li>
+                    </#if>
+                    <#if permissions["menuAdminAD"].permissionGrant>
+                    <li<#if type == "ad"> class="current"</#if>><a href="${servePath}/admin/ad">${adAdminLabel}</a></li>
+                    </#if>
+                    <#if permissions["menuAdminRoles"].permissionGrant>
                     <li<#if type == "roles"> class="fn-none"</#if>><a href="${servePath}/admin/roles">${rolesAdminLabel}</a></li>
+                    </#if>
+                    <#if permissions["menuAdminMisc"].permissionGrant>
                     <li<#if type == "misc"> class="fn-none"</#if>><a href="${servePath}/admin/misc">${miscAdminLabel}</a></li>
+                    </#if>
                 </ul>
             </div>
             <div class="fn-hr10"></div>
