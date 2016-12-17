@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.7.18, Dec 11, 2016
+ * @version 1.5.8.18, Dec 17, 2016
  */
 
 @import "variables";
@@ -2706,6 +2706,10 @@ code .dec { color: initial; } /* decimal - blue */
 
 .tab-current > span {
     color: #767676;
+}
+
+.tab {
+    list-style: none;
 }
 
 .tab > li a {

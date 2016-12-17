@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.15.12, Dec 9, 2016
+ * @version 2.19.15.12, Dec 17, 2016
  */
 
 /**
@@ -524,7 +524,7 @@ var AddArticle = {
             afterKeyup: function (event) {
                 $('.post .domains-tags').hide();
                 // 遇到分词符号自动添加标签
-                if (event.key === ',' || event.key === '，' ||
+                if (event.key === ' ' || event.key === ' ' || event.key === ',' || event.key === '，' ||
                         event.key === '、' || event.key === '；' || event.key === ';') {
                     var text = $("#articleTags").val();
                     addTag(text.substr(0, text.length - 1));
