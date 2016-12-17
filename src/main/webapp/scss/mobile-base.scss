@@ -277,11 +277,13 @@ blockquote {
     h1 {
         padding-bottom: 0.3em;
         font-size: 2em;
+        border-bottom: 1px solid #eee;
     }
 
     h2 {
         padding-bottom: 0.3em;
         font-size: 1.5em;
+        border-bottom: 1px solid #eee;
     }
 
     h3 {
@@ -298,6 +300,14 @@ blockquote {
 
     h6 {
         font-size: 0.85em;
+    }
+
+    hr {
+        height: 0.25em;
+        padding: 0;
+        margin: 24px 0;
+        background-color: #e7e7e7;
+        border: 0;
     }
 
     p {

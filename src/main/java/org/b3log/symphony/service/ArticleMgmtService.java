@@ -17,15 +17,6 @@
  */
 package org.b3log.symphony.service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import javax.inject.Inject;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -35,39 +26,15 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Follow;
-import org.b3log.symphony.model.Liveness;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.Option;
-import org.b3log.symphony.model.Pointtransfer;
-import org.b3log.symphony.model.Revision;
-import org.b3log.symphony.model.Reward;
-import org.b3log.symphony.model.Role;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.repository.ArticleRepository;
-import org.b3log.symphony.repository.CommentRepository;
-import org.b3log.symphony.repository.NotificationRepository;
-import org.b3log.symphony.repository.OptionRepository;
-import org.b3log.symphony.repository.RevisionRepository;
-import org.b3log.symphony.repository.TagArticleRepository;
-import org.b3log.symphony.repository.TagRepository;
-import org.b3log.symphony.repository.UserRepository;
-import org.b3log.symphony.repository.UserTagRepository;
+import org.b3log.symphony.model.*;
+import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Pangu;
 import org.b3log.symphony.util.Symphonys;
@@ -76,12 +43,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
+import javax.inject.Inject;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.*;
+
 /**
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.14.27.30, Nov 27, 2016
+ * @version 2.14.27.31, Dec 17, 2016
  * @since 0.2.0
  */
 @Service
@@ -91,121 +63,105 @@ public class ArticleMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleMgmtService.class.getName());
-
+    /**
+     * Tag max count.
+     */
+    private static final int TAG_MAX_CNT = 4;
     /**
      * Comment repository.
      */
     @Inject
     private CommentRepository commentRepository;
-
     /**
      * Article repository.
      */
     @Inject
     private ArticleRepository articleRepository;
-
     /**
      * Tag repository.
      */
     @Inject
     private TagRepository tagRepository;
-
     /**
      * Tag-Article repository.
      */
     @Inject
     private TagArticleRepository tagArticleRepository;
-
     /**
      * User repository.
      */
     @Inject
     private UserRepository userRepository;
-
     /**
      * User-Tag repository.
      */
     @Inject
     private UserTagRepository userTagRepository;
-
     /**
      * Option repository.
      */
     @Inject
     private OptionRepository optionRepository;
-
     /**
      * Notification repository.
      */
     @Inject
     private NotificationRepository notificationRepository;
-
     /**
      * Revision repository.
      */
     @Inject
     private RevisionRepository revisionRepository;
-
     /**
      * Tag management service.
      */
     @Inject
     private TagMgmtService tagMgmtService;
-
     /**
      * Event manager.
      */
     @Inject
     private EventManager eventManager;
-
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
-
     /**
      * Pointtransfer management service.
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
-
     /**
      * Reward management service.
      */
     @Inject
     private RewardMgmtService rewardMgmtService;
-
     /**
      * Reward query service.
      */
     @Inject
     private RewardQueryService rewardQueryService;
-
     /**
      * Follow query service.
      */
     @Inject
     private FollowQueryService followQueryService;
-
     /**
      * Tag query service.
      */
     @Inject
     private TagQueryService tagQueryService;
-
     /**
      * Notification management service.
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
-
     /**
      * Liveness management service.
      */
     @Inject
     private LivenessMgmtService livenessMgmtService;
-
     /**
      * Search management service.
      */
@@ -213,9 +169,22 @@ public class ArticleMgmtService {
     private SearchMgmtService searchMgmtService;
 
     /**
-     * Tag max count.
+     * Determines whether the specified tag title exists in the specified tags.
+     *
+     * @param tagTitle the specified tag title
+     * @param tags     the specified tags
+     * @return {@code true} if it exists, {@code false} otherwise
+     * @throws JSONException json exception
      */
-    private static final int TAG_MAX_CNT = 4;
+    private static boolean tagExists(final String tagTitle, final List<JSONObject> tags) throws JSONException {
+        for (final JSONObject tag : tags) {
+            if (tag.getString(Tag.TAG_TITLE).equals(tagTitle)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * Removes an article specified with the given article id.
@@ -340,28 +309,25 @@ public class ArticleMgmtService {
     /**
      * Adds an article with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "articleTitle": "",
-     *     "articleTags": "",
-     *     "articleContent": "",
-     *     "articleEditorType": "",
-     *     "articleAuthorEmail": "",
-     *     "articleAuthorId": "",
-     *     "articleCommentable": boolean, // optional, default to true
-     *     "syncWithSymphonyClient": boolean, // optional
-     *     "clientArticleId": "", // optional
-     *     "clientArticlePermalink": "", // optional
-     *     "isBroadcast": boolean, // Client broadcast, optional
-     *     "articleType": int, // optional, default to 0
-     *     "articleRewardContent": "", // optional, default to ""
-     *     "articleRewardPoint": int, // optional, default to 0
-     *     "articleIP": "", // optional, default to ""
-     *     "articleUA": "", // optional, default to ""
-     *     "articleAnonymous": int // optional, default to 0 (public)
-     * }
-     * </pre>, see {@link Article} for more details
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "articleTitle": "",
+     *                          "articleTags": "",
+     *                          "articleContent": "",
+     *                          "articleEditorType": "",
+     *                          "articleAuthorEmail": "",
+     *                          "articleAuthorId": "",
+     *                          "articleCommentable": boolean, // optional, default to true
+     *                          "syncWithSymphonyClient": boolean, // optional
+     *                          "clientArticleId": "", // optional
+     *                          "clientArticlePermalink": "", // optional
+     *                          "isBroadcast": boolean, // Client broadcast, optional
+     *                          "articleType": int, // optional, default to 0
+     *                          "articleRewardContent": "", // optional, default to ""
+     *                          "articleRewardPoint": int, // optional, default to 0
+     *                          "articleIP": "", // optional, default to ""
+     *                          "articleUA": "", // optional, default to ""
+     *                          "articleAnonymous": int // optional, default to 0 (public)
+     *                          , see {@link Article} for more details
      * @return generated article id
      * @throws ServiceException service exception
      */
@@ -505,8 +471,8 @@ public class ArticleMgmtService {
             String articleTags = article.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
             boolean sandboxEnv = false;
-            if (StringUtils.containsIgnoreCase(articleTags, "Sandbox")) {
-                articleTags = "Sandbox";
+            if (StringUtils.containsIgnoreCase(articleTags, Tag.TAG_TITLE_C_SANDBOX)) {
+                articleTags = Tag.TAG_TITLE_C_SANDBOX;
                 sandboxEnv = true;
             }
 
@@ -650,23 +616,20 @@ public class ArticleMgmtService {
     /**
      * Updates an article with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "oId": "",
-     *     "articleTitle": "",
-     *     "articleTags": "",
-     *     "articleContent": "",
-     *     "articleEditorType": "",
-     *     "articleCommentable": boolean, // optional, default to true
-     *     "clientArticlePermalink": "", // optional
-     *     "articleType": int // optional, default to 0
-     *     "articleRewardContent": "", // optional, default to ""
-     *     "articleRewardPoint": int, // optional, default to 0
-     *     "articleIP": "", // optional, default to ""
-     *     "articleUA": "", // optional default to ""
-     * }
-     * </pre>, see {@link Article} for more details
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "oId": "",
+     *                          "articleTitle": "",
+     *                          "articleTags": "",
+     *                          "articleContent": "",
+     *                          "articleEditorType": "",
+     *                          "articleCommentable": boolean, // optional, default to true
+     *                          "clientArticlePermalink": "", // optional
+     *                          "articleType": int // optional, default to 0
+     *                          "articleRewardContent": "", // optional, default to ""
+     *                          "articleRewardPoint": int, // optional, default to 0
+     *                          "articleIP": "", // optional, default to ""
+     *                          "articleUA": "", // optional default to ""
+     *                          , see {@link Article} for more details
      * @throws ServiceException service exception
      */
     public synchronized void updateArticle(final JSONObject requestJSONObject) throws ServiceException {
@@ -838,13 +801,12 @@ public class ArticleMgmtService {
 
     /**
      * Updates the specified article by the given article id.
-     *
      * <p>
      * <b>Note</b>: This method just for admin console.
      * </p>
      *
      * @param articleId the given article id
-     * @param article the specified article
+     * @param article   the specified article
      * @throws ServiceException service exception
      */
     public void updateArticleByAdmin(final String articleId, final JSONObject article) throws ServiceException {
@@ -909,7 +871,7 @@ public class ArticleMgmtService {
      * A user specified by the given sender id rewards the author of an article specified by the given article id.
      *
      * @param articleId the given article id
-     * @param senderId the given sender id
+     * @param senderId  the given sender id
      * @throws ServiceException service exception
      */
     public void reward(final String articleId, final String senderId) throws ServiceException {
@@ -992,7 +954,7 @@ public class ArticleMgmtService {
      * A user specified by the given sender id thanks the author of an article specified by the given article id.
      *
      * @param articleId the given article id
-     * @param senderId the given sender id
+     * @param senderId  the given sender id
      * @throws ServiceException service exception
      */
     public void thank(final String articleId, final String senderId) throws ServiceException {
@@ -1216,27 +1178,28 @@ public class ArticleMgmtService {
 
     /**
      * Processes tags for article update.
-     *
+     * <p>
      * <ul>
      * <li>Un-tags old article, decrements tag reference count</li>
      * <li>Removes old article-tag relations</li>
      * <li>Saves new article-tag relations with tag reference count</li>
      * </ul>
+     * </p>
      *
      * @param oldArticle the specified old article
      * @param newArticle the specified new article
-     * @param author the specified author
+     * @param author     the specified author
      * @throws Exception exception
      */
     private synchronized void processTagsForArticleUpdate(final JSONObject oldArticle, final JSONObject newArticle,
-            final JSONObject author) throws Exception {
+                                                          final JSONObject author) throws Exception {
         final String oldArticleId = oldArticle.getString(Keys.OBJECT_ID);
         final List<JSONObject> oldTags = tagRepository.getByArticleId(oldArticleId);
         String tagsString = newArticle.getString(Article.ARTICLE_TAGS);
         tagsString = Tag.formatTags(tagsString);
         boolean sandboxEnv = false;
-        if (StringUtils.containsIgnoreCase(tagsString, "Sandbox")) {
-            tagsString = "Sandbox";
+        if (StringUtils.containsIgnoreCase(tagsString, Tag.TAG_TITLE_C_SANDBOX)) {
+            tagsString = Tag.TAG_TITLE_C_SANDBOX;
             sandboxEnv = true;
         }
 
@@ -1337,14 +1300,13 @@ public class ArticleMgmtService {
 
     /**
      * Removes tag-article relations by the specified article id and tag ids of the relations to be removed.
-     *
      * <p>
      * Removes all relations if not specified the tag ids.
      * </p>
      *
      * @param articleId the specified article id
-     * @param tagIds the specified tag ids of the relations to be removed
-     * @throws JSONException json exception
+     * @param tagIds    the specified tag ids of the relations to be removed
+     * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
     private void removeTagArticleRelations(final String articleId, final String... tagIds)
@@ -1367,29 +1329,11 @@ public class ArticleMgmtService {
     }
 
     /**
-     * Determines whether the specified tag title exists in the specified tags.
-     *
-     * @param tagTitle the specified tag title
-     * @param tags the specified tags
-     * @return {@code true} if it exists, {@code false} otherwise
-     * @throws JSONException json exception
-     */
-    private static boolean tagExists(final String tagTitle, final List<JSONObject> tags) throws JSONException {
-        for (final JSONObject tag : tags) {
-            if (tag.getString(Tag.TAG_TITLE).equals(tagTitle)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Tags the specified article with the specified tag titles.
      *
      * @param tagTitles the specified (new) tag titles
-     * @param article the specified article
-     * @param author the specified author
+     * @param article   the specified article
+     * @param author    the specified author
      * @throws RepositoryException repository exception
      */
     private synchronized void tag(final String[] tagTitles, final JSONObject article, final JSONObject author)
@@ -1442,8 +1386,7 @@ public class ArticleMgmtService {
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
-                        new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
-                            article.optString(Article.ARTICLE_TITLE)});
+                        tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID), article.optString(Article.ARTICLE_TITLE));
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 final String title = tag.optString(Tag.TAG_TITLE);
@@ -1530,23 +1473,19 @@ public class ArticleMgmtService {
 
     /**
      * Adds an article with the specified request json object.
-     *
      * <p>
      * <b>Note</b>: This method just for admin console.
      * </p>
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "articleTitle": "",
-     *     "articleTags": "",
-     *     "articleContent": "",
-     *     "articleRewardContent": "",
-     *     "articleRewardPoint": int,
-     *     "userName": "",
-     *     "time": long
-     * }
-     * </pre>, see {@link Article} for more details
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "articleTitle": "",
+     *                          "articleTags": "",
+     *                          "articleContent": "",
+     *                          "articleRewardContent": "",
+     *                          "articleRewardPoint": int,
+     *                          "userName": "",
+     *                          "time": long
+     *                          , see {@link Article} for more details
      * @return generated article id
      * @throws ServiceException service exception
      */
@@ -1600,8 +1539,8 @@ public class ArticleMgmtService {
             String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
             boolean sandboxEnv = false;
-            if (StringUtils.containsIgnoreCase(articleTags, "Sandbox")) {
-                articleTags = "Sandbox";
+            if (StringUtils.containsIgnoreCase(articleTags, Tag.TAG_TITLE_C_SANDBOX)) {
+                articleTags = Tag.TAG_TITLE_C_SANDBOX;
                 sandboxEnv = true;
             }
 

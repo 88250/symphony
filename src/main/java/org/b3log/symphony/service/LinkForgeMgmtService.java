@@ -17,8 +17,7 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.List;
-import javax.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -32,8 +31,8 @@ import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.LinkRepository;
 import org.b3log.symphony.repository.OptionRepository;
-import org.b3log.symphony.repository.TagUserLinkRepository;
 import org.b3log.symphony.repository.TagRepository;
+import org.b3log.symphony.repository.TagUserLinkRepository;
 import org.b3log.symphony.util.Links;
 import org.b3log.symphony.util.Pangu;
 import org.b3log.symphony.util.Symphonys;
@@ -41,11 +40,14 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import javax.inject.Inject;
+import java.util.List;
+
 /**
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Sep 11, 2016
+ * @version 1.0.0.3, Dec 17, 2016
  * @since 1.6.0
  */
 @Service
@@ -89,7 +91,7 @@ public class LinkForgeMgmtService {
     /**
      * Forges the specified URL.
      *
-     * @param url the specified URL
+     * @param url    the specified URL
      * @param userId the specified user id
      */
     public void forge(final String url, final String userId) {
@@ -116,6 +118,20 @@ public class LinkForgeMgmtService {
         try {
             for (final JSONObject lnk : links) {
                 final String addr = lnk.optString(Link.LINK_ADDR);
+
+                boolean inBlacklist = false;
+                for (final String site : Link.LINK_ADDR_C_BLACKLIST) {
+                    if (StringUtils.containsIgnoreCase(addr, site)) {
+                        inBlacklist = true;
+
+                        break;
+                    }
+                }
+
+                if (inBlacklist) {
+                    continue;
+                }
+
                 JSONObject link = linkRepository.getLink(addr);
 
                 if (null == link) {

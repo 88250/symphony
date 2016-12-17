@@ -17,13 +17,6 @@
  */
 package org.b3log.symphony.event;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
@@ -36,10 +29,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.TimelineMgmtService;
@@ -50,11 +40,19 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.8, Sep 22, 2016
+ * @version 1.3.2.9, Dec 17, 2016
  * @since 0.2.0
  */
 @Named
@@ -136,13 +134,16 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
                 atedUserIds.add(atedUserId);
             }
 
+            final String tags = originalArticle.optString(Article.ARTICLE_TAGS);
+
             // 'FollowingUser' Notification
             if (Article.ARTICLE_TYPE_C_DISCUSSION != originalArticle.optInt(Article.ARTICLE_TYPE)
-                    && Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)) {
+                    && Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)
+                    && !Tag.TAG_TITLE_C_SANDBOX.equals(tags)) {
                 final JSONObject followerUsersResult = followQueryService.getFollowerUsers(
                         UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleAuthorId, 1, Integer.MAX_VALUE);
-                @SuppressWarnings("unchecked")
-                final List<JSONObject> followerUsers = (List) followerUsersResult.opt(Keys.RESULTS);
+
+                final List<JSONObject> followerUsers = (List<JSONObject>) followerUsersResult.opt(Keys.RESULTS);
                 for (final JSONObject followerUser : followerUsers) {
                     final JSONObject requestJSONObject = new JSONObject();
                     final String followerUserId = followerUser.optString(Keys.OBJECT_ID);
@@ -217,7 +218,6 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             }
 
             // 'Sys Announce' Notification
-            final String tags = originalArticle.optString(Article.ARTICLE_TAGS);
             if (StringUtils.containsIgnoreCase(tags, Symphonys.get("systemAnnounce"))) {
                 final long latestLoginTime = DateUtils.addDays(new Date(), -15).getTime();
 
