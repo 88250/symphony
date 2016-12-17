@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${registerLabel} - ${symphonyLabel}">
+        <@head title="${loginLabel} - ${symphonyLabel}">
         <meta name="description" content="${registerLabel} ${symphonyLabel}"/>
         </@head>
         <link rel="canonical" href="${servePath}/register">

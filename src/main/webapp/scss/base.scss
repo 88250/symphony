@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.19.49, Dec 13, 2016
+ * @version 2.25.19.50, Dec 17, 2016
  */
 
 @import "variables";
@@ -229,12 +229,17 @@ blockquote {
     word-wrap: break-word;
     overflow: hidden;
     line-height: 1.5;
+    font-size: 16px;
 
     ul,
     ol {
         padding-left: 2em;
         margin-top: 0;
         margin-bottom: 16px;
+    }
+
+    li {
+        margin-top: 0.25em;
     }
 
     h1,
@@ -1308,7 +1313,6 @@ a[class*=" icon-"]:hover {
 .main {
     background-color: #f2f2f2;
     padding: 20px 0;
-    background-image: url('../images/index-bg.svg');
     background-attachment: fixed;
     min-height: 280px;
 }
