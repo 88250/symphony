@@ -17,16 +17,9 @@
  */
 package org.b3log.symphony.repository;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Link;
 import org.b3log.symphony.model.Tag;
@@ -34,15 +27,25 @@ import org.b3log.symphony.model.UserExt;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Tag-User-Link relation repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 11, 2016
+ * @version 1.0.0.2, Dec 17, 2016
  * @since 1.6.0
  */
 @Repository
 public class TagUserLinkRepository extends AbstractRepository {
+
+    /**
+     * Public constructor.
+     */
+    public TagUserLinkRepository() {
+        super(Tag.TAG + "_" + User.USER + "_" + Link.LINK);
+    }
 
     /**
      * Counts link (distinct(linkId)) with the specified tag id.
@@ -61,9 +64,9 @@ public class TagUserLinkRepository extends AbstractRepository {
     /**
      * Updates link score with the specified tag id, link id and score.
      *
-     * @param tagId the specified tag id
+     * @param tagId  the specified tag id
      * @param linkId the specified link id
-     * @param score the specified score
+     * @param score  the specified score
      * @throws RepositoryException repository exception
      */
     public void updateTagLinkScore(final String tagId, final String linkId, final double score)
@@ -87,7 +90,7 @@ public class TagUserLinkRepository extends AbstractRepository {
     /**
      * Removes tag-user-link relations by the specified tag id, user id and link id.
      *
-     * @param tagId the specified tag id
+     * @param tagId  the specified tag id
      * @param userId the specified user id
      * @param linkId the specified link id
      * @throws RepositoryException repository exception
@@ -113,7 +116,7 @@ public class TagUserLinkRepository extends AbstractRepository {
     /**
      * Gets tag-link relations by the specified tag id and fetch size (distinct(linkId), order by score).
      *
-     * @param tagId the specified tag id
+     * @param tagId     the specified tag id
      * @param fetchSize the specified fetch size
      * @return a list of link id
      * @throws RepositoryException repository exception
@@ -133,8 +136,8 @@ public class TagUserLinkRepository extends AbstractRepository {
     /**
      * Gets tag-link relations by the specified tag id, user id and fetch size (distinct(linkId), order by score).
      *
-     * @param tagId the specified tag id
-     * @param userId the specified user id
+     * @param tagId     the specified tag id
+     * @param userId    the specified user id
      * @param fetchSize the specified fetch size
      * @return a list of link id
      * @throws RepositoryException repository exception
@@ -150,12 +153,5 @@ public class TagUserLinkRepository extends AbstractRepository {
         }
 
         return ret;
-    }
-
-    /**
-     * Public constructor.
-     */
-    public TagUserLinkRepository() {
-        super(Tag.TAG + "_" + User.USER + "_" + Link.LINK);
     }
 }

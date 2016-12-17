@@ -17,11 +17,15 @@
  */
 package org.b3log.symphony.model;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * This class defines all link model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 7, 2016
+ * @version 1.1.0.0, Dec 17, 2016
  * @since 1.6.0
  */
 public final class Link {
@@ -107,11 +111,21 @@ public final class Link {
      */
     public static final String LINK_T_COUNT = "linkCnt";
 
-    //// Type constants
+    // Type constants
     /**
      * Link type - forge.
      */
     public static final int LINK_TYPE_C_FORGE = 0;
+
+    // Address constants
+    /**
+     * Link blacklist.
+     */
+    public static final Set<String> LINK_ADDR_C_BLACKLIST = new HashSet<>(Arrays.asList(
+            "hacpai", "github", "jobbole", "csdn", "51cto", "iteye", "tianmaying", "588ku", "163", "50vip",
+            "hmlan", "oschina", "baidu", "infoq", "v2ex", "cnblogs", "blogread", "jd", "taobao", "tmall",
+            "segmentfault", "yiibai", "hao123", "bilibili", "itstu", "qq", "ituring", "zhihu", "w3cfuns",
+            "cnodejs", "jianshu", "36kr", "ifanr", "xitu", "huaban", "luosh"));
 
     /**
      * Private constructor.
