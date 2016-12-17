@@ -97,7 +97,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.20.34, Nov 22, 2016
+ * @version 1.24.21.34, Dec 18, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1452,6 +1452,7 @@ public class ArticleProcessor {
 
         markdownText = shortLinkQueryService.linkArticle(markdownText);
         markdownText = shortLinkQueryService.linkTag(markdownText);
+        markdownText = Emotions.toAliases(markdownText);
         markdownText = Emotions.convert(markdownText);
         markdownText = Markdowns.toHTML(markdownText);
         markdownText = Markdowns.clean(markdownText, "");
@@ -1461,7 +1462,6 @@ public class ArticleProcessor {
 
     /**
      * Gets article preview content.
-     * <p>
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
