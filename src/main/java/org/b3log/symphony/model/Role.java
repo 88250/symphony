@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all role model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Dec 10, 2016
+ * @version 1.1.0.2, Dec 14, 2016
  * @since 1.8.0
  */
 public final class Role {
@@ -50,6 +50,12 @@ public final class Role {
      * Key of role id.
      */
     public static final String ROLE_ID = "roleId";
+
+    //// Transient ////
+    /**
+     * Key of user count.
+     */
+    public static final String ROLE_T_USER_COUNT = "roleUserCount";
 
     // Role name constants
     /**

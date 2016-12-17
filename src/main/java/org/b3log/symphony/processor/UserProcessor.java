@@ -38,19 +38,68 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.*;
+import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Client;
+import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Emotion;
+import org.b3log.symphony.model.Follow;
+import org.b3log.symphony.model.Invitecode;
+import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.Role;
+import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.AnonymousViewCheck;
+import org.b3log.symphony.processor.advice.CSRFCheck;
+import org.b3log.symphony.processor.advice.CSRFToken;
+import org.b3log.symphony.processor.advice.LoginCheck;
+import org.b3log.symphony.processor.advice.PermissionCheck;
+import org.b3log.symphony.processor.advice.PermissionGrant;
+import org.b3log.symphony.processor.advice.UserBlockCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.advice.validate.*;
-import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.*;
+import org.b3log.symphony.processor.advice.validate.PointTransferValidation;
+import org.b3log.symphony.processor.advice.validate.UpdateEmotionListValidation;
+import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
+import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
+import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
+import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
+import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.AvatarQueryService;
+import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.DataModelService;
+import org.b3log.symphony.service.EmotionMgmtService;
+import org.b3log.symphony.service.EmotionQueryService;
+import org.b3log.symphony.service.FollowQueryService;
+import org.b3log.symphony.service.InvitecodeMgmtService;
+import org.b3log.symphony.service.InvitecodeQueryService;
+import org.b3log.symphony.service.LinkForgeQueryService;
+import org.b3log.symphony.service.NotificationMgmtService;
+import org.b3log.symphony.service.OptionQueryService;
+import org.b3log.symphony.service.PointtransferMgmtService;
+import org.b3log.symphony.service.PointtransferQueryService;
+import org.b3log.symphony.service.PostExportService;
+import org.b3log.symphony.service.UserMgmtService;
+import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Languages;
+import org.b3log.symphony.util.Networks;
+import org.b3log.symphony.util.Results;
+import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.TimeZones;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * User processor.
@@ -533,7 +582,7 @@ public class UserProcessor {
                     "question",
                     "zzz",
                     "notes",
-                    "shit",
+                    "poop",
                     "+1",
                     "-1",
                     "ok_hand",
@@ -656,22 +705,6 @@ public class UserProcessor {
                     Emotion.EOF_EMOJI //标记结束以便在function.ftl中处理
             }
             };
-            /**
-             * 设置处暂不启用新版本
-             * 别名问题尚未解决（考虑直接显示图片而非文字）
-             * 可参考Emotions.java中的处理，即在此处生成html代码返回
-             */
-            for (int i = 0; i < emojiLists.length; i++) {
-                for (int j = 0; j < emojiLists[i].length; j++) {
-//                    String unicode = EmojiParser.parseToUnicode(":"+emojiLists[i][j]+":");
-//                    String emojiCode=emojiLists[i][j];
-//                    emojiLists[i][j]=Integer.toHexString(unicode.codePointAt(0));
-//                    if(emojiLists[i][j].equals("3a")){
-//                        emojiLists[i][j]=emojiCode;
-                    emojiLists[i][j] = emojiLists[i][j];
-//                    }
-                }
-            }
             dataModel.put(Emotion.EMOTIONS, emojis);
             dataModel.put(Emotion.SHORT_T_LIST, emojiLists);
         }

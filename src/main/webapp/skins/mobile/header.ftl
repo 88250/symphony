@@ -8,7 +8,7 @@
 
         <div class="fn-right user-nav">
             <#if isLoggedIn>
-            <#if "adminRole" == userRole>
+            <#if permissions["menuAdmin"].permissionGrant>
             <a href="${servePath}/admin" title="${adminLabel}" class="last icon-userrole"></a>
             </#if>
             <a href="${servePath}/member/${currentUser.userName}" title="Home" class="<#if 'adminRole' != userRole>last </#if>nav-avatar">

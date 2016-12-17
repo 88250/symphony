@@ -30,13 +30,7 @@
                     <span class="tooltipped tooltipped-n" aria-label="${emailLabel}"><span class="icon-email"></span></span>
                     ${item.userEmail} &nbsp;
                     <span class="tooltipped tooltipped-n" aria-label="${roleLabel}"><span class="icon-userrole"></span></span>
-                    <#if item.userRole == "adminRole">
-                    ${administratorLabel}
-                    <#elseif item.userRole == "defaultCommenterRole">
-                    ${defaultCommenterLabel}
-                    <#else>
-                    ${defaultUserLabel}
-                    </#if>
+                    ${item.roleName}
                     <span class="fn-right ft-gray">
                         <span class="tooltipped tooltipped-n" aria-label="${articleCountLabel}"><span class="icon-articles"></span></span>
                         ${item.userArticleCount} &nbsp;

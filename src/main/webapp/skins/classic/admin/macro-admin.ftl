@@ -65,19 +65,39 @@
                         <div class="module-header"><h2>${adminLabel}</h2></div> 
                         <div class="module-panel">
                             <nav class="home-menu">
+                                <#if permissions["menuAdmin"].permissionGrant>
                                 <a href="${servePath}/admin"<#if type == "index"> class="current"</#if>>${consoleIndexLabel}</a>
+                                </#if>
+                                <#if permissions["menuAdminUsers"].permissionGrant>
                                 <a href="${servePath}/admin/users"<#if type == "users" || type == "addUser"> class="current"</#if>>${userAdminLabel}</a>
+                                </#if>
+                                <#if permissions["menuAdminArticles"].permissionGrant>
                                 <a href="${servePath}/admin/articles"<#if type == "articles" || type == "addArticle"> class="current"</#if>>${articleAdminLabel}</a>
+                                </#if>
+                                <#if permissions["menuAdminComments"].permissionGrant>
                                 <a href="${servePath}/admin/comments"<#if type == "comments"> class="current"</#if>>${commentAdminLabel}</a>
+                                </#if>
+                                <#if permissions["menuAdminDomains"].permissionGrant>
                                 <a href="${servePath}/admin/domains"<#if type == "domains" || type == "addDomain"> class="current"</#if>>${domainAdminLabel}</a>
+                                </#if>
+                                <#if permissions["menuAdminTags"].permissionGrant>
                                 <a href="${servePath}/admin/tags"<#if type == "tags" || type == "addTag"> class="current"</#if>>${tagAdminLabel}</a>
+                                </#if>
+                                <#if permissions["menuAdminRWs"].permissionGrant>
                                 <a href="${servePath}/admin/reserved-words"<#if type == "reservedWords" || type == "addReservedWord"> class="current"</#if>>${reservedWordAdminLabel}</a>
+                                </#if>
+                                <#if permissions["menuAdminIcs"].permissionGrant>
                                 <a href="${servePath}/admin/invitecodes"<#if type == "invitecodes"> class="current"</#if>>${invitecodeAdminLabel}</a>
-                                <#if permissions["adUpdateADSide"].permissionGrant>
+                                </#if>
+                                <#if permissions["menuAdminAD"].permissionGrant>
                                 <a href="${servePath}/admin/ad"<#if type == "ad"> class="current"</#if>>${adAdminLabel}</a>
                                 </#if>
+                                <#if permissions["menuAdminRoles"].permissionGrant>
                                 <a href="${servePath}/admin/roles"<#if type == "roles"> class="current"</#if>>${rolesAdminLabel}</a>
+                                </#if>
+                                <#if permissions["menuAdminMisc"].permissionGrant>
                                 <a href="${servePath}/admin/misc"<#if type == "misc"> class="current"</#if>>${miscAdminLabel}</a>
+                                </#if>
                             </nav>
                         </div>
                     </div>

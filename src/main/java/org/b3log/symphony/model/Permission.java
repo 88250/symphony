@@ -22,12 +22,11 @@ import java.util.Set;
 /**
  * This class defines all permission model relevant keys.
  * <p>
- * <p>
  * See <a href="https://github.com/b3log/symphony/issues/337">#337</a> for more details.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.0, Dec 13, 2016
+ * @version 1.6.1.1, Dec 15, 2016
  * @since 1.8.0
  */
 public final class Permission {
@@ -52,6 +51,7 @@ public final class Permission {
      */
     public static final String PERMISSION_ID = "permissionId";
 
+    //// Transient ////
     /**
      * Key of permission categories.
      */
@@ -152,6 +152,11 @@ public final class Permission {
      * Id - common - at user.
      */
     public static final String PERMISSION_ID_C_COMMON_AT_USER = "commonAtUser";
+
+    /**
+     * Id - common - at participants.
+     */
+    public static final String PERMISSION_ID_C_COMMON_AT_PARTICIPANTS = "commonAtParticipants";
 
     /**
      * Id - common - exchange invitation code.
@@ -323,6 +328,61 @@ public final class Permission {
      */
     public static final String PERMISSION_ID_C_MISC_LANGUAGE = "miscLanguage";
 
+    /**
+     * Id - menu - admin.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN = "menuAdmin";
+
+    /**
+     * Id - menu - admin - users.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_USERS = "menuAdminUsers";
+
+    /**
+     * Id - menu - admin - articles.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_ARTICLES = "menuAdminArticles";
+
+    /**
+     * Id - menu - admin - comments.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_COMMENTS = "menuAdminComments";
+
+    /**
+     * Id - menu - admin - domains.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_DOMAINS = "menuAdminDomains";
+
+    /**
+     * Id - menu - admin - tags.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_TAGS = "menuAdminTags";
+
+    /**
+     * Id - menu - admin - reserved words.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_RWS = "menuAdminRWs";
+
+    /**
+     * Id - menu - admin - invitecodes.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_ICS = "menuAdminIcs";
+
+    /**
+     * Id - menu - admin - ad.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_AD = "menuAdminAD";
+
+    /**
+     * Id - menu - admin - roles.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_ROLES = "menuAdminRoles";
+
+    /**
+     * Id - menu - admin - misc.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_MISC = "menuAdminMisc";
+
     // Category constants
     /**
      * Category - common function.
@@ -373,6 +433,11 @@ public final class Permission {
      * Category - misc management.
      */
     public static final int PERMISSION_CATEGORY_C_MISC = 9;
+
+    /**
+     * Category - menu.
+     */
+    public static final int PERMISSION_CATEGORY_C_MENU = 10;
 
 
     /**
