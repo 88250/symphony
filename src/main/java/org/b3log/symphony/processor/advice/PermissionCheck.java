@@ -38,7 +38,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -46,7 +45,7 @@ import java.util.*;
  * Permission check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 12, 2016
+ * @version 1.0.0.1, Dec 17, 2016
  * @since 1.8.0
  */
 @Named
@@ -125,13 +124,9 @@ public class PermissionCheck extends BeforeRequestProcessAdvice {
             return;
         }
 
-        Set<String> grantPermissions;
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        if (null != user) {
-            grantPermissions = roleQueryService.getUserPermissions(user.optString(Keys.OBJECT_ID));
-        } else {
-            grantPermissions = roleQueryService.getPermissions(Role.ROLE_ID_C_VISITOR);
-        }
+        final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
+        final Set<String> grantPermissions = roleQueryService.getPermissions(roleId);
 
         if (!Permission.hasPermission(requisitePermissions, grantPermissions)) {
             throw new RequestProcessAdviceException(exception);
