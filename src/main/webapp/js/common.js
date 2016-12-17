@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.39.27.38, Dec 13, 2016
+ * @version 1.39.27.39, Dec 17, 2016
  */
 
 /**
@@ -43,7 +43,7 @@ var Util = {
          + 'px;display: block;" class="dialog-background"></div>',
          alertContentHTML = '<div class="dialog-panel" id="alertDialogPanel">'
          + '<div class="fn-clear dialog-header-bg"><a href="javascript:void(0);" onclick="Util.closeAlert(this)" class="icon-close"></a></div>'
-         + '<div class="dialog-main" style="padding-top:30px;text-align:center">' + content + '</div></div>';
+         + '<div class="dialog-main" style="text-align:center;padding: 30px 10px 40px">' + content + '</div></div>';
 
          alertHTML = alertBgHTML + alertContentHTML;
 
