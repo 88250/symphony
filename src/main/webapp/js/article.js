@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.39.25, Dec 10, 2016
+ * @version 1.25.39.26, Dec 17, 2016
  */
 
 /**
@@ -776,6 +776,17 @@ var Comment = {
 };
 
 var Article = {
+    /**
+     * @description 没有权限的提示
+     * @param {String} tip 提示内容
+     */
+    permissionTip: function (tip) {
+        if (Label.isLoggedIn) {
+            Util.alert(tip);
+        } else {
+            Util.needLogin();
+        }
+    },
     /**
      * @description 赞同
      * @param {String} id 赞同的实体数据 id
