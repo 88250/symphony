@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.processor.advice;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -38,7 +37,7 @@ import java.util.Map;
  * Permission grant.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 12, 2016
+ * @version 1.0.0.1, Dec 17, 2016
  * @since 1.8.0
  */
 @Named
@@ -60,19 +59,21 @@ public class PermissionGrant extends AfterRequestProcessAdvice {
     public void doAdvice(final HTTPRequestContext context, final Object ret) {
         final HttpServletRequest request = context.getRequest();
 
-        Map<String, JSONObject> permissionsGrant;
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        if (null != user) {
-            permissionsGrant = roleQueryService.getUserPermissionsGrantMap(user.optString(Keys.OBJECT_ID));
-        } else {
-            permissionsGrant = roleQueryService.getPermissionsGrantMap(Role.ROLE_ID_C_VISITOR);
-        }
+        final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
+        final Map<String, JSONObject> permissionsGrant = roleQueryService.getPermissionsGrantMap(roleId);
+
+        final JSONObject role = roleQueryService.getRole(roleId);
 
         final AbstractHTTPResponseRenderer renderer = context.getRenderer();
         if (null != renderer) {
             final Map<String, Object> dataModel = renderer.getRenderDataModel();
 
             dataModel.put(Permission.PERMISSIONS, permissionsGrant);
+
+            String noPermissionLabel = (String) dataModel.get("noPermissionLabel");
+            noPermissionLabel = noPermissionLabel.replace("{roleName}", role.optString(Role.ROLE_NAME));
+            dataModel.put("noPermissionLabel", noPermissionLabel);
         }
     }
 }
