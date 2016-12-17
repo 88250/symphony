@@ -1319,7 +1319,7 @@ var Article = {
 
         $('.article-toc').css({
             'overflow': 'auto',
-            'max-height': $(window).height() - 127 + 'px'
+            'max-height': $(window).height() - 80 + 'px'
         });
 
         // 目录点击
