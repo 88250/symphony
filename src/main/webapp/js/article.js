@@ -1097,6 +1097,9 @@ var Article = {
                     }
 
                     alert(result.msg);
+                },
+                error: function (result) {
+                    Util.needLogin();
                 }
             });
         }
