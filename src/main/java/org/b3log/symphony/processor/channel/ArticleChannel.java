@@ -55,7 +55,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.8.6, Dec 10, 2016
+ * @version 2.3.9.6, Dec 17, 2016
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/article-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -78,12 +78,9 @@ public class ArticleChannel {
     /**
      * Notifies the specified article heat message to browsers.
      *
-     * @param message the specified message, for example      <pre>
-     *                                                                            {
-     *                                                                                "articleId": "",
-     *                                                                                "operation": "" // "+"/"-"
-     *                                                                            }
-     *                                                                            </pre>
+     * @param message the specified message, for example,
+     *                "articleId": "",
+     *                "operation": "" // "+"/"-"
      */
     public static void notifyHeat(final JSONObject message) {
         message.put(Common.TYPE, Article.ARTICLE_T_HEAT);
@@ -170,6 +167,7 @@ public class ArticleChannel {
                 message.put(Comment.COMMENT_T_NICE, false);
                 message.put(Common.REWARED_COUNT, 0);
                 message.put(Comment.COMMENT_T_VOTE, -1);
+                message.put(Common.REWARDED, false);
 
                 final Map dataModel = new HashMap();
                 dataModel.put(Common.IS_LOGGED_IN, isLoggedIn);
