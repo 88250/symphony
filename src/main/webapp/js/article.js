@@ -134,18 +134,16 @@ var Comment = {
             }, 1000);
             return false;
         }).bind('keydown', 'r', function assets(event) {
-            if (Util.prevKey) {
-                return false;
+            if (!Util.prevKey) {
+                // r 回复帖子
+                $('.article-actions .icon-reply-btn').click();
             } else if (Util.prevKey === 'v') {
                 // v r 打赏帖子
                 $('.action-btns .icon-points').parent().click();
-                return false;
             } else if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
                 // x r 回复回帖
                 $('#comments .list > ul > li.focus .icon-reply').parent().click();
             }
-            // r 回复帖子
-            $('.article-actions .icon-reply-btn').click();
             return false;
         }).bind('keyup', 'h', function assets() {
             // x h 感谢选中回贴
