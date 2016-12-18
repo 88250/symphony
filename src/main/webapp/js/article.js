@@ -134,10 +134,17 @@ var Comment = {
             }, 1000);
             return false;
         }).bind('keydown', 'r', function assets(event) {
-            // r 回复帖子
             if (Util.prevKey) {
                 return false;
+            } else if (Util.prevKey === 'v') {
+                // v r 打赏帖子
+                $('.action-btns .icon-points').parent().click();
+                return false;
+            } else if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                // x r 回复回帖
+                $('#comments .list > ul > li.focus .icon-reply').parent().click();
             }
+            // r 回复帖子
             $('.article-actions .icon-reply-btn').click();
             return false;
         }).bind('keyup', 'h', function assets() {
@@ -156,11 +163,6 @@ var Comment = {
             // x d 反对选中回贴
             if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
                 $('#comments .list > ul > li.focus .icon-thumbs-down').parent().click();
-            }
-            return false;
-        }).bind('keyup', 'r', function assets() {
-            if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('#comments .list > ul > li.focus .icon-reply').parent().click();
             }
             return false;
         }).bind('keyup', 'c', function assets() {
@@ -210,12 +212,6 @@ var Comment = {
             // v c 收藏帖子
             if (Util.prevKey === 'v') {
                 $('.action-btns .icon-star').parent().click();
-            }
-            return false;
-        }).bind('keyup', 'r', function assets() {
-            // v r 打赏帖子
-            if (Util.prevKey === 'v') {
-                $('.action-btns .icon-points').parent().click();
             }
             return false;
         }).bind('keyup', 'l', function assets() {
@@ -1100,6 +1096,10 @@ var Article = {
                     if (result.sc) {
                         $("#articleRewardContent").removeClass("reward").html(result.articleRewardContent);
                         Article.parseLanguage();
+
+                        var cnt = parseInt($('.action-btns .icon-points').parent().text());
+                        $('.action-btns .icon-points').parent().addClass('ft-red')
+                        .html('<span class="icon-points"></span> ' + (cnt + 1)).removeAttr('onclick');
                         return;
                     }
 
