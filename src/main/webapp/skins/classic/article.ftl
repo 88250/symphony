@@ -16,7 +16,9 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/aplayer/APlayer.min.css">
         <link rel="canonical" href="${servePath}${article.articlePermalink}?p=${paginationCurrentPageNum}&m=${userCommentViewMode}">
     </head>
-    <body itemscope itemtype="${servePath}${article.articlePermalink}?p=${paginationCurrentPageNum}&m=${userCommentViewMode}">
+    <body itemscope itemtype="http://schema.org/Product">
+        <img itemprop="image" class="fn-none"  src="${staticServePath}/images/faviconH.png" />
+        <p itemprop="description" class="fn-none">"${article.articlePreviewContent}"</p>
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
@@ -402,8 +404,6 @@
             </#if>
             </div>
         </div>
-        <img itemprop="image" src="${staticServePath}/images/hacpai.png" />
-        <p itemprop="description" class="fn-none">"${article.articlePreviewContent}"</p>
         <#include "footer.ftl">
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
