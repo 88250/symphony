@@ -209,6 +209,8 @@ public class LinkForgeMgmtService {
     @Transactional
     public void purge() {
         try {
+            Thread.sleep(10 * 1000);
+
             final JSONObject linkCntOption = optionRepository.get(Option.ID_C_STATISTIC_LINK_COUNT);
             int linkCnt = linkCntOption.optInt(Option.OPTION_VALUE);
 

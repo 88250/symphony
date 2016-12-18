@@ -89,7 +89,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.14.31, Dec 17, 2016
+ * @version 1.26.14.32, Dec 18, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -207,6 +207,12 @@ public class UserProcessor {
      */
     @Inject
     private LinkForgeQueryService linkForgeQueryService;
+
+    /**
+     * Role query service.
+     */
+    @Inject
+    private RoleQueryService roleQueryService;
 
     /**
      * Updates user i18n.
@@ -486,29 +492,28 @@ public class UserProcessor {
 
         if (requestURI.contains("function")) {
             final String emojis = emotionQueryService.getEmojis(userId);
-            final String[][] emojiLists = {
-                    {
-                            "smile",
-                            "laughing",
-                            "smirk",
-                            "heart_eyes",
-                            "kissing_heart",
-                            "flushed",
-                            "grin",
-                            "stuck_out_tongue_closed_eyes",
-                            "kissing",
-                            "sleeping",
-                            "anguished",
-                            "open_mouth",
-                            "expressionless",
-                            "unamused",
-                            "sweat_smile",
-                            "weary",
-                            "sob",
-                            "joy",
-                            "astonished",
-                            "scream"
-                    }, {
+            final String[][] emojiLists = {{
+                    "smile",
+                    "laughing",
+                    "smirk",
+                    "heart_eyes",
+                    "kissing_heart",
+                    "flushed",
+                    "grin",
+                    "stuck_out_tongue_closed_eyes",
+                    "kissing",
+                    "sleeping",
+                    "anguished",
+                    "open_mouth",
+                    "expressionless",
+                    "unamused",
+                    "sweat_smile",
+                    "weary",
+                    "sob",
+                    "joy",
+                    "astonished",
+                    "scream"
+            }, {
                     "tired_face",
                     "rage",
                     "triumph",
@@ -653,9 +658,9 @@ public class UserProcessor {
                     "sweet_potato",
                     "eggplant",
                     "tomato",
-                    Emotion.EOF_EMOJI //标记结束以便在function.ftl中处理
-            }
-            };
+                    Emotion.EOF_EMOJI // 标记结束以便在function.ftl中处理
+            }};
+
             dataModel.put(Emotion.EMOTIONS, emojis);
             dataModel.put(Emotion.SHORT_T_LIST, emojiLists);
         }
@@ -2072,5 +2077,9 @@ public class UserProcessor {
      */
     private void fillHomeUser(final Map<String, Object> dataModel, final JSONObject user) {
         dataModel.put(User.USER, user);
+
+        final String roleId = user.optString(User.USER_ROLE);
+        final JSONObject role = roleQueryService.getRole(roleId);
+        user.put(Role.ROLE_NAME, role.optString(Role.ROLE_NAME));
     }
 }
