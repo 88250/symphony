@@ -20,11 +20,11 @@
 -->
 <!--
     Description: Cron job configurations. 
-    Version: 1.10.0.7, Oct 31, 2016
+    Version: 1.11.0.7, Dec 18, 2016
     Author: Liang Ding
 -->
 <cronentries>
-    
+
     <cron>
         <url>/cron/users/load-names?key=dev_key</url>
         <description>Loads usernames</description>
@@ -36,7 +36,7 @@
         <description>Expire sticked article</description>
         <schedule>every 1 minutes</schedule>
     </cron>
-    
+
     <cron>
         <url>/cron/tag/cache-tags?key=dev_key</url>
         <description>Cache tags</description>
@@ -48,31 +48,31 @@
         <description>Cache domains</description>
         <schedule>every 6 hours</schedule>
     </cron>
-    
+
     <cron>
         <url>/cron/stat?key=dev_key</url>
         <description>Load statistic data</description>
         <schedule>every 30 minutes</schedule>
     </cron>
-    
+
     <cron>
         <url>/cron/xiaov?key=dev_key</url>
         <description>XiaoV replies Stm.</description>
         <schedule>every 5 seconds</schedule>
     </cron>
-    
+
     <cron>
         <url>/cron/invitecode-expire?key=dev_key</url>
         <description>Expire invitecode</description>
         <schedule>every 6 minutes</schedule>
     </cron>
-    
+
     <cron>
         <url>/cron/mail/weekly?key=dev_key</url>
         <description>Send weekly newsletter</description>
         <schedule>every 5 minutes</schedule>
     </cron>
-    
+
     <cron>
         <url>/cron/status?key=dev_key</url>
         <description>Checks running status</description>
@@ -84,17 +84,23 @@
         <description>Sends email verifycodes</description>
         <schedule>every 5 seconds</schedule>
     </cron>
-    
+
     <cron>
         <url>/cron/verifycode/remove-expired?key=dev_key</url>
         <description>Removes expired verifycodes</description>
         <schedule>every 1 hours</schedule>
     </cron>
-    
+
     <cron>
         <url>/cron/users/reset-unverified?key=dev_key</url>
         <description>Resets unverified users</description>
         <schedule>every 24 hours</schedule>
+    </cron>
+
+    <cron>
+        <url>/cron/forge/link/purge?key=dev_key</url>
+        <description>Purges link forge</description>
+        <schedule>every 48 hours</schedule>
     </cron>
 
 </cronentries>

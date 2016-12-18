@@ -17,6 +17,8 @@
  */
 package org.b3log.symphony.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,7 +27,7 @@ import java.util.Set;
  * This class defines all link model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Dec 17, 2016
+ * @version 1.2.0.0, Dec 18, 2016
  * @since 1.6.0
  */
 public final class Link {
@@ -125,11 +127,32 @@ public final class Link {
             "hacpai", "github", "jobbole", "csdn", "51cto", "iteye", "tianmaying", "588ku", "163", "50vip",
             "hmlan", "oschina", "baidu", "infoq", "v2ex", "cnblogs", "blogread", "jd", "taobao", "tmall",
             "segmentfault", "yiibai", "hao123", "bilibili", "itstu", "qq", "ituring", "zhihu", "w3cfuns",
-            "cnodejs", "jianshu", "36kr", "ifanr", "xitu", "huaban", "luosh"));
+            "cnodejs", "jianshu", "36kr", "ifanr", "xitu", "huaban", "luosh", "itpub", "manong", "blogjava",
+            "apple", "importnew", "cocoachina", "guokr", "w3school", "focus", "ruby-china", "ibm", "656463",
+            "outofmemory", "gitbook", "maiziedu", "php100", "imspm", "itheima", "stuq", "kancloud", "aichengxu",
+            "comsharp", "chinaunix", "aliyun", "coolshell", "ruanyifeng", "zhufengpeixun", "ttlsa", "apeclass",
+            "open-open", "w3cplus", "jb51", "wooyun", "ctolib", "jikexueyuan", "hiapk", "jq-school", "yunweipai",
+            "codeceo", "weibo", "sina", "html-js", "psjia", "jfedu", "laravel-china"));
 
     /**
      * Private constructor.
      */
     private Link() {
+    }
+
+    /**
+     * Checks whether the specified link address in blacklist.
+     *
+     * @param linkAddr the specified link address
+     * @return {@code true} if it in blacklist, otherwise returns {@code false}
+     */
+    public static final boolean inAddrBlacklist(final String linkAddr) {
+        for (final String site : LINK_ADDR_C_BLACKLIST) {
+            if (StringUtils.containsIgnoreCase(linkAddr, site)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
