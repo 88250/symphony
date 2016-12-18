@@ -19,6 +19,7 @@ package org.b3log.symphony.processor.advice;
 
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.AfterRequestProcessAdvice;
 import org.b3log.latke.servlet.renderer.AbstractHTTPResponseRenderer;
@@ -37,7 +38,7 @@ import java.util.Map;
  * Permission grant.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Dec 17, 2016
+ * @version 1.0.1.1, Dec 18, 2016
  * @since 1.8.0
  */
 @Named
@@ -54,6 +55,11 @@ public class PermissionGrant extends AfterRequestProcessAdvice {
      */
     @Inject
     private RoleQueryService roleQueryService;
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Object ret) {
@@ -71,7 +77,7 @@ public class PermissionGrant extends AfterRequestProcessAdvice {
 
             dataModel.put(Permission.PERMISSIONS, permissionsGrant);
 
-            String noPermissionLabel = (String) dataModel.get("noPermissionLabel");
+            String noPermissionLabel = langPropsService.get("noPermissionLabel");
             noPermissionLabel = noPermissionLabel.replace("{roleName}", role.optString(Role.ROLE_NAME));
             dataModel.put("noPermissionLabel", noPermissionLabel);
         }
