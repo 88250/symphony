@@ -3,29 +3,31 @@
          style="background-image:url('${user.userAvatarURL210}')"></div>
     <div>
         <div class="user-name">
-            <#if user.userNickname != "">
-            <div id="userNicknameDom">
-                ${user.userNickname}
+            <div>
+                <#if user.userNickname != "">
+                    <span id="userNicknameDom">${user.userNickname}</span> /
+                </#if>
+                <span class="ft-gray">${user.userName}</span>
             </div>
-            </#if>
-            <span class="ft-gray">${user.userName}</span>
-            <#if 0 == user.userOnlineStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
-            <span class="tooltipped tooltipped-s" aria-label="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>">
-                <img src="${staticServePath}/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
-            </span>
-            </#if>
-            <#if isLoggedIn && (userName != user.userName)>
-            <button class="green small" onclick="location.href = '/post?type=1&at=${user.userName}'"> 
-                ${privateMessageLabel}
-            </button>
-            </#if>
-            
-            <#if "adminRole" == user.userRole>
-            <span class="ft-13 tooltipped tooltipped-n" aria-label="${administratorLabel}"><span class="icon-userrole"></span></span>
-            </#if>
-            <#if isAdminLoggedIn>
-            <a class="ft-13 tooltipped tooltipped-n ft-a-title" href="${servePath}/admin/user/${user.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
-            </#if>
+
+            <div>
+                <#if isLoggedIn && (userName != user.userName)>
+                    <button class="green small" onclick="location.href = '/post?type=1&at=${user.userName}'">
+                        ${privateMessageLabel}
+                    </button>
+                </#if>
+                <#if 0 == user.userOnlineStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
+                    <span class="tooltipped tooltipped-n" aria-label="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>">
+                        <span class="<#if user.userOnlineFlag>online<#else>offline</#if>"><img src="${staticServePath}/images/H-20.png" />${user.roleName}</span>
+                    </span>
+                </#if>
+                <#if "adminRole" == user.userRole>
+                    <span class="ft-13 tooltipped tooltipped-n" aria-label="${administratorLabel}"><span class="icon-userrole"></span></span>
+                </#if>
+                <#if isAdminLoggedIn>
+                    <a class="ft-13 tooltipped tooltipped-n ft-a-title" href="${servePath}/admin/user/${user.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                </#if>
+            </div>
             
             <#if isLoggedIn && (userName != user.userName)>
             <#if isFollowing>

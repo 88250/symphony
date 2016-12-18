@@ -2543,7 +2543,30 @@ code .dec { color: initial; } /* decimal - blue */
     border-bottom: 1px dotted #CCCCCC;
     font-size: 25px;
     margin: 10px 0 10px;
-    padding-bottom: 10px;
+    padding: 10px;
+
+    .online,
+    .offline {
+        background-color: $red;
+        color: #fff;
+        font-size: 12px;
+        line-height: 20px;
+        border-radius: 3px;
+        height: 20px;
+        display: inline-block;
+        padding: 0 5px 0 3px;
+        vertical-align: middle;
+    }
+
+    .offline {
+        background-color: $gray;
+    }
+
+    button.follow {
+        font-size: 14px;
+        width: 100%;
+        margin: 10px 0;
+    }
 }
 
 .user-info {
