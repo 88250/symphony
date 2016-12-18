@@ -19,9 +19,6 @@
                     <span class="<#if user.userOnlineFlag>online<#else>offline</#if>"><img src="${staticServePath}/images/H-20.png" />${user.roleName}</span>
                 </span>
                 </#if>
-                <#if "adminRole" == user.userRole>
-                    <span class="ft-13 icon-userrole" title="${administratorLabel}"></span>
-                </#if>
                 <#if isAdminLoggedIn>
                     <a class="ft-13 icon-setting" href="${servePath}/admin/user/${user.oId}" title="${adminLabel}"></a>
                 </#if>
