@@ -132,7 +132,9 @@ public final class Link {
             "outofmemory", "gitbook", "maiziedu", "php100", "diycode", "psjia", "jfedu", "laravel-china",
             "imspm", "itheima", "stuq", "kancloud", "aichengxu", "comsharp", "chinaunix", "aliyun", "coolshell",
             "ruanyifeng", "zhufengpeixun", "ttlsa", "apeclass", "open-open", "w3cplus", "jb51", "wooyun",
-            "ctolib", "jikexueyuan", "hiapk", "jq-school", "yunweipai", "codeceo", "weibo", "sina", "html-js"));
+            "ctolib", "jikexueyuan", "hiapk", "jq-school", "yunweipai", "codeceo", "weibo", "sina", "html-js",
+            "shiyanlou", "studygolang", "golangtc", "gocn", "docin", "umeng", "1ke", "tencent", "shearphoto",
+            "ubuntu", "atom-china", "frontenddev", "beyoung"));
 
     /**
      * Private constructor.
