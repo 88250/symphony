@@ -129,10 +129,10 @@ public final class Link {
             "segmentfault", "yiibai", "hao123", "bilibili", "itstu", "qq", "ituring", "zhihu", "w3cfuns",
             "cnodejs", "jianshu", "36kr", "ifanr", "xitu", "huaban", "luosh", "itpub", "manong", "blogjava",
             "apple", "importnew", "cocoachina", "guokr", "w3school", "focus", "ruby-china", "ibm", "656463",
-            "outofmemory", "gitbook", "maiziedu", "php100", "imspm", "itheima", "stuq", "kancloud", "aichengxu",
-            "comsharp", "chinaunix", "aliyun", "coolshell", "ruanyifeng", "zhufengpeixun", "ttlsa", "apeclass",
-            "open-open", "w3cplus", "jb51", "wooyun", "ctolib", "jikexueyuan", "hiapk", "jq-school", "yunweipai",
-            "codeceo", "weibo", "sina", "html-js", "psjia", "jfedu", "laravel-china"));
+            "outofmemory", "gitbook", "maiziedu", "php100", "diycode", "psjia", "jfedu", "laravel-china",
+            "imspm", "itheima", "stuq", "kancloud", "aichengxu", "comsharp", "chinaunix", "aliyun", "coolshell",
+            "ruanyifeng", "zhufengpeixun", "ttlsa", "apeclass", "open-open", "w3cplus", "jb51", "wooyun",
+            "ctolib", "jikexueyuan", "hiapk", "jq-school", "yunweipai", "codeceo", "weibo", "sina", "html-js"));
 
     /**
      * Private constructor.
