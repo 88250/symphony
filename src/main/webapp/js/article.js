@@ -212,6 +212,12 @@ var Comment = {
                 $('.action-btns .icon-star').parent().click();
             }
             return false;
+        }).bind('keyup', 'r', function assets() {
+            // v r 打赏帖子
+            if (Util.prevKey === 'v') {
+                $('.action-btns .icon-points').parent().click();
+            }
+            return false;
         }).bind('keyup', 'l', function assets() {
             // v h 查看帖子历史
             if (Util.prevKey === 'v') {
@@ -1093,6 +1099,7 @@ var Article = {
                 success: function (result, textStatus) {
                     if (result.sc) {
                         $("#articleRewardContent").removeClass("reward").html(result.articleRewardContent);
+                        Article.parseLanguage();
                         return;
                     }
 
