@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.8.19, Dec 18, 2016
+ * @version 1.5.8.20, Dec 19, 2016
  */
 
 @import "variables";
@@ -1722,18 +1722,18 @@ ul.CodeMirror-hints {
     width: 100%;
 }
 
-h2.article-title {
+h1.article-title {
     word-break: break-all;
     font-size: 16px;
     font-weight: normal;
     margin: 10px 0;
 }
 
-h2.article-title > a {
+h1.article-title > a {
     color: #595959;
 }
 
-h2.article-title > a:hover {
+h1.article-title > a:hover {
     color: #333;
 }
 

@@ -71,7 +71,7 @@
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
                     </#if>><span class="icon-thumbs-down"></span> ${comment.commentBadCnt}</span> &nbsp;
-                    <#if comment.commentAuthorName != currentUser.userName && permissions["commonAddComment"].permissionGrant>
+                    <#if isLoggedIn && comment.commentAuthorName != currentUser.userName && permissions["commonAddComment"].permissionGrant>
                         <span aria-label="${replyLabel}" class="icon-reply-btn tooltipped tooltipped-n"
                               onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')">
                         <span class="icon-reply"></span></span>

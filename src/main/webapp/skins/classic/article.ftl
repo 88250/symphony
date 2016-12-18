@@ -16,14 +16,14 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/aplayer/APlayer.min.css">
         <link rel="canonical" href="${servePath}${article.articlePermalink}?p=${paginationCurrentPageNum}&m=${userCommentViewMode}">
     </head>
-    <body>
+    <body itemscope itemtype="${servePath}${article.articlePermalink}?p=${paginationCurrentPageNum}&m=${userCommentViewMode}">
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
                 <div class="content">
                     <div class="module article-module">
 
-                        <h1 class="article-title">
+                        <h1 class="article-title" itemprop="name">
                             <#if 1 == article.articlePerfect>
                             <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="24" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
                             </#if>
@@ -402,6 +402,8 @@
             </#if>
             </div>
         </div>
+        <img itemprop="image" src="${staticServePath}/images/hacpai.png" />
+        <p itemprop="description" class="fn-none">"${article.articlePreviewContent}"</p>
         <#include "footer.ftl">
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>

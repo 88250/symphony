@@ -14,7 +14,7 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/aplayer/APlayer.min.css">
     </head>
-    <body>
+    <body itemscope itemtype="${servePath}${article.articlePermalink}?p=${paginationCurrentPageNum}&m=${userCommentViewMode}">
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
@@ -72,7 +72,7 @@
                         </#if>
                     </span>
                 </div>
-                <h2 class="article-title">
+                <h1 class="article-title" itemprop="name">
                     <#if 1 == article.articlePerfect>
                     <svg height="20" viewBox="3 3 11 12" width="14">${perfectIcon}</svg>
                     </#if>
@@ -86,7 +86,7 @@
                     <a class="ft-a-title" href="${servePath}${article.articlePermalink}" rel="bookmark">
                         ${article.articleTitleEmoj}
                     </a>
-                </h2> 
+                </h1>
                 <div class="article-info">
                     <#if article.articleAnonymous == 0>
                     <a rel="author" href="${servePath}/member/${article.articleAuthorName}"
@@ -361,6 +361,8 @@
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <#include "footer.ftl">
+        <img itemprop="image" src="${staticServePath}/images/hacpai.png" />
+        <p itemprop="description" class="fn-none">"${article.articlePreviewContent}"</p>
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
