@@ -157,7 +157,7 @@
                                 </#if>
                                 <#if 0 < article.articleRewardPoint>
                                     <span class="tooltipped tooltipped-n has-cnt<#if article.rewarded> ft-red</#if>"
-                            <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>
+                                    <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>
                                           aria-label="${rewardLabel}"><span class="icon-points"></span> ${article.rewardedCnt}</span>
                                 </#if>
                             </span>

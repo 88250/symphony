@@ -37,7 +37,7 @@
                                    <span>${notificationCommentedLabel}</span>
                                     <#if unreadCommentedNotificationCnt &gt; 0>
                                     <span class="count">${unreadCommentedNotificationCnt}</span>
-                                    <span onclick="Settings.makeNotificationRead('commented')" 
+                                    <span onclick="Util.makeNotificationRead('commented')"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
                                         <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                     </span>
@@ -47,7 +47,7 @@
                                    <span>${notificationReplyLabel}</span>
                                     <#if unreadReplyNotificationCnt &gt; 0>
                                     <span class="count">${unreadReplyNotificationCnt}</span>
-                                    <span onclick="Settings.makeNotificationRead('reply')" 
+                                    <span onclick="Util.makeNotificationRead('reply')"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
                                         <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                     </span>
@@ -57,7 +57,7 @@
                                    <span>${notificationAtLabel}</span>
                                     <#if unreadAtNotificationCnt &gt; 0>
                                     <span class="count">${unreadAtNotificationCnt}</span>
-                                    <span onclick="Settings.makeNotificationRead('at')" 
+                                    <span onclick="Util.makeNotificationRead('at')"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
                                         <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                     </span>
@@ -67,7 +67,7 @@
                                    <span>${notificationFollowingUserLabel}</span>
                                     <#if unreadFollowingUserNotificationCnt &gt; 0>
                                     <span class="count">${unreadFollowingUserNotificationCnt}</span>
-                                    <span onclick="Settings.makeNotificationRead('followingUser')" 
+                                    <span onclick="Util.makeNotificationRead('followingUser')"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
                                         <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                     </span>
@@ -95,19 +95,20 @@
                         </div>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
         <#include "../../footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                                        Settings.initHljs();
-                                        $(document).bind('keyup', 'e', function assets() {
-                                            if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
-                                                return false;
-                                            }
-                                            $('.home-menu .current .tooltipped').click();
-                                            return false;
-                                        });
+            Settings.initHljs();
+            $(document).bind('keyup', 'e', function assets() {
+                if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
+                    return false;
+                }
+                $('.home-menu .current .tooltipped').click();
+                return false;
+            });
         </script>
     </body>
 </html>
