@@ -52,7 +52,7 @@ import java.util.Set;
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.9, Dec 17, 2016
+ * @version 1.3.3.9, Dec 18, 2016
  * @since 0.2.0
  */
 @Named
@@ -98,7 +98,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.TRACE, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, ArticleNotifier.class.getName()});
+                event.getType(), data, ArticleNotifier.class.getName());
 
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
@@ -139,7 +139,8 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             // 'FollowingUser' Notification
             if (Article.ARTICLE_TYPE_C_DISCUSSION != originalArticle.optInt(Article.ARTICLE_TYPE)
                     && Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)
-                    && !Tag.TAG_TITLE_C_SANDBOX.equals(tags)) {
+                    && !Tag.TAG_TITLE_C_SANDBOX.equals(tags)
+                    && !StringUtils.containsIgnoreCase(tags, Symphonys.get("systemAnnounce"))) {
                 final JSONObject followerUsersResult = followQueryService.getFollowerUsers(
                         UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleAuthorId, 1, Integer.MAX_VALUE);
 
