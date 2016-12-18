@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.39.27.39, Dec 17, 2016
+ * @version 1.40.27.39, Dec 18, 2016
  */
 
 /**
@@ -30,19 +30,17 @@
  */
 var Util = {
     prevKey: undefined,
-    closeAlert: function (it) {
-        var $alert = $(it).parent().parent();
-        if ($alert.prev().hasClass('dialog-background')) {
-            $alert.prev().remove();
-        }
+    closeAlert: function () {
+        var $alert = $('#alertDialogPanel');
+        $alert.prev().remove();
         $alert.remove();
     },
     alert: function (content) {
         var alertHTML = '',
-         alertBgHTML = '<div style="height: ' +  document.documentElement.scrollHeight
+         alertBgHTML = '<div onclick="Util.closeAlert(this)" style="height: ' +  document.documentElement.scrollHeight
          + 'px;display: block;" class="dialog-background"></div>',
-         alertContentHTML = '<div class="dialog-panel" id="alertDialogPanel">'
-         + '<div class="fn-clear dialog-header-bg"><a href="javascript:void(0);" onclick="Util.closeAlert(this)" class="icon-close"></a></div>'
+         alertContentHTML = '<div class="dialog-panel" id="alertDialogPanel" tabindex="0" onkeyup="Util.closeAlert()">'
+         + '<div class="fn-clear dialog-header-bg"><a href="javascript:void(0);" onclick="Util.closeAlert()" class="icon-close"></a></div>'
          + '<div class="dialog-main" style="text-align:center;padding: 30px 10px 40px">' + content + '</div></div>';
 
          alertHTML = alertBgHTML + alertContentHTML;
@@ -51,8 +49,9 @@ var Util = {
 
         $('#alertDialogPanel').css({
             "top": ($(window).height() - $('#alertDialogPanel').height()) / 2 + "px",
-            "left": ($(window).width() - $('#alertDialogPanel').width()) / 2 + "px"
-        }).show();
+            "left": ($(window).width() - $('#alertDialogPanel').width()) / 2 + "px",
+            "outline": 'none'
+        }).show().focus();
     },
     /**
      * 初始化全局快捷键
