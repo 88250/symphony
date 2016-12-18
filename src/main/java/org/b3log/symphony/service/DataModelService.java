@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.2.24, Dec 12, 2016
+ * @version 1.10.2.25, Dec 18, 2016
  * @since 0.2.0
  */
 @Service
@@ -124,6 +124,12 @@ public class DataModelService {
      */
     @Inject
     private LivenessQueryService livenessQueryService;
+
+    /**
+     * Role query service.
+     */
+    @Inject
+    private  RoleQueryService roleQueryService;
 
     /**
      * Domain cache.
@@ -337,8 +343,6 @@ public class DataModelService {
         }
 
         dataModel.put(Common.WEBSOCKET_SCHEME, Symphonys.get("websocket.scheme"));
-
-
     }
 
     /**
@@ -384,6 +388,7 @@ public class DataModelService {
             dataModel.put(User.USER_NAME, userName);
             final String userRole = curUser.optString(User.USER_ROLE);
             dataModel.put(User.USER_ROLE, userRole);
+
             dataModel.put(Common.IS_ADMIN_LOGGED_IN, Role.ROLE_ID_C_ADMIN.equals(userRole));
 
             avatarQueryService.fillUserAvatarURL(curUser.optInt(UserExt.USER_AVATAR_VIEW_MODE), curUser);
@@ -406,6 +411,9 @@ public class DataModelService {
             }
 
             dataModel.put(Common.CURRENT_USER, curUser);
+
+            final JSONObject role = roleQueryService.getRole(userRole);
+            curUser.put(Role.ROLE_NAME, role.optString(Role.ROLE_NAME));
 
             // final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.optString(Keys.OBJECT_ID));
             dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, 0); // AJAX polling 
