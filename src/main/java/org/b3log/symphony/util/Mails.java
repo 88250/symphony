@@ -41,7 +41,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://blog.thinkjava.top">VirutalPier</a>
- * @version 1.1.4.6, Dec 15, 2016
+ * @version 1.1.5.6, Dec 18, 2016
  * @since 1.3.0
  */
 public final class Mails {
@@ -49,7 +49,7 @@ public final class Mails {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Mails.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Mails.class);
 
     /**
      * Mail channel.
@@ -104,7 +104,7 @@ public final class Mails {
     /**
      * Aliyun batch from.
      */
-    private static final String ALIYUN_BATCH_FROM = Symphonys.get("aliyun.batch.from");
+    private static final String ALIYUN_BATCH_FROM = Symphonys.get("mail.aliyun.batch.from");
 
     /**
      * Template configuration.
