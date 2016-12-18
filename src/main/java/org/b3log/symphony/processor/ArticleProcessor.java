@@ -97,7 +97,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.21.34, Dec 18, 2016
+ * @version 1.24.22.34, Dec 18, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -566,6 +566,7 @@ public class ArticleProcessor {
         article.put(Common.IS_MY_ARTICLE, false);
         article.put(Article.ARTICLE_T_AUTHOR, author);
         article.put(Common.REWARDED, false);
+        article.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_ARTICLE));
         if (!article.has(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK)) { // TODO: for legacy data
             article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, "");
         }
@@ -1532,8 +1533,16 @@ public class ArticleProcessor {
         final JSONObject article = articleQueryService.getArticle(articleId);
         articleQueryService.processArticleContent(article, request);
 
+        String markdownText = article.optString(Article.ARTICLE_REWARD_CONTENT);
+        markdownText = shortLinkQueryService.linkArticle(markdownText);
+        markdownText = shortLinkQueryService.linkTag(markdownText);
+        markdownText = Emotions.toAliases(markdownText);
+        markdownText = Emotions.convert(markdownText);
+        markdownText = Markdowns.toHTML(markdownText);
+        markdownText = Markdowns.clean(markdownText, "");
+
         context.renderTrueResult().
-                renderJSONValue(Article.ARTICLE_REWARD_CONTENT, article.optString(Article.ARTICLE_REWARD_CONTENT));
+                renderJSONValue(Article.ARTICLE_REWARD_CONTENT, markdownText);
     }
 
     /**

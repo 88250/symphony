@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.18.42, Nov 24, 2016
+ * @version 2.18.18.43, Dec 18, 2016
  */
 
 @import "variables";
@@ -173,6 +173,7 @@ label.cmt-anonymous {
         transition: 218ms;
         padding: 2px 5px;
         font-size: 13px;
+        vertical-align: top;
     }
 
     .has-cnt:hover {

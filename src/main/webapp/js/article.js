@@ -134,11 +134,16 @@ var Comment = {
             }, 1000);
             return false;
         }).bind('keydown', 'r', function assets(event) {
-            // r 回复帖子
-            if (Util.prevKey) {
-                return false;
+            if (!Util.prevKey) {
+                // r 回复帖子
+                $('.article-actions .icon-reply-btn').click();
+            } else if (Util.prevKey === 'v') {
+                // v r 打赏帖子
+                $('.action-btns .icon-points').parent().click();
+            } else if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                // x r 回复回帖
+                $('#comments .list > ul > li.focus .icon-reply').parent().click();
             }
-            $('.article-actions .icon-reply-btn').click();
             return false;
         }).bind('keyup', 'h', function assets() {
             // x h 感谢选中回贴
@@ -156,11 +161,6 @@ var Comment = {
             // x d 反对选中回贴
             if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
                 $('#comments .list > ul > li.focus .icon-thumbs-down').parent().click();
-            }
-            return false;
-        }).bind('keyup', 'r', function assets() {
-            if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('#comments .list > ul > li.focus .icon-reply').parent().click();
             }
             return false;
         }).bind('keyup', 'c', function assets() {
@@ -1093,6 +1093,11 @@ var Article = {
                 success: function (result, textStatus) {
                     if (result.sc) {
                         $("#articleRewardContent").removeClass("reward").html(result.articleRewardContent);
+                        Article.parseLanguage();
+
+                        var cnt = parseInt($('.action-btns .icon-points').parent().text());
+                        $('.action-btns .icon-points').parent().addClass('ft-red')
+                        .html('<span class="icon-points"></span> ' + (cnt + 1)).removeAttr('onclick');
                         return;
                     }
 

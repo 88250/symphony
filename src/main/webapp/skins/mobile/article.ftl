@@ -54,7 +54,11 @@
                                 onclick="Article.permissionTip(Label.noPermissionLabel)"
                             </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
                         </#if>
-                        
+                        <#if 0 < article.articleRewardPoint>
+                        <span class="tooltipped tooltipped-n has-cnt<#if article.rewarded> ft-red</#if>"
+                        <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>
+                        aria-label="${rewardLabel}"><span class="icon-points"></span> ${article.rewardedCnt}</span>
+                        </#if>
                         <#if article.isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
                         <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" 
                            class="tooltipped tooltipped-n"><span class="icon-edit"></span></a>

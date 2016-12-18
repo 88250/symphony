@@ -49,7 +49,7 @@
                             <span>${notificationReplyLabel}</span>
                             <#if unreadReplyNotificationCnt &gt; 0>
                             <span class="count">${unreadReplyNotificationCnt}</span>
-                            <span class="ft-gray fn-right" onclick="Settings.makeNotificationRead('reply')" class="fn-right">
+                            <span class="ft-gray fn-right" onclick="Util.makeNotificationRead('reply')" class="fn-right">
                                 ${makeAsReadLabel}
                             </span>
                             </#if>
@@ -60,7 +60,7 @@
                             <span>${notificationAtLabel}</span>
                             <#if unreadAtNotificationCnt &gt; 0>
                             <span class="count">${unreadAtNotificationCnt}</span>
-                            <span class="ft-gray fn-right" onclick="Settings.makeNotificationRead('at')" class="fn-right">
+                            <span class="ft-gray fn-right" onclick="Util.makeNotificationRead('at')" class="fn-right">
                                 ${makeAsReadLabel}
                             </span>
                             </#if>
@@ -71,7 +71,7 @@
                             <span>${notificationFollowingUserLabel}</span>
                             <#if unreadFollowingUserNotificationCnt &gt; 0>
                             <span class="count">${unreadFollowingUserNotificationCnt}</span>
-                            <span class="ft-gray fn-right" onclick="Settings.makeNotificationRead('followingUser')" class="fn-right">
+                            <span class="ft-gray fn-right" onclick="Util.makeNotificationRead('followingUser')" class="fn-right">
                                 ${makeAsReadLabel}
                             </span>
                             </#if>

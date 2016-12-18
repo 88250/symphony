@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.8.18, Dec 17, 2016
+ * @version 1.5.8.19, Dec 18, 2016
  */
 
 @import "variables";
@@ -1087,40 +1087,52 @@ a[class*=" icon-"]:hover {
 /* end pagination */
 
 /* start dialog */
+
 .dialog-background {
     background-color: #000000;
     display: none;
     height: 100%;
     left: 0;
-    opacity: .3;
+    opacity: .5;
     position: absolute;
     top: 0;
     width: 100%;
-    z-index: 90;
+    z-index: 200;
 }
 
 .dialog-panel {
     display: none;
     position: fixed;
-    z-index: 100;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    z-index: 201;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,0.25);
+    border-radius: 5px;
+    box-shadow: 0 0 18px rgba(0,0,0,0.4);
 }
 
-.dialog-close-icon {
-    background: url("../images/close.png") no-repeat scroll -2px -3px transparent;
-    cursor: pointer;
+.dialog-header-bg {
+    padding: 10px;
+    font-size: 18px;
+    font-weight: normal;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.dialog-header-bg .icon-close {
+    color: rgba(0, 0, 0, 0.25);
+    font-size: 12px;
     float: right;
-    height: 25px;
-    margin-right: -13px;
-    margin-top: -12px;
-    padding: 3px;
-    width: 25px;
+    font-weight: bold;
+}
+
+.dialog-header-bg .icon-close:hover {
+    color: #333;
 }
 
 .dialog-main {
-    background-color: #FFFFFF;
-    border: 1px solid #777;
-    padding: 12px;
+    min-width: 200px;
+    padding: 10px;
+    box-sizing: content-box;
 }
 /* end dialog */
 
@@ -2531,7 +2543,30 @@ code .dec { color: initial; } /* decimal - blue */
     border-bottom: 1px dotted #CCCCCC;
     font-size: 25px;
     margin: 10px 0 10px;
-    padding-bottom: 10px;
+    padding: 10px;
+
+    .online,
+    .offline {
+        background-color: $red;
+        color: #fff;
+        font-size: 12px;
+        line-height: 20px;
+        border-radius: 3px;
+        height: 20px;
+        display: inline-block;
+        padding: 0 5px 0 3px;
+        vertical-align: middle;
+    }
+
+    .offline {
+        background-color: $gray;
+    }
+
+    button.follow {
+        font-size: 14px;
+        width: 100%;
+        margin: 10px 0;
+    }
 }
 
 .user-info {

@@ -17,11 +17,6 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -33,11 +28,17 @@ import org.b3log.symphony.repository.TagUserLinkRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * Link query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Oct 13, 2016
+ * @version 1.0.1.3, Dec 18, 2016
  * @since 1.6.0
  */
 @Service
@@ -199,7 +200,7 @@ public class LinkForgeQueryService {
                 tag.put(Tag.TAG_ICON_PATH, cachedTag.optString(Tag.TAG_ICON_PATH));
 
                 // query link id
-                final List<String> linkIds = tagUserLinkRepository.getByTagId(tagId, LINK_MAX_COUNT);
+                final List<String> linkIds = tagUserLinkRepository.getLinkIdsByTagId(tagId, LINK_MAX_COUNT);
                 if (linkIds.isEmpty()) {
                     continue;
                 }

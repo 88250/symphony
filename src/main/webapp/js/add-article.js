@@ -524,7 +524,7 @@ var AddArticle = {
             afterKeyup: function (event) {
                 $('.post .domains-tags').hide();
                 // 遇到分词符号自动添加标签
-                if (event.key === ' ' || event.key === ' ' || event.key === ',' || event.key === '，' ||
+                if (event.key === ',' || event.key === '，' ||
                         event.key === '、' || event.key === '；' || event.key === ';') {
                     var text = $("#articleTags").val();
                     addTag(text.substr(0, text.length - 1));

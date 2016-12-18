@@ -30,50 +30,50 @@
 .home-menu {
     list-style: none;
     background-color: #fff;
-}
 
-.home-menu a {
-    position: relative;
-    display: block;
-    padding: 8px 10px;
-    text-shadow: 0 1px 0 #fff;
-    border-bottom: 1px solid #eee;
-    color: #666;
-}
+    a {
+        position: relative;
+        display: block;
+        padding: 8px 10px;
+        text-shadow: 0 1px 0 #fff;
+        border-bottom: 1px solid #eee;
+        color: #666;
+    }
 
-.home-menu a:last-child {
-    border-bottom: 0;
-}
+    a:last-child {
+        border-bottom: 0;
+    }
 
-.home-menu a:hover {
-    text-decoration: none;
-    background-color: #f9f9f9;
-}
+    a:hover {
+        text-decoration: none;
+        background-color: #f9f9f9;
+    }
 
-.home-menu a.current {
-    font-weight: bold;
-    color: #222;
-    cursor: default;
-    background-color: #fff;
-}
+    a.current {
+        font-weight: bold;
+        color: #222;
+        cursor: default;
+        background-color: #fff;
+    }
 
-.home-menu a .todo {
-    position: absolute;
-    border-style: solid;
-    right: 0px;
-    top: 0px;
-    border-width: 10px 10px 10px 10px;
-    border-color: $red $red transparent transparent;
-}
+    a .todo {
+        position: absolute;
+        border-style: solid;
+        right: 0px;
+        top: 0px;
+        border-width: 10px 10px 10px 10px;
+        border-color: $red $red transparent transparent;
+    }
 
-.home-menu a.current::before {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 2px;
-    content: "";
-    background-color: $red;
+    a.current::before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 2px;
+        content: "";
+        background-color: $red;
+    }
 }
 
 .home-side-read {
@@ -96,12 +96,29 @@
     font-size: 25px;
     margin: 20px 0 20px;
     padding: 20px 10px 20px 10px;
-}
 
-.user-name button.follow {
-    font-size: 14px;
-    width: 100%;
-    margin-top: 20px;
+    .online,
+    .offline {
+        background-color: $red;
+        color: #fff;
+        font-size: 12px;
+        line-height: 20px;
+        border-radius: 3px;
+        height: 20px;
+        display: inline-block;
+        padding: 0 5px 0 3px;
+        vertical-align: middle;
+    }
+
+    .offline {
+        background-color: $gray;
+    }
+
+    button.follow {
+        font-size: 14px;
+        width: 100%;
+        margin-top: 20px;
+    }
 }
 
 .user-details {

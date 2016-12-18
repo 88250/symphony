@@ -146,14 +146,19 @@
                                       onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
                                     <#else>
                                         onclick="Article.permissionTip(Label.noPermissionLabel)"
-                                    </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                                    </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span> &nbsp;
                                 <#else>
                                 <span class="tooltipped tooltipped-n has-cnt" aria-label="${collectLabel}"
                                     <#if permissions["commonFollowArticle"].permissionGrant>
                                       onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
                                     <#else>
                                         onclick="Article.permissionTip(Label.noPermissionLabel)"
-                                    </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                                    </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span> &nbsp;
+                                </#if>
+                                <#if 0 < article.articleRewardPoint>
+                                    <span class="tooltipped tooltipped-n has-cnt<#if article.rewarded> ft-red</#if>"
+                                    <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>
+                                          aria-label="${rewardLabel}"><span class="icon-points"></span> ${article.rewardedCnt}</span>
                                 </#if>
                             </span>
 
@@ -193,7 +198,7 @@
                         <div class="module-panel list comments">
                             <ul>
                             <#list article.articleNiceComments as comment>
-                            <li>
+                                <li>
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
                                         <#if comment.commentAnonymous == 0>
