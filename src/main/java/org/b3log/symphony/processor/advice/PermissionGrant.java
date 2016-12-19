@@ -23,6 +23,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.AfterRequestProcessAdvice;
 import org.b3log.latke.servlet.renderer.AbstractHTTPResponseRenderer;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.Role;
 import org.b3log.symphony.service.RoleQueryService;
@@ -38,7 +39,7 @@ import java.util.Map;
  * Permission grant.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Dec 18, 2016
+ * @version 1.0.1.2, Dec 19, 2016
  * @since 1.8.0
  */
 @Named
@@ -63,23 +64,29 @@ public class PermissionGrant extends AfterRequestProcessAdvice {
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Object ret) {
-        final HttpServletRequest request = context.getRequest();
+        Stopwatchs.start("Grant permissions");
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
-        final Map<String, JSONObject> permissionsGrant = roleQueryService.getPermissionsGrantMap(roleId);
+        try {
+            final HttpServletRequest request = context.getRequest();
 
-        final JSONObject role = roleQueryService.getRole(roleId);
+            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+            final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
+            final Map<String, JSONObject> permissionsGrant = roleQueryService.getPermissionsGrantMap(roleId);
 
-        final AbstractHTTPResponseRenderer renderer = context.getRenderer();
-        if (null != renderer) {
-            final Map<String, Object> dataModel = renderer.getRenderDataModel();
+            final JSONObject role = roleQueryService.getRole(roleId);
 
-            dataModel.put(Permission.PERMISSIONS, permissionsGrant);
+            final AbstractHTTPResponseRenderer renderer = context.getRenderer();
+            if (null != renderer) {
+                final Map<String, Object> dataModel = renderer.getRenderDataModel();
 
-            String noPermissionLabel = langPropsService.get("noPermissionLabel");
-            noPermissionLabel = noPermissionLabel.replace("{roleName}", role.optString(Role.ROLE_NAME));
-            dataModel.put("noPermissionLabel", noPermissionLabel);
+                dataModel.put(Permission.PERMISSIONS, permissionsGrant);
+
+                String noPermissionLabel = langPropsService.get("noPermissionLabel");
+                noPermissionLabel = noPermissionLabel.replace("{roleName}", role.optString(Role.ROLE_NAME));
+                dataModel.put("noPermissionLabel", noPermissionLabel);
+            }
+        } finally {
+            Stopwatchs.end();
         }
     }
 }
