@@ -516,7 +516,7 @@ public class ArticleProcessor {
         String requisiteMsg = "";
         if (!currentUser.optString(UserExt.USER_AVATAR_URL).contains("_")) {
             requisite = true;
-            requisiteMsg = langPropsService.get("todoAvatarLabel");
+            requisiteMsg = langPropsService.get("uploadAvatarThenPostLabel");
         }
 
         dataModel.put(Common.REQUISITE, requisite);
