@@ -6,3 +6,4 @@ node_modules/
 .idea/
 symphony.iml
 nb-configuration.xml
+src/main/resources/local.properties
