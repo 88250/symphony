@@ -139,6 +139,7 @@ var AddArticle = {
                 dragDrop: false,
                 lineWrapping: true,
                 htmlURL: Label.servePath + "/markdown",
+                readOnly: Label.requisite,
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
                     "Ctrl-/": "autocompleteEmoji",

@@ -15,7 +15,17 @@
         <div class="main">
             <div class="wrapper post">
                 <div class="form fn-flex-1 fn-clear">
-                    <input type="text" id="articleTitle" autocomplete="off" tabindex="1"
+
+                    <#if requisite>
+                        <div class="tip error">
+                            <ul>
+                                <li>${requisiteMsg}</li>
+                            </ul>
+                        </div>
+                        <br/>
+                    </#if>
+
+                    <input type="text" id="articleTitle" autocomplete="off" tabindex="1"<#if requisite> readonly disabled</#if>
                            value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
                     <div class="article-content">
                         <textarea id="articleContent" tabindex="2"
@@ -23,7 +33,7 @@
                     </div>
                     <div class="tags-wrap">
                         <div class="tags-input"><span class="tags-selected"></span>
-                        <input id="articleTags" type="text" tabindex="3" 
+                        <input id="articleTags" type="text" tabindex="3"<#if requisite> readonly disabled</#if>
                                value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）" autocomplete="off" />
                         </div>
                         <#if domains?size != 0>
@@ -46,7 +56,8 @@
                         </#if>
                         <br/>
                     </div>
-                    <button id="showReward" class="fn-ellipsis" onclick="$(this).next().show(); $(this).hide()">
+                    <button id="showReward" class="fn-ellipsis"<#if requisite> readonly disabled</#if>
+                    onclick="$(this).next().show(); $(this).hide()">
                         ${rewardEditorPlaceholderLabel} &dtrif;
                     </button>
                     <div class="fn-none">
@@ -56,7 +67,7 @@
                         </div>
                         <div>
                             <input id="articleRewardPoint" type="number" tabindex="5" min="1"
-                                   <#if article?? && 0 < article.articleRewardPoint>data-orval="${article.articleRewardPoint}"</#if> 
+                                   <#if article?? && 0 < article.articleRewardPoint>data-orval="${article.articleRewardPoint}"</#if>
                                    value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint?c}</#if>" placeholder="${rewardPointLabel}" />
                         </div>
                     </div>
@@ -65,23 +76,23 @@
                     <div class="fn-clear fn-none">
                         <#if !article??>
                         <label> &nbsp;
-                            <input tabindex="6" type="radio" name="articleType" <#if 0 == articleType>checked="checked"</#if> value="0"/> 
+                            <input tabindex="6" type="radio" name="articleType" <#if 0 == articleType>checked="checked"</#if> value="0"/>
                                    ${articleLabel}
                         </label>
                         <label id="articleType3"> &nbsp;
-                            <input tabindex="9" type="radio" name="articleType" <#if 3 == articleType>checked="checked"</#if> value="3"/> 
+                            <input tabindex="9" type="radio" name="articleType" <#if 3 == articleType>checked="checked"</#if> value="3"/>
                                    ${thoughtLabel}
                         </label>
                         <label> &nbsp;
-                            <input tabindex="7" type="radio" name="articleType" <#if 1 == articleType>checked="checked"</#if> value="1"/> 
+                            <input tabindex="7" type="radio" name="articleType" <#if 1 == articleType>checked="checked"</#if> value="1"/>
                                    ${discussionLabel}
                         </label>
                         <label> &nbsp;
-                            <input tabindex="8" type="radio" name="articleType" <#if 2 == articleType>checked="checked"</#if> value="2"/> 
+                            <input tabindex="8" type="radio" name="articleType" <#if 2 == articleType>checked="checked"</#if> value="2"/>
                                    ${cityBroadcastLabel}
                         </label>
                         <#else>
-                        <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/> 
+                        <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/>
                         </#if>
                     </div>
                     <br/>
@@ -90,7 +101,7 @@
                         <#assign articleType=article.articleType>
                         </#if>
                         <#if 0 == articleType>
-                        <span class="icon-article"></span> ${articleLabel} 
+                        <span class="icon-article"></span> ${articleLabel}
                         <span class="ft-gray">${addNormalArticleTipLabel}</span>
                         <#elseif 1 == articleType>
                         <span class="icon-locked"></span> ${discussionLabel}
@@ -105,12 +116,12 @@
                         </#if>
                         <div class="fn-right">
                         	<#if hasB3Key>
-                        	<label class="article-anonymous">${syncLabel}<input
+                        	<label class="article-anonymous">${syncLabel}<input<#if requisite> readonly disabled</#if>
                                     <#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked</#if></#if>
                                     type="checkbox" id="syncWithSymphonyClient"></label>
                         	</#if>
                             <#if permissions["commonAddArticleAnonymous"].permissionGrant>
-                            <label class="article-anonymous">${anonymousLabel}<input
+                            <label class="article-anonymous">${anonymousLabel}<input<#if requisite> readonly disabled</#if>
                                     <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
                                     type="checkbox" id="articleAnonymous"></label>
                             </#if>
@@ -121,7 +132,8 @@
                                 </#if>
                             <#else>
                                 <#if permissions["commonUpdateArticle"].permissionGrant>
-                                <button class="red" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${postLabel}</button>
+                                <button class="red" tabindex="10"<#if requisite> readonly disabled</#if>
+                                    onclick="AddArticle.add('${csrfToken}')">${postLabel}</button>
                                 </#if>
                             </#if>
                         </div>
@@ -149,6 +161,7 @@
             Label.qiniuDomain = '${qiniuDomain}';
             Label.qiniuUploadToken = '${qiniuUploadToken}';
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
+            Label.requisite = ${requisite?c};
             <#if article??>Label.articleOId = '${article.oId}' ;</#if>
         </script>
         <script type="text/javascript" src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>

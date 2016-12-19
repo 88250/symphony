@@ -1512,6 +1512,7 @@
             autofocus: options.autofocus,
             lineWrapping: options.lineWrapping,
             extraKeys: keyMaps,
+            readOnly: options.readOnly,
             inputStyle: 'textarea'
         });
 

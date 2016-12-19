@@ -62,11 +62,7 @@
                     </div>
                 </div>
                 <div class="side">
-                    <#if currentUser?? && currentUser.userName == user.userName>
-                    <#include "../common/person-info.ftl">
-                    <#else>
                     <#include "home-side.ftl">
-                    </#if>
                     <div class="module">
                         <div class="module-header"><h2>${goHomeLabel}</h2></div> 
                         <div class="module-panel">
