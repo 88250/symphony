@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.18.43, Dec 18, 2016
+ * @version 2.18.18.44, Dec 19, 2016
  */
 
 @import "variables";
@@ -839,12 +839,12 @@ code .dec { color: initial; } /* decimal - blue */
     }
 
     .index-tabs > span.post {
-        border-bottom-color: #244776;
+        border-bottom-color: #ffac45;
     }
 
     .index-tabs > span:hover,
     .index-tabs > span:hover a {
-        color: #fff
+        color: #fff;
     }
 
     .index-tabs > span:before {
@@ -880,7 +880,7 @@ code .dec { color: initial; } /* decimal - blue */
     }
 
     .index-tabs > span.post:before {
-        background-color: #244776;
+        background-color: #ffac45;
     }
 
     .index-tabs > span:hover:before {
@@ -988,8 +988,8 @@ code .dec { color: initial; } /* decimal - blue */
         margin-top: -2px;
     }
 
-    .metro-border > div.red {
-        background-color: $red;
+    .metro-border > div.yellow {
+        background-color: #f1e05a;
         margin: -2px 2px 2px 2px;
     }
 
@@ -1007,11 +1007,11 @@ code .dec { color: initial; } /* decimal - blue */
         }
 
         .metro-border div {
-            background-color: #563d7c;
+            background-color: $red;
         }
 
-        .metro-border div.yellow {
-            background-color: #f1e05a;
+        .metro-border div.purple {
+            background-color: #563d7c;
             margin-left: 2px;
         }
 
