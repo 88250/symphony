@@ -21,10 +21,20 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.50.1.11, Nov 16, 2016
+ * @version 1.51.1.11, Dec 19, 2016
  * @since 0.2.0
  */
 public final class Common {
+
+    /**
+     * Key of requisite.
+     */
+    public static final String REQUISITE = "requisite";
+
+    /**
+     * Key of requisite message.
+     */
+    public static final String REQUISITE_MSG = "requisiteMsg";
 
     /**
      * Key of following user articles.
