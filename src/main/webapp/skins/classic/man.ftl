@@ -17,8 +17,8 @@
                         <i class="ft-gray">Command manual for hackers, with &hearts; from <a
                                 href="https://github.com/tldr-pages/tldr" target="_blank">tldr</a></i>
                         <br><br>
-                        <input id="cmd" style="width: 410px;" autofocus>
-                        <div id="html">
+                        <input id="manCmd" style="width: 410px;" autofocus placeholder="man">
+                        <div id="manHTML">${mans[0].manHTML}
                         </div>
                     </div>
                 </div>
@@ -28,10 +28,9 @@
             </div>
         </div>
         <#include "footer.ftl">
-
             <script>
-        $("#cmd").completed({
-            height: 170,
+        $("#manCmd").completed({
+            height: 0,
             onlySelect: true,
             data: [],
             afterSelected: function ($it) {
@@ -39,13 +38,13 @@
             },
             afterKeyup: function (event) {
                 $.ajax({
-                    url: Label.servePath + '/man/cmd?name=' + $("#cmd").val(),
+                    url: Label.servePath + '/man/cmd?name=' + $("#manCmd").val(),
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log(textStatus);
                     },
                     success: function (result, textStatus) {
-                        if (result.sc) {
-                            $("#cmd").completed('updateData', result.mans[0].html);
+                        if (result.sc && result.mans && result.mans.length > 0) {
+                            $("#manHTML").html(result.mans[0].manHTML);
                         } else {
                             console.log(result);
                         }
@@ -53,10 +52,6 @@
                 });
             }
         });
-
-
-
-
             </script>
     </body>
     </html>

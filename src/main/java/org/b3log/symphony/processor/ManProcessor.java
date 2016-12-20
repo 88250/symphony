@@ -89,6 +89,10 @@ public class ManProcessor {
         dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
+
+        final List<JSONObject> mans = manQueryService.getMansByCmdPrefix("man");
+
+        dataModel.put(Common.MANS, mans);
     }
 
 
