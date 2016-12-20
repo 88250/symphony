@@ -33,19 +33,22 @@ import java.io.InputStream;
 import java.util.*;
 
 /**
- * <a href="https://github.com/tldr-pages/tldr">TLDR</a> query service.
+ * Manual query service.
+ * <p>
+ * Sees <a href="https://github.com/tldr-pages/tldr">tldr</a> for more details.
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Dec 20, 2016
  * @since 1.8.0
  */
 @Service
-public class TLDRQueryService {
+public class ManQueryService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TLDRQueryService.class);
+    private static final Logger LOGGER = Logger.getLogger(ManQueryService.class);
 
     /**
      * All command manuals.
