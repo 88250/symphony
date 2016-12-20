@@ -38,68 +38,19 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Client;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Emotion;
-import org.b3log.symphony.model.Follow;
-import org.b3log.symphony.model.Invitecode;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.Pointtransfer;
-import org.b3log.symphony.model.Role;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.advice.AnonymousViewCheck;
-import org.b3log.symphony.processor.advice.CSRFCheck;
-import org.b3log.symphony.processor.advice.CSRFToken;
-import org.b3log.symphony.processor.advice.LoginCheck;
-import org.b3log.symphony.processor.advice.PermissionCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.UserBlockCheck;
+import org.b3log.symphony.model.*;
+import org.b3log.symphony.processor.advice.*;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.advice.validate.PointTransferValidation;
-import org.b3log.symphony.processor.advice.validate.UpdateEmotionListValidation;
-import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
-import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
-import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
-import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
-import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.AvatarQueryService;
-import org.b3log.symphony.service.CommentQueryService;
-import org.b3log.symphony.service.DataModelService;
-import org.b3log.symphony.service.EmotionMgmtService;
-import org.b3log.symphony.service.EmotionQueryService;
-import org.b3log.symphony.service.FollowQueryService;
-import org.b3log.symphony.service.InvitecodeMgmtService;
-import org.b3log.symphony.service.InvitecodeQueryService;
-import org.b3log.symphony.service.LinkForgeQueryService;
-import org.b3log.symphony.service.NotificationMgmtService;
-import org.b3log.symphony.service.OptionQueryService;
-import org.b3log.symphony.service.PointtransferMgmtService;
-import org.b3log.symphony.service.PointtransferQueryService;
-import org.b3log.symphony.service.PostExportService;
-import org.b3log.symphony.service.UserMgmtService;
-import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Languages;
-import org.b3log.symphony.util.Networks;
-import org.b3log.symphony.util.Results;
-import org.b3log.symphony.util.Sessions;
-import org.b3log.symphony.util.Symphonys;
-import org.b3log.symphony.util.TimeZones;
+import org.b3log.symphony.processor.advice.validate.*;
+import org.b3log.symphony.service.*;
+import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * User processor.
@@ -138,7 +89,7 @@ import java.util.TimeZone;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.14.30, Dec 13, 2016
+ * @version 1.26.14.32, Dec 18, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -256,6 +207,12 @@ public class UserProcessor {
      */
     @Inject
     private LinkForgeQueryService linkForgeQueryService;
+
+    /**
+     * Role query service.
+     */
+    @Inject
+    private RoleQueryService roleQueryService;
 
     /**
      * Updates user i18n.
@@ -535,29 +492,28 @@ public class UserProcessor {
 
         if (requestURI.contains("function")) {
             final String emojis = emotionQueryService.getEmojis(userId);
-            final String[][] emojiLists = {
-                    {
-                            "smile",
-                            "laughing",
-                            "smirk",
-                            "heart_eyes",
-                            "kissing_heart",
-                            "flushed",
-                            "grin",
-                            "stuck_out_tongue_closed_eyes",
-                            "kissing",
-                            "sleeping",
-                            "anguished",
-                            "open_mouth",
-                            "expressionless",
-                            "unamused",
-                            "sweat_smile",
-                            "weary",
-                            "sob",
-                            "joy",
-                            "astonished",
-                            "scream"
-                    }, {
+            final String[][] emojiLists = {{
+                    "smile",
+                    "laughing",
+                    "smirk",
+                    "heart_eyes",
+                    "kissing_heart",
+                    "flushed",
+                    "grin",
+                    "stuck_out_tongue_closed_eyes",
+                    "kissing",
+                    "sleeping",
+                    "anguished",
+                    "open_mouth",
+                    "expressionless",
+                    "unamused",
+                    "sweat_smile",
+                    "weary",
+                    "sob",
+                    "joy",
+                    "astonished",
+                    "scream"
+            }, {
                     "tired_face",
                     "rage",
                     "triumph",
@@ -702,9 +658,9 @@ public class UserProcessor {
                     "sweet_potato",
                     "eggplant",
                     "tomato",
-                    Emotion.EOF_EMOJI //标记结束以便在function.ftl中处理
-            }
-            };
+                    Emotion.EOF_EMOJI // 标记结束以便在function.ftl中处理
+            }};
+
             dataModel.put(Emotion.EMOTIONS, emojis);
             dataModel.put(Emotion.SHORT_T_LIST, emojiLists);
         }
@@ -2121,5 +2077,9 @@ public class UserProcessor {
      */
     private void fillHomeUser(final Map<String, Object> dataModel, final JSONObject user) {
         dataModel.put(User.USER, user);
+
+        final String roleId = user.optString(User.USER_ROLE);
+        final JSONObject role = roleQueryService.getRole(roleId);
+        user.put(Role.ROLE_NAME, role.optString(Role.ROLE_NAME));
     }
 }

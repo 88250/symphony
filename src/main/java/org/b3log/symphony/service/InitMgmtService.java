@@ -42,7 +42,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 16, 2016
+ * @version 1.0.1.1, Dec 17, 2016
  * @since 1.8.0
  */
 @Service
@@ -52,55 +52,138 @@ public class InitMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(InitMgmtService.class);
+    private static Set<String> VISITOR_PERMISSIONS = new HashSet<>();
+    private static Set<String> DEFAULT_PERMISSIONS = new HashSet<>();
+    private static Set<String> MEMBER_PERMISSIONS = new HashSet<>();
+    private static Set<String> REGULAR_PERMISSIONS = new HashSet<>();
+    private static Set<String> ADMIN_PERMISSIONS = new HashSet<>();
+    private static Set<String> LEADER_PERMISSIONS = new HashSet<>();
+
+    static {
+        DEFAULT_PERMISSIONS.addAll(VISITOR_PERMISSIONS);
+        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE);
+        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_UPDATE_ARTICLE);
+        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
+        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_UPDATE_COMMENT);
+        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_THANK_ARTICLE);
+        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_THANK_COMMENT);
+    }
+
+    static {
+        MEMBER_PERMISSIONS.addAll(DEFAULT_PERMISSIONS);
+        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_GOOD_ARTICLE);
+        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_BAD_ARTICLE);
+        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_GOOD_COMMENT);
+        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_BAD_COMMENT);
+        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_FOLLOW_ARTICLE);
+        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_AT_USER);
+        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_USE_INVITATION_LINK);
+    }
+
+    static {
+        REGULAR_PERMISSIONS.addAll(MEMBER_PERMISSIONS);
+        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_STICK_ARTICLE);
+        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE_ANONYMOUS);
+        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT_ANONYMOUS);
+        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_VIEW_ARTICLE_HISTORY);
+        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_VIEW_COMMENT_HISTORY);
+        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_AT_PARTICIPANTS);
+        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_EXCHANGE_INVITATION_CODE);
+        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_TAG_UPDATE_TAG_BASIC);
+        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN);
+        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_TAGS);
+    }
+
+    static {
+        LEADER_PERMISSIONS.addAll(REGULAR_PERMISSIONS);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_ADD_USER);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_UPDATE_USER_BASIC);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_UPDATE_USER_ADVANCED);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_UPDATE_ARTICLE_BASIC);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_STICK_ARTICLE);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_CANCEL_STICK_ARTICLE);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_REINDEX_ARTICLE_INDEX);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMENT_UPDATE_COMMENT_BASIC);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_ADD_POINT);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_EXCHANGE_POINT);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_DEDUCT_POINT);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_IC_GEN_IC);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_IC_UPDATE_IC_BASIC);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_RW_ADD_RW);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_RW_UPDATE_RW_BASIC);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_RW_REMOVE_RW);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_USERS);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_ARTICLES);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_COMMENTS);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_ICS);
+        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_RWS);
+    }
+
+    // Built-in init role permissions //
+
+    static {
+        ADMIN_PERMISSIONS.addAll(LEADER_PERMISSIONS);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_ADD_ARTICLE);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_REINDEX_ARTICLES_INDEX);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_REMOVE_ARTICLE);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMENT_REMOVE_COMMENT);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_DOMAIN_ADD_DOMAIN);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_DOMAIN_ADD_DOMAIN_TAG);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN_TAG);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_DOMAIN_UPDATE_DOMAIN_BASIC);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_AD_UPDATE_SIDE);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_ALLOW_ADD_ARTICLE);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_ALLOW_ADD_COMMENT);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_LANGUAGE);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_REGISTER_METHOD);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_DOMAINS);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_AD);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_ROLES);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_MISC);
+    }
 
     /**
      * Permission repository.
      */
     @Inject
     private PermissionRepository permissionRepository;
-
     /**
      * Role repository.
      */
     @Inject
     private RoleRepository roleRepository;
-
     /**
      * Role-permission repository.
      */
     @Inject
     private RolePermissionRepository rolePermissionRepository;
-
     /**
      * Option repository.
      */
     @Inject
     private OptionRepository optionRepository;
-
     /**
      * Tag repository.
      */
     @Inject
     private TagRepository tagRepository;
-
     /**
      * Tag management service.
      */
     @Inject
     private TagMgmtService tagMgmtService;
-
     /**
      * Article management service.
      */
     @Inject
     private ArticleMgmtService articleMgmtService;
-
     /**
      * User management service.
      */
     @Inject
     private UserMgmtService userMgmtService;
-
     /**
      * User query service.
      */
@@ -222,6 +305,8 @@ public class InitMgmtService {
             // article management permissions
             permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_ARTICLE);
 
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_ARTICLE_ADD_ARTICLE);
+            permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_ARTICLE_CANCEL_STICK_ARTICLE);
             permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_ARTICLE_REINDEX_ARTICLES_INDEX);
@@ -353,6 +438,32 @@ public class InitMgmtService {
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_USER_UPDATE_USER_ADVANCED);
             permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_USER_UPDATE_USER_BASIC);
+            permissionRepository.add(permission);
+
+            // menu permissions
+            permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_MENU);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_AD);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_ARTICLES);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_COMMENTS);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_DOMAINS);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_ICS);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_RWS);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_TAGS);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_USERS);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_MISC);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_ROLES);
             permissionRepository.add(permission);
 
             // Init roles
@@ -492,91 +603,5 @@ public class InitMgmtService {
 
             System.exit(0);
         }
-    }
-
-    // Built-in init role permissions //
-
-    private static Set<String> VISITOR_PERMISSIONS = new HashSet<>();
-
-    private static Set<String> DEFAULT_PERMISSIONS = new HashSet<>();
-
-    static {
-        DEFAULT_PERMISSIONS.addAll(VISITOR_PERMISSIONS);
-        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE);
-        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_UPDATE_ARTICLE);
-        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
-        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_UPDATE_COMMENT);
-        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_THANK_ARTICLE);
-        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_THANK_COMMENT);
-    }
-
-    private static Set<String> MEMBER_PERMISSIONS = new HashSet<>();
-
-    static {
-        MEMBER_PERMISSIONS.addAll(DEFAULT_PERMISSIONS);
-        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_GOOD_ARTICLE);
-        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_BAD_ARTICLE);
-        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_BAD_COMMENT);
-        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_BAD_COMMENT);
-        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_FOLLOW_ARTICLE);
-        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_AT_USER);
-        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_USE_INVITATION_LINK);
-    }
-
-    private static Set<String> REGULAR_PERMISSIONS = new HashSet<>();
-
-    static {
-        REGULAR_PERMISSIONS.addAll(MEMBER_PERMISSIONS);
-        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_STICK_ARTICLE);
-        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE_ANONYMOUS);
-        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT_ANONYMOUS);
-        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_VIEW_ARTICLE_HISTORY);
-        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_VIEW_COMMENT_HISTORY);
-        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_AT_PARTICIPANTS);
-        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_EXCHANGE_INVITATION_CODE);
-        REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_TAG_UPDATE_TAG_BASIC);
-    }
-
-    private static Set<String> LEADER_PERMISSIONS = new HashSet<>();
-
-    static {
-        LEADER_PERMISSIONS.addAll(REGULAR_PERMISSIONS);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_ADD_USER);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_UPDATE_USER_BASIC);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_UPDATE_USER_ADVANCED);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_UPDATE_ARTICLE_BASIC);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_STICK_ARTICLE);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_CANCEL_STICK_ARTICLE);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_REINDEX_ARTICLE_INDEX);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMENT_UPDATE_COMMENT_BASIC);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_ADD_POINT);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_EXCHANGE_POINT);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_DEDUCT_POINT);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_IC_GEN_IC);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_IC_UPDATE_IC_BASIC);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_RW_ADD_RW);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_RW_UPDATE_RW_BASIC);
-        LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_RW_REMOVE_RW);
-    }
-
-    private static Set<String> ADMIN_PERMISSIONS = new HashSet<>();
-
-    static {
-        ADMIN_PERMISSIONS.addAll(LEADER_PERMISSIONS);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_ADD_ARTICLE);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_REINDEX_ARTICLES_INDEX);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_REMOVE_ARTICLE);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMENT_REMOVE_COMMENT);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_DOMAIN_ADD_DOMAIN);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_DOMAIN_ADD_DOMAIN_TAG);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN_TAG);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_DOMAIN_UPDATE_DOMAIN_BASIC);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_AD_UPDATE_SIDE);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_ALLOW_ADD_ARTICLE);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_ALLOW_ADD_COMMENT);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_LANGUAGE);
-        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_REGISTER_METHOD);
     }
 }

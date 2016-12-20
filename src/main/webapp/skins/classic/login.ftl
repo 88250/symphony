@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${registerLabel} - ${symphonyLabel}">
+        <@head title="${loginLabel} - ${symphonyLabel}">
         <meta name="description" content="${registerLabel} ${symphonyLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />

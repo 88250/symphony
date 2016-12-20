@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.23.39, Dec 12, 2016
+ * @version 2.25.23.40, Dec 17, 2016
  * @since 0.2.0
  */
 @Service
@@ -1277,6 +1277,7 @@ public class ArticleQueryService {
             final List<Filter> filters = new ArrayList<>();
             filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
             filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
+            filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
 
             query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
 
@@ -1333,7 +1334,7 @@ public class ArticleQueryService {
         filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
         filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, "B3log%"));
-        filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, "Sandbox%"));
+        filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, Tag.TAG_TITLE_C_SANDBOX + "%"));
         return new CompositeFilter(CompositeFilterOperator.AND, filters);
     }
 
@@ -1631,7 +1632,7 @@ public class ArticleQueryService {
                         + "END AS flag\n"
                         + "FROM\n"
                         + "	`" + articleRepository.getName() + "`\n"
-                        + " WHERE `articleType` != 1 AND `articleStatus` = 0 AND `articleTags` != 'Sandbox'\n"
+                        + " WHERE `articleType` != 1 AND `articleStatus` = 0 AND `articleTags` != '" + Tag.TAG_TITLE_C_SANDBOX + "'\n"
                         + " ORDER BY\n"
                         + "	articleStick DESC,\n"
                         + "	flag DESC\n"

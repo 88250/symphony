@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.15.12, Dec 9, 2016
+ * @version 2.19.15.12, Dec 17, 2016
  */
 
 /**
@@ -139,6 +139,7 @@ var AddArticle = {
                 dragDrop: false,
                 lineWrapping: true,
                 htmlURL: Label.servePath + "/markdown",
+                readOnly: Label.requisite,
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
                     "Ctrl-/": "autocompleteEmoji",

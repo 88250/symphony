@@ -28,6 +28,7 @@ import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.servlet.handler.MatchResult;
 import org.b3log.latke.servlet.handler.RequestDispatchHandler;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.Role;
 import org.b3log.symphony.service.RoleQueryService;
@@ -38,7 +39,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -46,7 +46,7 @@ import java.util.*;
  * Permission check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 12, 2016
+ * @version 1.0.0.2, Dec 19, 2016
  * @since 1.8.0
  */
 @Named
@@ -93,48 +93,50 @@ public class PermissionCheck extends BeforeRequestProcessAdvice {
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
-        final HttpServletRequest request = context.getRequest();
-
-        final JSONObject exception = new JSONObject();
-        exception.put(Keys.MSG, langPropsService.get("noPermissionLabel"));
-        exception.put(Keys.STATUS_CODE, false);
-
-        final String prefix = "permission.rule.url.";
-        final String requestURI = request.getRequestURI();
-        final String method = request.getMethod();
-        String rule = prefix;
-
-        final RequestDispatchHandler requestDispatchHandler
-                = (RequestDispatchHandler) DispatcherServlet.SYS_HANDLER.get(2 /* DispatcherServlet#L69 */);
+        Stopwatchs.start("Check Permissions");
 
         try {
-            final Method doMatch = RequestDispatchHandler.class.getDeclaredMethod("doMatch",
-                    String.class, String.class);
-            doMatch.setAccessible(true);
-            final MatchResult matchResult = (MatchResult) doMatch.invoke(requestDispatchHandler, requestURI, method);
+            final HttpServletRequest request = context.getRequest();
 
-            rule += matchResult.getMatchedPattern() + "." + method;
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Match method failed", e);
+            final JSONObject exception = new JSONObject();
+            exception.put(Keys.MSG, langPropsService.get("noPermissionLabel"));
+            exception.put(Keys.STATUS_CODE, false);
 
-            throw new RequestProcessAdviceException(exception);
-        }
+            final String prefix = "permission.rule.url.";
+            final String requestURI = request.getRequestURI();
+            final String method = request.getMethod();
+            String rule = prefix;
 
-        final Set<String> requisitePermissions = URL_PERMISSION_RULES.get(rule);
-        if (null == requisitePermissions) {
-            return;
-        }
+            final RequestDispatchHandler requestDispatchHandler
+                    = (RequestDispatchHandler) DispatcherServlet.SYS_HANDLER.get(2 /* DispatcherServlet#L69 */);
 
-        Set<String> grantPermissions;
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        if (null != user) {
-            grantPermissions = roleQueryService.getUserPermissions(user.optString(Keys.OBJECT_ID));
-        } else {
-            grantPermissions = roleQueryService.getPermissions(Role.ROLE_ID_C_VISITOR);
-        }
+            try {
+                final Method doMatch = RequestDispatchHandler.class.getDeclaredMethod("doMatch",
+                        String.class, String.class);
+                doMatch.setAccessible(true);
+                final MatchResult matchResult = (MatchResult) doMatch.invoke(requestDispatchHandler, requestURI, method);
 
-        if (!Permission.hasPermission(requisitePermissions, grantPermissions)) {
-            throw new RequestProcessAdviceException(exception);
+                rule += matchResult.getMatchedPattern() + "." + method;
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Match method failed", e);
+
+                throw new RequestProcessAdviceException(exception);
+            }
+
+            final Set<String> requisitePermissions = URL_PERMISSION_RULES.get(rule);
+            if (null == requisitePermissions) {
+                return;
+            }
+
+            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+            final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
+            final Set<String> grantPermissions = roleQueryService.getPermissions(roleId);
+
+            if (!Permission.hasPermission(requisitePermissions, grantPermissions)) {
+                throw new RequestProcessAdviceException(exception);
+            }
+        } finally {
+            Stopwatchs.end();
         }
     }
 }

@@ -27,7 +27,7 @@
     </#if>
     <div class="user-nav">
         <#if isLoggedIn>
-        <#if "adminRole" == userRole>
+        <#if permissions["menuAdmin"].permissionGrant>
         <a href="${servePath}/admin" aria-label="${adminLabel}" class="tooltipped tooltipped-w"><span class="icon-userrole"></span></a>
         </#if>
         <a id="aNotifications" class="tooltipped tooltipped-w <#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" aria-label="${messageLabel}">${unreadNotificationCount}</a>

@@ -179,8 +179,8 @@
                     </div>
                     <div class="metro-border fn-flex">
                         <div></div>
-                        <div class="red"></div>
                         <div class="green"></div>
+                        <div class="yellow"></div>
                     </div>
                 </div>
                 <div class="index-side down">
@@ -209,7 +209,7 @@
                 </div>
                 <div class="metro-border fn-flex">
                     <div></div>
-                    <div class="yellow"></div>
+                    <div class="purple"></div>
                 </div>
             </div>
         </div>

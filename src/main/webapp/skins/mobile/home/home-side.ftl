@@ -3,33 +3,37 @@
     <div>
         <div class="user-name">
             <#if user.userNickname != "">
-            <div id="userNicknameDom">
-                ${user.userNickname}
+                <div id="userNicknameDom">
+                    ${user.userNickname} / <span class="ft-gray">${user.userName}</span>
+                </div>
+            </#if>
+
+            <div>
+                <#if isLoggedIn && (userName != user.userName)>
+                    <button class="green small" onclick="location.href = '/post?type=1&at=${user.userName}'">
+                        ${privateMessageLabel}
+                    </button>
+                </#if>
+                <#if 0 == user.userOnlineStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
+                <span class="tooltipped tooltipped-e" aria-label="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>">
+                    <span class="<#if user.userOnlineFlag>online<#else>offline</#if>"><img src="${staticServePath}/images/H-20.png" />${user.roleName}</span>
+                </span>
+                </#if>
+                <#if isAdminLoggedIn>
+                    <a class="ft-13 icon-setting" href="${servePath}/admin/user/${user.oId}" title="${adminLabel}"></a>
+                </#if>
             </div>
-            </#if>
-            <span class="ft-gray">${user.userName}</span>
-            <#if 0 == user.userOnlineStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
-            <img title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="${staticServePath}/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
-            </#if>
-            <#if "adminRole" == user.userRole>
-            <span class="ft-13 icon-userrole" title="${administratorLabel}"></span>
-            </#if>
-            <#if isAdminLoggedIn>
-            <a class="ft-13 icon-setting" href="${servePath}/admin/user/${user.oId}" title="${adminLabel}"></a>
-            </#if>
+
             <#if isLoggedIn && (userName != user.userName)>
-            <#if isFollowing>
-            <button class="red small" onclick="Util.unfollow(this, '${followingId}', 'user')"> 
-                ${unfollowLabel}
-            </button>
-            <#else>
-            <button class="green small" onclick="Util.follow(this, '${followingId}', 'user')"> 
-                ${followLabel}
-            </button>
-            </#if>
-            <button class="green small" onclick="location.href = '/post?type=1&at=${user.userName}'"> 
-                ${privateMessageLabel}
-            </button>
+                <#if isFollowing>
+                    <button class="follow" onclick="Util.unfollow(this, '${followingId}', 'user')">
+                        ${unfollowLabel}
+                    </button>
+                    <#else>
+                        <button class="follow" onclick="Util.follow(this, '${followingId}', 'user')">
+                            ${followLabel}
+                        </button>
+                </#if>
             </#if>
         </div>
 

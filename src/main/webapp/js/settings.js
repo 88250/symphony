@@ -611,22 +611,6 @@ var Settings = {
         };
     },
     /**
-     * @description 标记指定类型的消息通知为已读状态.
-     * @param {String} type 指定类型："commented"/"at"/"followingUser"/"reply"
-     */
-    makeNotificationRead: function (type) {
-        $.ajax({
-            url: Label.servePath + "/notification/read/" + type,
-            type: "GET",
-            cache: false,
-            success: function (result, textStatus) {
-                if (result.sc) {
-                    window.location.reload();
-                }
-            }
-        });
-    },
-    /**
      * @description 标记所有消息通知为已读状态.
      */
     makeAllNotificationsRead: function () {

@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.39.27.38, Dec 13, 2016
+ * @version 1.40.27.39, Dec 18, 2016
  */
 
 /**
@@ -29,21 +29,29 @@
  * @static
  */
 var Util = {
-    prevKey: undefined,
-    closeAlert: function (it) {
-        var $alert = $(it).parent().parent();
-        if ($alert.prev().hasClass('dialog-background')) {
-            $alert.prev().remove();
-        }
+    /**
+     * @description 前置快捷键
+     */
+     prevKey: undefined,
+    /**
+     * @description 关闭 alert
+     */
+    closeAlert: function () {
+        var $alert = $('#alertDialogPanel');
+        $alert.prev().remove();
         $alert.remove();
     },
+    /**
+     * @description alert
+     * @param {String} content alert 内容
+     */
     alert: function (content) {
         var alertHTML = '',
-         alertBgHTML = '<div style="height: ' +  document.documentElement.scrollHeight
+         alertBgHTML = '<div onclick="Util.closeAlert(this)" style="height: ' +  document.documentElement.scrollHeight
          + 'px;display: block;" class="dialog-background"></div>',
-         alertContentHTML = '<div class="dialog-panel" id="alertDialogPanel">'
-         + '<div class="fn-clear dialog-header-bg"><a href="javascript:void(0);" onclick="Util.closeAlert(this)" class="icon-close"></a></div>'
-         + '<div class="dialog-main" style="padding-top:30px;text-align:center">' + content + '</div></div>';
+         alertContentHTML = '<div class="dialog-panel" id="alertDialogPanel" tabindex="0" onkeyup="Util.closeAlert()">'
+         + '<div class="fn-clear dialog-header-bg"><a href="javascript:void(0);" onclick="Util.closeAlert()" class="icon-close"></a></div>'
+         + '<div class="dialog-main" style="text-align:center;padding: 30px 10px 40px">' + content + '</div></div>';
 
          alertHTML = alertBgHTML + alertContentHTML;
 
@@ -51,8 +59,25 @@ var Util = {
 
         $('#alertDialogPanel').css({
             "top": ($(window).height() - $('#alertDialogPanel').height()) / 2 + "px",
-            "left": ($(window).width() - $('#alertDialogPanel').width()) / 2 + "px"
-        }).show();
+            "left": ($(window).width() - $('#alertDialogPanel').width()) / 2 + "px",
+            "outline": 'none'
+        }).show().focus();
+    },
+    /**
+     * @description 标记指定类型的消息通知为已读状态.
+     * @param {String} type 指定类型："commented"/"at"/"followingUser"/"reply"
+     */
+    makeNotificationRead: function (type) {
+        $.ajax({
+            url: Label.servePath + "/notification/read/" + type,
+            type: "GET",
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc) {
+                    window.location.reload();
+                }
+            }
+        });
     },
     /**
      * 初始化全局快捷键
@@ -720,41 +745,57 @@ var Util = {
             success: function (result, textStatus) {
                 // 生成消息的 li 标签
                 var genLiHTML = function (data) {
-                    var notiHTML = '';
+                    var notiHTML = '',
+                    markReadHTML = '<span onclick="Util.makeNotificationRead(\'${markReadType}\');return false;" aria-label="'
+                        + Label.makeAsReadLabel + '" class="fn-right tooltipped tooltipped-nw">'
+                        + '<svg height="18" viewBox="0 0 12 16" width="12">' + Label.checkIcon + '</svg>' + '</span>';
+
                     // 收到的回帖 unreadCommentedNotificationCnt
                     if (data.unreadCommentedNotificationCnt > 0) {
-                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/commented">' + Label.notificationCommentedLabel +
-                                '<span class="count fn-right">' + data.unreadCommentedNotificationCnt + '</span></a></li>';
+                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/commented">'
+                            + Label.notificationCommentedLabel
+                            + ' <span class="count">' + data.unreadCommentedNotificationCnt + '</span>'
+                            + markReadHTML.replace('${markReadType}', 'commented')
+                            + '</a></li>';
                     }
                     // 收到的回复 unreadReplyNotificationCnt
                     if (data.unreadReplyNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/reply">' + Label.notificationReplyLabel +
-                                '<span class="count fn-right">' + data.unreadReplyNotificationCnt + '</span></a></li>';
+                            ' <span class="count">' + data.unreadReplyNotificationCnt + '</span>'
+                            + markReadHTML.replace('${markReadType}', 'reply')
+                            + '</a></li>';
                     }
                     // @ 我的 unreadAtNotificationCnt
                     if (data.unreadAtNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/at">' + Label.notificationAtLabel +
-                                '<span class="count fn-right">' + data.unreadAtNotificationCnt + '</span></a></li>';
+                            ' <span class="count">' + data.unreadAtNotificationCnt + '</span>'
+                            + markReadHTML.replace('${markReadType}', 'at')
+                            + '</a></li>';
                     }
                     // 我关注的人 unreadFollowingUserNotificationCnt
                     if (data.unreadFollowingUserNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/following-user">' + Label.notificationFollowingUserLabel +
-                                '<span class="count fn-right">' + data.unreadFollowingUserNotificationCnt + '</span></a></li>';
+                            ' <span class="count">' + data.unreadFollowingUserNotificationCnt + '</span>'
+                            + markReadHTML.replace('${markReadType}', 'following-user')
+                            + '</a></li>';
                     }
                     // 积分 unreadPointNotificationCnt
                     if (data.unreadPointNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/point">' + Label.pointLabel +
-                                '<span class="count fn-right">' + data.unreadPointNotificationCnt + '</span></a></li>';
+                            ' <span class="count">' + data.unreadPointNotificationCnt + '</span>'
+                            + '</a></li>';
                     }
                     // 同城 unreadBroadcastNotificationCnt
                     if (data.unreadBroadcastNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/broadcast">' + Label.sameCityLabel +
-                                '<span class="count fn-right">' + data.unreadBroadcastNotificationCnt + '</span></a></li>';
+                            ' <span class="count">' + data.unreadBroadcastNotificationCnt + '</span>'
+                            + '</a></li>';
                     }
                     // 系统 unreadSysAnnounceNotificationCnt
                     if (data.unreadSysAnnounceNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/sys-announce">' + Label.systemLabel +
-                                '<span class="count fn-right">' + data.unreadSysAnnounceNotificationCnt + '</span></a></li>';
+                            ' <span class="count">' + data.unreadSysAnnounceNotificationCnt + '</span>'
+                            + '</a></li>';
                     }
                     return notiHTML;
                 };

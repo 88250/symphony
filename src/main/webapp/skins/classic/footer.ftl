@@ -65,8 +65,9 @@
 		notificationFollowingUserLabel: '${notificationFollowingUserLabel}',
 		pointLabel: '${pointLabel}',
 		sameCityLabel: '${sameCityLabel}',
-		systemLabel: '${systemLabel}'
-
+		systemLabel: '${systemLabel}',
+        makeAsReadLabel: '${makeAsReadLabel}',
+        checkIcon: '${checkIcon}'
     };
 
     <#if isLoggedIn>

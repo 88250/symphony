@@ -97,7 +97,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.20.34, Nov 22, 2016
+ * @version 1.24.22.35, Dec 19, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -511,6 +511,16 @@ public class ArticleProcessor {
 
         final String b3logKey = currentUser.optString(UserExt.USER_B3_KEY);
         dataModel.put("hasB3Key", !Strings.isEmptyOrNull(b3logKey));
+
+        boolean requisite = false;
+        String requisiteMsg = "";
+        if (!currentUser.optString(UserExt.USER_AVATAR_URL).contains("_")) {
+            requisite = true;
+            requisiteMsg = langPropsService.get("uploadAvatarThenPostLabel");
+        }
+
+        dataModel.put(Common.REQUISITE, requisite);
+        dataModel.put(Common.REQUISITE_MSG, requisiteMsg);
     }
 
     /**
@@ -566,6 +576,7 @@ public class ArticleProcessor {
         article.put(Common.IS_MY_ARTICLE, false);
         article.put(Article.ARTICLE_T_AUTHOR, author);
         article.put(Common.REWARDED, false);
+        article.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_ARTICLE));
         if (!article.has(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK)) { // TODO: for legacy data
             article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, "");
         }
@@ -1447,8 +1458,12 @@ public class ArticleProcessor {
             markdownText = markdownText.replace('@' + userName, "@<a href='" + Latkes.getServePath()
                     + "/member/" + userName + "'>" + userName + "</a>");
         }
+        markdownText = markdownText.replace("@participants ",
+                "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
+
         markdownText = shortLinkQueryService.linkArticle(markdownText);
         markdownText = shortLinkQueryService.linkTag(markdownText);
+        markdownText = Emotions.toAliases(markdownText);
         markdownText = Emotions.convert(markdownText);
         markdownText = Markdowns.toHTML(markdownText);
         markdownText = Markdowns.clean(markdownText, "");
@@ -1458,7 +1473,6 @@ public class ArticleProcessor {
 
     /**
      * Gets article preview content.
-     * <p>
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -1529,8 +1543,16 @@ public class ArticleProcessor {
         final JSONObject article = articleQueryService.getArticle(articleId);
         articleQueryService.processArticleContent(article, request);
 
+        String markdownText = article.optString(Article.ARTICLE_REWARD_CONTENT);
+        markdownText = shortLinkQueryService.linkArticle(markdownText);
+        markdownText = shortLinkQueryService.linkTag(markdownText);
+        markdownText = Emotions.toAliases(markdownText);
+        markdownText = Emotions.convert(markdownText);
+        markdownText = Markdowns.toHTML(markdownText);
+        markdownText = Markdowns.clean(markdownText, "");
+
         context.renderTrueResult().
-                renderJSONValue(Article.ARTICLE_REWARD_CONTENT, article.optString(Article.ARTICLE_REWARD_CONTENT));
+                renderJSONValue(Article.ARTICLE_REWARD_CONTENT, markdownText);
     }
 
     /**

@@ -16,14 +16,16 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/aplayer/APlayer.min.css">
         <link rel="canonical" href="${servePath}${article.articlePermalink}?p=${paginationCurrentPageNum}&m=${userCommentViewMode}">
     </head>
-    <body>
+    <body itemscope itemtype="http://schema.org/Product">
+        <img itemprop="image" class="fn-none"  src="${staticServePath}/images/faviconH.png" />
+        <p itemprop="description" class="fn-none">"${article.articlePreviewContent}"</p>
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
                 <div class="content">
                     <div class="module article-module">
 
-                        <h1 class="article-title">
+                        <h1 class="article-title" itemprop="name">
                             <#if 1 == article.articlePerfect>
                             <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="24" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
                             </#if>
@@ -126,34 +128,39 @@
                                       <#if !article.thanked && permissions["commonThankArticle"].permissionGrant>
                                           onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"
                                       <#else>
-                                          onclick="Util.alert('${noPermissionLabel}')"
+                                          onclick="Article.permissionTip(Label.noPermissionLabel)"
                                       </#if>><span class="icon-heart"></span> ${article.thankedCnt}</span> &nbsp;
                                 <span class="tooltipped tooltipped-n has-cnt<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>" aria-label="${upLabel}"
                                      <#if permissions["commonGoodArticle"].permissionGrant>
                                           onclick="Article.voteUp('${article.oId}', 'article', this)"
                                       <#else>
-                                          onclick="Util.alert('${noPermissionLabel}')"
+                                          onclick="Article.permissionTip(Label.noPermissionLabel)"
                                      </#if>><span class="icon-thumbs-up"></span> ${article.articleGoodCnt}</span> &nbsp;
                                 <span  class="tooltipped tooltipped-n has-cnt<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>" aria-label="${downLabel}"
                                     <#if permissions["commonBadArticle"].permissionGrant>
                                        onclick="Article.voteDown('${article.oId}', 'article', this)"
                                     <#else>
-                                        onclick="Util.alert('${noPermissionLabel}')"
+                                        onclick="Article.permissionTip(Label.noPermissionLabel)"
                                 </#if>><span class="icon-thumbs-down"></span> ${article.articleBadCnt}</span> &nbsp;
                                 <#if isLoggedIn && isFollowing>
                                 <span class="tooltipped tooltipped-n has-cnt ft-red" aria-label="${uncollectLabel}"
                                     <#if permissions["commonFollowArticle"].permissionGrant>
                                       onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
                                     <#else>
-                                        onclick="Util.alert('${noPermissionLabel}')"
-                                    </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                                        onclick="Article.permissionTip(Label.noPermissionLabel)"
+                                    </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span> &nbsp;
                                 <#else>
                                 <span class="tooltipped tooltipped-n has-cnt" aria-label="${collectLabel}"
                                     <#if permissions["commonFollowArticle"].permissionGrant>
                                       onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
                                     <#else>
-                                        onclick="Util.alert('${noPermissionLabel}')"
-                                    </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                                        onclick="Article.permissionTip(Label.noPermissionLabel)"
+                                    </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span> &nbsp;
+                                </#if>
+                                <#if 0 < article.articleRewardPoint>
+                                    <span class="tooltipped tooltipped-n has-cnt<#if article.rewarded> ft-red</#if>"
+                                    <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>
+                                          aria-label="${rewardLabel}"><span class="icon-points"></span> ${article.rewardedCnt}</span>
                                 </#if>
                             </span>
 
@@ -193,7 +200,7 @@
                         <div class="module-panel list comments">
                             <ul>
                             <#list article.articleNiceComments as comment>
-                            <li>
+                                <li>
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
                                         <#if comment.commentAnonymous == 0>
@@ -256,7 +263,7 @@
                                     <#if permissions["commonAddComment"].permissionGrant>
                                         onclick="$('.article-actions .icon-reply-btn').click()"
                                     <#else>
-                                        onclick="Util.alert('${noPermissionLabel}')"
+                                        onclick="Article.permissionTip(Label.noPermissionLabel)"
                                     </#if>>
                                     <img src="${noCmtImg}" class="article-no-comment-img">
                                 </li>
@@ -277,7 +284,7 @@
                         <#if permissions["commonAddComment"].permissionGrant>
                             onclick="$('.article-actions .icon-reply-btn').click()"
                         <#else>
-                            onclick="Util.alert('${noPermissionLabel}')"
+                            onclick="Article.permissionTip(Label.noPermissionLabel)"
                         </#if>>
                         <img src="${noCmtImg}" class="article-no-comment-img">
 					</div>
@@ -434,6 +441,7 @@
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
             Label.qiniuDomain = '${qiniuDomain}';
             Label.qiniuUploadToken = '${qiniuUploadToken}';
+            Label.noPermissionLabel = '${noPermissionLabel}';
             <#if isLoggedIn>
                 Label.currentUserName = '${currentUser.userName}';
                 Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
