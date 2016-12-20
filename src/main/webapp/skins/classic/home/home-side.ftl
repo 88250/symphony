@@ -3,12 +3,8 @@
          style="background-image:url('${user.userAvatarURL210}')"></div>
     <div>
         <div class="user-name">
-            <div>
-                <#if user.userNickname != "">
-                    <span id="userNicknameDom">${user.userNickname}</span> /
-                </#if>
-                <span class="ft-gray">${user.userName}</span>
-            </div>
+            <div id="userNicknameDom"><b>${user.userNickname}</b></div>
+            <div class="ft-gray">${user.userName}</div>
 
             <div>
                 <#if isLoggedIn && (userName != user.userName)>
