@@ -39,7 +39,7 @@ import java.util.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Dec 21, 2016
+ * @version 1.0.1.1, Dec 21, 2016
  * @since 1.8.0
  */
 @Service
@@ -71,32 +71,34 @@ public class ManQueryService {
         // http://stackoverflow.com/questions/585534/what-is-the-best-way-to-find-the-users-home-directory-in-java
         final String userHome = System.getProperty("user.home");
         if (StringUtils.isBlank(userHome)) {
-            TLDR_ENABLED = false;
-
             return;
         }
 
-        final String tldrPagesPath = userHome + File.separator + "tldr" + File.separator + "pages" + File.separator;
-        final Collection<File> mans = FileUtils.listFiles(new File(tldrPagesPath), new String[]{"md"}, true);
-        for (final File manFile : mans) {
-            InputStream is = null;
-            try {
-                is = new FileInputStream(manFile);
-                final String md = IOUtils.toString(is, "UTF-8");
-                String html = Markdowns.toHTML(md);
+        try {
+            final String tldrPagesPath = userHome + File.separator + "tldr" + File.separator + "pages" + File.separator;
+            final Collection<File> mans = FileUtils.listFiles(new File(tldrPagesPath), new String[]{"md"}, true);
+            for (final File manFile : mans) {
+                InputStream is = null;
+                try {
+                    is = new FileInputStream(manFile);
+                    final String md = IOUtils.toString(is, "UTF-8");
+                    String html = Markdowns.toHTML(md);
 
-                final JSONObject cmdMan = new JSONObject();
-                cmdMan.put(Common.MAN_CMD, StringUtils.substringBeforeLast(manFile.getName(), "."));
+                    final JSONObject cmdMan = new JSONObject();
+                    cmdMan.put(Common.MAN_CMD, StringUtils.substringBeforeLast(manFile.getName(), "."));
 
-                html = html.replace("\n", "").replace("\r", "");
-                cmdMan.put(Common.MAN_HTML, html);
+                    html = html.replace("\n", "").replace("\r", "");
+                    cmdMan.put(Common.MAN_HTML, html);
 
-                CMD_MANS.add(cmdMan);
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Loads man [" + manFile.getPath() + "] failed", e);
-            } finally {
-                IOUtils.closeQuietly(is);
+                    CMD_MANS.add(cmdMan);
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Loads man [" + manFile.getPath() + "] failed", e);
+                } finally {
+                    IOUtils.closeQuietly(is);
+                }
             }
+        } catch (final Exception e) {
+            return;
         }
 
         TLDR_ENABLED = !CMD_MANS.isEmpty();
