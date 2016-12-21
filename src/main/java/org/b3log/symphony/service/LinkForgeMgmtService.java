@@ -49,7 +49,7 @@ import java.util.List;
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Dec 18, 2016
+ * @version 1.1.0.4, Dec 21, 2016
  * @since 1.6.0
  */
 @Service
@@ -208,47 +208,54 @@ public class LinkForgeMgmtService {
      */
     @Transactional
     public void purge() {
-        try {
-            Thread.sleep(10 * 1000);
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(15 * 1000);
 
-            final JSONObject linkCntOption = optionRepository.get(Option.ID_C_STATISTIC_LINK_COUNT);
-            int linkCnt = linkCntOption.optInt(Option.OPTION_VALUE);
+                    final JSONObject linkCntOption = optionRepository.get(Option.ID_C_STATISTIC_LINK_COUNT);
+                    int linkCnt = linkCntOption.optInt(Option.OPTION_VALUE);
 
-            int slags = 0;
-            final JSONArray links = linkRepository.get(new Query()).optJSONArray(Keys.RESULTS);
-            for (int i = 0; i < links.length(); i++) {
-                final JSONObject link = links.getJSONObject(i);
-                final String linkAddr = link.optString(Link.LINK_ADDR);
+                    int slags = 0;
+                    final JSONArray links = linkRepository.get(new Query()).optJSONArray(Keys.RESULTS);
+                    for (int i = 0; i < links.length(); i++) {
+                        final JSONObject link = links.getJSONObject(i);
+                        final String linkAddr = link.optString(Link.LINK_ADDR);
 
-                if (!Link.inAddrBlacklist(linkAddr)) {
-                    continue;
-                }
+                        if (!Link.inAddrBlacklist(linkAddr)) {
+                            continue;
+                        }
 
-                final String linkId = link.optString(Keys.OBJECT_ID);
+                        final String linkId = link.optString(Keys.OBJECT_ID);
 
-                // clean slags
+                        // clean slags
 
-                linkRepository.remove(linkId);
-                ++slags;
+                        linkRepository.remove(linkId);
+                        ++slags;
 
-                final List<String> tagIds = tagUserLinkRepository.getTagIdsByLinkId(linkId, Integer.MAX_VALUE);
-                for (final String tagId : tagIds) {
-                    final JSONObject tag = tagRepository.get(tagId);
+                        final List<String> tagIds = tagUserLinkRepository.getTagIdsByLinkId(linkId, Integer.MAX_VALUE);
+                        for (final String tagId : tagIds) {
+                            final JSONObject tag = tagRepository.get(tagId);
 
-                    tagUserLinkRepository.removeByLinkId(linkId);
+                            tagUserLinkRepository.removeByLinkId(linkId);
 
-                    final int tagLinkCnt = tagUserLinkRepository.countTagLink(tagId);
-                    tag.put(Tag.TAG_LINK_CNT, tagLinkCnt);
-                    tagRepository.update(tagId, tag);
+                            final int tagLinkCnt = tagUserLinkRepository.countTagLink(tagId);
+                            tag.put(Tag.TAG_LINK_CNT, tagLinkCnt);
+                            tagRepository.update(tagId, tag);
+                        }
+                    }
+
+                    linkCntOption.put(Option.OPTION_VALUE, linkCnt - slags);
+                    optionRepository.update(Option.ID_C_STATISTIC_LINK_COUNT, linkCntOption);
+
+                    LOGGER.info("Purged link forge [slags=" + slags + "]");
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Purges link forge failed", e);
                 }
             }
+        };
 
-            linkCntOption.put(Option.OPTION_VALUE, linkCnt - slags);
-            optionRepository.update(Option.ID_C_STATISTIC_LINK_COUNT, linkCntOption);
-
-            LOGGER.info("Purged link forge [slags=" + slags + "]");
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Purges link forge failed", e);
-        }
+        new Thread(runnable).start();
     }
 }
