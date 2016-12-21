@@ -11,14 +11,16 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="module article-module content-reset">
-                        <h1 class="article-title"><a class="ft-a-title" href="http://b3log.org" target="_blank">Hacker's
-                            Manual</a></h1>
-                        <i class="ft-gray">Command manual for hackers, with &hearts; from <a
-                                href="https://github.com/tldr-pages/tldr" target="_blank">tldr</a></i>
-                        <br><br>
-                        <input id="manCmd" style="width: 410px;" autofocus placeholder="man">
-                        <div id="manHTML">${mans[0].manHTML}
+                    <div class="module">
+                        <h2 class="sub-head">Hacker's Manual</h2>
+                        <div class="article-module content-reset">
+                            <i class="ft-gray">Command manual for hackers, with &hearts; from <a
+                                    href="https://github.com/tldr-pages/tldr" target="_blank">tldr</a></i>
+                            <br><br>
+                            <input id="manCmd" style="width: 410px; padding: 3px;" autofocus placeholder="man">
+                            <div id="manHTML">
+                                ${mans[0].manHTML}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -46,12 +48,13 @@
                         if (result.sc && result.mans && result.mans.length > 0) {
                             $("#manHTML").html(result.mans[0].manHTML);
                         } else {
-                            console.log(result);
+                            $("#manHTML").html('${mans[0].manHTML}');
                         }
                     }
                 });
             }
         });
+
             </script>
     </body>
     </html>
