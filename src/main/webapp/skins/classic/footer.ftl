@@ -43,6 +43,12 @@
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/compress/libs.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
+<script src="${staticServePath}/js/lib/jquery/jquery.nicescroll.min.js"></script>
+<script>
+    $(document).ready(function() {
+    $("html").niceScroll();
+});
+</script>
 <script>
     var Label = {
         invalidPasswordLabel: "${invalidPasswordLabel}",

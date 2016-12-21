@@ -39,7 +39,7 @@ import java.util.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 20, 2016
+ * @version 1.0.0.1, Dec 21, 2016
  * @since 1.8.0
  */
 @Service
@@ -83,10 +83,12 @@ public class ManQueryService {
             try {
                 is = new FileInputStream(manFile);
                 final String md = IOUtils.toString(is, "UTF-8");
-                final String html = Markdowns.toHTML(md);
+                String html = Markdowns.toHTML(md);
 
                 final JSONObject cmdMan = new JSONObject();
                 cmdMan.put(Common.MAN_CMD, StringUtils.substringBeforeLast(manFile.getName(), "."));
+
+                html = html.replace("\n", "").replace("\r", "");
                 cmdMan.put(Common.MAN_HTML, html);
 
                 CMD_MANS.add(cmdMan);
