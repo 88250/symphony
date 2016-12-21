@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.11.23, Dec 19, 2016
+ * @version 2.9.11.24, Dec 21, 2016
  */
 
 @import "variables";
@@ -113,8 +113,9 @@
         border-radius: 3px;
         height: 20px;
         display: inline-block;
-        padding: 0 5px 0 3px;
+        padding: 0 5px;
         vertical-align: middle;
+        box-sizing: border-box;
     }
 
     .offline {
@@ -480,10 +481,6 @@ label.article-anonymous {
 .points .balance {
     width: 40px;
     padding: 0 10px;
-}
-
-.points tr:last-child td {
-    border-bottom-width: 0;
 }
 /* end points */
 

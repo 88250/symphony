@@ -2,11 +2,8 @@
     <div id="avatarURLDom" class="avatar-big" title="${user.userName}" style="background-image:url('${user.userAvatarURL210}')"></div>
     <div>
         <div class="user-name">
-            <#if user.userNickname != "">
-                <div id="userNicknameDom">
-                    ${user.userNickname} / <span class="ft-gray">${user.userName}</span>
-                </div>
-            </#if>
+            <div id="userNicknameDom"><b>${user.userNickname}</b></div>
+            <div class="ft-gray">${user.userName}</div>
 
             <div>
                 <#if isLoggedIn && (userName != user.userName)>
@@ -14,10 +11,14 @@
                         ${privateMessageLabel}
                     </button>
                 </#if>
-                <#if 0 == user.userOnlineStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
-                <span class="tooltipped tooltipped-e" aria-label="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>">
-                    <span class="<#if user.userOnlineFlag>online<#else>offline</#if>"><img src="${staticServePath}/images/H-20.png" />${user.roleName}</span>
-                </span>
+                <#if (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName)) || 0 == user.userOnlineStatus>
+                    <span class="tooltipped tooltipped-n" aria-label="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>">
+                        <span class="<#if user.userOnlineFlag>online<#else>offline</#if>"><img src="${staticServePath}/images/H-20.png" /></span>
+                    </span>
+                </#if>
+                <span class="tooltipped tooltipped-n offline" aria-label="${roleLabel}"> ${user.roleName}</span>
+                <#if isAdminLoggedIn>
+                    <a class="ft-13 tooltipped tooltipped-n ft-a-title" href="${servePath}/admin/user/${user.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                 </#if>
                 <#if isAdminLoggedIn>
                     <a class="ft-13 icon-setting" href="${servePath}/admin/user/${user.oId}" title="${adminLabel}"></a>

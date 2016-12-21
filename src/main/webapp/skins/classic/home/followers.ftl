@@ -14,7 +14,8 @@
     </#if>
     <ul>
         <#list userHomeFollowerUsers as follower>
-        <li>
+        <li<#if !(paginationPageCount?? && paginationPageCount!=0 && paginationPageCount!=1) && follower_index == userHomeFollowerUsers?size - 1>
+            class="last"</#if>>
             <div class="fn-flex">
                 <a rel="nofollow" class="tooltipped tooltipped-se fn-left" aria-label="${follower.userName} <#if follower.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" 
                    href="${servePath}/member/${follower.userName}" >

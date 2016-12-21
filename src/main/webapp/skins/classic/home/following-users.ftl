@@ -14,7 +14,8 @@
     </#if>
     <ul>
         <#list userHomeFollowingUsers as followingUser>
-        <li>
+        <li<#if !(paginationPageCount?? && paginationPageCount!=0 && paginationPageCount!=1) && followingUser_index == userHomeFollowingUsers?size - 1>
+            class="last"</#if>>
             <div class="fn-flex">
                 <a rel="nofollow ft-gray"  
                    href="${servePath}/member/${followingUser.userName}">
