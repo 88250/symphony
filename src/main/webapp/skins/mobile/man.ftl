@@ -12,7 +12,7 @@
             <div class="wrapper">
                 <div class="content content-reset about">
                     <h1>Hacker's Manual</h1>
-                    <i class="ft-gray">Command manual for hackers, with &hearts; from <a
+                    <i class="ft-gray">Command manual for hackers, with <span class="ft-red">&hearts;</span> from <a
                             href="https://github.com/tldr-pages/tldr" target="_blank">tldr</a></i>
                     <br><br>
                     <input id="manCmd" style="width: 310px; padding: 3px;" autofocus placeholder="man">
