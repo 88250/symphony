@@ -276,18 +276,17 @@ label.article-anonymous {
         box-shadow: 0 0 0 transparent;
     }
 
-    .domains-tags,
-    .completed-panel {
+    .domains-tags {
         display: none;
         position: absolute;
         background-color: #FFF;
         border: 1px solid #e5e5e5;
         z-index: 72;
-        padding: 10px;
         border-radius: 0 0 3px 3px;
         width: 50%;
         top: 32px;
         box-sizing: border-box;
+        padding: 10px;
     }
 
     .domain-tags {
@@ -308,25 +307,6 @@ label.article-anonymous {
 
     .domains-tags .tag:hover {
         opacity: 0.7;
-    }
-
-    .completed-panel {
-        padding: 0;
-        overflow: auto;
-        left: 0;
-    }
-
-    .completed-panel a {
-        display: block;
-        padding: 3px;
-        text-decoration: none;
-        line-height: 18px;
-        height: 18px;
-    }
-
-    .completed-panel a.selected,
-    .completed-panel a:hover {
-        background-color: #F7F7F7;
     }
 }
 /* end add article */
