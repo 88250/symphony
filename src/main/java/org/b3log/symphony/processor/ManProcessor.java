@@ -18,6 +18,7 @@
 package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -44,7 +45,7 @@ import java.util.Map;
  * Man processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 20, 2016
+ * @version 1.0.0.1, Dec 21, 2016
  * @since 1.8.0
  */
 @RequestProcessor
@@ -76,6 +77,12 @@ public class ManProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showMan(final HTTPRequestContext context,
                         final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        if (!ManQueryService.TLDR_ENABLED) {
+            response.sendRedirect(Latkes.getServePath());
+
+            return;
+        }
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("man.ftl");

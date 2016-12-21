@@ -14,7 +14,8 @@
     </#if>
     <ul>
         <#list userHomeFollowingTags as followingTag>
-        <li>
+        <li<#if !(paginationPageCount?? && paginationPageCount!=0 && paginationPageCount!=1) && followingTag_index == userHomeFollowingTags?size - 1>
+             class="last"</#if>>
             <div class="fn-flex">
                 <#if "" != followingTag.tagIconPath>
                 <a href="${servePath}/tag/${followingTag.tagURI}">

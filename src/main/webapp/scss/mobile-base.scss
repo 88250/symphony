@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.8.20, Dec 19, 2016
+ * @version 1.5.8.21, Dec 21, 2016
  */
 
 @import "variables";
@@ -2540,10 +2540,17 @@ code .dec { color: initial; } /* decimal - blue */
 
 /* start home side */
 .user-name {
-    border-bottom: 1px dotted #CCCCCC;
-    font-size: 25px;
-    margin: 10px 0 10px;
-    padding: 10px;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 26px;
+    border-bottom: 1px dotted #CCC;
+    margin-bottom: 20px;
+    padding: 20px 10px 25px 10px;
+
+    #userNicknameDom {
+        font-size: 26px;
+        line-height: 30px;
+    }
 
     .online,
     .offline {

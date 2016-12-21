@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.19.50, Dec 17, 2016
+ * @version 2.25.19.51, Dec 21, 2016
  */
 
 @import "variables";
@@ -1257,6 +1257,36 @@ a[class*=" icon-"]:hover {
     color: #fff;
 }
 /* end pagination & tabs-sub */
+
+/* start completed */
+.completed-panel {
+    padding: 0;
+    overflow: auto;
+    left: 0;
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    border: 1px solid #e5e5e5;
+    z-index: 72;
+    border-radius: 0 0 3px 3px;
+    width: 50%;
+    top: 32px;
+    box-sizing: border-box;
+}
+
+.completed-panel a {
+    display: block;
+    padding: 3px;
+    text-decoration: none;
+    line-height: 18px;
+    height: 18px;
+}
+
+.completed-panel a.selected,
+.completed-panel a:hover {
+    background-color: #F7F7F7;
+}
+/* end completed */
 
 /* start dialog */
 .dialog-background {

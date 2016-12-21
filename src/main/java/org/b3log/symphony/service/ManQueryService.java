@@ -39,7 +39,7 @@ import java.util.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Dec 21, 2016
+ * @version 1.0.1.2, Dec 21, 2016
  * @since 1.8.0
  */
 @Service
@@ -58,7 +58,7 @@ public class ManQueryService {
     /**
      * Whether tldr is enabled.
      */
-    private static boolean TLDR_ENABLED;
+    public static boolean TLDR_ENABLED;
 
     static {
         init();
