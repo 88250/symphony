@@ -43,13 +43,12 @@
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/compress/libs.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
-<script src="${staticServePath}/js/lib/jquery/jquery.nicescroll.min.js"></script>
 <script>
+    // 滚动条
     $(document).ready(function() {
-    $("html").niceScroll();
-});
-</script>
-<script>
+        $("html").niceScroll();
+    });
+
     var Label = {
         invalidPasswordLabel: "${invalidPasswordLabel}",
         loginNameErrorLabel: "${loginNameErrorLabel}",

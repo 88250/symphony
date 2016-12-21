@@ -20,7 +20,8 @@
  * @file frontend tool.
  * 
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.3.1, Dec 8, 2016
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.4.3.1, Dec 21, 2016
  */
 
 'use strict';
@@ -91,7 +92,8 @@ gulp.task('build', ['sass', 'clean'], function () {
         './src/main/webapp/js/lib/reconnecting-websocket.min.js',
         './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
         './src/main/webapp/js/lib/ua-parser.min.js',
-        './src/main/webapp/js/lib/jquery/jquery.hotkeys.js'];
+        './src/main/webapp/js/lib/jquery/jquery.hotkeys.js',
+        './src/main/webapp/js/lib/jquery/jquery.nicescroll.min.js'];
     gulp.src(jsCommonLib)
             .pipe(uglify())
             .pipe(concat('libs.min.js'))
