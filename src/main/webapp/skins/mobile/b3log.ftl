@@ -12,7 +12,7 @@
                 <div class="content content-reset about">
                     <h1>B3log 构思</h1>
                     <i class="ft-gray">一个正在逐渐清晰、实践的创意</i>
-                    <br/><br/>
+                    <br/>
                     <h3>背景故事</h3>
                     <p>
                         美妙而动听的音乐可能是一个人的独奏，也可以是一种很有感觉的节奏，亦或者是一场宏伟的交响乐。B3log 将以不同的方式为你呈现出同样优美的旋律。
