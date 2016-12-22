@@ -203,7 +203,7 @@
                     <div class="metro-item last">
                         <a class="preview" href="https://hacpai.com/article/1460083956075">
                             <img width="44px" src="${staticServePath}/emoji/graphics/heart.png" alt="${sponsorLabel}">
-                            <b>${wantPutOnLabel}</b>
+                            <b>${adDeliveryLabel}</b>
                         </a>
                     </div>
                 </div>
