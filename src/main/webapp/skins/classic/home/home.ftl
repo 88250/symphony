@@ -16,7 +16,9 @@
     </#if>
     <ul> 
         <#list userHomeArticles as article>
-        <li>
+        <li<#if !(paginationPageCount?? && paginationPageCount!=0 && paginationPageCount!=1) && article_index == userHomeArticles?size - 1>
+            class="last"
+        </#if>>
             <div class="has-view fn-flex-1">
                 <h2>
                     <#if 1 == article.articlePerfect>

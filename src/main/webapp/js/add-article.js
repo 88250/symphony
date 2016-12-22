@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.19.15.12, Dec 17, 2016
+ * @version 2.19.15.13, Dec 21, 2016
  */
 
 /**
@@ -538,7 +538,7 @@ var AddArticle = {
                     return false;
                 }
 
-                // 上线左右
+                // 上下左右
                 if (event.keyCode === 37 || event.keyCode === 39 ||
                         event.keyCode === 38 || event.keyCode === 40) {
                     return false;

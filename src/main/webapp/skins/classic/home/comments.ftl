@@ -16,7 +16,9 @@
     </#if>
     <ul>
         <#list userHomeComments as comment>
-        <li class="fn-flex comment-list-item">
+        <li class="fn-flex comment-list-item
+        <#if !(paginationPageCount?? && paginationPageCount!=0 && paginationPageCount!=1) && comment_index == userHomeComments?size - 1>
+            last</#if>">
             <div>
             <#if comment.commentArticleAuthorName != "someone">
             <a target="_blank" class="tooltipped tooltipped-n" rel="nofollow" href="${servePath}/member/${comment.commentArticleAuthorName}"

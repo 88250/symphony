@@ -39,7 +39,7 @@ import java.util.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Dec 21, 2016
+ * @version 1.0.1.2, Dec 21, 2016
  * @since 1.8.0
  */
 @Service
@@ -58,7 +58,7 @@ public class ManQueryService {
     /**
      * Whether tldr is enabled.
      */
-    private static boolean TLDR_ENABLED;
+    public static boolean TLDR_ENABLED;
 
     static {
         init();
@@ -68,50 +68,59 @@ public class ManQueryService {
      * Initializes manuals.
      */
     private static void init() {
-        // http://stackoverflow.com/questions/585534/what-is-the-best-way-to-find-the-users-home-directory-in-java
-        final String userHome = System.getProperty("user.home");
-        if (StringUtils.isBlank(userHome)) {
-            return;
-        }
-
-        try {
-            final String tldrPagesPath = userHome + File.separator + "tldr" + File.separator + "pages" + File.separator;
-            final Collection<File> mans = FileUtils.listFiles(new File(tldrPagesPath), new String[]{"md"}, true);
-            for (final File manFile : mans) {
-                InputStream is = null;
-                try {
-                    is = new FileInputStream(manFile);
-                    final String md = IOUtils.toString(is, "UTF-8");
-                    String html = Markdowns.toHTML(md);
-
-                    final JSONObject cmdMan = new JSONObject();
-                    cmdMan.put(Common.MAN_CMD, StringUtils.substringBeforeLast(manFile.getName(), "."));
-
-                    html = html.replace("\n", "").replace("\r", "");
-                    cmdMan.put(Common.MAN_HTML, html);
-
-                    CMD_MANS.add(cmdMan);
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Loads man [" + manFile.getPath() + "] failed", e);
-                } finally {
-                    IOUtils.closeQuietly(is);
-                }
-            }
-        } catch (final Exception e) {
-            return;
-        }
-
-        TLDR_ENABLED = !CMD_MANS.isEmpty();
-
-        Collections.sort(CMD_MANS, new Comparator<JSONObject>() {
+        final Runnable runnable = new Runnable() {
             @Override
-            public int compare(final JSONObject o1, final JSONObject o2) {
-                final String c1 = o1.optString(Common.MAN_CMD);
-                final String c2 = o2.optString(Common.MAN_CMD);
+            public void run() {
+                // http://stackoverflow.com/questions/585534/what-is-the-best-way-to-find-the-users-home-directory-in-java
+                final String userHome = System.getProperty("user.home");
+                if (StringUtils.isBlank(userHome)) {
+                    return;
+                }
 
-                return c1.compareToIgnoreCase(c2);
+                try {
+                    Thread.sleep(5 * 1000);
+
+                    final String tldrPagesPath = userHome + File.separator + "tldr" + File.separator + "pages" + File.separator;
+                    final Collection<File> mans = FileUtils.listFiles(new File(tldrPagesPath), new String[]{"md"}, true);
+                    for (final File manFile : mans) {
+                        InputStream is = null;
+                        try {
+                            is = new FileInputStream(manFile);
+                            final String md = IOUtils.toString(is, "UTF-8");
+                            String html = Markdowns.toHTML(md);
+
+                            final JSONObject cmdMan = new JSONObject();
+                            cmdMan.put(Common.MAN_CMD, StringUtils.substringBeforeLast(manFile.getName(), "."));
+
+                            html = html.replace("\n", "").replace("\r", "");
+                            cmdMan.put(Common.MAN_HTML, html);
+
+                            CMD_MANS.add(cmdMan);
+                        } catch (final Exception e) {
+                            LOGGER.log(Level.ERROR, "Loads man [" + manFile.getPath() + "] failed", e);
+                        } finally {
+                            IOUtils.closeQuietly(is);
+                        }
+                    }
+                } catch (final Exception e) {
+                    return;
+                }
+
+                TLDR_ENABLED = !CMD_MANS.isEmpty();
+
+                Collections.sort(CMD_MANS, new Comparator<JSONObject>() {
+                    @Override
+                    public int compare(final JSONObject o1, final JSONObject o2) {
+                        final String c1 = o1.optString(Common.MAN_CMD);
+                        final String c2 = o2.optString(Common.MAN_CMD);
+
+                        return c1.compareToIgnoreCase(c2);
+                    }
+                });
             }
-        });
+        };
+
+        new Thread(runnable).start();
     }
 
     /**
