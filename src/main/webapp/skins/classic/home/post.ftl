@@ -128,7 +128,7 @@
 
                             <#if article??>
                                 <#if permissions["commonAddArticle"].permissionGrant>
-                                <button class="red" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
+                                <button class="red" tabindex="10"<#if requisite> readonly disabled</#if> onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
                                 </#if>
                             <#else>
                                 <#if permissions["commonUpdateArticle"].permissionGrant>
