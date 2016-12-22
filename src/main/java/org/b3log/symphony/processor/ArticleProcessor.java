@@ -97,7 +97,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.22.35, Dec 19, 2016
+ * @version 1.24.23.35, Dec 22, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -512,8 +512,13 @@ public class ArticleProcessor {
         final String b3logKey = currentUser.optString(UserExt.USER_B3_KEY);
         dataModel.put("hasB3Key", !Strings.isEmptyOrNull(b3logKey));
 
+        fillPostArticleRequisite(dataModel, currentUser);
+    }
+
+    private void fillPostArticleRequisite(final Map<String, Object> dataModel, final JSONObject currentUser) {
         boolean requisite = false;
         String requisiteMsg = "";
+
         if (!currentUser.optString(UserExt.USER_AVATAR_URL).contains("_")) {
             requisite = true;
             requisiteMsg = langPropsService.get("uploadAvatarThenPostLabel");
@@ -948,6 +953,8 @@ public class ArticleProcessor {
 
         final String b3logKey = currentUser.optString(UserExt.USER_B3_KEY);
         dataModel.put("hasB3Key", !Strings.isEmptyOrNull(b3logKey));
+
+        fillPostArticleRequisite(dataModel, currentUser);
     }
 
     /**
