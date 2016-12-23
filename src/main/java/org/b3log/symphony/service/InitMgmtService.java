@@ -39,10 +39,10 @@ import javax.inject.Inject;
 import java.util.*;
 
 /**
- * Data model service.
+ * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Dec 17, 2016
+ * @version 1.1.1.1, Dec 24, 2016
  * @since 1.8.0
  */
 @Service
@@ -59,7 +59,8 @@ public class InitMgmtService {
     private static Set<String> ADMIN_PERMISSIONS = new HashSet<>();
     private static Set<String> LEADER_PERMISSIONS = new HashSet<>();
 
-    static {
+    static { // Init built-in roles' permissions, see https://github.com/b3log/symphony/issues/358 for more details
+        // Visitor
         DEFAULT_PERMISSIONS.addAll(VISITOR_PERMISSIONS);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_UPDATE_ARTICLE);
@@ -67,9 +68,8 @@ public class InitMgmtService {
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_UPDATE_COMMENT);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_THANK_ARTICLE);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_THANK_COMMENT);
-    }
 
-    static {
+        // Member
         MEMBER_PERMISSIONS.addAll(DEFAULT_PERMISSIONS);
         MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_GOOD_ARTICLE);
         MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_BAD_ARTICLE);
@@ -78,9 +78,8 @@ public class InitMgmtService {
         MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_FOLLOW_ARTICLE);
         MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_AT_USER);
         MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_USE_INVITATION_LINK);
-    }
 
-    static {
+        // Regular
         REGULAR_PERMISSIONS.addAll(MEMBER_PERMISSIONS);
         REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_STICK_ARTICLE);
         REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE_ANONYMOUS);
@@ -92,9 +91,8 @@ public class InitMgmtService {
         REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_TAG_UPDATE_TAG_BASIC);
         REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN);
         REGULAR_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_TAGS);
-    }
 
-    static {
+        // Leader
         LEADER_PERMISSIONS.addAll(REGULAR_PERMISSIONS);
         LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_ADD_USER);
         LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_USER_UPDATE_USER_BASIC);
@@ -117,11 +115,8 @@ public class InitMgmtService {
         LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_COMMENTS);
         LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_ICS);
         LEADER_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_RWS);
-    }
 
-    // Built-in init role permissions //
-
-    static {
+        // Admin
         ADMIN_PERMISSIONS.addAll(LEADER_PERMISSIONS);
         ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_ADD_ARTICLE);
         ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_ARTICLE_REINDEX_ARTICLES_INDEX);
@@ -133,6 +128,7 @@ public class InitMgmtService {
         ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_DOMAIN_REMOVE_DOMAIN_TAG);
         ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_DOMAIN_UPDATE_DOMAIN_BASIC);
         ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_AD_UPDATE_SIDE);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_AD_UPDATE_BANNER);
         ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_ALLOW_ADD_ARTICLE);
         ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_ALLOW_ADD_COMMENT);
         ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
@@ -300,6 +296,9 @@ public class InitMgmtService {
             permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_AD);
 
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_AD_UPDATE_SIDE);
+            permissionRepository.add(permission);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_AD_UPDATE_BANNER);
             permissionRepository.add(permission);
 
             // article management permissions
