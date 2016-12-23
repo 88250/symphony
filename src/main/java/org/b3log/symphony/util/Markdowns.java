@@ -75,7 +75,7 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.9.16, Nov 29, 2016
+ * @version 1.10.10.16, Dec 23, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -397,6 +397,8 @@ public final class Markdowns {
         ret = StringUtils.substringBetween(ret, "<body>", "</body>");
         ret = StringUtils.trim(ret);
 
+        ret = ret.replaceAll("(\\<br\\>)+", "<br>");
+
         return ret;
     }
 
@@ -404,7 +406,6 @@ public final class Markdowns {
      * See https://github.com/b3log/symphony/issues/306.
      *
      * @param markdownText
-     * @param tag
      * @return
      */
     private static String formatMarkdown(final String markdownText) {
