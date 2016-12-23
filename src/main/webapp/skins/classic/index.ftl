@@ -9,7 +9,7 @@
         <link rel="canonical" href="${servePath}">
     </head>
     <body class="index">
-        <div onclick="Util.alert('Feel easy about trust &hearts;')" class="fn-pointer" style="background-image: url(${staticServePath}/images/holiday/mc-banner.jpg);background-size: cover;height: 80px;"></div>
+        ${HeaderBannerLabel}
         <#include "header.ftl">
         <div class="main" style="background-image: url(${staticServePath}/images/holiday/mc-bg.png);background-size: contain;">
             <div class="wrapper">
