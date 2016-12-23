@@ -8,7 +8,8 @@
         </@head>
     </head>
     <body class="index">
-        <#include "header.ftl">     
+        <div onclick="Util.alert('Feel easy about trust &hearts;')" class="fn-pointer" style="background-image: url(${staticServePath}/images/holiday/mc-banner.jpg);background-size: contain;height: 22px;"></div>
+        <#include "header.ftl">
         <@subNav '' ''/>
         <div class="main">
             <div class="wrapper fn-clear">
