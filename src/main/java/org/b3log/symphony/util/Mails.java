@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -206,8 +207,7 @@ public final class Mails {
         map.put("Version", "2015-11-23");
         map.put("AccessKeyId", accessKey);
         map.put("SignatureMethod", "HMAC-SHA1");
-        map.put("Timestamp", DateFormatUtils.format(System.currentTimeMillis(),
-                "yyyy-MM-dd'T'HH:mm:ss'Z'", Latkes.getLocale()));
+        map.put("Timestamp", getISO8601Time());
         map.put("SignatureVersion", "1.0");
         map.put("SignatureNonce", String.valueOf(System.currentTimeMillis()));
         map.put("AccountName", fromName);
@@ -245,6 +245,18 @@ public final class Mails {
     private static String percentEncode(final String value) throws UnsupportedEncodingException {
         return value != null ? URLEncoder.encode(value, "UTF-8").replace("+", "%20")
                 .replace("*", "%2A").replace("%7E", "~") : null;
+    }
+
+    /**
+     * Get Time
+     * @return
+     */
+    public static String getISO8601Time() {
+        final Date nowDate = new Date();
+        final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        df.setTimeZone(new SimpleTimeZone(0, "GMT"));
+
+        return df.format(nowDate);
     }
 
     /**
