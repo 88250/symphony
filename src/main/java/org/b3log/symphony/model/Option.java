@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.0.2, Oct 27, 2016
+ * @version 2.8.0.2, Dec 24, 2016
  * @since 0.2.0
  */
 public final class Option {
@@ -111,6 +111,11 @@ public final class Option {
      * Key of side full ad.
      */
     public static final String ID_C_SIDE_FULL_AD = "adSideFull";
+
+    /**
+     * Key of header banner.
+     */
+    public static final String ID_C_HEADER_BANNER = "headerBanner";
 
     // Category constants
     /**

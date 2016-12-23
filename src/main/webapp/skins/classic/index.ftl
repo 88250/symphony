@@ -9,8 +9,9 @@
         <link rel="canonical" href="${servePath}">
     </head>
     <body class="index">
-        <#include "header.ftl">   
-        <div class="main">
+        ${HeaderBannerLabel}
+        <#include "header.ftl">
+        <div class="main" style="background-image: url(${staticServePath}/images/holiday/mc-bg.png);background-size: contain;">
             <div class="wrapper">
                 <div class="index-main">
                     <div class="index-tabs fn-flex" id="articles">
