@@ -116,12 +116,12 @@
                 </div>
                 <div class="intro content-reset">
                     <dl>
-                        <dt class="current"><span class="index">1</span>上传个性头像</dt>
-                        <dd class="ft-gray ft-smaller">数据显示，设置头像后欢迎度是默认头像的 8.7 倍！</dd>
-                        <dt><span class="index">2</span>上传个性头像</dt>
-                        <dd class="ft-gray ft-smaller">数据显示，设置头像后欢迎度是默认头像的 8.7 倍！</dd>
-                        <dt><span class="index">3</span>上传个性头像</dt>
-                        <dd class="ft-gray ft-smaller">数据显示，设置头像后欢迎度是默认头像的 8.7 倍！</dd>
+                        <dt class="current"><span class="index">1</span>${guideUploadAvatarLabel}</dt>
+                        <dd class="ft-gray ft-smaller">${guideUploadAvatarTipLabel}</dd>
+                        <dt><span class="index">2</span>${guideFollowTagLabel}</dt>
+                        <dd class="ft-gray ft-smaller">${guideFollowTagTipLabel}</dd>
+                        <dt><span class="index">3</span>${guideFollowUserLabel}</dt>
+                        <dd class="ft-gray ft-smaller">${guideFollowUserTipLabel}</dd>
                     </dl>
                     <div class="fn-none">
                         ${introLabel}
