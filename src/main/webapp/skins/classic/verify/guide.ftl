@@ -19,7 +19,7 @@
                         <button class="fn-none green fn-right">${preStepLabel}</button>
                     </div>
                     <div class="guide-tab">
-                        <div class="fn-clear">
+                        <div class="fn-clear fn-none">
                             <div class="avatar-big" id="avatarURL"
                                  style="background-image:url('${currentUser.userAvatarURL20}')"></div> &nbsp; &nbsp;
                             <div class="avatar" id="avatarURLMid"

@@ -190,7 +190,7 @@ public class LoginProcessor {
 
         int step = requestJSONObject.optInt(UserExt.USER_GUIDE_STEP);
 
-        if (UserExt.USER_GUIDE_STEP_FOLLOW_USERS <= step || UserExt.USER_GUIDE_STEP_FIN >= step) {
+        if (UserExt.USER_GUIDE_STEP_FOLLOW_USERS < step || UserExt.USER_GUIDE_STEP_FIN >= step) {
             step = UserExt.USER_GUIDE_STEP_FIN;
         }
 

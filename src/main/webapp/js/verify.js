@@ -265,15 +265,13 @@ var Verify = {
     },
     /**
      * 新手向导初始化
-     * @param {int} initStep 新手向导步骤，0 为向导完成
+     * @param {int} currentStep 新手向导步骤，0 为向导完成
      */
-    initGuide: function (initStep) {
-        if (initStep === 0) {
+    initGuide: function (currentStep) {
+        if (currentStep === 0) {
             window.location.href = '/';
             return false;
         }
-
-        var currentStep = 1;
 
         var step = function () {
             if (currentStep !== 5) {
@@ -281,7 +279,7 @@ var Verify = {
                 $('.guide-tab > div').hide();
             }
 
-            if (currentStep < 4 && currentStep > 1) {
+            if (currentStep < 5 && currentStep > 0) {
                 $.ajax({
                     url: Label.servePath + "/guide/next",
                     type: "POST",
@@ -318,6 +316,7 @@ var Verify = {
 
                     $('.intro dt:eq(2)').addClass('current');
 
+                    $('.step-btn .green').show();
                     $('.step-btn .red').text(Label.nextStepLabel);
 
                     $('.intro > div').hide();
@@ -365,6 +364,6 @@ var Verify = {
             }
         });
 
-        step(initStep);
+        step(currentStep);
     }
 };
