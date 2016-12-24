@@ -187,6 +187,9 @@ public class LoginProcessor {
         final List<JSONObject> tags = tagQueryService.getTags(32);
         dataModel.put(Tag.TAGS, tags);
 
+        final List<JSONObject> users = userQueryService.getNiceUsers(12);
+        dataModel.put(User.USERS, users);
+
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
