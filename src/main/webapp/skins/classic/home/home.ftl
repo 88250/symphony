@@ -41,7 +41,7 @@
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>
-            <#if 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
+            <#if isMyArticle && 3 != article.articleType>
             <div class="cmts">
                 <a class="ft-a-title tooltipped tooltipped-w" href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"><span class="icon-edit"></span></a>
             </div>
