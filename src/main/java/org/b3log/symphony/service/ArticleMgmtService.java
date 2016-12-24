@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.14.27.31, Dec 17, 2016
+ * @version 2.14.27.32, Dec 24, 2016
  * @since 0.2.0
  */
 @Service
@@ -347,7 +347,11 @@ public class ArticleMgmtService {
         final boolean syncWithSymphonyClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
 
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
+        articleTitle = Emotions.toAliases(articleTitle);
+        articleTitle = Pangu.spacingText(articleTitle);
         articleTitle = StringUtils.trim(articleTitle);
+
+        final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
 
         try {
             // check if admin allow to add article
@@ -389,17 +393,19 @@ public class ArticleMgmtService {
                 }
             }
 
-            final JSONObject maybeExist = articleRepository.getByTitle(articleTitle);
-            if (null != maybeExist) {
-                final String existArticleAuthorId = maybeExist.optString(Article.ARTICLE_AUTHOR_ID);
-                final JSONObject existArticleAuthor = userRepository.get(existArticleAuthorId);
-                final String userName = existArticleAuthor.optString(User.USER_NAME);
-                String msg = langPropsService.get("duplicatedArticleTitleLabel");
-                msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
-                msg = msg.replace("{article}", "<a target='_blank' href='/article/" + maybeExist.optString(Keys.OBJECT_ID)
-                        + "'>" + articleTitle + "</a>");
+            if (Article.ARTICLE_TYPE_C_DISCUSSION != articleType) {
+                final JSONObject maybeExist = articleRepository.getByTitle(articleTitle);
+                if (null != maybeExist) {
+                    final String existArticleAuthorId = maybeExist.optString(Article.ARTICLE_AUTHOR_ID);
+                    final JSONObject existArticleAuthor = userRepository.get(existArticleAuthorId);
+                    final String userName = existArticleAuthor.optString(User.USER_NAME);
+                    String msg = langPropsService.get("duplicatedArticleTitleLabel");
+                    msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
+                    msg = msg.replace("{article}", "<a target='_blank' href='/article/" + maybeExist.optString(Keys.OBJECT_ID)
+                            + "'>" + articleTitle + "</a>");
 
-                throw new ServiceException(msg);
+                    throw new ServiceException(msg);
+                }
             }
         } catch (final RepositoryException e) {
             throw new ServiceException(e);
@@ -415,9 +421,6 @@ public class ArticleMgmtService {
             final String clientArticleId = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_ID, ret);
             final String clientArticlePermalink = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK);
             final boolean isBroadcast = requestJSONObject.optBoolean(Article.ARTICLE_T_IS_BROADCAST);
-
-            articleTitle = Emotions.toAliases(articleTitle);
-            articleTitle = Pangu.spacingText(articleTitle);
 
             article.put(Article.ARTICLE_TITLE, articleTitle);
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
@@ -455,7 +458,6 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.REDDIT_SCORE, 0);
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
-            final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
             article.put(Article.ARTICLE_TYPE, articleType);
             article.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
             String city = "";
