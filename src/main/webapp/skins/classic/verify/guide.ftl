@@ -1,4 +1,4 @@
-<#include "macro-head.ftl">
+<#include "../macro-head.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,7 +9,7 @@
         <link rel="canonical" href="${servePath}/register">
     </head>
     <body>
-        <#include "header.ftl">
+        <#include "../header.ftl">
         <div class="main">
             <div class="wrapper verify">
                 <div class="verify-wrap">
@@ -36,7 +36,7 @@
                         </div>
                         
                         <div id="loginTip" class="tip"></div>
-                        <button onclick="Verify.login('${goto}')">${loginLabel}</button>
+                        <button onclick="Verify.login('')">${loginLabel}</button>
                         <button class="green" onclick="Util.goRegister()">${registerLabel}</button>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <#include "footer.ftl">
+        <#include "../footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Verify.init();
