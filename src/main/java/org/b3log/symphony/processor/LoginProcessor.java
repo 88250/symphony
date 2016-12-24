@@ -74,7 +74,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.12.7.15, Dec 23, 2016
+ * @version 1.13.7.15, Dec 24, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -164,6 +164,42 @@ public class LoginProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
+    @RequestProcessing(value = "/guide", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showGuide(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        if (null != userQueryService.getCurrentUser(request)
+                || userMgmtService.tryLogInWithCookie(request, response)) {
+            response.sendRedirect(Latkes.getServePath());
+
+            return;
+        }
+
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+
+        String referer = request.getParameter(Common.GOTO);
+        if (StringUtils.isBlank(referer)) {
+            referer = request.getHeader("referer");
+        }
+
+        renderer.setTemplateName("/verify/guide.ftl");
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        dataModel.put(Common.GOTO, referer);
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows login page.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
     @RequestProcessing(value = "/login", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
@@ -184,7 +220,7 @@ public class LoginProcessor {
             referer = request.getHeader("referer");
         }
 
-        renderer.setTemplateName("login.ftl");
+        renderer.setTemplateName("/verify/login.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put(Common.GOTO, referer);
@@ -284,7 +320,7 @@ public class LoginProcessor {
             dataModel.put(Keys.MSG, langPropsService.get("verifycodeExpiredLabel"));
             renderer.setTemplateName("/error/custom.ftl");
         } else {
-            renderer.setTemplateName("reset-pwd.ftl");
+            renderer.setTemplateName("verify/reset-pwd.ftl");
 
             final String userId = verifycode.optString(Verifycode.USER_ID);
             final JSONObject user = userQueryService.getUser(userId);
@@ -380,14 +416,14 @@ public class LoginProcessor {
 
         final String code = request.getParameter("code");
         if (Strings.isEmptyOrNull(code)) { // Register Step 1
-            renderer.setTemplateName("register.ftl");
+            renderer.setTemplateName("verify/register.ftl");
         } else { // Register Step 2
             final JSONObject verifycode = verifycodeQueryService.getVerifycode(code);
             if (null == verifycode) {
                 dataModel.put(Keys.MSG, langPropsService.get("verifycodeExpiredLabel"));
                 renderer.setTemplateName("/error/custom.ftl");
             } else {
-                renderer.setTemplateName("register2.ftl");
+                renderer.setTemplateName("verify/register2.ftl");
 
                 final String userId = verifycode.optString(Verifycode.USER_ID);
                 final JSONObject user = userQueryService.getUser(userId);
