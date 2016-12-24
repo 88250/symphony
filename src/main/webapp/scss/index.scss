@@ -647,7 +647,8 @@ label.cmt-anonymous {
 
 /* start guide */
 .guide {
-    .guide-tab {
+    .guide-tab,
+    .step-btn {
         margin: 50px;
     }
 
@@ -660,9 +661,8 @@ label.cmt-anonymous {
         margin-top: 0;
     }
 
-    .step-btn {
-        margin: 0 50px 50px;
-        float: right;
+    .tag-desc > li {
+        margin: 0 20px 20px 0;
     }
 
     .tag-desc > li > div {

@@ -13,8 +13,13 @@
         <div class="main">
             <div class="wrapper verify guide">
                 <div class="verify-wrap">
+                    <div class="step-btn fn-clear">
+                        <button class="red fn-right">${nextStepLabel}</button>
+                        <span class="fn-right"> &nbsp; &nbsp;</span>
+                        <button class="fn-none green fn-right">${preStepLabel}</button>
+                    </div>
                     <div class="guide-tab">
-                        <div class="current fn-clear">
+                        <div class="fn-clear">
                             <div class="avatar-big" id="avatarURL"
                                  style="background-image:url('${currentUser.userAvatarURL20}')"></div> &nbsp; &nbsp;
                             <div class="avatar" id="avatarURLMid"
@@ -29,48 +34,67 @@
                         </div>
                         <div class="fn-none fn-clear">
                             <ul class="tag-desc">
-                                <li class="current">
-                                    <a rel="nofollow" href="javascript:void(0)">
-                                        <img src="https://static.hacpai.com/images/tags/mobicss.png" alt="Mobi.css">
-                                        Mobi.css
-                                    </a>
-                                    <div>
-                                        <div><p><a href="http://getmobicss.com">Mobi.css</a> is a lightweight, flexible <a href="https://hacpai.com/tag/CSS">CSS</a> framework that focus on mobile.</p></div>
-                                        <span class="fn-right">
-                                        <span class="ft-gray">引用</span>
-                                        2 &nbsp;
-                                        <span class="ft-gray">回帖</span>
-                                        11&nbsp;
-                                    </span>
-                                    </div>
-                                </li>
+                                <#list tags as tag>
+                                    <li data-id="${tag.oId}">
+                                        <a rel="nofollow" href="javascript:void(0)">
+                                            <#if tag.tagIconPath!="">
+                                                <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if>
+                                            ${tag.tagTitle}
+                                        </a>
+                                        <div<#if tag.tagDescription == ''> style="width:auto"</#if>>
+                                            <div>${tag.tagDescription}</div>
+                                            <span class="fn-right">
+                                                <span class="ft-gray">${referenceLabel}</span>
+                                                ${tag.tagReferenceCount} &nbsp;
+                                                <span class="ft-gray">${cmtLabel}</span>
+                                                ${tag.tagCommentCount}&nbsp;
+                                            </span>
+                                        </div>
+                                    </li>
+                                </#list>
                             </ul>
                         </div>
                         <div class="fn-none list">
                             <ul class="fn-clear">
-                                <li>
-                                    <div class="fn-flex">
-                                        <a rel="nofollow ft-gray" href="https://hacpai.com/member/jiangzezhou">
-                                            <div class="avatar fn-left tooltipped tooltipped-se" aria-label="jiangzezhou 离线" style="background-image:url('https://img.hacpai.com/avatar/1357654187909?1437293059736')"></div>
-                                        </a>
-                                        <div class="fn-flex-1">
-                                            <h2 class="fn-inline">
-                                                <a rel="nofollow" href="https://hacpai.com/member/jiangzezhou">jiangzezhou</a>
-                                            </h2>
-                                            <button class="fn-right mid" onclick="Util.unfollow(this, '1357654187909', 'user')">
-                                                取消关注
-                                            </button>
-                                            <div>
-                                                <span class="ft-gray">帖子</span> 32 &nbsp;
-                                                <span class="ft-gray">标签</span> 48
+                                <#list users as follower>
+                                    <li>
+                                        <div class="fn-flex">
+                                            <a rel="nofollow" class="tooltipped tooltipped-se fn-left" aria-label="${follower.userName} <#if follower.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>"
+                                               href="${servePath}/member/${follower.userName}" >
+                                                <div class="avatar" style="background-image:url('${follower.userAvatarURL}')"></div>
+                                            </a>
+                                            <div class="fn-flex-1">
+                                                <h2 class="fn-inline">
+                                                    <a rel="nofollow" href="${servePath}/member/${follower.userName}" ><#if follower.userNickname != ''>${follower.userNickname}<#else>${follower.userName}</#if></a>
+                                                </h2>
+                                                <#if follower.userNickname != ''>
+                                                    <a class='ft-fade' rel="nofollow" href="${servePath}/member/${follower.userName}" >${follower.userName}</a>
+                                                </#if>
+                                                <button class="fn-right mid" onclick="Util.follow(this, '${follower.oId}', 'user')">
+                                                    ${followLabel}
+                                                </button>
+                                                <div>
+                                                    <#if follower.userArticleCount == 0>
+                                                        <#if follower.userURL != "">
+                                                            <a class="ft-gray" target="_blank" rel="friend" href="${follower.userURL?html}">${follower.userURL?html}</a>
+                                                            <#else>
+                                                                <span class="ft-gray">${symphonyLabel}</span>
+                                                                ${follower.userNo?c}
+                                                                <span class="ft-gray">${numVIPLabel}</span>
+                                                        </#if>
+                                                        <#else>
+                                                            <span class="ft-gray">${articleLabel}</span> ${follower.userArticleCount?c} &nbsp;
+                                                            <span class="ft-gray">${tagLabel}</span> ${follower.userTagCount?c}
+                                                    </#if>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                </#list>
                             </ul>
                         </div>
                         <div class="fn-none list">
-                            <br/><br/><br/><br/>
+                            <br/><br/>
                             <div class="ft-center">${logoIcon2}</div> <br/>
                             <ul>
                                 <li>
@@ -88,10 +112,6 @@
                             </ul>
                             <br/>
                         </div>
-                    </div>
-                    <div class="step-btn">
-                        <button class="fn-none green">Prev</button> &nbsp;
-                        <button class="red">Next</button>
                     </div>
                 </div>
                 <div class="intro content-reset">
@@ -114,6 +134,12 @@
         <script type="text/javascript" src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script>
+            Label.finshLabel = '${finshLabel}';
+            Label.nextStepLabel = '${nextStepLabel}';
+            Label.unfollowLabel = '${unfollowLabel}';
+            Label.followLabel = '${followLabel}';
+            Verify.initGuide(${currentUser.userGuideStep?c});
+
             Settings.initUploadAvatar({
                 id: 'avatarUpload',
                 qiniuUploadToken: '${qiniuUploadToken}',
@@ -135,8 +161,6 @@
 
                 Settings.updateAvatar('${csrfToken}');
             });
-
-            Verify.initGuide();
         </script>
     </body>
 </html>

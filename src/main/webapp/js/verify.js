@@ -265,45 +265,106 @@ var Verify = {
     },
     /**
      * 新手向导初始化
+     * @param {int} initStep 新手向导步骤，0 为向导完成
      */
-    initGuide: function () {
+    initGuide: function (initStep) {
+        if (initStep === 0) {
+            window.location.href = '/';
+            return false;
+        }
+
         var currentStep = 1;
 
         var step = function () {
+            if (currentStep !== 5) {
+                $('.intro dt').removeClass('current');
+                $('.guide-tab > div').hide();
+            }
 
+            if (currentStep < 4 && currentStep > 1) {
+                $.ajax({
+                    url: Label.servePath + "/guide/next",
+                    type: "POST",
+                    cache: false,
+                    data: JSON.stringify({
+                        userGuideStep: currentStep
+                    }),
+                    success: function (result, textStatus) {
+                        if (!result.sc) {
+                            Util.alert(result.msg);
+                        }
+                    }
+                });
+            }
+
+
+            switch (currentStep) {
+                case 1:
+                    $('.guide-tab > div:eq(0)').show();
+
+                    $('.step-btn .green').hide();
+
+                    $('.intro dt:eq(0)').addClass('current');
+                    break;
+                case 2:
+                    $('.guide-tab > div:eq(1)').show();
+
+                    $('.step-btn .green').show();
+
+                    $('.intro dt:eq(1)').addClass('current');
+                    break;
+                case 3:
+                    $('.guide-tab > div:eq(2)').show();
+
+                    $('.intro dt:eq(2)').addClass('current');
+
+                    $('.step-btn .red').text(Label.nextStepLabel);
+
+                    $('.intro > div').hide();
+                    $('.intro > dl').show();
+                    break;
+                case 4:
+                    $('.guide-tab > div:eq(3)').show();
+
+                    $('.step-btn .red').text(Label.finshLabel);
+
+                    $('.intro > div').show();
+                    $('.intro > dl').hide();
+                    break;
+                case 5:
+                    // finished
+                    window.location.href = '/';
+                    break;
+                default:
+                    break;
+
+            }
         };
 
         $('.step-btn .red').click(function () {
-            $('.guide-tab > .current').removeClass('current').hide().next().show().addClass('current');
-            $('.step-btn .green').show();
-
-            if ($('.guide-tab > div:last').hasClass('current')) {
-                $('.step-btn .red').text('fi');
-
-                $('.intro > div').show();
-                $('.intro > dl').hide();
+            if (currentStep > 4) {
+                return false;
             }
+            currentStep++;
+            step();
         });
 
         $('.step-btn .green').click(function () {
-            $('.guide-tab > .current').removeClass('current').hide().prev().show().addClass('current');
-
-            if ($('.guide-tab > div:first').hasClass('current')) {
-                $('.step-btn .green').hide();
-            }
-
-            $('.step-btn .red').text('next');
-            $('.intro > div').hide();
-            $('.intro > dl').show();
+            currentStep--;
+            step();
         });
 
         $('.tag-desc li').click(function () {
             var $it = $(this);
             if ($it.hasClass('current')) {
+                Util.unfollow(window, $it.data('id'), 'tag');
                 $it.removeClass('current');
             } else {
+                Util.follow(window, $it.data('id'), 'tag');
                 $it.addClass('current');
             }
         });
+
+        step(initStep);
     }
 };
