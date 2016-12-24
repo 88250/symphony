@@ -185,7 +185,7 @@ public class LoginProcessor {
             return;
         }
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        JSONObject user = (JSONObject) request.getAttribute(User.USER);
         final String userId = user.optString(Keys.OBJECT_ID);
 
         int step = requestJSONObject.optInt(UserExt.USER_GUIDE_STEP);
@@ -194,11 +194,13 @@ public class LoginProcessor {
             step = UserExt.USER_GUIDE_STEP_FIN;
         }
 
-        user.put(UserExt.USER_GUIDE_STEP, step);
-
         try {
+            user = userQueryService.getUser(userId);
+            user.put(UserExt.USER_GUIDE_STEP, step);
             userMgmtService.updateUser(userId, user);
         } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Guide next step [" + step + "] failed", e);
+
             return;
         }
 
@@ -219,6 +221,12 @@ public class LoginProcessor {
     public void showGuide(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final int step = currentUser.optInt(UserExt.USER_GUIDE_STEP);
+        if (UserExt.USER_GUIDE_STEP_FIN == step) {
+            response.sendRedirect(Latkes.getServePath());
+
+            return;
+        }
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
