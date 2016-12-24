@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.processor;
 
+import com.qiniu.util.Auth;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -38,6 +39,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.*;
+import org.b3log.symphony.processor.advice.CSRFToken;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
@@ -172,7 +174,7 @@ public class LoginProcessor {
      */
     @RequestProcessing(value = "/guide", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showGuide(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
@@ -189,6 +191,21 @@ public class LoginProcessor {
 
         final List<JSONObject> users = userQueryService.getNiceUsers(12);
         dataModel.put(User.USERS, users);
+
+        // Qiniu file upload authenticate
+        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
+        dataModel.put("qiniuUploadToken", uploadToken);
+        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
+
+        if (!Symphonys.getBoolean("qiniu.enabled")) {
+            dataModel.put("qiniuUploadToken", "");
+        }
+
+        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        dataModel.put("imgMaxSize", imgMaxSize);
+        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        dataModel.put("fileMaxSize", fileMaxSize);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
