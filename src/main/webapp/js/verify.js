@@ -266,12 +266,15 @@ var Verify = {
     /**
      * 新手向导初始化
      * @param {int} currentStep 新手向导步骤，0 为向导完成
+     * @param {int} tagSize 标签数
      */
-    initGuide: function (currentStep) {
+    initGuide: function (currentStep, tagSize) {
         if (currentStep === 0) {
             window.location.href = '/';
             return false;
         }
+
+        var step2Sort = 'random';
 
         var step = function () {
             if (currentStep !== 5) {
@@ -300,24 +303,34 @@ var Verify = {
                 case 1:
                     $('.guide-tab > div:eq(0)').show();
 
-                    $('.step-btn .green').hide();
+                    $('.step-btn .red').hide();
 
                     $('.intro dt:eq(0)').addClass('current');
                     break;
                 case 2:
                     $('.guide-tab > div:eq(1)').show();
 
-                    $('.step-btn .green').show();
+                    $('.step-btn .red').show();
 
                     $('.intro dt:eq(1)').addClass('current');
+
+                    // sort
+                    $('.step-btn .green, .step-btn .red').prop('disabled', true);
+                    $('.tag-desc').isotope({
+                        sortBy: step2Sort
+                    });
+                    step2Sort = (step2Sort === 'random' ? 'original-order' : 'random');
+                    $('.tag-desc').on( 'arrangeComplete', function () {
+                        $('.step-btn .green, .step-btn .red').prop('disabled', false);
+                    });
                     break;
                 case 3:
                     $('.guide-tab > div:eq(2)').show();
 
                     $('.intro dt:eq(2)').addClass('current');
 
-                    $('.step-btn .green').show();
-                    $('.step-btn .red').text(Label.nextStepLabel);
+                    $('.step-btn .red').show();
+                    $('.step-btn .green').text(Label.nextStepLabel);
 
                     $('.intro > div').hide();
                     $('.intro > dl').show();
@@ -325,7 +338,7 @@ var Verify = {
                 case 4:
                     $('.guide-tab > div:eq(3)').show();
 
-                    $('.step-btn .red').text(Label.finshLabel);
+                    $('.step-btn .green').text(Label.finshLabel);
 
                     $('.intro > div').show();
                     $('.intro > dl').hide();
@@ -340,7 +353,7 @@ var Verify = {
             }
         };
 
-        $('.step-btn .red').click(function () {
+        $('.step-btn .green').click(function () {
             if (currentStep > 4) {
                 return false;
             }
@@ -348,7 +361,7 @@ var Verify = {
             step();
         });
 
-        $('.step-btn .green').click(function () {
+        $('.step-btn .red').click(function () {
             currentStep--;
             step();
         });
@@ -365,5 +378,18 @@ var Verify = {
         });
 
         step(currentStep);
+
+        $('.tag-desc').isotope({
+            transitionDuration: '1.5s',
+            filter: 'li',
+            layoutMode: 'fitRows'
+        });
+
+        // random select five tags
+        for (var i = 6; i > 0; i--) {
+            var random = parseInt(Math.random() * tagSize);
+            $('.tag-desc li:eq(' + random + ')').addClass('current');
+            Util.follow(window, $('.tag-desc li:eq(' + random + ')').data('id'), 'tag');
+        }
     }
 };

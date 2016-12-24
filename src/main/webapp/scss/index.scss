@@ -672,9 +672,9 @@ label.cmt-anonymous {
     }
 
     .tag-desc li.current > a {
-        background-color: #d23f31;
+        background-color: $fade;
         color: #fff;
-        border-color: #c0372a;
+        border-color: #bbb;
     }
 
     .intro dl {
@@ -690,7 +690,7 @@ label.cmt-anonymous {
     }
 
     .intro dt.current {
-        color: $blue;
+        color: #ffac45;
     }
 
     .intro dt .index {

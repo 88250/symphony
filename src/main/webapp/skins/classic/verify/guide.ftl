@@ -12,11 +12,24 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper verify guide">
+                <div class="intro content-reset">
+                    <dl>
+                        <dt class="current"><span class="index">1</span>${guideUploadAvatarLabel}</dt>
+                        <dd class="ft-gray ft-smaller">${guideUploadAvatarTipLabel}</dd>
+                        <dt><span class="index">2</span>${guideFollowTagLabel}</dt>
+                        <dd class="ft-gray ft-smaller">${guideFollowTagTipLabel}</dd>
+                        <dt><span class="index">3</span>${guideFollowUserLabel}</dt>
+                        <dd class="ft-gray ft-smaller">${guideFollowUserTipLabel}</dd>
+                    </dl>
+                    <div class="fn-none">
+                        ${introLabel}
+                    </div>
+                </div>
                 <div class="verify-wrap">
                     <div class="step-btn fn-clear">
-                        <button class="red fn-right">${nextStepLabel}</button>
+                        <button class="fn-right green">${nextStepLabel}</button>
                         <span class="fn-right"> &nbsp; &nbsp;</span>
-                        <button class="fn-none green fn-right">${preStepLabel}</button>
+                        <button class="red fn-right fn-none">${preStepLabel}</button>
                     </div>
                     <div class="guide-tab">
                         <div class="fn-clear fn-none">
@@ -74,17 +87,11 @@
                                                     ${followLabel}
                                                 </button>
                                                 <div>
-                                                    <#if follower.userArticleCount == 0>
-                                                        <#if follower.userURL != "">
-                                                            <a class="ft-gray" target="_blank" rel="friend" href="${follower.userURL?html}">${follower.userURL?html}</a>
-                                                            <#else>
-                                                                <span class="ft-gray">${symphonyLabel}</span>
-                                                                ${follower.userNo?c}
-                                                                <span class="ft-gray">${numVIPLabel}</span>
-                                                        </#if>
-                                                        <#else>
-                                                            <span class="ft-gray">${articleLabel}</span> ${follower.userArticleCount?c} &nbsp;
-                                                            <span class="ft-gray">${tagLabel}</span> ${follower.userTagCount?c}
+                                                    <#if follower.userIntro != "">
+                                                        <span class="ft-gray">${follower.userIntro}</span>
+                                                    <#else>
+                                                        <span class="ft-gray">${articleLabel}</span> ${follower.userArticleCount?c} &nbsp;
+                                                        <span class="ft-gray">${tagLabel}</span> ${follower.userTagCount?c}
                                                     </#if>
                                                 </div>
                                             </div>
@@ -114,31 +121,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="intro content-reset">
-                    <dl>
-                        <dt class="current"><span class="index">1</span>${guideUploadAvatarLabel}</dt>
-                        <dd class="ft-gray ft-smaller">${guideUploadAvatarTipLabel}</dd>
-                        <dt><span class="index">2</span>${guideFollowTagLabel}</dt>
-                        <dd class="ft-gray ft-smaller">${guideFollowTagTipLabel}</dd>
-                        <dt><span class="index">3</span>${guideFollowUserLabel}</dt>
-                        <dd class="ft-gray ft-smaller">${guideFollowUserTipLabel}</dd>
-                    </dl>
-                    <div class="fn-none">
-                        ${introLabel}
-                    </div>
-                </div>
             </div>
         </div>
         <#include "../footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/isotope.pkgd.min.js"></script>
         <script>
             Label.finshLabel = '${finshLabel}';
             Label.nextStepLabel = '${nextStepLabel}';
             Label.unfollowLabel = '${unfollowLabel}';
             Label.followLabel = '${followLabel}';
-            Verify.initGuide(${currentUser.userGuideStep?c});
+            Verify.initGuide(${currentUser.userGuideStep?c}, ${tags?size});
 
             Settings.initUploadAvatar({
                 id: 'avatarUpload',
