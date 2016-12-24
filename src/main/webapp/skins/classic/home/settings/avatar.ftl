@@ -32,10 +32,10 @@
             userId: '${currentUser.oId}',
             maxSize: '${imgMaxSize?c}'
         }, function (data) {
-            var qiniuKey = data.result.key;
-            $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
-            $('#avatarURLMid').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
-            $('#avatarURLNor').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+            var uploadKey = data.result.key;
+            $('#avatarURL').css("background-image", 'url(' + uploadKey + ')').data('imageurl', uploadKey);
+            $('#avatarURLMid').css("background-image", 'url(' + uploadKey + ')').data('imageurl', uploadKey);
+            $('#avatarURLNor').css("background-image", 'url(' + uploadKey + ')').data('imageurl', uploadKey);
 
             Settings.updateAvatar('${csrfToken}');
         }, function (data) {
