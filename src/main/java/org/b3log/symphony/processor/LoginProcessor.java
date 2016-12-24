@@ -165,6 +165,48 @@ public class LoginProcessor {
     private TagQueryService tagQueryService;
 
     /**
+     * Next guide step.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     */
+    @RequestProcessing(value = "/guide/next", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class})
+    public void nextGuideStep(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+        context.renderJSON();
+
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        } catch (final Exception e) {
+            LOGGER.warn(e.getMessage());
+
+            return;
+        }
+
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+
+        int step = requestJSONObject.optInt(UserExt.USER_GUIDE_STEP);
+        final int currentStep = user.optInt(UserExt.USER_GUIDE_STEP);
+
+        if (UserExt.USER_GUIDE_STEP_FOLLOW_USERS <= step || UserExt.USER_GUIDE_STEP_FIN >= step) {
+            step = UserExt.USER_GUIDE_STEP_FIN;
+        }
+
+        user.put(UserExt.USER_GUIDE_STEP, step);
+
+        try {
+            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
+        } catch (final Exception e) {
+            return;
+        }
+
+        context.renderJSON(true);
+    }
+
+    /**
      * Shows login page.
      *
      * @param context  the specified context
