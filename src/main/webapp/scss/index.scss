@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.18.44, Dec 19, 2016
+ * @version 2.18.19.44, Dec 24, 2016
  */
 
 @import "variables";
@@ -644,6 +644,65 @@ label.cmt-anonymous {
     }
     /* end register & login form */
 }
+
+/* start guide */
+.guide {
+    .guide-tab {
+        margin: 50px;
+    }
+
+    .form {
+        margin: 0;
+        width: auto;
+    }
+
+    #avatarUpload label {
+        margin-top: 0;
+    }
+
+    .step-btn {
+        margin: 0 50px 50px;
+        float: right;
+    }
+
+    .tag-desc > li > div {
+        left: -3px;
+        right: inherit;
+        border-radius: 0px 3px 3px 3px;
+    }
+
+    .tag-desc li.current > a {
+        background-color: #d23f31;
+        color: #fff;
+        border-color: #c0372a;
+    }
+
+    .intro dl {
+        margin-left: 50px;
+    }
+
+    .intro dd {
+        margin-bottom: 50px;
+    }
+
+    .intro dt {
+        position: relative;
+    }
+
+    .intro dt.current {
+        color: $blue;
+    }
+
+    .intro dt .index {
+        position: absolute;
+        left: -38px;
+        font-size: 46px;
+        top: -13px;
+        font-family: serif;
+        font-weight: 600;
+    }
+}
+/* end guide */
 /* end verify */
 
 /* start tags.html */
@@ -811,7 +870,6 @@ code .dec { color: initial; } /* decimal - blue */
         color: #333;
         text-decoration: none;
         display: block;
-        cursor: auto;
     }
 
     .index-tabs > span.current,

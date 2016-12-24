@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.5.2.10, Nov 26, 2016
+ * @version 2.6.2.10, Dec 24, 2016
  */
 
 /**
@@ -231,6 +231,9 @@ var Verify = {
             });
         }
     },
+    /**
+     * 登录注册等页面回车事件绑定
+     */
     init: function () {
         // 注册回车事件
         $("#registerCaptcha, #registerInviteCode").keyup(function (event) {
@@ -257,6 +260,49 @@ var Verify = {
         $("#rpwdConfirmPassword").keyup(function (event) {
             if (event.keyCode === 13) {
                 Verify.resetPwd();
+            }
+        });
+    },
+    /**
+     * 新手向导初始化
+     */
+    initGuide: function () {
+        var currentStep = 1;
+
+        var step = function () {
+
+        };
+
+        $('.step-btn .red').click(function () {
+            $('.guide-tab > .current').removeClass('current').hide().next().show().addClass('current');
+            $('.step-btn .green').show();
+
+            if ($('.guide-tab > div:last').hasClass('current')) {
+                $('.step-btn .red').text('fi');
+
+                $('.intro > div').show();
+                $('.intro > dl').hide();
+            }
+        });
+
+        $('.step-btn .green').click(function () {
+            $('.guide-tab > .current').removeClass('current').hide().prev().show().addClass('current');
+
+            if ($('.guide-tab > div:first').hasClass('current')) {
+                $('.step-btn .green').hide();
+            }
+
+            $('.step-btn .red').text('next');
+            $('.intro > div').hide();
+            $('.intro > dl').show();
+        });
+
+        $('.tag-desc li').click(function () {
+            var $it = $(this);
+            if ($it.hasClass('current')) {
+                $it.removeClass('current');
+            } else {
+                $it.addClass('current');
             }
         });
     }
