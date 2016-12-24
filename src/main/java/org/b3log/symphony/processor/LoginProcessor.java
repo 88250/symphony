@@ -56,6 +56,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -155,6 +156,11 @@ public class LoginProcessor {
      */
     @Inject
     private RoleQueryService roleQueryService;
+    /**
+     * Tag query service.
+     */
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * Shows login page.
@@ -177,6 +183,9 @@ public class LoginProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put(Common.CURRENT_USER, currentUser);
+
+        final List<JSONObject> tags = tagQueryService.getTags(32);
+        dataModel.put(Tag.TAGS, tags);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
