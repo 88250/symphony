@@ -197,7 +197,7 @@ public class LoginProcessor {
         user.put(UserExt.USER_GUIDE_STEP, step);
 
         try {
-            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
+            userMgmtService.updateUser(userId, user);
         } catch (final Exception e) {
             return;
         }
