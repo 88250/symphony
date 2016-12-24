@@ -93,7 +93,7 @@
                             </a>
                             </#if>
                         </span>
-                        <span class="post"><a href="${servePath}/post?type=0">${postArticleLabel}</a></span>
+                        <span class="post"><a href="${servePath}/pre-post">${postArticleLabel}</a></span>
                     </div>
                     <div class="perfect-panel list">
                         <ul>
