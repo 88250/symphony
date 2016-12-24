@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.14.19.19, Dec 16, 2016
+ * @version 1.14.19.20, Dec 24, 2016
  * @since 0.2.0
  */
 @Service
@@ -397,6 +397,7 @@ public class UserMgmtService {
      *                          "userAppRole": int, // optional, default to 0
      *                          "userRole": "", // optional, uses {@value Role#ROLE_ID_C_DEFAULT} instead if not specified
      *                          "userStatus": int, // optional, uses {@value UserExt#USER_STATUS_C_NOT_VERIFIED} instead if not specified
+     *                          "userGuideStep": int // optional, uses {@value UserExt#USER_GUIDE_STEP_UPLOAD_AVATAR} instead if not specified
      *                          ,see {@link User} for more details
      * @return generated user id
      * @throws ServiceException if user name or email duplicated, or repository exception
@@ -511,6 +512,8 @@ public class UserMgmtService {
 
             user.put(UserExt.USER_TIMEZONE,
                     requestJSONObject.optString(UserExt.USER_TIMEZONE, TimeZone.getDefault().getID()));
+
+            user.put(UserExt.USER_GUIDE_STEP, requestJSONObject.optInt(UserExt.USER_GUIDE_STEP, UserExt.USER_GUIDE_STEP_UPLOAD_AVATAR));
 
             if (toUpdate) {
                 user.put(UserExt.USER_NO, userNo);

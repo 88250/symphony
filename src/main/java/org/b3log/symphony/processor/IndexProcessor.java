@@ -17,16 +17,9 @@
  */
 package org.b3log.symphony.processor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
@@ -48,13 +41,17 @@ import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+
 /**
  * Index processor.
- *
+ * <p>
  * <ul>
  * <li>Shows index (/), GET</li>
  * <li>Shows recent articles (/recent), GET</li>
@@ -65,10 +62,11 @@ import org.json.JSONObject;
  * <li>Shows SymHub (/symhub), GET</li>
  * <li>Shows kill browser (/kill-browser), GET</li>
  * </ul>
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.11.2.21, Nov 16, 2016
+ * @version 1.11.2.22, Dec 24, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -118,8 +116,8 @@ public class IndexProcessor {
     /**
      * Shows index.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -146,6 +144,12 @@ public class IndexProcessor {
         currentUser = userQueryService.getCurrentUser(request);
 
         if (null != currentUser) {
+            if (!UserExt.finshedGuide(currentUser)) {
+                response.sendRedirect(Latkes.getServePath() + "/guide");
+
+                return;
+            }
+
             final String userId = currentUser.optString(Keys.OBJECT_ID);
 
             final int pageSize = Symphonys.getInt("indexArticlesCnt");
@@ -177,8 +181,8 @@ public class IndexProcessor {
     /**
      * Shows recent articles.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -202,6 +206,12 @@ public class IndexProcessor {
         final JSONObject user = userQueryService.getCurrentUser(request);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+
+            if (!UserExt.finshedGuide(user)) {
+                response.sendRedirect(Latkes.getServePath() + "/guide");
+
+                return;
+            }
         }
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
@@ -278,8 +288,8 @@ public class IndexProcessor {
     /**
      * Shows hot articles.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -287,7 +297,7 @@ public class IndexProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHotArticles(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                                final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("hot.ftl");
@@ -324,8 +334,8 @@ public class IndexProcessor {
     /**
      * Shows SymHub page.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -333,7 +343,7 @@ public class IndexProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showSymHub(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                           final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("symhub.ftl");
@@ -361,8 +371,8 @@ public class IndexProcessor {
     /**
      * Shows perfect articles.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -370,7 +380,7 @@ public class IndexProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showPerfectArticles(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                                    final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("perfect.ftl");
@@ -386,6 +396,12 @@ public class IndexProcessor {
         final JSONObject user = userQueryService.getCurrentUser(request);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+
+            if (!UserExt.finshedGuide(user)) {
+                response.sendRedirect(Latkes.getServePath() + "/guide");
+
+                return;
+            }
         }
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
@@ -434,8 +450,8 @@ public class IndexProcessor {
     /**
      * Shows b3log.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -443,7 +459,7 @@ public class IndexProcessor {
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showB3log(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                          final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("b3log.ftl");
@@ -462,8 +478,8 @@ public class IndexProcessor {
     /**
      * Shows kill browser page with the specified context.
      *
-     * @param context the specified context
-     * @param request the specified HTTP servlet request
+     * @param context  the specified context
+     * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
      */
     @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)

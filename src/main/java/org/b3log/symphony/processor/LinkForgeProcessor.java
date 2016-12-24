@@ -58,9 +58,10 @@ import java.util.concurrent.Executors;
  * <li>Shows link forge (/link-forge), GET</li>
  * <li>Submits a link into forge (/forge/link), POST</li>
  * </ul>
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.5, Dec 18, 2016
+ * @version 1.1.0.6, Dec 24, 2016
  * @since 1.6.0
  */
 @RequestProcessor

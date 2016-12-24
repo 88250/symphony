@@ -17,12 +17,8 @@
  */
 package org.b3log.symphony.processor;
 
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -33,31 +29,32 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.DomainCache;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Domain;
-import org.b3log.symphony.model.Option;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Domain processor.
- *
+ * <p>
  * <ul>
  * <li>Shows domains (/domains), GET</li>
  * <li>Shows domain article (/{domainURI}), GET</li>
  * </ul>
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, Oct 26, 2016
+ * @version 1.1.0.8, Dec 24, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -102,9 +99,9 @@ public class DomainProcessor {
     /**
      * Caches domains.
      *
-     * @param request the specified HTTP servlet request
+     * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @param context the specified HTTP request context
+     * @param context  the specified HTTP request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/cron/domain/cache-domains", method = HTTPRequestMethod.GET)
@@ -127,9 +124,9 @@ public class DomainProcessor {
     /**
      * Shows domain articles.
      *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
+     * @param context   the specified context
+     * @param request   the specified request
+     * @param response  the specified response
      * @param domainURI the specified domain URI
      * @throws Exception exception
      */
@@ -137,7 +134,7 @@ public class DomainProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDomainArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String domainURI)
+                                   final String domainURI)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
@@ -155,6 +152,12 @@ public class DomainProcessor {
         final JSONObject user = userQueryService.getCurrentUser(request);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+
+            if (!UserExt.finshedGuide(user)) {
+                response.sendRedirect(Latkes.getServePath() + "/guide");
+
+                return;
+            }
         }
 
         final JSONObject domain = domainQueryService.getByURI(domainURI);
@@ -201,8 +204,8 @@ public class DomainProcessor {
     /**
      * Shows domains.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */

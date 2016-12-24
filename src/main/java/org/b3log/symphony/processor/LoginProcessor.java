@@ -38,6 +38,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.*;
+import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
@@ -61,7 +62,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Login/Register processor.
- * <p>
  * <p>
  * For user
  * <ul>
@@ -165,29 +165,18 @@ public class LoginProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/guide", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showGuide(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        if (null != userQueryService.getCurrentUser(request)
-                || userMgmtService.tryLogInWithCookie(request, response)) {
-            response.sendRedirect(Latkes.getServePath());
-
-            return;
-        }
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-
-        String referer = request.getParameter(Common.GOTO);
-        if (StringUtils.isBlank(referer)) {
-            referer = request.getHeader("referer");
-        }
-
         renderer.setTemplateName("/verify/guide.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModel.put(Common.GOTO, referer);
+        dataModel.put(Common.CURRENT_USER, currentUser);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }

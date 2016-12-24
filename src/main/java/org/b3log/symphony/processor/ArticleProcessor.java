@@ -519,7 +519,7 @@ public class ArticleProcessor {
         boolean requisite = false;
         String requisiteMsg = "";
 
-        if (!currentUser.optString(UserExt.USER_AVATAR_URL).contains("_")) {
+        if (!UserExt.updatedAvatar(currentUser)) {
             requisite = true;
             requisiteMsg = langPropsService.get("uploadAvatarThenPostLabel");
         }
