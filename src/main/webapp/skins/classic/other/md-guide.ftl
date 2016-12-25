@@ -2,7 +2,7 @@
     <!DOCTYPE html>
     <html>
     <head>
-        <@head title="Markdown ${newbieGuideLabel} - ${symphonyLabel}" />
+        <@head title="Markdown ${tutorialLabel} - ${symphonyLabel}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}"/>
         <link rel="canonical" href="${servePath}/guide/markdown">
     </head>
@@ -11,7 +11,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="module guide">
-                    <div class="module-header">Markdown ${newbieGuideLabel}</div>
+                    <div class="module-header">Markdown ${tutorialLabel}</div>
                     <div class="module-panel fn-flex">
                         <div class="md">
                         <pre>

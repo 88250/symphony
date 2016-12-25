@@ -2,7 +2,7 @@
     <!DOCTYPE html>
     <html>
     <head>
-        <@head title="Markdown ${newbieGuideLabel} - ${symphonyLabel}" />
+        <@head title="Markdown ${tutorialLabel} - ${symphonyLabel}" />
         <link rel="canonical" href="${servePath}/guide/markdown">
     </head>
     <body>
@@ -10,7 +10,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="fn-hr10"></div>
-                <h2>Markdown ${newbieGuideLabel}</h2>
+                <h2>Markdown ${tutorialLabel}</h2>
                 <div class="fn-hr10"></div>
             </div>
             <div class="guide">
