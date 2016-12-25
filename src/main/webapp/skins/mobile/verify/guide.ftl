@@ -101,6 +101,10 @@
                                     <a href="https://hacpai.com/article/1474030007391">${hotKeyLabel}</a>
                                     <span class="ft-gray">${hotKeyTipLabel}</span>
                                 </li>
+                                <li>
+                                    <a href="https://hacpai.com/guide/markdown">Markdown ${tutorialLabel}</a>
+                                    <span class="ft-gray">${markdownTutorialTipLabel}</span>
+                                </li>
                             </ul>
                             <br/>
                         </div>

@@ -20,8 +20,8 @@
                 <span class="ft-gray">${hotKeyTipLabel}</span>
             </li>
             <li>
-                <a href="${servePath}/guide/markdown">Markdown ${newbieGuideLabel}</a>
-                <span class="ft-gray">话说排版很重要，赶快上手吧</span>
+                <a href="${servePath}/guide/markdown">Markdown ${tutorialLabel}</a>
+                <span class="ft-gray">${markdownTutorialTipLabel}</span>
             </li>
         </ul>
     </div>
