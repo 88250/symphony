@@ -77,7 +77,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.7.15, Dec 24, 2016
+ * @version 1.13.7.16, Dec 25, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -312,7 +312,7 @@ public class LoginProcessor {
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        renderer.setTemplateName("forget-pwd.ftl");
+        renderer.setTemplateName("verify/forget-pwd.ftl");
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }

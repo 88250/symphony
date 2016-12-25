@@ -1087,7 +1087,6 @@ a[class*=" icon-"]:hover {
 /* end pagination */
 
 /* start dialog */
-
 .dialog-background {
     background-color: #000000;
     display: none;
@@ -1135,6 +1134,36 @@ a[class*=" icon-"]:hover {
     box-sizing: content-box;
 }
 /* end dialog */
+
+/* start completed */
+.completed-panel {
+    padding: 0;
+    overflow: auto;
+    left: 0;
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    border: 1px solid #e5e5e5;
+    z-index: 72;
+    border-radius: 0 0 3px 3px;
+    width: 50%;
+    top: 32px;
+    box-sizing: border-box;
+}
+
+.completed-panel a {
+    display: block;
+    padding: 3px;
+    text-decoration: none;
+    line-height: 18px;
+    height: 18px;
+}
+
+.completed-panel a.selected,
+.completed-panel a:hover {
+    background-color: #F7F7F7;
+}
+/* end completed */
 
 /* start framework */
 .wrapper {
@@ -1650,7 +1679,7 @@ ul.CodeMirror-hints {
     color: #767676;
     margin: 5px 0 5px 30px;
     display: block;
-    line-height: 19px;
+    line-height: 20px;
 }
 
 .module-list.open-source .title {
@@ -2939,3 +2968,21 @@ code .dec { color: initial; } /* decimal - blue */
     display: none;
 }
 /* end editor */
+
+/* start other */
+.link-forge {
+    .link-forge-upload {
+        margin: 10px 0;
+
+        input[type=text] {
+            width: 80%;
+            height: 27px;
+        }
+    }
+
+    .module-panel {
+        max-height: 409px;
+        overflow: hidden;
+    }
+}
+/* end other */

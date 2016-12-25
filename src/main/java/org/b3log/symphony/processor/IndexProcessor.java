@@ -66,7 +66,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.11.2.22, Dec 24, 2016
+ * @version 1.12.2.23, Dec 25, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -346,7 +346,7 @@ public class IndexProcessor {
                            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("symhub.ftl");
+        renderer.setTemplateName("other/symhub.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final List<JSONObject> syms = Symphonys.getSyms();
@@ -462,7 +462,7 @@ public class IndexProcessor {
                           final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("b3log.ftl");
+        renderer.setTemplateName("other/b3log.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -487,7 +487,7 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
-        renderer.setTemplateName("kill-browser.ftl");
+        renderer.setTemplateName("other/kill-browser.ftl");
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
