@@ -17,9 +17,11 @@
  */
 package org.b3log.symphony.processor;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
@@ -41,12 +43,15 @@ import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
+import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -66,7 +71,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.12.2.23, Dec 25, 2016
+ * @version 1.12.2.24, Dec 25, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -128,6 +133,21 @@ public class IndexProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("other/md-guide.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
+
+        InputStream inputStream = null;
+        try {
+            inputStream = IndexProcessor.class.getResourceAsStream("/md_guide.md");
+            final String md = IOUtils.toString(inputStream);
+            String html = Emotions.convert(md);
+            html = Markdowns.toHTML(html);
+
+            dataModel.put("md", md);
+            dataModel.put("html", html);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Loads markdown guide failed", e);
+        } finally {
+            IOUtils.closeQuietly(inputStream);
+        }
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
