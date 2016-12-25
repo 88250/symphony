@@ -2258,6 +2258,43 @@ label.cmt-anonymous {
     color: $red;
 }
 /* end article list */
+/* start guide */
+.guide {
+    .intro.content-reset {
+        padding: 10px;
+        line-height: 24px;
+    }
+
+    .guide-tab,
+    .step-btn {
+        margin: 10px;
+    }
+
+    .form {
+        margin: 0;
+        width: auto;
+    }
+
+    #avatarUpload label {
+        margin-top: 0;
+    }
+
+    .tag-desc > li:hover > a {
+        border-bottom-style: solid;
+        border-radius: 3px;
+    }
+
+    .tag-desc li.current > a {
+        background-color: $fade;
+        color: #fff;
+        border-color: #bbb;
+    }
+
+    .intro dt.current {
+        color: #ffac45;
+    }
+}
+/* end guide */
 /* start verify */
 .verify {
 
