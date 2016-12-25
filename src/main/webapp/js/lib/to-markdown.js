@@ -677,7 +677,10 @@ function collapseWhitespace(elem, isBlock) {
   while (node !== elem) {
     if (node.nodeType === 3) {
       // Node.TEXT_NODE
-      var text = node.data.replace(/[ \r\n\t]+/g, ' ');
+      // Note: start changed by vanessa. 代码片段粘贴的时候换行被吃掉了
+      //var text = node.data.replace(/[ \r\n\t]+/g, ' ');
+      var text = node.data.replace(/[ \r\t]+/g, ' ');
+      // Note: end changed by vanessa
 
       if ((!prevText || / $/.test(prevText.data)) && !prevVoid && text[0] === ' ') {
         text = text.substr(1);
