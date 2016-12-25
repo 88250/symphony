@@ -2294,6 +2294,26 @@ label.cmt-anonymous {
         color: #ffac45;
     }
 }
+
+
+/* start guide md */
+.guide {
+    .fn-flex > div {
+        padding: 10px;
+        box-sizing: border-content;
+        width: 50%;
+    }
+
+    .md {
+        background-color: #f1f7fe;
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    }
+}
+/* end guide md */
 /* end guide */
 /* start verify */
 .verify {
@@ -2603,23 +2623,6 @@ code .dec { color: initial; } /* decimal - blue */
     margin-right: 13px;
 }
 /* end index */
-/* start guide md */
-.guide {
-    .fn-flex > div {
-        padding: 10px;
-        box-sizing: border-content;
-        width: 50%;
-    }
-
-    .md {
-        background-color: #f1f7fe;
-
-        pre {
-            white-space: pre-wrap;
-        }
-    }
-}
-/* end guide md */
 /* start home side */
 .user-name {
     font-size: 20px;

@@ -647,6 +647,8 @@ label.cmt-anonymous {
 
 /* start guide */
 .guide {
+    width: 960px;
+
     .guide-tab,
     .step-btn {
         margin: 50px;
@@ -702,6 +704,27 @@ label.cmt-anonymous {
         font-weight: 600;
     }
 }
+
+
+/* start guide md */
+.guide {
+    .fn-flex > div {
+        padding: 10px;
+        box-sizing: border-content;
+        width: 50%;
+    }
+
+    .md {
+        background-color: #f1f7fe;
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    }
+}
+/* end guide md */
+
 /* end guide */
 /* end verify */
 
@@ -1119,21 +1142,3 @@ code .dec { color: initial; } /* decimal - blue */
     }
 }
 /* end symhub */
-
-/* start guide md */
-.guide {
-    .fn-flex > div {
-        padding: 10px;
-        box-sizing: border-content;
-        width: 50%;
-    }
-
-    .md {
-        background-color: #f1f7fe;
-
-        pre {
-            white-space: pre-wrap;
-        }
-    }
-}
-/* end guide md */
