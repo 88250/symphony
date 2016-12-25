@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.8.21, Dec 21, 2016
+ * @version 1.6.8.21, Dec 25, 2016
  */
 
 @import "variables";
@@ -129,7 +129,7 @@ audio:not([controls]) {
 a {
     outline: 0;
     text-decoration: none;
-    color: #4183C4;
+    color: $blue;
 }
 
 a:hover {
@@ -489,7 +489,7 @@ a[class^="icon-"].ft-fade:hover {
 }
 
 .ft-blue {
-    color: #4183C4;
+    color: $blue;
 }
 
 .ft-green {
@@ -650,7 +650,7 @@ a[class*=" icon-"] {
 a[class^="icon-"]:hover, 
 a[class*=" icon-"]:hover {
     text-decoration: none;
-    color: #4183c4;
+    color: $blue;
 }
 
 .icon-weibo:before {
@@ -1051,7 +1051,7 @@ a[class*=" icon-"]:hover {
 }
 
 .pagination a:hover {
-    color:#4183c4;
+    color:$blue;
     border-bottom-color:#CFDCE8;
     background-color: #fafbfd;
     background: linear-gradient(#fafbfd, #dce6ef);
@@ -1217,7 +1217,7 @@ a[class*=" icon-"]:hover {
 }
 
 .nav div > a:hover {
-    color: #4183C4;
+    color: $blue;
 }
 
 .nav div > a.current {
@@ -1795,7 +1795,7 @@ label.cmt-anonymous {
 }
 
 #shareClipboard.tooltipped-hover {
-    color: #4183C4;
+    color: $blue;
 }
 
 .comments > .comments-header {
@@ -1963,7 +1963,7 @@ label.cmt-anonymous {
 }
 
 .share [class^="icon-"]:hover {
-    color: #4183c4;
+    color: $blue;
 }
 
 .cm-s-default.CodeMirror {
@@ -2003,17 +2003,17 @@ label.cmt-anonymous {
 }
 
 .article-toc li a:hover {
-    border-left: 1px solid #4183c4;
+    border-left: 1px solid $blue;
     background-color: #F7F7F7;
     padding-left: 21px;
-    color: #4183C4;
+    color: $blue;
     text-decoration: none;
 }
 
 .article-toc li.current a {
-    border-left: 2px solid #4183c4;
+    border-left: 2px solid $blue;
     background-color: #f0f0f0;
-    color: #4183c4;
+    color: $blue;
 }
 
 .article-toc li.toc-h2 a,
@@ -2122,7 +2122,7 @@ label.cmt-anonymous {
 }
 
 .article-list li .commenters > a:hover {
-    color: #4183c4;
+    color: $blue;
 }
 
 .article-list li:hover .cmts {
@@ -2507,7 +2507,7 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .index > .slogan a:hover svg {
-    color: #4183C4;
+    color: $blue;
 }
 
 .index .item {
@@ -2566,7 +2566,23 @@ code .dec { color: initial; } /* decimal - blue */
     margin-right: 13px;
 }
 /* end index */
+/* start guide md */
+.guide {
+    .fn-flex > div {
+        padding: 10px;
+        box-sizing: border-content;
+        width: 50%;
+    }
 
+    .md {
+        background-color: #f1f7fe;
+
+        pre {
+            white-space: pre-wrap;
+        }
+    }
+}
+/* end guide md */
 /* start home side */
 .user-name {
     font-size: 20px;
@@ -2635,7 +2651,7 @@ code .dec { color: initial; } /* decimal - blue */
 
 .pre-post a:hover {
     text-decoration: none;
-    color: #4183C4;
+    color: $blue;
 }
 
 .pre-post a div {
@@ -2700,7 +2716,7 @@ code .dec { color: initial; } /* decimal - blue */
 
 .post .tags-input span.tag {
     margin: 2px 5px 0 0px;
-    color: #4183C4;
+    color: $blue;
 }
 
 .post .tags-input .tag > span.close {
@@ -2746,7 +2762,7 @@ code .dec { color: initial; } /* decimal - blue */
 
 .post .domains-tags .tag {
     cursor: pointer;
-    color: #4183C4;
+    color: $blue;
 }
 
 .post .domains-tags > span.current {

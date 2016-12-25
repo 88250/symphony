@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.19.44, Dec 24, 2016
+ * @version 2.19.19.44, Dec 25, 2016
  */
 
 @import "variables";
@@ -1119,3 +1119,21 @@ code .dec { color: initial; } /* decimal - blue */
     }
 }
 /* end symhub */
+
+/* start guide md */
+.guide {
+    .fn-flex > div {
+        padding: 10px;
+        box-sizing: border-content;
+        width: 50%;
+    }
+
+    .md {
+        background-color: #f1f7fe;
+
+        pre {
+            white-space: pre-wrap;
+        }
+    }
+}
+/* end guide md */

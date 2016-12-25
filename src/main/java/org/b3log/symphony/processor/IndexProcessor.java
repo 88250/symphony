@@ -114,6 +114,25 @@ public class IndexProcessor {
     private TimelineMgmtService timelineMgmtService;
 
     /**
+     * Shows md guide.
+     *
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/guide/markdown", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showMDGuide(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("other/md-guide.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
      * Shows index.
      *
      * @param context  the specified context

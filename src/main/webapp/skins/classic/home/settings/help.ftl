@@ -19,6 +19,10 @@
                 <a href="https://hacpai.com/article/1474030007391">${hotKeyLabel}</a>
                 <span class="ft-gray">${hotKeyTipLabel}</span>
             </li>
+            <li>
+                <a href="${servePath}/guide/markdown">Markdown ${newbieGuideLabel}</a>
+                <span class="ft-gray">话说排版很重要，赶快上手吧</span>
+            </li>
         </ul>
     </div>
 </div>
