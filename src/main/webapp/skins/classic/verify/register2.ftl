@@ -1,13 +1,14 @@
-<#include "macro-head.ftl">
+<#include "../macro-head.ftl">
 <!DOCTYPE html>
 <html>
     <head>
         <@head title="${registerLabel} - ${symphonyLabel}">
         <meta name="description" content="${registerLabel} ${symphonyLabel}"/>
         </@head>
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
     </head>
     <body>
-        <#include "header.ftl">
+        <#include "../header.ftl">
         <div class="main">
             <div class="wrapper verify">
                 <div class="verify-wrap">
@@ -48,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <#include "footer.ftl">
+        <#include "../footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Verify.init();

@@ -107,7 +107,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.24.5.21, Dec 17, 2016
+ * @version 2.25.5.21, Dec 24, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -388,25 +388,19 @@ public class AdminProcessor {
     }
 
     /**
-     * Updates ad.
+     * Updates side ad.
      *
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/admin/ad", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/admin/ad/side", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateAd(final HTTPRequestContext context,
-                         final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("admin/ad.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
+    public void updateSideAd(final HTTPRequestContext context,
+                             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String sideFullAd = request.getParameter("sideFullAd");
-        dataModel.put("sideFullAd", sideFullAd);
 
         JSONObject adOption = optionQueryService.getOption(Option.ID_C_SIDE_FULL_AD);
         if (null == adOption) {
@@ -422,7 +416,39 @@ public class AdminProcessor {
             optionMgmtService.updateOption(Option.ID_C_SIDE_FULL_AD, adOption);
         }
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        response.sendRedirect(Latkes.getServePath() + "/admin/ad");
+    }
+
+    /**
+     * Updates banner.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/ad/banner", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void updateBanner(final HTTPRequestContext context,
+                             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final String headerBanner = request.getParameter("headerBanner");
+
+        JSONObject adOption = optionQueryService.getOption(Option.ID_C_HEADER_BANNER);
+        if (null == adOption) {
+            adOption = new JSONObject();
+            adOption.put(Keys.OBJECT_ID, Option.ID_C_HEADER_BANNER);
+            adOption.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_AD);
+            adOption.put(Option.OPTION_VALUE, headerBanner);
+
+            optionMgmtService.addOption(adOption);
+        } else {
+            adOption.put(Option.OPTION_VALUE, headerBanner);
+
+            optionMgmtService.updateOption(Option.ID_C_HEADER_BANNER, adOption);
+        }
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/ad");
     }
 
     /**
@@ -444,10 +470,16 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModel.put("sideFullAd", "");
+        dataModel.put("headerBanner", "");
 
-        JSONObject adOption = optionQueryService.getOption(Option.ID_C_SIDE_FULL_AD);
-        if (null != adOption) {
-            dataModel.put("sideFullAd", adOption.optString(Option.OPTION_VALUE));
+        final JSONObject sideAdOption = optionQueryService.getOption(Option.ID_C_SIDE_FULL_AD);
+        if (null != sideAdOption) {
+            dataModel.put("sideFullAd", sideAdOption.optString(Option.OPTION_VALUE));
+        }
+
+        final JSONObject headerBanner = optionQueryService.getOption(Option.ID_C_HEADER_BANNER);
+        if (null != headerBanner) {
+            dataModel.put("headerBanner", headerBanner.optString(Option.OPTION_VALUE));
         }
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);

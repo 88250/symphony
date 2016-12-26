@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.19.15.13, Dec 21, 2016
+ * @version 2.19.15.14, Dec 24, 2016
  */
 
 /**
@@ -310,6 +310,11 @@ var AddArticle = {
             if ($.trim($(this).val()) === '') {
                 return false;
             }
+
+            if (1 === Label.articleType) { // 小黑屋不检查标题重复
+                return;
+            }
+
             $.ajax({
                 url: Label.servePath + "/article/check-title",
                 type: "POST",

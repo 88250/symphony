@@ -25,7 +25,7 @@ import org.b3log.symphony.util.Symphonys;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.4.1.12, Oct 26, 2016
+ * @version 2.5.1.12, Dec 23, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -591,6 +591,22 @@ public final class UserExt {
     public static boolean isReservedUserName(final String userName) {
         for (final String reservedUserName : Symphonys.RESERVED_USER_NAMES) {
             if (StringUtils.equalsIgnoreCase(userName, reservedUserName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks the specified username whether contains the white list invitation user.
+     *
+     * @param userName the specified username
+     * @return {@code true} if it contains, returns {@code false} otherwise
+     */
+    public static boolean containsWhiteListInvitationUser(final String userName) {
+        for (final String whiteListInvitationUser : Symphonys.WHITE_LIST_INVITATION_USERS) {
+            if (StringUtils.equalsIgnoreCase(userName, whiteListInvitationUser)) {
                 return true;
             }
         }

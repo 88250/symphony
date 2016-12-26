@@ -153,6 +153,7 @@
             Label.qiniuUploadToken = '${qiniuUploadToken}';
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
             <#if article??>Label.articleOId = '${article.oId}' ;</#if>
+            Label.articleType = ${articleType};
         </script>
         <script type="text/javascript" src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
