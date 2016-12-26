@@ -33,6 +33,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.*;
 import org.b3log.symphony.cache.DomainCache;
+import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.event.*;
 import org.b3log.symphony.event.solo.ArticleSender;
 import org.b3log.symphony.event.solo.ArticleUpdater;
@@ -125,8 +126,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final ArticleSearchUpdater articleSearchUpdater = beanManager.getReference(ArticleSearchUpdater.class);
         eventManager.registerListener(articleSearchUpdater);
 
-        //final TagCache tagCache = beanManager.getReference(TagCache.class);
-        //tagCache.loadTags();
+        final TagCache tagCache = beanManager.getReference(TagCache.class);
+        tagCache.loadTags();
 
         final DomainCache domainCache = beanManager.getReference(DomainCache.class);
         domainCache.loadDomains();

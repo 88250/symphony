@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.processor;
 
+import com.qiniu.util.Auth;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -38,6 +39,8 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.*;
+import org.b3log.symphony.processor.advice.CSRFToken;
+import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
@@ -55,13 +58,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Login/Register processor.
- * <p>
  * <p>
  * For user
  * <ul>
@@ -74,7 +77,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.7.15, Dec 24, 2016
+ * @version 1.13.7.16, Dec 25, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -155,6 +158,54 @@ public class LoginProcessor {
      */
     @Inject
     private RoleQueryService roleQueryService;
+    /**
+     * Tag query service.
+     */
+    @Inject
+    private TagQueryService tagQueryService;
+
+    /**
+     * Next guide step.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     */
+    @RequestProcessing(value = "/guide/next", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class})
+    public void nextGuideStep(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+        context.renderJSON();
+
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        } catch (final Exception e) {
+            LOGGER.warn(e.getMessage());
+
+            return;
+        }
+
+        JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+
+        int step = requestJSONObject.optInt(UserExt.USER_GUIDE_STEP);
+
+        if (UserExt.USER_GUIDE_STEP_FOLLOW_USERS < step || UserExt.USER_GUIDE_STEP_FIN >= step) {
+            step = UserExt.USER_GUIDE_STEP_FIN;
+        }
+
+        try {
+            user = userQueryService.getUser(userId);
+            user.put(UserExt.USER_GUIDE_STEP, step);
+            userMgmtService.updateUser(userId, user);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Guide next step [" + step + "] failed", e);
+
+            return;
+        }
+
+        context.renderJSON(true);
+    }
 
     /**
      * Shows login page.
@@ -165,12 +216,13 @@ public class LoginProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/guide", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showGuide(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        if (null != userQueryService.getCurrentUser(request)
-                || userMgmtService.tryLogInWithCookie(request, response)) {
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final int step = currentUser.optInt(UserExt.USER_GUIDE_STEP);
+        if (UserExt.USER_GUIDE_STEP_FIN == step) {
             response.sendRedirect(Latkes.getServePath());
 
             return;
@@ -178,16 +230,31 @@ public class LoginProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-
-        String referer = request.getParameter(Common.GOTO);
-        if (StringUtils.isBlank(referer)) {
-            referer = request.getHeader("referer");
-        }
-
         renderer.setTemplateName("/verify/guide.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModel.put(Common.GOTO, referer);
+        dataModel.put(Common.CURRENT_USER, currentUser);
+
+        final List<JSONObject> tags = tagQueryService.getTags(32);
+        dataModel.put(Tag.TAGS, tags);
+
+        final List<JSONObject> users = userQueryService.getNiceUsers(6);
+        dataModel.put(User.USERS, users);
+
+        // Qiniu file upload authenticate
+        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
+        dataModel.put("qiniuUploadToken", uploadToken);
+        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
+
+        if (!Symphonys.getBoolean("qiniu.enabled")) {
+            dataModel.put("qiniuUploadToken", "");
+        }
+
+        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        dataModel.put("imgMaxSize", imgMaxSize);
+        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        dataModel.put("fileMaxSize", fileMaxSize);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
@@ -245,7 +312,7 @@ public class LoginProcessor {
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        renderer.setTemplateName("forget-pwd.ftl");
+        renderer.setTemplateName("verify/forget-pwd.ftl");
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }

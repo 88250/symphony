@@ -17,16 +17,10 @@
  */
 package org.b3log.symphony.processor;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -48,21 +42,29 @@ import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 /**
  * City processor.
- *
+ * <p>
  * <ul>
  * <li>Shows city articles (/city/{city}), GET</li>
  * </ul>
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.3.1.7, Oct 28, 2016
+ * @version 1.3.1.8, Dec 24, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -107,17 +109,17 @@ public class CityProcessor {
     /**
      * Shows city articles.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param city the specified city
+     * @param city     the specified city
      * @throws Exception exception
      */
     @RequestProcessing(value = {"/city/{city}", "/city/{city}/articles"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCityArticles(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
+                                 final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
@@ -139,6 +141,11 @@ public class CityProcessor {
         dataModel.put(Common.SELECTED, Common.CITY);
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        if (!UserExt.finshedGuide(user)) {
+            response.sendRedirect(Latkes.getServePath() + "/guide");
+
+            return;
+        }
 
         dataModel.put(UserExt.USER_GEO_STATUS, true);
         dataModel.put(Common.CITY_FOUND, true);
@@ -198,17 +205,17 @@ public class CityProcessor {
     /**
      * Shows city users.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @param city the specified city
+     * @param city     the specified city
      * @throws Exception exception
      */
     @RequestProcessing(value = {"/city/{city}/users"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCityUsers(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
+                              final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
@@ -229,6 +236,12 @@ public class CityProcessor {
         dataModel.put(Common.SELECTED, Common.CITY);
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        if (!UserExt.finshedGuide(user)) {
+            response.sendRedirect(Latkes.getServePath() + "/guide");
+
+            return;
+        }
+
         dataModel.put(UserExt.USER_GEO_STATUS, true);
         dataModel.put(Common.CITY_FOUND, true);
         dataModel.put(Common.CITY, langService.get("sameCityLabel"));

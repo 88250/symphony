@@ -5,21 +5,17 @@
         <@head title="${newbieGuideLabel} - ${symphonyLabel}">
         <meta name="description" content="${newbieGuideLabel} ${symphonyLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         <link rel="canonical" href="${servePath}/guide">
     </head>
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper verify guide">
+            <div class="verify guide">
                 <div class="intro content-reset">
                     <dl>
-                        <dt class="current"><span class="index">1</span>${guideUploadAvatarLabel}</dt>
-                        <dd class="ft-gray ft-smaller">${guideUploadAvatarTipLabel}</dd>
-                        <dt><span class="index">2</span>${guideFollowTagLabel}</dt>
-                        <dd class="ft-gray ft-smaller">${guideFollowTagTipLabel}</dd>
-                        <dt><span class="index">3</span>${guideFollowUserLabel}</dt>
-                        <dd class="ft-gray ft-smaller">${guideFollowUserTipLabel}</dd>
+                        <dt class="current"><b>1. </b>${guideUploadAvatarLabel}</dt>
+                        <dt><b>2. </b>${guideFollowTagLabel}</dt>
+                        <dt><b>3. </b>${guideFollowUserLabel}</dt>
                     </dl>
                     <div class="fn-none">
                         ${introLabel}
@@ -34,7 +30,7 @@
                     <div class="guide-tab">
                         <div class="fn-clear fn-none">
                             <div class="avatar-big" id="avatarURL"
-                                 style="background-image:url('${currentUser.userAvatarURL210}')"></div> &nbsp; &nbsp;
+                                 style="background-image:url('${currentUser.userAvatarURL210}')"></div><br/><br/>
                             <div class="avatar" id="avatarURLMid"
                                  style="background-image:url('${currentUser.userAvatarURL48}')"></div> &nbsp; &nbsp;
                             <div class="avatar-small" id="avatarURLNor"
@@ -54,15 +50,6 @@
                                                 <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if>
                                             ${tag.tagTitle}
                                         </a>
-                                        <div<#if tag.tagDescription == ''> style="width:auto"</#if>>
-                                            <div>${tag.tagDescription}</div>
-                                            <span class="fn-right">
-                                                <span class="ft-gray">${referenceLabel}</span>
-                                                ${tag.tagReferenceCount} &nbsp;
-                                                <span class="ft-gray">${cmtLabel}</span>
-                                                ${tag.tagCommentCount}&nbsp;
-                                            </span>
-                                        </div>
                                     </li>
                                 </#list>
                             </ul>
@@ -101,8 +88,6 @@
                             </ul>
                         </div>
                         <div class="fn-none list">
-                            <br/><br/>
-                            <div class="ft-center">${logoIcon2}</div> <br/>
                             <ul>
                                 <li>
                                     <a href="${servePath}/about">${getStartLabel}</a>

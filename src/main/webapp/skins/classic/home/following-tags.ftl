@@ -24,8 +24,7 @@
                 </a>
                 <#else>
                 <a href="${servePath}/tag/${followingTag.tagURI}"
-                   class="tooltipped tooltipped-se fn-left ft-a-title" aria-label="${followingTag.tagTitle}"><div class="icon-tags"  
-                                                                                                              ></div></a>
+                   class="tooltipped tooltipped-se fn-left ft-a-title" aria-label="${followingTag.tagTitle}"><div class="icon-tags"></div></a>
                 </#if>
                 <div class="fn-flex-1">
                     <h2 class="fn-inline">
@@ -44,7 +43,7 @@
                     </#if>
                     </#if>
                     <div>
-                        <span class="ft-gray">${referenceLabel}</span> ${followingTag.tagReferenceCount?c}
+                        <span class="ft-gray">${referenceLabel}</span> ${followingTag.tagReferenceCount?c} &nbsp;
                         <span class="ft-gray">${cmtLabel}</span> ${followingTag.tagCommentCount?c} 
                     </div>
                 </div>

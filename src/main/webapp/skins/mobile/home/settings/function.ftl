@@ -46,9 +46,7 @@
         <br>
         <textarea id="emotionList" rows="3" placeholder="${setEmotionTipLabel}" >${emotions}</textarea>
         <br><br>
-        <div class="fn-clear"></div>
-        <div id="emotionListTip" class="tip"></div>
-        <div class="fn-hr5"></div>
+        <a href="${servePath}/emoji/index.html">EMOJI CHEAT SHEET</a>
         <button class="green fn-right" onclick="Settings.update('emotionList', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
