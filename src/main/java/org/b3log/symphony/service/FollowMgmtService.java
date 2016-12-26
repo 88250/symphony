@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Follow management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Aug 12, 2015
+ * @version 1.2.1.1, Dec 25, 2016
  * @since 0.2.5
  */
 @Service
@@ -187,7 +187,7 @@ public class FollowMgmtService {
      * @param followingType the specified following type
      * @throws RepositoryException repository exception
      */
-    private void follow(final String followerId, final String followingId, final int followingType) throws RepositoryException {
+    private synchronized void follow(final String followerId, final String followingId, final int followingType) throws RepositoryException {
         if (followRepository.exists(followerId, followingId)) {
             return;
         }

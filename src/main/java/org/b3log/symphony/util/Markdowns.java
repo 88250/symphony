@@ -17,23 +17,6 @@
  */
 package org.b3log.symphony.util;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
@@ -54,19 +37,21 @@ import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeVisitor;
-import static org.parboiled.common.Preconditions.checkArgNotNull;
-import org.pegdown.DefaultVerbatimSerializer;
-import org.pegdown.Extensions;
-import org.pegdown.LinkRenderer;
-import org.pegdown.PegDownProcessor;
-import org.pegdown.Printer;
-import org.pegdown.VerbatimSerializer;
+import org.pegdown.*;
 import org.pegdown.ast.*;
 import org.pegdown.plugins.ToHtmlSerializerPlugin;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
+import java.util.concurrent.*;
+
+import static org.parboiled.common.Preconditions.checkArgNotNull;
+
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
- *
  * <p>
  * Uses the <a href="https://github.com/chjj/marked">marked</a> as the processor, if not found this command, try
  * built-in
@@ -75,42 +60,40 @@ import org.pegdown.plugins.ToHtmlSerializerPlugin;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.10.16, Dec 23, 2016
+ * @version 1.10.11.16, Dec 24, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(Markdowns.class);
 
     /**
      * Language service.
      */
     public static final LangPropsService LANG_PROPS_SERVICE
             = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
-
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Markdowns.class);
     /**
      * Markdown cache.
      */
     private static final Cache MD_CACHE = CacheFactory.getCache("markdown");
-
-    static {
-        MD_CACHE.setMaxCount(1024 * 10 * 4);
-    }
-
     /**
      * Markdown to HTML timeout.
      */
     private static final int MD_TIMEOUT = 800;
-
+    /**
+     * Marked engine serve path.
+     */
+    private static final String MARKED_ENGINE_URL = "http://localhost:8250";
     /**
      * Whether marked is available.
      */
     public static boolean MARKED_AVAILABLE;
 
-    private static final String MARKED_ENGINE_URL = "http://localhost:8250";
+    static {
+        MD_CACHE.setMaxCount(1024 * 10 * 4);
+    }
 
     static {
         try {
@@ -142,6 +125,12 @@ public final class Markdowns {
     }
 
     /**
+     * Private constructor.
+     */
+    private Markdowns() {
+    }
+
+    /**
      * Gets the safe HTML content of the specified content.
      *
      * @param content the specified content
@@ -153,15 +142,15 @@ public final class Markdowns {
         outputSettings.prettyPrint(false);
 
         final String tmp = Jsoup.clean(content, baseURI, Whitelist.relaxed().
-                addAttributes(":all", "id", "target", "class").
-                addTags("span", "hr", "kbd", "samp", "tt", "del", "s", "strike", "u").
-                addAttributes("iframe", "src", "width", "height", "border", "marginwidth", "marginheight").
-                addAttributes("audio", "controls", "src").
-                addAttributes("video", "controls", "src", "width", "height").
-                addAttributes("source", "src", "media", "type").
-                addAttributes("object", "width", "height", "data", "type").
-                addAttributes("param", "name", "value").
-                addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking"),
+                        addAttributes(":all", "id", "target", "class").
+                        addTags("span", "hr", "kbd", "samp", "tt", "del", "s", "strike", "u").
+                        addAttributes("iframe", "src", "width", "height", "border", "marginwidth", "marginheight").
+                        addAttributes("audio", "controls", "src").
+                        addAttributes("video", "controls", "src", "width", "height").
+                        addAttributes("source", "src", "media", "type").
+                        addAttributes("object", "width", "height", "data", "type").
+                        addAttributes("param", "name", "value").
+                        addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking"),
                 outputSettings);
         final Document doc = Jsoup.parse(tmp, baseURI, Parser.xmlParser());
 
@@ -192,7 +181,10 @@ public final class Markdowns {
             video.attr("preload", "none");
         }
 
-        return doc.html();
+        String ret = doc.html();
+        ret = ret.replaceAll("(</?br\\s*/?>\\s*)+", "<br>"); // patch for Jsoup issue
+
+        return ret;
     }
 
     /**
@@ -397,8 +389,6 @@ public final class Markdowns {
         ret = StringUtils.substringBetween(ret, "<body>", "</body>");
         ret = StringUtils.trim(ret);
 
-        ret = ret.replaceAll("(\\<br\\>)+", "<br>");
-
         return ret;
     }
 
@@ -454,20 +444,39 @@ public final class Markdowns {
     }
 
     /**
+     * Gets HTML for the specified markdown text.
+     *
+     * @param markdownText the specified markdown text
+     * @return HTML
+     */
+    private static String getHTML(final String markdownText) {
+        final String hash = MD5.hash(markdownText);
+
+        return (String) MD_CACHE.get(hash);
+    }
+
+    /**
+     * Puts the specified HTML into cache.
+     *
+     * @param markdownText the specified markdown text
+     * @param html         the specified HTML
+     */
+    private static void putHTML(final String markdownText, final String html) {
+        final String hash = MD5.hash(markdownText);
+
+        MD_CACHE.put(hash, html);
+    }
+
+    /**
      * Enhanced with {@link Pangu} for text node.
      */
     private static class ToHtmlSerializer implements Visitor {
 
-        protected Printer printer = new Printer();
-
         protected final Map<String, ReferenceNode> references = new HashMap<String, ReferenceNode>();
-
         protected final Map<String, String> abbreviations = new HashMap<String, String>();
-
         protected final LinkRenderer linkRenderer;
-
         protected final List<ToHtmlSerializerPlugin> plugins;
-
+        protected Printer printer = new Printer();
         protected TableNode currentTableNode;
 
         protected int currentTableColumn;
@@ -1001,35 +1010,5 @@ public final class Markdowns {
                 printer.print(string);
             }
         }
-    }
-
-    /**
-     * Gets HTML for the specified markdown text.
-     *
-     * @param markdownText the specified markdown text
-     * @return HTML
-     */
-    private static String getHTML(final String markdownText) {
-        final String hash = MD5.hash(markdownText);
-
-        return (String) MD_CACHE.get(hash);
-    }
-
-    /**
-     * Puts the specified HTML into cache.
-     *
-     * @param markdownText the specified markdown text
-     * @param html the specified HTML
-     */
-    private static void putHTML(final String markdownText, final String html) {
-        final String hash = MD5.hash(markdownText);
-
-        MD_CACHE.put(hash, html);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Markdowns() {
     }
 }

@@ -72,3 +72,6 @@
     </div>
 </div>
 </@home>
+<script>
+    Settings.initFunction();
+</script>

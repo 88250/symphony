@@ -23,6 +23,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.annotation.Transactional;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.TagCache;
@@ -49,7 +50,7 @@ import java.util.List;
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Dec 21, 2016
+ * @version 1.1.0.5, Dec 24, 2016
  * @since 1.6.0
  */
 @Service
@@ -252,6 +253,8 @@ public class LinkForgeMgmtService {
                     LOGGER.info("Purged link forge [slags=" + slags + "]");
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Purges link forge failed", e);
+                } finally {
+                    JdbcRepository.dispose();
                 }
             }
         };

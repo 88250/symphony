@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.19.10.14, Nov 6, 2016
+ * @version 1.19.10.15, Dec 24, 2016
  */
 
 /**
@@ -624,20 +624,21 @@ var Settings = {
                 }
             }
         });
+    },
+    /**
+     * @description 设置常用表情点击事件绑定.
+     */
+    initFunction: function () {
+        $("#emojiGrid img").click(function () {
+            var emoji = $(this).attr('alt');
+            if ($("#emotionList").val().indexOf(emoji) !== -1) {
+                return;
+            }
+            if ($("#emotionList").val() !== "") {
+                $("#emotionList").val($("#emotionList").val() + "," + emoji);
+            } else {
+                $("#emotionList").val(emoji);
+            }
+        });
     }
 };
-
-/**
- * @description 设置常用表情点击事件绑定.
- */
-$("#emojiGrid img").click(function () {
-    var emoji = $(this).attr('alt');
-    if ($("#emotionList").val().indexOf(emoji) !== -1) {
-        return;
-    }
-    if ($("#emotionList").val() !== "") {
-        $("#emotionList").val($("#emotionList").val() + "," + emoji);
-    } else {
-        $("#emotionList").val(emoji);
-    }
-});

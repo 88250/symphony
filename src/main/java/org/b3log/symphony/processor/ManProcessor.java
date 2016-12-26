@@ -45,7 +45,8 @@ import java.util.Map;
  * Man processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Dec 21, 2016
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.0.0.2, Dec 25, 2016
  * @since 1.8.0
  */
 @RequestProcessor
@@ -85,7 +86,7 @@ public class ManProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("man.ftl");
+        renderer.setTemplateName("other/man.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);

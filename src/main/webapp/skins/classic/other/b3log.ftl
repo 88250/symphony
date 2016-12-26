@@ -1,4 +1,4 @@
-<#include "macro-head.ftl">
+<#include "../macro-head.ftl">
     <!DOCTYPE html>
     <html>
     <head>
@@ -7,7 +7,7 @@
         <link rel="canonical" href="${servePath}/b3log">
     </head>
     <body>
-    <#include "header.ftl">
+    <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
                 <div class="content">
@@ -116,10 +116,10 @@
                     </div>
                 </div>
                 <div class="side">
-                    <#include "side.ftl">
+                    <#include "../side.ftl">
                 </div>
             </div>
         </div>
-        <#include "footer.ftl">
+        <#include "../footer.ftl">
     </body>
     </html>

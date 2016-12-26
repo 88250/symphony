@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.5.2.10, Nov 26, 2016
+ * @version 2.6.2.10, Dec 24, 2016
  */
 
 /**
@@ -231,6 +231,9 @@ var Verify = {
             });
         }
     },
+    /**
+     * 登录注册等页面回车事件绑定
+     */
     init: function () {
         // 注册回车事件
         $("#registerCaptcha, #registerInviteCode").keyup(function (event) {
@@ -259,5 +262,134 @@ var Verify = {
                 Verify.resetPwd();
             }
         });
+    },
+    /**
+     * 新手向导初始化
+     * @param {int} currentStep 新手向导步骤，0 为向导完成
+     * @param {int} tagSize 标签数
+     */
+    initGuide: function (currentStep, tagSize) {
+        if (currentStep === 0) {
+            window.location.href = '/';
+            return false;
+        }
+
+        var step2Sort = 'random';
+
+        var step = function () {
+            if (currentStep !== 5) {
+                $('.intro dt').removeClass('current');
+                $('.guide-tab > div').hide();
+            }
+
+            if (currentStep < 5 && currentStep > 0) {
+                $.ajax({
+                    url: Label.servePath + "/guide/next",
+                    type: "POST",
+                    cache: false,
+                    data: JSON.stringify({
+                        userGuideStep: currentStep
+                    }),
+                    success: function (result, textStatus) {
+                        if (!result.sc) {
+                            Util.alert(result.msg);
+                        }
+                    }
+                });
+            }
+
+
+            switch (currentStep) {
+                case 1:
+                    $('.guide-tab > div:eq(0)').show();
+
+                    $('.step-btn .red').hide();
+
+                    $('.intro dt:eq(0)').addClass('current');
+                    break;
+                case 2:
+                    $('.guide-tab > div:eq(1)').show();
+
+                    $('.step-btn .red').show();
+
+                    $('.intro dt:eq(1)').addClass('current');
+
+                    // sort
+                    $('.step-btn .green, .step-btn .red').prop('disabled', true);
+                    $('.tag-desc').isotope({
+                        sortBy: step2Sort
+                    });
+                    step2Sort = (step2Sort === 'random' ? 'original-order' : 'random');
+                    $('.tag-desc').on( 'arrangeComplete', function () {
+                        $('.step-btn .green, .step-btn .red').prop('disabled', false);
+                    });
+                    break;
+                case 3:
+                    $('.guide-tab > div:eq(2)').show();
+
+                    $('.intro dt:eq(2)').addClass('current');
+
+                    $('.step-btn .red').show();
+                    $('.step-btn .green').text(Label.nextStepLabel);
+
+                    $('.intro > div').hide();
+                    $('.intro > dl').show();
+                    break;
+                case 4:
+                    $('.guide-tab > div:eq(3)').show();
+
+                    $('.step-btn .green').text(Label.finshLabel);
+
+                    $('.intro > div').show();
+                    $('.intro > dl').hide();
+                    break;
+                case 5:
+                    // finished
+                    window.location.href = '/';
+                    break;
+                default:
+                    break;
+
+            }
+        };
+
+        $('.step-btn .green').click(function () {
+            if (currentStep > 4) {
+                return false;
+            }
+            currentStep++;
+            step();
+        });
+
+        $('.step-btn .red').click(function () {
+            currentStep--;
+            step();
+        });
+
+        $('.tag-desc li').click(function () {
+            var $it = $(this);
+            if ($it.hasClass('current')) {
+                Util.unfollow(window, $it.data('id'), 'tag');
+                $it.removeClass('current');
+            } else {
+                Util.follow(window, $it.data('id'), 'tag');
+                $it.addClass('current');
+            }
+        });
+
+        step(currentStep);
+
+        $('.tag-desc').isotope({
+            transitionDuration: '1.5s',
+            filter: 'li',
+            layoutMode: 'fitRows'
+        });
+
+        // random select five tags
+        for (var i = 6; i > 0; i--) {
+            var random = parseInt(Math.random() * tagSize);
+            $('.tag-desc li:eq(' + random + ')').addClass('current');
+            Util.follow(window, $('.tag-desc li:eq(' + random + ')').data('id'), 'tag');
+        }
     }
 };

@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.11.24, Dec 21, 2016
+ * @version 2.9.11.25, Dec 24, 2016
  */
 
 @import "variables";
@@ -366,8 +366,10 @@ label.article-anonymous {
 }
 
 .follow .icon-tags {
-    font-size: 48px;
+    font-size: 37px;
     margin-right: 10px;
+    width: 38px;
+    line-height: 38px;
 }
 /* end follow */
 

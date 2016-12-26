@@ -1,4 +1,4 @@
-<#include "macro-head.ftl">
+<#include "../macro-head.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,7 +6,7 @@
         </@head>
     </head>
     <body>
-        <#include "header.ftl">
+        <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
                 <div class="content content-reset about">
@@ -112,10 +112,10 @@
                 </div>
                 <div class="fn-hr10"></div>
                 <div class="side">
-                    <#include "side.ftl">
+                    <#include "../side.ftl">
                 </div>
             </div>
         </div>
-        <#include "footer.ftl">
+        <#include "../footer.ftl">
     </body>
 </html>

@@ -1060,7 +1060,7 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets an article with {@link #organizeArticle(org.json.JSONObject)} by the specified id.
+     * Gets an article with {@link #organizeArticle(int, JSONObject)} by the specified id.
      *
      * @param avatarViewMode the specified avatar view mode
      * @param articleId      the specified id

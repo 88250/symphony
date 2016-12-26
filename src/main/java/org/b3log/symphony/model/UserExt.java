@@ -19,17 +19,23 @@ package org.b3log.symphony.model;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.symphony.util.Symphonys;
+import org.json.JSONObject;
 
 /**
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.5.1.12, Dec 23, 2016
- * @since 0.2.0
+ * @version 2.6.1.12, Dec 24, 2016
  * @see org.b3log.latke.model.User
+ * @since 0.2.0
  */
 public final class UserExt {
+
+    /**
+     * Key of user guide step.
+     */
+    public static final String USER_GUIDE_STEP = "userGuideStep";
 
     /**
      * Key of user language.
@@ -368,6 +374,27 @@ public final class UserExt {
      */
     public static final int USER_SUB_MAIL_STATUS_DISABLED = 1;
 
+    //// User guide step constants
+    /**
+     * User guide step - finish.
+     */
+    public static final int USER_GUIDE_STEP_FIN = 0;
+
+    /**
+     * User guide step - upload avatar.
+     */
+    public static final int USER_GUIDE_STEP_UPLOAD_AVATAR = 1;
+
+    /**
+     * User guide step - follow tags.
+     */
+    public static final int USER_GUIDE_STEP_FOLLOW_TAGS = 2;
+
+    /**
+     * User guide step - follow users.
+     */
+    public static final int USER_GUIDE_STEP_FOLLOW_USERS = 3;
+
     //// Default Commenter constants
     /**
      * Default commenter name.
@@ -529,6 +556,12 @@ public final class UserExt {
     public static final int USER_APP_ROLE_C_PAINTER = 1;
 
     /**
+     * Private constructor.
+     */
+    private UserExt() {
+    }
+
+    /**
      * Gets color code of the specified point.
      *
      * @param point the specified point
@@ -615,8 +648,22 @@ public final class UserExt {
     }
 
     /**
-     * Private constructor.
+     * Checks whether the specified user updated avatar.
+     *
+     * @param user the specified user
+     * @return {@code true} if the specified user updated avatar, returns {@code false} otherwise
      */
-    private UserExt() {
+    public static boolean updatedAvatar(final JSONObject user) {
+        return user.optString(UserExt.USER_AVATAR_URL).contains("_");
+    }
+
+    /**
+     * Checks whether the specified user finshed guide.
+     *
+     * @param user the specified user
+     * @return {@code true} if the specified user finshed guide, returns {@code false} otherwise
+     */
+    public static boolean finshedGuide(final JSONObject user) {
+        return UserExt.USER_GUIDE_STEP_FIN == user.optInt(UserExt.USER_GUIDE_STEP);
     }
 }

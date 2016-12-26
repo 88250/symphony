@@ -80,7 +80,7 @@ var ArticleChannel = {
                     // ua
                     $("#" + data.commentId + ' .cmt-via').text(Util.getDeviceByUa(data.commentUA));
 
-                    // 代码高亮
+                    // 回帖高亮
                     Comment._bgFade($("#" + data.commentId));
 
                     // 更新回复的帖子
