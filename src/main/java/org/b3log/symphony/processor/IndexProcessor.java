@@ -71,7 +71,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.12.2.24, Dec 25, 2016
+ * @version 1.12.3.24, Dec 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -137,7 +137,7 @@ public class IndexProcessor {
         InputStream inputStream = null;
         try {
             inputStream = IndexProcessor.class.getResourceAsStream("/md_guide.md");
-            final String md = IOUtils.toString(inputStream);
+            final String md = IOUtils.toString(inputStream, "UTF-8");
             String html = Emotions.convert(md);
             html = Markdowns.toHTML(html);
 
