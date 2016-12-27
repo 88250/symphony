@@ -1,3 +1,16 @@
+<#if tipsLabel??>
+<div class="module">
+    <div class="module-header">${smallTipLabel}</div>
+    <div class="module-panel">
+        <ul class="module-list small-tips">
+            <li>
+                <span class="ft-gray">${tipsLabel}</a></span>
+            </li>
+        </ul>
+    </div>
+</div>
+</#if>
+
 <#if isLoggedIn>
 <div class="module person-info" data-percent="${liveness}">
     <div class="info fn-clear">

@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.2.25, Dec 24, 2016
+ * @version 1.12.2.25, Dec 27, 2016
  * @since 0.2.0
  */
 @Service
@@ -129,7 +129,7 @@ public class DataModelService {
      * Role query service.
      */
     @Inject
-    private  RoleQueryService roleQueryService;
+    private RoleQueryService roleQueryService;
 
     /**
      * Domain cache.
@@ -280,10 +280,11 @@ public class DataModelService {
         // fillTrendTags(dataModel);
         fillPersonalNav(request, response, dataModel);
 
-        fillLangs(dataModel, request);
+        fillLangs(dataModel);
         fillIcons(dataModel);
         fillSideAd(dataModel);
         fillHeaderBanner(dataModel);
+        fillSideTips(dataModel);
 
         fillDomainNav(dataModel);
     }
@@ -452,17 +453,10 @@ public class DataModelService {
      * Fills the all language labels.
      *
      * @param dataModel the specified data model
-     * @param request   the specified HTTP servlet request
      */
-    private void fillLangs(final Map<String, Object> dataModel, final HttpServletRequest request) {
+    private void fillLangs(final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills lang");
         try {
-            if ((Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
-                dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
-
-                return;
-            }
-
             dataModel.putAll(langPropsService.getAll(Locales.getLocale()));
         } finally {
             Stopwatchs.end();
@@ -511,6 +505,29 @@ public class DataModelService {
         } else {
             dataModel.put("ADLabel", adOption.optString(Option.OPTION_VALUE));
         }
+    }
+
+    /**
+     * Fills the side tips.
+     *
+     * @param dataModel the specified data model
+     */
+    private void fillSideTips(final Map<String, Object> dataModel) {
+        if (RandomUtils.nextFloat() < 0.8) {
+            return;
+        }
+
+        final Map<String, String> labels = langPropsService.getAll(Locales.getLocale());
+        final List<String> tipsLabels = new ArrayList<>();
+
+        for (final Map.Entry<String, String> entry : labels.entrySet()) {
+            final String key = entry.getKey();
+            if (key.startsWith("tips")) {
+                tipsLabels.add(entry.getValue());
+            }
+        }
+
+        dataModel.put("tipsLabel", tipsLabels.get(RandomUtils.nextInt(tipsLabels.size())));
     }
 
     /**

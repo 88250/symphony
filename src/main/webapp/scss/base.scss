@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.19.51, Dec 21, 2016
+ * @version 2.26.19.51, Dec 27, 2016
  */
 
 @import "variables";
@@ -1915,6 +1915,12 @@ ul.CodeMirror-hints {
 /* end emoji */
 
 /* start person info */
+.small-tips .emoji {
+    margin-bottom: 0;
+    height: 17px;
+    width: 17px;
+}
+
 .person-info {
     position: relative;
 
