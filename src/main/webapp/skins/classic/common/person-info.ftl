@@ -1,14 +1,15 @@
+<#if tipsLabel??>
 <div class="module">
-    <div class="module-header">小贴士</div>
+    <div class="module-header">${smallTipLabel} <span class="ft-red">&hearts;</span></div>
     <div class="module-panel">
         <ul class="module-list">
             <li>
-                <a href="https://hacpai.com/article/1474030007391">${hotKeyLabel}</a>
-                <span class="ft-gray">${hotKeyTipLabel}</span>
+                <span class="ft-gray">${tipsLabel}</a></span>
             </li>
         </ul>
     </div>
 </div>
+</#if>
 
 <#if isLoggedIn>
 <div class="module person-info" data-percent="${liveness}">
