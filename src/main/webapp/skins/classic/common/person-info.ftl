@@ -1,6 +1,6 @@
 <#if tipsLabel??>
 <div class="module">
-    <div class="module-header">${smallTipLabel} <img align="absmiddle" alt="memo" class="emoji" src="https://static.hacpai.com/emoji/graphics/memo.png" title="yum"></div>
+    <div class="module-header">${smallTipLabel}</div>
     <div class="module-panel">
         <ul class="module-list">
             <li>
