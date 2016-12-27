@@ -1,11 +1,8 @@
 <#if tipsLabel??>
 <div class="module">
-    <div class="module-header small-tips">
-        <img align="absmiddle" alt="sparkles" class="emoji" src="https://static.hacpai.com/emoji/graphics/sparkles.png" title="sparkles">
-        ${smallTipLabel}
-    </div>
+    <div class="module-header">${smallTipLabel}</div>
     <div class="module-panel">
-        <ul class="module-list">
+        <ul class="module-list small-tips">
             <li>
                 <span class="ft-gray">${tipsLabel}</a></span>
             </li>
