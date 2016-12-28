@@ -4,7 +4,7 @@
     <head>
         <@head title="404 Not Found! - ${symphonyLabel}">
         <meta name="robots" content="none" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/error.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/css/error.css?${staticResourceVersion}" />
         </@head>
     </head>
     <body class="error">

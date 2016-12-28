@@ -5,7 +5,7 @@
         <@head title="500 Internal Server Error! - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/error.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/css/error.css?${staticResourceVersion}" />
     </head>
     <body class="error">
         <#include "../header.ftl">

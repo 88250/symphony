@@ -6,7 +6,7 @@
         <meta name="robots" content="none" />
         </@head>
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
     </head>
     <body>
         <#include "../header.ftl">
@@ -133,10 +133,10 @@
             </div>
         </div>
         <#include "../footer.ftl"/>
-        <script type="text/javascript" src="${staticServePath}/js/lib/editor/codemirror.min.js?4.13"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-9.6.0/highlight.pack.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
+        <script src="${staticServePath}/js/lib/editor/codemirror.min.js?4.13"></script>
+        <script src="${staticServePath}/js/lib/highlight.js-9.6.0/highlight.pack.js"></script>
+        <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
+        <script src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
         <script>
             Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
             Label.articleContentErrorLabel = "${articleContentErrorLabel}";
@@ -155,7 +155,7 @@
             <#if article??>Label.articleOId = '${article.oId}' ;</#if>
             Label.articleType = ${articleType};
         </script>
-        <script type="text/javascript" src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Util.uploadFile({
                 "id": "fileUpload",

@@ -3,7 +3,7 @@
     <html>
     <head>
         <@head title="Manual for Hackers - ${symphonyLabel}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}"/>
+        <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}"/>
         <link rel="canonical" href="${servePath}/man">
     </head>
     <body>

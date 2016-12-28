@@ -18,7 +18,7 @@
         </div>
         <#include '../footer.ftl'/>
     </body>
-    <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
+    <script src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
     <script>
         var index = Math.round(Math.random() * 6);
         $('.main .wrapper div').html('<img src="${staticServePath}/images/404/' + index + '.gif">');

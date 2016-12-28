@@ -7,8 +7,8 @@
         <@head title="${messageLabel} - ${userName} - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
+        <link rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
     </head>
     <body>
         <#include "../../header.ftl">
@@ -99,7 +99,7 @@
             </div>
         </div>
         <#include "../../footer.ftl">
-        <script type="text/javascript" src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Settings.initHljs();
             $(document).bind('keyup', 'e', function assets() {

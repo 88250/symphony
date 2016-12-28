@@ -45,7 +45,7 @@
             </div>
         </div>
         <#include "../footer.ftl">
-        <script type="text/javascript" src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Verify.init();
             Label.userNameErrorLabel = "${userNameErrorLabel}";

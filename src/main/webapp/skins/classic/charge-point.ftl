@@ -4,7 +4,7 @@
     <head>
         <@head title="${chargePointLabel} - ${symphonyLabel}">
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         <link rel="canonical" href="${servePath}/charge/point">
     </head>
     <body>

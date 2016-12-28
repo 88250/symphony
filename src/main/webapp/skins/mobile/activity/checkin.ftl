@@ -20,7 +20,7 @@
             </div>
         </div>
         <#include "../footer.ftl">
-        <script type="text/javascript" src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="https://static.geetest.com/static/tools/gt.js"></script>
         <script>
             var handler = function (captchaObj) {

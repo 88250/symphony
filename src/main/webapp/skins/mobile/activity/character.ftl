@@ -42,7 +42,7 @@
             </div>
         </div>
         <#include "../footer.ftl">
-        <script type="text/javascript" src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
                                     Activity.charInit('charCanvas');
         </script>

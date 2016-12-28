@@ -5,7 +5,7 @@
         <@head title="${symphonyLabel}">
         <meta name="description" content="${symDescriptionLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         <link rel="canonical" href="${servePath}">
     </head>
     <body class="index">
@@ -222,7 +222,7 @@
         </div>
     </div>
     <#include "footer.ftl">   
-    <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script> 
+    <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
     <script type="text/javascript">
         $('.metro-item').height($('.metro-item').width());
         $('.timeline ul').outerHeight($('.metro-item').width() * 2 + 2 - 30);

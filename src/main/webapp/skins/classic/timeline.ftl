@@ -5,7 +5,7 @@
         <@head title="${timelineLabel} - ${symphonyLabel}">
         <meta name="description" content="${timelineLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         <link rel="canonical" href="${servePath}/timeline">
     </head>
     <body>
@@ -34,7 +34,7 @@
         </div>
         <#include "footer.ftl">
 
-        <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             // Init [Timeline] channel
             TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/timeline-channel", ${timelineCnt});

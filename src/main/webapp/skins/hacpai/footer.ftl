@@ -7,4 +7,4 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
+<script src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>

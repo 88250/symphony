@@ -7,7 +7,7 @@
         <@head title="${city} - ${symphonyLabel}">
         <meta name="description" content="${symDescriptionLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">

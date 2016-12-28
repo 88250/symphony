@@ -4,7 +4,7 @@
     <head>
         <@head title="${dataStatLabel} - ${symphonyLabel}">
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         <link rel="canonical" href="${servePath}/statistic">
     </head>
     <body>
@@ -55,7 +55,7 @@
         </div>
         <#include "footer.ftl">
 
-        <script type="text/javascript" src="${staticServePath}/js/lib/echarts-2.2.7/echarts.js"></script>
+        <script src="${staticServePath}/js/lib/echarts-2.2.7/echarts.js"></script>
         <script type="text/javascript">
             require.config({
                 paths: {
