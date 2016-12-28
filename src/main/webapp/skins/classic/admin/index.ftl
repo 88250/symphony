@@ -24,11 +24,10 @@
         <div class="fn-hr5"></div>
     </div>
 </div>
-</@admin>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
         $.ajax({
-            url: "//rhythm.b3log.org/version/symphony/latest",
+            url: "https://rhythm.b3log.org/version/symphony/latest",
             type: "GET",
             dataType: "jsonp",
             jsonp: "callback",
@@ -45,4 +44,6 @@
     });
 
 </script>
+
+</@admin>
 

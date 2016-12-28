@@ -2,7 +2,7 @@
 <@home "b3">
 <div class="module">
     <div class="module-header">
-        <a href="//hacpai.com/article/1440820551723" target="_blank">${symphonyLabel}${symClientSyncLabel}</a>
+        <a href="https://hacpai.com/article/1440820551723" target="_blank">${symphonyLabel}${symClientSyncLabel}</a>
     </div>
     <div class="module-panel form fn-clear">
         <label>B3log Key</label>

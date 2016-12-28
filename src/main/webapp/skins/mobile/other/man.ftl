@@ -14,7 +14,7 @@
                     <h2 class="sub-head">Hacker's Manual</h2>
                     <div class="article-module">
                         <i class="ft-gray">Command manual for hackers, with <span class="ft-red">&hearts;</span> from <a
-                                href="//github.com/tldr-pages/tldr" target="_blank">tldr</a></i>
+                                href="https://github.com/tldr-pages/tldr" target="_blank">tldr</a></i>
                         <br><br>
                         <div class="form">
                             <input id="manCmd" type="text" autofocus placeholder="man">

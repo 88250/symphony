@@ -219,7 +219,7 @@
                                                     <#if comment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${comment.commentAuthorName}</span><#if comment.commentAnonymous == 0></a></#if>
                                                     <#else><span class="ft-gray">${comment.commentAuthorName}</span>
                                                     <span class="ft-fade"> • </span>
-                                                    <a rel="nofollow" class="ft-green" href="//hacpai.com/article/1457158841475">API</a>
+                                                    <a rel="nofollow" class="ft-green" href="https://hacpai.com/article/1457158841475">API</a>
                                                     </#if>
                                                     <span class="ft-fade">• ${comment.timeAgo}</span>
 
@@ -298,7 +298,7 @@
                         <div class="module-header">
                             <h2>
                                 ${sponsorLabel}
-                                <a href="//hacpai.com/article/1460083956075" class="fn-right ft-13 ft-gray" target="_blank">${wantPutOnLabel}</a>
+                                <a href="https://hacpai.com/article/1460083956075" class="fn-right ft-13 ft-gray" target="_blank">${wantPutOnLabel}</a>
                             </h2>
                         </div>
                         <div class="module-panel ad fn-clear">

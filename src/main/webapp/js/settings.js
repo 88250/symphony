@@ -135,7 +135,7 @@ var Settings = {
                 multipart: true,
                 pasteZone: null,
                 dropZone: null,
-                url: "//up.qbox.me/",
+                url: "https://up.qbox.me/",
                 add: function (e, data) {
                     ext = data.files[0].type.split("/")[1];
 

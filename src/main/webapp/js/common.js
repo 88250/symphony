@@ -178,7 +178,7 @@ var Util = {
             return false;
         }).bind('keyup', 'Shift+/', function (event) {
             // shift/⇧ ? 新窗口打开键盘快捷键说明文档
-            window.open('//hacpai.com/article/1474030007391');
+            window.open('https://hacpai.com/article/1474030007391');
             return false;
         }).bind('keyup', 'j', function (event) {
             // j 移动到下一项
@@ -463,7 +463,7 @@ var Util = {
         $('#search').autocomplete({
             hint: false,
             templates: {
-                footer: '<div class="fn-right fn-pointer" onclick="window.open(\'//www.algolia.com/referrals/1faf0d17/join\')">'
+                footer: '<div class="fn-right fn-pointer" onclick="window.open(\'https://www.algolia.com/referrals/1faf0d17/join\')">'
                         + '<span class="ft-gray">With &hearts; from</span> <img src="' + Label.staticServePath + '/images/services/algolia128x40.png" /> </div>'
             }
         }, [{
@@ -691,7 +691,7 @@ var Util = {
 
                     $.ajax({
                         type: 'POST',
-                        url: '//up.qbox.me/',
+                        url: 'https://up.qbox.me/',
                         data: fd,
                         processData: false,
                         contentType: false,
@@ -1329,7 +1329,7 @@ var Util = {
             multipart: true,
             pasteZone: obj.pasteZone,
             dropZone: obj.pasteZone,
-            url: "//up.qbox.me/",
+            url: "https://up.qbox.me/",
             paramName: "file",
             add: function (e, data) {
                 if (data.files[0].name) {

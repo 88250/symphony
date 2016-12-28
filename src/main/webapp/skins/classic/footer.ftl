@@ -2,18 +2,18 @@
     <div class="wrapper">
         <div class="slogan">
             ${indexIntroLabel} &nbsp; &nbsp;
-            <a href="//github.com/b3log/symphony" target="_blank" class="tooltipped tooltipped-n" aria-label="${siteCodeLabel}">
+            <a href="https://github.com/b3log/symphony" target="_blank" class="tooltipped tooltipped-n" aria-label="${siteCodeLabel}">
                 <svg class="ft-gray" height="16" width="16" viewBox="0 0 16 16">${githubIcon}</svg></a> &nbsp;
-            <a href="//weibo.com/u/2778228501" target="_blank" class="tooltipped tooltipped-n" aria-label="${followWeiboLabel}">
+            <a href="http://weibo.com/u/2778228501" target="_blank" class="tooltipped tooltipped-n" aria-label="${followWeiboLabel}">
                 <svg class="ft-gray" width="18" height="18" viewBox="0 0 37 30">${weiboIcon}</svg></a>   &nbsp;
             <a target="_blank" class="tooltipped tooltipped-n" aria-label="${joinQQGroupLabel}"
-               href="//shang.qq.com/wpa/qunwpa?idkey=f77a54e7d2bd53bed4043f70838da92fa49eccda53e706ef2124943cb0df4df5">
+               href="http://shang.qq.com/wpa/qunwpa?idkey=f77a54e7d2bd53bed4043f70838da92fa49eccda53e706ef2124943cb0df4df5">
                 <svg class="ft-gray" width="16" height="16" viewBox="0 0 30 30">${qqIcon}</svg></a>
         </div>
         <div class="fn-flex-1">
             <div class="footer-nav fn-clear">
                 <a rel="help" href="${servePath}/about">${aboutLabel}</a>
-                <a href="//hacpai.com/article/1457158841475">API</a>
+                <a href="https://hacpai.com/article/1457158841475">API</a>
                 <a href="${servePath}/tag/announcement">${symAnnouncementLabel}</a>
                 <a href="${servePath}/domains">${domainLabel}</a>
                 <a href="${servePath}/tags">${tagLabel}</a>
@@ -21,14 +21,14 @@
 
                 <div class="fn-right">
                     <span class="ft-gray">&COPY; ${year}</span>
-                    <a rel="copyright" href="//hacpai.com" target="_blank">hacpai.com</a>
+                    <a rel="copyright" href="https://hacpai.com" target="_blank">hacpai.com</a>
                     ${visionLabel}</div>
             </div>
             <div class="fn-clear ft-smaller ft-fade">
                        ${sloganLabel}
                     <div class="fn-right">
-                       Powered by <a href="//b3log.org" class="ft-gray" target="_blank">B3log 开源</a> •
-                            <a href="//github.com/b3log/symphony" class="ft-gray" target="_blank">Sym</a>
+                       Powered by <a href="http://b3log.org" class="ft-gray" target="_blank">B3log 开源</a> •
+                            <a href="https://github.com/b3log/symphony" class="ft-gray" target="_blank">Sym</a>
                             ${version} • ${elapsed?c}ms
                     </div>
                 </div>

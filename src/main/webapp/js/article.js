@@ -1040,12 +1040,12 @@ var Article = {
                     url = encodeURIComponent(shareURL),
                     pic = $(".content-reset img").attr("src");
             var urls = {};
-            urls.tencent = "//share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
+            urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
                     "&url=" + url + "&pic=" + pic;
-            urls.weibo = "//v.t.sina.com.cn/share/share.php?title=" +
+            urls.weibo = "http://v.t.sina.com.cn/share/share.php?title=" +
                     title + "&url=" + url + "&pic=" + pic;
             urls.google = "https://plus.google.com/share?url=" + url;
-            urls.twitter = "//twitter.com/intent/tweet?status=" + title + " " + url;
+            urls.twitter = "https://twitter.com/intent/tweet?status=" + title + " " + url;
             window.open(urls[key], "_blank", "top=100,left=200,width=648,height=618");
         });
 
