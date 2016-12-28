@@ -25,17 +25,17 @@
                             <ul>
                                 <li>
                                     Solo 是<a href="http://www.iciba.com/solo">独奏</a>，
-                                    <a href="https://github.com/b3log/solo">Solo</a>
+                                    <a href="//github.com/b3log/solo">Solo</a>
                                     也是一个独立的个人博客系统，在音乐中相当于乐手各自所拿的乐器，使用它来演奏不同的声音。
                                 </li>
                                 <li>
                                     Rhythm 是<a href="http://www.iciba.com/rhythm">节奏</a>，相当于音乐中节拍器控制的节奏。
-                                    <a href="https://github.com/b3log/rhythm">Rhythm</a>
+                                    <a href="//github.com/b3log/rhythm">Rhythm</a>
                                     用来处理不同博客和社区服务之间的同步，以避免在交响乐中乱了节奏。
                                 </li>
                                 <li>
                                     Symphony 是<a href="http://www.iciba.com/symphony">交响乐</a>。
-                                    <a href="https://github.com/b3log/symphony">Symphony</a>
+                                    <a href="//github.com/b3log/symphony">Symphony</a>
                                     以论坛的方式交互，汇总个人博客，需要很多人协同参与才能奏出美妙的乐章。
                                 </li>
                             </ul>
@@ -50,7 +50,7 @@
                             </p>
                             <p>
                                 关于选择独立博客还是选择个人博客服务的讨论<a
-                                    href="https://www.google.com.hk/search?sugexp=chrome,mod=15&amp;sourceid=chrome&amp;ie=UTF-8&amp;q=%E4%B8%BA%E4%BB%80%E4%B9%88+%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2">比比皆是</a>。究其根本，如果有廉价、稳定的空间搭建独立博客，且安装部署简单、后续维护简洁、使用过程方便，那博客服务就完全没有优势了。
+                                    href="//www.google.com.hk/search?sugexp=chrome,mod=15&amp;sourceid=chrome&amp;ie=UTF-8&amp;q=%E4%B8%BA%E4%BB%80%E4%B9%88+%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2">比比皆是</a>。究其根本，如果有廉价、稳定的空间搭建独立博客，且安装部署简单、后续维护简洁、使用过程方便，那博客服务就完全没有优势了。
                             </p>
                             <p>
                                 随着云环境的普及（或者说成是泛滥）、廉价、稳定。易管理的空间已经有很多，各大互联网公司 xAE 的运营也日趋成熟。
@@ -88,7 +88,7 @@
                             </p>
                             <p>
                                 从架构上看，Solo 是 B3log 社区的重要客户端，但除了 Solo 外，目前也以插件的方支持了一些主流博客系统，请看<a
-                                    href="https://hacpai.com/article/1457158841475">这里</a>。
+                                    href="//hacpai.com/article/1457158841475">这里</a>。
                             </p>
                             <h3>Rhythm</h3>
                             <p>

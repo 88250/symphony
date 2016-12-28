@@ -19,10 +19,13 @@
         <span id="upgrade">${checkVersionLabel}</span>
     </div>
 </div>
+</@admin>
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
         $.ajax({
-            url: "https://rhythm.b3log.org/version/symphony/latest",
+            url: "//rhythm.b3log.org/version/symphony/latest",
             type: "GET",
             dataType: "jsonp",
             jsonp: "callback",
@@ -37,8 +40,4 @@
             }
         });
     });
-
 </script>
-
-</@admin>
-

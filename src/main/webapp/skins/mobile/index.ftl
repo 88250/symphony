@@ -92,7 +92,7 @@
             </div>
             <#if ADLabel != ''>
             <div class="item mid">
-                <a class="item-header" style="background-image: url(${adBgIcon})" href="https://hacpai.com/article/1460083956075">${sponsorLabel}</a>
+                <a class="item-header" style="background-image: url(${adBgIcon})" href="//hacpai.com/article/1460083956075">${sponsorLabel}</a>
                 <div class="ad module-panel">
                     ${ADLabel}
                 </div>
@@ -114,12 +114,12 @@
 
     <div class="slogan">
         ${indexIntroLabel}&nbsp;
-        <a href="https://github.com/b3log/symphony" target="_blank">
+        <a href="//github.com/b3log/symphony" target="_blank">
             <svg class="ft-gray" height="16" width="16" viewBox="0 0 16 16">${githubIcon}</svg></a>
-        <a href="http://weibo.com/u/2778228501" target="_blank">
+        <a href="//weibo.com/u/2778228501" target="_blank">
             <svg class="ft-gray" width="18" height="18" viewBox="0 0 37 30">${weiboIcon}</svg></a>    
         <a target="_blank"
-           href="http://shang.qq.com/wpa/qunwpa?idkey=f77a54e7d2bd53bed4043f70838da92fa49eccda53e706ef2124943cb0df4df5">
+           href="//shang.qq.com/wpa/qunwpa?idkey=f77a54e7d2bd53bed4043f70838da92fa49eccda53e706ef2124943cb0df4df5">
             <svg class="ft-gray" width="16" height="16" viewBox="0 0 30 30">${qqIcon}</svg></a>
     </div>
     <#include "footer.ftl">
