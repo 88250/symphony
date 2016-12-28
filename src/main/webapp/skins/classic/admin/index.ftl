@@ -24,6 +24,8 @@
         <div class="fn-hr5"></div>
     </div>
 </div>
+</@admin>
+
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
         $.ajax({
@@ -44,6 +46,3 @@
     });
 
 </script>
-
-</@admin>
-

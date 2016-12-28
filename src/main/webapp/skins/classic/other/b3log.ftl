@@ -3,7 +3,7 @@
     <html>
     <head>
         <@head title="B3log 构思 - ${symphonyLabel}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}"/>
+        <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}"/>
         <link rel="canonical" href="${servePath}/b3log">
     </head>
     <body>

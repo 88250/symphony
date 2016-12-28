@@ -47,7 +47,7 @@
 </div>
 </#if>
 </@home>
-<script type="text/javascript" src="${staticServePath}/js/lib/zeroclipboard/ZeroClipboard.min.js"></script>
+<script src="${staticServePath}/js/lib/zeroclipboard/ZeroClipboard.min.js"></script>
 <script>
             ZeroClipboard.config({
                 hoverClass: "red-hover",

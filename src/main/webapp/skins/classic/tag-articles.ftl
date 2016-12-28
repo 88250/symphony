@@ -8,7 +8,7 @@
         <meta name="keywords" content="${tag.tagSeoKeywords}"/>
         <meta name="description" content="${tag.tagSeoDesc}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">

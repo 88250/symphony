@@ -24,7 +24,7 @@
         </div>
         <#include "footer.ftl">
 
-        <script type="text/javascript" src="${staticServePath}/js/lib/echarts-2.2.7/echarts.js"></script>
+        <script src="${staticServePath}/js/lib/echarts-2.2.7/echarts.js"></script>
         <script type="text/javascript">
             require.config({
                 paths: {

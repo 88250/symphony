@@ -5,7 +5,7 @@
         <@head title="403 Forbidden! - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/error.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/css/error.css?${staticResourceVersion}" />
     </head>
     <body class="error error-403">
         <#include "../header.ftl">
@@ -49,7 +49,7 @@
             </div>
         </div> 
         <#include '../footer.ftl'/>
-        <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
                             // Init [Timeline] channel
                             TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/timeline-channel", 20);

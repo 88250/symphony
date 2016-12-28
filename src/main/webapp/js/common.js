@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.41.28.40, Dec 27, 2016
+ * @version 1.41.28.41, Dec 28, 2016
  */
 
 /**
@@ -835,7 +835,7 @@ var Util = {
 
                 // browser
                 if (0 < count) {
-                    $("#aNotifications").removeClass("no-msg tooltipped tooltipped-w").addClass("msg").text(count).attr('href', 'javascript:void(0)');;
+                    $("#aNotifications").removeClass("no-msg tooltipped tooltipped-w").addClass("msg").text(count).attr('href', 'javascript:void(0)');
                     if (0 === result.userNotifyStatus && window.localStorage.hadNotificate !== count.toString()) {
                         Util.notifyMsg(count);
                         window.localStorage.hadNotificate = count;
@@ -1106,9 +1106,10 @@ var Util = {
             Util.setUnreadNotificationCount();
 
             // 定时获取并设置未读提醒计数
-            setInterval(function () {
-                Util.setUnreadNotificationCount();
-            }, 1000 * 60 * 10);
+            // NOTE: 有了 userChannel，停了观察一下
+//            setInterval(function () {
+//                Util.setUnreadNotificationCount();
+//            }, 1000 * 60 * 10);
         }
 
         this._initCommonHotKey();
@@ -1149,7 +1150,6 @@ var Util = {
             switch (data.command) {
                 case "refreshNotification":
                     Util.setUnreadNotificationCount();
-
                     break;
             }
         };
