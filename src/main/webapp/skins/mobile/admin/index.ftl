@@ -19,6 +19,7 @@
         <span id="upgrade">${checkVersionLabel}</span>
     </div>
 </div>
+</@admin>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
         $.ajax({
@@ -39,6 +40,3 @@
     });
 
 </script>
-
-</@admin>
-
