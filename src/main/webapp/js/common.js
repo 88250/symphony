@@ -15,13 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 /**
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.41.28.41, Dec 28, 2016
+ * @version 1.41.28.42, Dec 30, 2016
  */
 
 /**
@@ -761,6 +762,7 @@ var Util = {
                             + markReadHTML.replace('${markReadType}', 'commented')
                             + '</a></li>';
                     }
+
                     // 收到的回复 unreadReplyNotificationCnt
                     if (data.unreadReplyNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/reply">' + Label.notificationReplyLabel +
@@ -768,6 +770,7 @@ var Util = {
                             + markReadHTML.replace('${markReadType}', 'reply')
                             + '</a></li>';
                     }
+
                     // @ 我的 unreadAtNotificationCnt
                     if (data.unreadAtNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/at">' + Label.notificationAtLabel +
@@ -775,6 +778,7 @@ var Util = {
                             + markReadHTML.replace('${markReadType}', 'at')
                             + '</a></li>';
                     }
+
                     // 我关注的人 unreadFollowingUserNotificationCnt
                     if (data.unreadFollowingUserNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/following-user">' + Label.notificationFollowingUserLabel +
@@ -782,24 +786,35 @@ var Util = {
                             + markReadHTML.replace('${markReadType}', 'following-user')
                             + '</a></li>';
                     }
+
                     // 积分 unreadPointNotificationCnt
                     if (data.unreadPointNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/point">' + Label.pointLabel +
                             ' <span class="count">' + data.unreadPointNotificationCnt + '</span>'
                             + '</a></li>';
                     }
+
                     // 同城 unreadBroadcastNotificationCnt
                     if (data.unreadBroadcastNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/broadcast">' + Label.sameCityLabel +
                             ' <span class="count">' + data.unreadBroadcastNotificationCnt + '</span>'
                             + '</a></li>';
                     }
+
                     // 系统 unreadSysAnnounceNotificationCnt
                     if (data.unreadSysAnnounceNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/sys-announce">' + Label.systemLabel +
                             ' <span class="count">' + data.unreadSysAnnounceNotificationCnt + '</span>'
                             + '</a></li>';
                     }
+
+                    // 新关注者 unreadNewFollowerNotificationCnt
+                    if (data.unreadNewFollowerNotificationCnt > 0) {
+                        notiHTML += '<li><a href="' + Label.servePath + '/member/' + Label.currentUserName + '/followers">' +
+                            Label.newFollowerLabel + ' <span class="count">' + data.unreadNewFollowerNotificationCnt + '</span>'
+                            + '</a></li>';
+                    }
+
                     return notiHTML;
                 };
 

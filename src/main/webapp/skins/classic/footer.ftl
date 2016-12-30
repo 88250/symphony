@@ -64,8 +64,10 @@
 		pointLabel: '${pointLabel}',
 		sameCityLabel: '${sameCityLabel}',
 		systemLabel: '${systemLabel}',
+		newFollowerLabel: '${newFollowerLabel}',
         makeAsReadLabel: '${makeAsReadLabel}',
-        checkIcon: '${checkIcon}'
+        checkIcon: '${checkIcon}'<#if isLoggedIn>,
+        currentUserName: '${currentUser.userName}'</#if>
     };
 
     <#if isLoggedIn>

@@ -30,9 +30,11 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Follow;
+import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.service.FollowMgmtService;
+import org.b3log.symphony.service.NotificationMgmtService;
 import org.json.JSONObject;
 
 /**
@@ -48,7 +50,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jun 3, 2015
+ * @version 1.1.0.1, Dec 30, 2016
  * @since 0.2.5
  */
 @RequestProcessor
@@ -64,6 +66,12 @@ public class FollowProcessor {
      */
     @Inject
     private FollowMgmtService followMgmtService;
+
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
 
     /**
      * Follows a user.
@@ -95,6 +103,12 @@ public class FollowProcessor {
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
 
         followMgmtService.followUser(followerUserId, followingUserId);
+
+        final JSONObject notification = new JSONObject();
+        notification.put(Notification.NOTIFICATION_USER_ID, followingUserId);
+        notification.put(Notification.NOTIFICATION_DATA_ID, followerUserId);
+
+        notificationMgmtService.addNewFollowerNotification(notification);
 
         context.renderTrueResult();
     }
