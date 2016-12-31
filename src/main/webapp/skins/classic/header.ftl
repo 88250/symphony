@@ -32,7 +32,7 @@
         </#if>
         <a id="aNotifications" class="tooltipped tooltipped-w <#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" aria-label="${messageLabel}">${unreadNotificationCount}</a>
         <a href="${servePath}/activities" aria-label="${activityLabel}" class="tooltipped tooltipped-w"><span class="icon-flag"></span></a>
-        <a href="javascript:void(0)" id="aPersonListPanel" class="tooltipped tooltipped-w" aria-label="About ${currentUser.userName}"
+        <a href="javascript:void(0)" id="aPersonListPanel" class="tooltipped tooltipped-w" aria-label="${viewHomeAndProfileLabel}"
            data-url="${servePath}/member/${currentUser.userName}">
             <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL20}')"></span>
         </a>

@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
+
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -63,15 +64,33 @@ public class NotificationMgmtService {
     private NotificationRepository notificationRepository;
 
     /**
+     * Adds a 'new follower' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId": "",
+     *                          "dataId": "" // new follower id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addNewFollowerNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_NEW_FOLLOWER);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=new_follower] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
      * Adds a 'sys announce - article' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "" // article id
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // article id
      * @throws ServiceException service exception
      */
     @Transactional
@@ -91,13 +110,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'sys announce - new user' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "" // article id
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // article id
      * @throws ServiceException service exception
      */
     @Transactional
@@ -117,13 +132,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'invitecode used' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "" // invited user id
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // invited user id
      * @throws ServiceException service exception
      */
     @Transactional
@@ -144,7 +155,7 @@ public class NotificationMgmtService {
      * Makes the specified user's notifications of the specified type as read.
      *
      * @param userId the specified user id
-     * @param type the specified notification type
+     * @param type   the specified notification type
      */
     public void makeRead(final String userId, final int type) {
         final Query query = new Query().setFilter(
@@ -187,8 +198,8 @@ public class NotificationMgmtService {
     /**
      * Makes the specified user to article, comments notifications as read.
      *
-     * @param userId the specified user id
-     * @param articleId the specified article id
+     * @param userId     the specified user id
+     * @param articleId  the specified article id
      * @param commentIds the specified comment ids
      */
     public void makeRead(final String userId, final String articleId, final List<String> commentIds) {
@@ -228,7 +239,7 @@ public class NotificationMgmtService {
      * Makes the specified notification have been read.
      *
      * @param notification the specified notification, return directly if this notification has been read
-     * (notification.hasRead equals to {@code true})
+     *                     (notification.hasRead equals to {@code true})
      * @throws ServiceException service exception
      */
     @Transactional
@@ -256,13 +267,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'broadcast' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "" // article id
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // article id
      * @throws ServiceException service exception
      */
     @Transactional
@@ -282,13 +289,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'point charge' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "" // transfer record id
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // transfer record id
      * @throws ServiceException service exception
      */
     @Transactional
@@ -308,13 +311,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'abuse point deduct' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "" // transfer record id
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // transfer record id
      * @throws ServiceException service exception
      */
     @Transactional
@@ -334,13 +333,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'point exchange' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "" // transfer record id
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // transfer record id
      * @throws ServiceException service exception
      */
     @Transactional
@@ -360,13 +355,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'point transfer' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "" // transfer record id
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // transfer record id
      * @throws ServiceException service exception
      */
     @Transactional
@@ -386,13 +377,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'article reward' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "" // reward id
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // reward id
      * @throws ServiceException service exception
      */
     @Transactional
@@ -412,13 +399,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'article thank' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "" // thank id
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // thank id
      * @throws ServiceException service exception
      */
     @Transactional
@@ -438,13 +421,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'comment thank' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "" // reward id
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // reward id
      * @throws ServiceException service exception
      */
     @Transactional
@@ -464,13 +443,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'comment' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": ""
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": ""
      * @throws ServiceException service exception
      */
     // XXX: Unused
@@ -491,13 +466,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'at' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": ""
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": ""
      * @throws ServiceException service exception
      */
     @Transactional
@@ -517,13 +488,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'article' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": ""
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": ""
      * @throws ServiceException service exception
      */
     // XXX: Unused
@@ -544,13 +511,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'followingUser' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "" // article id
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // article id
      * @throws ServiceException service exception
      */
     @Transactional
@@ -570,13 +533,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'commented' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": ""
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": ""
      * @throws ServiceException service exception
      */
     @Transactional
@@ -596,13 +555,9 @@ public class NotificationMgmtService {
     /**
      * Adds a 'reply' type notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": ""
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": ""
      * @throws ServiceException service exception
      */
     @Transactional
@@ -622,14 +577,10 @@ public class NotificationMgmtService {
     /**
      * Adds a notification with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": "",
-     *     "dataType": int
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "",
+     *                          "dataType": int
      * @throws RepositoryException repository exception
      */
     private void addNotification(final JSONObject requestJSONObject) throws RepositoryException {

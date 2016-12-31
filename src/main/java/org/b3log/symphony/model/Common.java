@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.52.1.11, Dec 20, 2016
+ * @version 1.53.1.11, Dec 30, 2016
  * @since 0.2.0
  */
 public final class Common {
@@ -145,6 +145,11 @@ public final class Common {
      * Key of unread 'sys announce' notifications count.
      */
     public static final String UNREAD_SYS_ANNOUNCE_NOTIFICATION_CNT = "unreadSysAnnounceNotificationCnt";
+
+    /**
+     * Key of unread 'new follower' notifications count.
+     */
+    public static final String UNREAD_NEW_FOLLOWER_NOTIFICATION_CNT = "unreadNewFollowerNotificationCnt";
 
     /**
      * Key of mouse effects.

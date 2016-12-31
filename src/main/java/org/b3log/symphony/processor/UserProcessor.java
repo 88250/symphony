@@ -89,7 +89,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.14.32, Dec 18, 2016
+ * @version 1.26.14.33, Dec 30, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1358,6 +1358,8 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_RECORD_COUNT, followerUserCnt);
 
         dataModel.put(Common.TYPE, "followers");
+
+        notificationMgmtService.makeRead(followingId, Notification.DATA_TYPE_C_NEW_FOLLOWER);
     }
 
     /**

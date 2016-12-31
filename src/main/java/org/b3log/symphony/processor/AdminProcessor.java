@@ -107,7 +107,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.25.5.21, Dec 24, 2016
+ * @version 2.25.6.21, Dec 29, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -516,7 +516,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/add-tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void addTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         String title = StringUtils.trim(request.getParameter(Tag.TAG_TITLE));
@@ -774,7 +774,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/add-article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final String userName = request.getParameter(User.USER_NAME);
@@ -1192,7 +1192,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/add-user", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void addUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final String userName = request.getParameter(User.USER_NAME);
@@ -1343,7 +1343,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/user/{userId}/email", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateUserEmail(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                 final String userId) throws Exception {
         final JSONObject user = userQueryService.getUser(userId);
@@ -1386,7 +1386,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/user/{userId}/username", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateUserName(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                final String userId) throws Exception {
         final JSONObject user = userQueryService.getUser(userId);
@@ -1429,7 +1429,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/user/{userId}/charge-point", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void chargePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                             final String userId) throws Exception {
         final String pointStr = request.getParameter(Common.POINT);
@@ -1480,7 +1480,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/user/{userId}/abuse-point", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void abusePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                            final String userId) throws Exception {
         final String pointStr = request.getParameter(Common.POINT);
@@ -1539,7 +1539,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/user/{userId}/init-point", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void initPoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                           final String userId) throws Exception {
         try {
@@ -1584,7 +1584,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/user/{userId}/exchange-point", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void exchangePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                               final String userId) throws Exception {
         final String pointStr = request.getParameter(Common.POINT);
@@ -2276,7 +2276,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/add-domain", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void addDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final String domainTitle = request.getParameter(Domain.DOMAIN_TITLE);
@@ -2361,7 +2361,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/domain/{domainId}/add-tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass ={PermissionGrant.class, StopwatchEndAdvice.class})
     public void addDomainTag(final HTTPRequestContext context,
                              final HttpServletRequest request, final HttpServletResponse response, final String domainId)
             throws Exception {
@@ -2455,7 +2455,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/domain/{domainId}/remove-tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void removeDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                              final String domainId)
             throws Exception {
