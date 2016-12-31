@@ -37,9 +37,12 @@ import org.b3log.symphony.service.FollowMgmtService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Follow processor.
- *
+ * <p>
  * <ul>
  * <li>Follows a user (/follow/user), POST</li>
  * <li>Unfollows a user (/follow/user), DELETE</li>
@@ -48,9 +51,10 @@ import org.json.JSONObject;
  * <li>Follows an article (/follow/article), POST</li>
  * <li>Unfollows an article (/follow/article), DELETE</li>
  * </ul>
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Dec 30, 2016
+ * @version 1.1.0.2, Dec 31, 2016
  * @since 0.2.5
  */
 @RequestProcessor
@@ -72,6 +76,15 @@ public class FollowProcessor {
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
+
+    /**
+     * Holds follow relations.
+     * <p>
+     * &lt;followerId, followingId&gt;
+     * </p>
+     */
+    private static final Map<String, String> FOLLOWS = new HashMap<>();
+
 
     /**
      * Follows a user.
@@ -104,18 +117,21 @@ public class FollowProcessor {
 
         followMgmtService.followUser(followerUserId, followingUserId);
 
-        final JSONObject notification = new JSONObject();
-        notification.put(Notification.NOTIFICATION_USER_ID, followingUserId);
-        notification.put(Notification.NOTIFICATION_DATA_ID, followerUserId);
+        if (null == FOLLOWS.get(followerUserId)) {
+            final JSONObject notification = new JSONObject();
+            notification.put(Notification.NOTIFICATION_USER_ID, followingUserId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, followerUserId);
 
-        notificationMgmtService.addNewFollowerNotification(notification);
+            notificationMgmtService.addNewFollowerNotification(notification);
+        }
+
+        FOLLOWS.put(followerUserId, followingUserId);
 
         context.renderTrueResult();
     }
 
     /**
      * Unfollows a user.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -149,7 +165,6 @@ public class FollowProcessor {
 
     /**
      * Follows a tag.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -183,7 +198,6 @@ public class FollowProcessor {
 
     /**
      * Unfollows a tag.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -217,7 +231,6 @@ public class FollowProcessor {
 
     /**
      * Follows an article.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -251,7 +264,6 @@ public class FollowProcessor {
 
     /**
      * Unfollows an article.
-     *
      * <p>
      * The request json object:
      * <pre>
