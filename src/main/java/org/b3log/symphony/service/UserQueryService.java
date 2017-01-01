@@ -54,7 +54,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.8.4.9, Dec 24, 2016
+ * @version 1.8.5.9, Jan 1, 2017
  * @since 0.2.0
  */
 @Service
@@ -100,7 +100,7 @@ public class UserQueryService {
      * @param fetchSize the specified fetch size
      * @return a list of users
      */
-    public List<JSONObject> getNiceUsers(final int fetchSize) {
+    public List<JSONObject> getNiceUsers(int fetchSize) {
         final List<JSONObject> ret = new ArrayList<>();
 
         final int RANGE_SIZE = 64;
@@ -112,7 +112,14 @@ public class UserQueryService {
                     addSort(UserExt.USER_ARTICLE_COUNT, SortDirection.DESCENDING).
                     addSort(UserExt.USER_COMMENT_COUNT, SortDirection.DESCENDING);
             final JSONArray rangeUsers = userRepository.get(userQuery).optJSONArray(Keys.RESULTS);
-            final List<Integer> indices = CollectionUtils.getRandomIntegers(0, RANGE_SIZE, fetchSize);
+
+            final int realLen = rangeUsers.length();
+            if (realLen < fetchSize) {
+                fetchSize = realLen;
+            }
+
+
+            final List<Integer> indices = CollectionUtils.getRandomIntegers(0, realLen, fetchSize);
 
             for (final Integer index : indices) {
                 ret.add(rangeUsers.getJSONObject(index));
