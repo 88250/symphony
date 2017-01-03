@@ -9,8 +9,9 @@
         <link rel="canonical" href="${servePath}">
     </head>
     <body class="index">
-        <#include "header.ftl">   
-        <div class="main">
+        ${HeaderBannerLabel}
+        <#include "header.ftl">
+        <div class="main" style="background-image: url(${staticServePath}/images/holiday/mc-bg.png);background-size: contain;">
             <div class="wrapper">
                 <div class="index-main">
                     <div class="index-tabs fn-flex" id="articles">
@@ -92,7 +93,7 @@
                             </a>
                             </#if>
                         </span>
-                        <span class="post"><a href="${servePath}/post?type=0">${postArticleLabel}</a></span>
+                        <span class="post"><a href="${servePath}/pre-post">${postArticleLabel}</a></span>
                     </div>
                     <div class="perfect-panel list">
                         <ul>
@@ -199,11 +200,17 @@
                     </ul>
                 </div>
                 <div class="metro-line fn-flex">
-                    <div class="metro-item ad"> ${ADLabel}</div>
+                    <div class="metro-item">
+                        <!-- ${ADLabel} -->
+                        <a class="preview" href="https://hacpai.com/man">
+                            <img width="44px" src="${staticServePath}/images/tags/shell.png" alt="${sponsorLabel}">
+                            <b>Hacker's Manual</b>
+                        </a>
+                    </div>
                     <div class="metro-item last">
                         <a class="preview" href="https://hacpai.com/article/1460083956075">
                             <img width="44px" src="${staticServePath}/emoji/graphics/heart.png" alt="${sponsorLabel}">
-                            <b>${wantPutOnLabel}</b>
+                            <b>${adDeliveryLabel}</b>
                         </a>
                     </div>
                 </div>

@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.8.20, Dec 19, 2016
+ * @version 1.6.8.21, Dec 25, 2016
  */
 
 @import "variables";
@@ -129,7 +129,7 @@ audio:not([controls]) {
 a {
     outline: 0;
     text-decoration: none;
-    color: #4183C4;
+    color: $blue;
 }
 
 a:hover {
@@ -489,7 +489,7 @@ a[class^="icon-"].ft-fade:hover {
 }
 
 .ft-blue {
-    color: #4183C4;
+    color: $blue;
 }
 
 .ft-green {
@@ -650,7 +650,7 @@ a[class*=" icon-"] {
 a[class^="icon-"]:hover, 
 a[class*=" icon-"]:hover {
     text-decoration: none;
-    color: #4183c4;
+    color: $blue;
 }
 
 .icon-weibo:before {
@@ -1051,7 +1051,7 @@ a[class*=" icon-"]:hover {
 }
 
 .pagination a:hover {
-    color:#4183c4;
+    color:$blue;
     border-bottom-color:#CFDCE8;
     background-color: #fafbfd;
     background: linear-gradient(#fafbfd, #dce6ef);
@@ -1087,7 +1087,6 @@ a[class*=" icon-"]:hover {
 /* end pagination */
 
 /* start dialog */
-
 .dialog-background {
     background-color: #000000;
     display: none;
@@ -1135,6 +1134,36 @@ a[class*=" icon-"]:hover {
     box-sizing: content-box;
 }
 /* end dialog */
+
+/* start completed */
+.completed-panel {
+    padding: 0;
+    overflow: auto;
+    left: 0;
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    border: 1px solid #e5e5e5;
+    z-index: 72;
+    border-radius: 0 0 3px 3px;
+    width: 50%;
+    top: 32px;
+    box-sizing: border-box;
+}
+
+.completed-panel a {
+    display: block;
+    padding: 3px;
+    text-decoration: none;
+    line-height: 18px;
+    height: 18px;
+}
+
+.completed-panel a.selected,
+.completed-panel a:hover {
+    background-color: #F7F7F7;
+}
+/* end completed */
 
 /* start framework */
 .wrapper {
@@ -1188,7 +1217,7 @@ a[class*=" icon-"]:hover {
 }
 
 .nav div > a:hover {
-    color: #4183C4;
+    color: $blue;
 }
 
 .nav div > a.current {
@@ -1650,7 +1679,7 @@ ul.CodeMirror-hints {
     color: #767676;
     margin: 5px 0 5px 30px;
     display: block;
-    line-height: 19px;
+    line-height: 20px;
 }
 
 .module-list.open-source .title {
@@ -1766,7 +1795,7 @@ label.cmt-anonymous {
 }
 
 #shareClipboard.tooltipped-hover {
-    color: #4183C4;
+    color: $blue;
 }
 
 .comments > .comments-header {
@@ -1934,7 +1963,7 @@ label.cmt-anonymous {
 }
 
 .share [class^="icon-"]:hover {
-    color: #4183c4;
+    color: $blue;
 }
 
 .cm-s-default.CodeMirror {
@@ -1974,17 +2003,17 @@ label.cmt-anonymous {
 }
 
 .article-toc li a:hover {
-    border-left: 1px solid #4183c4;
+    border-left: 1px solid $blue;
     background-color: #F7F7F7;
     padding-left: 21px;
-    color: #4183C4;
+    color: $blue;
     text-decoration: none;
 }
 
 .article-toc li.current a {
-    border-left: 2px solid #4183c4;
+    border-left: 2px solid $blue;
     background-color: #f0f0f0;
-    color: #4183c4;
+    color: $blue;
 }
 
 .article-toc li.toc-h2 a,
@@ -2093,7 +2122,7 @@ label.cmt-anonymous {
 }
 
 .article-list li .commenters > a:hover {
-    color: #4183c4;
+    color: $blue;
 }
 
 .article-list li:hover .cmts {
@@ -2229,6 +2258,63 @@ label.cmt-anonymous {
     color: $red;
 }
 /* end article list */
+/* start guide */
+.guide {
+    .intro.content-reset {
+        padding: 10px;
+        line-height: 24px;
+    }
+
+    .guide-tab,
+    .step-btn {
+        margin: 10px;
+    }
+
+    .form {
+        margin: 0;
+        width: auto;
+    }
+
+    #avatarUpload label {
+        margin-top: 0;
+    }
+
+    .tag-desc > li:hover > a {
+        border-bottom-style: solid;
+        border-radius: 3px;
+    }
+
+    .tag-desc li.current > a {
+        background-color: $fade;
+        color: #fff;
+        border-color: #bbb;
+    }
+
+    .intro dt.current {
+        color: #ffac45;
+    }
+}
+
+
+/* start guide md */
+.guide {
+    .fn-flex > div {
+        padding: 10px;
+        box-sizing: border-content;
+        width: 50%;
+    }
+
+    .md {
+        background-color: #f1f7fe;
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    }
+}
+/* end guide md */
+/* end guide */
 /* start verify */
 .verify {
 
@@ -2478,7 +2564,7 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .index > .slogan a:hover svg {
-    color: #4183C4;
+    color: $blue;
 }
 
 .index .item {
@@ -2537,13 +2623,19 @@ code .dec { color: initial; } /* decimal - blue */
     margin-right: 13px;
 }
 /* end index */
-
 /* start home side */
 .user-name {
-    border-bottom: 1px dotted #CCCCCC;
-    font-size: 25px;
-    margin: 10px 0 10px;
-    padding: 10px;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 26px;
+    border-bottom: 1px dotted #CCC;
+    margin-bottom: 20px;
+    padding: 20px 10px 25px 10px;
+
+    #userNicknameDom {
+        font-size: 26px;
+        line-height: 30px;
+    }
 
     .online,
     .offline {
@@ -2599,7 +2691,7 @@ code .dec { color: initial; } /* decimal - blue */
 
 .pre-post a:hover {
     text-decoration: none;
-    color: #4183C4;
+    color: $blue;
 }
 
 .pre-post a div {
@@ -2664,7 +2756,7 @@ code .dec { color: initial; } /* decimal - blue */
 
 .post .tags-input span.tag {
     margin: 2px 5px 0 0px;
-    color: #4183C4;
+    color: $blue;
 }
 
 .post .tags-input .tag > span.close {
@@ -2710,7 +2802,7 @@ code .dec { color: initial; } /* decimal - blue */
 
 .post .domains-tags .tag {
     cursor: pointer;
-    color: #4183C4;
+    color: $blue;
 }
 
 .post .domains-tags > span.current {
@@ -2932,3 +3024,21 @@ code .dec { color: initial; } /* decimal - blue */
     display: none;
 }
 /* end editor */
+
+/* start other */
+.link-forge {
+    .link-forge-upload {
+        margin: 10px 0;
+
+        input[type=text] {
+            width: 80%;
+            height: 27px;
+        }
+    }
+
+    .module-panel {
+        max-height: 409px;
+        overflow: hidden;
+    }
+}
+/* end other */

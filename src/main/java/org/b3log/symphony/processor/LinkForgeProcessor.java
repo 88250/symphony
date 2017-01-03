@@ -58,9 +58,11 @@ import java.util.concurrent.Executors;
  * <li>Shows link forge (/link-forge), GET</li>
  * <li>Submits a link into forge (/forge/link), POST</li>
  * </ul>
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.5, Dec 18, 2016
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.1.0.7, Dec 25, 2016
  * @since 1.6.0
  */
 @RequestProcessor
@@ -143,7 +145,7 @@ public class LinkForgeProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
-        renderer.setTemplateName("link-forge.ftl");
+        renderer.setTemplateName("other/link-forge.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final List<JSONObject> tags = linkForgeQueryService.getForgedLinks();

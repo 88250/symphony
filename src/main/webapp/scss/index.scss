@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.18.44, Dec 19, 2016
+ * @version 2.19.19.44, Dec 25, 2016
  */
 
 @import "variables";
@@ -644,6 +644,88 @@ label.cmt-anonymous {
     }
     /* end register & login form */
 }
+
+/* start guide */
+.guide {
+    width: 960px;
+
+    .guide-tab,
+    .step-btn {
+        margin: 50px;
+    }
+
+    .form {
+        margin: 0;
+        width: auto;
+    }
+
+    #avatarUpload label {
+        margin-top: 0;
+    }
+
+    .tag-desc > li {
+        margin: 0 20px 20px 0;
+    }
+
+    .tag-desc > li > div {
+        left: -3px;
+        right: inherit;
+        border-radius: 0px 3px 3px 3px;
+    }
+
+    .tag-desc li.current > a {
+        background-color: $fade;
+        color: #fff;
+        border-color: #bbb;
+    }
+
+    .intro dl {
+        margin-left: 50px;
+    }
+
+    .intro dd {
+        margin-bottom: 50px;
+    }
+
+    .intro dt {
+        position: relative;
+    }
+
+    .intro dt.current {
+        color: #ffac45;
+    }
+
+    .intro dt .index {
+        position: absolute;
+        left: -38px;
+        font-size: 46px;
+        top: -13px;
+        font-family: serif;
+        font-weight: 600;
+    }
+}
+
+
+/* start guide md */
+.guide {
+    .fn-flex > div {
+        padding: 10px;
+        box-sizing: border-content;
+        width: 50%;
+    }
+
+    .md {
+        background-color: #f1f7fe;
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    }
+}
+/* end guide md */
+
+/* end guide */
 /* end verify */
 
 /* start tags.html */
@@ -811,7 +893,6 @@ code .dec { color: initial; } /* decimal - blue */
         color: #333;
         text-decoration: none;
         display: block;
-        cursor: auto;
     }
 
     .index-tabs > span.current,

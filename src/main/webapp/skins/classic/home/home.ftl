@@ -16,7 +16,9 @@
     </#if>
     <ul> 
         <#list userHomeArticles as article>
-        <li>
+        <li<#if !(paginationPageCount?? && paginationPageCount!=0 && paginationPageCount!=1) && article_index == userHomeArticles?size - 1>
+            class="last"
+        </#if>>
             <div class="has-view fn-flex-1">
                 <h2>
                     <#if 1 == article.articlePerfect>
@@ -39,7 +41,7 @@
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>
-            <#if 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
+            <#if isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
             <div class="cmts">
                 <a class="ft-a-title tooltipped tooltipped-w" href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"><span class="icon-edit"></span></a>
             </div>

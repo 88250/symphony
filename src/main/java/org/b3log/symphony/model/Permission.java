@@ -26,7 +26,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.1, Dec 15, 2016
+ * @version 1.7.1.1, Dec 24, 2016
  * @since 1.8.0
  */
 public final class Permission {
@@ -302,6 +302,11 @@ public final class Permission {
      * Id - advertise - update side.
      */
     public static final String PERMISSION_ID_C_AD_UPDATE_SIDE = "adUpdateADSide";
+
+    /**
+     * Id - advertise - update banner.
+     */
+    public static final String PERMISSION_ID_C_AD_UPDATE_BANNER = "adUpdateBanner";
 
     /**
      * Id - misc - allow add article.

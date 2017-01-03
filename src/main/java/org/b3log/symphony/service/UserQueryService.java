@@ -27,6 +27,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
@@ -53,7 +54,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.7.4.9, Nov 25, 2016
+ * @version 1.8.4.9, Dec 24, 2016
  * @since 0.2.0
  */
 @Service
@@ -92,6 +93,40 @@ public class UserQueryService {
      */
     @Inject
     private RoleQueryService roleQueryService;
+
+    /**
+     * Get nice users with the specified fetch size.
+     *
+     * @param fetchSize the specified fetch size
+     * @return a list of users
+     */
+    public List<JSONObject> getNiceUsers(final int fetchSize) {
+        final List<JSONObject> ret = new ArrayList<>();
+
+        final int RANGE_SIZE = 64;
+
+        try {
+            final Query userQuery = new Query();
+            userQuery.setCurrentPageNum(1).setPageCount(1).setPageSize(RANGE_SIZE).
+                    setFilter(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID)).
+                    addSort(UserExt.USER_ARTICLE_COUNT, SortDirection.DESCENDING).
+                    addSort(UserExt.USER_COMMENT_COUNT, SortDirection.DESCENDING);
+            final JSONArray rangeUsers = userRepository.get(userQuery).optJSONArray(Keys.RESULTS);
+            final List<Integer> indices = CollectionUtils.getRandomIntegers(0, RANGE_SIZE, fetchSize);
+
+            for (final Integer index : indices) {
+                ret.add(rangeUsers.getJSONObject(index));
+            }
+
+            for (final JSONObject selectedUser : ret) {
+                avatarQueryService.fillUserAvatarURL(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, selectedUser);
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Get nice users failed", e);
+        }
+
+        return ret;
+    }
 
     /**
      * Gets invite user count of a user specified by the given user id.
@@ -504,14 +539,12 @@ public class UserQueryService {
     /**
      * Gets users by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     *                          {
-     *                              "userNameOrEmail": "", // optional
-     *                              "paginationCurrentPageNum": 1,
-     *                              "paginationPageSize": 20,
-     *                              "paginationWindowSize": 10,
-     *                          }, see {@link Pagination} for more details
-     *                          </pre>
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userNameOrEmail": "", // optional
+     *                          "paginationCurrentPageNum": 1,
+     *                          "paginationPageSize": 20,
+     *                          "paginationWindowSize": 10,
+     *                          , see {@link Pagination} for more details
      * @return for example,      <pre>
      * {
      *     "pagination": {
@@ -586,15 +619,13 @@ public class UserQueryService {
     /**
      * Gets users by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     *                          {
-     *                              "userCity": "",
-     *                              "userLatestLoginTime": long, // optional, default to 0
-     *                              "paginationCurrentPageNum": 1,
-     *                              "paginationPageSize": 20,
-     *                              "paginationWindowSize": 10,
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userCity": "",
+     *                          "userLatestLoginTime": long, // optional, default to 0
+     *                          "paginationCurrentPageNum": 1,
+     *                          "paginationPageSize": 20,
+     *                          "paginationWindowSize": 10,
      *                          }, see {@link Pagination} for more details
-     *                          </pre>
      * @return for example,      <pre>
      * {
      *     "pagination": {

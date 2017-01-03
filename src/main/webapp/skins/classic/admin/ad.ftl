@@ -7,11 +7,21 @@
         </div>
 
         <div class="module-panel form fn-clear">
-            <form action="${servePath}/admin/ad" method="POST">
+            <form action="${servePath}/admin/ad/side" method="POST">
                 <label for="sideFullAd">${sideFullPosLabel}</label>
                 <textarea rows="20" name="sideFullAd">${sideFullAd}</textarea>
 
-                <br/><br/><br/>
+                <br/><br/>
+                <button type="submit" class="green fn-right">${submitLabel}</button>
+            </form>
+        </div>
+
+        <div class="module-panel form fn-clear">
+            <form action="${servePath}/admin/ad/banner" method="POST">
+                <label for="headerBanner">${headerBannerPosLabel}</label>
+                <textarea rows="20" name="headerBanner">${headerBanner}</textarea>
+
+                <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
         </div>

@@ -128,7 +128,7 @@
 
                             <#if article??>
                                 <#if permissions["commonAddArticle"].permissionGrant>
-                                <button class="red" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
+                                <button class="red" tabindex="10"<#if requisite> readonly disabled</#if> onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
                                 </#if>
                             <#else>
                                 <#if permissions["commonUpdateArticle"].permissionGrant>
@@ -163,6 +163,7 @@
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
             Label.requisite = ${requisite?c};
             <#if article??>Label.articleOId = '${article.oId}' ;</#if>
+            Label.articleType = ${articleType};
         </script>
         <script type="text/javascript" src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>

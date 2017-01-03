@@ -1150,7 +1150,7 @@
     if ((e.clipboardData && e.clipboardData.getData("text/html")) || e.clipboardData.items.length === 2) {
       // fix mac: in browser, right click -> copy image, remove text/plain
       var pasted = Util.processClipBoard(e.clipboardData, cm); 
-      // NOTE: end bu Vanessa
+      // NOTE: end by Vanessa
       e.preventDefault();
       if (!cm.isReadOnly() && !cm.options.disableInput)
         runInOp(cm, function() { applyTextInput(cm, pasted, 0, null, "paste"); });

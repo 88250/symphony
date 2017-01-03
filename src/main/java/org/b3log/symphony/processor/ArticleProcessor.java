@@ -97,7 +97,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.22.35, Dec 19, 2016
+ * @version 1.24.24.35, Dec 24, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -512,9 +512,14 @@ public class ArticleProcessor {
         final String b3logKey = currentUser.optString(UserExt.USER_B3_KEY);
         dataModel.put("hasB3Key", !Strings.isEmptyOrNull(b3logKey));
 
+        fillPostArticleRequisite(dataModel, currentUser);
+    }
+
+    private void fillPostArticleRequisite(final Map<String, Object> dataModel, final JSONObject currentUser) {
         boolean requisite = false;
         String requisiteMsg = "";
-        if (!currentUser.optString(UserExt.USER_AVATAR_URL).contains("_")) {
+
+        if (!UserExt.updatedAvatar(currentUser)) {
             requisite = true;
             requisiteMsg = langPropsService.get("uploadAvatarThenPostLabel");
         }
@@ -905,7 +910,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONObject currentUser = Sessions.currentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser
                 || !currentUser.optString(Keys.OBJECT_ID).equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -948,6 +953,8 @@ public class ArticleProcessor {
 
         final String b3logKey = currentUser.optString(UserExt.USER_B3_KEY);
         dataModel.put("hasB3Key", !Strings.isEmptyOrNull(b3logKey));
+
+        fillPostArticleRequisite(dataModel, currentUser);
     }
 
     /**

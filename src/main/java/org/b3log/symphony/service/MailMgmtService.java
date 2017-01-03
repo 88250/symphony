@@ -45,7 +45,7 @@ import java.util.*;
  * Mail management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Dec 18, 2016
+ * @version 1.0.0.5, Dec 24, 2016
  * @since 1.6.0
  */
 @Service
@@ -91,6 +91,12 @@ public class MailMgmtService {
      */
     @Inject
     private AvatarQueryService avatarQueryService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Weekly newsletter sending status.
@@ -164,6 +170,8 @@ public class MailMgmtService {
                 toMails.add(admin.optString(User.USER_EMAIL));
             }
 
+            final Map<String, Object> dataModel = new HashMap<>();
+
             // select nice articles
             final Query articleQuery = new Query();
             articleQuery.setCurrentPageNum(1).setPageCount(1).setPageSize(Symphonys.getInt("mail.batch.articleSize")).
@@ -190,27 +198,10 @@ public class MailMgmtService {
                 }
             }
 
-            // select nice users
-            final int RANGE_SIZE = 64;
-            final int SELECT_SIZE = 6;
-            final Query userQuery = new Query();
-            userQuery.setCurrentPageNum(1).setPageCount(1).setPageSize(RANGE_SIZE).
-                    setFilter(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID)).
-                    addSort(UserExt.USER_ARTICLE_COUNT, SortDirection.DESCENDING).
-                    addSort(UserExt.USER_COMMENT_COUNT, SortDirection.DESCENDING);
-            final JSONArray rangeUsers = userRepository.get(userQuery).optJSONArray(Keys.RESULTS);
-            final List<Integer> indices = CollectionUtils.getRandomIntegers(0, RANGE_SIZE, SELECT_SIZE);
-            final List<JSONObject> users = new ArrayList<>();
-            for (final Integer index : indices) {
-                users.add(rangeUsers.getJSONObject(index));
-            }
-
-            for (final JSONObject selectedUser : users) {
-                avatarQueryService.fillUserAvatarURL(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, selectedUser);
-            }
-
-            final Map<String, Object> dataModel = new HashMap<>();
             dataModel.put(Article.ARTICLES, (Object) articles);
+
+            // select nice users
+            final List<JSONObject> users = userQueryService.getNiceUsers(6);
             dataModel.put(User.USERS, (Object) users);
 
             final String fromName = langPropsService.get("symphonyEnLabel") + " "
