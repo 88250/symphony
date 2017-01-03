@@ -151,14 +151,17 @@ public class BookProcessor {
         contentBuilder.append("### 目录\n\n" + book.optString(Book.BOOK_CATALOG) + "\n\n");
 
         contentBuilder.append("### 其他\n\n")
-                .append("* 出版社：" + book.optString(Book.BOOK_PUBLISHER) + "\n")
-                .append("* 副标题：" + book.optString(Book.BOOK_SUB_TITLE) + "\n")
+                .append("* 出版社：" + book.optString(Book.BOOK_PUBLISHER) + "\n");
+        if (StringUtils.isNotBlank(book.optString(Book.BOOK_SERIES))) {
+            contentBuilder.append("* 丛　书：" + book.optString(Book.BOOK_SERIES) + "\n");
+        }
+
+        contentBuilder.append("* 副标题：" + book.optString(Book.BOOK_SUB_TITLE) + "\n")
                 .append("* 原作名：" + book.optString(Book.BOOK_ORIGINAL_TITLE) + "\n")
                 .append("* 出版年：" + book.optString(Book.BOOK_PUBLISH_DATE) + "\n")
                 .append("* 总页数：" + book.optString(Book.BOOK_PAGES) + "\n")
                 .append("* 定　价：" + book.optString(Book.BOOK_PRICE) + "\n")
                 .append("* 装　帧：" + book.optString(Book.BOOK_BINDING) + "\n")
-                .append("* 类　目：" + book.optString(Book.BOOK_CATEGORY) + "\n")
                 .append("* ISBN：" + book.optString(Book.BOOK_ISBN13) + "\n\n");
 
         addArticleRequest.put(Article.ARTICLE_CONTENT, contentBuilder.toString() + "\n\n");
@@ -212,6 +215,11 @@ public class BookProcessor {
         }
 
         final JSONObject book = bookQueryService.getBookByISBN(isbn);
+        if (null == book) {
+            context.renderJSON(false);
+
+            return;
+        }
 
         final JSONObject ret = new JSONObject();
         ret.put(Keys.STATUS_CODE, true);
