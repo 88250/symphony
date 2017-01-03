@@ -4,7 +4,7 @@
     <head>
         <@head title="Markdown ${tutorialLabel} - ${symphonyLabel}" />
         <link rel="canonical" href="${servePath}/guide/markdown">
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
     </head>
     <body>
     <#include "../header.ftl">
@@ -27,7 +27,7 @@ ${md}
                 </div>
             </div>
             <#include "../footer.ftl">
-                <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-9.6.0/highlight.pack.js"></script>
+                <script src="${staticServePath}/js/lib/highlight.js-9.6.0/highlight.pack.js"></script>
                 <script>
              $('pre code').each(function (i, block) {
                     hljs.highlightBlock(block);

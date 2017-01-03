@@ -1,6 +1,6 @@
 /*
  * Symphony - A modern community (forum/SNS/blog) platform written in Java.
- * Copyright (C) 2012-2016,  b3log.org & hacpai.com
+ * Copyright (C) 2012-2017,  b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.39.26, Dec 17, 2016
+ * @version 1.25.39.27, Dec 28, 2016
  */
 
 /**
@@ -1203,10 +1203,10 @@ var Article = {
             var srcLinesContent = units[0],
                     from = units[2].split('-'),
                     to = units[3].split('-');
-            from[0] = parseInt(from[0]);
-            from[1] = parseInt(from[1]);
-            to[0] = parseInt(to[0]);
-            to[1] = parseInt(to[1]);
+            from[0] = parseInt(from[0]);    // from.ch
+            from[1] = parseInt(from[1]);    // from.line
+            to[0] = parseInt(to[0]);    // to.ch
+            to[1] = parseInt(to[1]);    // to.line
 
             if (srcLinesContent === "") {
                 // remove
@@ -1246,6 +1246,11 @@ var Article = {
         };
 
         var records = articleContent.split("");
+
+        // 分隔符后的''删除
+        if (records[records.length - 1] === '') {
+            records.pop();
+        }
         for (var i = 0, j = 0; i < records.length; i++) {
             setTimeout(function () {
                 if (!$('.article-content').data('text')) {

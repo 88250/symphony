@@ -46,10 +46,10 @@
     </ul>
 </div>
 
-<script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js"></script>
-<script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js"></script>
-<script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
-<script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
+<script src="${staticServePath}/js/lib/ws-flash/swfobject.js"></script>
+<script src="${staticServePath}/js/lib/ws-flash/web_socket.js"></script>
+<script src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
+<script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
 

@@ -1,6 +1,6 @@
 /*
  * Symphony - A modern community (forum/SNS/blog) platform written in Java.
- * Copyright (C) 2012-2016,  b3log.org & hacpai.com
+ * Copyright (C) 2012-2017,  b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.*;
 import org.b3log.symphony.cache.DomainCache;
+import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.event.*;
 import org.b3log.symphony.event.solo.ArticleSender;
 import org.b3log.symphony.event.solo.ArticleUpdater;
@@ -62,7 +63,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.17.9.26, Dec 21, 2016
+ * @version 3.17.9.27, Dec 26, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -70,7 +71,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     /**
      * Symphony version.
      */
-    public static final String VERSION = "1.7.0";
+    public static final String VERSION = "1.8.0";
     /**
      * JSONO print indent factor.
      */
@@ -125,8 +126,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final ArticleSearchUpdater articleSearchUpdater = beanManager.getReference(ArticleSearchUpdater.class);
         eventManager.registerListener(articleSearchUpdater);
 
-        //final TagCache tagCache = beanManager.getReference(TagCache.class);
-        //tagCache.loadTags();
+        final TagCache tagCache = beanManager.getReference(TagCache.class);
+        tagCache.loadTags();
 
         final DomainCache domainCache = beanManager.getReference(DomainCache.class);
         domainCache.loadDomains();

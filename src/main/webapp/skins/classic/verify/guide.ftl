@@ -5,7 +5,7 @@
         <@head title="${newbieGuideLabel} - ${symphonyLabel}">
         <meta name="description" content="${newbieGuideLabel} ${symphonyLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         <link rel="canonical" href="${servePath}/guide">
     </head>
     <body>
@@ -34,9 +34,9 @@
                     <div class="guide-tab">
                         <div class="fn-clear fn-none">
                             <div class="avatar-big" id="avatarURL"
-                                 style="background-image:url('${currentUser.userAvatarURL20}')"></div> &nbsp; &nbsp;
+                                 style="background-image:url('${currentUser.userAvatarURL210}')"></div> &nbsp; &nbsp;
                             <div class="avatar" id="avatarURLMid"
-                                 style="background-image:url('${currentUser.userAvatarURL20}')"></div> &nbsp; &nbsp;
+                                 style="background-image:url('${currentUser.userAvatarURL48}')"></div> &nbsp; &nbsp;
                             <div class="avatar-small" id="avatarURLNor"
                                  style="background-image:url('${currentUser.userAvatarURL20}')"></div>
                             <form class="fn-right form" id="avatarUpload" method="POST" enctype="multipart/form-data">
@@ -128,10 +128,10 @@
             </div>
         </div>
         <#include "../footer.ftl">
-        <script type="text/javascript" src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/isotope.pkgd.min.js"></script>
+        <script src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
+        <script src="${staticServePath}/js/lib/jquery/isotope.pkgd.min.js"></script>
         <script>
             Label.finshLabel = '${finshLabel}';
             Label.nextStepLabel = '${nextStepLabel}';

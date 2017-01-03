@@ -7,7 +7,7 @@
         <@head title="${symphonyLabel} - ${tag.tagTitle}">
         <meta name="description" content="${tag.tagCreatorName},${tag.tagDescription}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">

@@ -1,6 +1,6 @@
 /*
  * Symphony - A modern community (forum/SNS/blog) platform written in Java.
- * Copyright (C) 2012-2016,  b3log.org & hacpai.com
+ * Copyright (C) 2012-2017,  b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.41.28.39, Dec 24, 2016
+ * @version 1.41.28.42, Dec 30, 2016
  */
 
 /**
@@ -761,6 +761,7 @@ var Util = {
                             + markReadHTML.replace('${markReadType}', 'commented')
                             + '</a></li>';
                     }
+
                     // 收到的回复 unreadReplyNotificationCnt
                     if (data.unreadReplyNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/reply">' + Label.notificationReplyLabel +
@@ -768,6 +769,7 @@ var Util = {
                             + markReadHTML.replace('${markReadType}', 'reply')
                             + '</a></li>';
                     }
+
                     // @ 我的 unreadAtNotificationCnt
                     if (data.unreadAtNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/at">' + Label.notificationAtLabel +
@@ -775,6 +777,7 @@ var Util = {
                             + markReadHTML.replace('${markReadType}', 'at')
                             + '</a></li>';
                     }
+
                     // 我关注的人 unreadFollowingUserNotificationCnt
                     if (data.unreadFollowingUserNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/following-user">' + Label.notificationFollowingUserLabel +
@@ -782,24 +785,35 @@ var Util = {
                             + markReadHTML.replace('${markReadType}', 'following-user')
                             + '</a></li>';
                     }
+
                     // 积分 unreadPointNotificationCnt
                     if (data.unreadPointNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/point">' + Label.pointLabel +
                             ' <span class="count">' + data.unreadPointNotificationCnt + '</span>'
                             + '</a></li>';
                     }
+
                     // 同城 unreadBroadcastNotificationCnt
                     if (data.unreadBroadcastNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/broadcast">' + Label.sameCityLabel +
                             ' <span class="count">' + data.unreadBroadcastNotificationCnt + '</span>'
                             + '</a></li>';
                     }
+
                     // 系统 unreadSysAnnounceNotificationCnt
                     if (data.unreadSysAnnounceNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/sys-announce">' + Label.systemLabel +
                             ' <span class="count">' + data.unreadSysAnnounceNotificationCnt + '</span>'
                             + '</a></li>';
                     }
+
+                    // 新关注者 unreadNewFollowerNotificationCnt
+                    if (data.unreadNewFollowerNotificationCnt > 0) {
+                        notiHTML += '<li><a href="' + Label.servePath + '/member/' + Label.currentUserName + '/followers">' +
+                            Label.newFollowerLabel + ' <span class="count">' + data.unreadNewFollowerNotificationCnt + '</span>'
+                            + '</a></li>';
+                    }
+
                     return notiHTML;
                 };
 
@@ -835,7 +849,7 @@ var Util = {
 
                 // browser
                 if (0 < count) {
-                    $("#aNotifications").removeClass("no-msg tooltipped tooltipped-w").addClass("msg").text(count);
+                    $("#aNotifications").removeClass("no-msg tooltipped tooltipped-w").addClass("msg").text(count).attr('href', 'javascript:void(0)');
                     if (0 === result.userNotifyStatus && window.localStorage.hadNotificate !== count.toString()) {
                         Util.notifyMsg(count);
                         window.localStorage.hadNotificate = count;
@@ -851,22 +865,15 @@ var Util = {
                     $("#aNotifications").after('<div id="notificationsPanel" class="module person-list"><ul>' +
                             notiHTML + '</ul></div>');
 
-					var hideTimeOut = undefined;
-                    $('#aNotifications').mouseover(function () {
+                    $('#aNotifications').click(function () {
                         $('#notificationsPanel').show();
-                        $('#personListPanel').hide();
-						clearTimeout(hideTimeOut);
-                    }).mouseout(function () {
-						hideTimeOut = setTimeout(function () {
-							$('#notificationsPanel').hide();
-						}, 600);
                     });
 
-                    $('#notificationsPanel').mouseover(function () {
-                        $('#notificationsPanel').show();
-												clearTimeout(hideTimeOut);
-                    }).mouseout(function () {
-                        $('#notificationsPanel').hide();
+                    $('body').click(function (event) {
+                        if (event.target.id !== 'aNotifications' &&
+                        $(event.target).closest('.module').attr('id') !== 'notificationsPanel') {
+                            $('#notificationsPanel').hide();
+                        }
                     });
                 } else {
                     window.localStorage.hadNotificate = 'false';
@@ -1113,9 +1120,10 @@ var Util = {
             Util.setUnreadNotificationCount();
 
             // 定时获取并设置未读提醒计数
-            setInterval(function () {
-                Util.setUnreadNotificationCount();
-            }, 1000 * 60 * 10);
+            // NOTE: 有了 userChannel，停了观察一下
+//            setInterval(function () {
+//                Util.setUnreadNotificationCount();
+//            }, 1000 * 60 * 10);
         }
 
         this._initCommonHotKey();
@@ -1156,7 +1164,6 @@ var Util = {
             switch (data.command) {
                 case "refreshNotification":
                     Util.setUnreadNotificationCount();
-
                     break;
             }
         };
@@ -1183,27 +1190,21 @@ var Util = {
             } else if (location.pathname === "/login") {
                 // 登录没有使用 href，对其进行特殊处理
                 $(".user-nav a:first").addClass("selected");
-            } else if (href.indexOf(Label.servePath + '/settings') === 0) {
-                $(".user-nav .nav-avatar").addClass("selected");
+            } else if (href.indexOf(Label.servePath + '/settings') === 0 ||
+             href.indexOf($("#aPersonListPanel").data('url')) === 0) {
+                $("#aPersonListPanel").addClass("selected");
             }
         });
 
-				var hideTimeOut = undefined;
-        $('.nav .avatar-small').parent().mouseover(function () {
+        $('.nav .avatar-small').parent().click(function () {
             $('#personListPanel').show();
-            $('#notificationsPanel').hide();
-			clearTimeout(hideTimeOut);
-        }).mouseout(function () {
-			hideTimeOut = setTimeout(function () {
-				  $('#personListPanel').hide();
-			}, 600);
         });
 
-        $('#personListPanel').mouseover(function () {
-            $('#personListPanel').show();
-			clearTimeout(hideTimeOut);
-        }).mouseout(function () {
-            $('#personListPanel').hide();
+        $('body').click(function (event) {
+            if ($(event.target).closest('a').attr('id') !== 'aPersonListPanel' &&
+                $(event.target).closest('.module').attr('id') !== 'personListPanel') {
+                $('#personListPanel').hide();
+           }
         });
 
         // 导航过长处理

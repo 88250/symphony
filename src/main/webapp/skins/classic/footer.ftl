@@ -39,8 +39,8 @@
 <div class="go-top tooltipped tooltipped-w" aria-label="${goTopLabel}" onclick="Util.goTop()">
     <span class="icon-go-top"></span>
 </div>
-<script type="text/javascript" src="${staticServePath}/js/lib/compress/libs.min.js"></script>
-<script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
+<script src="${staticServePath}/js/lib/compress/libs.min.js"></script>
+<script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     var Label = {
         invalidPasswordLabel: "${invalidPasswordLabel}",
@@ -64,8 +64,10 @@
 		pointLabel: '${pointLabel}',
 		sameCityLabel: '${sameCityLabel}',
 		systemLabel: '${systemLabel}',
+		newFollowerLabel: '${newFollowerLabel}',
         makeAsReadLabel: '${makeAsReadLabel}',
-        checkIcon: '${checkIcon}'
+        checkIcon: '${checkIcon}'<#if isLoggedIn>,
+        currentUserName: '${currentUser.userName}'</#if>
     };
 
     <#if isLoggedIn>

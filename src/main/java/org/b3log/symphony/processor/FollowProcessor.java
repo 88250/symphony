@@ -1,6 +1,6 @@
 /*
  * Symphony - A modern community (forum/SNS/blog) platform written in Java.
- * Copyright (C) 2012-2016,  b3log.org & hacpai.com
+ * Copyright (C) 2012-2017,  b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,14 +30,19 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Follow;
+import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.service.FollowMgmtService;
+import org.b3log.symphony.service.NotificationMgmtService;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Follow processor.
- *
+ * <p>
  * <ul>
  * <li>Follows a user (/follow/user), POST</li>
  * <li>Unfollows a user (/follow/user), DELETE</li>
@@ -46,9 +51,10 @@ import org.json.JSONObject;
  * <li>Follows an article (/follow/article), POST</li>
  * <li>Unfollows an article (/follow/article), DELETE</li>
  * </ul>
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jun 3, 2015
+ * @version 1.1.0.2, Dec 31, 2016
  * @since 0.2.5
  */
 @RequestProcessor
@@ -64,6 +70,21 @@ public class FollowProcessor {
      */
     @Inject
     private FollowMgmtService followMgmtService;
+
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
+
+    /**
+     * Holds follow relations.
+     * <p>
+     * &lt;followerId, followingId&gt;
+     * </p>
+     */
+    private static final Map<String, String> FOLLOWS = new HashMap<>();
+
 
     /**
      * Follows a user.
@@ -96,12 +117,21 @@ public class FollowProcessor {
 
         followMgmtService.followUser(followerUserId, followingUserId);
 
+        if (null == FOLLOWS.get(followerUserId)) {
+            final JSONObject notification = new JSONObject();
+            notification.put(Notification.NOTIFICATION_USER_ID, followingUserId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, followerUserId);
+
+            notificationMgmtService.addNewFollowerNotification(notification);
+        }
+
+        FOLLOWS.put(followerUserId, followingUserId);
+
         context.renderTrueResult();
     }
 
     /**
      * Unfollows a user.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -135,7 +165,6 @@ public class FollowProcessor {
 
     /**
      * Follows a tag.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -169,7 +198,6 @@ public class FollowProcessor {
 
     /**
      * Unfollows a tag.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -203,7 +231,6 @@ public class FollowProcessor {
 
     /**
      * Follows an article.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -237,7 +264,6 @@ public class FollowProcessor {
 
     /**
      * Unfollows an article.
-     *
      * <p>
      * The request json object:
      * <pre>

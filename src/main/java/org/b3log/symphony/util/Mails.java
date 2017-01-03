@@ -1,6 +1,6 @@
 /*
  * Symphony - A modern community (forum/SNS/blog) platform written in Java.
- * Copyright (C) 2012-2016,  b3log.org & hacpai.com
+ * Copyright (C) 2012-2017,  b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -159,7 +159,7 @@ public final class Mails {
             final String html = stringWriter.toString();
 
             if ("aliyun".equals(MAIL_CHANNEL)) {
-                aliSendHtml(ALIYUN_FROM, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
+                aliSendHtml(ALIYUN_FROM, fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
                 return;
             }
 
@@ -193,7 +193,7 @@ public final class Mails {
      * @param toMail   the specified receiver mail
      * @param html     send html
      */
-    private static void aliSendHtml(final String fromName, final String subject, final String toMail,
+    private static void aliSendHtml(final String sendMail, final String fromName, final String subject, final String toMail,
                                     final String html, final String accessKey, final String accessSecret) throws Exception {
         if (StringUtils.isBlank(accessKey) || StringUtils.isBlank(accessSecret)) {
             LOGGER.warn("Please configure [#### Aliyun Mail ####] section in symphony.properties for sending mail");
@@ -210,7 +210,8 @@ public final class Mails {
         map.put("Timestamp", getISO8601Time());
         map.put("SignatureVersion", "1.0");
         map.put("SignatureNonce", String.valueOf(System.currentTimeMillis()));
-        map.put("AccountName", fromName);
+        map.put("AccountName", sendMail);
+        map.put("FromAlias", fromName);
         map.put("ReplyToAddress", "true");
         map.put("AddressType", "1");
         map.put("ToAddress", toMail);
@@ -311,7 +312,7 @@ public final class Mails {
                 if (batch.size() > 99) {
                     if ("aliyun".equals(MAIL_CHANNEL)) {
                         final String toMail = getStringToMailByList(batch);
-                        aliSendHtml(ALIYUN_BATCH_FROM, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
+                        aliSendHtml(ALIYUN_BATCH_FROM, fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
                         LOGGER.info("Sent [" + batch.size() + "] mails");
                     } else {
                         try {
@@ -337,7 +338,7 @@ public final class Mails {
             if (!batch.isEmpty()) { // Process remains
                 if ("aliyun".equals(MAIL_CHANNEL)) {
                     final String toMail = getStringToMailByList(batch);
-                    aliSendHtml(ALIYUN_FROM, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
+                    aliSendHtml(ALIYUN_BATCH_FROM , fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
                     LOGGER.info("Sent [" + batch.size() + "] mails");
                 } else {
                     try {

@@ -17,7 +17,7 @@
         </#if>
         <#if type == "comments">
         <@head title="${commentAdminLabel} - ${symphonyLabel}">
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
         </@head>
         </#if>
         <#if type == "addDomain">
@@ -53,7 +53,7 @@
         <#if type == "roles">
             <@head title="${rolesAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../header.ftl">
@@ -106,7 +106,7 @@
         </div>
         <#include "../footer.ftl">
         <#if type == "comments">
-        <script type="text/javascript" src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Settings.initHljs();
         </script>
