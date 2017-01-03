@@ -17,10 +17,6 @@
  */
 package org.b3log.symphony.util;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -31,11 +27,16 @@ import org.b3log.latke.model.User;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 /**
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.2.2, Nov 1, 2015
+ * @version 2.0.2.3, Jan 4, 2017
  */
 public final class Sessions {
 
@@ -78,30 +79,26 @@ public final class Sessions {
 
     /**
      * Logins the specified user from the specified request.
-     *
      * <p>
      * If no session of the specified request, do nothing.
      * </p>
      *
-     * @param request the specified request
-     * @param response the specified response
-     * @param user the specified user, for example,      <pre>
-     * {
-     *     "oId": "",
-     *     "userPassword": ""
-     * }
-     * </pre>
-     *
+     * @param request       the specified request
+     * @param response      the specified response
+     * @param user          the specified user, for example,
+     *                      "oId": "",
+     *                      "userPassword": ""
      * @param rememberLogin remember login or not
+     * @return token, returns {@code null} if login failed
      */
-    public static void login(final HttpServletRequest request, final HttpServletResponse response,
-            final JSONObject user, final boolean rememberLogin) {
+    public static String login(final HttpServletRequest request, final HttpServletResponse response,
+                               final JSONObject user, final boolean rememberLogin) {
         final HttpSession session = request.getSession(false);
 
         if (null == session) {
             LOGGER.warn("The session is null");
 
-            return;
+            return null;
         }
 
         session.setAttribute(User.USER, user);
@@ -116,8 +113,8 @@ public final class Sessions {
             cookieJSONObject.put(Common.TOKEN, user.optString(User.USER_PASSWORD) + ":" + random);
             cookieJSONObject.put(Common.REMEMBER_LOGIN, rememberLogin);
 
-            final String value = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.get("cookie.secret"));
-            final Cookie cookie = new Cookie("b3log-latke", value);
+            final String ret = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.get("cookie.secret"));
+            final Cookie cookie = new Cookie("b3log-latke", ret);
 
             cookie.setPath("/");
             cookie.setMaxAge(rememberLogin ? COOKIE_EXPIRY : -1);
@@ -125,16 +122,20 @@ public final class Sessions {
             cookie.setSecure(StringUtils.equalsIgnoreCase(Latkes.getServerScheme(), "https"));
 
             response.addCookie(cookie);
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.WARN, "Can not write cookie [oId=" + user.optString(Keys.OBJECT_ID)
                     + ", token=" + user.optString(User.USER_PASSWORD) + "]");
+
+            return null;
         }
     }
 
     /**
      * Logouts a user with the specified request.
      *
-     * @param request the specified request
+     * @param request  the specified request
      * @param response the specified response
      * @return {@code true} if succeed, otherwise returns {@code false}
      */
