@@ -86,7 +86,13 @@ public class BookQueryService {
             ret.put(Book.BOOK_AUTHOR_INTRO, result.optString("author_intro").replace("\n", "\n\n"));
             ret.put(Book.BOOK_BINDING, result.optString("binding"));
             ret.put(Book.BOOK_CATALOG, result.optString("catalog"));
-            ret.put(Book.BOOK_CATEGORY, result.optJSONObject("series").optString("title"));
+
+            final JSONObject series = result.optJSONObject("series");
+            if (null != series) {
+                ret.put(Book.BOOK_SERIES, series.optString("title"));
+            } else {
+                ret.put(Book.BOOK_SERIES, "");
+            }
             ret.put(Book.BOOK_DOUBAN_URL, result.optString("alt"));
             ret.put(Book.BOOK_IMG_URL, result.optString("image"));
             ret.put(Book.BOOK_ISBN10, result.optString("isbn10"));

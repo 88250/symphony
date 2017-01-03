@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all book model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 3, 2017
+ * @version 1.0.0.1, Jan 4, 2017
  */
 public final class Book {
 
@@ -117,9 +117,9 @@ public final class Book {
     public static final String BOOK_PUBLISHER = "bookPublisher";
 
     /**
-     * Key of book category.
+     * Key of book series.
      */
-    public static final String BOOK_CATEGORY = "bookCategory";
+    public static final String BOOK_SERIES = "bookSeries";
 
     /**
      * Key of book summary.
