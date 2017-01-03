@@ -963,6 +963,7 @@ public final class Emotions {
             "umbrella",
             "unamused",
             "underage",
+            "unicorn_face",
             "unlock",
             "up",
             "us",
