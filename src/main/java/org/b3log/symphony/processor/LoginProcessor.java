@@ -77,7 +77,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.7.16, Dec 25, 2016
+ * @version 1.13.7.17, Jan 4, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -756,12 +756,13 @@ public class LoginProcessor {
 
             final String userPassword = user.optString(User.USER_PASSWORD);
             if (userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
-                Sessions.login(request, response, user, requestJSONObject.optBoolean(Common.REMEMBER_LOGIN));
+                final String token = Sessions.login(request, response, user, requestJSONObject.optBoolean(Common.REMEMBER_LOGIN));
 
                 final String ip = Requests.getRemoteAddr(request);
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
 
                 context.renderMsg("").renderTrueResult();
+                context.renderJSONValue(Common.TOKEN, token);
 
                 WRONG_PWD_TRIES.remove(userId);
 

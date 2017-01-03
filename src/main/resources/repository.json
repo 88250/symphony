@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "4.33.7.18, Dec 24, 2016",
+    "version": "4.34.7.18, Jan 3, 2017",
     "authors": [
         "Liang Ding",
         "Zephyr",
@@ -8,6 +8,116 @@
     ],
     "since": "0.2.0",
     "repositories": [
+        {
+            "name": "book",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "bookTitle",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "bookSubTitle",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "bookOriginalTitle",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "bookAltTitle",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "bookDoubanURL",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "bookAuthor",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "bookAuthorIntro",
+                    "type": "String",
+                    "length": 1024
+                },
+                {
+                    "name": "bookBinding",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "bookCatalog",
+                    "type": "String",
+                    "length": 2048
+                },
+                {
+                    "name": "bookImgURL",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "bookISBN10",
+                    "type": "String",
+                    "length": 10
+                },
+                {
+                    "name": "bookISBN13",
+                    "type": "String",
+                    "length": 13
+                },
+                {
+                    "name": "bookPages",
+                    "type": "String",
+                    "length": 4
+                },
+                {
+                    "name": "bookPrice",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "bookPublishDate",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "bookPublisher",
+                    "type": "String",
+                    "length": 64
+                },
+                {
+                    "name": "bookCategory",
+                    "type": "String",
+                    "length": 64
+                },
+                {
+                    "name": "bookSummary",
+                    "type": "String",
+                    "length": 2048
+                },
+                {
+                    "name": "bookTags",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "bookTranslator",
+                    "type": "String",
+                    "length": 128
+                }
+            ]
+        },
         {
             "name": "permission",
             "keys": [

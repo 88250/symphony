@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.0.12, Nov 19, 2016
+ * @version 1.22.0.12, Jan 3, 2017
  * @since 0.2.0
  */
 public final class Article {
@@ -408,13 +408,18 @@ public final class Article {
     public static final int ARTICLE_TYPE_C_THOUGHT = 3;
 
     /**
+     * Article type - <a href="https://hacpai.com/article/1483240295087">book</a>。
+     */
+    public static final int ARTICLE_TYPE_C_BOOK = 4;
+
+    /**
      * Checks the specified article type is whether invalid.
      *
      * @param articleType the specified article type
      * @return {@code true} if it is invalid, otherwise returns {@code false}
      */
     public static boolean isInvalidArticleType(final int articleType) {
-        return articleType < 0 || articleType > Article.ARTICLE_TYPE_C_THOUGHT;
+        return articleType < 0 || articleType > Article.ARTICLE_TYPE_C_BOOK;
     }
 
     /**
