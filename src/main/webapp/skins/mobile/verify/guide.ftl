@@ -16,7 +16,7 @@
                         <dt class="current"><b>1. </b>${guideUploadAvatarLabel}</dt>
                         <dt><b>2. </b>${guideFollowTagLabel}</dt>
                         <dt><b>3. </b>${guideFollowUserLabel}</dt>
-                        <dt><b>4. </b>${guideFollowUserLabel}</dt>
+                        <dt><b>4. </b>${guideStarProjectLabel}</dt>
                     </dl>
                     <div class="fn-none">
                         ${introLabel}
