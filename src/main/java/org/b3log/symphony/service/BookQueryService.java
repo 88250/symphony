@@ -36,7 +36,7 @@ import java.net.URL;
  * Book query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 3, 2017
+ * @version 1.0.0.1, Jan 4, 2017
  * @since 1.9.0
  */
 @Service
@@ -73,6 +73,10 @@ public class BookQueryService {
             final HTTPResponse response = urlFetchService.fetch(request);
             final String content = new String(response.getContent(), "UTF-8");
             final JSONObject result = new JSONObject(content);
+
+            if (result.has("code")) {
+                return null;
+            }
 
             JSONObject ret = bookRepository.getByISBN(isbn);
             boolean add = false;
@@ -131,7 +135,7 @@ public class BookQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Query book by ISBN failed", e);
+            LOGGER.log(Level.ERROR, "Query book by ISBN [" + isbn + "] failed", e);
 
             return null;
         }
