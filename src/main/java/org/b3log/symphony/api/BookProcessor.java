@@ -189,10 +189,10 @@ public class BookProcessor {
                 "### 如何参与\n" +
                 "\n" +
                 "1. 使用微信扫描如下二维码，进入黑客派社区小程序\n" +
-                "    ![e250c37452c94951b0e1860f5d8951f0.png](https://img.hacpai.com/file/2017/1/e250c37452c94951b0e1860f5d8951f0.png) \n" +
+                "    ![3c04bd33b54a493aa97107a94a1ae706.png](https://img.hacpai.com/file/2017/1/3c04bd33b54a493aa97107a94a1ae706.png) \n" +
                 "2. 按照小程序的指引开始即可\n" +
                 "\n" +
-                "### 思考\n" +
+                "### 一点思考\n" +
                 "\n" +
                 "类似共享书籍的事情有很多人做过，比如：\n" +
                 "\n" +
