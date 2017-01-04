@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.6.2.10, Dec 24, 2016
+ * @version 2.7.2.10, Jan 4, 2017
  */
 
 /**
@@ -359,7 +359,7 @@ var Verify = {
         };
 
         $('.step-btn .green').click(function () {
-            if (currentStep > 4) {
+            if (currentStep > 5) {
                 return false;
             }
             currentStep++;
