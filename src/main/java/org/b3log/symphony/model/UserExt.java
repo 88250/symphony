@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.6.1.12, Dec 24, 2016
+ * @version 2.7.1.12, Jan 4, 2017
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -394,6 +394,11 @@ public final class UserExt {
      * User guide step - follow users.
      */
     public static final int USER_GUIDE_STEP_FOLLOW_USERS = 3;
+
+    /**
+     * User guide step - star project.
+     */
+    public static final int USER_GUIDE_STEP_STAR_PROJECT = 4;
 
     //// Default Commenter constants
     /**
