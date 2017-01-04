@@ -55,7 +55,7 @@ import javax.servlet.http.HttpServletResponse;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 3, 2017
+ * @version 1.0.0.1, Jan 4, 2017
  * @since 1.9.0
  */
 @RequestProcessor
@@ -130,7 +130,7 @@ public class BookProcessor {
         }
 
         final JSONObject addArticleRequest = new JSONObject();
-        addArticleRequest.put(Article.ARTICLE_TITLE, ":books: 《" + book.optString(Book.BOOK_TITLE) + "》纸质实体书免费送啦，包邮！");
+        addArticleRequest.put(Article.ARTICLE_TITLE, ":books: 《" + book.optString(Book.BOOK_TITLE) + "》纸质实体书免费送啦！");
         addArticleRequest.put(Article.ARTICLE_TAGS, "书单," + book.optString(Book.BOOK_TAGS));
 
         final StringBuilder contentBuilder = new StringBuilder();
@@ -173,6 +173,38 @@ public class BookProcessor {
                 .append("* 定　价：" + book.optString(Book.BOOK_PRICE) + "\n")
                 .append("* 装　帧：" + book.optString(Book.BOOK_BINDING) + "\n")
                 .append("* ISBN：" + book.optString(Book.BOOK_ISBN13) + "\n\n");
+
+        contentBuilder.append("----\n\n").append("## 关于『书单』\n" +
+                "\n" +
+                "书单是黑客派社区的一个纸质书共享活动，所有书均来自捐赠，原则上当前的书籍持有者有义务将书寄送给需要的会员。\n" +
+                "\n" +
+                "我们鼓励你在书籍上**留下笔迹**，任何信息都行，让其他人可以看到一些有意思的内容也是蛮不错的 :sweat_smile: \n" +
+                "\n" +
+                "### 共享意味着什么\n" +
+                "\n" +
+                "一旦你共享了一本书，就会使用你的社区账号自动发一篇书籍共享帖，这意味着你做了一个**承诺**：将书送到需要的人手中。\n" +
+                "\n" +
+                "如果有同城的书籍需求者回帖，就面交吧！\n" +
+                "\n" +
+                "### 如何参与\n" +
+                "\n" +
+                "1. 使用微信扫描如下二维码，进入黑客派社区小程序\n" +
+                "    ![e250c37452c94951b0e1860f5d8951f0.png](https://img.hacpai.com/file/2017/1/e250c37452c94951b0e1860f5d8951f0.png) \n" +
+                "2. 按照小程序的指引开始即可\n" +
+                "\n" +
+                "### 思考\n" +
+                "\n" +
+                "类似共享书籍的事情有很多人做过，比如：\n" +
+                "\n" +
+                "* 摆摆书架\n" +
+                "* 青番茄\n" +
+                "* 书巢\n" +
+                "* 丢书大作战\n" +
+                "* 很多社区的书籍交换\n" +
+                "\n" +
+                "大家的出发点都是想让这个世界变得更好。\n" +
+                "\n" +
+                "黑客派的『书单』将作为长期活动持续下去，大家随时都能参与进来，让你我的生活变得更丰富有趣！");
 
         addArticleRequest.put(Article.ARTICLE_CONTENT, contentBuilder.toString() + "\n\n");
         addArticleRequest.put(Article.ARTICLE_EDITOR_TYPE, 0);
