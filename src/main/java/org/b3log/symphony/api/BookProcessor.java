@@ -23,6 +23,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -78,6 +79,12 @@ public class BookProcessor {
     private ArticleMgmtService articleMgmtService;
 
     /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
      * Shares a book.
      *
      * @param context  the specified context
@@ -95,6 +102,7 @@ public class BookProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Parses request failed", e);
             context.renderJSON(false);
+            context.renderJSONValue(Keys.MSG, langPropsService.get("bookQueryFailedLabel"));
 
             return;
         }
@@ -104,6 +112,7 @@ public class BookProcessor {
 
         if (StringUtils.isBlank(isbn)) {
             context.renderJSON(false);
+            context.renderJSONValue(Keys.MSG, langPropsService.get("bookQueryFailedLabel"));
 
             return;
         }
@@ -115,6 +124,7 @@ public class BookProcessor {
         final JSONObject book = bookQueryService.getBookByISBN(isbn);
         if (null == book) {
             context.renderJSON(false);
+            context.renderJSONValue(Keys.MSG, langPropsService.get("bookQueryFailedLabel"));
 
             return;
         }
@@ -188,6 +198,7 @@ public class BookProcessor {
             LOGGER.log(Level.ERROR, "Shares book failed", e);
 
             context.renderJSON(false);
+            context.renderJSONValue(Keys.MSG, langPropsService.get("bookQueryFailedLabel"));
         }
     }
 
@@ -210,6 +221,7 @@ public class BookProcessor {
 
         if (StringUtils.isBlank(isbn)) {
             context.renderJSON(false);
+            context.renderJSONValue(Keys.MSG, langPropsService.get("bookQueryFailedLabel"));
 
             return;
         }
@@ -217,6 +229,7 @@ public class BookProcessor {
         final JSONObject book = bookQueryService.getBookByISBN(isbn);
         if (null == book) {
             context.renderJSON(false);
+            context.renderJSONValue(Keys.MSG, langPropsService.get("bookQueryFailedLabel"));
 
             return;
         }
