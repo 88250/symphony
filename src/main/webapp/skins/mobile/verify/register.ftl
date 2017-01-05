@@ -37,8 +37,8 @@
                        
                         <div id="registerTip" class="tip"></div>
                         <input id="referral" type="hidden" value="${referral}">
-                        <button id="registerBtn" onclick="Verify.register()">${registerLabel}</button>
-                        <button class="green" onclick="Util.goLogin()">${loginLabel}</button>
+                        <button class="green" id="registerBtn" onclick="Verify.register()">${registerLabel}</button>
+                        <button onclick="Util.goLogin()">${loginLabel}</button>
                     </div>
                 </div>
                 <div class="intro content-reset">
