@@ -77,7 +77,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.7.17, Jan 4, 2017
+ * @version 1.13.7.18, Jan 4, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -190,7 +190,7 @@ public class LoginProcessor {
 
         int step = requestJSONObject.optInt(UserExt.USER_GUIDE_STEP);
 
-        if (UserExt.USER_GUIDE_STEP_FOLLOW_USERS < step || UserExt.USER_GUIDE_STEP_FIN >= step) {
+        if (UserExt.USER_GUIDE_STEP_STAR_PROJECT < step || UserExt.USER_GUIDE_STEP_FIN >= step) {
             step = UserExt.USER_GUIDE_STEP_FIN;
         }
 

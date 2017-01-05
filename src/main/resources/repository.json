@@ -9,12 +9,37 @@
     "since": "0.2.0",
     "repositories": [
         {
+            "name": "user_book_article",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "bookId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "articleId",
+                    "type": "String",
+                    "length": 19
+                }
+            ]
+        },
+        {
             "name": "book",
             "keys": [
                 {
                     "name": "oId",
                     "type": "String",
-                    "length": 32
+                    "length": 19
                 },
                 {
                     "name": "bookTitle",

@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.6.2.10, Dec 24, 2016
+ * @version 2.7.2.10, Jan 4, 2017
  */
 
 /**
@@ -277,12 +277,12 @@ var Verify = {
         var step2Sort = 'random';
 
         var step = function () {
-            if (currentStep !== 5) {
+            if (currentStep !== 6) {
                 $('.intro dt').removeClass('current');
                 $('.guide-tab > div').hide();
             }
 
-            if (currentStep < 5 && currentStep > 0) {
+            if (currentStep < 6 && currentStep > 0) {
                 $.ajax({
                     url: Label.servePath + "/guide/next",
                     type: "POST",
@@ -326,24 +326,29 @@ var Verify = {
                     break;
                 case 3:
                     $('.guide-tab > div:eq(2)').show();
-
                     $('.intro dt:eq(2)').addClass('current');
-
                     $('.step-btn .red').show();
-                    $('.step-btn .green').text(Label.nextStepLabel);
-
-                    $('.intro > div').hide();
-                    $('.intro > dl').show();
                     break;
                 case 4:
                     $('.guide-tab > div:eq(3)').show();
+                    $('.intro dt:eq(3)').addClass('current');
 
+                     $('.step-btn .red').show();
+                     $('.step-btn .green').text(Label.nextStepLabel);
+
+                     $('.intro > div').hide();
+                     $('.intro > dl').show();
+                    break;
+                case 5:
+                    $('.guide-tab > div:eq(4)').show();
+
+                    $('.step-btn .red').show();
                     $('.step-btn .green').text(Label.finshLabel);
 
                     $('.intro > div').show();
                     $('.intro > dl').hide();
                     break;
-                case 5:
+                case 6:
                     // finished
                     window.location.href = '/';
                     break;
@@ -354,7 +359,7 @@ var Verify = {
         };
 
         $('.step-btn .green').click(function () {
-            if (currentStep > 4) {
+            if (currentStep > 5) {
                 return false;
             }
             currentStep++;
