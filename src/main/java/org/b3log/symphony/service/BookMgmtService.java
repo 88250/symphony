@@ -40,7 +40,7 @@ import javax.inject.Inject;
  * Book management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 5, 2017
+ * @version 1.0.0.1, Jan 5, 2017
  * @since 1.9.0
  */
 @Service
@@ -96,6 +96,9 @@ public class BookMgmtService {
         addArticleRequest.put(Article.ARTICLE_TAGS, "书单," + book.optString(Book.BOOK_TAGS));
 
         final StringBuilder contentBuilder = new StringBuilder();
+
+        contentBuilder.append("** 有需要该书的朋友请回帖沟通寄送方式，谢谢！**\n\n");
+
         contentBuilder.append("## " + book.optString(Book.BOOK_TITLE) + "\n\n");
         contentBuilder.append("![" + book.optString(Book.BOOK_TITLE).replace("[", " ").replace("]", " ")
                 + book.optString(Book.BOOK_TITLE) + "](" + book.optString(Book.BOOK_IMG_URL) + ")\n\n");
