@@ -9,6 +9,7 @@
         <meta name="description" content="${tag.tagSeoDesc}"/>
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
+        ${tag.tagCSS}
     </head>
     <body>
         <#include "header.ftl">
