@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Short link query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.5.1, May 10, 2016
+ * @version 1.1.6.1, Jan 6, 2017
  * @since 1.3.0
  */
 @Service
@@ -169,6 +169,7 @@ public class ShortLinkQueryService {
                     final String linkTagTitle = StringUtils.substringBetween(matcher.group(), "[", "]");
 
                     final Query query = new Query().addProjection(Tag.TAG_TITLE, String.class)
+                            .addProjection(Tag.TAG_URI, String.class)
                             .setFilter(new PropertyFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, linkTagTitle));
                     final JSONArray results = tagRepository.get(query).optJSONArray(Keys.RESULTS);
                     if (0 == results.length()) {
@@ -178,7 +179,8 @@ public class ShortLinkQueryService {
                     final JSONObject linkTag = results.optJSONObject(0);
 
                     final String linkTitle = linkTag.optString(Tag.TAG_TITLE);
-                    final String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/tag/" + linkTitle + ") ";
+                    final String linkURI = linkTag.optString(Tag.TAG_URI);
+                    final String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/tag/" + linkURI + ") ";
 
                     matcher.appendReplacement(contentBuilder, link);
                 }
