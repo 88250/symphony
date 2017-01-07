@@ -17,7 +17,7 @@
         <a href="${servePath}/timeline"<#if selected?? && 'timeline' == selected> class="selected"</#if>>
            <svg height="14" viewBox="0 0 16 14" width="16">${timelineIcon}</svg> ${timelineLabel}</a>
         <a href="https://hacpai.com/tag/book_share"<#if selected?? && 'book' == selected> class="selected"</#if>>
-           <svg height="14" viewBox="0 1 16 14" width="16">${baguaIcon}</svg> ${bookShareLabel}</a>
+           <svg height="16" viewBox="0 -1 17 14" width="16">${bookIcon}</svg> ${bookShareLabel}</a>
     </div>
     <#if esEnabled || algoliaEnabled>
     <form class="responsive-hide fn-left" target="_blank" action="/search">
