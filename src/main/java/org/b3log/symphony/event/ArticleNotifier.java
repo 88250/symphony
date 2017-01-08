@@ -52,7 +52,7 @@ import java.util.Set;
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.10, Jan 7, 2017
+ * @version 1.3.3.11, Jan 8, 2017
  * @since 0.2.0
  */
 @Named
@@ -185,7 +185,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
 
             // 'Broadcast' / 'Book' Notification
             if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == originalArticle.optInt(Article.ARTICLE_TYPE)
-                    || Article.ARTICLE_TYPE_C_BOOK == originalArticle.optInt(Article.ARTICLE_TYPE)) {
+                    || (Article.ARTICLE_TYPE_C_BOOK == originalArticle.optInt(Article.ARTICLE_TYPE) && !articleAuthorName.equals("book_share"))) {
                 final String city = originalArticle.optString(Article.ARTICLE_CITY);
 
                 if (StringUtils.isNotBlank(city)) {

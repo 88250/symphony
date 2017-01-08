@@ -60,7 +60,7 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.11.16, Dec 24, 2016
+ * @version 1.10.12.16, Jan 8, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -152,7 +152,7 @@ public final class Markdowns {
                         addAttributes("param", "name", "value").
                         addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking"),
                 outputSettings);
-        final Document doc = Jsoup.parse(tmp, baseURI, Parser.xmlParser());
+        final Document doc = Jsoup.parse(tmp, baseURI, Parser.htmlParser());
 
         final Elements ps = doc.getElementsByTag("p");
         for (final Element p : ps) {
@@ -400,7 +400,7 @@ public final class Markdowns {
      */
     private static String formatMarkdown(final String markdownText) {
         String ret = markdownText;
-        final Document doc = Jsoup.parse(markdownText, "", Parser.xmlParser());
+        final Document doc = Jsoup.parse(markdownText, "", Parser.htmlParser());
         final Elements tagA = doc.select("a");
         for (int i = 0; i < tagA.size(); i++) {
             final String search = tagA.get(i).attr("href");
