@@ -48,7 +48,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.9, Dec 23, 2016
+ * @version 1.5.2.10, Jan 8, 2017
  * @since 0.2.0
  */
 @Named
@@ -220,8 +220,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
                             roleQueryService.getUserPermissionsGrantMap(referralUser.optString(Keys.OBJECT_ID));
                     final JSONObject useILPermission =
                             permissions.get(Permission.PERMISSION_ID_C_COMMON_USE_INVITATION_LINK);
-                    useInvitationLink = UserExt.containsWhiteListInvitationUser(referral)
-                            && useILPermission.optBoolean(Permission.PERMISSION_T_GRANT);
+                    useInvitationLink = useILPermission.optBoolean(Permission.PERMISSION_T_GRANT);
                 }
             } catch (final Exception e) {
                 LOGGER.log(Level.WARN, "Query user [name=" + referral + "] failed", e);
