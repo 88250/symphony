@@ -722,8 +722,7 @@ button,
     color: #333;
     border-radius: 3px;
     padding: 6px 12px;
-    background-color: #fcfcfc;
-    background: linear-gradient(#fcfcfc, #eee);
+    background-color: #f2f2f2;
     border: 1px solid #D5D5D5;
     border-bottom-color: #E1E1E1;
     box-sizing: border-box;
@@ -737,14 +736,12 @@ button:hover,
     text-decoration: none;
     border-color: $fade;
     background-color: #eee;
-    background: linear-gradient(#eee, #ddd);
 }
 
 button:active,
 .btn:active {
-    border-color: #51a7e8;
-    background-color: #dcdcdc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset;
+    background-color: $fade;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) inset;
 }
 
 button.green,
@@ -752,21 +749,18 @@ button.green,
     color: #fff;
     text-shadow: 0 -1px 0 rgba(0,0,0,0.15);
     background-color: #60b044;
-    background-image: none;
     border-color: #5ca941;
 }
 
 button.green:hover,
 .btn.green:hover{
     background-color: $green;
-    background-image: none;
 }
 
 button.green:active {
     background-color: $green;
-    background-image: none;
     border-color: #418737;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) inset;
 }
 
 button.red,
@@ -779,15 +773,15 @@ button.red:hover,
 .btn.red-hover {
     color: #FFF;
     background-color: $red;
-    background-image: linear-gradient(#c0372a, $red);
     border-color: #c0372a;
 }
 
 button.red:active,
 .btn.red:active {
     background-color: $red;
-    background-image: none;
-    border-color: #c9320c
+    border-color: #c9320c;
+    color: #FFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) inset;
 }
 
 button.small,
@@ -1935,7 +1929,7 @@ ul.CodeMirror-hints {
         min-width: 35%;
         color: #FFF;
         background-color: $red;
-        background-image: linear-gradient(#c0372a, $red);
+        background-image: none;
         border-color: #c0372a;
         letter-spacing: 1px;
         line-height: 18px;
@@ -1944,7 +1938,6 @@ ul.CodeMirror-hints {
 
     .info button.red:hover {
         background-color: #c0372a;
-        background-image: none;
     }
 
     .info .fn-right {
