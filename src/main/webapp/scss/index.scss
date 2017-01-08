@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.19.19.45, Dec 27, 2016
+ * @version 2.20.19.45, Jan 8, 2017
  */
 
 @import "variables";
@@ -868,6 +868,11 @@ code .dec { color: initial; } /* decimal - blue */
         display: none;
     }
 
+    .more {
+        display: block;
+        text-align: right;
+    }
+
     .index-tabs > span {
         flex: 1;
         display: inline-block;
@@ -979,7 +984,7 @@ code .dec { color: initial; } /* decimal - blue */
 
     .index-tabs-panels {
         background-color: #FFF;
-        padding: 15px;
+        padding: 15px 15px 0;
     }
 
     .index-tabs-panels > ul > li:last-child,
