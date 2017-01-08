@@ -77,7 +77,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.7.18, Jan 4, 2017
+ * @version 1.13.7.19, Jan 8, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -87,6 +87,7 @@ public class LoginProcessor {
      * Wrong password tries.
      * <p>
      * &lt;userId, {"wrongCount": int, "captcha": ""}&gt;
+     * </p>
      */
     public static final Map<String, JSONObject> WRONG_PWD_TRIES = new ConcurrentHashMap<>();
     /**
@@ -476,8 +477,7 @@ public class LoginProcessor {
                         roleQueryService.getUserPermissionsGrantMap(referralUser.optString(Keys.OBJECT_ID));
                 final JSONObject useILPermission =
                         permissions.get(Permission.PERMISSION_ID_C_COMMON_USE_INVITATION_LINK);
-                useInvitationLink = UserExt.containsWhiteListInvitationUser(referral)
-                        && useILPermission.optBoolean(Permission.PERMISSION_T_GRANT);
+                useInvitationLink = useILPermission.optBoolean(Permission.PERMISSION_T_GRANT);
             }
         }
 

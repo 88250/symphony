@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.6, Dec 23, 2016
+ * @version 1.7.0.7, Jan 8, 2017
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -81,11 +81,6 @@ public final class Symphonys {
      * White list - tags.
      */
     public static final String[] WHITE_LIST_TAGS;
-
-    /**
-     * White list - invitation users.
-     */
-    public static final String[] WHITE_LIST_INVITATION_USERS;
 
     /**
      * Reserved user names.
@@ -118,17 +113,6 @@ public final class Symphonys {
             final String tag = wlTags[i];
 
             WHITE_LIST_TAGS[i] = tag.trim();
-        }
-
-        // Loads white list invitation users
-        final String whiteListInvitationUsers = CFG.getString("whitelist.invitationUsers");
-        final String[] wlInvitationUsers = whiteListInvitationUsers.split(",");
-        WHITE_LIST_INVITATION_USERS = new String[wlInvitationUsers.length];
-
-        for (int i = 0; i < wlInvitationUsers.length; i++) {
-            final String invitationUser = wlInvitationUsers[i];
-
-            WHITE_LIST_INVITATION_USERS[i] = invitationUser.trim();
         }
 
         // Loads reserved usernames
