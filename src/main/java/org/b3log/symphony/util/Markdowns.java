@@ -60,7 +60,7 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.11.16, Dec 24, 2016
+ * @version 1.10.12.16, Jan 8, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
