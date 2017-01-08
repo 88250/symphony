@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.11.25, Dec 24, 2016
+ * @version 2.9.11.26, Jan 8, 2017
  */
 
 @import "variables";
@@ -145,6 +145,10 @@
 /* end home side */
 
 /* start add article */
+.pre-post-wrap {
+    background-color: #f1f7fe;
+}
+
 .pre-post > div {
     width: 25%;
     margin: 100px 0px;
