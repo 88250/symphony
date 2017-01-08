@@ -9,7 +9,7 @@
     </head>
     <body>
         <#include "../header.ftl">
-        <div class="main">
+        <div class="main pre-post-wrap">
             <div class="wrapper pre-post">
                 <div>
                     <a href="${servePath}/post?type=0">

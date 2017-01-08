@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.2.10, Jan 4, 2017
+ * @version 2.7.2.11, Jan 8, 2017
  */
 
 /**
@@ -390,11 +390,11 @@ var Verify = {
             layoutMode: 'fitRows'
         });
 
-        // random select five tags
-        for (var i = 6; i > 0; i--) {
-            var random = parseInt(Math.random() * tagSize);
-            $('.tag-desc li:eq(' + random + ')').addClass('current');
-            Util.follow(window, $('.tag-desc li:eq(' + random + ')').data('id'), 'tag');
-        }
+        // random select one tag
+
+        var random = parseInt(Math.random() * tagSize);
+        $('.tag-desc li:eq(' + random + ')').addClass('current');
+        Util.follow(window, $('.tag-desc li:eq(' + random + ')').data('id'), 'tag');
+
     }
 };

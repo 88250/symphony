@@ -37,6 +37,9 @@
                                 ${systemEmptyTipLabel}<br> 
                                 <img src="${staticServePath}/images/404/5.gif"/>          
                             </#if>
+                            <li>
+                                <a class="more" href="${servePath}/recent">${moreRecentArticleLabel}</a>
+                            </li>
                         </ul>
                         <ul class="fn-none">
                             <#list followingTagArticles as article>
@@ -56,6 +59,9 @@
                                     <img src="${staticServePath}/images/404/6.gif"/>     
                                 </li>  
                             </#if>
+                            <li>
+                                <a class="more" href="${servePath}/recent">${moreRecentArticleLabel}</a>
+                            </li>
                         </ul>
                         <ul class="fn-none">
                             <#list followingUserArticles as article>
@@ -75,6 +81,9 @@
                                     <img src="${staticServePath}/images/404/2.gif"/>     
                                 </li>   
                             </#if>
+                            <li>
+                                <a class="more" href="${servePath}/recent">${moreRecentArticleLabel}</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
