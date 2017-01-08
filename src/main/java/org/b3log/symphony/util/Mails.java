@@ -23,9 +23,7 @@ import freemarker.template.TemplateExceptionHandler;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.json.JSONObject;
@@ -42,85 +40,71 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://blog.thinkjava.top">VirutalPier</a>
- * @version 1.1.5.6, Dec 18, 2016
+ * @version 1.1.6.6, Jan 8, 2017
  * @since 1.3.0
  */
 public final class Mails {
 
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(Mails.class);
-
-    /**
-     * Mail channel.
-     */
-    private static final String MAIL_CHANNEL = Symphonys.get("mail.channel");
-
-    /**
-     * SendCloud API user.
-     */
-    private static final String SENDCLOUD_API_USER = Symphonys.get("mail.sendcloud.apiUser");
-
-    /**
-     * SendCloud API key.
-     */
-    private static final String SENDCLOUD_API_KEY = Symphonys.get("mail.sendcloud.apiKey");
-
-    /**
-     * SendCloud from.
-     */
-    private static final String SENDCLOUD_FROM = Symphonys.get("mail.sendcloud.from");
-
-    /**
-     * SendCloud batch API User.
-     */
-    private static final String SENDCLOUD_BATCH_API_USER = Symphonys.get("mail.sendcloud.batch.apiUser");
-
-    /**
-     * SendCloud batch API key.
-     */
-    private static final String SENDCLOUD_BATCH_API_KEY = Symphonys.get("mail.sendcloud.batch.apiKey");
-
-    /**
-     * SendCloud batch sender email.
-     */
-    private static final String SENDCLOUD_BATCH_FROM = Symphonys.get("mail.sendcloud.batch.from");
-
-    /**
-     * Aliyun accesskey.
-     */
-    private static final String ALIYUN_ACCESSKEY = Symphonys.get("mail.aliyun.accessKey");
-
-    /**
-     * Aliyun access secret.
-     */
-    private static final String ALIYUN_ACCESSSECRET = Symphonys.get("mail.aliyun.accessSecret");
-
-    /**
-     * Aliyun from.
-     */
-    private static final String ALIYUN_FROM = Symphonys.get("mail.aliyun.from");
-
-    /**
-     * Aliyun batch from.
-     */
-    private static final String ALIYUN_BATCH_FROM = Symphonys.get("mail.aliyun.batch.from");
-
-    /**
-     * Template configuration.
-     */
-    private static final Configuration TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_23);
-
-    /**
      * Template name - verifycode.
      */
     public static final String TEMPLATE_NAME_VERIFYCODE = "sym_verifycode";
-
     /**
      * Template name - weekly.
      */
     public static final String TEMPLATE_NAME_WEEKLY = "sym_weekly";
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Mails.class);
+    /**
+     * Mail channel.
+     */
+    private static final String MAIL_CHANNEL = Symphonys.get("mail.channel");
+    /**
+     * SendCloud API user.
+     */
+    private static final String SENDCLOUD_API_USER = Symphonys.get("mail.sendcloud.apiUser");
+    /**
+     * SendCloud API key.
+     */
+    private static final String SENDCLOUD_API_KEY = Symphonys.get("mail.sendcloud.apiKey");
+    /**
+     * SendCloud from.
+     */
+    private static final String SENDCLOUD_FROM = Symphonys.get("mail.sendcloud.from");
+    /**
+     * SendCloud batch API User.
+     */
+    private static final String SENDCLOUD_BATCH_API_USER = Symphonys.get("mail.sendcloud.batch.apiUser");
+    /**
+     * SendCloud batch API key.
+     */
+    private static final String SENDCLOUD_BATCH_API_KEY = Symphonys.get("mail.sendcloud.batch.apiKey");
+    /**
+     * SendCloud batch sender email.
+     */
+    private static final String SENDCLOUD_BATCH_FROM = Symphonys.get("mail.sendcloud.batch.from");
+    /**
+     * Aliyun accesskey.
+     */
+    private static final String ALIYUN_ACCESSKEY = Symphonys.get("mail.aliyun.accessKey");
+    /**
+     * Aliyun access secret.
+     */
+    private static final String ALIYUN_ACCESSSECRET = Symphonys.get("mail.aliyun.accessSecret");
+    /**
+     * Aliyun from.
+     */
+    private static final String ALIYUN_FROM = Symphonys.get("mail.aliyun.from");
+    /**
+     * Aliyun batch from.
+     */
+    private static final String ALIYUN_BATCH_FROM = Symphonys.get("mail.aliyun.batch.from");
+    /**
+     * Template configuration.
+     */
+    private static final Configuration TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_23);
 
     static {
         try {
@@ -131,6 +115,12 @@ public final class Mails {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Loads mail templates failed", e);
         }
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Mails() {
     }
 
     /**
@@ -238,26 +228,16 @@ public final class Mails {
         } catch (UnsupportedEncodingException exp) {
             throw new RuntimeException("UTF-8 encoding is not supported.");
         }
-        final HttpResponse response = HttpRequest.post("http://dm.aliyuncs.com").form(map).send();
+
+        final HttpResponse response = HttpRequest.post("https://dm.aliyuncs.com").form(map).send();
         LOGGER.debug(response.bodyText());
+
         response.close();
     }
 
     private static String percentEncode(final String value) throws UnsupportedEncodingException {
         return value != null ? URLEncoder.encode(value, "UTF-8").replace("+", "%20")
                 .replace("*", "%2A").replace("%7E", "~") : null;
-    }
-
-    /**
-     * Get Time
-     * @return
-     */
-    public static String getISO8601Time() {
-        final Date nowDate = new Date();
-        final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(new SimpleTimeZone(0, "GMT"));
-
-        return df.format(nowDate);
     }
 
     /**
@@ -338,7 +318,7 @@ public final class Mails {
             if (!batch.isEmpty()) { // Process remains
                 if ("aliyun".equals(MAIL_CHANNEL)) {
                     final String toMail = getStringToMailByList(batch);
-                    aliSendHtml(ALIYUN_BATCH_FROM , fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
+                    aliSendHtml(ALIYUN_BATCH_FROM, fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
                     LOGGER.info("Sent [" + batch.size() + "] mails");
                 } else {
                     try {
@@ -360,6 +340,14 @@ public final class Mails {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Batch send mail error", e);
         }
+    }
+
+    private static String getISO8601Time() {
+        final Date nowDate = new Date();
+        final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        df.setTimeZone(new SimpleTimeZone(0, "GMT"));
+
+        return df.format(nowDate);
     }
 
     private static String getStringToMailByList(final List<String> toMails) {
@@ -390,11 +378,5 @@ public final class Mails {
 
         updateData.put("html", html);
         HttpRequest.post("http://api.sendcloud.net/apiv2/template/update").form(updateData).send();
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Mails() {
     }
 }
