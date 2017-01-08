@@ -152,7 +152,7 @@ public final class Markdowns {
                         addAttributes("param", "name", "value").
                         addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking"),
                 outputSettings);
-        final Document doc = Jsoup.parse(tmp, baseURI, Parser.xmlParser());
+        final Document doc = Jsoup.parse(tmp, baseURI, Parser.htmlParser());
 
         final Elements ps = doc.getElementsByTag("p");
         for (final Element p : ps) {
@@ -400,7 +400,7 @@ public final class Markdowns {
      */
     private static String formatMarkdown(final String markdownText) {
         String ret = markdownText;
-        final Document doc = Jsoup.parse(markdownText, "", Parser.xmlParser());
+        final Document doc = Jsoup.parse(markdownText, "", Parser.htmlParser());
         final Elements tagA = doc.select("a");
         for (int i = 0; i < tagA.size(); i++) {
             final String search = tagA.get(i).attr("href");
