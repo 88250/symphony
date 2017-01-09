@@ -77,7 +77,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.7.19, Jan 8, 2017
+ * @version 1.13.7.20, Jan 9, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -639,6 +639,12 @@ public class LoginProcessor {
                     pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, referralId,
                             Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER,
                             Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, userId, System.currentTimeMillis());
+
+                    final JSONObject notification = new JSONObject();
+                    notification.put(Notification.NOTIFICATION_USER_ID, referralId);
+                    notification.put(Notification.NOTIFICATION_DATA_ID, userId);
+
+                    notificationMgmtService.addInvitationLinkUsedNotification(notification);
                 }
             }
 
