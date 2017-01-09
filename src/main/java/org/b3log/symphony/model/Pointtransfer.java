@@ -323,6 +323,7 @@ public final class Pointtransfer {
     /**
      * Transfer type - Invitation link Used.
      */
+    public static final int TRANSFER_TYPE_C_INVITATION_LINK_USED = 28; // just a placeholder at present
 
     /**
      * Private constructor.
