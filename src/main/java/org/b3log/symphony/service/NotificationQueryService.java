@@ -17,51 +17,32 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.CompositeFilter;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.Filter;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.Pointtransfer;
-import org.b3log.symphony.model.Reward;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.repository.ArticleRepository;
-import org.b3log.symphony.repository.CommentRepository;
-import org.b3log.symphony.repository.NotificationRepository;
-import org.b3log.symphony.repository.PointtransferRepository;
-import org.b3log.symphony.repository.RewardRepository;
-import org.b3log.symphony.repository.TagRepository;
-import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.model.*;
+import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Emotions;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.6, Oct 13, 2016
+ * @version 1.9.3.7, Jan 9, 2017
  * @since 0.2.5
  */
 @Service
@@ -168,9 +149,9 @@ public class NotificationQueryService {
      * Gets 'sys announce' type notifications with the specified user id, current page number and page size.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param userId the specified user id
+     * @param userId         the specified user id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -181,11 +162,10 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getSysAnnounceNotifications(final int avatarViewMode,
-            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+                                                  final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
 
@@ -289,7 +269,7 @@ public class NotificationQueryService {
     /**
      * Gets the count of unread notifications of a user specified with the given user id and data type.
      *
-     * @param userId the given user id
+     * @param userId               the given user id
      * @param notificationDataType the specified notification data type
      * @return count of unread notifications, returns {@code 0} if occurs exception
      */
@@ -342,6 +322,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_POINT_TRANSFER));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_INVITECODE_USED));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_INVITATION_LINK_USED));
 
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
 
@@ -361,9 +343,9 @@ public class NotificationQueryService {
     /**
      * Gets 'point' type notifications with the specified user id, current page number and page size.
      *
-     * @param userId the specified user id
+     * @param userId         the specified user id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -374,7 +356,6 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getPointNotifications(final String userId, final int currentPageNum, final int pageSize)
@@ -404,6 +385,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_POINT_TRANSFER));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_INVITECODE_USED));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_INVITATION_LINK_USED));
 
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
 
@@ -557,6 +540,16 @@ public class NotificationQueryService {
                         desTemplate = desTemplate.replace("{user}", invitedUserLink);
 
                         break;
+                    case Notification.DATA_TYPE_C_INVITATION_LINK_USED:
+                        desTemplate = langPropsService.get("notificationInvitationLinkUsedLabel");
+
+                        final JSONObject invitedUser18 = userRepository.get(dataId);
+                        final String invitedUserLink18 = "<a href=\"/member/" + invitedUser18.optString(User.USER_NAME) + "\">"
+                                + invitedUser18.optString(User.USER_NAME) + "</a>";
+
+                        desTemplate = desTemplate.replace("{user}", invitedUserLink18);
+
+                        break;
                     default:
                         throw new AssertionError();
                 }
@@ -578,9 +571,9 @@ public class NotificationQueryService {
      * Gets 'commented' type notifications with the specified user id, current page number and page size.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param userId the specified user id
+     * @param userId         the specified user id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -597,11 +590,10 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getCommentedNotifications(final int avatarViewMode,
-            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+                                                final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
 
@@ -669,9 +661,9 @@ public class NotificationQueryService {
      * Gets 'reply' type notifications with the specified user id, current page number and page size.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param userId the specified user id
+     * @param userId         the specified user id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -688,11 +680,10 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getReplyNotifications(final int avatarViewMode,
-            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+                                            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
 
@@ -760,9 +751,9 @@ public class NotificationQueryService {
      * Gets 'at' type notifications with the specified user id, current page number and page size.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param userId the specified user id
+     * @param userId         the specified user id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -783,11 +774,10 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getAtNotifications(final int avatarViewMode,
-            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+                                         final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
 
@@ -887,9 +877,9 @@ public class NotificationQueryService {
      * Gets 'followingUser' type notifications with the specified user id, current page number and page size.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param userId the specified user id
+     * @param userId         the specified user id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -910,11 +900,10 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getFollowingUserNotifications(final int avatarViewMode,
-            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+                                                    final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
 
@@ -1007,9 +996,9 @@ public class NotificationQueryService {
      * Gets 'broadcast' type notifications with the specified user id, current page number and page size.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param userId the specified user id
+     * @param userId         the specified user id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -1030,11 +1019,10 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getBroadcastNotifications(final int avatarViewMode,
-            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+                                                final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
 
