@@ -5,11 +5,14 @@
     <div class="module-panel form">
         <div class="fn-clear ft-center"> <br/>
             <div class="avatar-big" id="avatarURL" data-imageurl="${currentUser.userAvatarURL}"
+                 onclick="$('#avatarUpload input').click()"
                  style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp; &nbsp; 
             <br/> <br/>
             <div class="avatar" id="avatarURLMid" data-imageurl="${currentUser.userAvatarURL}"
+                 onclick="$('#avatarUpload input').click()"
                  style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp; &nbsp; 
             <div class="avatar-small" id="avatarURLNor" data-imageurl="${currentUser.userAvatarURL}"
+                 onclick="$('#avatarUpload input').click()"
                  style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div>
         </div>
         <br/>
