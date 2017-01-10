@@ -12,14 +12,16 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content module">
+                <div class="content">
                     <#if 0 == articles?size>
-                        <div class="article-module content-reset">
-                        暂时没有 [${key}] 相关的数据 :(
+                        <div class="module article-module ft-center">
+                        ${searchEmptyLabel}
                         </div>
                     <#else>
-                    <@list listData=articles/>
-                    <@pagination url="${servePath}/search" query="key=${key}" />
+                        <div class="module">
+                        <@list listData=articles/>
+                        <@pagination url="${servePath}/search" query="key=${key}" />
+                        </div>
                     </#if>
                 </div>
                 <div class="side">
