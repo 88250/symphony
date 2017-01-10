@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.14.28.32, Dec 27, 2016
+ * @version 2.14.28.33, Jan 3, 2017
  * @since 0.2.0
  */
 @Service
@@ -326,7 +326,8 @@ public class ArticleMgmtService {
      *                          "articleRewardPoint": int, // optional, default to 0
      *                          "articleIP": "", // optional, default to ""
      *                          "articleUA": "", // optional, default to ""
-     *                          "articleAnonymous": int // optional, default to 0 (public)
+     *                          "articleAnonymous": int, // optional, default to 0 (public)
+     *                          "articleAnonymousView": int // optional, default to 0 (use global)
      *                          , see {@link Article} for more details
      * @return generated article id
      * @throws ServiceException service exception
@@ -395,7 +396,7 @@ public class ArticleMgmtService {
                 }
             }
 
-            if (Article.ARTICLE_TYPE_C_DISCUSSION != articleType) {
+            if (Article.ARTICLE_TYPE_C_DISCUSSION != articleType && Article.ARTICLE_TYPE_C_BOOK != articleType) {
                 final JSONObject maybeExist = articleRepository.getByTitle(articleTitle);
                 if (null != maybeExist) {
                     final String existArticleAuthorId = maybeExist.optString(Article.ARTICLE_AUTHOR_ID);
@@ -470,7 +471,8 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
             article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncWithSymphonyClient);
             article.put(Article.ARTICLE_PERFECT, Article.ARTICLE_PERFECT_C_NOT_PERFECT);
-            article.put(Article.ARTICLE_ANONYMOUS_VIEW, Article.ARTICLE_ANONYMOUS_VIEW_C_USE_GLOBAL);
+            article.put(Article.ARTICLE_ANONYMOUS_VIEW,
+                    requestJSONObject.optInt(Article.ARTICLE_ANONYMOUS_VIEW, Article.ARTICLE_ANONYMOUS_VIEW_C_USE_GLOBAL));
 
             String articleTags = article.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);

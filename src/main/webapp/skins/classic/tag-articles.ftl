@@ -9,6 +9,7 @@
         <meta name="description" content="${tag.tagSeoDesc}"/>
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
+        ${tag.tagCSS}
     </head>
     <body>
         <#include "header.ftl">
@@ -73,15 +74,26 @@
                     <div class="module">
                         <div class="module-header fn-clear">
                             <span class="fn-right ft-fade">
-                                <a class="<#if "" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}">${defaultLabel}</a>
+                                <a class="<#if "" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}">
+                                    ${defaultLabel}
+                                </a>
                                 /
-                                <a class="<#if "/hot" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/hot">${hotArticlesLabel}</a>
+                                <a class="<#if "/hot" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/hot">
+                                    ${hotArticlesLabel}
+                                </a>
                                 /
-                                <a class="<#if "/good" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/good">${goodCmtsLabel}</a>
+                                <a class="<#if "/good" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/good">
+                                    ${goodCmtsLabel}
+                                </a>
                                 /
-                                <a class="<#if "/perfect" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/perfect">${perfectLabel}</a>
+                                <a class="<#if "/perfect" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/perfect">
+                                    <svg height="16" viewBox="3 2 11 12" width="14">${perfectIcon}</svg>
+                                    ${perfectLabel}
+                                </a>
                                 /
-                                <a class="<#if "/reply" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/reply">${recentCommentLabel}</a>
+                                <a class="<#if "/reply" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/reply">
+                                    ${recentCommentLabel}
+                                </a>
                             </span>
                         </div>
                         <@list listData=articles/>

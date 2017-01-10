@@ -60,7 +60,7 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.11.16, Dec 24, 2016
+ * @version 1.10.13.16, Jan 8, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -152,7 +152,7 @@ public final class Markdowns {
                         addAttributes("param", "name", "value").
                         addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking"),
                 outputSettings);
-        final Document doc = Jsoup.parse(tmp, baseURI, Parser.xmlParser());
+        final Document doc = Jsoup.parse(tmp, baseURI, Parser.htmlParser());
 
         final Elements ps = doc.getElementsByTag("p");
         for (final Element p : ps) {
@@ -181,7 +181,7 @@ public final class Markdowns {
             video.attr("preload", "none");
         }
 
-        String ret = doc.html();
+        String ret = doc.body().html();
         ret = ret.replaceAll("(</?br\\s*/?>\\s*)+", "<br>"); // patch for Jsoup issue
 
         return ret;
@@ -400,30 +400,38 @@ public final class Markdowns {
      */
     private static String formatMarkdown(final String markdownText) {
         String ret = markdownText;
-        final Document doc = Jsoup.parse(markdownText, "", Parser.xmlParser());
+
+        final Document doc = Jsoup.parse(markdownText, "", Parser.htmlParser());
         final Elements tagA = doc.select("a");
+
         for (int i = 0; i < tagA.size(); i++) {
             final String search = tagA.get(i).attr("href");
             final String replace = StringUtils.replace(search, "_", "[downline]");
+
             ret = StringUtils.replace(ret, search, replace);
         }
+
         final Elements tagImg = doc.select("img");
         for (int i = 0; i < tagImg.size(); i++) {
             final String search = tagImg.get(i).attr("src");
             final String replace = StringUtils.replace(search, "_", "[downline]");
+
             ret = StringUtils.replace(ret, search, replace);
         }
+
         final Elements tagCode = doc.select("code");
         for (int i = 0; i < tagCode.size(); i++) {
             final String search = tagCode.get(i).html();
             final String replace = StringUtils.replace(search, "_", "[downline]");
+
             ret = StringUtils.replace(ret, search, replace);
         }
 
         String[] rets = ret.split("\n");
-        for (String temp : rets) {
+        for (final String temp : rets) {
             final String[] toStrong = StringUtils.substringsBetween(temp, "**", "**");
             final String[] toEm = StringUtils.substringsBetween(temp, "_", "_");
+
             if (toStrong != null && toStrong.length > 0) {
                 for (final String strong : toStrong) {
                     final String search = "**" + strong + "**";
@@ -431,6 +439,7 @@ public final class Markdowns {
                     ret = StringUtils.replace(ret, search, replace);
                 }
             }
+
             if (toEm != null && toEm.length > 0) {
                 for (final String em : toEm) {
                     final String search = "_" + em + "_";
@@ -439,7 +448,9 @@ public final class Markdowns {
                 }
             }
         }
+
         ret = StringUtils.replace(ret, "[downline]", "_");
+
         return ret;
     }
 

@@ -17,20 +17,10 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.inject.Inject;
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
@@ -42,11 +32,17 @@ import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.3, Oct 11, 2016
+ * @version 1.10.0.3, Jan 9, 2017
  * @since 0.2.5
  */
 @Service
@@ -62,6 +58,28 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+
+    /**
+     * Adds a 'invitation link used' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // invited user id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addInvitationLinkUsedNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_INVITATION_LINK_USED);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=invitation_link_used] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
 
     /**
      * Adds a 'new follower' type notification with the specified request json object.

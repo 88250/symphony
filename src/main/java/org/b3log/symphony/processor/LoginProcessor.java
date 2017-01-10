@@ -77,7 +77,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.7.16, Dec 25, 2016
+ * @version 1.13.7.20, Jan 9, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -87,6 +87,7 @@ public class LoginProcessor {
      * Wrong password tries.
      * <p>
      * &lt;userId, {"wrongCount": int, "captcha": ""}&gt;
+     * </p>
      */
     public static final Map<String, JSONObject> WRONG_PWD_TRIES = new ConcurrentHashMap<>();
     /**
@@ -190,7 +191,7 @@ public class LoginProcessor {
 
         int step = requestJSONObject.optInt(UserExt.USER_GUIDE_STEP);
 
-        if (UserExt.USER_GUIDE_STEP_FOLLOW_USERS < step || UserExt.USER_GUIDE_STEP_FIN >= step) {
+        if (UserExt.USER_GUIDE_STEP_STAR_PROJECT < step || UserExt.USER_GUIDE_STEP_FIN >= step) {
             step = UserExt.USER_GUIDE_STEP_FIN;
         }
 
@@ -476,8 +477,7 @@ public class LoginProcessor {
                         roleQueryService.getUserPermissionsGrantMap(referralUser.optString(Keys.OBJECT_ID));
                 final JSONObject useILPermission =
                         permissions.get(Permission.PERMISSION_ID_C_COMMON_USE_INVITATION_LINK);
-                useInvitationLink = UserExt.containsWhiteListInvitationUser(referral)
-                        && useILPermission.optBoolean(Permission.PERMISSION_T_GRANT);
+                useInvitationLink = useILPermission.optBoolean(Permission.PERMISSION_T_GRANT);
             }
         }
 
@@ -639,6 +639,12 @@ public class LoginProcessor {
                     pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, referralId,
                             Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER,
                             Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, userId, System.currentTimeMillis());
+
+                    final JSONObject notification = new JSONObject();
+                    notification.put(Notification.NOTIFICATION_USER_ID, referralId);
+                    notification.put(Notification.NOTIFICATION_DATA_ID, userId);
+
+                    notificationMgmtService.addInvitationLinkUsedNotification(notification);
                 }
             }
 
@@ -756,12 +762,13 @@ public class LoginProcessor {
 
             final String userPassword = user.optString(User.USER_PASSWORD);
             if (userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
-                Sessions.login(request, response, user, requestJSONObject.optBoolean(Common.REMEMBER_LOGIN));
+                final String token = Sessions.login(request, response, user, requestJSONObject.optBoolean(Common.REMEMBER_LOGIN));
 
                 final String ip = Requests.getRemoteAddr(request);
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
 
                 context.renderMsg("").renderTrueResult();
+                context.renderJSONValue(Common.TOKEN, token);
 
                 WRONG_PWD_TRIES.remove(userId);
 

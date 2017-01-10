@@ -550,49 +550,46 @@ button,
     cursor: pointer;
     color: #333;
     border-radius: 3px;
-    padding: 2px 6px;
-    background-color: #fcfcfc;
-    background: linear-gradient(#fcfcfc, #eee);
+    padding: 6px 12px;
+    background-color: #f2f2f2;
     border: 1px solid #D5D5D5;
     border-bottom-color: #E1E1E1;
     box-sizing: border-box;
-    line-height: 21px;
+    line-height: 19px;
     white-space: nowrap;
 }
+
 
 button:hover,
 .btn:hover {
     text-decoration: none;
-    border-color: #ccc;
-    background-color: #0ca6dd;
-    background: linear-gradient(#eee, #ddd);
+    border-color: $fade;
+    background-color: #eee;
 }
 
 button:active,
 .btn:active {
-    border-color: #51a7e8;
-    background-color: #dcdcdc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset;
+    background-color: $fade;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) inset;
 }
 
-button.green {
+button.green,
+.btn.green {
     color: #fff;
     text-shadow: 0 -1px 0 rgba(0,0,0,0.15);
     background-color: #60b044;
-    background-image: linear-gradient(#8add6d, #60b044);
     border-color: #5ca941;
 }
 
-button.green:hover {
-    background-color: #69d344;
-    background: linear-gradient(#79d858, #569e3d);
+button.green:hover,
+.btn.green:hover{
+    background-color: $green;
 }
 
 button.green:active {
-    background-color: #569e3d;
-    background-image: none;
+    background-color: $green;
     border-color: #418737;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) inset;
 }
 
 button.red,
@@ -601,18 +598,19 @@ button.red,
 }
 
 button.red:hover,
-.btn.red:hover {
+.btn.red:hover,
+.btn.red-hover {
     color: #FFF;
-    background-color: #b33630;
-    background-image: linear-gradient(#dc5f59, #b33630);
-    border-color: #cd504a;
+    background-color: $red;
+    border-color: #c0372a;
 }
 
 button.red:active,
 .btn.red:active {
-    background-color: #b33630;
-    background-image: none;
-    border-color: #9f312c;
+    background-color: $red;
+    border-color: #c9320c;
+    color: #FFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) inset;
 }
 
 button.small,

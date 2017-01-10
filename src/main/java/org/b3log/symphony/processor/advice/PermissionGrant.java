@@ -33,14 +33,13 @@ import org.json.JSONObject;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
  * Permission grant.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.2, Dec 21, 2016
+ * @version 1.0.3.2, Jan 7, 2017
  * @since 1.8.0
  */
 @Named
@@ -65,27 +64,25 @@ public class PermissionGrant extends AfterRequestProcessAdvice {
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Object ret) {
+        final AbstractHTTPResponseRenderer renderer = context.getRenderer();
+        if (null == renderer) {
+            return;
+        }
+
         Stopwatchs.start("Grant permissions");
-
         try {
-            final HttpServletRequest request = context.getRequest();
-
             final Map<String, Object> dataModel = context.getRenderer().getRenderDataModel();
 
             final JSONObject user = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
             final Map<String, JSONObject> permissionsGrant = roleQueryService.getPermissionsGrantMap(roleId);
+            dataModel.put(Permission.PERMISSIONS, permissionsGrant);
 
             final JSONObject role = roleQueryService.getRole(roleId);
 
-            final AbstractHTTPResponseRenderer renderer = context.getRenderer();
-            if (null != renderer) {
-                dataModel.put(Permission.PERMISSIONS, permissionsGrant);
-
-                String noPermissionLabel = langPropsService.get("noPermissionLabel");
-                noPermissionLabel = noPermissionLabel.replace("{roleName}", role.optString(Role.ROLE_NAME));
-                dataModel.put("noPermissionLabel", noPermissionLabel);
-            }
+            String noPermissionLabel = langPropsService.get("noPermissionLabel");
+            noPermissionLabel = noPermissionLabel.replace("{roleName}", role.optString(Role.ROLE_NAME));
+            dataModel.put("noPermissionLabel", noPermissionLabel);
         } finally {
             Stopwatchs.end();
         }

@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.6.1.12, Dec 24, 2016
+ * @version 2.7.1.13, Jan 8, 2017
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -395,6 +395,11 @@ public final class UserExt {
      */
     public static final int USER_GUIDE_STEP_FOLLOW_USERS = 3;
 
+    /**
+     * User guide step - star project.
+     */
+    public static final int USER_GUIDE_STEP_STAR_PROJECT = 4;
+
     //// Default Commenter constants
     /**
      * Default commenter name.
@@ -624,22 +629,6 @@ public final class UserExt {
     public static boolean isReservedUserName(final String userName) {
         for (final String reservedUserName : Symphonys.RESERVED_USER_NAMES) {
             if (StringUtils.equalsIgnoreCase(userName, reservedUserName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks the specified username whether contains the white list invitation user.
-     *
-     * @param userName the specified username
-     * @return {@code true} if it contains, returns {@code false} otherwise
-     */
-    public static boolean containsWhiteListInvitationUser(final String userName) {
-        for (final String whiteListInvitationUser : Symphonys.WHITE_LIST_INVITATION_USERS) {
-            if (StringUtils.equalsIgnoreCase(userName, whiteListInvitationUser)) {
                 return true;
             }
         }
