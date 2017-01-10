@@ -46,9 +46,15 @@
         </div>
         <#include "../footer.ftl">
         <script>
-            if ($.ua.device.type === 'mobile') {
-                $('.pre-post > div:last').hide();
-            }   
+            (function () {
+                var h = $(window).height() - $('.nav').outerHeight() - $('.footer').outerHeight();
+                if (h > 451) {
+                    $('.main').outerHeight(h).css({
+                        display: 'flex',
+                        'align-items': 'center'
+                    });
+                }
+            })();
         </script>
     </body>
 </html>
