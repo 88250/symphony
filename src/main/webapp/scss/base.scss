@@ -226,7 +226,7 @@ blockquote {
 .content-reset {
     font-family: $font-family-base;
     word-wrap: break-word;
-    overflow: hidden;
+    overflow: auto;
     line-height: 1.5;
     font-size: 16px;
 
@@ -2064,6 +2064,7 @@ ul.CodeMirror-hints {
 
     .aa-dataset-0 {
         max-height: 600px;
+        overflow: auto;
     }
 
     .aa-dropdown-menu img {

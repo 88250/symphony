@@ -35,11 +35,11 @@
                     </div>
                     <div class="guide-tab">
                         <div class="fn-clear fn-none">
-                            <div class="avatar-big" id="avatarURL"
+                            <div class="avatar-big" id="avatarURL" onclick="$('#avatarUpload input').click()"
                                  style="background-image:url('${currentUser.userAvatarURL210}')"></div> &nbsp; &nbsp;
-                            <div class="avatar" id="avatarURLMid"
+                            <div class="avatar" id="avatarURLMid" onclick="$('#avatarUpload input').click()"
                                  style="background-image:url('${currentUser.userAvatarURL48}')"></div> &nbsp; &nbsp;
-                            <div class="avatar-small" id="avatarURLNor"
+                            <div class="avatar-small" id="avatarURLNor" onclick="$('#avatarUpload input').click()"
                                  style="background-image:url('${currentUser.userAvatarURL20}')"></div>
                             <form class="fn-right form" id="avatarUpload" method="POST" enctype="multipart/form-data">
                                 <label class="btn">
