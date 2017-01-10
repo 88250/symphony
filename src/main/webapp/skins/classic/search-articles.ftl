@@ -13,8 +13,14 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content module">
+                    <#if 0 == articles?size>
+                        <div class="article-module content-reset">
+                        暂时没有 [${key}] 相关的数据 :(
+                        </div>
+                    <#else>
                     <@list listData=articles/>
                     <@pagination url="${servePath}/search" query="key=${key}" />
+                    </#if>
                 </div>
                 <div class="side">
                     <#include "side.ftl">
