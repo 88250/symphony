@@ -77,7 +77,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.7.20, Jan 9, 2017
+ * @version 1.13.8.20, Jan 11, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -286,6 +286,10 @@ public class LoginProcessor {
         String referer = request.getParameter(Common.GOTO);
         if (StringUtils.isBlank(referer)) {
             referer = request.getHeader("referer");
+        }
+
+        if (StringUtils.isBlank(referer)) {
+            referer = Latkes.getServePath();
         }
 
         renderer.setTemplateName("/verify/login.ftl");
