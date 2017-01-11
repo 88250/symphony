@@ -171,7 +171,7 @@
                                 </#if>
                                  <#if permissions["commonViewArticleHistory"].permissionGrant>
                                 <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
-                                      class="tooltipped tooltipped-n"><span class="icon-refresh"></span></span> &nbsp; &nbsp;
+                                      class="tooltipped tooltipped-n"><span class="icon-history"></span></span> &nbsp; &nbsp;
                                 </#if>
                                 <#if article.isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
                                 <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"
