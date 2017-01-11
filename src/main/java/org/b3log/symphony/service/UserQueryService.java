@@ -54,20 +54,20 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.8.5.9, Jan 1, 2017
+ * @version 1.8.5.10, Jan 11, 2017
  * @since 0.2.0
  */
 @Service
 public class UserQueryService {
 
     /**
+     * All usernames.
+     */
+    public static final List<JSONObject> USER_NAMES = Collections.synchronizedList(new ArrayList<JSONObject>());
+    /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserQueryService.class.getName());
-    /**
-     * All usernames.
-     */
-    private final List<JSONObject> userNames = Collections.synchronizedList(new ArrayList<JSONObject>());
     /**
      * User repository.
      */
@@ -276,7 +276,7 @@ public class UserQueryService {
      * Loads all usernames from database.
      */
     public void loadUserNames() {
-        userNames.clear();
+        USER_NAMES.clear();
 
         final Query query = new Query().setPageCount(1);
         query.setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.NOT_EQUAL, UserExt.NULL_USER_NAME));
@@ -297,10 +297,10 @@ public class UserQueryService {
                         user, "20");
                 u.put(UserExt.USER_AVATAR_URL, avatar);
 
-                userNames.add(u);
+                USER_NAMES.add(u);
             }
 
-            Collections.sort(userNames, new Comparator<JSONObject>() {
+            Collections.sort(USER_NAMES, new Comparator<JSONObject>() {
                 @Override
                 public int compare(final JSONObject u1, final JSONObject u2) {
                     final String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
@@ -331,7 +331,7 @@ public class UserQueryService {
         final JSONObject nameToSearch = new JSONObject();
         nameToSearch.put(UserExt.USER_T_NAME_LOWER_CASE, namePrefix.toLowerCase());
 
-        int index = Collections.binarySearch(userNames, nameToSearch, new Comparator<JSONObject>() {
+        int index = Collections.binarySearch(USER_NAMES, nameToSearch, new Comparator<JSONObject>() {
             @Override
             public int compare(final JSONObject u1, final JSONObject u2) {
                 String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
@@ -356,7 +356,7 @@ public class UserQueryService {
         int start = index;
         int end = index;
 
-        while (start > -1 && userNames.get(start).optString(UserExt.USER_T_NAME_LOWER_CASE).startsWith(namePrefix.toLowerCase())) {
+        while (start > -1 && USER_NAMES.get(start).optString(UserExt.USER_T_NAME_LOWER_CASE).startsWith(namePrefix.toLowerCase())) {
             start--;
         }
 
@@ -365,7 +365,7 @@ public class UserQueryService {
         if (start < index - 5) {
             end = start + 5;
         } else {
-            while (end < userNames.size() && end < index + 5 && userNames.get(end).optString(UserExt.USER_T_NAME_LOWER_CASE).startsWith(namePrefix.toLowerCase())) {
+            while (end < USER_NAMES.size() && end < index + 5 && USER_NAMES.get(end).optString(UserExt.USER_T_NAME_LOWER_CASE).startsWith(namePrefix.toLowerCase())) {
                 end++;
 
                 if (end >= start + 5) {
@@ -374,7 +374,7 @@ public class UserQueryService {
             }
         }
 
-        return userNames.subList(start, end);
+        return USER_NAMES.subList(start, end);
     }
 
     /**
