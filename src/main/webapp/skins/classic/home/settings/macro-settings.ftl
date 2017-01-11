@@ -16,6 +16,11 @@
                     <#nested>
                 </div>
                 <div class="side">
+                    <#if 'profile' == type || 'avatar' == type>
+                        <div id="homeSidePanel" class="fn-none">
+                            <#include "../home-side.ftl">
+                        </div>
+                    </#if>
                     <div class="module">
                         <div class="module-header"><h2>${goHomeLabel}</h2></div> 
                         <div class="module-panel">
@@ -57,11 +62,6 @@
                             </nav>
                         </div>
                     </div>
-                    <#if 'profile' == type || 'avatar' == type> 
-                    <div id="homeSidePanel" class="fn-none">
-                        <#include "../home-side.ftl">
-                    </div>
-                    </#if>
                 </div>
             </div>
         </div>
