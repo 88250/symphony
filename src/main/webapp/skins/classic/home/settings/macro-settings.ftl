@@ -23,7 +23,7 @@
                     </#if>
                     <div class="module">
                         <div class="module-header"><h2>${goHomeLabel}</h2></div> 
-                        <div class="module-panel">
+                        <div class="module-panel fn-oh">
                             <nav class="home-menu">
                                 <a <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
                                     class="current"</#if>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="module">
                         <div class="module-header"><h2>${settingsLabel}</h2></div> 
-                        <div class="module-panel">
+                        <div class="module-panel fn-oh">
                             <nav class="home-menu">
                                 <a href="${servePath}/settings"<#if 'profile' == type> class="current"</#if>>${profilesLabel}</a>
                                 <a href="${servePath}/settings/avatar"<#if 'avatar' == type> class="current"</#if>>

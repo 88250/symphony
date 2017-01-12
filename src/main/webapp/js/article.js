@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.39.28, Jan 11, 2017
+ * @version 1.25.40.28, Jan 12, 2017
  */
 
 /**
@@ -45,6 +45,12 @@ var Comment = {
      * @returns {undefined}
      */
     _bgFade: function ($obj) {
+        $(window).scrollTop($obj.offset().top);
+
+        if ($obj.attr('id') === 'comments') {
+            return false;
+        }
+
         $obj.css({
             'background-color': '#9bbee0'
         });
@@ -455,7 +461,9 @@ var Comment = {
                 MathJax.Hub.Queue(function () {
                     var all = MathJax.Hub.getAllJax(), i;
                     for (i = 0; i < all.length; i += 1) {
-                        all[i].SourceElement().parentNode.className += 'has-jax';
+                        if ($(all[i].SourceElement().parentNode).closest('.content-reset') === 1) {
+                            all[i].SourceElement().parentNode.className += 'has-jax';
+                        }
                     }
                 });
             });
@@ -1271,19 +1279,20 @@ var Article = {
 
         // progress
         var currentTime = 0,
-                amountTime = parseInt(records[i - 1].split("")[1]) / fast + 300;
+            step = 20, // 间隔速度
+                amountTime = parseInt(records[i - 1].split("")[1]) / fast + step * 6;
         var interval = setInterval(function () {
             if (currentTime >= amountTime) {
                 $('#thoughtProgress .bar').width('100%');
                 $('#thoughtProgress .icon-video').css('left', '100%');
                 clearInterval(interval);
             } else {
-                currentTime += 50;
+                currentTime += step;
                 $('#thoughtProgress .icon-video').css('left', (currentTime * 100 / amountTime) + '%');
                 $('#thoughtProgress .bar').width((currentTime * 100 / amountTime) + '%');
             }
 
-        }, 50);
+        }, step);
 
         // preview
         for (var v = 0, k = 0; v < records.length; v++) {
@@ -1303,6 +1312,10 @@ var Article = {
         $('#thoughtProgress .icon-video').click(function () {
             $("#thoughtProgressPreview").dialog("open");
         });
+
+        // set default height
+        $('.article-content').html(articleHTML).height($('.article-content').height()).html('');
+        Comment._bgFade($(window.location.hash));
     },
     /**
      * @description 初始化目录.
