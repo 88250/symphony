@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.39.28, Jan 11, 2017
+ * @version 1.25.40.28, Jan 12, 2017
  */
 
 /**
@@ -455,7 +455,9 @@ var Comment = {
                 MathJax.Hub.Queue(function () {
                     var all = MathJax.Hub.getAllJax(), i;
                     for (i = 0; i < all.length; i += 1) {
-                        all[i].SourceElement().parentNode.className += 'has-jax';
+                        if ($(all[i].SourceElement().parentNode).closest('.content-reset') === 1) {
+                            all[i].SourceElement().parentNode.className += 'has-jax';
+                        }
                     }
                 });
             });
