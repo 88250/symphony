@@ -31,7 +31,7 @@
                             </span>
                             </#if>
                         </div>
-                        <div class="module-panel">
+                        <div class="module-panel fn-oh">
                             <nav class="home-menu">
                                 <a href="${servePath}/notifications/commented"<#if type == "commented"> class="current"</#if>>
                                    <span>${notificationCommentedLabel}</span>
