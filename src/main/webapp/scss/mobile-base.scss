@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.8.21, Dec 25, 2016
+ * @version 1.6.8.22, Jan 12, 2017
  */
 
 @import "variables";
@@ -473,12 +473,10 @@ blockquote {
 }
 
 .ft-fade,
-.ft-fade a,
 a[class^="icon-"].ft-fade {
     color: #ccc;
 }
 
-.ft-fade a:hover,
 a[class^="icon-"].ft-fade:hover {
     color: #999;
 }
