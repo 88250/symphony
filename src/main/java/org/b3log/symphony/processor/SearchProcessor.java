@@ -20,6 +20,7 @@ package org.b3log.symphony.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -60,7 +61,7 @@ import java.util.Map;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.3, Dec 6, 2016
+ * @version 1.1.1.4, Jan 10, 2017
  * @since 1.4.0
  */
 @RequestProcessor
@@ -94,6 +95,12 @@ public class SearchProcessor {
      */
     @Inject
     private DataModelService dataModelService;
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Searches.
@@ -139,7 +146,7 @@ public class SearchProcessor {
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
         }
-        final List<JSONObject> articles = new ArrayList<JSONObject>();
+        final List<JSONObject> articles = new ArrayList<>();
         int total = 0;
 
         if (Symphonys.getBoolean("es.enabled")) {
@@ -203,5 +210,9 @@ public class SearchProcessor {
         dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
+
+        String searchEmptyLabel = langPropsService.get("searchEmptyLabel");
+        searchEmptyLabel = searchEmptyLabel.replace("${key}", keyword);
+        dataModel.put("searchEmptyLabel", searchEmptyLabel);
     }
 }

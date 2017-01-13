@@ -15,9 +15,25 @@
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
         <link rel="stylesheet" href="${staticServePath}/js/lib/aplayer/APlayer.min.css">
         <link rel="canonical" href="${servePath}${article.articlePermalink}?p=${paginationCurrentPageNum}&m=${userCommentViewMode}">
+
+        <!-- Open Graph -->
+        <meta property="og:locale" content="zh_CN" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="${article.articleTitle} - ${symphonyLabel}" />
+        <meta property="og:description" content="${article.articlePreviewContent}" />
+        <meta property="og:image" content="${article.articleAuthorThumbnailURL210}" />
+        <meta property="og:url" content="${servePath}${article.articlePermalink}" />
+        <meta property="og:site_name" content="HacPai" />
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:description" content="${article.articlePreviewContent}" />
+        <meta name="twitter:title" content="${article.articleTitle} - ${symphonyLabel}" />
+        <meta name="twitter:image" content="${article.articleAuthorThumbnailURL210}" />
+        <meta name="twitter:site" content="@DL88250" />
+        <meta name="twitter:creator" content="@DL88250" />
     </head>
     <body itemscope itemtype="http://schema.org/Product">
-        <img itemprop="image" class="fn-none"  src="${staticServePath}/images/faviconH.png" />
+        <img itemprop="image" class="fn-none"  src="${article.articleAuthorThumbnailURL210}" />
         <p itemprop="description" class="fn-none">"${article.articlePreviewContent}"</p>
         <#include "header.ftl">
         <div class="main">
@@ -171,7 +187,7 @@
                                 </#if>
                                  <#if permissions["commonViewArticleHistory"].permissionGrant>
                                 <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
-                                      class="tooltipped tooltipped-n"><span class="icon-refresh"></span></span> &nbsp; &nbsp;
+                                      class="tooltipped tooltipped-n"><span class="icon-history"></span></span> &nbsp; &nbsp;
                                 </#if>
                                 <#if article.isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
                                 <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"
@@ -279,7 +295,7 @@
                         </div>
                         <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
                     </div>
-                   
+
 					<div class="ft-center fn-pointer <#if article.articleComments?size == 0> fn-none</#if>" title="${cmtLabel}"
                         <#if permissions["commonAddComment"].permissionGrant>
                             onclick="$('.article-actions .icon-reply-btn').click()"
@@ -288,7 +304,7 @@
                         </#if>>
                         <img src="${noCmtImg}" class="article-no-comment-img">
 					</div>
-                    
+
                 </div>
                 <div class="side">
                     <#include 'common/person-info.ftl'/>

@@ -12,9 +12,17 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content module">
-                    <@list listData=articles/>
-                    <@pagination url="${servePath}/search" query="key=${key}" />
+                <div class="content">
+                    <#if 0 == articles?size>
+                        <div class="module article-module ft-center">
+                        ${searchEmptyLabel}
+                        </div>
+                    <#else>
+                        <div class="module">
+                        <@list listData=articles/>
+                        <@pagination url="${servePath}/search" query="key=${key}" />
+                        </div>
+                    </#if>
                 </div>
                 <div class="side">
                     <#include "side.ftl">

@@ -57,10 +57,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -77,7 +74,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.7.20, Jan 9, 2017
+ * @version 1.13.9.20, Jan 12, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -240,6 +237,15 @@ public class LoginProcessor {
         dataModel.put(Tag.TAGS, tags);
 
         final List<JSONObject> users = userQueryService.getNiceUsers(6);
+        final Iterator<JSONObject> iterator = users.iterator();
+        while (iterator.hasNext()) {
+            final JSONObject user = iterator.next();
+            if (user.optString(Keys.OBJECT_ID).equals(currentUser.optString(Keys.OBJECT_ID))) {
+                iterator.remove();
+
+                break;
+            }
+        }
         dataModel.put(User.USERS, users);
 
         // Qiniu file upload authenticate
@@ -286,6 +292,10 @@ public class LoginProcessor {
         String referer = request.getParameter(Common.GOTO);
         if (StringUtils.isBlank(referer)) {
             referer = request.getHeader("referer");
+        }
+
+        if (StringUtils.isBlank(referer)) {
+            referer = Latkes.getServePath();
         }
 
         renderer.setTemplateName("/verify/login.ftl");

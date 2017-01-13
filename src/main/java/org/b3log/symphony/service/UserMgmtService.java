@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.14.19.20, Dec 24, 2016
+ * @version 1.14.20.20, Jan 11, 2017
  * @since 0.2.0
  */
 @Service
@@ -616,6 +616,27 @@ public class UserMgmtService {
                 notification.put(Notification.NOTIFICATION_USER_ID, ret);
                 notification.put(Notification.NOTIFICATION_DATA_ID, "");
                 notificationMgmtService.addSysAnnounceNewUserNotification(notification);
+
+                // Refresh usernames
+                final JSONObject u = new JSONObject();
+                u.put(User.USER_NAME, user.optString(User.USER_NAME));
+                u.put(UserExt.USER_T_NAME_LOWER_CASE, user.optString(User.USER_NAME).toLowerCase());
+
+                final String avatar = avatarQueryService.getAvatarURLByUser(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC,
+                        user, "20");
+                u.put(UserExt.USER_AVATAR_URL, avatar);
+
+                UserQueryService.USER_NAMES.add(u);
+
+                Collections.sort(UserQueryService.USER_NAMES, new Comparator<JSONObject>() {
+                    @Override
+                    public int compare(final JSONObject u1, final JSONObject u2) {
+                        final String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
+                        final String u2Name = u2.optString(UserExt.USER_T_NAME_LOWER_CASE);
+
+                        return u1Name.compareTo(u2Name);
+                    }
+                });
             }
 
             return ret;

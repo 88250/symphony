@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.11.26, Jan 8, 2017
+ * @version 2.9.11.27, Jan 11, 2017
  */
 
 @import "variables";
@@ -487,10 +487,7 @@ label.article-anonymous {
 }
 
 #homeSidePanel {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    background-color: #FFF;
+    margin-bottom: 20px;
 }
 
 #emojiGrid img {

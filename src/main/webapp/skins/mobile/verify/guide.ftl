@@ -30,11 +30,11 @@
                     </div>
                     <div class="guide-tab">
                         <div class="fn-clear fn-none">
-                            <div class="avatar-big" id="avatarURL"
+                            <div class="avatar-big" id="avatarURL" onclick="$('#avatarUpload input').click()"
                                  style="background-image:url('${currentUser.userAvatarURL210}')"></div><br/><br/>
-                            <div class="avatar" id="avatarURLMid"
+                            <div class="avatar" id="avatarURLMid" onclick="$('#avatarUpload input').click()"
                                  style="background-image:url('${currentUser.userAvatarURL48}')"></div> &nbsp; &nbsp;
-                            <div class="avatar-small" id="avatarURLNor"
+                            <div class="avatar-small" id="avatarURLNor" onclick="$('#avatarUpload input').click()"
                                  style="background-image:url('${currentUser.userAvatarURL20}')"></div>
                             <form class="fn-right form" id="avatarUpload" method="POST" enctype="multipart/form-data">
                                 <label class="btn">
@@ -90,7 +90,7 @@
                         </div>
                         <div class="fn-none ft-center">
                             <br/>
-                            <img src="${staticServePath}/images/sym-logo300.png" width="180px"> <br/> <br/><br/>
+                            <a href="https://github.com/b3log/symphony" target="_blank"><img src="${staticServePath}/images/sym-logo300.png" width="180px"></a> <br/> <br/><br/>
                             <iframe src="https://ghbtns.com/github-btn.html?user=b3log&repo=symphony&type=star&count=true&size=large" frameborder="0" scrolling="0" width="130px" height="30px"></iframe>
                         </div>
                         <div class="fn-none list">

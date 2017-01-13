@@ -63,7 +63,7 @@
                 <div class="side">
                     <div class="module">
                         <div class="module-header"><h2>${adminLabel}</h2></div> 
-                        <div class="module-panel">
+                        <div class="module-panel fn-oh">
                             <nav class="home-menu">
                                 <#if permissions["menuAdmin"].permissionGrant>
                                 <a href="${servePath}/admin"<#if type == "index"> class="current"</#if>>${consoleIndexLabel}</a>

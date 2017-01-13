@@ -39,7 +39,7 @@
                                             <a href="${servePath}/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a>
                                         </h2>
                                         <span class="ft-fade content-reset">
-                                            领取昨日 <a href="https://hacpai.com/article/1458624687933" rel="nofollow">活跃度奖励</a> ，目前最高可以获得 <code>${activitYesterdayLivenessRewardMaxPoint?c}</code>
+                                            领取昨日 <a href="https://hacpai.com/article/1458624687933" class="ft-gray" rel="nofollow">活跃度奖励</a> ，目前最高可以获得 <code>${activitYesterdayLivenessRewardMaxPoint?c}</code>
                                         </span>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                         <h2 class="ft-13">
                                             <a href="${servePath}/activity/1A0001">${activity1A0001Label}</a>
                                         </h2>
-                                        <span class="ft-fade">
+                                        <span class="ft-fade content-reset">
                                             下注后，请在当天 16-24 点在本页面进行兑奖，逾期作废！
                                         </span>
                                     </div>
@@ -66,7 +66,7 @@
                                         <h2 class="ft-13">
                                             <a href="${servePath}/activity/character">${characterLabel}</a>
                                         </h2>
-                                        <span class="ft-fade">${activityCharacterTitleLabel}</span>
+                                        <span class="ft-fade content-reset">${activityCharacterTitleLabel}</span>
                                     </div>
                                 </div>
                             </li>

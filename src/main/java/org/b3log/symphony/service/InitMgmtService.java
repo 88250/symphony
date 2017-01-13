@@ -42,7 +42,7 @@ import java.util.*;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Dec 24, 2016
+ * @version 1.1.1.2, Jan 12, 2017
  * @since 1.8.0
  */
 @Service
@@ -580,11 +580,27 @@ public class InitMgmtService {
             defaultCommenter.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             userMgmtService.addUser(defaultCommenter);
 
-            // Add the first tag
-            final String tagTitle = Symphonys.get("systemAnnounce");
-            final String tagId = tagMgmtService.addTag(adminId, tagTitle);
-            final JSONObject tag = tagRepository.get(tagId);
+            // Add tags
+            String tagTitle = Symphonys.get("systemAnnounce");
+            String tagId = tagMgmtService.addTag(adminId, tagTitle);
+            JSONObject tag = tagRepository.get(tagId);
             tag.put(Tag.TAG_URI, "announcement");
+            tagMgmtService.updateTag(tagId, tag);
+
+            tagTitle = "Sym";
+            tagId = tagMgmtService.addTag(adminId, tagTitle);
+            tag = tagRepository.get(tagId);
+            tag.put(Tag.TAG_URI, "Sym");
+            tag.put(Tag.TAG_ICON_PATH, "sym.png");
+            tag.put(Tag.TAG_DESCRIPTION, "[Sym](https://github.com/b3log/symphony) 是一个用 [Java] 实现的现代化社区（论坛/社交网络/博客）平台，“下一代的社区系统，为未来而构建”。");
+            tagMgmtService.updateTag(tagId, tag);
+
+            tagTitle = "B3log";
+            tagId = tagMgmtService.addTag(adminId, tagTitle);
+            tag = tagRepository.get(tagId);
+            tag.put(Tag.TAG_URI, "B3log");
+            tag.put(Tag.TAG_ICON_PATH, "b3log.png");
+            tag.put(Tag.TAG_DESCRIPTION, "[B3log](http://b3log.org) 是一个开源组织，名字来源于“Bulletin Board Blog”缩写，目标是将独立博客与论坛结合，形成一种新的网络社区体验，详细请看 [B3log 构思](https://hacpai.com/b3log)。目前 B3log 已经开源了多款产品： [Solo] 、 [Sym] 、 [Wide] 。");
             tagMgmtService.updateTag(tagId, tag);
 
             // Hello World!
