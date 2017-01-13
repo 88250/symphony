@@ -202,7 +202,7 @@ public class SettingsProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-        fillHomeUser(dataModel, user);
+        UserProcessor.fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
@@ -839,21 +839,5 @@ public class SettingsProcessor {
 
             context.renderMsg(msg);
         }
-    }
-
-
-    /**
-     * Fills home user.
-     *
-     * @param dataModel the specified data model
-     * @param user      the specified user
-     */
-    private void fillHomeUser(final Map<String, Object> dataModel, final JSONObject user) {
-        Escapes.escapeHTML(user);
-        dataModel.put(User.USER, user);
-
-        final String roleId = user.optString(User.USER_ROLE);
-        final JSONObject role = roleQueryService.getRole(roleId);
-        user.put(Role.ROLE_NAME, role.optString(Role.ROLE_NAME));
     }
 }

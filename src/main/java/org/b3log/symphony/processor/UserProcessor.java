@@ -224,7 +224,7 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-        fillHomeUser(dataModel, user);
+        fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
@@ -394,7 +394,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeCmtsCnt");
         final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
 
-        fillHomeUser(dataModel, user);
+        fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
@@ -485,7 +485,7 @@ public class UserProcessor {
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
         dataModel.put(User.USER, user);
-        fillHomeUser(dataModel, user);
+        fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
@@ -594,7 +594,7 @@ public class UserProcessor {
         renderer.setTemplateName("/home/home.ftl");
 
         dataModel.put(User.USER, user);
-        fillHomeUser(dataModel, user);
+        fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
@@ -678,7 +678,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeCmtsCnt");
         final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
 
-        fillHomeUser(dataModel, user);
+        fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
@@ -756,7 +756,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeFollowingUsersCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingUsersWindowSize");
 
-        fillHomeUser(dataModel, user);
+        fillHomeUser(dataModel, user, roleQueryService);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -835,7 +835,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeFollowingTagsCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingTagsWindowSize");
 
-        fillHomeUser(dataModel, user);
+        fillHomeUser(dataModel, user, roleQueryService);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -913,7 +913,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeFollowingArticlesCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingArticlesWindowSize");
 
-        fillHomeUser(dataModel, user);
+        fillHomeUser(dataModel, user, roleQueryService);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -992,7 +992,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeFollowingArticlesCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingArticlesWindowSize");
 
-        fillHomeUser(dataModel, user);
+        fillHomeUser(dataModel, user, roleQueryService);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -1071,7 +1071,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeFollowersCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowersWindowSize");
 
-        fillHomeUser(dataModel, user);
+        fillHomeUser(dataModel, user, roleQueryService);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -1157,7 +1157,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomePointsCnt");
         final int windowSize = Symphonys.getInt("userHomePointsWindowSize");
 
-        fillHomeUser(dataModel, user);
+        fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
@@ -1360,7 +1360,7 @@ public class UserProcessor {
      * @param dataModel the specified data model
      * @param user      the specified user
      */
-    private void fillHomeUser(final Map<String, Object> dataModel, final JSONObject user) {
+    static void fillHomeUser(final Map<String, Object> dataModel, final JSONObject user, final RoleQueryService roleQueryService) {
         Escapes.escapeHTML(user);
         dataModel.put(User.USER, user);
 
