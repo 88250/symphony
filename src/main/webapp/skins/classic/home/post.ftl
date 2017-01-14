@@ -12,131 +12,128 @@
     </head>
     <body>
         <#include "../header.ftl">
-        <div class="main">
-            <div class="wrapper post">
-                <div class="form fn-flex-1 fn-clear">
+        <div class="main post">
+            <div class="form fn-flex-1 fn-clear">
 
-                    <#if requisite>
-                        <div class="tip error">
-                            <ul>
-                                <li>${requisiteMsg}</li>
-                            </ul>
-                        </div>
-                        <br/>
+                <#if requisite>
+                    <div class="tip error">
+                        <ul>
+                            <li>${requisiteMsg}</li>
+                        </ul>
+                    </div>
+                    <br/>
+                </#if>
+
+                <input type="text" id="articleTitle" autocomplete="off" tabindex="1"<#if requisite> readonly disabled</#if>
+                       value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
+                <div class="article-content">
+                    <textarea id="articleContent" tabindex="2"
+                              placeholder="<#if !article?? && 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent?html}</#if><#if at??>@${at}</#if></textarea>
+                </div>
+                <div class="tags-wrap">
+                    <div class="tags-input"><span class="tags-selected"></span>
+                    <input id="articleTags" type="text" tabindex="3"<#if requisite> readonly disabled</#if>
+                           value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）" autocomplete="off" />
+                    </div>
+                    <#if domains?size != 0>
+                    <div class="domains-tags">
+                        <#list domains as domain>
+                            <#if domain.domainTags?size gt 0>
+                                <span data-id="${domain.oId}" class="btn small<#if 0 == domain_index> current green</#if>">${domain.domainTitle}</span>&nbsp;
+                            </#if>
+                        </#list>
+                        <#list domains as domain>
+                            <#if domain.domainTags?size gt 0>
+                            <div id="tags${domain.oId}" class="domain-tags<#if 0 != domain_index> fn-none</#if>">
+                                <#list domain.domainTags as tag>
+                                <span class="tag">${tag.tagTitle}</span>
+                                </#list>
+                            </div>
+                            </#if>
+                        </#list>
+                    </div>
                     </#if>
-
-                    <input type="text" id="articleTitle" autocomplete="off" tabindex="1"<#if requisite> readonly disabled</#if>
-                           value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
-                    <div class="article-content">
-                        <textarea id="articleContent" tabindex="2"
-                                  placeholder="<#if !article?? && 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent?html}</#if><#if at??>@${at}</#if></textarea>
+                </div>
+                <button id="showReward" class="fn-ellipsis"<#if requisite> readonly disabled</#if>
+                onclick="$(this).next().show(); $(this).hide()">
+                    ${rewardEditorPlaceholderLabel} &dtrif;
+                </button>
+                <div class="fn-none">
+                    <div class="fn-clear article-reward-content">
+                        <textarea id="articleRewardContent" tabindex="4"
+                                  placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
                     </div>
-                    <div class="tags-wrap">
-                        <div class="tags-input"><span class="tags-selected"></span>
-                        <input id="articleTags" type="text" tabindex="3"<#if requisite> readonly disabled</#if>
-                               value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）" autocomplete="off" />
-                        </div>
-                        <#if domains?size != 0>
-                        <div class="domains-tags">
-                            <#list domains as domain>
-                                <#if domain.domainTags?size gt 0>
-                                    <span data-id="${domain.oId}" class="btn small<#if 0 == domain_index> current green</#if>">${domain.domainTitle}</span>&nbsp;
-                                </#if>
-                            </#list>
-                            <#list domains as domain>
-                                <#if domain.domainTags?size gt 0>
-                                <div id="tags${domain.oId}" class="domain-tags<#if 0 != domain_index> fn-none</#if>">
-                                    <#list domain.domainTags as tag>
-                                    <span class="tag">${tag.tagTitle}</span>
-                                    </#list>
-                                </div>
-                                </#if>
-                            </#list>
-                        </div>
+                    <div>
+                        <input id="articleRewardPoint" type="number" tabindex="5" min="1"
+                        <#if article?? && 0 < article.articleRewardPoint>data-orval="${article.articleRewardPoint}"</#if>
+                        value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint?c}</#if>" placeholder="${rewardPointLabel}" />
+                    </div>
+                </div>
+                <br/>
+                <div class="tip" id="addArticleTip"></div>
+                <div class="fn-clear fn-none">
+                    <#if !article??>
+                    <label> &nbsp;
+                        <input tabindex="6" type="radio" name="articleType" <#if 0 == articleType>checked="checked"</#if> value="0"/>
+                               ${articleLabel}
+                    </label>
+                    <label id="articleType3"> &nbsp;
+                        <input tabindex="9" type="radio" name="articleType" <#if 3 == articleType>checked="checked"</#if> value="3"/>
+                               ${thoughtLabel}
+                    </label>
+                    <label> &nbsp;
+                        <input tabindex="7" type="radio" name="articleType" <#if 1 == articleType>checked="checked"</#if> value="1"/>
+                               ${discussionLabel}
+                    </label>
+                    <label> &nbsp;
+                        <input tabindex="8" type="radio" name="articleType" <#if 2 == articleType>checked="checked"</#if> value="2"/>
+                               ${cityBroadcastLabel}
+                    </label>
+                    <#else>
+                    <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/>
+                    </#if>
+                </div>
+                <br/>
+                <div class="fn-clear wrapper">
+                    <#if !articleType??>
+                    <#assign articleType=article.articleType>
+                    </#if>
+                    <#if 0 == articleType>
+                    <span class="icon-article"></span> ${articleLabel}
+                    <span class="ft-gray">${addNormalArticleTipLabel}</span>
+                    <#elseif 1 == articleType>
+                    <span class="icon-locked"></span> ${discussionLabel}
+                    <span class="ft-gray">${addDiscussionArticleTipLabel}</span>
+                    <#elseif 2 == articleType>
+                    <span class="icon-feed"></span> ${cityBroadcastLabel}
+                    <span class="ft-gray">${addCityArticleTipLabel} <i>${broadcastPoint}</i> ${pointLabel}</span>
+                    <#elseif 3 == articleType>
+                    <span class="icon-video"></span> ${thoughtLabel}
+                    <span class="ft-gray">${addThoughtArticleTipLabel}
+                        <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
+                    </#if>
+                    <div class="fn-right">
+                        <#if hasB3Key>
+                        <label class="article-anonymous">${syncLabel}<input<#if requisite> readonly disabled</#if>
+                                <#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked</#if></#if>
+                                type="checkbox" id="syncWithSymphonyClient"></label>
                         </#if>
-                        <br/>
-                    </div>
-                    <button id="showReward" class="fn-ellipsis"<#if requisite> readonly disabled</#if>
-                    onclick="$(this).next().show(); $(this).hide()">
-                        ${rewardEditorPlaceholderLabel} &dtrif;
-                    </button>
-                    <div class="fn-none">
-                        <div class="fn-clear article-reward-content">
-                            <textarea id="articleRewardContent" tabindex="4"
-                                      placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
-                        </div>
-                        <div>
-                            <input id="articleRewardPoint" type="number" tabindex="5" min="1"
-                                   <#if article?? && 0 < article.articleRewardPoint>data-orval="${article.articleRewardPoint}"</#if>
-                                   value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint?c}</#if>" placeholder="${rewardPointLabel}" />
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="tip" id="addArticleTip"></div>
-                    <div class="fn-clear fn-none">
-                        <#if !article??>
-                        <label> &nbsp;
-                            <input tabindex="6" type="radio" name="articleType" <#if 0 == articleType>checked="checked"</#if> value="0"/>
-                                   ${articleLabel}
-                        </label>
-                        <label id="articleType3"> &nbsp;
-                            <input tabindex="9" type="radio" name="articleType" <#if 3 == articleType>checked="checked"</#if> value="3"/>
-                                   ${thoughtLabel}
-                        </label>
-                        <label> &nbsp;
-                            <input tabindex="7" type="radio" name="articleType" <#if 1 == articleType>checked="checked"</#if> value="1"/>
-                                   ${discussionLabel}
-                        </label>
-                        <label> &nbsp;
-                            <input tabindex="8" type="radio" name="articleType" <#if 2 == articleType>checked="checked"</#if> value="2"/>
-                                   ${cityBroadcastLabel}
-                        </label>
+                        <#if permissions["commonAddArticleAnonymous"].permissionGrant>
+                        <label class="article-anonymous">${anonymousLabel}<input<#if requisite> readonly disabled</#if>
+                                <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
+                                type="checkbox" id="articleAnonymous"></label>
+                        </#if>
+
+                        <#if article??>
+                            <#if permissions["commonAddArticle"].permissionGrant>
+                            <button class="red" tabindex="10"<#if requisite> readonly disabled</#if> onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
+                            </#if>
                         <#else>
-                        <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/>
-                        </#if>
-                    </div>
-                    <br/>
-                    <div class="fn-clear">
-                        <#if !articleType??>
-                        <#assign articleType=article.articleType>
-                        </#if>
-                        <#if 0 == articleType>
-                        <span class="icon-article"></span> ${articleLabel}
-                        <span class="ft-gray">${addNormalArticleTipLabel}</span>
-                        <#elseif 1 == articleType>
-                        <span class="icon-locked"></span> ${discussionLabel}
-                        <span class="ft-gray">${addDiscussionArticleTipLabel}</span>
-                        <#elseif 2 == articleType>
-                        <span class="icon-feed"></span> ${cityBroadcastLabel}
-                        <span class="ft-gray">${addCityArticleTipLabel} <i>${broadcastPoint}</i> ${pointLabel}</span>
-                        <#elseif 3 == articleType>
-                        <span class="icon-video"></span> ${thoughtLabel}
-                        <span class="ft-gray">${addThoughtArticleTipLabel}
-                            <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
-                        </#if>
-                        <div class="fn-right">
-                        	<#if hasB3Key>
-                        	<label class="article-anonymous">${syncLabel}<input<#if requisite> readonly disabled</#if>
-                                    <#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked</#if></#if>
-                                    type="checkbox" id="syncWithSymphonyClient"></label>
-                        	</#if>
-                            <#if permissions["commonAddArticleAnonymous"].permissionGrant>
-                            <label class="article-anonymous">${anonymousLabel}<input<#if requisite> readonly disabled</#if>
-                                    <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
-                                    type="checkbox" id="articleAnonymous"></label>
+                            <#if permissions["commonUpdateArticle"].permissionGrant>
+                            <button class="red" tabindex="10"<#if requisite> readonly disabled</#if>
+                                onclick="AddArticle.add('${csrfToken}')">${postLabel}</button>
                             </#if>
-
-                            <#if article??>
-                                <#if permissions["commonAddArticle"].permissionGrant>
-                                <button class="red" tabindex="10"<#if requisite> readonly disabled</#if> onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
-                                </#if>
-                            <#else>
-                                <#if permissions["commonUpdateArticle"].permissionGrant>
-                                <button class="red" tabindex="10"<#if requisite> readonly disabled</#if>
-                                    onclick="AddArticle.add('${csrfToken}')">${postLabel}</button>
-                                </#if>
-                            </#if>
-                        </div>
+                        </#if>
                     </div>
                 </div>
             </div>

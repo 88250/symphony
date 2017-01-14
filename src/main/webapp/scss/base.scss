@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.27.19.52, Jan 12, 2017
+ * @version 2.28.19.52, Jan 15, 2017
  */
 
 @import "variables";
@@ -1267,10 +1267,10 @@ a[class*=" icon-"]:hover {
     position: absolute;
     background-color: #FFF;
     border: 1px solid #e5e5e5;
-    z-index: 72;
+    z-index: 82;
     border-radius: 0 0 3px 3px;
     width: 50%;
-    top: 32px;
+    top: 35px;
     box-sizing: border-box;
 }
 
@@ -1659,8 +1659,7 @@ a[class*=" icon-"]:hover {
 
 .cm-s-default.CodeMirror {
     border-radius: 0 0 3px 3px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
-    border: 1px solid $fade;
+    border: 1px solid #f2f2f2;
     margin-bottom: 20px;
     border-top-width: 0;
     height: 100px;
@@ -1669,7 +1668,6 @@ a[class*=" icon-"]:hover {
 .CodeMirror-scroll {
     background-color: #FAFAFA;
     font-family: $font-family-base;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
     line-height: 17px;
 }
 
