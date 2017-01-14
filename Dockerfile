@@ -1,6 +1,8 @@
 FROM ubuntu:16.10
 MAINTAINER Liang Ding <dl88250@gmail.com>
 
+RUN apt-get update
+
 RUN mkdir /jdk && cd /jdk
 RUN apt-get install -y wget
 RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u111-b14/jdk-8u111-linux-x64.tar.gz
