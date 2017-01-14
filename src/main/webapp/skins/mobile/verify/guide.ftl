@@ -100,7 +100,7 @@
                                     <span class="ft-gray">${getStartTipLabel}</span>
                                 </li>
                                 <li>
-                                    <a href="${servePath}/tag/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97">${basicLabel}</a>
+                                    <a href="${servePath}/tag/user_guide">${basicLabel}</a>
                                     <span class="ft-gray">${basicTipLabel}</span>
                                 </li>
                                 <li>
