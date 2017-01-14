@@ -19,7 +19,8 @@ RUN apt-get -y install mysql-server
 #    && echo 'skip-host-cache\nskip-name-resolve' | awk '{ print } $1 == "[mysqld]" && c == 0 { c = 1; system("cat") }' /etc/mysql/my.cnf > /tmp/my.cnf \
 #    && mv /tmp/my.cnf /etc/mysql/my.cnf
 
-RUN service mysql start
+RUN service mysql start && mysql -uroot -e "CREATE DATABASE `b3log_symphony` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
+
 
 RUN cd /
 RUN wget http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.0.v20161208/jetty-distribution-9.4.0.v20161208.tar.gz
