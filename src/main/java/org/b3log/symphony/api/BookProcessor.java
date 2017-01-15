@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -31,6 +32,8 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Book;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.advice.LoginCheck;
@@ -43,6 +46,8 @@ import org.json.JSONObject;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Book processor.
@@ -53,7 +58,7 @@ import javax.servlet.http.HttpServletResponse;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Jan 5, 2017
+ * @version 1.1.0.2, Jan 15, 2017
  * @since 1.9.0
  */
 @RequestProcessor
@@ -81,6 +86,49 @@ public class BookProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Get books.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/books", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {StopwatchEndAdvice.class})
+    public void getBooks(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        String pageStr = requestJSONObject.optString("p");
+        if (!Strings.isNumeric(pageStr)) {
+            pageStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageStr);
+
+        final JSONObject queryRequest = new JSONObject();
+        queryRequest.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        queryRequest.put(Pagination.PAGINATION_PAGE_SIZE, 10);
+        queryRequest.put(Pagination.PAGINATION_WINDOW_SIZE, 10);
+
+        final Map<String, Class<?>> queryFields = new HashMap<>();
+        queryFields.put(Keys.OBJECT_ID, String.class);
+        queryFields.put(Article.ARTICLE_TITLE, String.class);
+        queryFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
+        queryFields.put(Article.ARTICLE_VIEW_CNT, Integer.class);
+        queryFields.put(Article.ARTICLE_COMMENT_CNT, Integer.class);
+        queryFields.put(Article.ARTICLE_AUTHOR_EMAIL, String.class);
+        queryFields.put(Article.ARTICLE_AUTHOR_ID, String.class);
+        queryFields.put(Article.ARTICLE_TAGS, String.class);
+        queryFields.put(Article.ARTICLE_STATUS, Integer.class);
+
+        final JSONObject ret = bookQueryService.getSharedBooks(queryRequest, queryFields);
+        ret.put(Keys.STATUS_CODE, true);
+
+        context.renderJSON(ret);
+    }
 
     /**
      * Shares a book.
