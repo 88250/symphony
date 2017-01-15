@@ -17,11 +17,13 @@
                     </span>
                 </#if>
                 <span class="tooltipped tooltipped-n offline" aria-label="${roleLabel}"> ${user.roleName}</span>
-                <#if isAdminLoggedIn>
-                    <a class="ft-13 tooltipped tooltipped-n ft-a-title" href="${servePath}/admin/user/${user.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
-                </#if>
-                <#if isAdminLoggedIn>
-                    <a class="ft-13 icon-setting" href="${servePath}/admin/user/${user.oId}" title="${adminLabel}"></a>
+                <#if permissions["userAddPoint"].permissionGrant ||
+                        permissions["userAddUser"].permissionGrant ||
+                        permissions["userExchangePoint"].permissionGrant ||
+                        permissions["userDeductPoint"].permissionGrant ||
+                        permissions["userUpdateUserAdvanced"].permissionGrant ||
+                        permissions["userUpdateUserBasic"].permissionGrant>
+                    <a class="ft-13 ft-a-title" href="${servePath}/admin/user/${user.oId}"><span class="icon-setting"></span></a>
                 </#if>
             </div>
 

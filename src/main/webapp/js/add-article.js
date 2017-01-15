@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.19.15.14, Dec 24, 2016
+ * @version 2.19.15.16, Jan 15, 2017
  */
 
 /**
@@ -280,7 +280,7 @@ var AddArticle = {
 
                 window.localStorage.thoughtContent += change;
 
-                if ($('.article-content .CodeMirror-preview').length === 0) {
+                if ($('.article-content .editor-preview-active').length === 0) {
                     return false;
                 }
 
@@ -292,7 +292,7 @@ var AddArticle = {
                         markdownText: cm.getValue()
                     },
                     success: function (result, textStatus) {
-                        $('.article-content .CodeMirror-preview').html(result.html);
+                        $('.article-content .editor-preview-active').html(result.html);
                         hljs.initHighlighting.called = false;
                         hljs.initHighlighting();
                     }
@@ -353,7 +353,7 @@ var AddArticle = {
                 lineWrapping: true,
                 htmlURL: Label.servePath + "/markdown",
                 toolbar: [
-                    {name: 'bold'},
+                     {name: 'bold'},
                     {name: 'italic'},
                     '|',
                     {name: 'quote'},
@@ -361,7 +361,7 @@ var AddArticle = {
                     {name: 'ordered-list'},
                     '|',
                     {name: 'link'},
-                    {name: 'image', html: '<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><label class="icon-image"><input type="file"/></label></form>'},
+                    {name: 'image', html: '<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form>'},
                     '|',
                     {name: 'redo'},
                     {name: 'undo'},
@@ -404,7 +404,7 @@ var AddArticle = {
                     return CodeMirror.Pass;
                 }
 
-                if ($('.article-reward-content .CodeMirror-preview').length === 0) {
+                if ($('.article-reward-content .editor-preview-active').length === 0) {
                     return false;
                 }
 
@@ -416,7 +416,7 @@ var AddArticle = {
                         markdownText: cm.getValue()
                     },
                     success: function (result, textStatus) {
-                        $('.article-reward-content .CodeMirror-preview').html(result.html);
+                        $('.article-reward-content .editor-preview-active').html(result.html);
                         hljs.initHighlighting.called = false;
                         hljs.initHighlighting();
                     }
@@ -504,7 +504,7 @@ var AddArticle = {
         $('#articleTags').click(function () {
             $('.post .domains-tags').show();
             if ($.ua.device.type !== 'mobile') {
-                $('.post .domains-tags').css('left', $('.post .tags-selected').width() + 'px');
+                $('.post .domains-tags').css('left', ($('.post .tags-selected').width() + 10) + 'px');
             }
             $('#articleTagsSelectedPanel').hide();
         }).blur(function () {
@@ -574,7 +574,7 @@ var AddArticle = {
                     success: function (result, textStatus) {
                         if (result.sc) {
                             if ($.ua.device.type !== 'mobile') {
-                                $('#articleTagsSelectedPanel').css('left', $('.post .tags-selected').width() + 'px');
+                                $('#articleTagsSelectedPanel').css('left', ($('.post .tags-selected').width() + 10) + 'px');
                             }
                             $("#articleTags").completed('updateData', result.tags);
                         } else {

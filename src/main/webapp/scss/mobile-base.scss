@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.8.22, Jan 12, 2017
+ * @version 1.6.8.23, Jan 14, 2017
  */
 
 @import "variables";
@@ -1765,6 +1765,7 @@ h1.article-title > a:hover {
     height: 2px;
     position: relative;
     margin-bottom: 6px;
+    left: -7px;
 }
 
 #thoughtProgress .bar {
@@ -2913,7 +2914,6 @@ code .dec { color: initial; } /* decimal - blue */
 .admin .form input[type=number] {
     width: 30%;
     margin-right: 10px;
-    height: 27px;
 }
 /* end admin */
 

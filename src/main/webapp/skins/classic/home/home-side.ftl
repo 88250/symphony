@@ -1,6 +1,5 @@
 <div class="ft-center module">
-    <div id="avatarURLDom" class="avatar-big tooltipped tooltipped-s" aria-label="${user.userName}"
-         style="background-image:url('${user.userAvatarURL210}')"></div>
+    <div id="avatarURLDom" class="avatar-big" style="background-image:url('${user.userAvatarURL210}')"></div>
     <div>
         <div class="user-name">
             <div id="userNicknameDom"><b>${user.userNickname}</b></div>
@@ -18,7 +17,12 @@
                     </span>
                 </#if>
                 <span class="tooltipped tooltipped-n offline" aria-label="${roleLabel}"> ${user.roleName}</span>
-                <#if isAdminLoggedIn>
+                <#if permissions["userAddPoint"].permissionGrant ||
+                        permissions["userAddUser"].permissionGrant ||
+                        permissions["userExchangePoint"].permissionGrant ||
+                        permissions["userDeductPoint"].permissionGrant ||
+                        permissions["userUpdateUserAdvanced"].permissionGrant ||
+                        permissions["userUpdateUserBasic"].permissionGrant>
                     <a class="ft-13 tooltipped tooltipped-n ft-a-title" href="${servePath}/admin/user/${user.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                 </#if>
             </div>

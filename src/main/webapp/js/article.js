@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.40.28, Jan 12, 2017
+ * @version 1.26.40.28, Jan 15, 2017
  */
 
 /**
@@ -381,7 +381,7 @@ var Comment = {
                 return CodeMirror.Pass;
             }
 
-            if ($('.article-comment-content .CodeMirror-preview').length === 0) {
+            if ($('.article-comment-content .editor-preview-active').length === 0) {
                 return false;
             }
 
@@ -393,7 +393,7 @@ var Comment = {
                     markdownText: cm.getValue()
                 },
                 success: function (result, textStatus) {
-                    $('.article-comment-content .CodeMirror-preview').html(result.html);
+                    $('.article-comment-content .editor-preview-active').html(result.html);
                     hljs.initHighlighting.called = false;
                     hljs.initHighlighting();
                 }
