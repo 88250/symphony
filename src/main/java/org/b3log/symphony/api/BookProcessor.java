@@ -110,7 +110,7 @@ public class BookProcessor {
 
         final JSONObject queryRequest = new JSONObject();
         queryRequest.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
-        queryRequest.put(Pagination.PAGINATION_PAGE_SIZE, 5);
+        queryRequest.put(Pagination.PAGINATION_PAGE_SIZE, 10);
         queryRequest.put(Pagination.PAGINATION_WINDOW_SIZE, 10);
 
         final Map<String, Class<?>> queryFields = new HashMap<>();
