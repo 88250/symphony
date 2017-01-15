@@ -14,16 +14,6 @@
         <#include "../header.ftl">
         <div class="main post">
             <div class="form fn-flex-1 fn-clear">
-
-                <#if requisite>
-                    <div class="tip error">
-                        <ul>
-                            <li>${requisiteMsg}</li>
-                        </ul>
-                    </div>
-                    <br/>
-                </#if>
-
                 <input type="text" id="articleTitle" autocomplete="off" tabindex="1"<#if requisite> readonly disabled</#if>
                        value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
                 <div class="article-content">
@@ -69,8 +59,19 @@
                         value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint?c}</#if>" placeholder="${rewardPointLabel}" />
                     </div>
                 </div>
-                <br/>
-                <div class="tip" id="addArticleTip"></div>
+
+                <div class="wrapper">
+                    <br>
+                    <#if requisite>
+                        <div class="tip error">
+                            <ul>
+                                <li>${requisiteMsg}</li>
+                            </ul>
+                        </div>
+                    <#else>
+                        <div class="tip" id="addArticleTip"></div>
+                    </#if>
+                </div>
                 <div class="fn-clear fn-none">
                     <#if !article??>
                     <label> &nbsp;

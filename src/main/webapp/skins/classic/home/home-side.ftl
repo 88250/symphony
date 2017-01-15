@@ -1,6 +1,5 @@
 <div class="ft-center module">
-    <div id="avatarURLDom" class="avatar-big tooltipped tooltipped-s" aria-label="${user.userName}"
-         style="background-image:url('${user.userAvatarURL210}')"></div>
+    <div id="avatarURLDom" class="avatar-big" style="background-image:url('${user.userAvatarURL210}')"></div>
     <div>
         <div class="user-name">
             <div id="userNicknameDom"><b>${user.userNickname}</b></div>
