@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all notification model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.2, Jan 9, 2017
+ * @version 1.10.0.2, Jan 14, 2017
  * @since 0.2.5
  */
 public final class Notification {
@@ -151,6 +151,11 @@ public final class Notification {
      * Data type - invitation link used.
      */
     public static final int DATA_TYPE_C_INVITATION_LINK_USED = 18;
+
+    /**
+     * Data type - system announcement - role changed.
+     */
+    public static final int DATA_TYPE_C_SYS_ANNOUNCE_ROLE_CHANGED = 19;
 
     //// Transient ////
     /**

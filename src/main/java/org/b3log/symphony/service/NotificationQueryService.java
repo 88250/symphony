@@ -42,7 +42,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.7, Jan 9, 2017
+ * @version 1.9.3.8, Jan 14, 2017
  * @since 0.2.5
  */
 @Service
@@ -114,6 +114,12 @@ public class NotificationQueryService {
     private LangPropsService langPropsService;
 
     /**
+     * Role query service.
+     */
+    @Inject
+    private RoleQueryService roleQueryService;
+
+    /**
      * Gets the count of unread 'point' notifications of a user specified with the given user id.
      *
      * @param userId the given user id
@@ -129,6 +135,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_SYS_ANNOUNCE_ARTICLE));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_SYS_ANNOUNCE_NEW_USER));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_SYS_ANNOUNCE_ROLE_CHANGED));
 
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
 
@@ -179,6 +187,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_SYS_ANNOUNCE_ARTICLE));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_SYS_ANNOUNCE_NEW_USER));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_SYS_ANNOUNCE_ROLE_CHANGED));
 
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
 
@@ -220,6 +230,18 @@ public class NotificationQueryService {
                                 + article15.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article15.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink15);
+
+                        break;
+                    case Notification.DATA_TYPE_C_SYS_ANNOUNCE_ROLE_CHANGED:
+                        desTemplate = langPropsService.get("notificationSysRoleChangedLabel");
+
+                        final String oldRoleId = dataId.split("-")[0];
+                        final String newRoleId = dataId.split("-")[1];
+                        final JSONObject oldRole = roleQueryService.getRole(oldRoleId);
+                        final JSONObject newRole = roleQueryService.getRole(newRoleId);
+
+                        desTemplate = desTemplate.replace("{oldRole}", oldRole.optString(Role.ROLE_NAME));
+                        desTemplate = desTemplate.replace("{newRole}", newRole.optString(Role.ROLE_NAME));
 
                         break;
                     default:

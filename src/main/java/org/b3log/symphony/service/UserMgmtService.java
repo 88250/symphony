@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.14.20.20, Jan 11, 2017
+ * @version 1.15.20.20, Jan 14, 2017
  * @since 0.2.0
  */
 @Service
@@ -684,9 +684,20 @@ public class UserMgmtService {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
+            final JSONObject old = userRepository.get(userId);
+            final String oldRoleId = old.optString(User.USER_ROLE);
+            final String newRoleId = user.optString(User.USER_ROLE);
+
             userRepository.update(userId, user);
 
             transaction.commit();
+
+            if (!oldRoleId.equals(newRoleId)) {
+                final JSONObject notification = new JSONObject();
+                notification.put(Notification.NOTIFICATION_USER_ID, userId);
+                notification.put(Notification.NOTIFICATION_DATA_ID, oldRoleId + "-" + newRoleId);
+                notificationMgmtService.addSysAnnounceRoleChangedNotification(notification);
+            }
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
