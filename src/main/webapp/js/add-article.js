@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.19.15.16, Jan 15, 2017
+ * @version 2.20.15.16, Jan 16, 2017
  */
 
 /**
@@ -167,6 +167,8 @@ var AddArticle = {
                 status: false
             });
             addArticleEditor.render();
+            // 默认使用 preview
+            $('.editor-toolbar .icon-preview:eq(0)').click();
 
             AddArticle.editor = addArticleEditor.codemirror;
         }
