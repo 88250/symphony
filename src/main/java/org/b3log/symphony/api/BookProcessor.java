@@ -148,7 +148,7 @@ public class BookProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Parses request failed", e);
             context.renderJSON(false);
-            context.renderJSONValue(Keys.MSG, langPropsService.get("bookQueryFailedLabel"));
+            context.renderJSONValue(Keys.MSG, langPropsService.get("queryFailedLabel"));
 
             return;
         }
@@ -158,7 +158,7 @@ public class BookProcessor {
 
         if (StringUtils.isBlank(isbn)) {
             context.renderJSON(false);
-            context.renderJSONValue(Keys.MSG, langPropsService.get("bookQueryFailedLabel"));
+            context.renderJSONValue(Keys.MSG, langPropsService.get("queryFailedLabel"));
 
             return;
         }
@@ -168,7 +168,7 @@ public class BookProcessor {
         final JSONObject book = bookQueryService.getBookByISBN(isbn);
         if (null == book) {
             context.renderJSON(false);
-            context.renderJSONValue(Keys.MSG, langPropsService.get("bookQueryFailedLabel"));
+            context.renderJSONValue(Keys.MSG, langPropsService.get("queryFailedLabel"));
 
             return;
         }
@@ -200,7 +200,7 @@ public class BookProcessor {
 
         if (StringUtils.isBlank(isbn)) {
             context.renderJSON(false);
-            context.renderJSONValue(Keys.MSG, langPropsService.get("bookQueryFailedLabel"));
+            context.renderJSONValue(Keys.MSG, langPropsService.get("queryFailedLabel"));
 
             return;
         }
@@ -208,7 +208,7 @@ public class BookProcessor {
         final JSONObject book = bookQueryService.getBookByISBN(isbn);
         if (null == book) {
             context.renderJSON(false);
-            context.renderJSONValue(Keys.MSG, langPropsService.get("bookQueryFailedLabel"));
+            context.renderJSONValue(Keys.MSG, langPropsService.get("queryFailedLabel"));
 
             return;
         }

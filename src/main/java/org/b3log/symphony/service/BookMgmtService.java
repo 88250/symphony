@@ -184,7 +184,7 @@ public class BookMgmtService {
             LOGGER.log(Level.ERROR, "Shares book failed", e);
 
             ret.put(Keys.STATUS_CODE, false);
-            ret.put(Keys.MSG, langPropsService.get("bookQueryFailedLabel"));
+            ret.put(Keys.MSG, langPropsService.get("queryFailedLabel"));
         }
 
         if (ret.optBoolean(Keys.STATUS_CODE)) {
