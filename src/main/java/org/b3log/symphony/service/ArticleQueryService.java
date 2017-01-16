@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.23.41, Jan 16, 2017
+ * @version 2.25.24.41, Jan 16, 2017
  * @since 0.2.0
  */
 @Service
@@ -2590,7 +2590,9 @@ public class ArticleQueryService {
                 throw e;
             }
 
-            ret = Jsoup.clean(ret, Whitelist.basicWithImages());
+            final Whitelist whitelist = Whitelist.basicWithImages();
+            whitelist.addTags("object", "video");
+            ret = Jsoup.clean(ret,whitelist);
 
             final int threshold = 20;
             String[] pics = StringUtils.substringsBetween(ret, "<img", "/>");
@@ -2610,6 +2612,44 @@ public class ArticleQueryService {
                 }
 
                 ret = StringUtils.replaceEach(ret, pics, picsRepl);
+            }
+
+            String[] objs = StringUtils.substringsBetween(ret, "<object>", "</object>");
+            if (null != objs) {
+                if (objs.length > threshold) {
+                    objs = Arrays.copyOf(objs, threshold);
+                }
+
+                final String[] objsRepl = new String[objs.length];
+                for (int i = 0; i < objsRepl.length; i++) {
+                    objsRepl[i] = langPropsService.get("objTagLabel", Latkes.getLocale());
+                    objs[i] = "<object>" + objs[i] + "</object>";
+
+                    if (i > threshold) {
+                        break;
+                    }
+                }
+
+                ret = StringUtils.replaceEach(ret, objs, objsRepl);
+            }
+
+            objs = StringUtils.substringsBetween(ret, "<video", "</video>");
+            if (null != objs) {
+                if (objs.length > threshold) {
+                    objs = Arrays.copyOf(objs, threshold);
+                }
+
+                final String[] objsRepl = new String[objs.length];
+                for (int i = 0; i < objsRepl.length; i++) {
+                    objsRepl[i] = langPropsService.get("objTagLabel", Latkes.getLocale());
+                    objs[i] = "<video" + objs[i] + "</video>";
+
+                    if (i > threshold) {
+                        break;
+                    }
+                }
+
+                ret = StringUtils.replaceEach(ret, objs, objsRepl);
             }
 
             if (ret.length() >= length && null != pics) {
