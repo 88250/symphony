@@ -17,13 +17,22 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Transactional;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.urlfetch.*;
+import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Paginator;
+import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Book;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.BookRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
@@ -31,12 +40,15 @@ import org.json.JSONObject;
 
 import javax.inject.Inject;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Book query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 4, 2017
+ * @version 1.1.0.1, Jan 15, 2017
  * @since 1.9.0
  */
 @Service
@@ -52,6 +64,102 @@ public class BookQueryService {
      */
     @Inject
     private BookRepository bookRepository;
+
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
+
+    /**
+     * Article query service.
+     */
+    @Inject
+    private ArticleQueryService articleQueryService;
+
+    /**
+     * Get shared books by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example
+     *                          "paginationCurrentPageNum": 1,
+     *                          "paginationPageSize": 20,
+     *                          "paginationWindowSize": 10
+     * @param articleFields     the specified article fields to return
+     * @return for example,      <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "articles": [{
+     *         "oId": "",
+     *         "articleTitle": "",
+     *         "articleContent": "",
+     *         ....
+     *      }, ....]
+     * }
+     * </pre>
+     * @throws ServiceException service exception
+     * @see Pagination
+     */
+    public JSONObject getSharedBooks(final JSONObject requestJSONObject, final Map<String, Class<?>> articleFields)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
+        final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
+        final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
+        final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setFilter(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.EQUAL, Article.ARTICLE_TYPE_C_BOOK));
+        for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
+            query.addProjection(articleField.getKey(), articleField.getValue());
+        }
+
+        JSONObject result = null;
+
+        try {
+            result = articleRepository.get(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets articles failed", e);
+
+            throw new ServiceException(e);
+        }
+
+        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        final JSONArray data = result.optJSONArray(Keys.RESULTS);
+        final List<JSONObject> articles = CollectionUtils.<JSONObject>jsonArrayToList(data);
+
+        try {
+            articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Organizes articles failed", e);
+
+            throw new ServiceException(e);
+        }
+
+        final List<JSONObject> retArticles = new ArrayList<>();
+        for (final JSONObject article : articles) {
+            final JSONObject retArticle = new JSONObject();
+
+            retArticle.put(Article.ARTICLE_T_ID, article.optString(Keys.OBJECT_ID));
+            retArticle.put(Article.ARTICLE_TITLE, StringUtils.substringBetween(article.optString(Article.ARTICLE_TITLE), "《", "》"));
+            retArticle.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, article.optString(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "48"));
+
+            retArticles.add(retArticle);
+        }
+
+        ret.put(Article.ARTICLES, retArticles);
+
+        return ret;
+    }
 
     /**
      * Gets a book's information with the specified ISBN.

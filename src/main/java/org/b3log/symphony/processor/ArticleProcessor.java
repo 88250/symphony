@@ -97,7 +97,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.24.35, Dec 24, 2016
+ * @version 1.24.25.35, Jan 15, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1175,7 +1175,7 @@ public class ArticleProcessor {
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
-        article.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
+        article.put(Article.ARTICLE_SYNC_TO_CLIENT, true);
         article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
         article.put(Article.ARTICLE_AUTHOR_ID, authorId);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, clientAdminEmail.toLowerCase().trim());

@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.23.40, Dec 17, 2016
+ * @version 2.25.23.41, Jan 16, 2017
  * @since 0.2.0
  */
 @Service
@@ -1381,12 +1381,20 @@ public class ArticleQueryService {
      * @return recent articles query
      */
     private Query makeRecentHotQuery(final int currentPageNum, final int fetchSize) {
+        final String id = String.valueOf(DateUtils.addMonths(new Date(), -1).getTime());
+
         final Query ret = new Query()
                 .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
                 .addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING)
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
-        ret.setFilter(makeRecentArticleShowingFilter());
+
+        final CompositeFilter compositeFilter = makeRecentArticleShowingFilter();
+        final List<Filter> filters = new ArrayList<>();
+        filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
+        filters.addAll(compositeFilter.getSubFilters());
+
+        ret.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
         ret.addProjection(Keys.OBJECT_ID, String.class).
                 addProjection(Article.ARTICLE_STICK, Long.class).
                 addProjection(Article.ARTICLE_CREATE_TIME, Long.class).

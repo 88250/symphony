@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.41.28.42, Dec 30, 2016
+ * @version 1.41.29.42, Jan 14, 2017
  */
 
 /**
@@ -782,7 +782,7 @@ var Util = {
                     if (data.unreadFollowingUserNotificationCnt > 0) {
                         notiHTML += '<li><a href="' + Label.servePath + '/notifications/following-user">' + Label.notificationFollowingUserLabel +
                             ' <span class="count">' + data.unreadFollowingUserNotificationCnt + '</span>'
-                            + markReadHTML.replace('${markReadType}', 'following-user')
+                            + markReadHTML.replace('${markReadType}', 'followingUser')
                             + '</a></li>';
                     }
 
@@ -878,7 +878,7 @@ var Util = {
                 } else {
                     window.localStorage.hadNotificate = 'false';
                     $("#notificationsPanel").remove();
-                    $("#aNotifications").removeClass("msg").addClass("no-msg tooltipped tooltipped-w").text(count);
+                    $("#aNotifications").removeClass("msg").addClass("no-msg tooltipped tooltipped-w").text(count).attr('href', Label.servePath + '/notifications');
                 }
             }
         });
