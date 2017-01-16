@@ -58,7 +58,7 @@ import java.util.Map;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Jan 15, 2017
+ * @version 1.1.0.3, Jan 16, 2017
  * @since 1.9.0
  */
 @RequestProcessor
@@ -96,7 +96,7 @@ public class BookProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/books", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
     public void getBooks(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -190,7 +190,7 @@ public class BookProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/book/info", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
     public void getBook(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {

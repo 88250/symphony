@@ -34,6 +34,7 @@ import org.b3log.symphony.model.Book;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.BookRepository;
+import org.b3log.symphony.repository.UserBookArticleRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,7 +49,7 @@ import java.util.Map;
  * Book query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Jan 15, 2017
+ * @version 1.1.0.2, Jan 16, 2017
  * @since 1.9.0
  */
 @Service
@@ -70,6 +71,12 @@ public class BookQueryService {
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * User-Book-Article repository.
+     */
+    @Inject
+    private UserBookArticleRepository userBookArticleRepository;
 
     /**
      * Article query service.
@@ -147,11 +154,23 @@ public class BookQueryService {
 
         final List<JSONObject> retArticles = new ArrayList<>();
         for (final JSONObject article : articles) {
-            final JSONObject retArticle = new JSONObject();
+            final String articleId = article.optString(Keys.OBJECT_ID);
 
-            retArticle.put(Article.ARTICLE_T_ID, article.optString(Keys.OBJECT_ID));
+            final JSONObject retArticle = new JSONObject();
+            retArticle.put(Article.ARTICLE_T_ID, articleId);
             retArticle.put(Article.ARTICLE_TITLE, StringUtils.substringBetween(article.optString(Article.ARTICLE_TITLE), "《", "》"));
             retArticle.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, article.optString(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "48"));
+
+            try {
+                final JSONObject userBookArticleRel = userBookArticleRepository.getByArticleId(articleId);
+                final String bookId = userBookArticleRel.optString(Book.BOOK_T_ID);
+                final JSONObject book = bookRepository.get(bookId);
+                retArticle.put(Book.BOOK_ISBN13, book.optString(Book.BOOK_ISBN13));
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Get user book article rel failed [articleId=" + articleId + "]", e);
+
+                continue;
+            }
 
             retArticles.add(retArticle);
         }
