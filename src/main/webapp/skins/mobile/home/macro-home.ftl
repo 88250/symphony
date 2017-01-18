@@ -23,6 +23,10 @@
         <@head title="${followingArticlesLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${followingArticlesLabel}"/>
         </@head>
+        <#elseif type == "watchingArticles">
+        <@head title="${watchingArticlesLabel} - ${user.userName} - ${symphonyLabel}">
+        <meta name="description" content="${user.userName}${deLabel}${watchingArticlesLabel}"/>
+        </@head>
         <#elseif type == "followers">
         <@head title="${followersLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${followersLabel}"/>
@@ -61,6 +65,8 @@
                     ${followingTagsLabel}
                     <#elseif type == "followingArticles">
                     ${followingArticlesLabel}
+                    <#elseif type == "watchingArticles">
+                    ${watchingArticlesLabel}
                     <#elseif type == "followers">
                     ${followersLabel}
                     <#elseif type == "points">

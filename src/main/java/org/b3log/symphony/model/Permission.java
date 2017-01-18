@@ -26,7 +26,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.1, Dec 24, 2016
+ * @version 1.8.1.1, Jan 18, 2017
  * @since 1.8.0
  */
 public final class Permission {
@@ -127,6 +127,11 @@ public final class Permission {
      * Id - common - follow article.
      */
     public static final String PERMISSION_ID_C_COMMON_FOLLOW_ARTICLE = "commonFollowArticle";
+
+    /**
+     * Id - common - watch article.
+     */
+    public static final String PERMISSION_ID_C_COMMON_WATCH_ARTICLE = "commonWatchArticle";
 
     /**
      * Id - common - view article history.
