@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.41.29.42, Jan 14, 2017
+ * @version 1.41.29.43, Jan 18, 2017
  */
 
 /**
@@ -913,9 +913,15 @@ var Util = {
                 if (result.sc) {
                     $(it).removeClass("disabled");
                     if (typeof (index) !== 'undefined') {
-                        $(it).html('<span class="icon-star"></span> ' + (index + 1)).
+                        if ('article' === type) {
+                            $(it).html('<span class="icon-star"></span> ' + (index + 1)).
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
                                 .attr("aria-label", Label.uncollectLabel).addClass('ft-red');
+                        } else if ('article-watch' === type) {
+                            $(it).html('<span class="icon-view"></span> ' + (index + 1)).
+                                attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
+                                .attr("aria-label", Label.unfollowLabel).addClass('ft-red');
+                        }
                     } else {
                         $(it).attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
                                 .text("article" === type ? Label.uncollectLabel : Label.unfollowLabel);
@@ -951,9 +957,15 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     if (typeof (index) !== 'undefined') {
-                        $(it).removeClass('ft-red').html('<span class="icon-star"></span> ' + (index - 1))
+                        if ('article' === type) {
+                            $(it).removeClass('ft-red').html('<span class="icon-star"></span> ' + (index - 1))
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.collectLabel);
+                        } else if ('article-watch' === type) {
+                            $(it).removeClass('ft-red').html('<span class="icon-view"></span> ' + (index - 1))
+                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
+                                .attr("aria-label", Label.followLabel);
+                        }
                     } else {
                         $(it).attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
                                 .text("article" === type ? Label.collectLabel : Label.followLabel);

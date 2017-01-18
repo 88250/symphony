@@ -29,10 +29,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Pointtransfer;
-import org.b3log.symphony.model.Role;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.FollowRepository;
 import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -54,7 +51,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.8.5.10, Jan 11, 2017
+ * @version 1.8.5.11, Jan 18, 2017
  * @since 0.2.0
  */
 @Service
@@ -690,7 +687,8 @@ public class UserQueryService {
             for (int i = 0; i < users.length(); i++) {
                 JSONObject user = users.getJSONObject(i);
                 users.getJSONObject(i).put(Common.IS_FOLLOWING,
-                        followRepository.exists(requestJSONObject.optString(Keys.OBJECT_ID), user.optString(Keys.OBJECT_ID)));
+                        followRepository.exists(requestJSONObject.optString(Keys.OBJECT_ID), user.optString(Keys.OBJECT_ID),
+                                Follow.FOLLOWING_TYPE_C_USER));
             }
         } catch (final RepositoryException | JSONException e) {
             LOGGER.log(Level.ERROR, "Fills following failed", e);

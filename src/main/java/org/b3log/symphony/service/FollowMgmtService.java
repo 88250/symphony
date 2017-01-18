@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Follow management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.1, Jan 18, 2017
+ * @version 1.3.1.2, Jan 18, 2017
  * @since 0.2.5
  */
 @Service
@@ -227,7 +227,7 @@ public class FollowMgmtService {
      * @throws RepositoryException repository exception
      */
     private synchronized void follow(final String followerId, final String followingId, final int followingType) throws RepositoryException {
-        if (followRepository.exists(followerId, followingId)) {
+        if (followRepository.exists(followerId, followingId, followingType)) {
             return;
         }
 
@@ -284,7 +284,7 @@ public class FollowMgmtService {
      * @throws RepositoryException repository exception
      */
     public synchronized void unfollow(final String followerId, final String followingId, final int followingType) throws RepositoryException {
-        followRepository.removeByFollowerIdAndFollowingId(followerId, followingId);
+        followRepository.removeByFollowerIdAndFollowingId(followerId, followingId, followingType);
 
         if (Follow.FOLLOWING_TYPE_C_TAG == followingType) {
             final JSONObject tag = tagRepository.get(followingId);

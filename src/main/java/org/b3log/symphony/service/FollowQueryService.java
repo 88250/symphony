@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Follow query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, Nov 16, 2016
+ * @version 1.3.0.4, Jan 18, 2017
  * @since 0.2.5
  */
 @Service
@@ -94,12 +94,13 @@ public class FollowQueryService {
      *
      * @param followerId the specified follower id
      * @param followingId the specified following entity id
+     * @param followingType the specified following type
      * @return {@code true} if exists, returns {@code false} otherwise
      */
-    public boolean isFollowing(final String followerId, final String followingId) {
+    public boolean isFollowing(final String followerId, final String followingId, final int followingType) {
         Stopwatchs.start("Is following");
         try {
-            return followRepository.exists(followerId, followingId);
+            return followRepository.exists(followerId, followingId, followingType);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Determines following failed[followerId=" + followerId + ", followingId="
                     + followingId + ']', e);

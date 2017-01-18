@@ -50,11 +50,13 @@ import java.util.Map;
  * <li>Unfollows a tag (/follow/tag), DELETE</li>
  * <li>Follows an article (/follow/article), POST</li>
  * <li>Unfollows an article (/follow/article), DELETE</li>
+ * <li>Watches an article (/follow/article-watch), POST</li>
+ * <li>Unwatches an article (/follow/article-watch), DELETE</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.2, Jan 18, 2017
+ * @version 1.2.0.3, Jan 18, 2017
  * @since 0.2.5
  */
 @RequestProcessor
