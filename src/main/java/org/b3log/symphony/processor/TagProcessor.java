@@ -60,7 +60,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.9, Jan 7, 2017
+ * @version 1.7.0.10, Jan 18, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -255,7 +255,7 @@ public class TagProcessor {
             final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
-            final boolean isFollowing = followQueryService.isFollowing(followerId, tagId);
+            final boolean isFollowing = followQueryService.isFollowing(followerId, tagId, Follow.FOLLOWING_TYPE_C_TAG);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 

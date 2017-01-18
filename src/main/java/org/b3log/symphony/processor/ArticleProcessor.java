@@ -97,7 +97,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.25.35, Jan 15, 2017
+ * @version 1.24.25.36, Jan 18, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -599,8 +599,11 @@ public class ArticleProcessor {
 
             article.put(Common.IS_MY_ARTICLE, currentUserId.equals(article.optString(Article.ARTICLE_AUTHOR_ID)));
 
-            final boolean isFollowing = followQueryService.isFollowing(currentUserId, articleId);
+            final boolean isFollowing = followQueryService.isFollowing(currentUserId, articleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
+
+            final boolean isWatching = followQueryService.isFollowing(currentUserId, articleId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH);
+            dataModel.put(Common.IS_WATCHING, isWatching);
 
             final int articleVote = voteQueryService.isVoted(currentUserId, articleId);
             article.put(Article.ARTICLE_T_VOTE, articleVote);

@@ -56,6 +56,21 @@
                                 onclick="Article.permissionTip(Label.noPermissionLabel)"
                             </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
                         </#if>
+                        <#if isLoggedIn && isWatching>
+                            <span class="tooltipped tooltipped-n has-cnt ft-red" aria-label="${unfollowLabel}"
+                            <#if permissions["commonWatchArticle"].permissionGrant>
+                                onclick="Util.unfollow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
+                                <#else>
+                                    onclick="Article.permissionTip(Label.noPermissionLabel)"
+                            </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
+                            <#else>
+                                <span class="tooltipped tooltipped-n has-cnt" aria-label="${followLabel}"
+                                <#if permissions["commonWatchArticle"].permissionGrant>
+                                    onclick="Util.follow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
+                                    <#else>
+                                        onclick="Article.permissionTip(Label.noPermissionLabel)"
+                                </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
+                        </#if>
                         <#if 0 < article.articleRewardPoint>
                         <span class="tooltipped tooltipped-n has-cnt<#if article.rewarded> ft-red</#if>"
                         <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>

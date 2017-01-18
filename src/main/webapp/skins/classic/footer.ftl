@@ -61,7 +61,7 @@
 		notificationCommentedLabel: '${notificationCommentedLabel}',
 		notificationReplyLabel: '${notificationReplyLabel}',
 		notificationAtLabel: '${notificationAtLabel}',
-		notificationFollowingUserLabel: '${notificationFollowingUserLabel}',
+		notificationFollowingLabel: '${notificationFollowingLabel}',
 		pointLabel: '${pointLabel}',
 		sameCityLabel: '${sameCityLabel}',
 		systemLabel: '${systemLabel}',

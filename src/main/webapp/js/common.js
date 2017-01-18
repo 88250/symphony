@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.41.29.42, Jan 14, 2017
+ * @version 1.41.29.43, Jan 18, 2017
  */
 
 /**
@@ -65,7 +65,7 @@ var Util = {
     },
     /**
      * @description 标记指定类型的消息通知为已读状态.
-     * @param {String} type 指定类型："commented"/"at"/"followingUser"/"reply"
+     * @param {String} type 指定类型："commented"/"at"/"following"/"reply"
      */
     makeNotificationRead: function (type) {
         $.ajax({
@@ -778,11 +778,11 @@ var Util = {
                             + '</a></li>';
                     }
 
-                    // 我关注的人 unreadFollowingUserNotificationCnt
-                    if (data.unreadFollowingUserNotificationCnt > 0) {
-                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/following-user">' + Label.notificationFollowingUserLabel +
-                            ' <span class="count">' + data.unreadFollowingUserNotificationCnt + '</span>'
-                            + markReadHTML.replace('${markReadType}', 'followingUser')
+                    // 我关注的 unreadFollowingNotificationCnt
+                    if (data.unreadFollowingNotificationCnt > 0) {
+                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/following">' + Label.notificationFollowingLabel +
+                            ' <span class="count">' + data.unreadFollowingNotificationCnt + '</span>'
+                            + markReadHTML.replace('${markReadType}', 'following')
                             + '</a></li>';
                     }
 
@@ -913,9 +913,15 @@ var Util = {
                 if (result.sc) {
                     $(it).removeClass("disabled");
                     if (typeof (index) !== 'undefined') {
-                        $(it).html('<span class="icon-star"></span> ' + (index + 1)).
+                        if ('article' === type) {
+                            $(it).html('<span class="icon-star"></span> ' + (index + 1)).
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
                                 .attr("aria-label", Label.uncollectLabel).addClass('ft-red');
+                        } else if ('article-watch' === type) {
+                            $(it).html('<span class="icon-view"></span> ' + (index + 1)).
+                                attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
+                                .attr("aria-label", Label.unfollowLabel).addClass('ft-red');
+                        }
                     } else {
                         $(it).attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
                                 .text("article" === type ? Label.uncollectLabel : Label.unfollowLabel);
@@ -951,9 +957,15 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     if (typeof (index) !== 'undefined') {
-                        $(it).removeClass('ft-red').html('<span class="icon-star"></span> ' + (index - 1))
+                        if ('article' === type) {
+                            $(it).removeClass('ft-red').html('<span class="icon-star"></span> ' + (index - 1))
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.collectLabel);
+                        } else if ('article-watch' === type) {
+                            $(it).removeClass('ft-red').html('<span class="icon-view"></span> ' + (index - 1))
+                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
+                                .attr("aria-label", Label.followLabel);
+                        }
                     } else {
                         $(it).attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
                                 .text("article" === type ? Label.collectLabel : Label.followLabel);

@@ -42,7 +42,7 @@ import java.util.*;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.2, Jan 12, 2017
+ * @version 1.2.1.2, Jan 18, 2017
  * @since 1.8.0
  */
 @Service
@@ -68,6 +68,7 @@ public class InitMgmtService {
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_UPDATE_COMMENT);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_THANK_ARTICLE);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_THANK_COMMENT);
+        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_WATCH_ARTICLE);
 
         // Member
         MEMBER_PERMISSIONS.addAll(DEFAULT_PERMISSIONS);
@@ -355,6 +356,8 @@ public class InitMgmtService {
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_EXCHANGE_INVITATION_CODE);
             permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_FOLLOW_ARTICLE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_WATCH_ARTICLE);
             permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_GOOD_ARTICLE);
             permissionRepository.add(permission);
