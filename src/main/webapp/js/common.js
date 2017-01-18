@@ -65,7 +65,7 @@ var Util = {
     },
     /**
      * @description 标记指定类型的消息通知为已读状态.
-     * @param {String} type 指定类型："commented"/"at"/"followingUser"/"reply"
+     * @param {String} type 指定类型："commented"/"at"/"following"/"reply"
      */
     makeNotificationRead: function (type) {
         $.ajax({
@@ -778,11 +778,11 @@ var Util = {
                             + '</a></li>';
                     }
 
-                    // 我关注的人 unreadFollowingUserNotificationCnt
-                    if (data.unreadFollowingUserNotificationCnt > 0) {
-                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/following-user">' + Label.notificationFollowingUserLabel +
-                            ' <span class="count">' + data.unreadFollowingUserNotificationCnt + '</span>'
-                            + markReadHTML.replace('${markReadType}', 'followingUser')
+                    // 我关注的 unreadFollowingNotificationCnt
+                    if (data.unreadFollowingNotificationCnt > 0) {
+                        notiHTML += '<li><a href="' + Label.servePath + '/notifications/following">' + Label.notificationFollowingLabel +
+                            ' <span class="count">' + data.unreadFollowingNotificationCnt + '</span>'
+                            + markReadHTML.replace('${markReadType}', 'following')
                             + '</a></li>';
                     }
 

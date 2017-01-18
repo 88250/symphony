@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all notification model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.2, Jan 14, 2017
+ * @version 1.11.0.2, Jan 18, 2017
  * @since 0.2.5
  */
 public final class Notification {
@@ -78,7 +78,7 @@ public final class Notification {
     public static final int DATA_TYPE_C_COMMENTED = 3;
 
     /**
-     * Data type - followingUser.
+     * Data type - following - user.
      */
     public static final int DATA_TYPE_C_FOLLOWING_USER = 4;
 
@@ -156,6 +156,16 @@ public final class Notification {
      * Data type - system announcement - role changed.
      */
     public static final int DATA_TYPE_C_SYS_ANNOUNCE_ROLE_CHANGED = 19;
+
+    /**
+     * Data type - following - article update.
+     */
+    public static final int DATA_TYPE_C_FOLLOWING_ARTICLE_UPDATE = 20;
+
+    /**
+     * Data type - following - article comment.
+     */
+    public static final int DATA_TYPE_C_FOLLOWING_ARTICLE_COMMENT = 21;
 
     //// Transient ////
     /**

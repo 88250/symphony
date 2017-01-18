@@ -42,7 +42,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.8, Jan 14, 2017
+ * @version 1.10.3.8, Jan 18, 2017
  * @since 0.2.5
  */
 @Service
@@ -120,7 +120,39 @@ public class NotificationQueryService {
     private RoleQueryService roleQueryService;
 
     /**
-     * Gets the count of unread 'point' notifications of a user specified with the given user id.
+     * Gets the count of unread 'following' notifications of a user specified with the given user id.
+     *
+     * @param userId the given user id
+     * @return count of unread notifications, returns {@code 0} if occurs exception
+     */
+    public int getUnreadFollowingNotificationCount(final String userId) {
+        final List<Filter> filters = new ArrayList<>();
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
+
+        final List<Filter> subFilters = new ArrayList<>();
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_UPDATE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_FOLLOWING_USER));
+
+        filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
+
+        final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+        try {
+            final JSONObject result = notificationRepository.get(query);
+
+            return result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets [following] notification count failed [userId=" + userId + "]", e);
+
+            return 0;
+        }
+    }
+
+    /**
+     * Gets the count of unread 'sys announce' notifications of a user specified with the given user id.
      *
      * @param userId the given user id
      * @return count of unread notifications, returns {@code 0} if occurs exception
@@ -896,7 +928,7 @@ public class NotificationQueryService {
     }
 
     /**
-     * Gets 'followingUser' type notifications with the specified user id, current page number and page size.
+     * Gets 'following' type notifications with the specified user id, current page number and page size.
      *
      * @param avatarViewMode the specified avatar view mode
      * @param userId         the specified user id
@@ -924,8 +956,8 @@ public class NotificationQueryService {
      * </pre>
      * @throws ServiceException service exception
      */
-    public JSONObject getFollowingUserNotifications(final int avatarViewMode,
-                                                    final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getFollowingNotifications(final int avatarViewMode,
+                                                final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
 
@@ -933,7 +965,13 @@ public class NotificationQueryService {
 
         final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
-        filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_FOLLOWING_USER));
+
+        final List<Filter> subFilters = new ArrayList<>();
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_FOLLOWING_USER));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_UPDATE));
+        filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
 
         final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
