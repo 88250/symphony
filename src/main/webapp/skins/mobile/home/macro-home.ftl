@@ -82,6 +82,9 @@
                     <li<#if type == "comments"> class="fn-none"</#if>>
                         <a href="${servePath}/member/${user.userName}/comments">${cmtLabel}</a>
                     </li>
+                    <li<#if type == "watchingArticles"> class="fn-none"</#if>>
+                    <a href="${servePath}/member/${user.userName}/watching/articles">${watchingArticlesLabel}</a>
+                    </li>
                     <li<#if type == "followingUsers"> class="fn-none"</#if>>
                         <a href="${servePath}/member/${user.userName}/following/users">${followingUsersLabel}</a>
                     </li>

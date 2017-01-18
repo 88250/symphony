@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.14.28.33, Jan 3, 2017
+ * @version 2.14.28.35, Jan 18, 2017
  * @since 0.2.0
  */
 @Service
@@ -446,6 +446,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_GOOD_CNT, 0);
             article.put(Article.ARTICLE_BAD_CNT, 0);
             article.put(Article.ARTICLE_COLLECT_CNT, 0);
+            article.put(Article.ARTICLE_WATCH_CNT, 0);
             article.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
             article.put(Article.ARTICLE_CREATE_TIME, currentTimeMillis);
             article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
@@ -665,7 +666,8 @@ public class ArticleMgmtService {
             final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
             int addition = (int) Math.round(Math.sqrt(followerCnt));
             final long collectCnt = followQueryService.getFollowerCount(articleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
-            addition += collectCnt * 2;
+            final long watchCnt = followQueryService.getFollowerCount(articleId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH);
+            addition += (collectCnt + watchCnt) * 2;
             updatePointSum = Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition;
 
             articleAnonymous = oldArticle.optInt(Article.ARTICLE_ANONYMOUS);
@@ -1530,6 +1532,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_GOOD_CNT, 0);
             article.put(Article.ARTICLE_BAD_CNT, 0);
             article.put(Article.ARTICLE_COLLECT_CNT, 0);
+            article.put(Article.ARTICLE_WATCH_CNT, 0);
             article.put(Article.ARTICLE_COMMENTABLE, true);
             article.put(Article.ARTICLE_CREATE_TIME, time);
             article.put(Article.ARTICLE_UPDATE_TIME, time);

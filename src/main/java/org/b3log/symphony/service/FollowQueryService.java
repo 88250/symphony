@@ -253,7 +253,7 @@ public class FollowQueryService {
                 final JSONObject article = articleRepository.get(followingId);
 
                 if (null == article) {
-                    LOGGER.log(Level.WARN, "Not found article[id=" + followingId + ']');
+                    LOGGER.log(Level.WARN, "Not found article [id=" + followingId + ']');
 
                     continue;
                 }
@@ -265,7 +265,64 @@ public class FollowQueryService {
 
             ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets following articles of follower[id=" + followerId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Get following articles of follower [id=" + followerId + "] failed", e);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets watching articles of the specified follower.
+     *
+     * @param avatarViewMode the specified avatar view mode
+     * @param followerId the specified follower id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return result json object, for example,      <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         Article
+     *     }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    public JSONObject getWatchingArticles(final int avatarViewMode,
+                                           final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> records = new ArrayList<>();
+
+        ret.put(Keys.RESULTS, (Object) records);
+        ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
+
+        try {
+            final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH, currentPageNum, pageSize);
+            @SuppressWarnings("unchecked")
+            final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
+
+            final ArticleQueryService articleQueryService
+                    = Lifecycle.getBeanManager().getReference(ArticleQueryService.class);
+
+            for (final JSONObject follow : followings) {
+                final String followingId = follow.optString(Follow.FOLLOWING_ID);
+                final JSONObject article = articleRepository.get(followingId);
+
+                if (null == article) {
+                    LOGGER.log(Level.WARN, "Not found article [id=" + followingId + ']');
+
+                    continue;
+                }
+
+                articleQueryService.organizeArticle(avatarViewMode, article);
+
+                records.add(article);
+            }
+
+            ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Get watching articles of follower [id=" + followerId + "] failed", e);
         }
 
         return ret;

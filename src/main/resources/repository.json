@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "4.34.7.20, Jan 14, 2017",
+    "version": "4.35.7.20, Jan 18, 2017",
     "authors": [
         "Liang Ding",
         "Zephyr",
@@ -742,7 +742,7 @@
                 {
                     "name": "followingType",
                     "type": "int",
-                    "description": "0: user, 1: tag"
+                    "description": "0: user, 1: tag, 2: article collect, 3: article watch"
                 }
             ]
         },
@@ -1470,6 +1470,10 @@
                 },
                 {
                     "name": "articleCollectCnt",
+                    "type": "int"
+                },
+                {
+                    "name": "articleWatchCnt",
                     "type": "int"
                 },
                 {

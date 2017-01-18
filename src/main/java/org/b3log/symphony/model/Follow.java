@@ -63,9 +63,14 @@ public final class Follow {
     public static final int FOLLOWING_TYPE_C_TAG = 1;
 
     /**
-     * Following type - article.
+     * Following type - article collect.
      */
     public static final int FOLLOWING_TYPE_C_ARTICLE = 2;
+
+    /**
+     * Following type - article watch.
+     */
+    public static final int FOLLOWING_TYPE_C_ARTICLE_WATCH = 3;
 
     /**
      * Private constructor.
