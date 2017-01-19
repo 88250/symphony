@@ -28,7 +28,9 @@
                 <div class="content">
                     <div class="module">
                     <#nested>
-                    <#include "../common/ranking.ftl">
+                        <div class="top-ranking">
+                            <#include "../common/ranking.ftl">
+                        </div>
                     <br>    
                     </div>
                 </div>

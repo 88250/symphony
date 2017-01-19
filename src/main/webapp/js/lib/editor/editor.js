@@ -1110,7 +1110,8 @@
     function toggleFullScreen(editor) {
         var cm = editor.codemirror,
         wrap = editor.codemirror.getWrapperElement();
-        
+
+        $(editor.element.parentElement).css('z-index', 'inherit');
         if ('icon-fullscreen' === editor.toolbar.fullscreen.className) {
             editor.toolbar.fullscreen.className = 'icon-contract';
 
