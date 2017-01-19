@@ -49,20 +49,20 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Sends article add related notifications.
+ * Sends article update related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.12, Jan 19, 2017
- * @since 0.2.0
+ * @version 1.0.0.0, Jan 19, 2017
+ * @since 2.0.0
  */
 @Named
 @Singleton
-public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
+public class ArticleUpdateNotifier extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleAddNotifier.class);
+    private static final Logger LOGGER = Logger.getLogger(ArticleUpdateNotifier.class);
 
     /**
      * Notification management service.
@@ -98,7 +98,7 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.TRACE, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                event.getType(), data, ArticleAddNotifier.class.getName());
+                event.getType(), data, ArticleUpdateNotifier.class.getName());
 
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
@@ -114,25 +114,7 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
 
             final Set<String> atedUserIds = new HashSet<>();
 
-            // 'At' Notification
-            for (final String userName : atUserNames) {
-                final JSONObject user = userQueryService.getUserByName(userName);
 
-                if (null == user) {
-                    LOGGER.log(Level.WARN, "Not found user by name [{0}]", userName);
-
-                    continue;
-                }
-
-                final JSONObject requestJSONObject = new JSONObject();
-                final String atedUserId = user.optString(Keys.OBJECT_ID);
-                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, atedUserId);
-                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
-
-                notificationMgmtService.addAtNotification(requestJSONObject);
-
-                atedUserIds.add(atedUserId);
-            }
 
             final String tags = originalArticle.optString(Article.ARTICLE_TAGS);
 
@@ -245,12 +227,12 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
+     * Gets the event type {@linkplain EventTypes#UPDATE_ARTICLE}.
      *
      * @return event type
      */
     @Override
     public String getEventType() {
-        return EventTypes.ADD_ARTICLE;
+        return EventTypes.UPDATE_ARTICLE;
     }
 }

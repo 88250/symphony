@@ -64,7 +64,7 @@ public class TimelineMgmtService {
      * {
      *     "userId": "",
      *     "type": "article",
-     *     "content": timelineArticleLabel
+     *     "content": timelineArticleAddLabel
      * }
      * </pre>
      */
