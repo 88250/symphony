@@ -56,6 +56,11 @@ var Settings = {
             $(it).text(Label.previewLabel);
         } else {
             $('#homeSidePanel').show();
+            $('#userNicknameDom').text($('#userNickname').val());
+            $('#userTagsDom').text($('#userTags').val());
+            $('#userURLDom').text($('#userURL').val()).attr('href', $('#userURL').val());
+            $('#userIntroDom').text($('#userIntro').val());
+
             $(it).text(Label.unPreviewLabel);
         }
     },
