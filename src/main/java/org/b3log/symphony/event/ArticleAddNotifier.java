@@ -172,7 +172,6 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
             if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)) {
                 content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
                         + "/member/" + articleAuthorName + "'>" + articleAuthorName + "</a>");
-
             } else {
                 content = content.replace("{user}", UserExt.ANONYMOUS_USER_NAME);
             }
@@ -240,7 +239,7 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
                 LOGGER.info("System announcement [" + articleTitle + "] broadcast [users=" + users.length() + "]");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Sends the article notification failed", e);
+            LOGGER.log(Level.ERROR, "Sends the article add notification failed", e);
         }
     }
 

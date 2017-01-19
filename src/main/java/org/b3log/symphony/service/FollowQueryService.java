@@ -17,22 +17,12 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.repository.CompositeFilter;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.Filter;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
@@ -44,11 +34,15 @@ import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Follow query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.4, Jan 18, 2017
+ * @version 1.4.0.4, Jan 19, 2017
  * @since 0.2.5
  */
 @Service
@@ -92,8 +86,8 @@ public class FollowQueryService {
     /**
      * Determines whether exists a follow relationship for the specified follower and the specified following entity.
      *
-     * @param followerId the specified follower id
-     * @param followingId the specified following entity id
+     * @param followerId    the specified follower id
+     * @param followingId   the specified following entity id
      * @param followingType the specified following type
      * @return {@code true} if exists, returns {@code false} otherwise
      */
@@ -115,9 +109,9 @@ public class FollowQueryService {
      * Gets following users of the specified follower.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param followerId the specified follower id
+     * @param followerId     the specified follower id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -126,11 +120,10 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getFollowingUsers(final int avatarViewMode,
-            final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
+                                        final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
 
@@ -168,9 +161,9 @@ public class FollowQueryService {
     /**
      * Gets following tags of the specified follower.
      *
-     * @param followerId the specified follower id
+     * @param followerId     the specified follower id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -179,7 +172,6 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getFollowingTags(final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
@@ -219,9 +211,9 @@ public class FollowQueryService {
      * Gets following articles of the specified follower.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param followerId the specified follower id
+     * @param followerId     the specified follower id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -230,11 +222,10 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getFollowingArticles(final int avatarViewMode,
-            final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
+                                           final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
 
@@ -276,9 +267,9 @@ public class FollowQueryService {
      * Gets watching articles of the specified follower.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param followerId the specified follower id
+     * @param followerId     the specified follower id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -287,11 +278,10 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getWatchingArticles(final int avatarViewMode,
-                                           final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
+                                          final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
 
@@ -330,12 +320,12 @@ public class FollowQueryService {
     }
 
     /**
-     * Gets follower users of the specified following user.
+     * Gets watcher users of the specified watching article.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param followingUserId the specified following user id
-     * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param avatarViewMode    the specified avatar view mode
+     * @param watchingArticleId the specified watching article id
+     * @param currentPageNum    the specified page number
+     * @param pageSize          the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -344,11 +334,65 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
+     * @throws ServiceException service exception
+     */
+    public JSONObject getArticleWatchers(final int avatarViewMode,
+                                         final String watchingArticleId, final int currentPageNum, final int pageSize)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> records = new ArrayList<>();
+
+        ret.put(Keys.RESULTS, (Object) records);
+        ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
+
+        try {
+            final JSONObject result = getFollowers(watchingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH, currentPageNum, pageSize);
+
+            @SuppressWarnings("unchecked")
+            final List<JSONObject> followers = (List<JSONObject>) result.opt(Keys.RESULTS);
+
+            for (final JSONObject follow : followers) {
+                final String followerId = follow.optString(Follow.FOLLOWER_ID);
+                final JSONObject user = userRepository.get(followerId);
+
+                if (null == user) {
+                    LOGGER.log(Level.WARN, "Not found user[id=" + followerId + ']');
+
+                    continue;
+                }
+
+                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+
+                records.add(user);
+            }
+
+            ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets watcher users of watching article [id=" + watchingArticleId + "] failed", e);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets follower users of the specified following user.
      *
+     * @param avatarViewMode  the specified avatar view mode
+     * @param followingUserId the specified following user id
+     * @param currentPageNum  the specified page number
+     * @param pageSize        the specified page size
+     * @return result json object, for example,      <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         User
+     *     }, ....]
+     * }
+     * </pre>
      * @throws ServiceException service exception
      */
     public JSONObject getFollowerUsers(final int avatarViewMode,
-            final String followingUserId, final int currentPageNum, final int pageSize)
+                                       final String followingUserId, final int currentPageNum, final int pageSize)
             throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
@@ -388,7 +432,7 @@ public class FollowQueryService {
     /**
      * Gets the following count of a follower specified by the given follower id and following type.
      *
-     * @param followerId the given follower id
+     * @param followerId    the given follower id
      * @param followingType the given following type
      * @return count
      */
@@ -416,7 +460,7 @@ public class FollowQueryService {
     /**
      * Gets the follower count of a following specified by the given following id and following type.
      *
-     * @param followingId the given following id
+     * @param followingId   the given following id
      * @param followingType the given following type
      * @return count
      */
@@ -439,10 +483,10 @@ public class FollowQueryService {
     /**
      * Gets the followings of a follower specified by the given follower id and following type.
      *
-     * @param followerId the given follower id
-     * @param followingType the specified following type
+     * @param followerId     the given follower id
+     * @param followingType  the specified following type
      * @param currentPageNum the specified current page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -454,7 +498,6 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws RepositoryException repository exception
      */
     private JSONObject getFollowings(final String followerId, final int followingType, final int currentPageNum, final int pageSize)
@@ -481,10 +524,10 @@ public class FollowQueryService {
     /**
      * Gets the followers of a following specified by the given following id and follow type.
      *
-     * @param followingId the given following id
-     * @param followingType the specified following type
+     * @param followingId    the given following id
+     * @param followingType  the specified following type
      * @param currentPageNum the specified current page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -496,7 +539,6 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws RepositoryException repository exception
      */
     private JSONObject getFollowers(final String followingId, final int followingType, final int currentPageNum, final int pageSize)
