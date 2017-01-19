@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Sends an article to local search engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.0, Sep 1, 2016
+ * @version 1.1.3.0, Jan 19, 2017
  * @since 1.4.0
  */
 @Named
@@ -45,7 +45,7 @@ public class ArticleSearchAdder extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleNotifier.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleSearchAdder.class);
 
     /**
      * Search management service.

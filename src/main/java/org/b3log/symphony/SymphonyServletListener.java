@@ -108,7 +108,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         eventManager.registerListener(new CommentSender()); // Not a bean
         eventManager.registerListener(new org.b3log.symphony.event.other.CommentSender()); // Not a bean
 
-        final ArticleNotifier articleNotifier = beanManager.getReference(ArticleNotifier.class);
+        final ArticleAddNotifier articleNotifier = beanManager.getReference(ArticleAddNotifier.class);
         eventManager.registerListener(articleNotifier);
 
         final ArticleBaiduSender articleBaiduSender = beanManager.getReference(ArticleBaiduSender.class);
