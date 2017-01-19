@@ -6,7 +6,7 @@
         <meta name="description" content="${timelineLabel}"/>
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
-        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css?${staticResourceVersion}">
         <link rel="canonical" href="${servePath}/community">
     </head>
     <body>
@@ -81,7 +81,7 @@
         <script>
             Label.uploadLabel = "${uploadLabel}";
         </script>
-        <script src="${staticServePath}/js/lib/editor/codemirror.min.js?5120"></script>
+        <script src="${staticServePath}/js/lib/editor/codemirror.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/lib/highlight.js-9.6.0/highlight.pack.js"></script>
         <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>

@@ -167,8 +167,6 @@ var AddArticle = {
                 status: false
             });
             addArticleEditor.render();
-            // 默认使用 preview
-            $('.editor-toolbar .icon-preview:eq(0)').click();
 
             AddArticle.editor = addArticleEditor.codemirror;
         }
@@ -176,6 +174,8 @@ var AddArticle = {
         if (window.localStorage && window.localStorage.articleContent && "" === AddArticle.editor.getValue()
                 && "" !== window.localStorage.articleContent.replace(/(^\s*)|(\s*$)/g, "")) {
             AddArticle.editor.setValue(window.localStorage.articleContent);
+            // 默认使用 preview
+            $('.editor-toolbar .icon-preview:eq(0)').click();
         }
 
         if (!window.localStorage.thoughtContent) {

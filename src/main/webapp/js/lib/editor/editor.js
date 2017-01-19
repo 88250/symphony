@@ -1311,6 +1311,7 @@
                     /\s*editor-preview-active\s*/g, ''
                     );
             toolbar.className = toolbar.className.replace(/\s*active\s*/g, '');
+            cm.display.scroller.style.width = '100%';
             return false;
         } else {
             /* When the preview button is clicked for the first time,
@@ -1321,6 +1322,8 @@
                 preview.className += ' editor-preview-active'
             }, 1);
             toolbar.className += ' active';
+
+            cm.display.scroller.style.width = '50%';
         }
         var text = cm.getValue();
 
