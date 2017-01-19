@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.19.11.15, Jan 11, 2017
+ * @version 1.19.11.16, Jan 20, 2017
  */
 
 /**
@@ -380,6 +380,7 @@ var Settings = {
                     userFollowingUserStatus: $("#userFollowingUserStatus").prop("checked"),
                     userFollowingTagStatus: $("#userFollowingTagStatus").prop("checked"),
                     userFollowingArticleStatus: $("#userFollowingArticleStatus").prop("checked"),
+                    userWatchingArticleStatus: $("#userWatchingArticleStatus").prop("checked"),
                     userFollowerStatus: $("#userFollowerStatus").prop("checked"),
                     userPointStatus: $("#userPointStatus").prop("checked"),
                     userOnlineStatus: $("#userOnlineStatus").prop("checked"),

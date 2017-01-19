@@ -34,6 +34,12 @@
         <div class="fn-clear settings-secret">
             <div>
                 <label>
+                    ${userWatchingArticleStatusLabel}
+                    <input id="userWatchingArticleStatus" <#if 0 == currentUser.userWatchingArticleStatus> checked="checked"</#if> type="checkbox" />
+                </label>
+            </div>
+            <div>
+                <label>
                     ${userFollowingArticleStatusLabel}
                     <input id="userFollowingArticleStatus" <#if 0 == currentUser.userFollowingArticleStatus> checked="checked"</#if> type="checkbox" /> 
                 </label>
