@@ -42,7 +42,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.3.8, Jan 18, 2017
+ * @version 1.10.3.9, Jan 19, 2017
  * @since 0.2.5
  */
 @Service
@@ -133,6 +133,8 @@ public class NotificationQueryService {
         final List<Filter> subFilters = new ArrayList<>();
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_UPDATE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_COMMENT));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_FOLLOWING_USER));
 
@@ -971,6 +973,9 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_FOLLOWING_USER));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_UPDATE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_COMMENT));
+
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
 
         final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
