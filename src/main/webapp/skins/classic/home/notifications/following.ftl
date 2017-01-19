@@ -1,5 +1,5 @@
 <#include "macro-notifications.ftl">
-<@notifications "followingUser">
+<@notifications "following">
 <#if followingNotifications?size != 0>
 <ul class="notification">
     <#list followingNotifications as notification>
