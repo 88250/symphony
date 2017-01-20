@@ -5,7 +5,7 @@
     <div class="module list">
         <form method="GET" action="${servePath}/admin/tags" class="form">
             <input name="title" type="text" placeholder="${tagLabel}"/>
-            <button type="submit" class="green">${searchLabel}</button>
+            <button type="submit" class="green">${searchLabel}</button>  &nbsp;
             <button type="button" class="btn red" onclick="window.location = '${servePath}/admin/add-tag'">${addTagLabel}</button>
         </form>
         <ul>

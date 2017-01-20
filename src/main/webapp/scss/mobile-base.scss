@@ -1714,8 +1714,8 @@ ul.CodeMirror-hints {
 /* end module */
 
 /* start article */
-.article-action .fn-right > a,
-.article-action .fn-right > span {
+.article-actions .fn-right > a,
+.article-actions .fn-right > span {
     padding: 4px 8px;
     border-radius: 2px;
     display: inline-block;
@@ -2469,7 +2469,7 @@ label.cmt-anonymous {
     vertical-align: super;
 }
 
-.tag-articles .article-action .fn-right {
+.tag-articles .article-actions .fn-right {
     margin-top: -8px;
 }
 /* end side tags */

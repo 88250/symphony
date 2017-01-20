@@ -20,7 +20,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="article-action fn-clear"> 
+                <div class="article-actions fn-clear">
                     <span class="fn-right">
                         <span id="thankArticle" aria-label="${thankLabel}"
                               class="tooltipped tooltipped-n has-cnt<#if article.thanked> ft-red</#if>"
