@@ -35,11 +35,11 @@
                 </span> 
             </div>
             <#if isLoggedIn>
-            <#if article.isFollowing>
-            <button class="green small fn-right" onclick="Util.unfollow(this, '${article.oId}', 'article')">${uncollectLabel}</button>
-            <#else>
-            <button class="green small fn-right" onclick="Util.follow(this, '${article.oId}', 'article')">${followLabel}</button>
-            </#if>
+                <#if article.isFollowing>
+                    <button class="small fn-right" onclick="Util.unfollow(this, '${article.oId}', 'article-watch')">${followLabel}</button>
+                    <#else>
+                    <button class="small fn-right" onclick="Util.follow(this, '${article.oId}', 'article-watch')">${unfollowLabel}</button>
+                </#if>
             </#if>
         </li>
         </#list>
