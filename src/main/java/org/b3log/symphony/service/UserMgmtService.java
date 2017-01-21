@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.20.22, Jan 21, 2017
+ * @version 1.15.20.23, Jan 21, 2017
  * @since 0.2.0
  */
 @Service
@@ -724,17 +724,6 @@ public class UserMgmtService {
         try {
             if (null != userRepository.getByEmail(newEmail)) {
                 throw new ServiceException(langPropsService.get("duplicatedEmailLabel") + " [" + newEmail + "]");
-            }
-
-            // Update relevent comments of the user
-            final Query commentQuery = new Query().setFilter(new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId));
-            final JSONObject commentResult = commentRepository.get(commentQuery);
-            final JSONArray comments = commentResult.optJSONArray(Keys.RESULTS);
-            for (int i = 0; i < comments.length(); i++) {
-                final JSONObject comment = comments.optJSONObject(i);
-                comment.put(Comment.COMMENT_AUTHOR_EMAIL, newEmail);
-
-                commentRepository.update(comment.optString(Keys.OBJECT_ID), comment);
             }
 
             // Update the user

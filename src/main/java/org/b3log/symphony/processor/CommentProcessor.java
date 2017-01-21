@@ -17,13 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Set;
-import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
@@ -37,43 +30,40 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Requests;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Client;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Reward;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.processor.advice.validate.ClientCommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentAddValidation;
-import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.ClientMgmtService;
-import org.b3log.symphony.service.ClientQueryService;
-import org.b3log.symphony.service.CommentMgmtService;
-import org.b3log.symphony.service.CommentQueryService;
-import org.b3log.symphony.service.RewardQueryService;
-import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.service.*;
 import org.json.JSONObject;
+
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Comment processor.
- *
+ * <p>
  * <ul>
  * <li>Adds a comment (/comment) <em>locally</em>, POST</li>
  * <li>Adds a comment (/solo/comment) <em>remotely</em>, POST</li>
  * <li>Thanks a comment (/comment/thank), POST</li>
  * <li>Gets a comment's replies (/comment/replies), GET </li>
  * </ul>
- *
+ * </p>
  * <p>
  * The '<em>locally</em>' means user post a comment on Symphony directly rather than receiving a comment from externally
  * (for example Solo).
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.12, Aug 30, 2016
+ * @version 1.5.1.13, Jan 21, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -135,14 +125,14 @@ public class CommentProcessor {
     /**
      * Gets a comment's original comment.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/comment/original", method = HTTPRequestMethod.POST)
     public void getOriginalComment(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                                   final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
@@ -171,14 +161,14 @@ public class CommentProcessor {
     /**
      * Gets a comment's replies.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/comment/replies", method = HTTPRequestMethod.POST)
     public void getReplies(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                           final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
@@ -208,7 +198,6 @@ public class CommentProcessor {
 
     /**
      * Adds a comment locally.
-     *
      * <p>
      * The request json object (a comment):
      * <pre>
@@ -222,10 +211,10 @@ public class CommentProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @throws IOException io exception
+     * @throws IOException      io exception
      * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/comment", method = HTTPRequestMethod.POST)
@@ -295,9 +284,6 @@ public class CommentProcessor {
 
             comment.put(Comment.COMMENT_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
 
-            final String authorEmail = currentUser.optString(User.USER_EMAIL);
-            comment.put(Comment.COMMENT_AUTHOR_EMAIL, authorEmail);
-
             comment.put(Comment.COMMENT_T_COMMENTER, currentUser);
             comment.put(Comment.COMMENT_ANONYMOUS, isAnonymous
                     ? Comment.COMMENT_ANONYMOUS_C_ANONYMOUS : Comment.COMMENT_ANONYMOUS_C_PUBLIC);
@@ -311,7 +297,6 @@ public class CommentProcessor {
 
     /**
      * Thanks a comment.
-     *
      * <p>
      * The request json object:
      * <pre>
@@ -321,10 +306,10 @@ public class CommentProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @throws IOException io exception
+     * @throws IOException      io exception
      * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/comment/thank", method = HTTPRequestMethod.POST)
@@ -357,7 +342,6 @@ public class CommentProcessor {
 
     /**
      * Adds a comment remotely.
-     *
      * <p>
      * The request json object (a comment):
      * <pre>
@@ -379,8 +363,8 @@ public class CommentProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -398,7 +382,6 @@ public class CommentProcessor {
 
         final JSONObject defaultCommenter = userQueryService.getDefaultCommenter();
         final JSONObject comment = new JSONObject();
-        comment.put(Comment.COMMENT_AUTHOR_EMAIL, defaultCommenter.optString(User.USER_EMAIL));
         comment.put(Comment.COMMENT_AUTHOR_ID, defaultCommenter.optString(Keys.OBJECT_ID));
         comment.put(Comment.COMMENT_CLIENT_COMMENT_ID, originalCmt.optString(Comment.COMMENT_T_ID));
         comment.put(Comment.COMMENT_CONTENT, originalCmt.optString(Comment.COMMENT_CONTENT));

@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.24.41, Jan 16, 2017
+ * @version 2.25.24.42, Jan 21, 2017
  * @since 0.2.0
  */
 @Service
@@ -2222,7 +2222,6 @@ public class ArticleQueryService {
                                                          final String articleId, final int fetchSize) throws ServiceException {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId))
-                .addProjection(Comment.COMMENT_AUTHOR_EMAIL, String.class)
                 .addProjection(Keys.OBJECT_ID, String.class)
                 .addProjection(Comment.COMMENT_AUTHOR_ID, String.class)
                 .setPageCount(1).setCurrentPageNum(1).setPageSize(fetchSize);
@@ -2253,10 +2252,10 @@ public class ArticleQueryService {
             }
 
             for (final JSONObject comment : comments) {
-                final String email = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 final String userId = comment.optString(Comment.COMMENT_AUTHOR_ID);
 
                 final JSONObject commenter = userRepository.get(userId);
+                final String email = commenter.optString(User.USER_EMAIL);
 
                 String thumbnailURL = Symphonys.get("defaultThumbnailURL");
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
