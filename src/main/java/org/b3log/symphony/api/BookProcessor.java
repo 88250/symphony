@@ -58,7 +58,7 @@ import java.util.Map;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Jan 16, 2017
+ * @version 1.1.0.4, Jan 21, 2017
  * @since 1.9.0
  */
 @RequestProcessor
@@ -119,7 +119,6 @@ public class BookProcessor {
         queryFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
         queryFields.put(Article.ARTICLE_VIEW_CNT, Integer.class);
         queryFields.put(Article.ARTICLE_COMMENT_CNT, Integer.class);
-        queryFields.put(Article.ARTICLE_AUTHOR_EMAIL, String.class);
         queryFields.put(Article.ARTICLE_AUTHOR_ID, String.class);
         queryFields.put(Article.ARTICLE_TAGS, String.class);
         queryFields.put(Article.ARTICLE_STATUS, Integer.class);

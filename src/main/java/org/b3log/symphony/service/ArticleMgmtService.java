@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.14.28.35, Jan 18, 2017
+ * @version 2.14.28.36, Jan 21, 2017
  * @since 0.2.0
  */
 @Service
@@ -314,7 +314,6 @@ public class ArticleMgmtService {
      *                          "articleTags": "",
      *                          "articleContent": "",
      *                          "articleEditorType": "",
-     *                          "articleAuthorEmail": "",
      *                          "articleAuthorId": "",
      *                          "articleCommentable": boolean, // optional, default to true
      *                          "syncWithSymphonyClient": boolean, // optional
@@ -438,7 +437,6 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
 
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
-            article.put(Article.ARTICLE_AUTHOR_EMAIL, requestJSONObject.optString(Article.ARTICLE_AUTHOR_EMAIL));
             article.put(Article.ARTICLE_SYNC_TO_CLIENT, fromClient ? true : author.optBoolean(UserExt.SYNC_TO_CLIENT));
             article.put(Article.ARTICLE_AUTHOR_ID, authorId);
             article.put(Article.ARTICLE_COMMENT_CNT, 0);
@@ -1521,7 +1519,6 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, ret);
             article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, "");
             article.put(Article.ARTICLE_AUTHOR_ID, author.optString(Keys.OBJECT_ID));
-            article.put(Article.ARTICLE_AUTHOR_EMAIL, author.optString(User.USER_EMAIL));
             article.put(Article.ARTICLE_TITLE, Emotions.toAliases(requestJSONObject.optString(Article.ARTICLE_TITLE)));
             article.put(Article.ARTICLE_CONTENT, Emotions.toAliases(requestJSONObject.optString(Article.ARTICLE_CONTENT)));
             article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));

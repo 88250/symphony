@@ -17,15 +17,6 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -33,12 +24,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
@@ -46,11 +32,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Role;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
@@ -64,11 +46,16 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
+import javax.inject.Inject;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.10.8.21, Nov 28, 2016
+ * @version 2.10.8.22, Jan 21, 2017
  * @since 0.2.0
  */
 @Service
@@ -124,9 +111,9 @@ public class CommentQueryService {
     /**
      * Gets original comment of a comment specified by the given comment id.
      *
-     * @param avatarViewMode the specified avatar view mode
+     * @param avatarViewMode  the specified avatar view mode
      * @param commentViewMode the specified comment view mode
-     * @param commentId the given comment id
+     * @param commentId       the given comment id
      * @return original comment, return {@code null} if not found
      */
     public JSONObject getOriginalComment(final int avatarViewMode, final int commentViewMode, final String commentId) {
@@ -190,9 +177,9 @@ public class CommentQueryService {
     /**
      * Gets replies of a comment specified by the given comment id.
      *
-     * @param avatarViewMode the specified avatar view mode
+     * @param avatarViewMode  the specified avatar view mode
      * @param commentViewMode the specified comment view mode
-     * @param commentId the given comment id
+     * @param commentId       the given comment id
      * @return a list of replies, return an empty list if not found
      */
     public List<JSONObject> getReplies(final int avatarViewMode, final int commentViewMode, final String commentId) {
@@ -267,14 +254,14 @@ public class CommentQueryService {
     /**
      * Gets nice comments of an article specified by the given article id.
      *
-     * @param avatarViewMode the specified avatar view mode
+     * @param avatarViewMode  the specified avatar view mode
      * @param commentViewMode the specified comment view mode
-     * @param articleId the given article id
-     * @param fetchSize the specified fetch size
+     * @param articleId       the given article id
+     * @param fetchSize       the specified fetch size
      * @return a list of nice comments, return an empty list if not found
      */
     public List<JSONObject> getNiceComments(final int avatarViewMode, final int commentViewMode,
-            final String articleId, final int fetchSize) {
+                                            final String articleId, final int fetchSize) {
         Stopwatchs.start("Gets nice comments");
         try {
             final Query query = new Query().addSort(Comment.COMMENT_SCORE, SortDirection.DESCENDING).
@@ -384,10 +371,10 @@ public class CommentQueryService {
     }
 
     /**
-     * Gets a comment with {@link #organizeComment(org.json.JSONObject)} by the specified comment id.
+     * Gets a comment with {@link #organizeComment(int, JSONObject)} by the specified comment id.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param commentId the specified comment id
+     * @param commentId      the specified comment id
      * @return comment, returns {@code null} if not found
      * @throws ServiceException service exception
      */
@@ -433,13 +420,13 @@ public class CommentQueryService {
 
     /**
      * Gets the latest comments with the specified fetch size.
-     *
+     * <p>
      * <p>
      * The returned comments content is plain text.
      * </p>
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param fetchSize the specified fetch size
+     * @param fetchSize      the specified fetch size
      * @return the latest comments, returns an empty list if not found
      * @throws ServiceException service exception
      */
@@ -478,7 +465,7 @@ public class CommentQueryService {
                     comment.put(Comment.COMMENT_CONTENT, content);
                 }
 
-                final String commenterEmail = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
+                final String commenterEmail = commenter.optString(User.USER_EMAIL);
                 String avatarURL = Symphonys.get("defaultThumbnailURL");
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
                     avatarURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, commenter, "20");
@@ -499,22 +486,22 @@ public class CommentQueryService {
      * Gets the user comments with the specified user id, page number and page size.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param userId the specified user id
-     * @param anonymous the specified comment anonymous
+     * @param userId         the specified user id
+     * @param anonymous      the specified comment anonymous
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
-     * @param viewer the specified viewer, may be {@code null}
+     * @param pageSize       the specified page size
+     * @param viewer         the specified viewer, may be {@code null}
      * @return user comments, return an empty list if not found
      * @throws ServiceException service exception
      */
     public List<JSONObject> getUserComments(final int avatarViewMode, final String userId, final int anonymous,
-            final int currentPageNum, final int pageSize, final JSONObject viewer) throws ServiceException {
+                                            final int currentPageNum, final int pageSize, final JSONObject viewer) throws ServiceException {
         final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
                 .setCurrentPageNum(currentPageNum).setPageSize(pageSize).
-                setFilter(CompositeFilterOperator.and(
-                        new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId),
-                        new PropertyFilter(Comment.COMMENT_ANONYMOUS, FilterOperator.EQUAL, anonymous)
-                ));
+                        setFilter(CompositeFilterOperator.and(
+                                new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId),
+                                new PropertyFilter(Comment.COMMENT_ANONYMOUS, FilterOperator.EQUAL, anonymous)
+                        ));
         try {
             final JSONObject result = commentRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -538,8 +525,8 @@ public class CommentQueryService {
 
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE,
                         Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
-                        ? langPropsService.get("articleTitleBlockLabel")
-                        : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
+                                ? langPropsService.get("articleTitleBlockLabel")
+                                : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                 comment.put(Comment.COMMENT_T_ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERFECT, article.optInt(Article.ARTICLE_PERFECT));
@@ -609,15 +596,15 @@ public class CommentQueryService {
      * Gets the article comments with the specified article id, page number and page size.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param articleId the specified article id
+     * @param articleId      the specified article id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
-     * @param sortMode the specified sort mode (traditional: 0, real time: 1)
+     * @param pageSize       the specified page size
+     * @param sortMode       the specified sort mode (traditional: 0, real time: 1)
      * @return comments, return an empty list if not found
      * @throws ServiceException service exception
      */
     public List<JSONObject> getArticleComments(final int avatarViewMode,
-            final String articleId, final int currentPageNum, final int pageSize, final int sortMode)
+                                               final String articleId, final int currentPageNum, final int pageSize, final int sortMode)
             throws ServiceException {
         Stopwatchs.start("Get comments");
 
@@ -685,16 +672,15 @@ public class CommentQueryService {
     /**
      * Gets comments by the specified request json object.
      *
-     * @param avatarViewMode the specified avatar view mode
+     * @param avatarViewMode    the specified avatar view mode
      * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "paginationCurrentPageNum": 1,
-     *     "paginationPageSize": 20,
-     *     "paginationWindowSize": 10,
-     * }, see {@link Pagination} for more details
-     * </pre>
-     *
-     * @param commentFields the specified article fields to return
+     *                          {
+     *                              "paginationCurrentPageNum": 1,
+     *                              "paginationPageSize": 20,
+     *                              "paginationWindowSize": 10,
+     *                          }, see {@link Pagination} for more details
+     *                          </pre>
+     * @param commentFields     the specified article fields to return
      * @return for example,      <pre>
      * {
      *     "pagination": {
@@ -709,12 +695,11 @@ public class CommentQueryService {
      *      }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      * @see Pagination
      */
     public JSONObject getComments(final int avatarViewMode,
-            final JSONObject requestJSONObject, final Map<String, Class<?>> commentFields) throws ServiceException {
+                                  final JSONObject requestJSONObject, final Map<String, Class<?>> commentFields) throws ServiceException {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -756,8 +741,8 @@ public class CommentQueryService {
 
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE,
                         Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
-                        ? langPropsService.get("articleTitleBlockLabel")
-                        : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
+                                ? langPropsService.get("articleTitleBlockLabel")
+                                : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
             }
         } catch (final RepositoryException e) {
@@ -773,7 +758,7 @@ public class CommentQueryService {
 
     /**
      * Organizes the specified comments.
-     *
+     * <p>
      * <ul>
      * <li>converts comment create time (long) to date type</li>
      * <li>generates comment author thumbnail URL</li>
@@ -788,7 +773,7 @@ public class CommentQueryService {
      * </ul>
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param comments the specified comments
+     * @param comments       the specified comments
      * @throws RepositoryException repository exception
      */
     private void organizeComments(final int avatarViewMode, final List<JSONObject> comments) throws RepositoryException {
@@ -799,7 +784,7 @@ public class CommentQueryService {
 
     /**
      * Organizes the specified comment.
-     *
+     * <p>
      * <ul>
      * <li>converts comment create time (long) to date type</li>
      * <li>generates comment author thumbnail URL</li>
@@ -814,7 +799,7 @@ public class CommentQueryService {
      * </ul>
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param comment the specified comment
+     * @param comment        the specified comment
      * @throws RepositoryException repository exception
      */
     private void organizeComment(final int avatarViewMode, final JSONObject comment) throws RepositoryException {
@@ -848,7 +833,7 @@ public class CommentQueryService {
 
     /**
      * Processes the specified comment content.
-     *
+     * <p>
      * <ul>
      * <li>Generates &#64;username home URL</li>
      * <li>Markdowns</li>
@@ -858,12 +843,12 @@ public class CommentQueryService {
      * </ul>
      *
      * @param comment the specified comment, for example,      <pre>
-     * {
-     *     "commentContent": "",
-     *     ....,
-     *     "commenter": {}
-     * }
-     * </pre>
+     *                {
+     *                    "commentContent": "",
+     *                    ....,
+     *                    "commenter": {}
+     *                }
+     *                </pre>
      */
     private void processCommentContent(final JSONObject comment) {
         final JSONObject commenter = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
@@ -959,7 +944,7 @@ public class CommentQueryService {
                 for (final String userName : userNames) {
                     commentContent = commentContent.replace('@' + userName,
                             "@<a href='" + Latkes.getServePath()
-                            + "/member/" + userName + "'>" + userName + "</a>");
+                                    + "/member/" + userName + "'>" + userName + "</a>");
                 }
 
                 commentContent = commentContent.replace("@participants ",

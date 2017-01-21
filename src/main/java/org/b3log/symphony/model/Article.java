@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.0.12, Jan 18, 2017
+ * @version 1.23.0.13, Jan 21, 2017
  * @since 0.2.0
  */
 public final class Article {
@@ -60,11 +60,6 @@ public final class Article {
      * Key of article tags.
      */
     public static final String ARTICLE_TAGS = "articleTags";
-
-    /**
-     * Key of article author email.
-     */
-    public static final String ARTICLE_AUTHOR_EMAIL = "articleAuthorEmail";
 
     /**
      * Key of article author id.

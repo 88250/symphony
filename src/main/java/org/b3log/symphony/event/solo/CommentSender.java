@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Sends comment to client.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.5, Aug 10, 2016
+ * @version 1.0.2.6, Jan 21, 2017
  * @since 0.2.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -121,11 +121,11 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             httpRequest.setURL(new URL(clientURL));
             httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
             final JSONObject requestJSONObject = new JSONObject();
-            final JSONObject comment = new JSONObject(originalComment, new String[]{
-                Comment.COMMENT_AUTHOR_EMAIL,
-                Comment.COMMENT_CONTENT,
-                Keys.OBJECT_ID
-            });
+            final JSONObject comment = new JSONObject();
+
+            comment.put(Keys.OBJECT_ID, originalComment.optString(Keys.OBJECT_ID));
+            comment.put(Comment.COMMENT_CONTENT, originalComment.optString(Comment.COMMENT_CONTENT));
+            comment.put(Comment.COMMENT_T_AUTHOR_EMAIL, commenter.optString(User.USER_EMAIL));
 
             final String authorName = commenter.optString(User.USER_NAME);
             comment.put(Comment.COMMENT_T_AUTHOR_NAME, authorName);
