@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.21.20.46, Jan 20, 2017
+ * @version 2.21.20.47, Jan 21, 2017
  */
 
 @import "variables";
@@ -1027,12 +1027,12 @@ code .dec { color: initial; } /* decimal - blue */
         .preview {
             height: 100%;
             width: 100%;
-            padding-top: 25%;
+            padding-top: 50%;
             position: relative;
             box-sizing: border-box;
             display: block;
             transition: all 0.2s ease-out 0s;
-            color: $gray;
+            color: #999;
             text-decoration: none;
         }
 
@@ -1043,6 +1043,7 @@ code .dec { color: initial; } /* decimal - blue */
 
         .preview img {
             transition: all 0.2s ease-out 0s;
+            margin-top: -48px;
         }
 
         .preview:hover > img {
