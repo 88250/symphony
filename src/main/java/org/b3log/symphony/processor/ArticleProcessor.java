@@ -51,7 +51,6 @@ import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
-import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -97,7 +96,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.25.36, Jan 18, 2017
+ * @version 1.24.25.37, Jan 21, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -855,9 +854,6 @@ public class ArticleProcessor {
 
             article.put(Article.ARTICLE_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
 
-            final String authorEmail = currentUser.optString(User.USER_EMAIL);
-            article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
-
             if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
                 articleTags = articleMgmtService.filterReservedTags(articleTags);
             }
@@ -1047,9 +1043,6 @@ public class ArticleProcessor {
 
         article.put(Article.ARTICLE_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
 
-        final String authorEmail = currentUser.optString(User.USER_EMAIL);
-        article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
-
         if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
             articleTags = articleMgmtService.filterReservedTags(articleTags);
         }
@@ -1181,7 +1174,6 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, true);
         article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
         article.put(Article.ARTICLE_AUTHOR_ID, authorId);
-        article.put(Article.ARTICLE_AUTHOR_EMAIL, clientAdminEmail.toLowerCase().trim());
 
         final String permalink = originalArticle.optString(Article.ARTICLE_PERMALINK);
 
@@ -1379,7 +1371,6 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
         article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
         article.put(Article.ARTICLE_AUTHOR_ID, authorId);
-        article.put(Article.ARTICLE_AUTHOR_EMAIL, clientAdminEmail.toLowerCase().trim());
         article.put(Article.ARTICLE_T_IS_BROADCAST, false);
         article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, clientHost + permalink);
 

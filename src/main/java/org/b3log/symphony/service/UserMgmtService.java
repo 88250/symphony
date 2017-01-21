@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.20.21, Jan 20, 2017
+ * @version 1.15.20.22, Jan 21, 2017
  * @since 0.2.0
  */
 @Service
@@ -735,17 +735,6 @@ public class UserMgmtService {
                 comment.put(Comment.COMMENT_AUTHOR_EMAIL, newEmail);
 
                 commentRepository.update(comment.optString(Keys.OBJECT_ID), comment);
-            }
-
-            // Update relevent articles of the user
-            final Query articleQuery = new Query().setFilter(new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, userId));
-            final JSONObject articleResult = articleRepository.get(articleQuery);
-            final JSONArray articles = articleResult.optJSONArray(Keys.RESULTS);
-            for (int i = 0; i < articles.length(); i++) {
-                final JSONObject article = articles.optJSONObject(i);
-                article.put(Article.ARTICLE_AUTHOR_EMAIL, newEmail);
-
-                articleRepository.update(article.optString(Keys.OBJECT_ID), article);
             }
 
             // Update the user

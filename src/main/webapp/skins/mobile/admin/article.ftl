@@ -9,9 +9,6 @@
             <label for="oId">Id</label>
             <input type="text" id="oId" name="oId" value="${article.oId}" readonly="readonly" />
 
-            <label for="articleAuthorEmail">${authorEmailLabel}</label>
-            <input type="text" id="articleAuthorEmail" name="articleAuthorEmail" value="${article.articleAuthorEmail}" readonly="readonly" />
-
             <label for="articleAuthorId">${authorIdLabel}</label>
             <input type="text" id="articleAuthorId" name="articleAuthorId" value="${article.articleAuthorId}" readonly="readonly" />
 

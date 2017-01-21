@@ -107,7 +107,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.25.6.22, Jan 20, 2017
+ * @version 2.25.6.23, Jan 21, 2017
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1677,7 +1677,6 @@ public class AdminProcessor {
         articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
         articleFields.put(Article.ARTICLE_VIEW_CNT, Integer.class);
         articleFields.put(Article.ARTICLE_COMMENT_CNT, Integer.class);
-        articleFields.put(Article.ARTICLE_AUTHOR_EMAIL, String.class);
         articleFields.put(Article.ARTICLE_AUTHOR_ID, String.class);
         articleFields.put(Article.ARTICLE_TAGS, String.class);
         articleFields.put(Article.ARTICLE_STATUS, Integer.class);
