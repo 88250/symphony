@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://wdx.me">DX</a>
- * @version 1.0.0.1, Sep 19, 2015
+ * @version 1.0.0.2, Jan 21, 2017
  * @since 1.3.0
  */
 @RequestProcessor
@@ -184,10 +184,6 @@ public class CommentProcessor {
             }
 
             comment.put(Comment.COMMENT_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
-
-            final String authorEmail = currentUser.optString(User.USER_EMAIL);
-            comment.put(Comment.COMMENT_AUTHOR_EMAIL, authorEmail);
-
             comment.put(Comment.COMMENT_T_COMMENTER, currentUser);
 
             final String newId = commentMgmtService.addComment(comment);

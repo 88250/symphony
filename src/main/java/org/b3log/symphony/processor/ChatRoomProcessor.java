@@ -76,7 +76,7 @@ import org.jsoup.Jsoup;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.9, Oct 26, 2016
+ * @version 1.3.5.10, Jan 21, 2017
  * @since 1.4.0
  */
 @RequestProcessor
@@ -219,7 +219,6 @@ public class ChatRoomProcessor {
 
                     comment.put(Comment.COMMENT_CONTENT, xiaoVSaid);
                     comment.put(Comment.COMMENT_AUTHOR_ID, xiaoVUserId);
-                    comment.put(Comment.COMMENT_AUTHOR_EMAIL, xiaoVEmail);
                     comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
 
                     xiaoV.remove(UserExt.USER_T_POINT_CC);

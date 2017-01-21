@@ -42,7 +42,7 @@ import java.util.*;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.2, Jan 18, 2017
+ * @version 1.2.1.3, Jan 21, 2017
  * @since 1.8.0
  */
 @Service
@@ -612,9 +612,9 @@ public class InitMgmtService {
             article.put(Article.ARTICLE_TAGS, init.getString("helloWorld.tags"));
             article.put(Article.ARTICLE_CONTENT, init.getString("helloWorld.content"));
             article.put(Article.ARTICLE_EDITOR_TYPE, 0);
-            article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.optString(User.USER_EMAIL));
             article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
+
             articleMgmtService.addArticle(article);
 
             LOGGER.info("Initialized Sym, have fun :)");

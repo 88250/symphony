@@ -9,8 +9,8 @@
             <label for="oId">Id</label>
             <input type="text" id="oId" value="${comment.oId}" readonly="readonly" />
 
-            <label for="commentAuthorEmail">${userEmailLabel}</label>
-            <input type="text" id="commentAuthorEmail" name="commentAuthorEmail" value="${comment.commentAuthorEmail}" readonly="readonly" />
+            <label for="commentAuthorId">${authorIdLabel}</label>
+            <input type="text" id="commentAuthorId" name="commentAuthorId" value="${comment.commentAuthorId}" readonly="readonly" />
 
             <label for="commentOnArticleId">${articleLabel} Id</label>
             <input type="text" id="commentOnArticleId" name="commentOnArticleId" value="${comment.commentOnArticleId}" readonly="readonly" />

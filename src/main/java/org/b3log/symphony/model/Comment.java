@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.9, Aug 29, 2016
+ * @version 1.9.0.10, Jan 21, 2017
  * @since 0.2.0
  */
 public final class Comment {
@@ -45,11 +45,6 @@ public final class Comment {
      * Key of comment create time.
      */
     public static final String COMMENT_CREATE_TIME = "commentCreateTime";
-
-    /**
-     * Key of comment author email.
-     */
-    public static final String COMMENT_AUTHOR_EMAIL = "commentAuthorEmail";
 
     /**
      * Key of comment author id.
@@ -126,6 +121,11 @@ public final class Comment {
      * Key of commenter.
      */
     public static final String COMMENT_T_COMMENTER = "commenter";
+
+    /**
+     * Key of comment author email.
+     */
+    public static final String COMMENT_T_AUTHOR_EMAIL = "commentAuthorEmail";
 
     /**
      * Key of comment id.
