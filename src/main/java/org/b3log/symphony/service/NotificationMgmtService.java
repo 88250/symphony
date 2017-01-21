@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.0.3, Jan 18, 2017
+ * @version 1.12.1.3, Jan 21, 2017
  * @since 0.2.5
  */
 @Service
@@ -64,7 +64,7 @@ public class NotificationMgmtService {
      *
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId"; "",
-     *                          "dataId": "" // article id
+     *                          "dataId": "" // comment id
      * @throws ServiceException service exception
      */
     @Transactional

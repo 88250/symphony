@@ -11,7 +11,7 @@
            style="background-image:url('${notification.thumbnailURL}')"></div>
         <#if "someone" != notification.authorName></a></#if>
 
-        <#if isComment>
+        <#if notification.isComment>
             <div class="fn-flex-1">
                 <div class="fn-flex">
                     <h2 class="fn-flex-1">
