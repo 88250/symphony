@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.7.1.13, Jan 8, 2017
+ * @version 2.8.1.13, Jan 20, 2017
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -91,6 +91,11 @@ public final class UserExt {
      * Key of user following article status.
      */
     public static final String USER_FOLLOWING_ARTICLE_STATUS = "userFollowingArticleStatus";
+
+    /**
+     * Key of user watching article status.
+     */
+    public static final String USER_WATCHING_ARTICLE_STATUS = "userWatchingArticleStatus";
 
     /**
      * Key of user following tag status.
@@ -482,7 +487,7 @@ public final class UserExt {
     public static final int USER_XXX_STATUS_C_PUBLIC = 0;
 
     /**
-     * User XXX (notify/point/follower/following article/following tag/following user/comment/article) status - private.
+     * User XXX (notify/point/follower/following article/watching article/following tag/following user/comment/article) status - private.
      */
     public static final int USER_XXX_STATUS_C_PRIVATE = 1;
 

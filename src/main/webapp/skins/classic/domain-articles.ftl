@@ -20,15 +20,24 @@
                     <div class="tabs-sub fn-clear">
                         <#list domains as navDomain>
                         <#if navDomain.domainURI == domain.domainURI>
-                        <#list navDomain.domainTags as tag>
-                        <a rel="nofollow" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>  
-                        </#list>
+                            <#if navDomain.domainTags?size gt 0>
+                                <#list navDomain.domainTags as tag>
+                                <a rel="nofollow" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
+                                </#list>
+                            <#else>
+                                <div class="no-list fn-flex-1">${chickenEggLabel}</div>
+                            </#if>
                         </#if>
                         </#list>
                     </div>
-                    <@list listData=latestArticles/>
-                    <@pagination url="/domain/${domain.domainURI}"/>
-                </div>
+                        <#if latestArticles?size gt 0>
+                            <@list listData=latestArticles/>
+                            <@pagination url="/domain/${domain.domainURI}"/>
+                        <#else>
+                            <div class="no-list"> ${systemEmptyLabel}</div>
+                        </#if>
+                    </div>
+
                     <#include "common/domains.ftl">
                 </div>
                 <div class="side">

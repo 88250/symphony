@@ -17,6 +17,10 @@
                         <div class="content-reset article-charge-point">
                             ${chargePointContentLabel}
                         </div>
+                        <div class="top-ranking">
+                            <#include "common/ranking.ftl">
+                        </div>
+                        <br/>
                     </div>
                 </div>
                 <div class="side">

@@ -34,14 +34,28 @@
         <div class="fn-clear settings-secret">
             <div>
                 <label>
-                    ${userFollowingArticleStatusLabel}
-                    <input id="userFollowingArticleStatus" <#if 0 == currentUser.userFollowingArticleStatus> checked="checked"</#if> type="checkbox" /> 
+                    ${userWatchingArticleStatusLabel}
+                    <input id="userWatchingArticleStatus" <#if 0 == currentUser.userWatchingArticleStatus> checked="checked"</#if> type="checkbox" />
                 </label>
             </div>
             <div>
                 <label>
+                    ${userFollowingArticleStatusLabel}
+                    <input id="userFollowingArticleStatus" <#if 0 == currentUser.userFollowingArticleStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
                     ${userFollowerStatusLabel}
-                    <input id="userFollowerStatus" <#if 0 == currentUser.userFollowerStatus> checked="checked"</#if> type="checkbox" /> 
+                    <input id="userFollowerStatus" <#if 0 == currentUser.userFollowerStatus> checked="checked"</#if> type="checkbox" />
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${userForgeLinkStatusLabel}
+                    <input id="userForgeLinkStatus" <#if 0 == currentUser.userForgeLinkStatus> checked="checked"</#if> type="checkbox" />
                 </label>
             </div>
         </div>
@@ -59,7 +73,6 @@
                 </label>
             </div>
         </div>
-
         <div class="fn-clear settings-secret">
             <div>
                 <label>
@@ -74,16 +87,6 @@
                 </label>
             </div>
         </div>
-
-        <div class="fn-clear settings-secret">
-            <div>
-                <label>
-                    ${userForgeLinkStatusLabel}
-                    <input id="userForgeLinkStatus" <#if 0 == currentUser.userForgeLinkStatus> checked="checked"</#if> type="checkbox" /> 
-                </label>
-            </div>
-        </div>
-        
         <div class="fn-clear settings-secret">
             <div>
                 <label>

@@ -8,7 +8,7 @@
     <a href="${servePath}/member/${user.userName}/following/articles"<#if type == "followingArticles"> class="current"</#if>>${followingArticlesLabel}</a>
     <a href="${servePath}/member/${user.userName}/followers"<#if type == "followers"> class="current"</#if>>${followersLabel}</a>
 </div>
-<#if 0 == user.userFollowingArticleStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
+<#if 0 == user.userWatchingArticleStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="list">
     <#if userHomeFollowingArticles?size == 0>
     <p class="ft-center ft-gray home-invisible">${chickenEggLabel}</p>
@@ -46,9 +46,9 @@
             </div>
             <#if isLoggedIn>
             <#if article.isFollowing>
-            <button class="mid" onclick="Util.unfollow(this, '${article.oId}', 'article')">${uncollectLabel}</button>
+            <button class="mid" onclick="Util.unfollow(this, '${article.oId}', 'article-watch')">${followLabel}</button>
             <#else>
-            <button class="mid" onclick="Util.follow(this, '${article.oId}', 'article')">${followLabel}</button>
+            <button class="mid" onclick="Util.follow(this, '${article.oId}', 'article-watch')">${unfollowLabel}</button>
             </#if>
             </#if>
         </li>

@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.21.20.45, Jan 15, 2017
+ * @version 2.21.20.47, Jan 21, 2017
  */
 
 @import "variables";
@@ -57,7 +57,11 @@
 
 /* start article */
 .article-module {
-    padding: 10px;
+    padding: 15px;
+}
+
+.article-content {
+    margin: 15px;
 }
 
 #heatBar {
@@ -72,16 +76,15 @@ h1.article-title {
     word-break: break-all;
     font-size: 24px;
     font-weight: normal;
-    margin-bottom: 10px;
+    margin: 15px 15px 0;
     line-height: 36px;
 }
 
 .article-info {
-    margin-bottom: 10px;
     border-bottom: 1px solid #eee;
     font-size: 12px;
     line-height: 19px;
-    padding-bottom: 10px;
+    padding: 15px;
 
     .article-info-action {
         font-size: 24px;
@@ -163,8 +166,10 @@ label.cmt-anonymous {
 }
 
 .article-actions {
-    padding-top: 10px;
+    padding-top: 15px;
     text-align: center;
+    height: 22px;
+    line-height: 22px;
 
     .has-cnt {
         border: 1px solid #d9d9d9;
@@ -289,7 +294,6 @@ label.cmt-anonymous {
 }
 
 #articleRewardContent {
-    margin-top: 10px;
     padding: 10px;
     background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .9)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .9)), color-stop(.75, rgba(255, 255, 255, .9)), color-stop(.75, transparent), to(transparent));
     background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
@@ -843,16 +847,8 @@ code .dec { color: initial; } /* decimal - blue */
 
 /* start index */
 .index {
-    .cb-stick {
-        left: -15px;
-    }
-
     .wrapper {
         width: 90%;
-    }
-
-    .main {
-        padding: 40px 0;
     }
 
     .index-main {
@@ -987,9 +983,13 @@ code .dec { color: initial; } /* decimal - blue */
         padding: 15px 15px 0;
     }
 
-    .index-tabs-panels > ul > li:last-child,
     .perfect-panel.list > ul > li:last-child {
         border-bottom-width: 0;
+    }
+
+    .perfect-panel.list > ul,
+    .index-tabs-panels> ul {
+        padding: 0;
     }
 
     .perfect-panel {
@@ -1027,12 +1027,12 @@ code .dec { color: initial; } /* decimal - blue */
         .preview {
             height: 100%;
             width: 100%;
-            padding-top: 25%;
+            padding-top: 50%;
             position: relative;
             box-sizing: border-box;
             display: block;
             transition: all 0.2s ease-out 0s;
-            color: $gray;
+            color: #999;
             text-decoration: none;
         }
 
@@ -1043,6 +1043,7 @@ code .dec { color: initial; } /* decimal - blue */
 
         .preview img {
             transition: all 0.2s ease-out 0s;
+            margin-top: -48px;
         }
 
         .preview:hover > img {
@@ -1105,6 +1106,7 @@ code .dec { color: initial; } /* decimal - blue */
             ul {
                 overflow: hidden;
                 height: 402px;
+                padding: 0;
             }
         }
     }
@@ -1144,3 +1146,10 @@ code .dec { color: initial; } /* decimal - blue */
     }
 }
 /* end symhub */
+
+/* start top */
+.top-ranking {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+/* end top */

@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all notification model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.0.2, Jan 18, 2017
+ * @version 1.12.0.2, Jan 21, 2017
  * @since 0.2.5
  */
 public final class Notification {
@@ -177,6 +177,11 @@ public final class Notification {
      * Key of at in article.
      */
     public static final String NOTIFICATION_T_AT_IN_ARTICLE = "atInArticle";
+
+    /**
+     * Key of is comment.
+     */
+    public static final String NOTIFICATION_T_IS_COMMENT = "isComment";
 
     /**
      * Private constructor.

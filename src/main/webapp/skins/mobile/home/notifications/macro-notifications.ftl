@@ -20,7 +20,7 @@
                     ${notificationReplyLabel}
                     <#elseif type == "at">
                     ${notificationAtLabel}
-                    <#elseif type == "followingUser">
+                    <#elseif type == "following">
                     ${notificationFollowingLabel}
                     <#elseif type == "point">
                     ${pointLabel}

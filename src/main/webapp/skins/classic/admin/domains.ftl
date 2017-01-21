@@ -6,7 +6,7 @@
         <form method="GET" action="${servePath}/admin/domains" class="form">
             <input name="title" type="text" placeholder="${domainLabel}"/>
             <button type="submit" class="green">${searchLabel}</button>
-            <#if permissions["domainAddDomain"].permissionGrant>
+            <#if permissions["domainAddDomain"].permissionGrant> &nbsp;
             <button type="button" class="btn red" onclick="window.location = '${servePath}/admin/add-domain'">${addDomainLabel}</button>
             </#if>
         </form>

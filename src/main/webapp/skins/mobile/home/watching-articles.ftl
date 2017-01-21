@@ -1,7 +1,7 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
 <@home "${type}">
-<#if 0 == user.userFollowingArticleStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
+<#if 0 == user.userWatchingArticleStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="list">
     <ul class="fn-clear">
         <#list userHomeFollowingArticles as article>
@@ -35,11 +35,11 @@
                 </span> 
             </div>
             <#if isLoggedIn>
-            <#if article.isFollowing>
-            <button class="green small fn-right" onclick="Util.unfollow(this, '${article.oId}', 'article')">${uncollectLabel}</button>
-            <#else>
-            <button class="green small fn-right" onclick="Util.follow(this, '${article.oId}', 'article')">${followLabel}</button>
-            </#if>
+                <#if article.isFollowing>
+                    <button class="small fn-right" onclick="Util.unfollow(this, '${article.oId}', 'article-watch')">${followLabel}</button>
+                    <#else>
+                    <button class="small fn-right" onclick="Util.follow(this, '${article.oId}', 'article-watch')">${unfollowLabel}</button>
+                </#if>
             </#if>
         </li>
         </#list>

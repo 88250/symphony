@@ -63,7 +63,7 @@
                                     </span>
                                     </#if>
                                 </a>
-                                <a href="${servePath}/notifications/following"<#if type == "followingUser"> class="current"</#if>>
+                                <a href="${servePath}/notifications/following"<#if type == "following"> class="current"</#if>>
                                    <span>${notificationFollowingLabel}</span>
                                     <#if unreadFollowingNotificationCnt &gt; 0>
                                     <span class="count">${unreadFollowingNotificationCnt}</span>
