@@ -11,7 +11,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content activity">
-                    <div class="module">
+                    <div class="module article-module">
                         <h2 class="sub-head">${activityLabel}</h2>
                         <div class="list">
                             <ul>

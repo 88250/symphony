@@ -6,8 +6,7 @@
     </div>
 
     <div class="module-panel form fn-clear">
-        <br/>
-        <input id="cityName" type="text" placeholder="${geoInfoPlaceholderLabel}" value="${user.userCity}" 
+        <input id="cityName" type="text" placeholder="${geoInfoPlaceholderLabel}" value="${user.userCity}"
                readonly="readonly"/>
         <br/><br/>
         <select id="geoStatus" onchange="Settings.changeGeoStatus('${csrfToken}')">

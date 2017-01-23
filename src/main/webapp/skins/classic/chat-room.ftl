@@ -14,7 +14,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content chat-room">
-                    <div class="module">
+                    <div class="module article-module">
                         <div class="sub-head">
                             <h2 class="fn-inline">${communityDynamicLabel}</h2><span class="ft-gray">${communityDynamicSubLabel}</span>
                         </div>

@@ -12,7 +12,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="module">
+                    <div class="module article-module">
                         <h2 class="sub-head">
                             <div class="avatar-small tooltipped tooltipped-ne"
                                  aria-label="${characterLabel}" style="background-image:url('${staticServePath}/images/activities/char.png')"></div>
@@ -20,8 +20,7 @@
                             <span class="ft-13 ft-gray">${activityCharacterTitleLabel}</span>
                         </h2>
                         <div class="fn-clear fn-m10">   
-                            <div class="fn-hr5"></div>
-                            <div class="fn-hr5"></div>
+                            <br>
                             <div class="fn-left">
                                 <#if noCharacter??>
                                 ${activityCharacterNotCharacterLabel}

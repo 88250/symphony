@@ -12,15 +12,14 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="module">
+                    <div class="module article-module">
                         <h2 class="sub-head">
                             <div class="avatar-small tooltipped tooltipped-ne"
                                  aria-label="${eatingSnakeLabel}" style="background-image:url('${staticServePath}/images/activities/snak.png')"></div>
                             ${eatingSnakeLabel}
                             <span class="ft-13 ft-gray">${activityEatingSnakeTitleLabel}</span>
                         </h2>
-                        <div class="fn-hr5"></div>
-                        <div class="fn-hr5"></div>
+                        <br>
                         <div class="fn-clear fn-m10">
                             <button class="green fn-right" onclick="Activity.startSnake('${csrfToken}')">${gameStartLabel}</button>
                         </div>
