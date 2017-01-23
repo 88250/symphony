@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.26.40.28, Jan 20, 2017
+ * @version 1.27.40.28, Jan 23, 2017
  */
 
 /**
@@ -1052,7 +1052,9 @@ var Article = {
 
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
                     url = encodeURIComponent(shareURL),
-                    pic = $(".content-reset img").attr("src");
+                    picCSS = $(".article-info .avatar").css('background-image');
+                    pic = picCSS.substring(5, picCSS.length - 2);
+
             var urls = {};
             urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
                     "&url=" + url + "&pic=" + pic;
