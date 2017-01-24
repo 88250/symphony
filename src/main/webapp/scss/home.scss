@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.12.28, Jan 20, 2017
+ * @version 2.11.12.29, Jan 23, 2017
  */
 
 @import "variables";
@@ -87,7 +87,7 @@
 
 /* start home side */
 #avatarURLDom {
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .user-name {
@@ -403,10 +403,16 @@ label.article-anonymous {
 /* end follow */
 
 /* start admin */
+.admin-index .content-reset {
+    padding: 30px;
+}
+
 .admin {
     .form {
-        padding: 10px;
-        border-bottom: 1px solid #eee;
+        padding: 8px 15px;
+        border-bottom: 1px solid #e5e5e5;
+        background: #f9fafb;
+        border-radius: 3px 3px 0 0;
     }
 
     .tags {
@@ -460,11 +466,11 @@ label.article-anonymous {
 
 .points .date {
     width: 75px;
-    padding: 10px;
+    padding: 15px 10px 15px 15px;
 }
 
 .points .name {
-    padding: 10px;
+    padding: 15px 10px;
     word-break: break-all;
 }
 
@@ -495,7 +501,7 @@ label.article-anonymous {
 
 .points .balance {
     width: 40px;
-    padding: 0 10px;
+    padding: 15px 15px 15px 10px;
 }
 /* end points */
 
@@ -506,8 +512,8 @@ label.article-anonymous {
 
 #shareClipboard {
     position: absolute;
-    right: 20px;
-    bottom: 20px;
+    right: 15px;
+    bottom: 15px;
     border-radius: 0 3px 3px 0;
 }
 
@@ -524,6 +530,14 @@ label.article-anonymous {
     width: 25px;
     height: 25px;
     cursor: pointer;
+}
+
+#emotionList {
+    margin-bottom: 15px;
+}
+
+#pointBuyInvitecode {
+    padding: 0;
 }
 
 .point-pagination {

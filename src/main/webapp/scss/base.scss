@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.28.19.53, Jan 20, 2017
+ * @version 2.28.19.54, Jan 23, 2017
  */
 
 @import "variables";
@@ -505,9 +505,12 @@ blockquote {
 }
 
 .sub-head {
-    padding: 5px 10px;
+    padding: 0 15px 15px;
     border-bottom: 1px solid #e5e5e5;
     line-height: 31px;
+    /* margin: 15px; */
+    font-size: 24px;
+    color: #666;
 }
 /* end function */
 
@@ -1237,7 +1240,7 @@ a[class*=" icon-"]:hover {
 .pagination a,
 .pagination span,
 .tabs-sub a {
-    line-height: 38px;
+    line-height: 48px;
     text-decoration: none;
     flex: 1;
     text-align: center;
@@ -1339,7 +1342,7 @@ a[class*=" icon-"]:hover {
 
 /* start framework */
 .wrapper {
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
     display: flex;
     min-width: 720px;
@@ -1755,7 +1758,7 @@ ul.CodeMirror-hints {
 .module-panel .module-list li {
     border-bottom: 1px dotted $fade;
     list-style: none outside none;
-    padding: 10px 15px;
+    padding: 15px;
     position: relative;
 }
 
@@ -1772,7 +1775,7 @@ ul.CodeMirror-hints {
 }
 
 .module-panel.form {
-    padding: 10px 20px 20px;
+    padding: 15px;
 }
 
 .module-list .slogan {
@@ -1783,7 +1786,7 @@ ul.CodeMirror-hints {
 
 .module-list .title {
     color: #666;
-    margin: 5px 0 5px 30px;
+    margin: 0px 0 0px 30px;
     display: block;
     line-height: 20px;
 }
@@ -1797,7 +1800,7 @@ ul.CodeMirror-hints {
 }
 
 .module-panel.ad {
-    padding: 10px;
+    padding: 15px;
     text-align: center;
 }
 
@@ -1928,7 +1931,7 @@ ul.CodeMirror-hints {
     .info {
         position: relative;
         overflow: hidden;
-        height: 38px;
+        height: 48px;
     }
 
     .info button.red {
@@ -1941,7 +1944,7 @@ ul.CodeMirror-hints {
         border-color: #c0372a;
         letter-spacing: 1px;
         line-height: 18px;
-        padding: 10px;
+        padding: 15px;
     }
 
     .info button.red:hover {
@@ -1949,7 +1952,7 @@ ul.CodeMirror-hints {
     }
 
     .info .fn-right {
-        margin: 10px 10px 0 0;
+        margin: 15px 15px 0 0;
     }
 
     .status {

@@ -6,7 +6,6 @@
     </div>
 
     <div class="module-panel form fn-clear">
-        <br/>
         <label>${languageLabel}</label>
         <select id="userLanguage">
             <#list languages as language>

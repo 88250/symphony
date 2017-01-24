@@ -11,9 +11,9 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="module">
+                    <div class="module article-module ">
                         <h2 class="sub-head">B3log 构思</h2>
-                        <div class="article-module content-reset">
+                        <div class="article-content content-reset">
                             <i class="ft-gray">一个正在逐渐清晰、实践的创意</i>
                             <h3>背景故事</h3>
                             <p>

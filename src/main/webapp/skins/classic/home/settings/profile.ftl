@@ -19,11 +19,9 @@
 
         <label>${userIntroLabel}</label><br/>
         <textarea id="userIntro" placeholder="${selfIntroLabel}">${currentUser.userIntro}</textarea>
-        <div class="fn-hr5"></div>
-        <div class="fn-hr5"></div>
+        <br>
         <div class="tip" id="profilesTip"></div>
-        <div class="fn-hr5"></div>
-        <div class="fn-hr5"></div>
+        <br>
         <button class="green fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
         <button onclick="Settings.preview(this)">${previewLabel}</button>
     </div>

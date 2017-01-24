@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.21.20.47, Jan 21, 2017
+ * @version 2.21.20.48, Jan 23, 2017
  */
 
 @import "variables";
@@ -57,7 +57,7 @@
 
 /* start article */
 .article-module {
-    padding: 15px;
+    padding: 30px 15px;
 }
 
 .article-content {
@@ -76,7 +76,7 @@ h1.article-title {
     word-break: break-all;
     font-size: 24px;
     font-weight: normal;
-    margin: 15px 15px 0;
+    margin: 0 15px;
     line-height: 36px;
 }
 
@@ -170,6 +170,7 @@ label.cmt-anonymous {
     text-align: center;
     height: 22px;
     line-height: 22px;
+    margin: 0 15px;
 
     .has-cnt {
         border: 1px solid #d9d9d9;
@@ -272,12 +273,23 @@ label.cmt-anonymous {
     border-bottom-width: 0;
 }
 
+.comment-get-comment.list > ul {
+    padding: 0;
+}
+
 .comment-get-comment.list > ul > li {
     padding-top: 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
+}
+
+.comment-get-comment.list>ul>li:last-child {
+    border-bottom: 1px solid #eee;
 }
 
 .comment-replies.list > ul {
     margin-top: 10px;
+    padding: 0;
 }
 
 .comment-replies.list > ul > li {
@@ -300,6 +312,7 @@ label.cmt-anonymous {
     background-image: linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
     background-color: #f7f7f7;
     background-size: 45px 45px;
+    margin: 0 15px;
 }
 
 #articleRewardContent > p {
@@ -729,16 +742,10 @@ label.cmt-anonymous {
 /* end guide */
 /* end verify */
 
-/* start tags.html */
-.tags-cold li h2,
-.tags-trend li h2 {
-    display: inline;
-}
-/* end tags.html */
 
 /* start tag-article.html */
 .tag-articles .article-module {
-    padding-bottom: 0;
+    padding: 30px 30px 15px;
 }
 
 .tag-articles-tag-desc.tag-desc {
@@ -809,7 +816,7 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .snak-rank {
-    margin: 20px;
+    margin: 30px 15px 0;
 
     .module:last-child {
         margin-left: 20px;
@@ -847,10 +854,6 @@ code .dec { color: initial; } /* decimal - blue */
 
 /* start index */
 .index {
-    .wrapper {
-        width: 90%;
-    }
-
     .index-main {
         width: 60%;
     }
