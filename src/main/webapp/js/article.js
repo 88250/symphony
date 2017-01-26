@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.27.40.28, Jan 23, 2017
+ * @version 1.27.40.29, Jan 26, 2017
  */
 
 /**
@@ -238,7 +238,7 @@ var Comment = {
             return false;
         }).bind('keyup', 's', function assets() {
             // v p 置顶帖子
-            if (Util.prevKey === 'v' && $('.article-actions.icon-chevron-up').length === 1) {
+            if (Util.prevKey === 'v' && $('.article-actions .icon-chevron-up').length === 1) {
                 Article.stick(Label.articleOId);
             }
             return false;
@@ -250,14 +250,14 @@ var Comment = {
             return false;
         }).bind('keyup', 'p', function assets() {
             // v p 跳转到上一篇帖子 prev
-            if (Util.prevKey === 'v' && $('.article-info-action a[rel=prev]').length === 1) {
-                window.location = $('.article-info-action a[rel=prev]').attr('href');
+            if (Util.prevKey === 'v' && $('.article-actions a[rel=prev]').length === 1) {
+                window.location = $('.article-actions a[rel=prev]').attr('href');
             }
             return false;
         }).bind('keyup', 'n', function assets() {
             // v n 跳转到下一篇帖子 next
-            if (Util.prevKey === 'v' && $('.article-info-action a[rel=next]').length === 1) {
-                window.location = $('.article-info-action a[rel=next]').attr('href');
+            if (Util.prevKey === 'v' && $('.article-actions a[rel=next]').length === 1) {
+                window.location = $('.article-actions a[rel=next]').attr('href');
             }
             return false;
         });
@@ -1323,7 +1323,6 @@ var Article = {
 
         // set default height
         $('.article-content').html(articleHTML).height($('.article-content').height()).html('');
-        Comment._bgFade($(window.location.hash));
     },
     /**
      * @description 初始化目录.
@@ -1441,8 +1440,6 @@ var Article = {
             }
             $('.side').height($('.side').height());
         }
-
-
     },
     /**
      * @description 标记消息通知为已读状态.

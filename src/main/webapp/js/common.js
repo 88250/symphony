@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.41.29.43, Jan 18, 2017
+ * @version 1.41.29.44, Jan 26, 2017
  */
 
 /**
@@ -913,7 +913,7 @@ var Util = {
                 if (result.sc) {
                     $(it).removeClass("disabled");
                     if (typeof (index) !== 'undefined') {
-                        if ('article' === type) {
+                        if ('article' === type || 'tag' === type) {
                             $(it).html('<span class="icon-star"></span> ' + (index + 1)).
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
                                 .attr("aria-label", Label.uncollectLabel).addClass('ft-red');
@@ -957,7 +957,7 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     if (typeof (index) !== 'undefined') {
-                        if ('article' === type) {
+                        if ('article' === type || 'tag' === type) {
                             $(it).removeClass('ft-red').html('<span class="icon-star"></span> ' + (index - 1))
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.collectLabel);
