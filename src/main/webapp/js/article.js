@@ -1342,11 +1342,6 @@ var Article = {
             'width': $('.side').width() + 'px',
             'top': ($articleToc.height() + 41) + 'px'
         });
-        $articleToc.next().next().css({
-            'width': $('.side').width() + 'px',
-            'top': ($articleToc.height() + $articleToc.next().height() + 62) + 'px'
-        });
-
         $('.article-toc').css({
             'overflow': 'auto',
             'max-height': $(window).height() - 80 + 'px'
@@ -1395,18 +1390,13 @@ var Article = {
             if ($(window).scrollTop() > top - 20) {
                 $articleToc.css('position', 'fixed');
                 $articleToc.next().css('position', 'fixed');
-                $articleToc.next().next().css('position', 'fixed');
             } else {
                 $articleToc.css('position', 'initial');
                 $articleToc.next().css('position', 'initial');
-                $articleToc.next().next().css('position', 'initial');
             }
         }).resize(function () {
             $articleToc.css('width', $('.side').width() + 'px');
             $articleToc.next().css({
-                'width': $('.side').width() + 'px'
-            });
-            $articleToc.next().next().css({
                 'width': $('.side').width() + 'px'
             });
         });
@@ -1428,7 +1418,6 @@ var Article = {
             $menu.removeClass('ft-red');
             $articleToc.css('position', 'initial');
             $articleToc.next().css('position', 'initial');
-            $articleToc.next().next().css('position', 'initial');
             $('.side').height('auto');
         } else {
             $articleToc.show();
@@ -1436,7 +1425,6 @@ var Article = {
             if ($(window).scrollTop() > $('#articleToC').offset().top - 20) {
                 $articleToc.css('position', 'fixed');
                 $articleToc.next().css('position', 'fixed');
-                $articleToc.next().next().css('position', 'fixed');
             }
             $('.side').height($('.side').height());
         }

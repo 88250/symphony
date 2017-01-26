@@ -324,6 +324,32 @@
                         <img src="${noCmtImg}" class="article-no-comment-img">
 					</div>
 
+                    <#if sideRelevantArticles?size != 0>
+                        <div class="module">
+                            <div class="module-header">
+                                <h2>
+                                    ${relativeArticleLabel}
+                                </h2>
+                            </div>
+                            <div class="module-panel">
+                                <ul class="module-list">
+                                    <#list sideRelevantArticles as relevantArticle>
+                                        <li<#if !relevantArticle_has_next> class="last"</#if>>
+                                        <#if "someone" != relevantArticle.articleAuthorName>
+                                            <a rel="nofollow"
+                                               href="${servePath}/member/${relevantArticle.articleAuthorName}"></#if>
+                                        <span class="avatar-small slogan tooltipped tooltipped-se" aria-label="${relevantArticle.articleAuthorName}"
+                                              style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"
+                                        ></span>
+                                        <#if "someone" != relevantArticle.articleAuthorName></a></#if>
+                                        <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
+                                        </li>
+                                    </#list>
+                                </ul>
+                            </div>
+                        </div>
+                    </#if>
+
                 </div>
                 <div class="side">
                     <#include 'common/person-info.ftl'/>
@@ -351,32 +377,6 @@
                         </div>
                         <div class="module-panel">
                              ${article.articleToC}
-                        </div>
-                    </div>
-                    </#if>
-
-                    <#if sideRelevantArticles?size != 0>
-                    <div class="module">
-                        <div class="module-header">
-                            <h2>
-                                ${relativeArticleLabel}
-                            </h2>
-                        </div>
-                        <div class="module-panel">
-                            <ul class="module-list">
-                                <#list sideRelevantArticles as relevantArticle>
-                                <li<#if !relevantArticle_has_next> class="last"</#if>>
-                                    <#if "someone" != relevantArticle.articleAuthorName>
-                                    <a rel="nofollow"
-                                   href="${servePath}/member/${relevantArticle.articleAuthorName}"></#if>
-                                        <span class="avatar-small slogan tooltipped tooltipped-se" aria-label="${relevantArticle.articleAuthorName}"
-                                   style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"
-                                   ></span>
-                                    <#if "someone" != relevantArticle.articleAuthorName></a></#if>
-                                    <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
-                                </li>
-                                </#list>
-                            </ul>
                         </div>
                     </div>
                     </#if>
