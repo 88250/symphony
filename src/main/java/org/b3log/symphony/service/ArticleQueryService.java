@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.24.42, Jan 21, 2017
+ * @version 2.25.24.43, Jan 26, 2017
  * @since 0.2.0
  */
 @Service
@@ -273,7 +273,8 @@ public class ArticleQueryService {
      * @return permalink and title, <pre>
      * {
      *     "articlePermalink": "",
-     *     "articleTitle": ""
+     *     "articleTitle": "",
+     *     "articleTitleEmoj": ""
      * }
      * </pre>, returns {@code null} if not found
      */
@@ -293,7 +294,15 @@ public class ArticleQueryService {
                 return null;
             }
 
-            return result.optJSONObject(0);
+            final JSONObject ret = result.optJSONObject(0);
+            if (null == ret) {
+                return null;
+            }
+
+            String title = ret.optString(Article.ARTICLE_TITLE);
+            ret.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets next article permalink failed", e);
 
@@ -310,7 +319,8 @@ public class ArticleQueryService {
      * @return permalink and title, <pre>
      * {
      *     "articlePermalink": "",
-     *     "articleTitle": ""
+     *     "articleTitle": "",
+     *     "articleTitleEmoj": ""
      * }
      * </pre>, returns {@code null} if not found
      */
@@ -330,7 +340,15 @@ public class ArticleQueryService {
                 return null;
             }
 
-            return result.optJSONObject(0);
+            final JSONObject ret = result.optJSONObject(0);
+            if (null == ret) {
+                return null;
+            }
+
+            String title = ret.optString(Article.ARTICLE_TITLE);
+            ret.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets previous article permalink failed", e);
 

@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.21.20.48, Jan 23, 2017
+ * @version 2.22.20.49, Jan 26, 2017
  */
 
 @import "variables";
@@ -60,6 +60,29 @@
     padding: 30px 15px;
 }
 
+.article-module-bottom {
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 0;
+    border-radius: 0 0 3px 3px;
+    font-weight: bold;
+    padding: 15px 30px;
+
+    a {
+        text-decoration: none;
+        transition: all 0.2s ease-out 0s;
+        color: #666;
+        width: 45%;
+    }
+
+    a.fn-right {
+        text-align: right;
+    }
+
+    a:hover {
+        color: #333;
+    }
+}
+
 .article-content {
     margin: 15px;
 }
@@ -83,62 +106,48 @@ h1.article-title {
 .article-info {
     border-bottom: 1px solid #eee;
     font-size: 12px;
-    line-height: 19px;
+    line-height: 20px;
     padding: 15px;
 
-    .article-info-action {
-        font-size: 24px;
-        font-weight: bold;
-        line-height: 36px;
+    .article-actions {
+        line-height: 40px;
+    }
 
-        a {
-            text-decoration: none;
-            transition: all 0.2s ease-out 0s;
-            color: #666;
+    .share {
+        position: relative;
+        display: inline;
+
+        span {
+            color: $blue;
         }
 
-        a:hover {
-            color: #333;
-        }
-
-        .share {
-            position: relative;
-            font-size: 18px;
-
-            #qrCode {
-                position: absolute;
-                top: 28px;
-                left: 0;
-                border: 5px solid #e5e5e5;
-                z-index: 1;
-                height: 90px;
-                border-radius: 3px;
-                width: 90px;
-            }
-
-            [class^="icon-"] {
-                cursor: pointer;
-                transition: all 0.2s ease-out 0s;
-                color: $fade;
-            }
-
-            [class^="icon-"]:hover {
-                color: $gray;
-            }
-
-        }
-
+        span:hover,
         #shareClipboard.tooltipped-hover .icon-link {
             color: $gray;
         }
+
+        #qrCode {
+            position: absolute;
+            top: 28px;
+            left: 0;
+            border: 5px solid #e5e5e5;
+            z-index: 1;
+            height: 90px;
+            border-radius: 3px;
+            width: 90px;
+        }
     }
+}
+
+.article-bottom {
+    margin: 0 15px;
 }
 
 #thoughtProgress {
     height: 2px;
     position: relative;
     margin-bottom: 10px;
-    margin-top: -11px;
+    margin-top: -1px;
 }
 
 #thoughtProgress .bar {
@@ -166,26 +175,7 @@ label.cmt-anonymous {
 }
 
 .article-actions {
-    padding-top: 15px;
-    text-align: center;
-    height: 22px;
-    line-height: 22px;
-    margin: 0 15px;
-
-    .has-cnt {
-        border: 1px solid #d9d9d9;
-        border-radius: 3px;
-        transition: 218ms;
-        padding: 2px 5px;
-        font-size: 13px;
-        vertical-align: top;
-    }
-
-    .has-cnt:hover {
-        background-color: #bcbcbc;
-        border-color: #bfbfbf;
-        color: #fff;
-    }
+    font-size: 18px;
 }
 
 .action-btns > span,
@@ -312,7 +302,7 @@ label.cmt-anonymous {
     background-image: linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
     background-color: #f7f7f7;
     background-size: 45px 45px;
-    margin: 0 15px;
+    margin: 0 15px 30px;
 }
 
 #articleRewardContent > p {
