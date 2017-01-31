@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.14.6.48, Jan 23, 2017
+    Version: 2.14.6.49, Jan 31, 2017
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -307,6 +307,7 @@
                         <include>**/src/*/webapp/scss/*.scss</include>
                         <include>**/src/*/resources/*.properties</include>
                         <include>**/src/*/webapp/WEB-INF/*.xml</include>
+                        <include>**/src/*/webapp/*.xml</include>
                         <include>gulpfile.js</include>
                     </includes>
                     <excludes>
