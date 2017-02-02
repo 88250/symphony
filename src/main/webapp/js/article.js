@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.27.40.29, Jan 26, 2017
+ * @version 1.27.41.29, Feb 2, 2017
  */
 
 /**
@@ -324,7 +324,7 @@ var Comment = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'},
+                    {name: 'view'},
                     {name: 'fullscreen'}
                 ],
                 extraKeys: {
@@ -696,8 +696,8 @@ var Comment = {
                     // reset comment editor
                     Comment.editor.setValue('');
                     $('.editor-preview').html('');
-                    if ($('.icon-preview').hasClass('active')) {
-                        $('.icon-preview').click();
+                    if ($('.icon-view').hasClass('active')) {
+                        $('.icon-view').click();
                     }
 
                     // hide comment panel

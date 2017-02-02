@@ -1297,7 +1297,7 @@
      * Preview action.
      */
     function togglePreview(editor) {
-        var toolbar = editor.toolbar.preview;
+        var toolbar = editor.toolbar.view;
         var cm = editor.codemirror;
         var wrapper = cm.getWrapperElement();
         var preview = wrapper.lastChild;
@@ -1424,7 +1424,7 @@
         {name: 'undo', action: undo},
         '|',
         //{name: 'info', action: 'http://lab.lepture.com/editor/markdown'},
-        {name: 'preview', action: togglePreview},
+        {name: 'view', action: togglePreview},
         {name: 'fullscreen', action: toggleFullScreen}
     ];
 
@@ -1585,7 +1585,7 @@
                             el.className += ' active';
                         }
                     } else {
-                        if (el.className.indexOf('icon-preview') === -1) {
+                        if (el.className.indexOf('icon-view') === -1) {
                             el.className = el.className.replace(/\s*active\s*/g, '');
                         }
                     }

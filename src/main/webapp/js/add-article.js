@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.20.15.16, Jan 16, 2017
+ * @version 2.20.16.16, Feb 2, 2017
  */
 
 /**
@@ -161,7 +161,7 @@ var AddArticle = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'},
+                    {name: 'view'},
                     {name: 'fullscreen'}
                 ],
                 status: false
@@ -174,9 +174,10 @@ var AddArticle = {
         if (window.localStorage && window.localStorage.articleContent && "" === AddArticle.editor.getValue()
                 && "" !== window.localStorage.articleContent.replace(/(^\s*)|(\s*$)/g, "")) {
             AddArticle.editor.setValue(window.localStorage.articleContent);
-            // 默认使用 preview
-            $('.editor-toolbar .icon-preview:eq(0)').click();
         }
+
+        // 默认使用 preview
+        $('.editor-toolbar .icon-view:eq(0)').click();
 
         if (!window.localStorage.thoughtContent) {
             window.localStorage.thoughtContent = "";
@@ -368,7 +369,7 @@ var AddArticle = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'},
+                    {name: 'view'},
                     {name: 'fullscreen'}
                 ],
                 extraKeys: {
