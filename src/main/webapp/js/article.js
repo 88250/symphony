@@ -69,9 +69,13 @@ var Comment = {
      * @param {string} url 跳转的 url 
      */
     goComment: function (url) {
+        if ($(url.substr(url.length - 14, 14)).length === 0) {
+            window.location = url;
+            return false;
+        }
+
         $('#comments .list > ul > li').removeAttr('style');
         Comment._bgFade($(url.substr(url.length - 14, 14)));
-        window.location = url;
     },
     /**
      * 设置评论来源
