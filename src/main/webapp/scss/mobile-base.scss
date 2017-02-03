@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.8.23, Jan 14, 2017
+ * @version 1.6.9.23, Feb 2, 2017
  */
 
 @import "variables";
@@ -648,6 +648,51 @@ a[class*=" icon-"]:hover {
     color: $blue;
 }
 
+.icon-view:before {
+  content: "\e902";
+}
+.icon-pin:before {
+  content: "\e90e";
+}
+.icon-upload:before {
+  content: "\f0ee";
+}
+.icon-time:before {
+  content: "\e906";
+}
+.icon-sortasc:before {
+  content: "\e905";
+}
+.icon-locked:before {
+  content: "\e61e";
+}
+.icon-star:before {
+  content: "\f006";
+}
+.icon-heart:before {
+  content: "\f08b";
+}
+.icon-thumbs-up:before {
+  content: "\f089";
+}
+.icon-thumbs-down:before {
+  content: "\f08a";
+}
+.icon-chevron-down:before {
+  content: "\f0db";
+}
+.icon-chevron-up:before {
+  content: "\f0dc";
+}
+.icon-chevron-left:before {
+  content: "\f0dd";
+}
+.icon-chevron-right:before {
+  content: "\f0de";
+}
+.icon-history:before {
+  content: "\f1db";
+}
 .icon-weibo:before {
   content: "\e908";
 }
@@ -714,17 +759,8 @@ a[class*=" icon-"]:hover {
 .icon-code:before {
   content: "\e011";
 }
-.icon-preview:before {
-  content: "\e002";
-}
 .icon-navigation:before {
   content: "\e903";
-}
-.icon-thumbs-down:before {
-  content: "\e901";
-}
-.icon-thumbs-up:before {
-  content: "\e902";
 }
 .icon-video:before {
   content: "\f057";
@@ -734,9 +770,6 @@ a[class*=" icon-"]:hover {
 }
 .icon-article:before {
   content: "\e61d";
-}
-.icon-star:before {
-  content: "\e600";
 }
 .icon-register:before {
   content: "\e602";
@@ -752,9 +785,6 @@ a[class*=" icon-"]:hover {
 }
 .icon-date:before {
   content: "\e608";
-}
-.icon-view:before {
-  content: "\e609";
 }
 .icon-cmts:before {
   content: "\e60a";
@@ -792,12 +822,6 @@ a[class*=" icon-"]:hover {
 .icon-flag:before {
   content: "\e617";
 }
-.icon-chevron-down:before {
-  content: "\e618";
-}
-.icon-chevron-up:before {
-  content: "\e619";
-}
 .icon-reply-to:before {
   content: "\e620";
 }
@@ -810,26 +834,11 @@ a[class*=" icon-"]:hover {
 .icon-compass:before {
   content: "\e61c";
 }
-.icon-heart:before {
-  content: "\e9da";
-}
 .icon-google:before {
   content: "\e90d";
 }
 .icon-wechat:before {
   content: "\e907";
-}
-.icon-upload:before {
-  content: "\f0ee";
-}
-.icon-time:before {
-  content: "\e906";
-}
-.icon-sortasc:before {
-  content: "\e905";
-}
-.icon-locked:before {
-  content: "\e61e";
 }
 .icon-close:before {
   content: "\e909";

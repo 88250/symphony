@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.27.40.29, Jan 26, 2017
+ * @version 1.27.41.29, Feb 2, 2017
  */
 
 /**
@@ -69,9 +69,13 @@ var Comment = {
      * @param {string} url 跳转的 url 
      */
     goComment: function (url) {
+        if ($(url.substr(url.length - 14, 14)).length === 0) {
+            window.location = url;
+            return false;
+        }
+
         $('#comments .list > ul > li').removeAttr('style');
         Comment._bgFade($(url.substr(url.length - 14, 14)));
-        window.location = url;
     },
     /**
      * 设置评论来源
@@ -324,7 +328,7 @@ var Comment = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'},
+                    {name: 'view'},
                     {name: 'fullscreen'}
                 ],
                 extraKeys: {
@@ -696,8 +700,8 @@ var Comment = {
                     // reset comment editor
                     Comment.editor.setValue('');
                     $('.editor-preview').html('');
-                    if ($('.icon-preview').hasClass('active')) {
-                        $('.icon-preview').click();
+                    if ($('.icon-view').hasClass('active')) {
+                        $('.icon-view').click();
                     }
 
                     // hide comment panel
