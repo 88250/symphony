@@ -62,7 +62,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.9.19, Jan 21, 2017
+ * @version 2.12.10.19, Feb 2, 2017
  * @since 0.2.0
  */
 @Service
@@ -400,7 +400,7 @@ public class CommentMgmtService {
             }
 
             content = Emotions.toAliases(content);
-            content = StringUtils.trim(content) + " ";
+            // content = StringUtils.trim(content) + " "; https://github.com/b3log/symphony/issues/389
             content = content.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             content = content.replace(langPropsService.get("uploadingLabel", Locale.US), "");
 

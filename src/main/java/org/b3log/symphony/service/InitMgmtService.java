@@ -42,7 +42,7 @@ import java.util.*;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.3, Jan 21, 2017
+ * @version 1.2.1.4, Feb 4, 2017
  * @since 1.8.0
  */
 @Service
@@ -552,11 +552,10 @@ public class InitMgmtService {
             transaction.commit();
 
             // Init admin
-            final ResourceBundle init = ResourceBundle.getBundle("init");
             final JSONObject admin = new JSONObject();
-            admin.put(User.USER_EMAIL, init.getString("admin.email"));
-            admin.put(User.USER_NAME, init.getString("admin.name"));
-            admin.put(User.USER_PASSWORD, MD5.hash(init.getString("admin.password")));
+            admin.put(User.USER_EMAIL, "sym@b3log.org");
+            admin.put(User.USER_NAME, "admin");
+            admin.put(User.USER_PASSWORD, MD5.hash("admin"));
 
             final Locale defaultLocale = Locale.getDefault();
             final String lang = Locales.getLanguage(defaultLocale.toString());
@@ -608,9 +607,9 @@ public class InitMgmtService {
 
             // Hello World!
             final JSONObject article = new JSONObject();
-            article.put(Article.ARTICLE_TITLE, init.getString("helloWorld.title"));
-            article.put(Article.ARTICLE_TAGS, init.getString("helloWorld.tags"));
-            article.put(Article.ARTICLE_CONTENT, init.getString("helloWorld.content"));
+            article.put(Article.ARTICLE_TITLE, "Welcome to Sym community &hearts;");
+            article.put(Article.ARTICLE_TAGS, "Sym,Announcement");
+            article.put(Article.ARTICLE_CONTENT, "Hello, everyone!");
             article.put(Article.ARTICLE_EDITOR_TYPE, 0);
             article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
