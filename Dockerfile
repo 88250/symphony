@@ -1,4 +1,4 @@
-FROM ubuntu:16.10
+FROM mysql:5.7
 MAINTAINER Liang Ding <dl88250@gmail.com>
 
 RUN apt-get update
@@ -10,16 +10,7 @@ RUN tar zxvf jdk-8u111-linux-x64.tar.gz
 ENV JAVA_HOME /jdk/jdk1.8.0_111
 ENV PATH $PATH:$JAVA_HOME/bin
 
-RUN apt-get -y install mysql-server
-
-#RUN /etc/init.d/mysql start \
-#    && mysql -uroot -e "grant all privileges on *.* to 'root'@'%' identified by '';" \
-#    && mysql -uroot -e "grant all privileges on *.* to 'root'@'localhost' identified by '';"
-#RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf \
-#    && echo 'skip-host-cache\nskip-name-resolve' | awk '{ print } $1 == "[mysqld]" && c == 0 { c = 1; system("cat") }' /etc/mysql/my.cnf > /tmp/my.cnf \
-#    && mv /tmp/my.cnf /etc/mysql/my.cnf
-
-RUN service mysql start && mysql -uroot -e "CREATE DATABASE `b3log_symphony` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
+RUN service mysql restart && mysql -uroot -e "CREATE DATABASE `b3log_symphony` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
 
 
 RUN cd /
@@ -33,4 +24,3 @@ RUN cd /sym && mvn package -Dmaven.test.skip=true
 RUN mv /sym/target/symphony.war /jetty/webapps/ROOT.war
 
 EXPOSE 8080
-CMD ["/usr/bin/mysqld_safe"]
