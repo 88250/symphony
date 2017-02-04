@@ -26,12 +26,11 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="module">
+                    <div class="module article-module">
                     <#nested>
-                        <div class="top-ranking">
+                        <div class="top-ranking"> <br>
                             <#include "../common/ranking.ftl">
                         </div>
-                    <br>    
                     </div>
                 </div>
                 <div class="side">
