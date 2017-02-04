@@ -71,5 +71,5 @@
 <div class="ft-center">${noMessageLabel}</div>
 </#if>
 
-<@pagination url="/notifications/following-user"/>
+<@pagination url="/notifications/following"/>
 </@notifications>
