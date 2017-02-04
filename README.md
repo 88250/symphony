@@ -252,7 +252,6 @@ Record the achievements of the users and the contribution to the community.
 1. [Download](https://github.com/b3log/symphony/archive/master.zip) source code
 2. to modify the database after extracting `src/main/resources/local.properties` configuration, and create a database
 3. _may_ need to modify the `latke.properties` port for container port
-4. _may_ need to modify the `init.properties` administrator account
 3. use `mvn install` to build
 4. to deploy the war package to the container, the database table will be created automatically at the start of the first
 
