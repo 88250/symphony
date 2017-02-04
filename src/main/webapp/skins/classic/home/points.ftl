@@ -22,7 +22,7 @@
 <#else>
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
 </#if>
-<br>
+<br><br>
 <#include "../common/ranking.ftl">
-<br>
+<br><br>
 </@home>
