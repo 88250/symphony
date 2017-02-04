@@ -48,17 +48,6 @@ body {
     background: rgba(66, 133, 244,0.4)
 }
 
-@font-face {
-    font-family: 'icomoon';
-    src:url('fonts/icomoon.eot?1450');
-    src:url('fonts/icomoon.eot?#iefix') format('embedded-opentype'),
-        url('fonts/icomoon.ttf?1450') format('truetype'),
-        url('fonts/icomoon.woff?1450') format('woff'),
-        url('fonts/icomoon.svg#icomoon') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
 ul,
 ol {
     margin:0;
@@ -808,19 +797,6 @@ button.mid,
 /* end button */
 
 /* start icon */
-[class^="icon-"], [class*=" icon-"] {
-    font-family: 'icomoon';
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
 a[class^="icon-"],
 a[class*=" icon-"] {
     color: #333;
@@ -832,23 +808,34 @@ a[class*=" icon-"]:hover {
     color: $blue;
 }
 
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?68j667');
+  src:  url('fonts/icomoon.eot?68j667#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?68j667') format('truetype'),
+    url('fonts/icomoon.woff?68j667') format('woff'),
+    url('fonts/icomoon.svg?68j667#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .icon-view:before {
-  content: "\e902";
-}
-.icon-pin:before {
-  content: "\e90e";
-}
-.icon-upload:before {
-  content: "\f0ee";
-}
-.icon-time:before {
-  content: "\e906";
-}
-.icon-sortasc:before {
-  content: "\e905";
-}
-.icon-locked:before {
-  content: "\e61e";
+  content: "\e901";
 }
 .icon-star:before {
   content: "\f006";
@@ -1017,6 +1004,21 @@ a[class*=" icon-"]:hover {
 }
 .icon-compass:before {
   content: "\e61c";
+}
+.icon-pin:before {
+  content: "\e90e";
+}
+.icon-upload:before {
+  content: "\f0ee";
+}
+.icon-time:before {
+  content: "\e906";
+}
+.icon-sortasc:before {
+  content: "\e905";
+}
+.icon-locked:before {
+  content: "\e61e";
 }
 .icon-google:before {
   content: "\e90d";
