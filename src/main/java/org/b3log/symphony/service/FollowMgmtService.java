@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Follow management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.1, Dec 25, 2016
+ * @version 1.3.1.2, Jan 18, 2017
  * @since 0.2.5
  */
 @Service
@@ -123,6 +123,25 @@ public class FollowMgmtService {
     }
 
     /**
+     * The specified follower watches the specified following article.
+     *
+     * @param followerId the specified follower id
+     * @param followingArticleId the specified following article id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void watchArticle(final String followerId, final String followingArticleId) throws ServiceException {
+        try {
+            follow(followerId, followingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH);
+        } catch (final RepositoryException e) {
+            final String msg = "User[id=" + followerId + "] watches an article[id=" + followingArticleId + "] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
      * The specified follower unfollows the specified following tag.
      *
      * @param followerId the specified follower id
@@ -179,6 +198,26 @@ public class FollowMgmtService {
         }
     }
 
+
+    /**
+     * The specified follower unwatches the specified following article.
+     *
+     * @param followerId the specified follower id
+     * @param followingArticleId the specified following article id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void unwatchArticle(final String followerId, final String followingArticleId) throws ServiceException {
+        try {
+            unfollow(followerId, followingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH);
+        } catch (final RepositoryException e) {
+            final String msg = "User[id=" + followerId + "] unwatches an article[id=" + followingArticleId + "] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
     /**
      * The specified follower follows the specified following entity with the specified following type.
      *
@@ -188,7 +227,7 @@ public class FollowMgmtService {
      * @throws RepositoryException repository exception
      */
     private synchronized void follow(final String followerId, final String followingId, final int followingType) throws RepositoryException {
-        if (followRepository.exists(followerId, followingId)) {
+        if (followRepository.exists(followerId, followingId, followingType)) {
             return;
         }
 
@@ -215,6 +254,17 @@ public class FollowMgmtService {
             article.put(Article.ARTICLE_COLLECT_CNT, article.optInt(Article.ARTICLE_COLLECT_CNT) + 1);
 
             articleRepository.update(followingId, article);
+        } else if (Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH == followingType) {
+            final JSONObject article = articleRepository.get(followingId);
+            if (null == article) {
+                LOGGER.log(Level.ERROR, "Not found article [id={0}] to watch", followingId);
+
+                return;
+            }
+
+            article.put(Article.ARTICLE_WATCH_CNT, article.optInt(Article.ARTICLE_WATCH_CNT) + 1);
+
+            articleRepository.update(followingId, article);
         }
 
         final JSONObject follow = new JSONObject();
@@ -233,8 +283,8 @@ public class FollowMgmtService {
      * @param followingType the specified following type
      * @throws RepositoryException repository exception
      */
-    public void unfollow(final String followerId, final String followingId, final int followingType) throws RepositoryException {
-        followRepository.removeByFollowerIdAndFollowingId(followerId, followingId);
+    public synchronized void unfollow(final String followerId, final String followingId, final int followingType) throws RepositoryException {
+        followRepository.removeByFollowerIdAndFollowingId(followerId, followingId, followingType);
 
         if (Follow.FOLLOWING_TYPE_C_TAG == followingType) {
             final JSONObject tag = tagRepository.get(followingId);
@@ -245,7 +295,6 @@ public class FollowMgmtService {
             }
 
             tag.put(Tag.TAG_FOLLOWER_CNT, tag.optInt(Tag.TAG_FOLLOWER_CNT) - 1);
-
             if (tag.optInt(Tag.TAG_FOLLOWER_CNT) < 0) {
                 tag.put(Tag.TAG_FOLLOWER_CNT, 0);
             }
@@ -262,9 +311,22 @@ public class FollowMgmtService {
             }
 
             article.put(Article.ARTICLE_COLLECT_CNT, article.optInt(Article.ARTICLE_COLLECT_CNT) - 1);
-
             if (article.optInt(Article.ARTICLE_COLLECT_CNT) < 0) {
                 article.put(Article.ARTICLE_COLLECT_CNT, 0);
+            }
+
+            articleRepository.update(followingId, article);
+        } else if (Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH == followingType) {
+            final JSONObject article = articleRepository.get(followingId);
+            if (null == article) {
+                LOGGER.log(Level.ERROR, "Not found article [id={0}] to unwatch", followingId);
+
+                return;
+            }
+
+            article.put(Article.ARTICLE_WATCH_CNT, article.optInt(Article.ARTICLE_WATCH_CNT) - 1);
+            if (article.optInt(Article.ARTICLE_WATCH_CNT) < 0) {
+                article.put(Article.ARTICLE_WATCH_CNT, 0);
             }
 
             articleRepository.update(followingId, article);

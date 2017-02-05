@@ -9,7 +9,6 @@
         </span>
     </div>
     <div class="module-panel form fn-clear">
-        <br/>
         <input id="pointTransferUserName" type="text" placeholder="${userNameLabel}"/>
         <br/> <br/>
         <input id="pointTransferAmount" type="number" placeholder="${amountLabel}"/> <br/><br/>

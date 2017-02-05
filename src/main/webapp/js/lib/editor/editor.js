@@ -1110,7 +1110,8 @@
     function toggleFullScreen(editor) {
         var cm = editor.codemirror,
         wrap = editor.codemirror.getWrapperElement();
-        
+
+        $(editor.element.parentElement).css('z-index', 'inherit');
         if ('icon-fullscreen' === editor.toolbar.fullscreen.className) {
             editor.toolbar.fullscreen.className = 'icon-contract';
 
@@ -1296,7 +1297,7 @@
      * Preview action.
      */
     function togglePreview(editor) {
-        var toolbar = editor.toolbar.preview;
+        var toolbar = editor.toolbar.view;
         var cm = editor.codemirror;
         var wrapper = cm.getWrapperElement();
         var preview = wrapper.lastChild;
@@ -1310,6 +1311,7 @@
                     /\s*editor-preview-active\s*/g, ''
                     );
             toolbar.className = toolbar.className.replace(/\s*active\s*/g, '');
+            cm.display.scroller.style.width = '100%';
             return false;
         } else {
             /* When the preview button is clicked for the first time,
@@ -1320,6 +1322,8 @@
                 preview.className += ' editor-preview-active'
             }, 1);
             toolbar.className += ' active';
+
+            cm.display.scroller.style.width = '50%';
         }
         var text = cm.getValue();
 
@@ -1420,7 +1424,7 @@
         {name: 'undo', action: undo},
         '|',
         //{name: 'info', action: 'http://lab.lepture.com/editor/markdown'},
-        {name: 'preview', action: togglePreview},
+        {name: 'view', action: togglePreview},
         {name: 'fullscreen', action: toggleFullScreen}
     ];
 
@@ -1581,7 +1585,7 @@
                             el.className += ' active';
                         }
                     } else {
-                        if (el.className.indexOf('icon-preview') === -1) {
+                        if (el.className.indexOf('icon-view') === -1) {
                             el.className = el.className.replace(/\s*active\s*/g, '');
                         }
                     }

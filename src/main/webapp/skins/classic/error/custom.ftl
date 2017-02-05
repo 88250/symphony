@@ -10,7 +10,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="module ">
+                <div class="module article-module">
                     <h2 class="sub-head">Oops!</h2>
                     <div class="no-list">${msg}</div>
                 </div>

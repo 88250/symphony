@@ -161,6 +161,12 @@
                     <option value="1"<#if 1 == user.userFollowingArticleStatus> selected</#if>>${privateLabel}</option>
                 </select>
 
+                <label>${userWatchingArticleStatusLabel}</label>
+                <select id="userWatchingArticleStatus" name="userWatchingArticleStatus">
+                    <option value="0"<#if 0 == user.userWatchingArticleStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userWatchingArticleStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
                 <label>${userFollowerStatusLabel}</label>
                 <select id="userFollowerStatus" name="userFollowerStatus">
                     <option value="0"<#if 0 == user.userFollowerStatus> selected</#if>>${publicLabel}</option>

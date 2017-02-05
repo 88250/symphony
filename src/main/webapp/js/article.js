@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.26.40.28, Jan 15, 2017
+ * @version 1.27.41.29, Feb 2, 2017
  */
 
 /**
@@ -69,9 +69,13 @@ var Comment = {
      * @param {string} url 跳转的 url 
      */
     goComment: function (url) {
+        if ($(url.substr(url.length - 14, 14)).length === 0) {
+            window.location = url;
+            return false;
+        }
+
         $('#comments .list > ul > li').removeAttr('style');
         Comment._bgFade($(url.substr(url.length - 14, 14)));
-        window.location = url;
     },
     /**
      * 设置评论来源
@@ -145,7 +149,7 @@ var Comment = {
                 $('.article-actions .icon-reply-btn').click();
             } else if (Util.prevKey === 'v') {
                 // v r 打赏帖子
-                $('.action-btns .icon-points').parent().click();
+                $('.article-actions .icon-points').parent().click();
             } else if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
                 // x r 回复回帖
                 $('#comments .list > ul > li.focus .icon-reply').parent().click();
@@ -203,55 +207,61 @@ var Comment = {
         }).bind('keyup', 't', function assets() {
             // v t 赞同帖子
             if (Util.prevKey === 'v') {
-                $('.action-btns .icon-thumbs-up').parent().click();
+                $('.article-actions .icon-thumbs-up').parent().click();
             }
             return false;
         }).bind('keyup', 'd', function assets() {
             // v d 反对帖子
             if (Util.prevKey === 'v') {
-                $('.action-btns .icon-thumbs-down').parent().click();
+                $('.article-actions .icon-thumbs-down').parent().click();
             }
             return false;
+        }).bind('keyup', 'i', function assets() {
+              // v i 关注帖子
+              if (Util.prevKey === 'v') {
+                  $('.article-actions .icon-view').parent().click();
+              }
+              return false;
         }).bind('keyup', 'c', function assets() {
             // v c 收藏帖子
             if (Util.prevKey === 'v') {
-                $('.action-btns .icon-star').parent().click();
+                $('.article-actions .icon-star').parent().click();
             }
             return false;
         }).bind('keyup', 'l', function assets() {
             // v h 查看帖子历史
             if (Util.prevKey === 'v') {
-                $('.action-btns .icon-history').parent().click();
+                $('.article-actions .icon-history').parent().click();
             }
             return false;
         }).bind('keyup', 'e', function assets() {
             // v e 编辑帖子
-            if (Util.prevKey === 'v' && $('.action-btns .icon-edit').parent().length === 1) {
-                window.location = $('.action-btns .icon-edit').parent().attr('href');
+            if (Util.prevKey === 'v' && $('.article-actions .icon-edit').parent().length === 1) {
+                window.location = $('.article-actions .icon-edit').parent().attr('href');
             }
             return false;
         }).bind('keyup', 's', function assets() {
             // v p 置顶帖子
-            if (Util.prevKey === 'v') {
+            if (Util.prevKey === 'v' && $('.article-actions .icon-chevron-up').length === 1) {
                 Article.stick(Label.articleOId);
             }
             return false;
         }).bind('keyup', 'a', function assets() {
             // v a 管理员编辑帖子 
-            if (Util.prevKey === 'v' && $('.action-btns .icon-setting').parent().length === 1) {
-                window.location = $('.action-btns .icon-setting').parent().attr('href');
+            if (Util.prevKey === 'v' && $('.article-actions .icon-setting').parent().length === 1) {
+                window.location = $('.article-actions .icon-setting').parent().attr('href');
             }
             return false;
         }).bind('keyup', 'p', function assets() {
             // v p 跳转到上一篇帖子 prev
-            if (Util.prevKey === 'v' && $('.article-info-action a[rel=prev]').length === 1) {
-                window.location = $('.article-info-action a[rel=prev]').attr('href');
+            if (Util.prevKey === 'v' && $('.article-actions a[rel=prev]').length === 1) {
+                window.location = $('.article-actions a[rel=prev]').attr('href');
             }
             return false;
         }).bind('keyup', 'n', function assets() {
             // v n 跳转到下一篇帖子 next
-            if (Util.prevKey === 'v' && $('.article-info-action a[rel=next]').length === 1) {
-                window.location = $('.article-info-action a[rel=next]').attr('href');
+            if (Util.prevKey === 'v' && $('.article-actions a[rel=next]').length === 1) {
+                window.location = $('.article-actions a[rel=next]').attr('href');
             }
             return false;
         });
@@ -318,7 +328,7 @@ var Comment = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'},
+                    {name: 'view'},
                     {name: 'fullscreen'}
                 ],
                 extraKeys: {
@@ -690,8 +700,8 @@ var Comment = {
                     // reset comment editor
                     Comment.editor.setValue('');
                     $('.editor-preview').html('');
-                    if ($('.icon-preview').hasClass('active')) {
-                        $('.icon-preview').click();
+                    if ($('.icon-view').hasClass('active')) {
+                        $('.icon-view').click();
                     }
 
                     // hide comment panel
@@ -1046,7 +1056,9 @@ var Article = {
 
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
                     url = encodeURIComponent(shareURL),
-                    pic = $(".content-reset img").attr("src");
+                    picCSS = $(".article-info .avatar").css('background-image');
+                    pic = picCSS.substring(5, picCSS.length - 2);
+
             var urls = {};
             urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
                     "&url=" + url + "&pic=" + pic;
@@ -1103,8 +1115,8 @@ var Article = {
                         $("#articleRewardContent").removeClass("reward").html(result.articleRewardContent);
                         Article.parseLanguage();
 
-                        var cnt = parseInt($('.action-btns .icon-points').parent().text());
-                        $('.action-btns .icon-points').parent().addClass('ft-red')
+                        var cnt = parseInt($('.article-actions .icon-points').parent().text());
+                        $('.article-actions .icon-points').parent().addClass('ft-red')
                         .html('<span class="icon-points"></span> ' + (cnt + 1)).removeAttr('onclick');
                         return;
                     }
@@ -1315,7 +1327,6 @@ var Article = {
 
         // set default height
         $('.article-content').html(articleHTML).height($('.article-content').height()).html('');
-        Comment._bgFade($(window.location.hash));
     },
     /**
      * @description 初始化目录.
@@ -1335,11 +1346,6 @@ var Article = {
             'width': $('.side').width() + 'px',
             'top': ($articleToc.height() + 41) + 'px'
         });
-        $articleToc.next().next().css({
-            'width': $('.side').width() + 'px',
-            'top': ($articleToc.height() + $articleToc.next().height() + 62) + 'px'
-        });
-
         $('.article-toc').css({
             'overflow': 'auto',
             'max-height': $(window).height() - 80 + 'px'
@@ -1388,18 +1394,13 @@ var Article = {
             if ($(window).scrollTop() > top - 20) {
                 $articleToc.css('position', 'fixed');
                 $articleToc.next().css('position', 'fixed');
-                $articleToc.next().next().css('position', 'fixed');
             } else {
                 $articleToc.css('position', 'initial');
                 $articleToc.next().css('position', 'initial');
-                $articleToc.next().next().css('position', 'initial');
             }
         }).resize(function () {
             $articleToc.css('width', $('.side').width() + 'px');
             $articleToc.next().css({
-                'width': $('.side').width() + 'px'
-            });
-            $articleToc.next().next().css({
                 'width': $('.side').width() + 'px'
             });
         });
@@ -1415,13 +1416,12 @@ var Article = {
             return false;
         }
 
-        var $menu = $('.action-btns .icon-unordered-list');
+        var $menu = $('.article-actions .icon-unordered-list');
         if ($menu.hasClass('ft-red')) {
             $articleToc.hide();
             $menu.removeClass('ft-red');
             $articleToc.css('position', 'initial');
             $articleToc.next().css('position', 'initial');
-            $articleToc.next().next().css('position', 'initial');
             $('.side').height('auto');
         } else {
             $articleToc.show();
@@ -1429,12 +1429,9 @@ var Article = {
             if ($(window).scrollTop() > $('#articleToC').offset().top - 20) {
                 $articleToc.css('position', 'fixed');
                 $articleToc.next().css('position', 'fixed');
-                $articleToc.next().next().css('position', 'fixed');
             }
             $('.side').height($('.side').height());
         }
-
-
     },
     /**
      * @description 标记消息通知为已读状态.

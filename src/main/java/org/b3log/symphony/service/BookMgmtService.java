@@ -40,7 +40,7 @@ import javax.inject.Inject;
  * Book management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 5, 2017
+ * @version 1.0.0.2, Jan 21, 2017
  * @since 1.9.0
  */
 @Service
@@ -167,7 +167,6 @@ public class BookMgmtService {
 
         addArticleRequest.put(Article.ARTICLE_CONTENT, contentBuilder.toString() + "\n\n");
         addArticleRequest.put(Article.ARTICLE_EDITOR_TYPE, 0);
-        addArticleRequest.put(Article.ARTICLE_AUTHOR_EMAIL, user.optString(User.USER_EMAIL));
         addArticleRequest.put(Article.ARTICLE_AUTHOR_ID, user.optString(Keys.OBJECT_ID));
         addArticleRequest.put(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_BOOK);
 

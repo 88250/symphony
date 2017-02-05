@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "4.34.7.20, Jan 14, 2017",
+    "version": "4.36.7.22, Jan 21, 2017",
     "authors": [
         "Liang Ding",
         "Zephyr",
@@ -742,7 +742,7 @@
                 {
                     "name": "followingType",
                     "type": "int",
-                    "description": "0: user, 1: tag"
+                    "description": "0: user, 1: tag, 2: article collect, 3: article watch"
                 }
             ]
         },
@@ -768,11 +768,6 @@
                 {
                     "name": "commentCreateTime",
                     "type": "long"
-                },
-                {
-                    "name": "commentAuthorEmail",
-                    "type": "String",
-                    "length": 255
                 },
                 {
                     "name": "commentAuthorId",
@@ -1274,6 +1269,11 @@
                     "description": "0: public, 1: private"
                 },
                 {
+                    "name": "userWatchingArticleStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
                     "name": "userFollowingTagStatus",
                     "type": "int",
                     "description": "0: public, 1: private"
@@ -1362,11 +1362,6 @@
                 },
                 {
                     "name": "articleTags",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "articleAuthorEmail",
                     "type": "String",
                     "length": 255
                 },
@@ -1470,6 +1465,10 @@
                 },
                 {
                     "name": "articleCollectCnt",
+                    "type": "int"
+                },
+                {
+                    "name": "articleWatchCnt",
                     "type": "int"
                 },
                 {

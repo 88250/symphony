@@ -48,6 +48,20 @@
         <div class="fn-clear settings-secret">
             <div>
                 <label>
+                    ${userWatchingArticleStatusLabel}
+                    <input id="userWatchingArticleStatus" <#if 0 == currentUser.userWatchingArticleStatus> checked="checked"</#if> type="checkbox" />
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${userForgeLinkStatusLabel}
+                    <input id="userForgeLinkStatus" <#if 0 == currentUser.userForgeLinkStatus> checked="checked"</#if> type="checkbox" />
+                </label>
+            </div>
+        </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
                     ${userPointStatusLabel}
                     <input id="userPointStatus" <#if 0 == currentUser.userPointStatus> checked="checked"</#if> type="checkbox" /> 
                 </label>
@@ -59,7 +73,6 @@
                 </label>
             </div>
         </div>
-
         <div class="fn-clear settings-secret">
             <div>
                 <label>
@@ -74,16 +87,6 @@
                 </label>
             </div>
         </div>
-
-        <div class="fn-clear settings-secret">
-            <div>
-                <label>
-                    ${userForgeLinkStatusLabel}
-                    <input id="userForgeLinkStatus" <#if 0 == currentUser.userForgeLinkStatus> checked="checked"</#if> type="checkbox" /> 
-                </label>
-            </div>
-        </div>
-
         <div class="fn-clear settings-secret">
             <div>
                 <label>

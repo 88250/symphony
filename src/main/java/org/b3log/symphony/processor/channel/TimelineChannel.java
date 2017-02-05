@@ -98,7 +98,7 @@ public class TimelineChannel {
      * @param message the specified message, for example      <pre>
      * {
      *     "type": "article",
-     *     "content": timelineArticleLabel
+     *     "content": ""
      * }
      * </pre>
      */

@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.54.1.11, Jan 3, 2017
+ * @version 1.56.1.11, Jan 18, 2017
  * @since 0.2.0
  */
 public final class Common {
@@ -412,6 +412,11 @@ public final class Common {
     public static final String IS_FOLLOWING = "isFollowing";
 
     /**
+     * Key of is watching.
+     */
+    public static final String IS_WATCHING = "isWatching";
+
+    /**
      * Key of is my article.
      */
     public static final String IS_MY_ARTICLE = "isMyArticle";
@@ -617,9 +622,9 @@ public final class Common {
     public static final String UNREAD_AT_NOTIFICATION_CNT = "unreadAtNotificationCnt";
 
     /**
-     * Key of 'followingUser' notifications.
+     * Key of 'following' notifications.
      */
-    public static final String FOLLOWING_USER_NOTIFICATIONS = "followingUserNotifications";
+    public static final String FOLLOWING_NOTIFICATIONS = "followingNotifications";
 
     /**
      * Key of unread 'broadcast' notifications count.
@@ -632,9 +637,9 @@ public final class Common {
     public static final String BROADCAST_NOTIFICATIONS = "broadcastNotifications";
 
     /**
-     * Key of unread 'followingUser' notifications count.
+     * Key of unread 'following' notifications count.
      */
-    public static final String UNREAD_FOLLOWING_USER_NOTIFICATION_CNT = "unreadFollowingUserNotificationCnt";
+    public static final String UNREAD_FOLLOWING_NOTIFICATION_CNT = "unreadFollowingNotificationCnt";
 
     /**
      * Key of follower user count.

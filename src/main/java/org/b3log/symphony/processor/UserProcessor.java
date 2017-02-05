@@ -89,7 +89,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.14.33, Dec 30, 2016
+ * @version 1.26.14.35, Jan 20, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -295,7 +295,7 @@ public class UserProcessor {
             final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
-            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
@@ -741,7 +741,7 @@ public class UserProcessor {
             currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
-            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
@@ -828,7 +828,7 @@ public class UserProcessor {
         if (isLoggedIn) {
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
-            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
@@ -934,7 +934,7 @@ public class UserProcessor {
             final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
-            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
@@ -1017,7 +1017,7 @@ public class UserProcessor {
             currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
-            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
@@ -1094,13 +1094,13 @@ public class UserProcessor {
             final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
-            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
 
             for (final JSONObject followingUser : followingUsers) {
                 final String homeUserFollowingUserId = followingUser.optString(Keys.OBJECT_ID);
 
-                followingUser.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowingUserId));
+                followingUser.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowingUserId, Follow.FOLLOWING_TYPE_C_USER));
             }
         }
 
@@ -1172,13 +1172,13 @@ public class UserProcessor {
             final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
-            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
 
             for (final JSONObject followingTag : followingTags) {
                 final String homeUserFollowingTagId = followingTag.optString(Keys.OBJECT_ID);
 
-                followingTag.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowingTagId));
+                followingTag.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowingTagId, Follow.FOLLOWING_TYPE_C_TAG));
             }
         }
 
@@ -1251,13 +1251,13 @@ public class UserProcessor {
             final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
-            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
 
             for (final JSONObject followingArticle : followingArticles) {
                 final String homeUserFollowingArticleId = followingArticle.optString(Keys.OBJECT_ID);
 
-                followingArticle.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowingArticleId));
+                followingArticle.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE));
             }
         }
 
@@ -1278,6 +1278,85 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_RECORD_COUNT, followingArticleCnt);
 
         dataModel.put(Common.TYPE, "followingArticles");
+    }
+
+    /**
+     * Shows user home watching articles page.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @param userName the specified user name
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/member/{userName}/watching/articles", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showHomeWatchingArticles(final HTTPRequestContext context, final HttpServletRequest request,
+                                          final HttpServletResponse response, final String userName) throws Exception {
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/watching-articles.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
+        final int pageSize = Symphonys.getInt("userHomeFollowingArticlesCnt");
+        final int windowSize = Symphonys.getInt("userHomeFollowingArticlesWindowSize");
+
+        fillHomeUser(dataModel, user);
+
+        final String followingId = user.optString(Keys.OBJECT_ID);
+        dataModel.put(Follow.FOLLOWING_ID, followingId);
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+
+        final JSONObject followingArticlesResult = followQueryService.getWatchingArticles(avatarViewMode,
+                followingId, pageNum, pageSize);
+        final List<JSONObject> followingArticles = (List<JSONObject>) followingArticlesResult.opt(Keys.RESULTS);
+        dataModel.put(Common.USER_HOME_FOLLOWING_ARTICLES, followingArticles);
+
+        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+        if (isLoggedIn) {
+            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final String followerId = currentUser.optString(Keys.OBJECT_ID);
+
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
+            dataModel.put(Common.IS_FOLLOWING, isFollowing);
+
+            for (final JSONObject followingArticle : followingArticles) {
+                final String homeUserFollowingArticleId = followingArticle.optString(Keys.OBJECT_ID);
+
+                followingArticle.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE));
+            }
+        }
+
+        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
+
+        final int followingArticleCnt = followingArticlesResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil(followingArticleCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+        dataModel.put(Pagination.PAGINATION_RECORD_COUNT, followingArticleCnt);
+
+        dataModel.put(Common.TYPE, "watchingArticles");
     }
 
     /**
@@ -1331,13 +1410,13 @@ public class UserProcessor {
             final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
-            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
 
             for (final JSONObject followerUser : followerUsers) {
                 final String homeUserFollowerUserId = followerUser.optString(Keys.OBJECT_ID);
 
-                followerUser.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowerUserId));
+                followerUser.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowerUserId, Follow.FOLLOWING_TYPE_C_USER));
             }
         }
 
@@ -1413,7 +1492,7 @@ public class UserProcessor {
             final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
-            final boolean isFollowing = followQueryService.isFollowing(followerId, user.optString(Keys.OBJECT_ID));
+            final boolean isFollowing = followQueryService.isFollowing(followerId, user.optString(Keys.OBJECT_ID), Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
@@ -1504,6 +1583,7 @@ public class UserProcessor {
         final boolean followingUserStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWING_USER_STATUS);
         final boolean followingTagStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWING_TAG_STATUS);
         final boolean followingArticleStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWING_ARTICLE_STATUS);
+        final boolean watchingArticleStatus = requestJSONObject.optBoolean(UserExt.USER_WATCHING_ARTICLE_STATUS);
         final boolean followerStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWER_STATUS);
         final boolean pointStatus = requestJSONObject.optBoolean(UserExt.USER_POINT_STATUS);
         final boolean onlineStatus = requestJSONObject.optBoolean(UserExt.USER_ONLINE_STATUS);
@@ -1526,6 +1606,8 @@ public class UserProcessor {
         user.put(UserExt.USER_FOLLOWING_TAG_STATUS, followingTagStatus
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
         user.put(UserExt.USER_FOLLOWING_ARTICLE_STATUS, followingArticleStatus
+                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
+        user.put(UserExt.USER_WATCHING_ARTICLE_STATUS, watchingArticleStatus
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
         user.put(UserExt.USER_FOLLOWER_STATUS, followerStatus
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);

@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.0.3, Jan 14, 2017
+ * @version 1.12.1.3, Jan 21, 2017
  * @since 0.2.5
  */
 @Service
@@ -58,6 +58,50 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+
+    /**
+     * Adds a 'following - article comment' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // comment id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addFollowingArticleCommentNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_COMMENT);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=following_article_comment] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
+     * Adds a 'following - article update' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // article id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addFollowingArticleUpdateNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_UPDATE);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=following_article_update] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
 
     /**
      * Adds a 'sys announce - role changed' type notification with the specified request json object.
@@ -549,7 +593,7 @@ public class NotificationMgmtService {
     }
 
     /**
-     * Adds a 'followingUser' type notification with the specified request json object.
+     * Adds a 'following - user' type notification with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId"; "",
@@ -563,7 +607,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=followingUser] failed";
+            final String msg = "Adds notification [type=following_user] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);

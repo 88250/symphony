@@ -3,7 +3,7 @@
 <h2 class="sub-head">
     <span class="ft-red">♠</span> ${wealthRankLabel}
 </h2>
-<div class="list top">
+<div class="list">
     <ul>
         <#list topBalanceUsers as user>
         <li>

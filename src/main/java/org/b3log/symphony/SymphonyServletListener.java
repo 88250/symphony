@@ -63,7 +63,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.17.9.29, Jan 14, 2017
+ * @version 3.17.9.30, Jan 20, 2017
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -108,8 +108,11 @@ public final class SymphonyServletListener extends AbstractServletListener {
         eventManager.registerListener(new CommentSender()); // Not a bean
         eventManager.registerListener(new org.b3log.symphony.event.other.CommentSender()); // Not a bean
 
-        final ArticleNotifier articleNotifier = beanManager.getReference(ArticleNotifier.class);
-        eventManager.registerListener(articleNotifier);
+        final ArticleAddNotifier articleAddNotifier = beanManager.getReference(ArticleAddNotifier.class);
+        eventManager.registerListener(articleAddNotifier);
+
+        final ArticleUpdateNotifier articleUpdateNotifier = beanManager.getReference(ArticleUpdateNotifier.class);
+        eventManager.registerListener(articleUpdateNotifier);
 
         final ArticleBaiduSender articleBaiduSender = beanManager.getReference(ArticleBaiduSender.class);
         eventManager.registerListener(articleBaiduSender);

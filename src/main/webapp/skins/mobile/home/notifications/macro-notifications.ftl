@@ -20,8 +20,8 @@
                     ${notificationReplyLabel}
                     <#elseif type == "at">
                     ${notificationAtLabel}
-                    <#elseif type == "followingUser">
-                    ${notificationFollowingUserLabel}
+                    <#elseif type == "following">
+                    ${notificationFollowingLabel}
                     <#elseif type == "point">
                     ${pointLabel}
                     <#elseif type == "broadcast">
@@ -67,11 +67,11 @@
                         </a>
                     </li>
                     <li<#if type == "followingUser"> class="fn-none"</#if>>
-                        <a href="${servePath}/notifications/following-user">
-                            <span>${notificationFollowingUserLabel}</span>
-                            <#if unreadFollowingUserNotificationCnt &gt; 0>
-                            <span class="count">${unreadFollowingUserNotificationCnt}</span>
-                            <span class="ft-gray fn-right" onclick="Util.makeNotificationRead('followingUser')" class="fn-right">
+                        <a href="${servePath}/notifications/following">
+                            <span>${notificationFollowingLabel}</span>
+                            <#if unreadFollowingNotificationCnt &gt; 0>
+                            <span class="count">${unreadFollowingNotificationCnt}</span>
+                            <span class="ft-gray fn-right" onclick="Util.makeNotificationRead('following')" class="fn-right">
                                 ${makeAsReadLabel}
                             </span>
                             </#if>

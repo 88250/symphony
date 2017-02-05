@@ -11,7 +11,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="module">
+                    <div class="module article-module">
                         <h2 class="sub-head">
                             <div class="avatar-small tooltipped tooltipped-ne"
                                  aria-label="${activityDailyCheckinLabel}" style="background-image:url('${staticServePath}/images/activities/checkin.png')"></div>
@@ -35,7 +35,7 @@
                 captchaObj.appendTo("#captcha");
                 captchaObj.onSuccess(function () {
                     var result = captchaObj.getValidate();
-                    window.location.href = "/activity/daily-checkin?geetest_challenge=" + result.geetest_challenge +
+                    window.location.href = "${servePath}/activity/daily-checkin?geetest_challenge=" + result.geetest_challenge +
                             "&geetest_validate=" + result.geetest_validate + "&geetest_seccode=" + result.geetest_seccode;
                 });
             };

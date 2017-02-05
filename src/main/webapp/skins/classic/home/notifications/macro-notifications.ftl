@@ -63,11 +63,11 @@
                                     </span>
                                     </#if>
                                 </a>
-                                <a href="${servePath}/notifications/following-user"<#if type == "followingUser"> class="current"</#if>>
-                                   <span>${notificationFollowingUserLabel}</span>
-                                    <#if unreadFollowingUserNotificationCnt &gt; 0>
-                                    <span class="count">${unreadFollowingUserNotificationCnt}</span>
-                                    <span onclick="Util.makeNotificationRead('followingUser')"
+                                <a href="${servePath}/notifications/following"<#if type == "following"> class="current"</#if>>
+                                   <span>${notificationFollowingLabel}</span>
+                                    <#if unreadFollowingNotificationCnt &gt; 0>
+                                    <span class="count">${unreadFollowingNotificationCnt}</span>
+                                    <span onclick="Util.makeNotificationRead('following')"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
                                         <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                     </span>

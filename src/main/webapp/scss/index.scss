@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.21.20.45, Jan 15, 2017
+ * @version 2.22.20.49, Jan 26, 2017
  */
 
 @import "variables";
@@ -57,7 +57,34 @@
 
 /* start article */
 .article-module {
-    padding: 10px;
+    padding: 30px 15px;
+}
+
+.article-module-bottom {
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 0;
+    border-radius: 0 0 3px 3px;
+    font-weight: bold;
+    padding: 15px 30px;
+
+    a {
+        text-decoration: none;
+        transition: all 0.2s ease-out 0s;
+        color: #666;
+        width: 45%;
+    }
+
+    a.fn-right {
+        text-align: right;
+    }
+
+    a:hover {
+        color: #333;
+    }
+}
+
+.article-content {
+    margin: 15px;
 }
 
 #heatBar {
@@ -72,70 +99,55 @@ h1.article-title {
     word-break: break-all;
     font-size: 24px;
     font-weight: normal;
-    margin-bottom: 10px;
+    margin: 0 15px;
     line-height: 36px;
 }
 
 .article-info {
-    margin-bottom: 10px;
     border-bottom: 1px solid #eee;
     font-size: 12px;
-    line-height: 19px;
-    padding-bottom: 10px;
+    line-height: 20px;
+    padding: 15px;
 
-    .article-info-action {
-        font-size: 24px;
-        font-weight: bold;
-        line-height: 36px;
+    .article-actions {
+        line-height: 40px;
+    }
 
-        a {
-            text-decoration: none;
-            transition: all 0.2s ease-out 0s;
-            color: #666;
+    .share {
+        position: relative;
+        display: inline;
+
+        span {
+            color: $blue;
         }
 
-        a:hover {
-            color: #333;
-        }
-
-        .share {
-            position: relative;
-            font-size: 18px;
-
-            #qrCode {
-                position: absolute;
-                top: 28px;
-                left: 0;
-                border: 5px solid #e5e5e5;
-                z-index: 1;
-                height: 90px;
-                border-radius: 3px;
-                width: 90px;
-            }
-
-            [class^="icon-"] {
-                cursor: pointer;
-                transition: all 0.2s ease-out 0s;
-                color: $fade;
-            }
-
-            [class^="icon-"]:hover {
-                color: $gray;
-            }
-
-        }
-
+        span:hover,
         #shareClipboard.tooltipped-hover .icon-link {
             color: $gray;
         }
+
+        #qrCode {
+            position: absolute;
+            top: 28px;
+            left: 0;
+            border: 5px solid #e5e5e5;
+            z-index: 1;
+            height: 90px;
+            border-radius: 3px;
+            width: 90px;
+        }
     }
+}
+
+.article-bottom {
+    margin: 0 15px;
 }
 
 #thoughtProgress {
     height: 2px;
     position: relative;
     margin-bottom: 10px;
-    margin-top: -11px;
+    margin-top: -1px;
 }
 
 #thoughtProgress .bar {
@@ -163,23 +175,7 @@ label.cmt-anonymous {
 }
 
 .article-actions {
-    padding-top: 10px;
-    text-align: center;
-
-    .has-cnt {
-        border: 1px solid #d9d9d9;
-        border-radius: 3px;
-        transition: 218ms;
-        padding: 2px 5px;
-        font-size: 13px;
-        vertical-align: top;
-    }
-
-    .has-cnt:hover {
-        background-color: #bcbcbc;
-        border-color: #bfbfbf;
-        color: #fff;
-    }
+    font-size: 18px;
 }
 
 .action-btns > span,
@@ -267,12 +263,23 @@ label.cmt-anonymous {
     border-bottom-width: 0;
 }
 
+.comment-get-comment.list > ul {
+    padding: 0;
+}
+
 .comment-get-comment.list > ul > li {
     padding-top: 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
+}
+
+.comment-get-comment.list>ul>li:last-child {
+    border-bottom: 1px solid #eee;
 }
 
 .comment-replies.list > ul {
     margin-top: 10px;
+    padding: 0;
 }
 
 .comment-replies.list > ul > li {
@@ -289,13 +296,13 @@ label.cmt-anonymous {
 }
 
 #articleRewardContent {
-    margin-top: 10px;
     padding: 10px;
     background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .9)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .9)), color-stop(.75, rgba(255, 255, 255, .9)), color-stop(.75, transparent), to(transparent));
     background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
     background-image: linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
     background-color: #f7f7f7;
     background-size: 45px 45px;
+    margin: 0 15px 30px;
 }
 
 #articleRewardContent > p {
@@ -725,16 +732,10 @@ label.cmt-anonymous {
 /* end guide */
 /* end verify */
 
-/* start tags.html */
-.tags-cold li h2,
-.tags-trend li h2 {
-    display: inline;
-}
-/* end tags.html */
 
 /* start tag-article.html */
 .tag-articles .article-module {
-    padding-bottom: 0;
+    padding: 30px 30px 15px;
 }
 
 .tag-articles-tag-desc.tag-desc {
@@ -805,7 +806,7 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .snak-rank {
-    margin: 20px;
+    margin: 30px 15px 0;
 
     .module:last-child {
         margin-left: 20px;
@@ -843,18 +844,6 @@ code .dec { color: initial; } /* decimal - blue */
 
 /* start index */
 .index {
-    .cb-stick {
-        left: -15px;
-    }
-
-    .wrapper {
-        width: 90%;
-    }
-
-    .main {
-        padding: 40px 0;
-    }
-
     .index-main {
         width: 60%;
     }
@@ -987,9 +976,13 @@ code .dec { color: initial; } /* decimal - blue */
         padding: 15px 15px 0;
     }
 
-    .index-tabs-panels > ul > li:last-child,
     .perfect-panel.list > ul > li:last-child {
         border-bottom-width: 0;
+    }
+
+    .perfect-panel.list > ul,
+    .index-tabs-panels> ul {
+        padding: 0;
     }
 
     .perfect-panel {
@@ -1027,12 +1020,12 @@ code .dec { color: initial; } /* decimal - blue */
         .preview {
             height: 100%;
             width: 100%;
-            padding-top: 25%;
+            padding-top: 50%;
             position: relative;
             box-sizing: border-box;
             display: block;
             transition: all 0.2s ease-out 0s;
-            color: $gray;
+            color: #999;
             text-decoration: none;
         }
 
@@ -1043,6 +1036,7 @@ code .dec { color: initial; } /* decimal - blue */
 
         .preview img {
             transition: all 0.2s ease-out 0s;
+            margin-top: -48px;
         }
 
         .preview:hover > img {
@@ -1105,6 +1099,7 @@ code .dec { color: initial; } /* decimal - blue */
             ul {
                 overflow: hidden;
                 height: 402px;
+                padding: 0;
             }
         }
     }
@@ -1144,3 +1139,10 @@ code .dec { color: initial; } /* decimal - blue */
     }
 }
 /* end symhub */
+
+/* start top */
+.top-ranking {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+/* end top */

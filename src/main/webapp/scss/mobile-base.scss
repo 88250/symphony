@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.8.23, Jan 14, 2017
+ * @version 1.6.10.23, Feb 4, 2017
  */
 
 @import "variables";
@@ -71,17 +71,6 @@ body {
 ::-webkit-scrollbar-thumb:horizontal {
     border-bottom-width: 4px;
     border-top-width: 4px;
-}
-
-@font-face {
-    font-family: 'icomoon';
-    src:url('fonts/icomoon.eot?1450');
-    src:url('fonts/icomoon.eot?#iefix') format('embedded-opentype'),
-        url('fonts/icomoon.ttf?1450') format('truetype'),
-        url('fonts/icomoon.woff?1450') format('woff'),
-        url('fonts/icomoon.svg#icomoon') format('svg');
-    font-weight: normal;
-    font-style: normal;
 }
 
 ul,
@@ -253,6 +242,7 @@ blockquote {
     word-wrap: break-word;
     overflow: hidden;
     line-height: 1.5;
+    word-break: break-all;
 
     ul,
     ol {
@@ -624,19 +614,6 @@ button.small,
 /* end button */
 
 /* start icon */
-[class^="icon-"], [class*=" icon-"] {
-    font-family: 'icomoon';
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
 a[class^="icon-"], 
 a[class*=" icon-"] {
     color: #333;
@@ -648,6 +625,62 @@ a[class*=" icon-"]:hover {
     color: $blue;
 }
 
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?68j667');
+  src:  url('fonts/icomoon.eot?68j667#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?68j667') format('truetype'),
+    url('fonts/icomoon.woff?68j667') format('woff'),
+    url('fonts/icomoon.svg?68j667#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-view:before {
+  content: "\e901";
+}
+.icon-star:before {
+  content: "\f006";
+}
+.icon-heart:before {
+  content: "\f08b";
+}
+.icon-thumbs-up:before {
+  content: "\f089";
+}
+.icon-thumbs-down:before {
+  content: "\f08a";
+}
+.icon-chevron-down:before {
+  content: "\f0db";
+}
+.icon-chevron-up:before {
+  content: "\f0dc";
+}
+.icon-chevron-left:before {
+  content: "\f0dd";
+}
+.icon-chevron-right:before {
+  content: "\f0de";
+}
+.icon-history:before {
+  content: "\f1db";
+}
 .icon-weibo:before {
   content: "\e908";
 }
@@ -714,17 +747,8 @@ a[class*=" icon-"]:hover {
 .icon-code:before {
   content: "\e011";
 }
-.icon-preview:before {
-  content: "\e002";
-}
 .icon-navigation:before {
   content: "\e903";
-}
-.icon-thumbs-down:before {
-  content: "\e901";
-}
-.icon-thumbs-up:before {
-  content: "\e902";
 }
 .icon-video:before {
   content: "\f057";
@@ -734,9 +758,6 @@ a[class*=" icon-"]:hover {
 }
 .icon-article:before {
   content: "\e61d";
-}
-.icon-star:before {
-  content: "\e600";
 }
 .icon-register:before {
   content: "\e602";
@@ -752,9 +773,6 @@ a[class*=" icon-"]:hover {
 }
 .icon-date:before {
   content: "\e608";
-}
-.icon-view:before {
-  content: "\e609";
 }
 .icon-cmts:before {
   content: "\e60a";
@@ -792,12 +810,6 @@ a[class*=" icon-"]:hover {
 .icon-flag:before {
   content: "\e617";
 }
-.icon-chevron-down:before {
-  content: "\e618";
-}
-.icon-chevron-up:before {
-  content: "\e619";
-}
 .icon-reply-to:before {
   content: "\e620";
 }
@@ -810,14 +822,8 @@ a[class*=" icon-"]:hover {
 .icon-compass:before {
   content: "\e61c";
 }
-.icon-heart:before {
-  content: "\e9da";
-}
-.icon-google:before {
-  content: "\e90d";
-}
-.icon-wechat:before {
-  content: "\e907";
+.icon-pin:before {
+  content: "\e90e";
 }
 .icon-upload:before {
   content: "\f0ee";
@@ -830,6 +836,12 @@ a[class*=" icon-"]:hover {
 }
 .icon-locked:before {
   content: "\e61e";
+}
+.icon-google:before {
+  content: "\e90d";
+}
+.icon-wechat:before {
+  content: "\e907";
 }
 .icon-close:before {
   content: "\e909";
@@ -1714,8 +1726,8 @@ ul.CodeMirror-hints {
 /* end module */
 
 /* start article */
-.article-action .fn-right > a,
-.article-action .fn-right > span {
+.article-actions .fn-right > a,
+.article-actions .fn-right > span {
     padding: 4px 8px;
     border-radius: 2px;
     display: inline-block;
@@ -2469,7 +2481,7 @@ label.cmt-anonymous {
     vertical-align: super;
 }
 
-.tag-articles .article-action .fn-right {
+.tag-articles .article-actions .fn-right {
     margin-top: -8px;
 }
 /* end side tags */

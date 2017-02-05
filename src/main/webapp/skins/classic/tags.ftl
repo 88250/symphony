@@ -48,14 +48,14 @@
                                 ${coldTagsLabel}
                             </h2>
                         </div>
-                        <div class="module-panel list">
-                            <ul class="tags-cold">
+                        <div class="module-panel">
+                            <ul class="module-list">
                                 <#list coldTags as tag>
                                 <li class="fn-clear<#if !tag_has_next> last</#if>">
                                     <#if tag.tagIconPath!="">
-                                    <div class="avatar fn-left" style="background-image: url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
+                                    <div class="avatar-small slogan" style="background-image: url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                                     </#if>
-                                    <h2><a rel="tag" class="ft-green" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a></h2>
+                                   <a rel="tag" href="${servePath}/tag/${tag.tagURI}" class="title">${tag.tagTitle}</a>
                                     <span class="ft-gray fn-right">
                                         ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
                                         ${cmtLabel} ${tag.tagCommentCount?c} 

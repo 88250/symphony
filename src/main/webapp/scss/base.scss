@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.28.19.52, Jan 15, 2017
+ * @version 2.28.20.55, Feb 4, 2017
  */
 
 @import "variables";
@@ -46,17 +46,6 @@ body {
 ::selection {
     text-shadow: none;
     background: rgba(66, 133, 244,0.4)
-}
-
-@font-face {
-    font-family: 'icomoon';
-    src:url('fonts/icomoon.eot?1450');
-    src:url('fonts/icomoon.eot?#iefix') format('embedded-opentype'),
-        url('fonts/icomoon.ttf?1450') format('truetype'),
-        url('fonts/icomoon.woff?1450') format('woff'),
-        url('fonts/icomoon.svg#icomoon') format('svg');
-    font-weight: normal;
-    font-style: normal;
 }
 
 ul,
@@ -229,6 +218,7 @@ blockquote {
     overflow: auto;
     line-height: 1.5;
     font-size: 16px;
+    word-break: break-all;
 
     ul,
     ol {
@@ -505,9 +495,12 @@ blockquote {
 }
 
 .sub-head {
-    padding: 5px 10px;
+    padding: 0 15px 15px;
     border-bottom: 1px solid #e5e5e5;
     line-height: 31px;
+    /* margin: 15px; */
+    font-size: 24px;
+    color: #666;
 }
 /* end function */
 
@@ -536,10 +529,6 @@ blockquote {
 
 .timeline a:hover {
     color: #333;
-}
-
-.timeline li:last-child {
-    border-bottom: 0;
 }
 
 .tag {
@@ -809,19 +798,6 @@ button.mid,
 /* end button */
 
 /* start icon */
-[class^="icon-"], [class*=" icon-"] {
-    font-family: 'icomoon';
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
 a[class^="icon-"],
 a[class*=" icon-"] {
     color: #333;
@@ -833,23 +809,61 @@ a[class*=" icon-"]:hover {
     color: $blue;
 }
 
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?68j667');
+  src:  url('fonts/icomoon.eot?68j667#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?68j667') format('truetype'),
+    url('fonts/icomoon.woff?68j667') format('woff'),
+    url('fonts/icomoon.svg?68j667#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-view:before {
+  content: "\e901";
+}
+.icon-star:before {
+  content: "\f006";
+}
+.icon-heart:before {
+  content: "\f08b";
+}
+.icon-thumbs-up:before {
+  content: "\f089";
+}
+.icon-thumbs-down:before {
+  content: "\f08a";
+}
+.icon-chevron-down:before {
+  content: "\f0db";
+}
+.icon-chevron-up:before {
+  content: "\f0dc";
+}
+.icon-chevron-left:before {
+  content: "\f0dd";
+}
+.icon-chevron-right:before {
+  content: "\f0de";
+}
 .icon-history:before {
   content: "\f1db";
-}
-.icon-pin:before {
-  content: "\e90e";
-}
-.icon-upload:before {
-  content: "\f0ee";
-}
-.icon-time:before {
-  content: "\e906";
-}
-.icon-sortasc:before {
-  content: "\e905";
-}
-.icon-locked:before {
-  content: "\e61e";
 }
 .icon-weibo:before {
   content: "\e908";
@@ -917,17 +931,8 @@ a[class*=" icon-"]:hover {
 .icon-code:before {
   content: "\e011";
 }
-.icon-preview:before {
-  content: "\e002";
-}
 .icon-navigation:before {
   content: "\e903";
-}
-.icon-thumbs-down:before {
-  content: "\e901";
-}
-.icon-thumbs-up:before {
-  content: "\e902";
 }
 .icon-video:before {
   content: "\f057";
@@ -937,9 +942,6 @@ a[class*=" icon-"]:hover {
 }
 .icon-article:before {
   content: "\e61d";
-}
-.icon-star:before {
-  content: "\e600";
 }
 .icon-register:before {
   content: "\e602";
@@ -955,9 +957,6 @@ a[class*=" icon-"]:hover {
 }
 .icon-date:before {
   content: "\e608";
-}
-.icon-view:before {
-  content: "\e609";
 }
 .icon-cmts:before {
   content: "\e60a";
@@ -995,12 +994,6 @@ a[class*=" icon-"]:hover {
 .icon-flag:before {
   content: "\e617";
 }
-.icon-chevron-down:before {
-  content: "\e618";
-}
-.icon-chevron-up:before {
-  content: "\e619";
-}
 .icon-reply-to:before {
   content: "\e620";
 }
@@ -1013,8 +1006,20 @@ a[class*=" icon-"]:hover {
 .icon-compass:before {
   content: "\e61c";
 }
-.icon-heart:before {
-  content: "\e9da";
+.icon-pin:before {
+  content: "\e90e";
+}
+.icon-upload:before {
+  content: "\f0ee";
+}
+.icon-time:before {
+  content: "\e906";
+}
+.icon-sortasc:before {
+  content: "\e905";
+}
+.icon-locked:before {
+  content: "\e61e";
 }
 .icon-google:before {
   content: "\e90d";
@@ -1038,7 +1043,7 @@ a[class*=" icon-"]:hover {
 .go-top {
     background-color: #f9fafb;
     border-radius: 28px;
-    bottom: 20px;
+    bottom: 15px;
     color: $gray;
     cursor: pointer;
     display: none;
@@ -1048,7 +1053,7 @@ a[class*=" icon-"]:hover {
     position: fixed;
     width: 56px;
     z-index: 50;
-    right: 20px;
+    right: 15px;
     box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
     padding-top: 15px;
     box-sizing: border-box;
@@ -1220,6 +1225,10 @@ a[class*=" icon-"]:hover {
 /* end form */
 
 /* start pagination & tabs-sub */
+.pagination {
+    border-top: 1px solid #eee;
+}
+
 .pagination,
 .tabs-sub {
     display: flex;
@@ -1237,7 +1246,7 @@ a[class*=" icon-"]:hover {
 .pagination a,
 .pagination span,
 .tabs-sub a {
-    line-height: 38px;
+    line-height: 48px;
     text-decoration: none;
     flex: 1;
     text-align: center;
@@ -1339,7 +1348,7 @@ a[class*=" icon-"]:hover {
 
 /* start framework */
 .wrapper {
-    width: 75%;
+    width: 90%;
     margin: 0 auto;
     display: flex;
     min-width: 720px;
@@ -1352,7 +1361,7 @@ a[class*=" icon-"]:hover {
 
 .main {
     background-color: #f2f2f2;
-    padding: 20px 0;
+    padding: 40px 0;
     background-attachment: fixed;
     min-height: 280px;
 }
@@ -1600,6 +1609,7 @@ a[class*=" icon-"]:hover {
     text-align: center;
 }
 
+
 .list > ul > li > h2,
 .list > ul > li .fn-flex > h2,
 .list > ul > li .fn-flex-1 > h2  {
@@ -1611,11 +1621,12 @@ a[class*=" icon-"]:hover {
 
 .list > ul {
     list-style: none;
+    padding: 15px 15px 0;
 }
 
 .list > ul > li {
     border-bottom: 1px solid #eee;
-    padding: 10px;
+    padding: 15px;
     white-space: normal;
     word-wrap: break-word;
     position: relative;
@@ -1629,7 +1640,8 @@ a[class*=" icon-"]:hover {
     }
 }
 
-.list > ul > li.last {
+.list > ul > li.last,
+.list > ul > li:last-child {
     border-bottom-width: 0;
 }
 
@@ -1653,7 +1665,7 @@ a[class*=" icon-"]:hover {
 /* start article */
 .cmts {
     position: absolute;
-    right: 10px;
+    right: 15px;
     top: 40%;
 }
 
@@ -1728,7 +1740,7 @@ ul.CodeMirror-hints {
     border-radius: 3px 3px 0 0;
     background-color: #f9fafb;
     border-bottom: 1px solid #e5e5e5;
-    padding: 9px 10px 10px;
+    padding: 15px;
     text-shadow: 0 1px 0 #FFFFFF;
     font-size: 14px;
     line-height: 18px;
@@ -1752,7 +1764,7 @@ ul.CodeMirror-hints {
 .module-panel .module-list li {
     border-bottom: 1px dotted $fade;
     list-style: none outside none;
-    padding: 5px 10px;
+    padding: 15px;
     position: relative;
 }
 
@@ -1769,7 +1781,7 @@ ul.CodeMirror-hints {
 }
 
 .module-panel.form {
-    padding: 10px 20px 20px;
+    padding: 15px;
 }
 
 .module-list .slogan {
@@ -1780,7 +1792,7 @@ ul.CodeMirror-hints {
 
 .module-list .title {
     color: #666;
-    margin: 5px 0 5px 30px;
+    margin: 0px 0 0px 30px;
     display: block;
     line-height: 20px;
 }
@@ -1794,7 +1806,7 @@ ul.CodeMirror-hints {
 }
 
 .module-panel.ad {
-    padding: 10px;
+    padding: 15px;
     text-align: center;
 }
 
@@ -1809,25 +1821,25 @@ ul.CodeMirror-hints {
     float: left;
     list-style: none;
     line-height: 14px;
-    margin: 10px 10px 0 0;
+    margin: 15px 15px 0 0;
 }
 
 .module-panel .tags {
-    padding: 0 0 10px 10px;
+    padding: 0 0 15px 15px;
 }
 
 /* end side module */
 
 /* start side tags */
 .tag-desc.fn-clear {
-    margin: 10px 0 0px 10px;
+    margin: 15px 0 0px 15px;
 }
 
 .tag-desc > li {
     float: left;
     position: relative;
     list-style: none;
-    margin: 0 10px 10px 0;
+    margin: 0 15px 15px 0;
     font-size: 12px;
 }
 
@@ -1925,7 +1937,7 @@ ul.CodeMirror-hints {
     .info {
         position: relative;
         overflow: hidden;
-        height: 38px;
+        height: 48px;
     }
 
     .info button.red {
@@ -1938,7 +1950,7 @@ ul.CodeMirror-hints {
         border-color: #c0372a;
         letter-spacing: 1px;
         line-height: 18px;
-        padding: 10px;
+        padding: 15px;
     }
 
     .info button.red:hover {
@@ -1946,7 +1958,7 @@ ul.CodeMirror-hints {
     }
 
     .info .fn-right {
-        margin: 10px 10px 0 0;
+        margin: 15px 15px 0 0;
     }
 
     .status {
@@ -1962,7 +1974,7 @@ ul.CodeMirror-hints {
     }
 
     .module-panel {
-        padding: 0 10px 10px 10px;
+        padding: 0 15px 15px 15px;
     }
 
     .activity-board {
@@ -2036,12 +2048,6 @@ ul.CodeMirror-hints {
     border-radius: 0 3px 3px 0;
 }
 /* end link forge */
-
-/* start top */
-.top .has-view {
-    line-height: 21px;
-}
-/* end top */
 
 /* start responsive */
 .responsive-show {

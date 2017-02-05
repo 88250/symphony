@@ -2,6 +2,7 @@
 <#include "../macro-pagination.ftl">
 <@home "${type}">
 <div class="tabs-sub fn-clear">
+    <a href="${servePath}/member/${user.userName}/watching/articles"<#if type == "watchingUsers"> class="current"</#if>>${watchingArticlesLabel}</a>
     <a href="${servePath}/member/${user.userName}/following/users"<#if type == "followingUsers"> class="current"</#if>>${followingUsersLabel}</a>
     <a href="${servePath}/member/${user.userName}/following/tags"<#if type == "followingTags"> class="current"</#if>>${followingTagsLabel}</a>
     <a href="${servePath}/member/${user.userName}/following/articles"<#if type == "followingArticles"> class="current"</#if>>${followingArticlesLabel} &nbsp;<span class="count">${paginationRecordCount}</span></a>
@@ -54,7 +55,7 @@
         </#list>
     </ul>
 </div>
-<@pagination url="/member/${user.userName}/following/tags"/>
+<@pagination url="/member/${user.userName}/following/articles"/>
 <#else>
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
 </#if>

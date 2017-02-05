@@ -1,9 +1,7 @@
 <#include "macro-admin.ftl">
 <@admin "index">
-<div class="content">
+<div class="content admin-index">
     <div class="module content-reset">
-        <div class="fn-hr5"></div>
-        <div class="fn-hr5"></div>
         <ul>
             <li>${onlineVisitorCountLabel} ${onlineVisitorCnt?c}</li>
             <li>${onlineMemberCountLabel} ${onlineMemberCnt?c}</li>
@@ -20,8 +18,6 @@
             ${currentVersionLabel} <span id="version">${version}</span>${commaLabel}
             <span id="upgrade">${checkVersionLabel}</span>
         </div>
-        <div class="fn-hr5"></div>
-        <div class="fn-hr5"></div>
     </div>
 </div>
 </@admin>
