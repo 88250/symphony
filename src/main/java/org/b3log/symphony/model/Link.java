@@ -134,8 +134,9 @@ public final class Link {
             "ruanyifeng", "zhufengpeixun", "ttlsa", "apeclass", "open-open", "w3cplus", "jb51", "wooyun",
             "ctolib", "jikexueyuan", "hiapk", "jq-school", "yunweipai", "codeceo", "weibo", "sina", "html-js",
             "shiyanlou", "studygolang", "golangtc", "gocn", "docin", "umeng", "1ke", "tencent", "shearphoto",
-            "ubuntu", "atom-china", "frontenddev", "beyoung", "pythoner", "digitser", "liaoxuefeng",
-            "2cto"));
+            "ubuntu", "atom-china", "frontenddev", "beyoung", "pythoner", "digitser", "liaoxuefeng", "htmleaf",
+            "2cto", "androidchina", "jq22", "webhek", "css88", "itcast", "swiftv", "imooc", "bootcss", "runoob",
+            "pythondoc", "justjavac", "android-studio"));
 
     /**
      * Private constructor.
