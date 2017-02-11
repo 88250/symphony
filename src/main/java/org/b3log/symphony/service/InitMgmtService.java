@@ -42,7 +42,7 @@ import java.util.*;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.4, Feb 4, 2017
+ * @version 1.2.1.5, Feb 11, 2017
  * @since 1.8.0
  */
 @Service
@@ -69,6 +69,7 @@ public class InitMgmtService {
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_THANK_ARTICLE);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_THANK_COMMENT);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_WATCH_ARTICLE);
+        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_FOLLOW_ARTICLE);
 
         // Member
         MEMBER_PERMISSIONS.addAll(DEFAULT_PERMISSIONS);
@@ -76,7 +77,6 @@ public class InitMgmtService {
         MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_BAD_ARTICLE);
         MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_GOOD_COMMENT);
         MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_BAD_COMMENT);
-        MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_FOLLOW_ARTICLE);
         MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_AT_USER);
         MEMBER_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_USE_INVITATION_LINK);
 
