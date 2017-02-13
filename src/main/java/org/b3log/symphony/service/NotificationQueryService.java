@@ -42,7 +42,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.3.10, Jan 21, 2017
+ * @version 1.11.3.10, Feb 13, 2017
  * @since 0.2.5
  */
 @Service
@@ -380,6 +380,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_INVITECODE_USED));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_INVITATION_LINK_USED));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_PERFECT_ARTICLE));
 
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
 
@@ -443,6 +445,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_INVITECODE_USED));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_INVITATION_LINK_USED));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_PERFECT_ARTICLE));
 
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
 
@@ -604,6 +608,22 @@ public class NotificationQueryService {
                                 + invitedUser18.optString(User.USER_NAME) + "</a>";
 
                         desTemplate = desTemplate.replace("{user}", invitedUserLink18);
+
+                        break;
+                    case Notification.DATA_TYPE_C_POINT_PERFECT_ARTICLE:
+                        desTemplate = langPropsService.get("notificationPointPerfectArticleLabel");
+
+                        final JSONObject article22 = articleRepository.get(dataId);
+                        if (null == article22) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
+                        final String articleLink22 = "<a href=\""
+                                + article22.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + article22.optString(Article.ARTICLE_TITLE) + "</a>";
+                        desTemplate = desTemplate.replace("{article}", articleLink22);
 
                         break;
                     default:
