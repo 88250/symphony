@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all notification model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.0.2, Jan 21, 2017
+ * @version 1.13.0.2, Feb 13, 2017
  * @since 0.2.5
  */
 public final class Notification {
@@ -166,6 +166,11 @@ public final class Notification {
      * Data type - following - article comment.
      */
     public static final int DATA_TYPE_C_FOLLOWING_ARTICLE_COMMENT = 21;
+
+    /**
+     * Data type - point - perfect article.
+     */
+    public static final int DATA_TYPE_C_POINT_PERFECT_ARTICLE = 22;
 
     //// Transient ////
     /**

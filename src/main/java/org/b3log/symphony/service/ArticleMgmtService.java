@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.14.29.36, Feb 2, 2017
+ * @version 2.15.29.36, Feb 13, 2017
  * @since 0.2.0
  */
 @Service
@@ -859,10 +859,23 @@ public class ArticleMgmtService {
                 }
             }
 
-            userRepository.update(author.optString(Keys.OBJECT_ID), author);
+            userRepository.update(authorId, author);
             articleRepository.update(articleId, article);
 
             transaction.commit();
+
+            if (Article.ARTICLE_PERFECT_C_NOT_PERFECT == oldArticle.optInt(Article.ARTICLE_PERFECT)
+                    && Article.ARTICLE_PERFECT_C_PERFECT == perfect) {
+                final JSONObject notification = new JSONObject();
+                notification.put(Notification.NOTIFICATION_USER_ID, authorId);
+                notification.put(Notification.NOTIFICATION_DATA_ID, articleId);
+
+                notificationMgmtService.addPerfectArticleNotification(notification);
+
+                pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, authorId,
+                        Pointtransfer.TRANSFER_TYPE_C_PERFECT_ARTICLE, Pointtransfer.TRANSFER_SUM_C_PERFECT_ARTICLE,
+                        articleId, System.currentTimeMillis());
+            }
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
