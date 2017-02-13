@@ -39,7 +39,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.6.7, Dec 17, 2016
+ * @version 1.15.6.8, Feb 13, 2017
  * @since 0.2.0
  */
 public final class Tag {
@@ -442,14 +442,14 @@ public final class Tag {
                 final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
                 final String u2Title = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
 
-                return u1Title.length() - u2Title.length();
+                return u2Title.length() - u1Title.length();
             }
         });
 
         for (final JSONObject iconTag : iconTags) {
             final String iconTagTitle = iconTag.optString(Tag.TAG_TITLE);
             if (iconTagTitle.length() < 2) {
-                continue;
+                break;
             }
 
             if (StringUtils.containsIgnoreCase(title, iconTagTitle)) {
