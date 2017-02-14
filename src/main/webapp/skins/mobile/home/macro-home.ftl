@@ -47,6 +47,10 @@
         <@head title="${anonymousCommentLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
         </@head>
+        <#elseif type == "linkForge">
+        <@head title="${linkForgeLabel} - ${user.userName} - ${symphonyLabel}">
+        <meta name="description" content="${user.userName}${deLabel}${linkForgeLabel}"/>
+        </@head>
         </#if>
     </head>
     <body>
@@ -77,6 +81,8 @@
                     ${anonymousLabel}${cmtLabel}
                     <#elseif type == "settings">
                     ${settingsLabel}
+                    <#elseif type == "linkForge">
+                    ${linkForgeLabel}
                     </#if>
                     <span class="icon-chevron-down fn-right"></span>
                 </div>
@@ -105,6 +111,9 @@
                     </li>
                     <li<#if type == "points"> class="fn-none"</#if>>
                         <a href="${servePath}/member/${user.userName}/points">${pointLabel}</a>
+                    </li>
+                    <li<#if type == "linkForge"> class="fn-none"</#if>>
+                    <a href="${servePath}/member/${user.userName}/forge/link">${linkForgeLabel}</a>
                     </li>
                     <#if currentUser?? && currentUser.userName == user.userName>
                     <li<#if type == "articlesAnonymous"> class="current"</#if>>
