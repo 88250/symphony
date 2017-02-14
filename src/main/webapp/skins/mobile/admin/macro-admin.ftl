@@ -111,16 +111,16 @@
                     <li<#if type == "domains" || type == "addDomain"> class="fn-none"</#if>><a href="${servePath}/admin/domains">${domainAdminLabel}</a></li>
                     </#if>
                     <#if permissions["menuAdminTags"].permissionGrant>
-                    <li<#if type == "tags" || type == "addTag"> class="current"</#if>><a href="${servePath}/admin/tags">${tagAdminLabel}</a></li>
+                    <li<#if type == "tags" || type == "addTag"> class="fn-none"</#if>><a href="${servePath}/admin/tags">${tagAdminLabel}</a></li>
                     </#if>
                     <#if permissions["menuAdminRWs"].permissionGrant>
                     <li<#if type == "reservedWords" || type == "addReservedWord"> class="fn-none"</#if>><a href="${servePath}/admin/reserved-words">${reservedWordAdminLabel}</a></li>
                     </#if>
                     <#if permissions["menuAdminIcs"].permissionGrant>
-                    <li<#if type == "invitecodes"> class="current"</#if>><a href="${servePath}/admin/invitecodes">${invitecodeAdminLabel}</a></li>
+                    <li<#if type == "invitecodes"> class="fn-none"</#if>><a href="${servePath}/admin/invitecodes">${invitecodeAdminLabel}</a></li>
                     </#if>
                     <#if permissions["menuAdminAD"].permissionGrant>
-                    <li<#if type == "ad"> class="current"</#if>><a href="${servePath}/admin/ad">${adAdminLabel}</a></li>
+                    <li<#if type == "ad"> class="fn-none"</#if>><a href="${servePath}/admin/ad">${adAdminLabel}</a></li>
                     </#if>
                     <#if permissions["menuAdminRoles"].permissionGrant>
                     <li<#if type == "roles"> class="fn-none"</#if>><a href="${servePath}/admin/roles">${rolesAdminLabel}</a></li>

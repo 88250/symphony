@@ -17,7 +17,7 @@
                     <#if timelines?size <= 0>
                     <div id="emptyTimeline" class="no-list">${emptyTimelineLabel}</div>
                     </#if>
-                    <div class="list single-line ft-gray timeline">
+                    <div class="list single-line ft-gray timeline<#if timelines?size <= 0> fn-none</#if>">
                         <ul>
                             <#list timelines as timeline>
                             <li>${timeline.content}</li>

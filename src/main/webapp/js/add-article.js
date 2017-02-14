@@ -578,6 +578,18 @@ var AddArticle = {
             $(this).parent().remove();
             $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
             $('#articleTags').prop('disabled', false);
+
+            // set tags to localStorage
+            if (location.search.indexOf('?id=') === -1) {
+                var articleTags = '';
+                $('.tags-input .tag .text').each(function () {
+                    articleTags += $(this).text() + ',';
+                });
+
+                var postData = JSON.parse(localStorage.postData);
+                postData.tags = articleTags;
+                localStorage.postData = JSON.stringify(postData);
+            }
         });
 
         // 展现领域 tag 选择面板
