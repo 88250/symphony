@@ -130,7 +130,13 @@
                           $('.article-actions .icon-star').parent().click();
                       }
                       return false;
-                })
+                }).bind('keyup', 'a', function assets() {
+                      // v a 管理员编辑标签
+                      if (Util.prevKey === 'v' && $('.article-actions .icon-setting').parent().length === 1) {
+                          window.location = $('.article-actions .icon-setting').parent().attr('href');
+                      }
+                      return false;
+                });
             })();
         </script>
     </body>

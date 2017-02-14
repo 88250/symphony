@@ -187,8 +187,7 @@ var Comment = {
             return false;
         }).bind('keyup', 'a', function assets() {
             // x a 管理员编辑选中的回贴
-            if (Util.prevKey === 'x' && Label.isAdminLoggedIn 
-                && $('#comments .list > ul > li.focus .icon-setting').parent().length === 1) {
+            if (Util.prevKey === 'x' && $('#comments .list > ul > li.focus .icon-setting').parent().length === 1) {
                 window.location = $('#comments .list > ul > li.focus .icon-setting').parent().attr('href');
             }
             return false;
