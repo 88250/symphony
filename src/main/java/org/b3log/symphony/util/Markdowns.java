@@ -60,7 +60,7 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.13.16, Jan 8, 2017
+ * @version 1.10.13.17, Feb 15, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -366,28 +366,30 @@ public final class Markdowns {
         conn.disconnect();
 
         // Pangu space
-        final Document doc = Jsoup.parse(html);
-        doc.traverse(new NodeVisitor() {
-            @Override
-            public void head(final org.jsoup.nodes.Node node, int depth) {
-                if (node instanceof org.jsoup.nodes.TextNode) {
-                    // final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
+//        final Document doc = Jsoup.parse(html);
+//        doc.traverse(new NodeVisitor() {
+//            @Override
+//            public void head(final org.jsoup.nodes.Node node, int depth) {
+//                if (node instanceof org.jsoup.nodes.TextNode) {
+//                    // final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
+//
+//                    // textNode.text(Pangu.spacingText(textNode.getWholeText()));
+//                    // FIXME: Pangu space
+//                }
+//            }
+//
+//            @Override
+//            public void tail(org.jsoup.nodes.Node node, int depth) {
+//            }
+//        });
 
-                    // textNode.text(Pangu.spacingText(textNode.getWholeText()));
-                    // FIXME: Pangu space
-                }
-            }
+//        doc.outputSettings().prettyPrint(false);
 
-            @Override
-            public void tail(org.jsoup.nodes.Node node, int depth) {
-            }
-        });
+//        String ret = doc.html();
 
-        doc.outputSettings().prettyPrint(false);
-
-        String ret = doc.html();
-        ret = StringUtils.substringBetween(ret, "<body>", "</body>");
-        ret = StringUtils.trim(ret);
+        String ret = html;
+  //      ret = StringUtils.substringBetween(ret, "<body>", "</body>");
+  //      ret = StringUtils.trim(ret);
 
         return ret;
     }
