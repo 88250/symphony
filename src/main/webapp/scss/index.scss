@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.22.20.50, Feb 14, 2017
+ * @version 2.23.21.50, Feb 15, 2017
  */
 
 @import "variables";
@@ -341,7 +341,7 @@ label.cmt-anonymous {
 }
 
 #articleToC {
-    top: 21px;
+    top: 20px;
     z-index: 60;
 }
 
@@ -1125,7 +1125,6 @@ code .dec { color: initial; } /* decimal - blue */
 
 /* start symhub */
 .symhub {
-
     li a {
         color: #666;
         vertical-align: middle;
@@ -1145,3 +1144,9 @@ code .dec { color: initial; } /* decimal - blue */
     padding-top: 15px;
 }
 /* end top */
+
+/* start timeline */
+.timeline.list > ul {
+    padding-top: 0;
+}
+/* end timeline */
