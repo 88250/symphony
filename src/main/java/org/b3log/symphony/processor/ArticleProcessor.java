@@ -96,7 +96,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.26.37, Feb 12, 2017
+ * @version 1.24.26.38, Feb 16, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1457,7 +1457,7 @@ public class ArticleProcessor {
 
         final Set<String> userNames = userQueryService.getUserNames(markdownText);
         for (final String userName : userNames) {
-            markdownText = markdownText.replace('@' + userName, "@<a href='" + Latkes.getServePath()
+            markdownText = markdownText.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
                     + "/member/" + userName + "'>" + userName + "</a>");
         }
         markdownText = markdownText.replace("@participants ",
