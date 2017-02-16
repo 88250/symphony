@@ -17,6 +17,8 @@
  */
 package org.b3log.symphony.service;
 
+import jodd.util.ArraysUtil;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -51,7 +53,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.8.5.11, Jan 18, 2017
+ * @version 1.8.6.11, Feb 16, 2017
  * @since 0.2.0
  */
 @Service
@@ -474,8 +476,8 @@ public class UserQueryService {
         //(?=\\pP)匹配标点符号-http://www.cnblogs.com/qixuejia/p/4211428.html
         copy = copy.replaceAll("(?=\\pP)[^@]", " ");
         String[] uNames = StringUtils.substringsBetween(copy, "@", " ");
-        String tail = StringUtils.substringAfterLast(copy, "@");
 
+        String tail = StringUtils.substringAfterLast(copy, "@");
         if (tail.contains(" ")) {
             tail = null;
         }
@@ -490,21 +492,29 @@ public class UserQueryService {
             }
         }
 
+        String[] uNames2 = StringUtils.substringsBetween(copy, "@", "<");
+
+        final Set<String> maybeUserNameSet;
         if (null == uNames) {
-            return ret;
+            uNames = uNames2;
+
+            if (null == uNames) {
+                return ret;
+            }
+
+            maybeUserNameSet = CollectionUtils.arrayToSet(uNames);
+        } else {
+            maybeUserNameSet = CollectionUtils.arrayToSet(uNames);
+
+            if (null != uNames2) {
+                maybeUserNameSet.addAll(CollectionUtils.arrayToSet(uNames2));
+            }
         }
 
-        for (int i = 0; i < uNames.length; i++) {
-            final String maybeUserName = uNames[i];
-
+        for (String maybeUserName : maybeUserNameSet) {
+            maybeUserName = maybeUserName.trim();
             if (null != getUserByName(maybeUserName)) { // Found a user
                 ret.add(maybeUserName);
-
-                copy = copy.replaceFirst("@" + maybeUserName, "");
-                idx = copy.indexOf('@');
-                if (-1 == idx) {
-                    return ret;
-                }
             }
         }
 

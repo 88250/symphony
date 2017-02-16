@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.25.43, Feb 12, 2017
+ * @version 2.25.25.44, Feb 16, 2017
  * @since 0.2.0
  */
 @Service
@@ -2376,7 +2376,7 @@ public class ArticleQueryService {
             }
 
             for (final String userName : userNames) {
-                articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getServePath()
+                articleContent = articleContent.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
                         + "/member/" + userName + "'>" + userName + "</a>");
             }
 
@@ -2392,8 +2392,8 @@ public class ArticleQueryService {
                 final Set<String> rewordContentUserNames = userQueryService.getUserNames(articleRewardContent);
 
                 for (final String userName : rewordContentUserNames) {
-                    articleRewardContent = articleRewardContent.replace('@' + userName, "@<a href='" + Latkes.getServePath()
-                            + "/member/" + userName + "'>" + userName + "</a>");
+                    articleRewardContent = articleRewardContent.replace('@' + userName + " ",
+                            "@<a href='" + Latkes.getServePath() + "/member/" + userName + "'>" + userName + "</a>");
                 }
 
                 articleRewardContent = Emotions.convert(articleRewardContent);
