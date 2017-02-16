@@ -36,7 +36,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
-import org.jsoup.select.NodeVisitor;
 import org.pegdown.*;
 import org.pegdown.ast.*;
 import org.pegdown.plugins.ToHtmlSerializerPlugin;
@@ -60,7 +59,7 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.13.17, Feb 15, 2017
+ * @version 1.10.13.18, Feb 16, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -363,7 +362,9 @@ public final class Markdowns {
         final String html = IOUtils.toString(inputStream, "UTF-8");
         IOUtils.closeQuietly(inputStream);
 
-        conn.disconnect();
+        //conn.disconnect();
+
+        return html;
 
         // Pangu space
 //        final Document doc = Jsoup.parse(html);
@@ -382,16 +383,15 @@ public final class Markdowns {
 //            public void tail(org.jsoup.nodes.Node node, int depth) {
 //            }
 //        });
-
+//
 //        doc.outputSettings().prettyPrint(false);
-
+//
 //        String ret = doc.html();
-
-        String ret = html;
-  //      ret = StringUtils.substringBetween(ret, "<body>", "</body>");
-  //      ret = StringUtils.trim(ret);
-
-        return ret;
+//
+//        ret = StringUtils.substringBetween(ret, "<body>", "</body>");
+//        ret = StringUtils.trim(ret);
+//
+//        return ret;
     }
 
     /**
