@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.10.8.24, Feb 16, 2017
+ * @version 2.10.9.24, Feb 16, 2017
  * @since 0.2.0
  */
 @Service
@@ -930,18 +930,9 @@ public class CommentQueryService {
      * @param comment the specified comment
      */
     private void genCommentContentUserName(final JSONObject comment) {
-        final String markdownText = comment.optString(Comment.COMMENT_CONTENT);
-
-        String ret = Markdowns.getHTML(markdownText);
-        if (null != ret) {
-            comment.put(Comment.COMMENT_CONTENT, ret);
-
-            return;
-        }
-
-        String commentContent = markdownText;
-
         Stopwatchs.start("Gen cmt content username");
+
+        String commentContent = comment.optString(Comment.COMMENT_CONTENT);
         try {
             try {
                 final Set<String> userNames = userQueryService.getUserNames(markdownText);
@@ -957,7 +948,6 @@ public class CommentQueryService {
             }
 
             comment.put(Comment.COMMENT_CONTENT, commentContent);
-            Markdowns.putHTML(markdownText, commentContent);
         } finally {
             Stopwatchs.end();
         }
