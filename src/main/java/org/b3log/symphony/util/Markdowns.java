@@ -462,7 +462,7 @@ public final class Markdowns {
      * @param markdownText the specified markdown text
      * @return HTML
      */
-    private static String getHTML(final String markdownText) {
+    public static String getHTML(final String markdownText) {
         final String hash = MD5.hash(markdownText);
 
         return (String) MD_CACHE.get(hash);

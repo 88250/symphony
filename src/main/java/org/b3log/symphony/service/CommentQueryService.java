@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.10.8.22, Jan 21, 2017
+ * @version 2.10.8.23, Feb 16, 2017
  * @since 0.2.0
  */
 @Service
@@ -673,13 +673,11 @@ public class CommentQueryService {
      * Gets comments by the specified request json object.
      *
      * @param avatarViewMode    the specified avatar view mode
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     *                          {
-     *                              "paginationCurrentPageNum": 1,
-     *                              "paginationPageSize": 20,
-     *                              "paginationWindowSize": 10,
-     *                          }, see {@link Pagination} for more details
-     *                          </pre>
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "paginationCurrentPageNum": 1,
+     *                          "paginationPageSize": 20,
+     *                          "paginationWindowSize": 10,
+     *                          , see {@link Pagination} for more details
      * @param commentFields     the specified article fields to return
      * @return for example,      <pre>
      * {
@@ -842,13 +840,10 @@ public class CommentQueryService {
      * <li>Generates article link with article id</li>
      * </ul>
      *
-     * @param comment the specified comment, for example,      <pre>
-     *                {
-     *                    "commentContent": "",
-     *                    ....,
-     *                    "commenter": {}
-     *                }
-     *                </pre>
+     * @param comment the specified comment, for example,
+     *                "commentContent": "",
+     *                ....,
+     *                "commenter": {}
      */
     private void processCommentContent(final JSONObject comment) {
         final JSONObject commenter = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
@@ -934,11 +929,18 @@ public class CommentQueryService {
      *
      * @param comment the specified comment
      */
-    // XXX: [Performance Issue] genCommentContentUserName
     private void genCommentContentUserName(final JSONObject comment) {
+        String commentContent = comment.optString(Comment.COMMENT_CONTENT);
+
+        String ret = Markdowns.getHTML(commentContent);
+        if (null != ret) {
+            comment.put(Comment.COMMENT_CONTENT, commentContent);
+
+            return;
+        }
+
         Stopwatchs.start("Gen cmt content username");
         try {
-            String commentContent = comment.optString(Comment.COMMENT_CONTENT);
             try {
                 final Set<String> userNames = userQueryService.getUserNames(commentContent);
                 for (final String userName : userNames) {
