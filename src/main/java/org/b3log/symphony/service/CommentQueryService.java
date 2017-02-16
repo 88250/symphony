@@ -935,7 +935,7 @@ public class CommentQueryService {
         String commentContent = comment.optString(Comment.COMMENT_CONTENT);
         try {
             try {
-                final Set<String> userNames = userQueryService.getUserNames(markdownText);
+                final Set<String> userNames = userQueryService.getUserNames(commentContent);
                 for (final String userName : userNames) {
                     commentContent = commentContent.replace('@' + userName + " ",
                             "@<a href='" + Latkes.getServePath() + "/member/" + userName + "'>" + userName + "</a>");
