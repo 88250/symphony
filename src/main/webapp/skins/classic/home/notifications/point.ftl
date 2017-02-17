@@ -12,4 +12,4 @@
 <div class="no-list">${noMessageLabel}</div>
 </#if>
 
-<@pagination url="/notifications/point"/></@notifications>
+<@pagination url="${servePath}/notifications/point"/></@notifications>

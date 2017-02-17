@@ -1458,7 +1458,7 @@ public class ArticleProcessor {
         final Set<String> userNames = userQueryService.getUserNames(markdownText);
         for (final String userName : userNames) {
             markdownText = markdownText.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
-                    + "/member/" + userName + "'>" + userName + "</a>");
+                    + "/member/" + userName + "'>" + userName + "</a> ");
         }
         markdownText = markdownText.replace("@participants ",
                 "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
