@@ -25,7 +25,7 @@
                                 <#elseif 3 == notification.articleType>
                                     <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
                         </#if>
-                        <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
+                        <a rel="bookmark" href="${servePath}${notification.url}"> ${notification.articleTitle}</a>
                     </h2>
                     <span class="ft-gray">
                     ${notification.createTime?string('yyyy-MM-dd HH:mm')}
@@ -48,7 +48,7 @@
                     <#elseif 3 == notification.articleType>
                     <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
                     </#if>
-                    <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
+                    <a rel="bookmark" href="${servePath}${notification.url}"> ${notification.articleTitle}</a>
                 </h2>
                 <div class="ft-fade ft-smaller">
                     <#list notification.articleTagObjs as articleTag>
@@ -60,7 +60,7 @@
             </div>
             <#if notification.articleCommentCount != 0>
             <div class="cmts tooltipped tooltipped-w" aria-label="${cmtLabel}${quantityLabel}">
-                <a class="count ft-gray" href="${notification.url}">${notification.articleCommentCount}</a>
+                <a class="count ft-gray" href="${servePath}${notification.url}">${notification.articleCommentCount}</a>
             </div>
             </#if>
         </#if>
@@ -71,5 +71,5 @@
 <div class="no-list">${noMessageLabel}</div>
 </#if>
 
-<@pagination url="/notifications/following"/>
+<@pagination url="${servePath}/notifications/following"/>
 </@notifications>
