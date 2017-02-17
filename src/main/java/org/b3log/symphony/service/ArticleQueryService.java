@@ -2377,7 +2377,7 @@ public class ArticleQueryService {
 
             for (final String userName : userNames) {
                 articleContent = articleContent.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
-                        + "/member/" + userName + "'>" + userName + "</a>");
+                        + "/member/" + userName + "'>" + userName + "</a> ");
             }
 
             articleContent = shortLinkQueryService.linkArticle(articleContent);
@@ -2393,7 +2393,7 @@ public class ArticleQueryService {
 
                 for (final String userName : rewordContentUserNames) {
                     articleRewardContent = articleRewardContent.replace('@' + userName + " ",
-                            "@<a href='" + Latkes.getServePath() + "/member/" + userName + "'>" + userName + "</a>");
+                            "@<a href='" + Latkes.getServePath() + "/member/" + userName + "'>" + userName + "</a> ");
                 }
 
                 articleRewardContent = Emotions.convert(articleRewardContent);

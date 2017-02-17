@@ -938,7 +938,7 @@ public class CommentQueryService {
                 final Set<String> userNames = userQueryService.getUserNames(commentContent);
                 for (final String userName : userNames) {
                     commentContent = commentContent.replace('@' + userName + " ",
-                            "@<a href='" + Latkes.getServePath() + "/member/" + userName + "'>" + userName + "</a>");
+                            "@<a href='" + Latkes.getServePath() + "/member/" + userName + "'>" + userName + "</a> ");
                 }
 
                 commentContent = commentContent.replace("@participants ",

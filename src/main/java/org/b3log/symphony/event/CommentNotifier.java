@@ -233,7 +233,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 final Set<String> userNames = userQueryService.getUserNames(commentContent);
                 for (final String userName : userNames) {
                     cc = cc.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
-                            + "/member/" + userName + "'>" + userName + "</a>");
+                            + "/member/" + userName + "'>" + userName + "</a> ");
                 }
             } catch (final ServiceException e) {
                 LOGGER.log(Level.ERROR, "Generates @username home URL for comment content failed", e);
