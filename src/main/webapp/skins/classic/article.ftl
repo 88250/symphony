@@ -151,8 +151,10 @@
                                 <span class="action-btns fn-clear">
                                     <span id="thankArticle" aria-label="${thankLabel}"
                                           class="tooltipped tooltipped-n<#if article.thanked> ft-red</#if>"
-                                          <#if !article.thanked && permissions["commonThankArticle"].permissionGrant>
+                                          <#if permissions["commonThankArticle"].permissionGrant>
+                                          <#if !article.thanked>
                                               onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"
+                                          </#if>
                                           <#else>
                                               onclick="Article.permissionTip(Label.noPermissionLabel)"
                                           </#if>><span class="icon-heart"></span> ${article.thankedCnt}</span> &nbsp; &nbsp;
@@ -489,7 +491,6 @@
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             $(document).ready(function () {
                 Comment.init();
-
                  // jQuery File Upload
                 Util.uploadFile({
                     "type": "img",

@@ -80,8 +80,10 @@ var ArticleChannel = {
                     // ua
                     $("#" + data.commentId + ' .cmt-via').text(Util.getDeviceByUa(data.commentUA));
 
-                    // 回帖高亮
-                    Comment._bgFade($("#" + data.commentId));
+                    // 回帖高亮，他人回帖不定位，只有自己回帖才定位
+                    if (Label.currentUserName === data.commentAuthorName) {
+                        Comment._bgFade($("#" + data.commentId));
+                    }
 
                     // 代码高亮
                     hljs.initHighlighting.called = false;
@@ -236,6 +238,7 @@ var TimelineChannel = {
                 case 'article':
                 case 'comment':
                 case 'activity':
+                    $('.timeline').show();
                     var time = new Date().getTime();
                     var template = "<li class=\"fn-none\" id=" + time + ">" + data.content + "</li>";
                     $(".timeline > ul").prepend(template);

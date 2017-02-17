@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Sends comment to client.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.1, Aug 10, 2016
+ * @version 1.1.2.2, Feb 16, 2017
  * @since 1.4.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -148,10 +148,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final String authorName = commenter.optString(User.USER_NAME);
             comment.put(Common.AUTHOR_NAME, authorName);
             comment.put(Common.AUTHOR_EMAIL, commenter.optString(User.USER_EMAIL));
-            String authorURL = commenter.optString(User.USER_URL);
-            if (StringUtils.isBlank(authorURL)) {
-                authorURL = Latkes.getServePath() + "/member/" + authorName;
-            }
+            final String authorURL = Latkes.getServePath() + "/member/" + authorName;
             comment.put(Common.AUTHOR_URL, authorURL);
             comment.put(Common.IS_ARTICLE_AUTHOR,
                     originalArticle.optString(Article.ARTICLE_AUTHOR_ID)

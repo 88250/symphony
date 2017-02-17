@@ -96,7 +96,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.25.37, Jan 21, 2017
+ * @version 1.24.26.38, Feb 16, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -490,9 +490,10 @@ public class ArticleProcessor {
             dataModel.put(Article.ARTICLE_TYPE, articleType);
         }
 
-        final String at = request.getParameter(Common.AT);
+        String at = request.getParameter(Common.AT);
+        at = StringUtils.trim(at);
         if (StringUtils.isNotBlank(at)) {
-            dataModel.put(Common.AT, at);
+            dataModel.put(Common.AT, at + " ");
         }
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -1456,8 +1457,8 @@ public class ArticleProcessor {
 
         final Set<String> userNames = userQueryService.getUserNames(markdownText);
         for (final String userName : userNames) {
-            markdownText = markdownText.replace('@' + userName, "@<a href='" + Latkes.getServePath()
-                    + "/member/" + userName + "'>" + userName + "</a>");
+            markdownText = markdownText.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
+                    + "/member/" + userName + "'>" + userName + "</a> ");
         }
         markdownText = markdownText.replace("@participants ",
                 "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");

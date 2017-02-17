@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.10.23, Feb 4, 2017
+ * @version 1.6.12.23, Feb 15, 2017
  */
 
 @import "variables";
@@ -395,7 +395,7 @@ blockquote {
 
 .fn-flex-1 {
     flex: 1;
-    -webkit-box-flex: 1; 
+    min-width: 1px;
 }
 
 .fn-pointer {
@@ -3038,8 +3038,8 @@ code .dec { color: initial; } /* decimal - blue */
         margin: 10px 0;
 
         input[type=text] {
-            width: 80%;
-            height: 27px;
+            width: 74%;
+            margin-right: 20px;
         }
     }
 

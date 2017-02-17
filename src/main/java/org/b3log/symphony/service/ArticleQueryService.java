@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.24.43, Jan 26, 2017
+ * @version 2.25.25.44, Feb 16, 2017
  * @since 0.2.0
  */
 @Service
@@ -2376,8 +2376,8 @@ public class ArticleQueryService {
             }
 
             for (final String userName : userNames) {
-                articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getServePath()
-                        + "/member/" + userName + "'>" + userName + "</a>");
+                articleContent = articleContent.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
+                        + "/member/" + userName + "'>" + userName + "</a> ");
             }
 
             articleContent = shortLinkQueryService.linkArticle(articleContent);
@@ -2392,8 +2392,8 @@ public class ArticleQueryService {
                 final Set<String> rewordContentUserNames = userQueryService.getUserNames(articleRewardContent);
 
                 for (final String userName : rewordContentUserNames) {
-                    articleRewardContent = articleRewardContent.replace('@' + userName, "@<a href='" + Latkes.getServePath()
-                            + "/member/" + userName + "'>" + userName + "</a>");
+                    articleRewardContent = articleRewardContent.replace('@' + userName + " ",
+                            "@<a href='" + Latkes.getServePath() + "/member/" + userName + "'>" + userName + "</a> ");
                 }
 
                 articleRewardContent = Emotions.convert(articleRewardContent);
@@ -2612,7 +2612,7 @@ public class ArticleQueryService {
             ret = Jsoup.clean(ret,whitelist);
 
             final int threshold = 20;
-            String[] pics = StringUtils.substringsBetween(ret, "<img", "/>");
+            String[] pics = StringUtils.substringsBetween(ret, "<img", ">");
             if (null != pics) {
                 if (pics.length > threshold) {
                     pics = Arrays.copyOf(pics, threshold);
@@ -2621,7 +2621,7 @@ public class ArticleQueryService {
                 final String[] picsRepl = new String[pics.length];
                 for (int i = 0; i < picsRepl.length; i++) {
                     picsRepl[i] = langPropsService.get("picTagLabel", Latkes.getLocale());
-                    pics[i] = "<img" + pics[i] + "/>";
+                    pics[i] = "<img" + pics[i] + ">";
 
                     if (i > threshold) {
                         break;

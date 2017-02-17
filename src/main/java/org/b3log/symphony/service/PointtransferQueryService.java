@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.19.2.1, Sep 19, 2016
+ * @version 1.20.2.1, Feb 14, 2017
  * @since 1.3.0
  */
 @Service
@@ -551,6 +551,20 @@ public class PointtransferQueryService {
                                 + addArticleBroadcast.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + addArticleBroadcast.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", addArticleBroadcastLink);
+
+                        break;
+                    case Pointtransfer.TRANSFER_TYPE_C_PERFECT_ARTICLE:
+                        final JSONObject perfectArticle = articleRepository.get(dataId);
+                        if (null == perfectArticle) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
+                        final String perfectArticleLink = "<a href=\""
+                                + perfectArticle.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + perfectArticle.optString(Article.ARTICLE_TITLE) + "</a>";
+                        desTemplate = desTemplate.replace("{article}", perfectArticleLink);
 
                         break;
                     default:

@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.27.41.29, Feb 2, 2017
+ * @version 1.27.42.30, Feb 15, 2017
  */
 
 /**
@@ -187,8 +187,7 @@ var Comment = {
             return false;
         }).bind('keyup', 'a', function assets() {
             // x a 管理员编辑选中的回贴
-            if (Util.prevKey === 'x' && Label.isAdminLoggedIn 
-                && $('#comments .list > ul > li.focus .icon-setting').parent().length === 1) {
+            if (Util.prevKey === 'x' && $('#comments .list > ul > li.focus .icon-setting').parent().length === 1) {
                 window.location = $('#comments .list > ul > li.focus .icon-setting').parent().attr('href');
             }
             return false;
@@ -254,14 +253,14 @@ var Comment = {
             return false;
         }).bind('keyup', 'p', function assets() {
             // v p 跳转到上一篇帖子 prev
-            if (Util.prevKey === 'v' && $('.article-actions a[rel=prev]').length === 1) {
-                window.location = $('.article-actions a[rel=prev]').attr('href');
+            if (Util.prevKey === 'v' && $('.article-module-bottom a[rel=prev]').length === 1) {
+                window.location = $('.article-module-bottom a[rel=prev]').attr('href');
             }
             return false;
         }).bind('keyup', 'n', function assets() {
             // v n 跳转到下一篇帖子 next
-            if (Util.prevKey === 'v' && $('.article-actions a[rel=next]').length === 1) {
-                window.location = $('.article-actions a[rel=next]').attr('href');
+            if (Util.prevKey === 'v' && $('.article-module-bottom a[rel=next]').length === 1) {
+                window.location = $('.article-module-bottom a[rel=next]').attr('href');
             }
             return false;
         });
@@ -1339,16 +1338,20 @@ var Article = {
 
         // 样式
         var $articleToc = $('#articleToC'),
-                top = $articleToc.offset().top;
+            $articleTocUl = $('.article-toc'),
+            $articleTocs = $('.article-content [id^=toc]'),
+            isUlScroll = false,
+            top = $articleToc.offset().top;
 
         $articleToc.css('width', $('.side').width() + 'px');
         $articleToc.next().css({
             'width': $('.side').width() + 'px',
             'top': ($articleToc.height() + 41) + 'px'
         });
-        $('.article-toc').css({
+        $articleTocUl.css({
             'overflow': 'auto',
-            'max-height': $(window).height() - 80 + 'px'
+            'max-height': $(window).height() - 90 + 'px',
+            'position': 'relative'
         });
 
         // 目录点击
@@ -1360,22 +1363,22 @@ var Article = {
             }, 50);
         });
 
-        var toc = [];
-        $('.article-content [id^=toc]').each(function (i) {
-            toc.push({
-                id: this.id,
-                offsetTop: this.offsetTop
-            });
-        });
-
         $(window).scroll(function (event) {
             if ($('#articleToC').css('display') === 'none') {
                 return false;
             }
 
+            // 界面各种图片加载会导致帖子目录定位
+            toc = [];
+            $articleTocs.each(function (i) {
+                toc.push({
+                    id: this.id,
+                    offsetTop: this.offsetTop
+                });
+            });
+
             // 当前目录样式
             var scrollTop = $(window).scrollTop();
-
             for (var i = 0, iMax = toc.length; i < iMax; i++) {
                 if (scrollTop < toc[i].offsetTop - 5) {
                     $articleToc.find('li').removeClass('current');
@@ -1384,7 +1387,6 @@ var Article = {
                     break;
                 }
             }
-
             if (scrollTop >= toc[toc.length - 1].offsetTop - 5) {
                 $articleToc.find('li').removeClass('current');
                 $articleToc.find('li:last').addClass('current');
@@ -1398,6 +1400,23 @@ var Article = {
                 $articleToc.css('position', 'initial');
                 $articleToc.next().css('position', 'initial');
             }
+
+            // auto scroll to current toc
+            var liOffsetTop = $articleToc.find('li.current')[0].offsetTop;
+            if (!isUlScroll) {
+                // down scroll
+                if ($articleTocUl.scrollTop() < liOffsetTop - $articleTocUl.height() + 30) {
+                    $articleTocUl.scrollTop(liOffsetTop - $articleTocUl.height() + 30);
+                }
+                // up scroll
+                if ($articleTocUl.scrollTop() > liOffsetTop - 30) {
+                    $articleTocUl.scrollTop(liOffsetTop);
+                }
+            }
+            // 在目录上滚动到边界时，会滚动 window，为了不让 window 滚动触发目录滚动。
+            setTimeout(function () {
+                isUlScroll = false;
+            }, 600);
         }).resize(function () {
             $articleToc.css('width', $('.side').width() + 'px');
             $articleToc.next().css({
@@ -1406,6 +1425,9 @@ var Article = {
         });
 
         $(window).scroll();
+        $articleTocUl.scrollTop($articleToc.find('li.current')[0].offsetTop).scroll(function () {
+            isUlScroll = true;
+        });
     },
     /**
      * @description 目录展现隐藏切换.

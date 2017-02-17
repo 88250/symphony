@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.1.3, Jan 21, 2017
+ * @version 1.13.1.3, Feb 13, 2017
  * @since 0.2.5
  */
 @Service
@@ -58,6 +58,28 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+
+    /**
+     * Add a 'point - perfect article' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId": "",
+     *                          "dataId": "" // article id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addPerfectArticleNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_POINT_PERFECT_ARTICLE);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=perfect_article] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
 
     /**
      * Adds a 'following - article comment' type notification with the specified request json object.

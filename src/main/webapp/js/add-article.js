@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.20.16.16, Feb 2, 2017
+ * @version 2.21.16.16, Feb 2, 2017
  */
 
 /**
@@ -75,7 +75,7 @@ var AddArticle = {
                     url = Label.servePath + "/article", type = "POST";
 
             if (3 === parseInt(requestJSONObject.articleType)) { // 如果是“思绪”
-                requestJSONObject.articleContent = window.localStorage.thoughtContent;
+                requestJSONObject.articleContent = JSON.parse(window.localStorage.postData).thoughtContent;
             }
 
             if (Label.articleOId) {
@@ -99,11 +99,7 @@ var AddArticle = {
                     $(".form button.red").removeAttr("disabled").css("opacity", "1");
                     if (result.sc) {
                         window.location.href = Label.servePath + "/member/" + Label.userName;
-
-                        if (window.localStorage) {
-                            window.localStorage.articleContent = "";
-                            window.localStorage.thoughtContent = "";
-                        }
+                        localStorage.removeItem('postData');
                     } else {
                         $("#addArticleTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                     }
@@ -119,13 +115,38 @@ var AddArticle = {
      */
     init: function () {
         $.ua.set(navigator.userAgent);
+
+        // local data
+        if (location.search.indexOf('?id=') > -1) {
+            localStorage.removeItem('postData');
+        }
+
+        var postData = undefined;
+        if (!localStorage.postData) {
+            postData = {
+                title: '',
+                content: '',
+                tags: '',
+                thoughtContent: '',
+                rewardContent: '',
+                rewardPoint: ''
+            };
+            localStorage.postData = JSON.stringify(postData);
+        } else {
+            postData = JSON.parse(localStorage.postData);
+        }
+
+        // init content editor
+        if ("" !== postData.content) {
+            $('#articleContent').val(postData.content);
+        }
+
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
-            $('#articleType3').hide();
             AddArticle.editor = Util.initTextarea('articleContent',
                     function (editor) {
-                        if (window.localStorage) {
-                            window.localStorage.articleContent = editor.getValue();
-                        }
+                        var postData = JSON.parse(localStorage.postData);
+                        postData.content = editor.getValue()
+                        localStorage.postData = JSON.stringify(postData);
                     }
             );
             $('#articleContent').before('<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
@@ -171,44 +192,58 @@ var AddArticle = {
             AddArticle.editor = addArticleEditor.codemirror;
         }
 
-        if (window.localStorage && window.localStorage.articleContent && "" === AddArticle.editor.getValue()
-                && "" !== window.localStorage.articleContent.replace(/(^\s*)|(\s*$)/g, "")) {
-            AddArticle.editor.setValue(window.localStorage.articleContent);
-        }
-
         // 默认使用 preview
         $('.editor-toolbar .icon-view:eq(0)').click();
 
-        if (!window.localStorage.thoughtContent) {
-            window.localStorage.thoughtContent = "";
-        }
-
+        // 私信 at 默认值
         var atIdx = location.href.indexOf("at=");
         if (-1 !== atIdx) {
-            var at = AddArticle.editor.getValue();
-            AddArticle.editor.setValue("\n\n\n" + at);
-            AddArticle.editor.setCursor(CodeMirror.Pos(0, 0));
-            AddArticle.editor.focus();
-
-            var username = Util.getParameterByName("at");
-            $("#articleTitle").val("Hi, " + username);
-
-            var tagTitles = Label.discussionLabel;
-            var tags = Util.getParameterByName("tags");
-            if ("" !== tags) {
-                tagTitles += "," + tags;
+            if ("" == postData.content) {
+                var at = AddArticle.editor.getValue();
+                AddArticle.editor.setValue("\n\n\n" + at);
+                AddArticle.editor.setCursor(CodeMirror.Pos(0, 0));
+                AddArticle.editor.focus();
             }
-            $("#articleTags").val(tagTitles);
+
+            if ("" == postData.title) {
+                var username = Util.getParameterByName("at");
+                $("#articleTitle").val("Hi, " + username);
+            }
+
+            if ("" !== postData.tags) {
+                var tagTitles = Label.discussionLabel;
+                var tags = Util.getParameterByName("tags");
+                if ("" !== tags) {
+                    tagTitles += "," + tags;
+                }
+                $("#articleTags").val(tagTitles);
+            }
         }
 
-        var title = Util.getParameterByName("title");
-        if (title && title.length > 0) {
-            $("#articleTitle").val(title);
+        // set url title
+        if ("" == postData.title) {
+            var title = Util.getParameterByName("title");
+            if (title && title.length > 0) {
+                $("#articleTitle").val(title);
+            }
         }
 
-        if ($("#articleTitle").val().length <= 0) {
-            $("#articleTitle").focus();
+        // set localStorage
+        if ("" !== postData.title) {
+            $("#articleTitle").val(postData.title);
         }
+        $("#articleTitle").keyup(function () {
+            var postData = JSON.parse(localStorage.postData);
+            postData.title = $(this).val();
+            localStorage.postData = JSON.stringify(postData);
+        });
+
+        if ("" !== postData.tags) {
+            $("#articleTags").val(postData.tags);
+        }
+
+        this._initTag();
+
         if ($.ua.device.type !== 'mobile' || ($.ua.device.vendor !== 'Apple' && $.ua.device.vendor !== 'Nokia')) {
             AddArticle.editor.on('keydown', function (cm, evt) {
                 if (8 === evt.keyCode) {
@@ -227,13 +262,8 @@ var AddArticle = {
 
             var thoughtTime = '';
             AddArticle.editor.on('changes', function (cm, changes) {
-                if (window.localStorage) {
-                    window.localStorage.articleContent = cm.getValue();
-                }
-
-                if (!window.localStorage.thoughtContent) {
-                    window.localStorage.thoughtContent = '';
-                }
+                var postData = JSON.parse(localStorage.postData);
+                postData.content = cm.getValue();
 
                 if (thoughtTime === '') {
                     thoughtTime = (new Date()).getTime();
@@ -281,7 +311,8 @@ var AddArticle = {
                         break;
                 }
 
-                window.localStorage.thoughtContent += change;
+                postData.thoughtContent += change;
+                localStorage.postData = JSON.stringify(postData);
 
                 if ($('.article-content .editor-preview-active').length === 0) {
                     return false;
@@ -303,12 +334,12 @@ var AddArticle = {
             });
         }
 
-        $("#articleTitle, #articleRewardPoint").keypress(function (event) {
-            if (13 === event.keyCode) {
-                AddArticle.add();
-            }
-        });
+        // focus
+        if ($("#articleTitle").val().length <= 0) {
+            $("#articleTitle").focus();
+        }
 
+        // check title is repeat
         $("#articleTitle").blur(function () {
             if ($.trim($(this).val()) === '') {
                 return false;
@@ -339,13 +370,28 @@ var AddArticle = {
             });
         });
 
+        // 快捷发文
+        $("#articleTags, #articleRewardPoint").keypress(function (event) {
+            if (event.ctrlKey && 10 === event.charCode) {
+                AddArticle.add();
+                return false;
+            }
+        });
+
         // 初始化打赏区编辑器
         if (0 < $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")) {
             $('#showReward').click();
         }
 
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
-            AddArticle.rewardEditor = Util.initTextarea('articleRewardContent');
+            AddArticle.rewardEditor = Util.initTextarea('articleRewardContent',
+                  function (editor) {
+                      var postData = JSON.parse(localStorage.postData);
+                      postData.rewardContent = editor.getValue()
+                      localStorage.postData = JSON.stringify(postData);
+                  }
+            );
+
             $('#articleRewardContent').before('<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
                     + Label.uploadLabel + '<input type="file"/></label></form>')
                     .css('margin-top', 0);
@@ -407,6 +453,10 @@ var AddArticle = {
                     return CodeMirror.Pass;
                 }
 
+                var postData = JSON.parse(localStorage.postData);
+                postData.rewardContent = cm.getValue();
+                localStorage.postData = JSON.stringify(postData);
+
                 if ($('.article-reward-content .editor-preview-active').length === 0) {
                     return false;
                 }
@@ -428,7 +478,22 @@ var AddArticle = {
         }
 
         $("#articleContent").next().next().height(330);
-        this._initTag();
+
+         if ("" !== postData.rewardContent) {
+             $('#showReward').click();
+             AddArticle.rewardEditor.setValue(postData.rewardContent);
+         }
+
+         if ("" !== postData.rewardPoint) {
+             $('#showReward').click();
+            $('#articleRewardPoint').val(postData.rewardPoint);
+         }
+         $("#articleRewardPoint").keyup(function () {
+             var postData = JSON.parse(localStorage.postData);
+             postData.rewardPoint = $(this).val();
+             localStorage.postData = JSON.stringify(postData);
+         });
+
     },
     /**
      * @description 初始化标签编辑器
@@ -472,6 +537,18 @@ var AddArticle = {
                     + text + '</span><span class="close">x</span></span>');
             $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
 
+            // set tags to localStorage
+            if (location.search.indexOf('?id=') === -1) {
+                var articleTags = '';
+                $('.tags-input .tag .text').each(function () {
+                    articleTags += $(this).text() + ',';
+                });
+
+                var postData = JSON.parse(localStorage.postData);
+                postData.tags = articleTags;
+                localStorage.postData = JSON.stringify(postData);
+            }
+
             if ($('.tags-input .tag').length >= 4) {
                 $('#articleTags').prop('disabled', true).val('').data('val', '');
             }
@@ -501,6 +578,18 @@ var AddArticle = {
             $(this).parent().remove();
             $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
             $('#articleTags').prop('disabled', false);
+
+            // set tags to localStorage
+            if (location.search.indexOf('?id=') === -1) {
+                var articleTags = '';
+                $('.tags-input .tag .text').each(function () {
+                    articleTags += $(this).text() + ',';
+                });
+
+                var postData = JSON.parse(localStorage.postData);
+                postData.tags = articleTags;
+                localStorage.postData = JSON.stringify(postData);
+            }
         });
 
         // 展现领域 tag 选择面板

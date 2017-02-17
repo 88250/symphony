@@ -56,7 +56,7 @@ import java.util.Set;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.9.20, Jan 19, 2017
+ * @version 1.7.9.21, Feb 16, 2017
  * @since 0.2.0
  */
 @Named
@@ -232,8 +232,8 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             try {
                 final Set<String> userNames = userQueryService.getUserNames(commentContent);
                 for (final String userName : userNames) {
-                    cc = cc.replace('@' + userName, "@<a href='" + Latkes.getServePath()
-                            + "/member/" + userName + "'>" + userName + "</a>");
+                    cc = cc.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
+                            + "/member/" + userName + "'>" + userName + "</a> ");
                 }
             } catch (final ServiceException e) {
                 LOGGER.log(Level.ERROR, "Generates @username home URL for comment content failed", e);

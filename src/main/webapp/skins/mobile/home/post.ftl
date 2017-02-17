@@ -55,7 +55,7 @@
                         <div class="fn-clear article-reward-content">
                             <textarea id="articleRewardContent" tabindex="4"
                                       placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
-                        </div>
+                        </div><br>
                         <div>
                             <input id="articleRewardPoint" type="number" tabindex="5" min="1" 
                                    <#if article?? && 0 < article.articleRewardPoint>data-orval="${article.articleRewardPoint}"</#if> 

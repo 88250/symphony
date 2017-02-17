@@ -36,7 +36,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
-import org.jsoup.select.NodeVisitor;
 import org.pegdown.*;
 import org.pegdown.ast.*;
 import org.pegdown.plugins.ToHtmlSerializerPlugin;
@@ -60,7 +59,7 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.13.16, Jan 8, 2017
+ * @version 1.10.13.19, Feb 16, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -363,33 +362,36 @@ public final class Markdowns {
         final String html = IOUtils.toString(inputStream, "UTF-8");
         IOUtils.closeQuietly(inputStream);
 
-        conn.disconnect();
+        //conn.disconnect();
+
+        return html;
 
         // Pangu space
-        final Document doc = Jsoup.parse(html);
-        doc.traverse(new NodeVisitor() {
-            @Override
-            public void head(final org.jsoup.nodes.Node node, int depth) {
-                if (node instanceof org.jsoup.nodes.TextNode) {
-                    // final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
-
-                    // textNode.text(Pangu.spacingText(textNode.getWholeText()));
-                    // FIXME: Pangu space
-                }
-            }
-
-            @Override
-            public void tail(org.jsoup.nodes.Node node, int depth) {
-            }
-        });
-
-        doc.outputSettings().prettyPrint(false);
-
-        String ret = doc.html();
-        ret = StringUtils.substringBetween(ret, "<body>", "</body>");
-        ret = StringUtils.trim(ret);
-
-        return ret;
+//        final Document doc = Jsoup.parse(html);
+//        doc.traverse(new NodeVisitor() {
+//            @Override
+//            public void head(final org.jsoup.nodes.Node node, int depth) {
+//                if (node instanceof org.jsoup.nodes.TextNode) {
+//                    // final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
+//
+//                    // textNode.text(Pangu.spacingText(textNode.getWholeText()));
+//                    // FIXME: Pangu space
+//                }
+//            }
+//
+//            @Override
+//            public void tail(org.jsoup.nodes.Node node, int depth) {
+//            }
+//        });
+//
+//        doc.outputSettings().prettyPrint(false);
+//
+//        String ret = doc.html();
+//
+//        ret = StringUtils.substringBetween(ret, "<body>", "</body>");
+//        ret = StringUtils.trim(ret);
+//
+//        return ret;
     }
 
     /**
@@ -460,7 +462,7 @@ public final class Markdowns {
      * @param markdownText the specified markdown text
      * @return HTML
      */
-    private static String getHTML(final String markdownText) {
+    public static String getHTML(final String markdownText) {
         final String hash = MD5.hash(markdownText);
 
         return (String) MD_CACHE.get(hash);
@@ -472,7 +474,7 @@ public final class Markdowns {
      * @param markdownText the specified markdown text
      * @param html         the specified HTML
      */
-    private static void putHTML(final String markdownText, final String html) {
+    public static void putHTML(final String markdownText, final String html) {
         final String hash = MD5.hash(markdownText);
 
         MD_CACHE.put(hash, html);
