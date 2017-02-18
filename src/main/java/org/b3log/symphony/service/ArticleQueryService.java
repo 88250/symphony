@@ -2067,7 +2067,7 @@ public class ArticleQueryService {
         final String previewContent = getArticleMetaDesc(article);
         article.put(Article.ARTICLE_T_PREVIEW_CONTENT, previewContent);
 
-        if (StringUtils.length(previewContent) > 140) {
+        if (StringUtils.length(previewContent) > 100) {
             article.put(Article.ARTICLE_T_THUMBNAIL_URL, getArticleThumbnail(article));
         } else {
             article.put(Article.ARTICLE_T_THUMBNAIL_URL, "");
@@ -2156,7 +2156,7 @@ public class ArticleQueryService {
      * Gets the first image URL of the specified article.
      *
      * @param article the specified article
-     * @return the first image URL, returns {@code null} if not found
+     * @return the first image URL, returns {@code ""} if not found
      */
     private String getArticleThumbnail(final JSONObject article) {
         final String content = article.optString(Article.ARTICLE_CONTENT);
@@ -2165,10 +2165,17 @@ public class ArticleQueryService {
 
         final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
         if (qiniuEnabled) {
-            return ret + "?imageView2/1/w/" + 360 + "/h/" + 270 + "/format/jpg/interlace/1/q";
+            final String qiniuDomain = Symphonys.get("qiniu.domain");
+            if (StringUtils.startsWith(ret, qiniuDomain)) {
+                ret += "?imageView2/1/w/" + 160 + "/h/" + 120 + "/format/jpg/interlace/1/q";
+            } else {
+                ret = "";
+            }
         } else {
-            return ret;
+            ret = "";
         }
+
+        return ret;
     }
 
     /**
@@ -2608,7 +2615,7 @@ public class ArticleQueryService {
         final String articleId = article.optString(Keys.OBJECT_ID);
         String articleAbstract = articleCache.getArticleAbstract(articleId);
         if (StringUtils.isNotBlank(articleAbstract)) {
-            return articleAbstract;
+            //return articleAbstract;
         }
 
         Stopwatchs.start("Meta Desc");
@@ -2622,7 +2629,7 @@ public class ArticleQueryService {
                 return langPropsService.get("articleAbstractDiscussionLabel", Latkes.getLocale());
             }
 
-            final int length = Integer.valueOf("170");
+            final int length = Integer.valueOf("150");
 
             String ret = article.optString(Article.ARTICLE_CONTENT);
 
@@ -2695,12 +2702,10 @@ public class ArticleQueryService {
                 ret = StringUtils.replaceEach(ret, objs, objsRepl);
             }
 
-            if (ret.length() >= length && null != pics) {
-                ret = StringUtils.substring(ret, 0, length)
-                        + " ....";
-
-                ret = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
-                ret = ret.replaceAll("\"", "'");
+            String tmp = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
+            if (tmp.length() >= length && null != pics) {
+                tmp = StringUtils.substring(tmp, 0, length) + " ....";
+                ret = tmp.replaceAll("\"", "'");
 
                 articleCache.putArticleAbstract(articleId, ret);
 
@@ -2722,13 +2727,12 @@ public class ArticleQueryService {
                 ret = StringUtils.replaceEach(ret, urls, urlsRepl);
             }
 
-            if (ret.length() >= length) {
-                ret = StringUtils.substring(ret, 0, length)
-                        + " ....";
+            tmp = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
+            if (tmp.length() >= length) {
+                tmp = StringUtils.substring(tmp, 0, length) + " ....";
             }
 
-            ret = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
-            ret = ret.replaceAll("\"", "'");
+            ret = tmp.replaceAll("\"", "'");
 
             articleCache.putArticleAbstract(articleId, ret);
 
