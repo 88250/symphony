@@ -2167,11 +2167,13 @@ public class ArticleQueryService {
         if (qiniuEnabled) {
             final String qiniuDomain = Symphonys.get("qiniu.domain");
             if (StringUtils.startsWith(ret, qiniuDomain)) {
-                ret += "?imageView2/1/w/" + 160 + "/h/" + 120 + "/format/jpg/interlace/1/q";
+                ret += "?imageView2/1/w/" + 180 + "/h/" + 135 + "/format/jpg/interlace/1/q";
             } else {
                 ret = "";
             }
-        } else {
+        }
+
+        if (StringUtils.isBlank(ret)) {
             ret = "";
         }
 
@@ -2615,7 +2617,7 @@ public class ArticleQueryService {
         final String articleId = article.optString(Keys.OBJECT_ID);
         String articleAbstract = articleCache.getArticleAbstract(articleId);
         if (StringUtils.isNotBlank(articleAbstract)) {
-            //return articleAbstract;
+            return articleAbstract;
         }
 
         Stopwatchs.start("Meta Desc");
