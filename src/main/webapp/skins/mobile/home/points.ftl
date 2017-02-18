@@ -16,7 +16,7 @@
 </table>
 
 <br>
-<@pagination url="/member/${user.userName}/points"/>
+<@pagination url="${servePath}/member/${user.userName}/points"/>
 <#else>
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
 </#if>

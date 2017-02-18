@@ -71,5 +71,5 @@
 <div class="ft-center">${noMessageLabel}</div>
 </#if>
 
-<@pagination url="/notifications/at"/>
+<@pagination url="${servePath}/notifications/at"/>
 </@notifications>

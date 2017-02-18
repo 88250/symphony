@@ -40,7 +40,7 @@
         </#list>  
     </ul>
 </div>
-<@pagination url="/member/${user.userName}/comments"/>
+<@pagination url="${servePath}/member/${user.userName}/comments"/>
 <#else>
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
 </#if>
