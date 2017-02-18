@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.12.23, Feb 15, 2017
+ * @version 1.6.12.24, Feb 18, 2017
  */
 
 @import "variables";
@@ -1229,8 +1229,7 @@ a[class*=" icon-"]:hover {
 
 .nav div > a.current {
     border-bottom: 2px solid #D26911;
-    color: #222;
-    padding-bottom: 8px;
+    padding-bottom: 7px;
 }
 
 .nav div > a.last {

@@ -30,14 +30,13 @@
     </h2>
     <div class="fn-flex">
         <div class="fn-flex-1">
-            <div class="fn-clear">
+            <div class="fn-flex">
                 <#if article.articleAnonymous == 0>
-                <div class="fn-left">
                     <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if><div
                     class="avatar"
                     style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
-                </div>
-                <div class="fn-left ft-fade ft-smaller list-info">
+
+                <div class="fn-ellipsis ft-fade ft-smaller list-info">
                     <#if article.articleAnonymous == 0>
                         <a rel="nofollow" class="author"
                            href="${servePath}/member/${article.articleAuthorName}"></#if>
@@ -65,12 +64,12 @@
                 </div>
             </div>
 
-            <a class="content-reset abstract" href="${servePath}${article.articlePermalink}">
+            <a class="abstract" href="${servePath}${article.articlePermalink}">
                 ${article.articlePreviewContent}
             </a>
         </div>
         <#if "" != article.articleThumbnailURL>
-            <div class="abstract-img" style="background-image:url('${article.articleThumbnailURL}')"></div>
+            <a href="${servePath}${article.articlePermalink}" class="abstract-img" style="background-image:url('${article.articleThumbnailURL}')"></a>
         </#if>
     </div>
 
