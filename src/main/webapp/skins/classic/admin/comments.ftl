@@ -11,7 +11,7 @@
                          aria-label="${item.commentAuthorName}"></div>
                     <div class="fn-flex-1">
                         <h2>
-                            <a href="${item.commentSharpURL}">${item.commentArticleTitle}</a>
+                            <a href="${servePath}${item.commentSharpURL}">${item.commentArticleTitle}</a>
                             <span class="ft-smaller ft-gray">
                             <#if item.commentStatus == 0>${validLabel}<#else>
                             <font class="ft-red">${banLabel}</font>
