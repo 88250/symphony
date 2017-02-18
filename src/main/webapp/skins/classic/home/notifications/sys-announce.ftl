@@ -14,5 +14,5 @@ ${noMessageLabel}
 </div>
 </#if>
 
-<@pagination url="${servePath}/notifications/broadcast"/>
+<@pagination url="${servePath}/notifications/sys-announce"/>
 </@notifications>

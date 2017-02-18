@@ -36,15 +36,15 @@
         </div>
 
         <ul class="status fn-flex">
-            <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/tags'">
+            <li class="fn-pointer" onclick="window.location.href = '${servePath}/member/${currentUser.userName}/following/tags'">
                 <strong>${currentUser.followingTagCnt}</strong>
                 <span class="ft-small">${followingTagsLabel}</span>
             </li>
-            <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/users'">
+            <li class="fn-pointer" onclick="window.location.href = '${servePath}/member/${currentUser.userName}/following/users'">
                 <strong>${currentUser.followingUserCnt}</strong>
                 <span class="ft-small">${followingUsersLabel}</span>
             </li>
-            <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/articles'">
+            <li class="fn-pointer" onclick="window.location.href = '${servePath}/member/${currentUser.userName}/following/articles'">
                 <strong>${currentUser.followingArticleCnt}</strong>
                 <span class="ft-small">${followingArticlesLabel}</span>
             </li>

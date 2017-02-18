@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.0.13, Jan 21, 2017
+ * @version 1.24.0.13, Feb 18, 2017
  * @since 0.2.0
  */
 public final class Article {
@@ -241,6 +241,11 @@ public final class Article {
      * Key of article preview content.
      */
     public static final String ARTICLE_T_PREVIEW_CONTENT = "articlePreviewContent";
+
+    /**
+     * Key of article thumbnail URL.
+     */
+    public static final String ARTICLE_T_THUMBNAIL_URL = "articleThumbnailURL";
 
     /**
      * Key of article view count display format.
