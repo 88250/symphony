@@ -28,44 +28,52 @@
         <a class="ft-a-title" data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
         </a>
     </h2>
-    <div class="fn-flex list-info">
-        <#if article.articleAnonymous == 0>
-        <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if><div
-            class="avatar"
-            style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
-
-        <div class="fn-flex-1 ft-fade ft-smaller">
-            <#if article.articleAnonymous == 0>
-                <a rel="nofollow" class="author"
-                href="${servePath}/member/${article.articleAuthorName}"></#if>
-                    ${article.articleAuthorName}
-            <#if article.articleAnonymous == 0></a></#if>
-            <#if article.articleAuthor.userIntro != ''>
-                <span class="ft-fade"> - ${article.articleAuthor.userIntro}</span></a>
-            </#if>
-            <br>
-            ${article.timeAgo}
-            <span class="fn-hidden">
-                <#if "" != article.articleLatestCmterName>
-                    &nbsp;•&nbsp;
-                    <#if "" != article.articleLatestCmt.clientCommentId>
-                        <span class="author">${article.articleLatestCmterName}</span>
-                    <#else>
-                        <#if article.articleLatestCmterName != 'someone'>
-                                <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"></#if><span class="author">${article.articleLatestCmterName}</span><#if article.articleLatestCmterName != 'someone'></a>
-                        </#if>
-                    </#if>
-                    ${article.cmtTimeAgo}${cmtLabel}
-                </#if>
-            </span>
-        </div>
-    </div>
     <div class="fn-flex">
-        <div class="fn-flex-1 content-reset">${article.articlePreviewContent}</div>
-        <#if article.articleThumbnailURL??>
-        <div class="abstract-img" style="background-image:url('${article.articleThumbnailURL}')"></div>
+        <div class="fn-flex-1">
+            <div class="fn-clear">
+                <#if article.articleAnonymous == 0>
+                <div class="fn-left">
+                    <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if><div
+                    class="avatar"
+                    style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
+                </div>
+                <div class="fn-left ft-fade ft-smaller list-info">
+                    <#if article.articleAnonymous == 0>
+                        <a rel="nofollow" class="author"
+                           href="${servePath}/member/${article.articleAuthorName}"></#if>
+                    ${article.articleAuthorName}
+                    <#if article.articleAnonymous == 0></a></#if>
+
+                    <#if article.articleAuthor.userIntro != ''>
+                        - ${article.articleAuthor.userIntro}
+                    </#if>
+                    <br>
+                    ${article.timeAgo}
+                    <span class="fn-hidden">
+                    <#if "" != article.articleLatestCmterName>
+                    &nbsp;•&nbsp;
+                        <#if "" != article.articleLatestCmt.clientCommentId>
+                            <span class="author">${article.articleLatestCmterName}</span>
+                        <#else>
+                            <#if article.articleLatestCmterName != 'someone'>
+                                    <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"></#if><span class="author">${article.articleLatestCmterName}</span><#if article.articleLatestCmterName != 'someone'></a>
+                            </#if>
+                        </#if>
+                        ${article.cmtTimeAgo}${cmtLabel}
+                    </#if>
+                    </span>
+                </div>
+            </div>
+
+            <a class="content-reset abstract" href="${servePath}${article.articlePermalink}">
+                ${article.articlePreviewContent}
+            </a>
+        </div>
+        <#if "" != article.articleThumbnailURL>
+            <div class="abstract-img" style="background-image:url('${article.articleThumbnailURL}')"></div>
         </#if>
     </div>
+
     <span class="heat tooltipped tooltipped-n" aria-label="${postActivityLabel}" style="width:${article.articleHeat*3}px"></span>
 
     <#if article.articleStick gt 0>
