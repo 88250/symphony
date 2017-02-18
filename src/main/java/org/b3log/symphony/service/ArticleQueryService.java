@@ -2064,8 +2064,14 @@ public class ArticleQueryService {
         toArticleDate(article);
         genArticleAuthor(avatarViewMode, article);
 
-        article.put(Article.ARTICLE_T_PREVIEW_CONTENT, getArticleMetaDesc(article));
-        article.put(Article.ARTICLE_T_THUMBNAIL_URL, getArticleThumbnail(article));
+        final String previewContent = getArticleMetaDesc(article);
+        article.put(Article.ARTICLE_T_PREVIEW_CONTENT, previewContent);
+
+        if (StringUtils.length(previewContent) > 140) {
+            article.put(Article.ARTICLE_T_THUMBNAIL_URL, getArticleThumbnail(article));
+        } else {
+            article.put(Article.ARTICLE_T_THUMBNAIL_URL, "");
+        }
 
         String title = article.optString(Article.ARTICLE_TITLE).replace("<", "&lt;").replace(">", "&gt;");
         title = Markdowns.clean(title, "");
@@ -2155,7 +2161,7 @@ public class ArticleQueryService {
     private String getArticleThumbnail(final JSONObject article) {
         final String content = article.optString(Article.ARTICLE_CONTENT);
         final String html = Markdowns.toHTML(content);
-        String ret = StringUtils.substringBetween(html, "<img", ">");
+        String ret = StringUtils.substringBetween(html, "<img src=\"", "\"");
 
         final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
         if (qiniuEnabled) {
@@ -2616,7 +2622,7 @@ public class ArticleQueryService {
                 return langPropsService.get("articleAbstractDiscussionLabel", Latkes.getLocale());
             }
 
-            final int length = Integer.valueOf("150");
+            final int length = Integer.valueOf("170");
 
             String ret = article.optString(Article.ARTICLE_CONTENT);
 
