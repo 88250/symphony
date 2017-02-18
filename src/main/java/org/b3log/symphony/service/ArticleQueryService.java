@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.25.44, Feb 16, 2017
+ * @version 2.26.25.44, Feb 18, 2017
  * @since 0.2.0
  */
 @Service
@@ -2053,6 +2053,7 @@ public class ArticleQueryService {
      * <li>anonymous process</li>
      * <li>builds tag objects</li>
      * <li>generates article preview content</li>
+     * <li>extracts the first image URL</li>
      * </ul>
      *
      * @param avatarViewMode the specified avatar view mode
@@ -2064,6 +2065,7 @@ public class ArticleQueryService {
         genArticleAuthor(avatarViewMode, article);
 
         article.put(Article.ARTICLE_T_PREVIEW_CONTENT, getArticleMetaDesc(article));
+        article.put(Article.ARTICLE_T_THUMBNAIL_URL, getArticleThumbnail(article));
 
         String title = article.optString(Article.ARTICLE_TITLE).replace("<", "&lt;").replace(">", "&gt;");
         title = Markdowns.clean(title, "");
@@ -2142,6 +2144,25 @@ public class ArticleQueryService {
             tags.add(tag);
         }
         article.put(Article.ARTICLE_T_TAG_OBJS, (Object) tags);
+    }
+
+    /**
+     * Gets the first image URL of the specified article.
+     *
+     * @param article the specified article
+     * @return the first image URL, returns {@code null} if not found
+     */
+    private String getArticleThumbnail(final JSONObject article) {
+        final String content = article.optString(Article.ARTICLE_CONTENT);
+        final String html = Markdowns.toHTML(content);
+        String ret = StringUtils.substringBetween(html, "<img", ">");
+
+        final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
+        if (qiniuEnabled) {
+            return ret + "?imageView2/1/w/" + 360 + "/h/" + 270 + "/format/jpg/interlace/1/q";
+        } else {
+            return ret;
+        }
     }
 
     /**
@@ -2579,7 +2600,6 @@ public class ArticleQueryService {
      */
     public String getArticleMetaDesc(final JSONObject article) {
         final String articleId = article.optString(Keys.OBJECT_ID);
-
         String articleAbstract = articleCache.getArticleAbstract(articleId);
         if (StringUtils.isNotBlank(articleAbstract)) {
             return articleAbstract;
@@ -2609,7 +2629,7 @@ public class ArticleQueryService {
 
             final Whitelist whitelist = Whitelist.basicWithImages();
             whitelist.addTags("object", "video");
-            ret = Jsoup.clean(ret,whitelist);
+            ret = Jsoup.clean(ret, whitelist);
 
             final int threshold = 20;
             String[] pics = StringUtils.substringsBetween(ret, "<img", ">");
