@@ -481,6 +481,15 @@ label.cmt-anonymous {
         line-height: 1.6;
     }
 
+    .abstract-img {
+        width: 160px;
+        height: 120px;
+        border-radius: 2px;
+        margin-left: 10px;
+        background-size: cover;
+        background-position: center center;
+    }
+
     ul > li > h2 > a:visited,
     .abstract:visited {
         color: $gray;
@@ -492,7 +501,7 @@ label.cmt-anonymous {
     }
 
     .list-info {
-        line-height: 20px;
+        line-height: 18px;
     }
 }
 
