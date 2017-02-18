@@ -16,7 +16,7 @@
                 <#if articles?size gt 0>
                 <div class="fn-clear">
                     <@list listData=articles/>
-                    <@pagination url="/city/${city?url('utf-8')}"/>
+                    <@pagination url="${servePath}/city/${city?url('utf-8')}"/>
                 </div>
                 <#else>
                 <div class="content content-reset">

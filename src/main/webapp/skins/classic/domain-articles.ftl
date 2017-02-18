@@ -32,7 +32,7 @@
                     </div>
                         <#if latestArticles?size gt 0>
                             <@list listData=latestArticles/>
-                            <@pagination url="/domain/${domain.domainURI}"/>
+                            <@pagination url="${servePath}/domain/${domain.domainURI}"/>
                         <#else>
                             <div class="no-list"> ${systemEmptyLabel}</div>
                         </#if>

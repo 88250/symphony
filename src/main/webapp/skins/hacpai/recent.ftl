@@ -14,7 +14,7 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <@list listData=latestArticles/>
-                    <@pagination url="/recent"/>
+                    <@pagination url="${servePath}/recent"/>
                 </div>
                 <div class="side">
                     <#include "side.ftl">

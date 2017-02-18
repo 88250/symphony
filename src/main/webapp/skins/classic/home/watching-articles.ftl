@@ -55,7 +55,7 @@
         </#list>
     </ul>
 </div>
-<@pagination url="/member/${user.userName}/following/tags"/>
+<@pagination url="${servePath}/member/${user.userName}/following/tags"/>
 <#else>
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
 </#if>

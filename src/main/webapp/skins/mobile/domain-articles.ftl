@@ -17,7 +17,7 @@
             <@subNav '' '${domain.domainURI}'/>
             <div class="content fn-clear">
                 <@list listData=latestArticles/>
-                <@pagination url="/domain/${domain.domainURI}"/>
+                <@pagination url="${servePath}/domain/${domain.domainURI}"/>
                 <div class="wrapper">
                     <div class="module">
                         <div class="module-header">
