@@ -35,20 +35,17 @@ var Settings = {
     homeScroll: function () {
         $('.nav').css('position', 'fixed');
         $('.main').css('paddingTop', '89px');
-        var hasTab = $('.tabs-sub').length === 1 ? true : false,
-        maxScroll = hasTab ? 89 : 40;
-        $('.nav-tabs').append('<div class="fn-none">' + (hasTab ? $('.tabs-sub').html() : '') + $('.home-menu').html() + '</div>')
+        var hasTab = $('.tabs-sub').length === 1 ? true : false;
+        $('.nav-tabs').html((hasTab ? $('.tabs-sub').html() : '') + $('.home-menu').html());
 
-        $(window).scroll(function () {
-            if ($(window).scrollTop() > maxScroll) {
-                $('.nav-tabs > a').hide();
-                $('.nav-tabs > .fn-none').slideDown(600);
-            } else {
-                $('.nav-tabs > .fn-none').slideUp(600, function () {
-                    $('.nav-tabs > a').show();
-                });
-            }
+        $('#side').css({
+            position: 'fixed',
+            width: $('#side').width() + 'px',
+            top: '89px',
+            right: $('.wrapper').css('margin-right')
         });
+
+        $('.side.fn-none').show();
     },
     /**
      * 通知页面侧边栏滚动固定
