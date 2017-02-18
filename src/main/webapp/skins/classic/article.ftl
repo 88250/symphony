@@ -217,11 +217,11 @@
                         </div>
                         <div class="module-header article-module-bottom fn-clear">
                             <#if articlePrevious??>
-                                <a rel="prev" class="fn-left fn-ellipsis" href="${articlePrevious.articlePermalink}">
+                                <a rel="prev" class="fn-left fn-ellipsis" href="${servePath}${articlePrevious.articlePermalink}">
                                     <span class="icon-chevron-left"></span> ${articlePrevious.articleTitleEmoj}</a>
                             </#if>
                             <#if articleNext??>
-                                <a rel="next" class="fn-right fn-ellipsis" href="${articleNext.articlePermalink}">${articleNext.articleTitleEmoj}
+                                <a rel="next" class="fn-right fn-ellipsis" href="${servePath}${articleNext.articlePermalink}">${articleNext.articleTitleEmoj}
                                 <span class="icon-chevron-right"></span>
                                 </a>
                             </#if>
@@ -344,7 +344,7 @@
                                               style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"
                                         ></span>
                                         <#if "someone" != relevantArticle.articleAuthorName></a></#if>
-                                        <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
+                                        <a rel="nofollow" class="title" href="${servePath}${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                         </li>
                                     </#list>
                                 </ul>
@@ -401,7 +401,7 @@
                                    aria-label="${randomArticle.articleAuthorName}"
                                    style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
-                                    <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
+                                    <a class="title" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                                 </li>
                                 </#list>
                             </ul>
