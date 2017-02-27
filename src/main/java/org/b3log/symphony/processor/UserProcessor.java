@@ -89,7 +89,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.14.35, Jan 20, 2017
+ * @version 1.26.15.35, Jan 21, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -911,7 +911,12 @@ public class UserProcessor {
             pageNumStr = "1";
         }
 
-        final int pageNum = Integer.valueOf(pageNumStr);
+        int pageNum = 1;
+        try {
+            pageNum = Integer.valueOf(pageNumStr);
+        } catch (final Exception e) {
+            pageNum = 1;
+        }
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
@@ -1293,7 +1298,7 @@ public class UserProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeWatchingArticles(final HTTPRequestContext context, final HttpServletRequest request,
-                                          final HttpServletResponse response, final String userName) throws Exception {
+                                         final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);

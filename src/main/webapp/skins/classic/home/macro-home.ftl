@@ -118,7 +118,6 @@
                 Util.linkForge();
             </#if>
             Settings.homeScroll();
-            Settings.notiScroll();
         </script>
     </body>
 </html>

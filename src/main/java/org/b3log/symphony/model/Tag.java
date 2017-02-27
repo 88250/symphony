@@ -39,7 +39,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.6.8, Feb 13, 2017
+ * @version 1.15.6.9, Feb 22, 2017
  * @since 0.2.0
  */
 public final class Tag {
@@ -454,6 +454,29 @@ public final class Tag {
 
             if (StringUtils.containsIgnoreCase(title, iconTagTitle)) {
                 return iconTagTitle;
+            }
+        }
+
+        final List<JSONObject> allTags = cache.getTags();
+        Collections.sort(allTags, new Comparator<JSONObject>() {
+            @Override
+            public int compare(final JSONObject t1, final JSONObject t2) {
+                final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+                final String u2Title = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+
+                return u2Title.length() - u1Title.length();
+            }
+        });
+
+        for (final JSONObject tag : allTags) {
+            final String tagURI = tag.optString(Tag.TAG_URI);
+            final String tagTitle = tag.optString(Tag.TAG_TITLE);
+            if (tagURI.equals(tagTitle)) {
+                continue;
+            }
+
+            if (StringUtils.equals(title, tagURI)) {
+                return tag.optString(Tag.TAG_TITLE);
             }
         }
 
