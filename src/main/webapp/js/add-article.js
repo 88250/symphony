@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.21.16.16, Feb 2, 2017
+ * @version 2.21.16.17, Feb 22, 2017
  */
 
 /**
@@ -345,7 +345,7 @@ var AddArticle = {
                 return false;
             }
 
-            if (1 === Label.articleType) { // 小黑屋不检查标题重复
+            if (1 === Label.articleType) { // 小黑屋不检查
                 return;
             }
 
@@ -353,7 +353,8 @@ var AddArticle = {
                 url: Label.servePath + "/article/check-title",
                 type: "POST",
                 data: JSON.stringify({
-                    'articleTitle': $.trim($(this).val())
+                    'articleTitle': $.trim($(this).val()),
+                    'articleId': Label.articleOId // 更新时才有值
                 }),
                 success: function (result, textStatus) {
                     if (!result.sc) {

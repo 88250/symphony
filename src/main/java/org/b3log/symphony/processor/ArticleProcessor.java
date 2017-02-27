@@ -96,7 +96,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.26.38, Feb 16, 2017
+ * @version 1.24.26.39, Feb 22, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -231,13 +231,23 @@ public class ArticleProcessor {
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         String title = requestJSONObject.optString(Article.ARTICLE_TITLE);
         title = StringUtils.trim(title);
+        String id = requestJSONObject.optString(Article.ARTICLE_T_ID);
 
         final JSONObject article = articleQueryService.getArticleByTitle(title);
 
-        if (null == article) {
-            context.renderJSON(true);
+        if (StringUtils.isBlank(id)) { // Add
+            if (null == article) {
+                context.renderJSON(true);
 
-            return;
+                return;
+            }
+        } else { // Update
+            final JSONObject oldArticcle = articleQueryService.getArticle(id);
+            if (oldArticcle.optString(Article.ARTICLE_TITLE).equals(title)) {
+                context.renderJSON(true);
+
+                return;
+            }
         }
 
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
