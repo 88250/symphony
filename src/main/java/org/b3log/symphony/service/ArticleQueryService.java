@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.26.25.44, Feb 18, 2017
+ * @version 2.26.25.45, Feb 23, 2017
  * @since 0.2.0
  */
 @Service
@@ -2169,6 +2169,10 @@ public class ArticleQueryService {
             if (StringUtils.startsWith(ret, qiniuDomain)) {
                 ret += "?imageView2/1/w/" + 180 + "/h/" + 135 + "/format/jpg/interlace/1/q";
             } else {
+                ret = "";
+            }
+        } else {
+            if (!StringUtils.startsWith(ret, Latkes.getServePath())) {
                 ret = "";
             }
         }
