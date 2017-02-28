@@ -96,7 +96,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.26.39, Feb 22, 2017
+ * @version 1.24.26.40, Feb 24, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -228,19 +228,43 @@ public class ArticleProcessor {
     @After(adviceClass = {StopwatchEndAdvice.class})
     public void checkArticleTitle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         String title = requestJSONObject.optString(Article.ARTICLE_TITLE);
         title = StringUtils.trim(title);
         String id = requestJSONObject.optString(Article.ARTICLE_T_ID);
 
         final JSONObject article = articleQueryService.getArticleByTitle(title);
+        if (null == article) {
+            context.renderJSON(true);
+
+            return;
+        }
 
         if (StringUtils.isBlank(id)) { // Add
-            if (null == article) {
-                context.renderJSON(true);
+            final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
-                return;
+            String msg;
+            if (authorId.equals(currentUserId)) {
+                msg = langPropsService.get("duplicatedArticleTitleSelfLabel");
+                msg = msg.replace("{article}", "<a target='_blank' href='/article/" + article.optString(Keys.OBJECT_ID)
+                        + "'>" + title + "</a>");
+            } else {
+                final JSONObject author = userQueryService.getUser(authorId);
+                final String userName = author.optString(User.USER_NAME);
+
+                msg = langPropsService.get("duplicatedArticleTitleLabel");
+                msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
+                msg = msg.replace("{article}", "<a target='_blank' href='/article/" + article.optString(Keys.OBJECT_ID)
+                        + "'>" + title + "</a>");
             }
+
+            final JSONObject ret = new JSONObject();
+            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.MSG, msg);
+
+            context.renderJSON(ret);
         } else { // Update
             final JSONObject oldArticcle = articleQueryService.getArticle(id);
             if (oldArticcle.optString(Article.ARTICLE_TITLE).equals(title)) {
@@ -248,21 +272,30 @@ public class ArticleProcessor {
 
                 return;
             }
+
+            final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+
+            String msg;
+            if (authorId.equals(currentUserId)) {
+                msg = langPropsService.get("duplicatedArticleTitleSelfLabel");
+                msg = msg.replace("{article}", "<a target='_blank' href='/article/" + article.optString(Keys.OBJECT_ID)
+                        + "'>" + title + "</a>");
+            } else {
+                final JSONObject author = userQueryService.getUser(authorId);
+                final String userName = author.optString(User.USER_NAME);
+
+                msg = langPropsService.get("duplicatedArticleTitleLabel");
+                msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
+                msg = msg.replace("{article}", "<a target='_blank' href='/article/" + article.optString(Keys.OBJECT_ID)
+                        + "'>" + title + "</a>");
+            }
+
+            final JSONObject ret = new JSONObject();
+            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.MSG, msg);
+
+            context.renderJSON(ret);
         }
-
-        final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-        final JSONObject author = userQueryService.getUser(authorId);
-        final String userName = author.optString(User.USER_NAME);
-        String msg = langPropsService.get("duplicatedArticleTitleLabel");
-        msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
-        msg = msg.replace("{article}", "<a target='_blank' href='/article/" + article.optString(Keys.OBJECT_ID)
-                + "'>" + title + "</a>");
-
-        final JSONObject ret = new JSONObject();
-        ret.put(Keys.STATUS_CODE, false);
-        ret.put(Keys.MSG, msg);
-
-        context.renderJSON(ret);
     }
 
     /**
