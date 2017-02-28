@@ -35,17 +35,7 @@ var Settings = {
     homeScroll: function () {
         $('.nav').css('position', 'fixed');
         $('.main').css('paddingTop', '89px');
-        var hasTab = $('.tabs-sub').length === 1 ? true : false;
-        $('.nav-tabs').html((hasTab ? $('.tabs-sub').html() : '') + $('.home-menu').html());
-
-        $('#side').css({
-            position: 'fixed',
-            width: $('#side').width() + 'px',
-            top: '89px',
-            right: $('.wrapper').css('margin-right')
-        });
-
-        $('.side.fn-none').show();
+        $('.nav-tabs').html($('.home-menu').html()).css('text-align', 'left');
     },
     /**
      * 通知页面侧边栏滚动固定

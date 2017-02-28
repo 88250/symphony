@@ -65,8 +65,7 @@
                     <#nested>
                     </div>
                 </div>
-                <div class="side fn-none"></div>
-                <div class="side" id="side">
+                <div class="side">
                     <#include "home-side.ftl">
                     <div class="module fn-none">
                         <div class="module-header"><h2>${goHomeLabel}</h2></div> 
@@ -81,10 +80,6 @@
                                     <svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
                                 <a <#if type == "linkForge"> class="current"</#if> href="${servePath}/member/${user.userName}/forge/link">
                                     <svg height="18" viewBox="0 1 16 16" width="16">${baguaIcon}</svg>  ${forgeLabel}</a>
-                                <#if currentUser?? && currentUser.userName == user.userName>
-                                <a <#if type == "settings"> class="current"</#if>
-                                    href="${servePath}/settings"><svg height="18" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
-                                </#if>
                             </nav>
                         </div>
                     </div>
