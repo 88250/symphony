@@ -18,10 +18,7 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -73,7 +70,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Lo</a>
- * @version 1.9.1.7, Jan 18, 2017
+ * @version 1.10.1.7, Mar 1, 2017
  * @since 0.2.5
  */
 @RequestProcessor
@@ -229,6 +226,8 @@ public class NotificationProcessor {
                 break;
             case "at":
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_AT);
+                notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_FOLLOWER);
+                notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER);
 
                 break;
             case "following":
@@ -326,7 +325,9 @@ public class NotificationProcessor {
         }
 
         final int unreadAtNotificationCnt
-                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT)
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_FOLLOWER)
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER);
         if (unreadAtNotificationCnt > 0) {
             response.sendRedirect(Latkes.getServePath() + "/notifications/at");
 
@@ -442,7 +443,9 @@ public class NotificationProcessor {
         dataModel.put(Common.UNREAD_REPLY_NOTIFICATION_CNT, unreadReplyNotificationCnt);
 
         final int unreadAtNotificationCnt
-                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT)
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_FOLLOWER)
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER);
         dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
 
         final int unreadFollowingNotificationCnt
@@ -637,6 +640,14 @@ public class NotificationProcessor {
         final List<JSONObject> atNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.AT_NOTIFICATIONS, atNotifications);
+
+        final List<JSONObject> articleFollowAndWatchNotifications = new ArrayList<>();
+        for (final JSONObject notification : atNotifications) {
+            if (!notification.optBoolean(Notification.NOTIFICATION_T_IS_AT)) {
+                articleFollowAndWatchNotifications.add(notification);
+            }
+        }
+        notificationMgmtService.makeRead(articleFollowAndWatchNotifications);
 
         fillNotificationCount(userId, dataModel);
 
