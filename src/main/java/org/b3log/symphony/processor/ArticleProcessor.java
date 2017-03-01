@@ -96,7 +96,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.26.40, Feb 24, 2017
+ * @version 1.24.27.40, Mar 1, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -266,8 +266,8 @@ public class ArticleProcessor {
 
             context.renderJSON(ret);
         } else { // Update
-            final JSONObject oldArticcle = articleQueryService.getArticle(id);
-            if (oldArticcle.optString(Article.ARTICLE_TITLE).equals(title)) {
+            final JSONObject oldArticle = articleQueryService.getArticle(id);
+            if (oldArticle.optString(Article.ARTICLE_TITLE).equals(title)) {
                 context.renderJSON(true);
 
                 return;
