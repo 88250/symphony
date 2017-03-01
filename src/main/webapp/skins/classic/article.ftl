@@ -121,9 +121,10 @@
                                         <span class="tooltipped tooltipped-n" aria-label="share to google" data-type="google"><span class="icon-google"></span></span> &nbsp;
                                         <span class="tooltipped tooltipped-n" data-type="copy"
                                               aria-label="${copyLabel}"
-                                              id="shareClipboard"
-                                              data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"><span
+                                              id="shareClipboard"><span
                                                 class="icon-link"></span></span>
+                                        <input type="text" class="article-clipboard"
+                                               value="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"/>
                                     </div>
                                 </div>
                             </div>
