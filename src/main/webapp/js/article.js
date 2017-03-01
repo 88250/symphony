@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.27.42.30, Feb 15, 2017
+ * @version 1.28.42.30, Mar 1, 2017
  */
 
 /**
@@ -1072,23 +1072,12 @@ var Article = {
             $(this).hide();
         });
 
-        if (typeof (ZeroClipboard) !== "undefined") {
-            $('#shareClipboard').mouseover(function () {
-                $(this).attr('aria-label', Label.copyLabel);
-            });
-
-            ZeroClipboard.config({
-                hoverClass: "tooltipped-hover",
-                swfPath: Label.staticServePath + "/js/lib/zeroclipboard/ZeroClipboard.swf"
-            });
-
-            var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
-            shareClipboard.on("ready", function (readyEvent) {
-                shareClipboard.on("aftercopy", function (event) {
-                    $('#shareClipboard').attr('aria-label', Label.copiedLabel);
-                });
-            });
-        }
+        $('#shareClipboard').mouseover(function () {
+            $(this).attr('aria-label', Label.copyLabel);
+        });
+        Util.clipboard($('#shareClipboard'), $('#shareClipboard').next(), function () {
+            $('#shareClipboard').attr('aria-label', Label.copiedLabel);
+        });
     },
     /*
      * @description 解析语法高亮

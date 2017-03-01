@@ -60,10 +60,10 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content">
-                    <div<#if type != "linkForge"> class="module"</#if>>
+                <div class="content" id="home-pjax-container">
+                    <#if pjax><!---- pjax {#home-pjax-container} start ----></#if><div<#if type != "linkForge"> class="module"</#if>>
                     <#nested>
-                    </div>
+                    </div><#if pjax><!---- pjax {#home-pjax-container} end ----></#if>
                 </div>
                 <div class="side">
                     <#include "home-side.ftl">
@@ -88,6 +88,7 @@
             </div>
         <#include "../footer.ftl">
         <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/lib/jquery/jquery.pjax.js"></script>
         <script>
             Label.followLabel = "${followLabel}";
             Label.unfollowLabel = "${unfollowLabel}";
@@ -113,6 +114,20 @@
                 Util.linkForge();
             </#if>
             Settings.homeScroll();
+
+            $.pjax({
+                selector: 'a',
+                container: '#home-pjax-container',
+                show: 'fade',
+                cache: false,
+                storage: true,
+                titleSuffix: '',
+                filter: function(href){
+                    // 跳过其他链接，只处理正在访问用户的主页内相关链接
+                    return 0 > href.indexOf('${servePath}/member/${user.userName}');
+                },
+                callback: function(){}
+            })
         </script>
     </body>
 </html>

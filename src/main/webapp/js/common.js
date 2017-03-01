@@ -32,7 +32,34 @@ var Util = {
     /**
      * @description 前置快捷键
      */
-     prevKey: undefined,
+    prevKey: undefined,
+    /**
+     * 粘贴
+     * @param {jQuery} $click 点击触发复制事件的元素
+     * @param {jQuery} $text 包含复制内容的元素
+     * @param {function} cb 复制成功的回调函数
+     */
+    clipboard: function ($click, $text, cb) {
+        $click.click(function(event) {
+              $text[0].select();
+
+              try {
+                // Now that we've selected the anchor text, execute the copy command
+                var successful = document.execCommand('copy');
+                if (successful) {
+                    cb();
+                } else {
+                    console.log('Copy email command was unsuccessful');
+                }
+              } catch(err) {
+                console.log('Oops, unable to copy');
+              }
+
+              // Remove the selections - NOTE: Should use
+              // removeRange(range) when it is supported
+              window.getSelection().removeAllRanges();
+        });
+    },
     /**
      * @description 关闭 alert
      */
