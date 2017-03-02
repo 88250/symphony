@@ -125,10 +125,40 @@
                 storage: true,
                 titleSuffix: '',
                 filter: function(href){
-                    // 跳过其他链接，只处理正在访问用户的主页内相关链接
                     return 0 > href.indexOf('${servePath}/member/${user.userName}');
                 },
-                callback: function(){}
+                callback: function(status){
+                    switch(status.type){
+                        case 'success':
+                        case 'cache':
+                            $('.nav-tabs a').removeClass('current');
+                            switch (this.pathname) {
+                                case '/member/${user.userName}':
+                                case '/member/${user.userName}/comments':
+                                case '/member/${user.userName}/articles/anonymous':
+                                case '/member/${user.userName}/comments/anonymous':
+                                    $($('.nav-tabs a')[0]).addClass('current');
+                                    break;
+                                case '/member/${user.userName}/watching/articles':
+                                case '/member/${user.userName}/following/users':
+                                case '/member/${user.userName}/following/tags':
+                                case '/member/${user.userName}/following/articles':
+                                case '/member/${user.userName}/followers':
+                                    $($('.nav-tabs a')[1]).addClass('current');
+                                    break;
+                                case '/member/${user.userName}/points':
+                                    $($('.nav-tabs a')[2]).addClass('current');
+                                    break;
+                                case '/member/${user.userName}/forge/link':
+                                    $($('.nav-tabs a')[3]).addClass('current');
+                                    break;
+                            }
+                        case 'error':
+                            break;
+                        case 'hash':
+                            break;
+                    }
+                }
             });
             NProgress.configure({ showSpinner: false });
             $('#home-pjax-container').bind('pjax.start', function(){
