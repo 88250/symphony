@@ -53,7 +53,7 @@
                         <ul class="tag-desc fn-clear tag-articles-tag-desc">
                             <#list tag.tagRelatedTags as relatedTag>
                             <li>
-                                <a pjax-title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" rel="tag" href="${servePath}/tag/${relatedTag.tagURI}">
+                                <a pjax-title="${relatedTag.tagTitle} - ${tagLabel} - ${symphonyLabel}" rel="tag" href="${servePath}/tag/${relatedTag.tagURI}">
                                     <#if relatedTag.tagIconPath != "">
                                     <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
                                     ${relatedTag.tagTitle}</a>
