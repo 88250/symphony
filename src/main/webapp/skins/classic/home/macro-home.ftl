@@ -71,14 +71,14 @@
                         <div class="module-header"><h2>${goHomeLabel}</h2></div> 
                         <div class="module-panel fn-oh">
                             <nav class="home-menu">
-                                <a <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
+                                <a pjax-title="${articleLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
                                     class="current"</#if>
                                     href="${servePath}/member/${user.userName}"><svg height="18" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
-                                <a <#if type == "watchingArticles" || type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers"> class="current"</#if>
+                                <a pjax-title="${watchingArticlesLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "watchingArticles" || type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers"> class="current"</#if>
                                     href="${servePath}/member/${user.userName}/watching/articles"><svg height="18" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
-                                <a <#if type == "points"> class="current"</#if> href="${servePath}/member/${user.userName}/points">
+                                <a pjax-title="${pointLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "points"> class="current"</#if> href="${servePath}/member/${user.userName}/points">
                                     <svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
-                                <a <#if type == "linkForge"> class="current"</#if> href="${servePath}/member/${user.userName}/forge/link">
+                                <a pjax-title="${linkForgeLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "linkForge"> class="current"</#if> href="${servePath}/member/${user.userName}/forge/link">
                                     <svg height="18" viewBox="0 1 16 16" width="16">${baguaIcon}</svg>  ${forgeLabel}</a>
                             </nav>
                         </div>
@@ -89,6 +89,8 @@
         <#include "../footer.ftl">
         <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/lib/jquery/jquery.pjax.js"></script>
+        <script src='${staticServePath}/js/lib/nprogress/nprogress.js'></script>
+        <link rel='stylesheet' href='${staticServePath}/js/lib/nprogress/nprogress.css'/>
         <script>
             Label.followLabel = "${followLabel}";
             Label.unfollowLabel = "${unfollowLabel}";
@@ -127,7 +129,14 @@
                     return 0 > href.indexOf('${servePath}/member/${user.userName}');
                 },
                 callback: function(){}
-            })
+            });
+            NProgress.configure({ showSpinner: false });
+            $('#home-pjax-container').bind('pjax.start', function(){
+                NProgress.start();
+            });
+            $('#home-pjax-container').bind('pjax.end', function(){
+                NProgress.done();
+            });
         </script>
     </body>
 </html>
