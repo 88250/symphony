@@ -61,7 +61,18 @@
                 filter: function(href){
                     return 0 > href.indexOf('${servePath}/domain/');
                 },
-                callback: function(){}
+                callback: function(status){
+                    switch(status.type){
+                        case 'success':
+                        case 'cache':
+                            $('.nav-tabs a').removeClass('current');
+                            $(this).addClass('current');
+                        case 'error':
+                            break;
+                        case 'hash':
+                            break;
+                    }
+                }
             });
             NProgress.configure({ showSpinner: false });
             $('#domain-pjax-container').bind('pjax.start', function(){

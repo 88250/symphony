@@ -198,8 +198,8 @@
 				$this.html(data);
 				callback && callback.call($this, data, isCached);
 			}else{
-				this.fadeOut(200, function(){
-					$this.html(data).fadeIn(200, function(){
+				this.fadeOut(50, function(){
+					$this.html(data).fadeIn(50, function(){
 						callback && callback.call($this, data, isCached);
 					});
 				});
