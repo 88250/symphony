@@ -24,7 +24,7 @@
 
                             <div class="fn-flex-1">
                                 <span class="ft-gray ft-smaller">
-                                    <a rel="tag" class="ft-gray" href="${servePath}/tag/${tag.tagURI}"><strong>${tag.tagTitle}</strong></a> &nbsp;•&nbsp;
+                                    <a pjax-title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" rel="tag" class="ft-gray" href="${servePath}/tag/${tag.tagURI}"><strong>${tag.tagTitle}</strong></a> &nbsp;•&nbsp;
                                     <b class="article-level<#if tag.tagReferenceCount lt 40>${(tag.tagReferenceCount/1000)?int}<#else>4</#if>">${tag.tagReferenceCount?c}</b> ${referenceLabel}  &nbsp;•&nbsp;
                                     <b class="article-level<#if tag.tagCommentCount lt 400>${(tag.tagCommentCount/100)?int}<#else>4</#if>">${tag.tagCommentCount?c}</b> ${cmtLabel}
                                 </span>
@@ -53,7 +53,7 @@
                         <ul class="tag-desc fn-clear tag-articles-tag-desc">
                             <#list tag.tagRelatedTags as relatedTag>
                             <li>
-                                <a rel="tag" href="${servePath}/tag/${relatedTag.tagURI}">
+                                <a pjax-title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" rel="tag" href="${servePath}/tag/${relatedTag.tagURI}">
                                     <#if relatedTag.tagIconPath != "">
                                     <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
                                     ${relatedTag.tagTitle}</a>
@@ -97,9 +97,9 @@
         </div>
         <#include "footer.ftl">
         <@listScript/>
-        <script src="${staticServePath}/js/lib/jquery/jquery.pjax.js"></script>
-        <script src='${staticServePath}/js/lib/nprogress/nprogress.js'></script>
-        <link rel='stylesheet' href='${staticServePath}/js/lib/nprogress/nprogress.css'/>
+        <script src="${staticServePath}/js/lib/jquery/jquery.pjax.js?${staticResourceVersion}"></script>
+        <script src='${staticServePath}/js/lib/nprogress/nprogress.js?${staticResourceVersion}'></script>
+        <link rel='stylesheet' href='${staticServePath}/js/lib/nprogress/nprogress.css?${staticResourceVersion}'/>
         <script>
             <#if (isLoggedIn && !tag.isReserved) || (tag.isReserved && isAdminLoggedIn)>
             $('.person-info .btn.red').attr('onclick', 'window.location = "/post?tags=${tag.tagURI}&type=0"');
