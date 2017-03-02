@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
  * Network utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Sep 17, 2015
+ * @version 1.0.2.0, Mar 2, 2017
  * @since 1.3.0
  */
 public final class Networks {
@@ -41,10 +41,7 @@ public final class Networks {
             return false;
         }
 
-        final String regex = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
-                + "(00?\\d|1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
-                + "(00?\\d|1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
-                + "(00?\\d|1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
+        final String regex = "^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(ip);
