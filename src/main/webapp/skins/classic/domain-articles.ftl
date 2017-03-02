@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${domain.domainSeoTitle} - ${symphonyLabel}">
+        <@head title="${domain.domainTitle} - ${domainLabel} - ${symphonyLabel}">
         <meta name="keywords" content="${domain.domainSeoKeywords}" />
         <meta name="description" content="${domain.domainSeoDesc}"/>
         </@head>
@@ -15,8 +15,8 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content">
-                    <div class="module">
+                <div class="content" id="domain-pjax-container">
+                    <#if pjax><!---- pjax {#domain-pjax-container} start ----></#if><div class="module">
                     <div class="tabs-sub fn-clear">
                         <#list domains as navDomain>
                         <#if navDomain.domainURI == domain.domainURI>
@@ -36,7 +36,7 @@
                         <#else>
                             <div class="no-list"> ${systemEmptyLabel}</div>
                         </#if>
-                    </div>
+                    </div><#if pjax><!---- pjax {#domain-pjax-container} end ----></#if>
 
                     <#include "common/domains.ftl">
                 </div>
@@ -47,5 +47,29 @@
         </div>
         <#include "footer.ftl">
         <@listScript/>
+        <script src="${staticServePath}/js/lib/jquery/jquery.pjax.js"></script>
+        <script src='${staticServePath}/js/lib/nprogress/nprogress.js'></script>
+        <link rel='stylesheet' href='${staticServePath}/js/lib/nprogress/nprogress.css'/>
+        <script>
+            $.pjax({
+                selector: 'a',
+                container: '#domain-pjax-container',
+                show: '',
+                cache: false,
+                storage: true,
+                titleSuffix: '',
+                filter: function(href){
+                    return 0 > href.indexOf('${servePath}/domain/');
+                },
+                callback: function(){}
+            });
+            NProgress.configure({ showSpinner: false });
+            $('#domain-pjax-container').bind('pjax.start', function(){
+                NProgress.start();
+            });
+            $('#domain-pjax-container').bind('pjax.end', function(){
+                NProgress.done();
+            });
+        </script>
     </body>
 </html>

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${tag.tagSeoTitle} - ${symphonyLabel}">
+        <@head title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}">
         <meta name="keywords" content="${tag.tagSeoKeywords}"/>
         <meta name="description" content="${tag.tagSeoDesc}"/>
         </@head>

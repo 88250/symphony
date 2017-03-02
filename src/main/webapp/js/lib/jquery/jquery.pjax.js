@@ -250,15 +250,20 @@
 			location.href = pjax.options.url;
 			return false;
 		}
-		var title = pjax.options.title || "", el;
-		if (title == "" && pjax.options.element) {
-			el = $(pjax.options.element);
-			title = el.attr('title') || el.text();
+
+		var title = $(pjax.options.element).attr('pjax-title');
+		if (!title) {
+            title = pjax.options.title || "";
+            if (title == "" && pjax.options.element) {
+                var el = $(pjax.options.element);
+                title = el.attr('title') || el.text();
+            }
+            var matches = data.match(/<title>(.*?)<\/title>/);
+            if (matches) {
+                title = matches[1];
+            }
 		}
-		var matches = data.match(/<title>(.*?)<\/title>/);
-		if (matches) {
-			title = matches[1];
-		}
+
 		if (title) {
 			if (title.indexOf(pjax.options.titleSuffix) == -1) {
 				title += pjax.options.titleSuffix;
