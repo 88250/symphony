@@ -32,7 +32,7 @@
                     </div>
                         <#if latestArticles?size gt 0>
                             <@list listData=latestArticles/>
-                            <@pagination url="${servePath}/domain/${domain.domainURI}"/>
+                            <@pagination url="${servePath}/domain/${domain.domainURI}" pjaxTitle="${domain.domainTitle} - ${domainLabel} - ${symphonyLabel}"/>
                         <#else>
                             <div class="no-list"> ${systemEmptyLabel}</div>
                         </#if>

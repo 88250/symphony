@@ -30,7 +30,7 @@
                             <span class="fn-right ft-fade">
                                 <a pjax-title="${latestLabel} - ${symphonyLabel}" class="<#if "" == current>ft-gray</#if>" href="${servePath}/recent">${defaultLabel}</a>
                                 /
-                                <a pjax-title="${hotArticlesLabel} - ${symphonyLabel}"  class="<#if "/hot" == current>ft-gray</#if>" href="${servePath}/recent/hot">${hotArticlesLabel}</a>
+                                <a pjax-title="${latestLabel} - ${symphonyLabel}"  class="<#if "/hot" == current>ft-gray</#if>" href="${servePath}/recent/hot">${hotArticlesLabel}</a>
                                 /
                                 <a pjax-title="${goodCmtsLabel} - ${symphonyLabel}"  class="<#if "/good" == current>ft-gray</#if>" href="${servePath}/recent/good"><span class="icon-thumbs-up"></span> ${goodCmtsLabel}</a>
                                 /
@@ -38,7 +38,7 @@
                             </span>
                         </div>
                         <@list listData=latestArticles/>
-                        <@pagination url="${servePath}/recent${current}"/>
+                        <@pagination url="${servePath}/recent${current}" pjaxTitle="${latestLabel} - ${symphonyLabel}"/>
                     </div><#if pjax><!---- pjax {#recent-pjax-container} end ----></#if>
                     <#include "common/domains.ftl">
                 </div>

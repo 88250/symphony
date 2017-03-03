@@ -38,7 +38,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content">
+                <div class="content" id="article-pjax-container"><#if pjax><!---- pjax {#article-pjax-container} start ----></#if>
                     <div class="module">
                         <div class="article-module">
                             <h1 class="article-title" itemprop="name">
@@ -315,17 +315,17 @@
                             </ul>
                             <div id="bottomComment"></div>
                         </div>
-                        <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
+                        <@pagination url="${servePath}${article.articlePermalink}" query="m=${userCommentViewMode}#comments" pjaxTitle="${article.articleTitle} - ${symphonyLabel}" />
                     </div>
 
-					<div class="ft-center fn-pointer <#if article.articleComments?size == 0> fn-none</#if>" title="${cmtLabel}"
+                    <div class="ft-center fn-pointer <#if article.articleComments?size == 0> fn-none</#if>" title="${cmtLabel}"
                         <#if permissions["commonAddComment"].permissionGrant>
                             onclick="$('.article-actions .icon-reply-btn').click()"
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
                         </#if>>
                         <img src="${noCmtImg}" class="article-no-comment-img">
-					</div>
+                    </div>
 
                     <#if sideRelevantArticles?size != 0>
                         <div class="module">
@@ -352,7 +352,7 @@
                             </div>
                         </div>
                     </#if>
-
+                <#if pjax><!---- pjax {#article-pjax-container} end ----></#if>
                 </div>
                 <div class="side">
                     <#include 'common/person-info.ftl'/>
@@ -446,6 +446,9 @@
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/lib/jquery/jquery.pjax.js?${staticResourceVersion}"></script>
+        <script src='${staticServePath}/js/lib/nprogress/nprogress.js?${staticResourceVersion}'></script>
+        <link rel='stylesheet' href='${staticServePath}/js/lib/nprogress/nprogress.css?${staticResourceVersion}'/>
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";
@@ -507,6 +510,26 @@
                 <#if 3 == article.articleType>
                     Article.playThought('${article.articleContent}');
                 </#if>
+            });
+
+            $.pjax({
+                selector: 'a',
+                container: '#article-pjax-container',
+                show: '',
+                cache: false,
+                storage: true,
+                titleSuffix: '',
+                filter: function(href){
+                    return 0 > href.indexOf('${servePath}/article/');
+                },
+                callback: function(){}
+            });
+            NProgress.configure({ showSpinner: false });
+            $('#article-pjax-container').bind('pjax.start', function(){
+                NProgress.start();
+            });
+            $('#article-pjax-container').bind('pjax.end', function(){
+                NProgress.done();
             });
         </script>
     </body>

@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.15.30.37, Mar 1, 2017
+ * @version 2.15.31.37, Mar 3, 2017
  * @since 0.2.0
  */
 @Service
@@ -888,6 +888,16 @@ public class ArticleMgmtService {
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, authorId,
                         Pointtransfer.TRANSFER_TYPE_C_PERFECT_ARTICLE, Pointtransfer.TRANSFER_SUM_C_PERFECT_ARTICLE,
                         articleId, System.currentTimeMillis());
+            }
+
+            if (Article.ARTICLE_STATUS_C_VALID != article.optInt(Article.ARTICLE_STATUS)) {
+                if (Symphonys.getBoolean("algolia.enabled")) {
+                    searchMgmtService.removeAlgoliaDocument(article);
+                }
+
+                if (Symphonys.getBoolean("es.enabled")) {
+                    searchMgmtService.removeESDocument(article, Article.ARTICLE);
+                }
             }
         } catch (final Exception e) {
             if (transaction.isActive()) {

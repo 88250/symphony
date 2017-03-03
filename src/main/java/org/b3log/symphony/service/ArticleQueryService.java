@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.26.25.45, Feb 23, 2017
+ * @version 2.26.26.45, Mar 3, 2017
  * @since 0.2.0
  */
 @Service
@@ -1708,6 +1708,7 @@ public class ArticleQueryService {
 
                     if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
                         article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
+                        article.put(Article.ARTICLE_T_TITLE_EMOJI, langPropsService.get("articleTitleBlockLabel"));
                     }
                 }
             } finally {
@@ -2369,6 +2370,7 @@ public class ArticleQueryService {
             if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
                     || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
                 article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
+                article.put(Article.ARTICLE_T_TITLE_EMOJI, langPropsService.get("articleTitleBlockLabel"));
                 article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
                 article.put(Article.ARTICLE_T_PREVIEW_CONTENT, langPropsService.get("articleContentBlockLabel"));
                 article.put(Article.ARTICLE_T_TOC, "");

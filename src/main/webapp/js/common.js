@@ -49,7 +49,7 @@ var Util = {
                 if (successful) {
                     cb();
                 } else {
-                    console.log('Copy email command was unsuccessful');
+                    console.log('Copy command was unsuccessful');
                 }
               } catch(err) {
                 console.log('Oops, unable to copy');

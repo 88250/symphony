@@ -62,7 +62,7 @@
         </#list>
     </ul>
 </div>
-<@pagination url="${servePath}/member/${user.userName}/following/users"/>
+<@pagination url="${servePath}/member/${user.userName}/following/users" pjaxTitle="${followingUsersLabel} - ${user.userName} - ${symphonyLabel}"/>
 <#else>
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
 </#if>
