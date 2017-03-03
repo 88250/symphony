@@ -120,7 +120,7 @@
             $.pjax({
                 selector: 'a',
                 container: '#home-pjax-container',
-                show: 'fade',
+                show: '',
                 cache: false,
                 storage: true,
                 titleSuffix: '',
