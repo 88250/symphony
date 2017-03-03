@@ -315,7 +315,7 @@
                             </ul>
                             <div id="bottomComment"></div>
                         </div>
-                        <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
+                        <@pagination url=article.articlePermalink query="m=${userCommentViewMode}#comments" />
                     </div>
 
 					<div class="ft-center fn-pointer <#if article.articleComments?size == 0> fn-none</#if>" title="${cmtLabel}"
