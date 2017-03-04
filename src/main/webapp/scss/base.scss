@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.28.20.55, Feb 4, 2017
+ * @version 2.28.21.56, Feb 28, 2017
  */
 
 @import "variables";
@@ -229,6 +229,10 @@ blockquote {
 
     li {
         margin-top: 0.25em;
+    }
+
+    img {
+        cursor: pointer;
     }
 
     h1,
@@ -1408,11 +1412,11 @@ a[class*=" icon-"]:hover {
     }
 
     .nav-tabs a:hover svg,
-    .nav-tabs a.selected svg {
+    .nav-tabs a.current svg {
         visibility: visible;
     }
 
-    .nav-tabs > a,
+    .nav-tabs a,
     .user-nav > a {
         display: inline-block;
         color: #fff;
@@ -1421,13 +1425,13 @@ a[class*=" icon-"]:hover {
         padding: 5px 10px;
     }
 
-    .nav-tabs > a:hover,
+    .nav-tabs a:hover,
     .user-nav > a:hover {
         color: #FFF;
         text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.3)
     }
 
-    a.selected {
+    a.current {
         border-bottom: 2px solid $red;
         padding-bottom: 3px;
     }
@@ -1501,8 +1505,8 @@ a[class*=" icon-"]:hover {
         color: #FFFFFF;
     }
 
-    .user-nav a.selected.no-msg,
-    .user-nav a.selected.msg {
+    .user-nav a.current.no-msg,
+    .user-nav a.current.msg {
         animation: none;
         background-color: $red;
         border-bottom: 0;

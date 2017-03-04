@@ -22,7 +22,7 @@
                          style="background-image:url('${item.articleAuthorThumbnailURL20}')"></div>
                     <div class="fn-flex-1">
                         <h2>
-                            <a href="${item.articlePermalink}">${item.articleTitle}</a>
+                            <a href="${servePath}${item.articlePermalink}">${item.articleTitle}</a>
                             <span class="ft-smaller">
                             <#if item.articleStatus == 0>
                                 <span class="ft-gray">${validLabel}</span>

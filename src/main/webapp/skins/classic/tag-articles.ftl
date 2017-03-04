@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${tag.tagSeoTitle} - ${symphonyLabel}">
+        <@head title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}">
         <meta name="keywords" content="${tag.tagSeoKeywords}"/>
         <meta name="description" content="${tag.tagSeoDesc}"/>
         </@head>
@@ -15,8 +15,8 @@
         <#include "header.ftl">
         <div class="main tag-articles">
             <div class="wrapper">
-                <div class="content">
-                    <div class="module article-module">
+                <div class="content" id="tag-pjax-container">
+                    <#if pjax><!---- pjax {#tag-pjax-container} start ----></#if><div class="module article-module">
                         <div class="article-info fn-flex">
                             <#if tag.tagIconPath != "">
                             <div class="avatar" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
@@ -24,7 +24,7 @@
 
                             <div class="fn-flex-1">
                                 <span class="ft-gray ft-smaller">
-                                    <a rel="tag" class="ft-gray" href="${servePath}/tag/${tag.tagURI}"><strong>${tag.tagTitle}</strong></a> &nbsp;•&nbsp;
+                                    <a pjax-title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" rel="tag" class="ft-gray" href="${servePath}/tag/${tag.tagURI}"><strong>${tag.tagTitle}</strong></a> &nbsp;•&nbsp;
                                     <b class="article-level<#if tag.tagReferenceCount lt 40>${(tag.tagReferenceCount/1000)?int}<#else>4</#if>">${tag.tagReferenceCount?c}</b> ${referenceLabel}  &nbsp;•&nbsp;
                                     <b class="article-level<#if tag.tagCommentCount lt 400>${(tag.tagCommentCount/100)?int}<#else>4</#if>">${tag.tagCommentCount?c}</b> ${cmtLabel}
                                 </span>
@@ -53,7 +53,7 @@
                         <ul class="tag-desc fn-clear tag-articles-tag-desc">
                             <#list tag.tagRelatedTags as relatedTag>
                             <li>
-                                <a rel="tag" href="${servePath}/tag/${relatedTag.tagURI}">
+                                <a pjax-title="${relatedTag.tagTitle} - ${tagLabel} - ${symphonyLabel}" rel="tag" href="${servePath}/tag/${relatedTag.tagURI}">
                                     <#if relatedTag.tagIconPath != "">
                                     <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
                                     ${relatedTag.tagTitle}</a>
@@ -74,32 +74,21 @@
                     <div class="module">
                         <div class="module-header fn-clear">
                             <span class="fn-right ft-fade">
-                                <a class="<#if "" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}">
-                                    ${defaultLabel}
-                                </a>
+                                <a pjax-Title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" class="<#if "" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}">${defaultLabel}</a>
                                 /
-                                <a class="<#if "/hot" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/hot">
-                                    ${hotArticlesLabel}
-                                </a>
+                                <a pjax-Title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" class="<#if "/hot" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/hot">${hotArticlesLabel}</a>
                                 /
-                                <a class="<#if "/good" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/good">
-                                    ${goodCmtsLabel}
-                                </a>
+                                <a pjax-Title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" class="<#if "/good" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/good">${goodCmtsLabel}</a>
                                 /
-                                <a class="<#if "/perfect" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/perfect">
-                                    <svg height="16" viewBox="3 2 11 12" width="14">${perfectIcon}</svg>
-                                    ${perfectLabel}
-                                </a>
+                                <a pjax-Title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" class="<#if "/perfect" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/perfect"><svg height="16" viewBox="3 2 11 12" width="14">${perfectIcon}</svg> ${perfectLabel}</a>
                                 /
-                                <a class="<#if "/reply" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/reply">
-                                    ${recentCommentLabel}
-                                </a>
+                                <a pjax-Title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" class="<#if "/reply" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/reply">${recentCommentLabel}</a>
                             </span>
                         </div>
                         <@list listData=articles/>
-                        <@pagination url="${servePath}/tag/${tag.tagURI}${current}"/>
+                        <@pagination url="${servePath}/tag/${tag.tagURI}${current}" pjaxTitle="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}"/>
                     </div>
-                    </#if>
+                    </#if><#if pjax><!---- pjax {#tag-pjax-container} end ----></#if>
                 </div> 
                 <div class="side">
                     <#include "side.ftl">
@@ -108,6 +97,9 @@
         </div>
         <#include "footer.ftl">
         <@listScript/>
+        <script src="${staticServePath}/js/lib/jquery/jquery.pjax.js?${staticResourceVersion}"></script>
+        <script src='${staticServePath}/js/lib/nprogress/nprogress.js?${staticResourceVersion}'></script>
+        <link rel='stylesheet' href='${staticServePath}/js/lib/nprogress/nprogress.css?${staticResourceVersion}'/>
         <script>
             <#if (isLoggedIn && !tag.isReserved) || (tag.isReserved && isAdminLoggedIn)>
             $('.person-info .btn.red').attr('onclick', 'window.location = "/post?tags=${tag.tagURI}&type=0"');
@@ -138,6 +130,26 @@
                       return false;
                 });
             })();
+
+            $.pjax({
+                selector: 'a',
+                container: '#tag-pjax-container',
+                show: '',
+                cache: false,
+                storage: true,
+                titleSuffix: '',
+                filter: function(href){
+                    return 0 > href.indexOf('${servePath}/tag');
+                },
+                callback: function(){}
+            });
+            NProgress.configure({ showSpinner: false });
+            $('#tag-pjax-container').bind('pjax.start', function(){
+                NProgress.start();
+            });
+            $('#tag-pjax-container').bind('pjax.end', function(){
+                NProgress.done();
+            });
         </script>
     </body>
 </html>

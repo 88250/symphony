@@ -4,19 +4,19 @@
     </h1>
     <div class="nav-tabs">
         <#list domains as domain>
-        <a href="${servePath}/domain/${domain.domainURI}"<#if selected?? && selected == domain.domainURI> class="selected"</#if>>${domain.domainIconPath} ${domain.domainTitle}</a>
+        <a pjax-title="${domain.domainTitle} - ${domainLabel} - ${symphonyLabel}" href="${servePath}/domain/${domain.domainURI}"<#if selected?? && selected == domain.domainURI> class="current"</#if>>${domain.domainIconPath} ${domain.domainTitle}</a>
         </#list>
-        <a href="${servePath}/recent"<#if selected?? && 'recent' == selected> class="selected"</#if>>
+        <a pjax-title="${latestLabel} - ${symphonyLabel}" href="${servePath}/recent"<#if selected?? && 'recent' == selected> class="current"</#if>>
            <svg height="16" viewBox="0 0 14 16" width="14">${timeIcon}</svg> ${latestLabel}</a>
-        <a href="${servePath}/perfect"<#if selected?? && 'perfect' == selected> class="selected"</#if>>
+        <a href="${servePath}/perfect"<#if selected?? && 'perfect' == selected> class="current"</#if>>
            <svg height="16" viewBox="3 2 11 12" width="14">${perfectIcon}</svg> ${perfectLabel}</a>
         <#if isLoggedIn && "" != currentUser.userCity>
-        <a href="${servePath}/city/my"<#if selected?? && 'city' == selected> class="selected"</#if>>
+        <a href="${servePath}/city/my"<#if selected?? && 'city' == selected> class="current"</#if>>
            <svg height="16" viewBox="0 0 12 16" width="12">${localIcon}</svg> ${currentUser.userCity}</a>
         </#if>
-        <a href="${servePath}/timeline"<#if selected?? && 'timeline' == selected> class="selected"</#if>>
+        <a href="${servePath}/timeline"<#if selected?? && 'timeline' == selected> class="current"</#if>>
            <svg height="14" viewBox="0 0 16 14" width="16">${timelineIcon}</svg> ${timelineLabel}</a>
-        <a href="https://hacpai.com/tag/book_share"<#if selected?? && 'book' == selected> class="selected"</#if>>
+        <a href="https://hacpai.com/tag/book_share"<#if selected?? && 'book' == selected> class="current"</#if>>
            <svg height="16" viewBox="0 -1 17 14" width="16">${bookIcon}</svg> ${bookShareLabel}</a>
     </div>
     <#if esEnabled || algoliaEnabled>

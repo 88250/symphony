@@ -13,4 +13,4 @@
 <div class="ft-center">${noMessageLabel}</div>
 </#if>
 
-<@pagination url="/notifications/point"/></@notifications>
+<@pagination url="${servePath}/notifications/sys-announce"/></@notifications>

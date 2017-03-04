@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.1.3, Feb 13, 2017
+ * @version 1.14.1.3, Mar 1, 2017
  * @since 0.2.5
  */
 @Service
@@ -58,6 +58,50 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+
+    /**
+     * Add a 'article new watcher' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId": "",
+     *                          "dataId": "" // article id-follower user id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addArticleNewWatcherNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=article_new_watcher] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
+     * Add a 'article new follower' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId": "",
+     *                          "dataId": "" // article id-follower user id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addArticleNewFollowerNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_ARTICLE_NEW_FOLLOWER);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=article_new_follower] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
 
     /**
      * Add a 'point - perfect article' type notification with the specified request json object.

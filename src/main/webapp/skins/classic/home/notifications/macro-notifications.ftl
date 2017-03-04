@@ -19,7 +19,8 @@
                         <#nested>
                     </div>
                 </div>
-                <div class="side">
+                <div class="side fn-none"></div>
+                <div class="side" id="side">
                     <#include '../../common/person-info.ftl'/>
                     <div class="module">
                         <div class="module-header"><h2>${messageLabel}</h2>
@@ -102,6 +103,7 @@
         <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Settings.initHljs();
+            Settings.notiScroll();
             $(document).bind('keyup', 'e', function assets() {
                 if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
                     return false;

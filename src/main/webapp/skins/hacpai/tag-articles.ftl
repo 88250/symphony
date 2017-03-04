@@ -96,7 +96,7 @@
                 </div>
                 <div class="fn-clear">
                     <@list listData=articles/>
-                    <@pagination url="/tag/${tag.tagURI}"/>
+                    <@pagination url="${servePath}/tag/${tag.tagURI}"/>
                 </div>
             </div> 
             <div class="side">

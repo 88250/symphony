@@ -17,7 +17,7 @@
                 <div class="content fn-clear">
                     <div class="module">
                         <@list listData=indexArticles/>
-                        <@pagination url="/hot"/>
+                        <@pagination url="${servePath}/hot"/>
                         <div class="pagination">
                             <a href="${servePath}/recent" class="ft-gray">${moreRecentArticleLabel}</a>
                         </div>

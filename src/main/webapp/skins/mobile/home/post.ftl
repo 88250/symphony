@@ -100,11 +100,11 @@
                         </#if>
 
                         <#if article??>
-                            <#if permissions["commonAddArticle"].permissionGrant>
+                            <#if permissions["commonUpdateArticle"].permissionGrant>
                                 <button class="red fn-right" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
                             </#if>
                         <#else>
-                            <#if permissions["commonUpdateArticle"].permissionGrant>
+                            <#if permissions["commonAddArticle"].permissionGrant>
                                 <button class="red fn-right" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${postLabel}</button>
                             </#if>
                         </#if>

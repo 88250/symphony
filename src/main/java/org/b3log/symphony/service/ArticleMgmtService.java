@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.15.29.36, Feb 13, 2017
+ * @version 2.15.31.37, Mar 3, 2017
  * @since 0.2.0
  */
 @Service
@@ -399,12 +399,19 @@ public class ArticleMgmtService {
                 final JSONObject maybeExist = articleRepository.getByTitle(articleTitle);
                 if (null != maybeExist) {
                     final String existArticleAuthorId = maybeExist.optString(Article.ARTICLE_AUTHOR_ID);
-                    final JSONObject existArticleAuthor = userRepository.get(existArticleAuthorId);
-                    final String userName = existArticleAuthor.optString(User.USER_NAME);
-                    String msg = langPropsService.get("duplicatedArticleTitleLabel");
-                    msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
-                    msg = msg.replace("{article}", "<a target='_blank' href='/article/" + maybeExist.optString(Keys.OBJECT_ID)
-                            + "'>" + articleTitle + "</a>");
+                    String msg;
+                    if (existArticleAuthorId.equals(authorId)) {
+                        msg = langPropsService.get("duplicatedArticleTitleSelfLabel");
+                        msg = msg.replace("{article}", "<a target='_blank' href='/article/" + maybeExist.optString(Keys.OBJECT_ID)
+                                + "'>" + articleTitle + "</a>");
+                    } else {
+                        final JSONObject existArticleAuthor = userRepository.get(existArticleAuthorId);
+                        final String userName = existArticleAuthor.optString(User.USER_NAME);
+                        msg = langPropsService.get("duplicatedArticleTitleLabel");
+                        msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
+                        msg = msg.replace("{article}", "<a target='_blank' href='/article/" + maybeExist.optString(Keys.OBJECT_ID)
+                                + "'>" + articleTitle + "</a>");
+                    }
 
                     throw new ServiceException(msg);
                 }
@@ -680,15 +687,21 @@ public class ArticleMgmtService {
 
             final JSONObject maybeExist = articleRepository.getByTitle(articleTitle);
             if (null != maybeExist) {
-                final String existArticleAuthorId = maybeExist.optString(Article.ARTICLE_AUTHOR_ID);
-
-                if (!existArticleAuthorId.equals(requestJSONObject.optString(Article.ARTICLE_AUTHOR_ID))) {
-                    final JSONObject existArticleAuthor = userRepository.get(existArticleAuthorId);
-                    final String userName = existArticleAuthor.optString(User.USER_NAME);
-                    String msg = langPropsService.get("duplicatedArticleTitleLabel");
-                    msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
-                    msg = msg.replace("{article}", "<a target='_blank' href='/article/" + maybeExist.optString(Keys.OBJECT_ID)
-                            + "'>" + articleTitle + "</a>");
+                if (!oldArticle.optString(Article.ARTICLE_TITLE).equals(articleTitle)) {
+                    final String existArticleAuthorId = maybeExist.optString(Article.ARTICLE_AUTHOR_ID);
+                    String msg;
+                    if (existArticleAuthorId.equals(authorId)) {
+                        msg = langPropsService.get("duplicatedArticleTitleSelfLabel");
+                        msg = msg.replace("{article}", "<a target='_blank' href='/article/" + maybeExist.optString(Keys.OBJECT_ID)
+                                + "'>" + articleTitle + "</a>");
+                    } else {
+                        final JSONObject existArticleAuthor = userRepository.get(existArticleAuthorId);
+                        final String userName = existArticleAuthor.optString(User.USER_NAME);
+                        msg = langPropsService.get("duplicatedArticleTitleLabel");
+                        msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
+                        msg = msg.replace("{article}", "<a target='_blank' href='/article/" + maybeExist.optString(Keys.OBJECT_ID)
+                                + "'>" + articleTitle + "</a>");
+                    }
 
                     throw new ServiceException(msg);
                 }
@@ -875,6 +888,16 @@ public class ArticleMgmtService {
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, authorId,
                         Pointtransfer.TRANSFER_TYPE_C_PERFECT_ARTICLE, Pointtransfer.TRANSFER_SUM_C_PERFECT_ARTICLE,
                         articleId, System.currentTimeMillis());
+            }
+
+            if (Article.ARTICLE_STATUS_C_VALID != article.optInt(Article.ARTICLE_STATUS)) {
+                if (Symphonys.getBoolean("algolia.enabled")) {
+                    searchMgmtService.removeAlgoliaDocument(article);
+                }
+
+                if (Symphonys.getBoolean("es.enabled")) {
+                    searchMgmtService.removeESDocument(article, Article.ARTICLE);
+                }
             }
         } catch (final Exception e) {
             if (transaction.isActive()) {

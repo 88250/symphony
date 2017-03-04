@@ -23,7 +23,7 @@
                     <#elseif 3 == notification.commentArticleType>
                     <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
                     </#if>
-                    <a rel="bookmark" href="${notification.commentSharpURL}"> ${notification.commentArticleTitle}</a>
+                    <a rel="bookmark" href="${servePath}${notification.commentSharpURL}">${notification.commentArticleTitle}</a>
                 </h2>
                 <span class="ft-gray">
                     ${notification.commentCreateTime?string('yyyy-MM-dd HH:mm')}
@@ -42,4 +42,4 @@
 <div class="no-list">${chickenEggLabel}</div>
 </#if>
 
-<@pagination url="/notifications/commented"/></@notifications>
+<@pagination url="${servePath}/notifications/commented"/></@notifications>

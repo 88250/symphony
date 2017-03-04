@@ -17,41 +17,28 @@
  */
 package org.b3log.symphony.util;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.apache.commons.lang.StringUtils;
-
 /**
- * Network utilities.
+ * Status code constants and utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.0, Mar 2, 2017
- * @since 1.3.0
+ * @version 1.0.0.0, Mar 4, 2017
+ * @since 2.0.0
  */
-public final class Networks {
+public final class StatusCodes {
 
     /**
-     * Is IPv4.
-     *
-     * @param ip ip
-     * @return {@code true} if it is, returns {@code false} otherwise
+     * Indicates success.
      */
-    public static boolean isIPv4(final String ip) {
-        if (StringUtils.isBlank(ip)) {
-            return false;
-        }
-
-        final String regex = "^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-
-        final Pattern pattern = Pattern.compile(regex);
-        final Matcher matcher = pattern.matcher(ip);
-
-        return matcher.matches();
-    }
+    public static final int SUCC = 0;
 
     /**
-     * Private constructor.
+     * Indicates not found.
      */
-    private Networks() {
-    }
+    public static final int NOT_FOUND = 1;
+
+    /**
+     * Indicates an error occurred.
+     */
+    public static final int ERR = 2;
+
 }

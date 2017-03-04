@@ -2,11 +2,11 @@
 <#include "../macro-pagination.ftl">
 <@home "${type}">
 <div class="tabs-sub fn-clear">
-    <a href="${servePath}/member/${user.userName}"<#if type == "home"> class="current"</#if>>${articleLabel}</a>
-    <a href="${servePath}/member/${user.userName}/comments"<#if type == "comments"> class="current"</#if>>${cmtLabel}<#if type == "comments"> &nbsp;<span class="count">${paginationRecordCount?c}</span></#if></a>
+    <a pjax-title="${articleLabel} - ${user.userName} - ${symphonyLabel}" href="${servePath}/member/${user.userName}"<#if type == "home"> class="current"</#if>>${articleLabel}</a>
+    <a pjax-title="${cmtLabel} - ${user.userName} - ${symphonyLabel}" href="${servePath}/member/${user.userName}/comments"<#if type == "comments"> class="current"</#if>>${cmtLabel}<#if type == "comments"> &nbsp;<span class="count">${paginationRecordCount?c}</span></#if></a>
     <#if currentUser?? && currentUser.userName == user.userName>
-    <a<#if type == "articlesAnonymous"> class="current"</#if> href="${servePath}/member/${user.userName}/articles/anonymous">${anonymousArticleLabel}<#if type == "articlesAnonymous"> &nbsp;<span class="count">${paginationRecordCount?c}</span></#if></a>
-    <a<#if type == "commentsAnonymous"> class="current"</#if> href="${servePath}/member/${user.userName}/comments/anonymous">${anonymousCommentLabel}<#if type == "commentsAnonymous"> &nbsp;<span class="count">${paginationRecordCount?c}</span></#if></a>
+    <a pjax-title="${anonymousArticleLabel} - ${user.userName} - ${symphonyLabel}"<#if type == "articlesAnonymous"> class="current"</#if> href="${servePath}/member/${user.userName}/articles/anonymous">${anonymousArticleLabel}<#if type == "articlesAnonymous"> &nbsp;<span class="count">${paginationRecordCount?c}</span></#if></a>
+    <a pjax-title="${anonymousCommentLabel} - ${user.userName} - ${symphonyLabel}"<#if type == "commentsAnonymous"> class="current"</#if> href="${servePath}/member/${user.userName}/comments/anonymous">${anonymousCommentLabel}<#if type == "commentsAnonymous"> &nbsp;<span class="count">${paginationRecordCount?c}</span></#if></a>
     </#if>
 </div>
 <#if 0 == user.userCommentStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
@@ -56,7 +56,7 @@
         </#list>  
     </ul>
 </div>
-<@pagination url="/member/${user.userName}/comments"/>
+<@pagination url="${servePath}/member/${user.userName}/comments" pjaxTitle="${cmtLabel} - ${user.userName} - ${symphonyLabel}"/>
 <#else>
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
 </#if>

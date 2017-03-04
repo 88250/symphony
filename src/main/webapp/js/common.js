@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.41.29.44, Jan 26, 2017
+ * @version 1.41.29.45, Feb 18, 2017
  */
 
 /**
@@ -32,7 +32,34 @@ var Util = {
     /**
      * @description 前置快捷键
      */
-     prevKey: undefined,
+    prevKey: undefined,
+    /**
+     * 粘贴
+     * @param {jQuery} $click 点击触发复制事件的元素
+     * @param {jQuery} $text 包含复制内容的元素
+     * @param {function} cb 复制成功的回调函数
+     */
+    clipboard: function ($click, $text, cb) {
+        $click.click(function(event) {
+              $text[0].select();
+
+              try {
+                // Now that we've selected the anchor text, execute the copy command
+                var successful = document.execCommand('copy');
+                if (successful) {
+                    cb();
+                } else {
+                    console.log('Copy command was unsuccessful');
+                }
+              } catch(err) {
+                console.log('Oops, unable to copy');
+              }
+
+              // Remove the selections - NOTE: Should use
+              // removeRange(range) when it is supported
+              window.getSelection().removeAllRanges();
+        });
+    },
     /**
      * @description 关闭 alert
      */
@@ -1195,16 +1222,16 @@ var Util = {
         var href = location.href;
         $(".user-nav > a").each(function () {
             if (href.indexOf($(this).attr("href")) === 0) {
-                $(this).addClass("selected");
+                $(this).addClass("current");
             } else if (location.pathname === "/register") {
                 // 注册没有使用 href，对其进行特殊处理
-                $(".user-nav a:last").addClass("selected");
+                $(".user-nav a:last").addClass("current");
             } else if (location.pathname === "/login") {
                 // 登录没有使用 href，对其进行特殊处理
-                $(".user-nav a:first").addClass("selected");
+                $(".user-nav a:first").addClass("current");
             } else if (href.indexOf(Label.servePath + '/settings') === 0 ||
              href.indexOf($("#aPersonListPanel").data('url')) === 0) {
-                $("#aPersonListPanel").addClass("selected");
+                $("#aPersonListPanel").addClass("current");
             }
         });
 

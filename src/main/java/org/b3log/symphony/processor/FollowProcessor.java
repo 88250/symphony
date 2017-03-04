@@ -26,10 +26,12 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Requests;
+import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionCheck;
+import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.FollowMgmtService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.json.JSONObject;
@@ -37,8 +39,8 @@ import org.json.JSONObject;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Follow processor.
@@ -56,7 +58,7 @@ import java.util.Map;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.3, Jan 18, 2017
+ * @version 1.3.0.3, Mar 1, 2017
  * @since 0.2.5
  */
 @RequestProcessor
@@ -66,27 +68,25 @@ public class FollowProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(FollowProcessor.class.getName());
-
+    /**
+     * Holds follows.
+     */
+    private static final Set<String> FOLLOWS = new HashSet<>();
     /**
      * Follow management service.
      */
     @Inject
     private FollowMgmtService followMgmtService;
-
     /**
      * Notification management service.
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
-
     /**
-     * Holds follow relations.
-     * <p>
-     * &lt;followerId, followingId&gt;
-     * </p>
+     * Article query service.
      */
-    private static final Map<String, String> FOLLOWS = new HashMap<>();
-
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * Follows a user.
@@ -118,7 +118,7 @@ public class FollowProcessor {
 
         followMgmtService.followUser(followerUserId, followingUserId);
 
-        if (null == FOLLOWS.get(followerUserId)) {
+        if (!FOLLOWS.contains(followingUserId + followerUserId)) {
             final JSONObject notification = new JSONObject();
             notification.put(Notification.NOTIFICATION_USER_ID, followingUserId);
             notification.put(Notification.NOTIFICATION_DATA_ID, followerUserId);
@@ -126,7 +126,7 @@ public class FollowProcessor {
             notificationMgmtService.addNewFollowerNotification(notification);
         }
 
-        FOLLOWS.put(followerUserId, followingUserId);
+        FOLLOWS.add(followingUserId + followerUserId);
 
         context.renderTrueResult();
     }
@@ -260,6 +260,19 @@ public class FollowProcessor {
 
         followMgmtService.followArticle(followerUserId, followingArticleId);
 
+        final JSONObject article = articleQueryService.getArticle(followingArticleId);
+        final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+
+        if (!FOLLOWS.contains(articleAuthorId + followingArticleId + "-" + followerUserId)) {
+            final JSONObject notification = new JSONObject();
+            notification.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, followingArticleId + "-" + followerUserId);
+
+            notificationMgmtService.addArticleNewFollowerNotification(notification);
+        }
+
+        FOLLOWS.add(articleAuthorId + followingArticleId + "-" + followerUserId);
+
         context.renderTrueResult();
     }
 
@@ -325,6 +338,19 @@ public class FollowProcessor {
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
 
         followMgmtService.watchArticle(followerUserId, followingArticleId);
+
+        final JSONObject article = articleQueryService.getArticle(followingArticleId);
+        final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+
+        if (!FOLLOWS.contains(articleAuthorId + followingArticleId + "-" + followerUserId)) {
+            final JSONObject notification = new JSONObject();
+            notification.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, followingArticleId + "-" + followerUserId);
+
+            notificationMgmtService.addArticleNewWatcherNotification(notification);
+        }
+
+        FOLLOWS.add(articleAuthorId + followingArticleId + "-" + followerUserId);
 
         context.renderTrueResult();
     }

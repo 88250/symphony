@@ -60,30 +60,26 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content">
-                    <div<#if type != "linkForge"> class="module"</#if>>
+                <div class="content" id="home-pjax-container">
+                    <#if pjax><!---- pjax {#home-pjax-container} start ----></#if><div<#if type != "linkForge"> class="module"</#if>>
                     <#nested>
-                    </div>
+                    </div><#if pjax><!---- pjax {#home-pjax-container} end ----></#if>
                 </div>
                 <div class="side">
                     <#include "home-side.ftl">
-                    <div class="module">
+                    <div class="module fn-none">
                         <div class="module-header"><h2>${goHomeLabel}</h2></div> 
                         <div class="module-panel fn-oh">
                             <nav class="home-menu">
-                                <a <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
+                                <a pjax-title="${articleLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
                                     class="current"</#if>
                                     href="${servePath}/member/${user.userName}"><svg height="18" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
-                                <a <#if type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers"> class="current"</#if>
+                                <a pjax-title="${watchingArticlesLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "watchingArticles" || type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers"> class="current"</#if>
                                     href="${servePath}/member/${user.userName}/watching/articles"><svg height="18" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
-                                <a <#if type == "points"> class="current"</#if> href="${servePath}/member/${user.userName}/points">
+                                <a pjax-title="${pointLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "points"> class="current"</#if> href="${servePath}/member/${user.userName}/points">
                                     <svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
-                                <a <#if type == "linkForge"> class="current"</#if> href="${servePath}/member/${user.userName}/forge/link">
+                                <a pjax-title="${linkForgeLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "linkForge"> class="current"</#if> href="${servePath}/member/${user.userName}/forge/link">
                                     <svg height="18" viewBox="0 1 16 16" width="16">${baguaIcon}</svg>  ${forgeLabel}</a>
-                                <#if currentUser?? && currentUser.userName == user.userName>
-                                <a <#if type == "settings"> class="selected"</#if>
-                                    href="${servePath}/settings"><svg height="18" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
-                                </#if>
                             </nav>
                         </div>
                     </div>
@@ -92,6 +88,9 @@
             </div>
         <#include "../footer.ftl">
         <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/lib/jquery/jquery.pjax.js?${staticResourceVersion}"></script>
+        <script src='${staticServePath}/js/lib/nprogress/nprogress.js?${staticResourceVersion}'></script>
+        <link rel='stylesheet' href='${staticServePath}/js/lib/nprogress/nprogress.css?${staticResourceVersion}'/>
         <script>
             Label.followLabel = "${followLabel}";
             Label.unfollowLabel = "${unfollowLabel}";
@@ -116,6 +115,58 @@
             <#if type == 'linkForge'>
                 Util.linkForge();
             </#if>
+            Settings.homeScroll();
+
+            $.pjax({
+                selector: 'a',
+                container: '#home-pjax-container',
+                show: '',
+                cache: false,
+                storage: true,
+                titleSuffix: '',
+                filter: function(href){
+                    return 0 > href.indexOf('${servePath}/member/${user.userName}');
+                },
+                callback: function(status){
+                    switch(status.type){
+                        case 'success':
+                        case 'cache':
+                            $('.nav-tabs a').removeClass('current');
+                            switch (this.pathname) {
+                                case '/member/${user.userName}':
+                                case '/member/${user.userName}/comments':
+                                case '/member/${user.userName}/articles/anonymous':
+                                case '/member/${user.userName}/comments/anonymous':
+                                    $($('.nav-tabs a')[0]).addClass('current');
+                                    break;
+                                case '/member/${user.userName}/watching/articles':
+                                case '/member/${user.userName}/following/users':
+                                case '/member/${user.userName}/following/tags':
+                                case '/member/${user.userName}/following/articles':
+                                case '/member/${user.userName}/followers':
+                                    $($('.nav-tabs a')[1]).addClass('current');
+                                    break;
+                                case '/member/${user.userName}/points':
+                                    $($('.nav-tabs a')[2]).addClass('current');
+                                    break;
+                                case '/member/${user.userName}/forge/link':
+                                    $($('.nav-tabs a')[3]).addClass('current');
+                                    break;
+                            }
+                        case 'error':
+                            break;
+                        case 'hash':
+                            break;
+                    }
+                }
+            });
+            NProgress.configure({ showSpinner: false });
+            $('#home-pjax-container').bind('pjax.start', function(){
+                NProgress.start();
+            });
+            $('#home-pjax-container').bind('pjax.end', function(){
+                NProgress.done();
+            });
         </script>
     </body>
 </html>

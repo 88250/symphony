@@ -343,7 +343,7 @@
                                     <span class="avatar-small slogan"
                                           style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != relevantArticle.articleAuthorName></a></#if>
-                                <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
+                                <a rel="nofollow" class="title" href="${servePath}${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                             </li>
                             </#list>
                         </ul>
@@ -367,7 +367,7 @@
                                     <span class="avatar-small slogan"
                                           style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
-                                <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
+                                <a class="title" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                             </li>
                             </#list>
                         </ul>

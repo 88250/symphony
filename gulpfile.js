@@ -20,7 +20,7 @@
  * 
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.3.2, Dec 21, 2016
+ * @version 1.5.3.2, Mar 1, 2017
  */
 
 'use strict';
@@ -116,8 +116,7 @@ gulp.task('build', ['sass', 'clean'], function () {
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-validate.js',
         // end jquery.fileupload.min.js
         './src/main/webapp/js/lib/sound-recorder/SoundRecorder.js',
-        './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js',
-        './src/main/webapp/js/lib/zeroclipboard/ZeroClipboard.min.js'];
+        './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js'];
     gulp.src(jsArticleLib)
             .pipe(uglify())
             .pipe(concat('article-libs.min.js'))

@@ -38,7 +38,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content">
+                <div class="content" id="article-pjax-container"><#if pjax><!---- pjax {#article-pjax-container} start ----></#if>
                     <div class="module">
                         <div class="article-module">
                             <h1 class="article-title" itemprop="name">
@@ -121,9 +121,10 @@
                                         <span class="tooltipped tooltipped-n" aria-label="share to google" data-type="google"><span class="icon-google"></span></span> &nbsp;
                                         <span class="tooltipped tooltipped-n" data-type="copy"
                                               aria-label="${copyLabel}"
-                                              id="shareClipboard"
-                                              data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"><span
+                                              id="shareClipboard"><span
                                                 class="icon-link"></span></span>
+                                        <input type="text" class="article-clipboard"
+                                               value="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"/>
                                     </div>
                                 </div>
                             </div>
@@ -217,11 +218,11 @@
                         </div>
                         <div class="module-header article-module-bottom fn-clear">
                             <#if articlePrevious??>
-                                <a rel="prev" class="fn-left fn-ellipsis" href="${articlePrevious.articlePermalink}">
+                                <a rel="prev" class="fn-left fn-ellipsis" href="${servePath}${articlePrevious.articlePermalink}">
                                     <span class="icon-chevron-left"></span> ${articlePrevious.articleTitleEmoj}</a>
                             </#if>
                             <#if articleNext??>
-                                <a rel="next" class="fn-right fn-ellipsis" href="${articleNext.articlePermalink}">${articleNext.articleTitleEmoj}
+                                <a rel="next" class="fn-right fn-ellipsis" href="${servePath}${articleNext.articlePermalink}">${articleNext.articleTitleEmoj}
                                 <span class="icon-chevron-right"></span>
                                 </a>
                             </#if>
@@ -314,17 +315,17 @@
                             </ul>
                             <div id="bottomComment"></div>
                         </div>
-                        <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
+                        <@pagination url="${servePath}${article.articlePermalink}" query="m=${userCommentViewMode}#comments" pjaxTitle="${article.articleTitle} - ${symphonyLabel}" />
                     </div>
 
-					<div class="ft-center fn-pointer <#if article.articleComments?size == 0> fn-none</#if>" title="${cmtLabel}"
+                    <div class="ft-center fn-pointer <#if article.articleComments?size == 0> fn-none</#if>" title="${cmtLabel}"
                         <#if permissions["commonAddComment"].permissionGrant>
                             onclick="$('.article-actions .icon-reply-btn').click()"
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
                         </#if>>
                         <img src="${noCmtImg}" class="article-no-comment-img">
-					</div>
+                    </div>
 
                     <#if sideRelevantArticles?size != 0>
                         <div class="module">
@@ -344,14 +345,14 @@
                                               style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"
                                         ></span>
                                         <#if "someone" != relevantArticle.articleAuthorName></a></#if>
-                                        <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
+                                        <a rel="nofollow" class="title" href="${servePath}${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                         </li>
                                     </#list>
                                 </ul>
                             </div>
                         </div>
                     </#if>
-
+                <#if pjax><!---- pjax {#article-pjax-container} end ----></#if>
                 </div>
                 <div class="side">
                     <#include 'common/person-info.ftl'/>
@@ -401,7 +402,7 @@
                                    aria-label="${randomArticle.articleAuthorName}"
                                    style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
-                                    <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
+                                    <a class="title" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                                 </li>
                                 </#list>
                             </ul>
@@ -445,6 +446,9 @@
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/lib/jquery/jquery.pjax.js?${staticResourceVersion}"></script>
+        <script src='${staticServePath}/js/lib/nprogress/nprogress.js?${staticResourceVersion}'></script>
+        <link rel='stylesheet' href='${staticServePath}/js/lib/nprogress/nprogress.css?${staticResourceVersion}'/>
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";
@@ -506,6 +510,26 @@
                 <#if 3 == article.articleType>
                     Article.playThought('${article.articleContent}');
                 </#if>
+            });
+
+            $.pjax({
+                selector: 'a',
+                container: '#article-pjax-container',
+                show: '',
+                cache: false,
+                storage: true,
+                titleSuffix: '',
+                filter: function(href){
+                    return 0 > href.indexOf('${servePath}/article/');
+                },
+                callback: function(){}
+            });
+            NProgress.configure({ showSpinner: false });
+            $('#article-pjax-container').bind('pjax.start', function(){
+                NProgress.start();
+            });
+            $('#article-pjax-container').bind('pjax.end', function(){
+                NProgress.done();
             });
         </script>
     </body>
