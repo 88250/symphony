@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.api.v2;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -76,7 +77,8 @@ public class ArticleAPI2 {
      * @param context the specified context
      * @param request the specified request
      */
-    @RequestProcessing(value = "/api/v2/articles/latest", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/api/v2/articles/latest", "/api/v2/articles/latest/hot",
+            "/api/v2/articles/latest/good", "/api/v2/articles/latest/reply"}, method = HTTPRequestMethod.GET)
     public void getLatestArticles(final HTTPRequestContext context, final HttpServletRequest request) {
         int page = 1;
         final String p = request.getParameter("p");
@@ -92,7 +94,30 @@ public class ArticleAPI2 {
         try {
             final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-            data = articleQueryService.getRecentArticles(avatarViewMode, 0, page, 20);
+            String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/latest");
+            int sortMode;
+            switch (sortModeStr) {
+                case "":
+                    sortMode = 0;
+
+                    break;
+                case "/hot":
+                    sortMode = 1;
+
+                    break;
+                case "/good":
+                    sortMode = 2;
+
+                    break;
+                case "/reply":
+                    sortMode = 3;
+
+                    break;
+                default:
+                    sortMode = 0;
+            }
+
+            data = articleQueryService.getRecentArticles(avatarViewMode, sortMode, page, 20);
             final List<JSONObject> articles = (List<JSONObject>) data.opt(Article.ARTICLES);
             for (final JSONObject article : articles) {
                 cleanArticle(article);
@@ -114,9 +139,9 @@ public class ArticleAPI2 {
     }
 
     private void cleanArticle(final JSONObject article) {
-        article.put(Article.ARTICLE_CREATE_TIME, ((Date)article.opt(Article.ARTICLE_CREATE_TIME)).getTime());
-        article.put(Article.ARTICLE_UPDATE_TIME, ((Date)article.opt(Article.ARTICLE_UPDATE_TIME)).getTime());
-        article.put(Article.ARTICLE_LATEST_CMT_TIME, ((Date)article.opt(Article.ARTICLE_LATEST_CMT_TIME)).getTime());
+        article.put(Article.ARTICLE_CREATE_TIME, ((Date) article.opt(Article.ARTICLE_CREATE_TIME)).getTime());
+        article.put(Article.ARTICLE_UPDATE_TIME, ((Date) article.opt(Article.ARTICLE_UPDATE_TIME)).getTime());
+        article.put(Article.ARTICLE_LATEST_CMT_TIME, ((Date) article.opt(Article.ARTICLE_LATEST_CMT_TIME)).getTime());
 
         article.remove(Article.ARTICLE_T_LATEST_CMT);
         article.remove(Article.ARTICLE_LATEST_CMT_TIME);
