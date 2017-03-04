@@ -17,18 +17,6 @@
  */
 package org.b3log.symphony.service;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import javax.inject.Inject;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -36,22 +24,11 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.CompositeFilter;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.Filter;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.urlfetch.HTTPHeader;
-import org.b3log.latke.urlfetch.HTTPRequest;
-import org.b3log.latke.urlfetch.HTTPResponse;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
+import org.b3log.latke.urlfetch.*;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.cache.TagCache;
@@ -59,12 +36,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.repository.DomainRepository;
-import org.b3log.symphony.repository.DomainTagRepository;
-import org.b3log.symphony.repository.TagRepository;
-import org.b3log.symphony.repository.TagTagRepository;
-import org.b3log.symphony.repository.UserRepository;
-import org.b3log.symphony.repository.UserTagRepository;
+import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
@@ -72,11 +44,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
+import javax.inject.Inject;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
+
 /**
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.5.11, Oct 12, 2016
+ * @version 1.8.5.12, Mar 4, 2017
  * @since 0.2.0
  */
 @Service
@@ -86,60 +63,50 @@ public class TagQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TagQueryService.class.getName());
-
+    /**
+     * URL fetch service.
+     */
+    private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
     /**
      * Tag repository.
      */
     @Inject
     private TagRepository tagRepository;
-
     /**
      * User-Tag repository.
      */
     @Inject
     private UserTagRepository userTagRepository;
-
     /**
      * Tag-Tag repository.
      */
     @Inject
     private TagTagRepository tagTagRepository;
-
     /**
      * User repository.
      */
     @Inject
     private UserRepository userRepository;
-
     /**
      * Domain repository.
      */
     @Inject
     private DomainRepository domainRepository;
-
     /**
      * Domain tag repository.
      */
     @Inject
     private DomainTagRepository domainTagRepository;
-
     /**
      * Avatar query service.
      */
     @Inject
     private AvatarQueryService avatarQueryService;
-
     /**
      * Short link query service.
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
-
-    /**
-     * URL fetch service.
-     */
-    private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
-
     /**
      * Tag cache.
      */
@@ -150,7 +117,7 @@ public class TagQueryService {
      * Gets tags by the specified title prefix.
      *
      * @param titlePrefix the specified title prefix
-     * @param fetchSize the specified fetch size
+     * @param fetchSize   the specified fetch size
      * @return a list of tags, for example      <pre>
      * [
      *     {
@@ -217,7 +184,7 @@ public class TagQueryService {
     /**
      * Generates tags for the specified content.
      *
-     * @param content the specified content
+     * @param content      the specified content
      * @param tagFetchSize the specified tag fetch size
      * @return tags
      */
@@ -315,23 +282,14 @@ public class TagQueryService {
                 return null;
             }
 
-            String description = ret.optString(Tag.TAG_DESCRIPTION);
-            String descriptionText = ret.optString(Tag.TAG_TITLE);
-            if (StringUtils.isNotBlank(description)) {
-                description = shortLinkQueryService.linkTag(description);
-                description = Markdowns.toHTML(description);
-
-                ret.put(Tag.TAG_DESCRIPTION, description);
-                descriptionText = Jsoup.parse(description).text();
-            }
-            ret.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
+            Tag.fillDescription(ret);
 
             if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_TITLE))) {
                 ret.put(Tag.TAG_SEO_TITLE, tagURI);
             }
 
             if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_DESC))) {
-                ret.put(Tag.TAG_SEO_DESC, descriptionText);
+                ret.put(Tag.TAG_SEO_DESC, ret.optString(Tag.TAG_T_DESCRIPTION_TEXT));
             }
 
             if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_KEYWORDS))) {
@@ -376,23 +334,14 @@ public class TagQueryService {
                 return null;
             }
 
-            String description = ret.optString(Tag.TAG_DESCRIPTION);
-            String descriptionText = ret.optString(Tag.TAG_TITLE);
-            if (StringUtils.isNotBlank(description)) {
-                description = shortLinkQueryService.linkTag(description);
-                description = Markdowns.toHTML(description);
-
-                ret.put(Tag.TAG_DESCRIPTION, description);
-                descriptionText = Jsoup.parse(description).text();
-            }
-            ret.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
+            Tag.fillDescription(ret);
 
             if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_TITLE))) {
                 ret.put(Tag.TAG_SEO_TITLE, tagTitle);
             }
 
             if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_DESC))) {
-                ret.put(Tag.TAG_SEO_DESC, descriptionText);
+                ret.put(Tag.TAG_SEO_DESC, ret.optString(Tag.TAG_T_DESCRIPTION_TEXT));
             }
 
             if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_KEYWORDS))) {
@@ -435,16 +384,7 @@ public class TagQueryService {
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             for (final JSONObject tag : ret) {
-                String description = tag.optString(Tag.TAG_DESCRIPTION);
-                String descriptionText = tag.optString(Tag.TAG_TITLE);
-                if (StringUtils.isNotBlank(description)) {
-                    description = shortLinkQueryService.linkTag(description);
-                    description = Markdowns.toHTML(description);
-
-                    tag.put(Tag.TAG_DESCRIPTION, description);
-                    descriptionText = Jsoup.parse(description).text();
-                }
-                tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
+                Tag.fillDescription(tag);
             }
 
             return ret;
@@ -480,16 +420,7 @@ public class TagQueryService {
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             for (final JSONObject tag : ret) {
-                String description = tag.optString(Tag.TAG_DESCRIPTION);
-                String descriptionText = tag.optString(Tag.TAG_TITLE);
-                if (StringUtils.isNotBlank(description)) {
-                    description = shortLinkQueryService.linkTag(description);
-                    description = Markdowns.toHTML(description);
-
-                    tag.put(Tag.TAG_DESCRIPTION, description);
-                    descriptionText = Jsoup.parse(description).text();
-                }
-                tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
+                Tag.fillDescription(tag);
             }
 
             return ret;
@@ -514,7 +445,7 @@ public class TagQueryService {
      * Gets the creator of the specified tag of the given tag id.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param tagId the given tag id
+     * @param tagId          the given tag id
      * @return tag creator, for example,      <pre>
      * {
      *     "tagCreatorThumbnailURL": "",
@@ -522,7 +453,6 @@ public class TagQueryService {
      *     "tagCreatorName": ""
      * }
      * </pre>, returns {@code null} if not found
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getCreator(final int avatarViewMode, final String tagId) throws ServiceException {
@@ -574,8 +504,8 @@ public class TagQueryService {
      * Gets the participants (article ref) of the specified tag of the given tag id.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param tagId the given tag id
-     * @param fetchSize the specified fetch size
+     * @param tagId          the given tag id
+     * @param fetchSize      the specified fetch size
      * @return tag participants, for example,      <pre>
      * [
      *     {
@@ -585,11 +515,10 @@ public class TagQueryService {
      *     }, ....
      * ]
      * </pre>, returns an empty list if not found
-     *
      * @throws ServiceException service exception
      */
     public List<JSONObject> getParticipants(final int avatarViewMode,
-            final String tagId, final int fetchSize) throws ServiceException {
+                                            final String tagId, final int fetchSize) throws ServiceException {
         final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
         filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, 1));
@@ -634,7 +563,7 @@ public class TagQueryService {
     /**
      * Gets the related tags of the specified tag of the given tag id.
      *
-     * @param tagId the given tag id
+     * @param tagId     the given tag id
      * @param fetchSize the specified fetch size
      * @return related tags, for example,      <pre>
      * [{
@@ -644,7 +573,6 @@ public class TagQueryService {
      *     ....
      * }, ....]
      * </pre>, returns an empty list if not found
-     *
      * @throws ServiceException service exception
      */
     public List<JSONObject> getRelatedTags(final String tagId, final int fetchSize) throws ServiceException {
@@ -686,13 +614,7 @@ public class TagQueryService {
             ret.addAll(values);
 
             for (final JSONObject tag : ret) {
-                String description = tag.optString(Tag.TAG_DESCRIPTION);
-                if (StringUtils.isNotBlank(description)) {
-                    description = shortLinkQueryService.linkTag(description);
-                    description = Markdowns.toHTML(description);
-
-                    tag.put(Tag.TAG_DESCRIPTION, description);
-                }
+                Tag.fillDescription(tag);
             }
 
             return ret;
@@ -705,17 +627,13 @@ public class TagQueryService {
     /**
      * Gets tags by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "tagTitle": "", // optional
-     *     "paginationCurrentPageNum": 1,
-     *     "paginationPageSize": 20,
-     *     "paginationWindowSize": 10
-     * }, see {@link Pagination} for more details
-     * </pre>
-     *
-     * @param tagFields the specified tag fields to return
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "tagTitle": "", // optional
+     *                          "paginationCurrentPageNum": 1,
+     *                          "paginationPageSize": 20,
+     *                          "paginationWindowSize": 10
+     *                          , see {@link Pagination} for more details
+     * @param tagFields         the specified tag fields to return
      * @return for example,      <pre>
      * {
      *     "pagination": {
@@ -730,7 +648,6 @@ public class TagQueryService {
      *      }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      * @see Pagination
      */

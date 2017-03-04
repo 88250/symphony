@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.26.26.45, Mar 3, 2017
+ * @version 2.26.26.46, Mar 4, 2017
  * @since 0.2.0
  */
 @Service
@@ -1386,7 +1386,13 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
+                addProjection(Article.ARTICLE_UA, String.class).
                 addProjection(Article.ARTICLE_CONTENT, String.class);
+
 
         return ret;
     }
@@ -1430,7 +1436,11 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class).
+                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
+                addProjection(Article.ARTICLE_UA, String.class).
                 addProjection(Article.ARTICLE_CONTENT, String.class);
 
         return ret;
@@ -1467,6 +1477,11 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
+                addProjection(Article.ARTICLE_UA, String.class).
                 addProjection(Article.ARTICLE_CONTENT, String.class);
 
         return ret;
@@ -1503,6 +1518,11 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
+                addProjection(Article.ARTICLE_UA, String.class).
                 addProjection(Article.ARTICLE_CONTENT, String.class);
 
         return ret;
