@@ -121,13 +121,9 @@ public class ArticleAPI2 {
 
             final List<JSONObject> tags = domainQueryService.getTags(domain.optString(Keys.OBJECT_ID));
             domain.put(Domain.DOMAIN_T_TAGS, (Object) tags);
-            for (final JSONObject tag : tags) {
-                cleanTag(tag);
-
-                Tag.fillDescription(tag);
-            }
 
             data.put(Domain.DOMAIN, domain);
+            cleanDomain(domain);
 
             final String domainId = domain.optString(Keys.OBJECT_ID);
             final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
@@ -254,13 +250,37 @@ public class ArticleAPI2 {
         cleanUser(author);
     }
 
+    private void cleanDomain(final JSONObject domain) {
+        final String uri = domain.optString(Domain.DOMAIN_URI);
+        domain.put(Domain.DOMAIN_URI, Latkes.getServePath() + "/domain/" + uri);
+
+        final List<JSONObject> tags = (List<JSONObject>) domain.opt(Domain.DOMAIN_T_TAGS);
+        for (final JSONObject tag : tags) {
+            cleanTag(tag);
+        }
+
+        domain.remove(Domain.DOMAIN_TYPE);
+        domain.remove(Domain.DOMAIN_STATUS);
+        domain.remove(Domain.DOMAIN_SEO_DESC);
+        domain.remove(Domain.DOMAIN_SEO_KEYWORDS);
+        domain.remove(Domain.DOMAIN_SEO_TITLE);
+        domain.remove(Domain.DOMAIN_CSS);
+        domain.remove(Domain.DOMAIN_SORT);
+    }
+
     private void cleanTag(final JSONObject tag) {
         final String iconPath = tag.optString(Tag.TAG_ICON_PATH);
         if (StringUtils.isBlank(iconPath)) {
             tag.put(Tag.TAG_ICON_PATH, "");
         } else {
-            tag.put(Tag.TAG_ICON_PATH, Latkes.getStaticPath() + "/images/tags/" + iconPath);
+            tag.put(Tag.TAG_ICON_PATH, Latkes.getStaticServePath() + "/images/tags/" + iconPath);
         }
+
+        final String uri = tag.optString(Tag.TAG_URI);
+        tag.put(Tag.TAG_URI, Latkes.getServePath() + "/tag/" + uri);
+
+        Tag.fillDescription(tag);
+
         tag.remove(Tag.TAG_STATUS);
         tag.remove(Tag.TAG_RANDOM_DOUBLE);
         tag.remove(Tag.TAG_CSS);
