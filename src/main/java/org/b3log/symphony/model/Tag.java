@@ -28,18 +28,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.TagCache;
+import org.b3log.symphony.service.ShortLinkQueryService;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.6.9, Feb 22, 2017
+ * @version 1.15.6.10, Mar 4, 2017
  * @since 0.2.0
  */
 public final class Tag {
@@ -490,6 +495,27 @@ public final class Tag {
         }
 
         return title;
+    }
+
+    /**
+     * Fills the description for the specified tag.
+     *
+     * @param tag the specified tag
+     */
+    public static void fillDescription(final JSONObject tag) {
+        String description = tag.optString(Tag.TAG_DESCRIPTION);
+        String descriptionText = tag.optString(Tag.TAG_TITLE);
+        if (StringUtils.isNotBlank(description)) {
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final ShortLinkQueryService shortLinkQueryService = beanManager.getReference(ShortLinkQueryService.class);
+
+            description = shortLinkQueryService.linkTag(description);
+            description = Markdowns.toHTML(description);
+
+            tag.put(Tag.TAG_DESCRIPTION, description);
+            descriptionText = Jsoup.parse(description).text();
+        }
+        tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
     }
 
     /**
