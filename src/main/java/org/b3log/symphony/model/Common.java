@@ -21,10 +21,15 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.56.1.11, Jan 18, 2017
+ * @version 1.57.1.11, Mar 4, 2017
  * @since 0.2.0
  */
 public final class Common {
+
+    /**
+     * Key of data.
+     */
+    public static final String DATA = "data";
 
     /**
      * Key of ISBN.
