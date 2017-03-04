@@ -96,6 +96,8 @@ public class ArticleAPI2 {
             final List<JSONObject> articles = (List<JSONObject>) data.opt(Article.ARTICLES);
             for (final JSONObject article : articles) {
                 cleanArticle(article);
+
+                article.remove(Article.ARTICLE_CONTENT);
             }
 
             ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
@@ -176,5 +178,6 @@ public class ArticleAPI2 {
         user.remove(UserExt.USER_COUNTRY);
         user.remove(UserExt.USER_PROVINCE);
         user.remove(UserExt.USER_CITY);
+        user.remove(UserExt.USER_COMMENT_VIEW_MODE);
     }
 }
