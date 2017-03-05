@@ -52,9 +52,9 @@ import java.util.List;
  * <li>Gets latest articles (/api/v2/articles/latest), GET</li>
  * <li>Gets domain articles (/api/v2/articles/domain/{domainURI}), GET</li>
  * <li>Gets tag articles (/api/v2/articles/tag/{tagURI}), GET</li>
- * <li>Gets an article (/api/v2/article), GET</li>
+ * <li>Gets an article (/api/v2/article/{articleId}), GET</li>
  * <li>Adds an article (/api/v2/article), POST</li>
- * <li>Updates an article (/api/v2/article), PUT</li>
+ * <li>Updates an article (/api/v2/article/{articleId}), PUT</li>
  * <li>Adds a comment (/api/v2/comment), POST</li>
  * </ul>
  * </p>
@@ -87,10 +87,55 @@ public class ArticleAPI2 {
     private TagQueryService tagQueryService;
 
     /**
+     * Gets an article.
+     *
+     * @param context   the specified context
+     * @param request   the specified request
+     * @param articleId the specified article id
+     */
+    @RequestProcessing(value = {"/api/v2/article/{articleId}"}, method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void getArticle(final HTTPRequestContext context, final HttpServletRequest request, final String articleId) {
+        final JSONObject ret = new JSONObject();
+        context.renderJSONPretty(ret);
+
+        ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
+        ret.put(Keys.MSG, "");
+
+        JSONObject data = null;
+        try {
+            final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+            final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
+            if (null == article) {
+                ret.put(Keys.MSG, "Article not found");
+                ret.put(Keys.STATUS_CODE, StatusCodes.NOT_FOUND);
+
+                return;
+            }
+
+            data = new JSONObject();
+            data.put(Article.ARTICLE, article);
+            V2s.cleanArticle(article);
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
+        } catch (final Exception e) {
+            final String msg = "Gets article failed";
+
+            LOGGER.log(Level.ERROR, msg, e);
+            ret.put(Keys.MSG, msg);
+        }
+
+        ret.put(Common.DATA, data);
+    }
+
+
+    /**
      * Gets tag articles.
      *
      * @param context the specified context
      * @param request the specified request
+     * @param tagURI  the specified tag URI
      */
     @RequestProcessing(value = {"/api/v2/articles/tag/{tagURI}", "/api/v2/articles/tag/{tagURI}/hot",
             "/api/v2/articles/tag/{tagURI}/good", "/api/v2/articles/tag/{tagURI}/reply",
@@ -106,6 +151,8 @@ public class ArticleAPI2 {
         }
 
         final JSONObject ret = new JSONObject();
+        context.renderJSONPretty(ret);
+
         ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, "");
 
@@ -176,15 +223,14 @@ public class ArticleAPI2 {
         }
 
         ret.put(Common.DATA, data);
-
-        context.renderJSON(ret);
     }
 
     /**
      * Gets domain articles.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context   the specified context
+     * @param request   the specified request
+     * @param domainURI the specified domain URI
      */
     @RequestProcessing(value = {"/api/v2/articles/domain/{domainURI}"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
@@ -198,6 +244,8 @@ public class ArticleAPI2 {
         }
 
         final JSONObject ret = new JSONObject();
+        context.renderJSONPretty(ret);
+
         ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, "");
 
@@ -238,8 +286,6 @@ public class ArticleAPI2 {
         }
 
         ret.put(Common.DATA, data);
-
-        context.renderJSON(ret);
     }
 
     /**
@@ -260,6 +306,8 @@ public class ArticleAPI2 {
         }
 
         final JSONObject ret = new JSONObject();
+        context.renderJSONPretty(ret);
+
         ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, "");
 
@@ -303,7 +351,5 @@ public class ArticleAPI2 {
         }
 
         ret.put(Common.DATA, data);
-
-        context.renderJSON(ret);
     }
 }
