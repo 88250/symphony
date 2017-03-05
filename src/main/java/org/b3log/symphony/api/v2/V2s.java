@@ -157,6 +157,7 @@ public final class V2s {
         tag.remove(Tag.TAG_SEO_TITLE);
         tag.remove(Tag.TAG_SEO_KEYWORDS);
         tag.remove(Tag.TAG_T_DESCRIPTION_TEXT);
+        tag.remove(Tag.TAG_T_CREATE_TIME);
     }
 
     /**
