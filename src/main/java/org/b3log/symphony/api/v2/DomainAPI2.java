@@ -88,7 +88,7 @@ public class DomainAPI2 {
         }
 
         final JSONObject ret = new JSONObject();
-        context.renderJSON(ret);
+        context.renderJSONPretty(ret);
 
         ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, "");
