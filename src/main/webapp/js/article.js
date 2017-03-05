@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.28.42.30, Mar 1, 2017
+ * @version 1.28.42.31, Mar 5, 2017
  */
 
 /**
@@ -287,6 +287,22 @@ var Comment = {
         $.ua.set(navigator.userAgent);
 
         this._initHotKey();
+
+        $.pjax({
+            selector: '.pagination a',
+            container: '#comments',
+            show: '',
+            cache: false,
+            storage: true,
+            titleSuffix: ''
+        });
+        NProgress.configure({ showSpinner: false });
+        $('#comments').bind('pjax.start', function(){
+            NProgress.start();
+        });
+        $('#comments').bind('pjax.end', function(){
+            NProgress.done();
+        });
 
         if (!Label.isLoggedIn) {
             return false;
@@ -931,6 +947,14 @@ var Article = {
         });
 
         this.initToc();
+
+        if (Label.isLoggedIn) {
+            Article.makeNotificationRead(Label.articleOId, Label.notificationCmtIds);
+
+            setTimeout(function() {
+                Util.setUnreadNotificationCount();
+            }, 1000);
+        }
     },
     /**
      * 历史版本对比
@@ -1463,3 +1487,22 @@ var Article = {
 };
 
 Article.init();
+
+$(document).ready(function () {
+    Comment.init();
+    // jQuery File Upload
+    Util.uploadFile({
+        "type": "img",
+        "id": "fileUpload",
+        "pasteZone": $(".CodeMirror"),
+        "qiniuUploadToken": Label.qiniuUploadToken,
+        "editor": Comment.editor,
+        "uploadingLabel": Label.uploadingLabel,
+        "qiniuDomain": Label.qiniuDomain,
+        "imgMaxSize": Label.imgMaxSize,
+        "fileMaxSize": Label.fileMaxSize
+    });
+
+    // Init [Article] channel
+    ArticleChannel.init(Label.articleChannel);
+});
