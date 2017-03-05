@@ -33,9 +33,22 @@ var Settings = {
      * 个人主页滚动固定
      */
     homeScroll: function () {
+        var beforeScorllTop = $(window).scrollTop(),
+        navHTML = $('.nav-tabs').html();
+
+        $(window).scroll(function () {
+            var currentScrollTop = $(window).scrollTop();
+            if (currentScrollTop > beforeScorllTop) {
+                $('.nav-tabs').html($('.home-menu').html());
+            } else {
+                $('.nav-tabs').html(navHTML);
+            }
+
+            beforeScorllTop = currentScrollTop;
+        });
+
         $('.nav').css('position', 'fixed');
         $('.main').css('paddingTop', '89px');
-        $('.nav-tabs').html($('.home-menu').html()).css('text-align', 'left');
     },
     /**
      * 通知页面侧边栏滚动固定
@@ -689,6 +702,10 @@ var Settings = {
         }
         if (Label.type === 'linkForge') {
             Util.linkForge();
+        }
+
+        if ($.ua.device.type !== 'mobile') {
+            Settings.homeScroll();
         }
 
         $.pjax({

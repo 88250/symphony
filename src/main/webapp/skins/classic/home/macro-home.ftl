@@ -109,7 +109,6 @@
             Label.userName = '${userName}';
 
             Settings.initHome();
-            Settings.homeScroll();
         </script>
     </body>
 </html>
