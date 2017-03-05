@@ -98,6 +98,8 @@ public class ArticleAPI2 {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void getArticle(final HTTPRequestContext context, final HttpServletRequest request, final String articleId) {
         final JSONObject ret = new JSONObject();
+        context.renderJSON(ret);
+
         ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, "");
 
@@ -125,8 +127,6 @@ public class ArticleAPI2 {
         }
 
         ret.put(Common.DATA, data);
-
-        context.renderJSON(ret);
     }
 
 
@@ -151,6 +151,8 @@ public class ArticleAPI2 {
         }
 
         final JSONObject ret = new JSONObject();
+        context.renderJSON(ret);
+
         ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, "");
 
@@ -221,8 +223,6 @@ public class ArticleAPI2 {
         }
 
         ret.put(Common.DATA, data);
-
-        context.renderJSON(ret);
     }
 
     /**
@@ -244,6 +244,8 @@ public class ArticleAPI2 {
         }
 
         final JSONObject ret = new JSONObject();
+        context.renderJSON(ret);
+
         ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, "");
 
@@ -284,8 +286,6 @@ public class ArticleAPI2 {
         }
 
         ret.put(Common.DATA, data);
-
-        context.renderJSON(ret);
     }
 
     /**
@@ -306,6 +306,8 @@ public class ArticleAPI2 {
         }
 
         final JSONObject ret = new JSONObject();
+        context.renderJSON(ret);
+
         ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, "");
 
@@ -349,7 +351,5 @@ public class ArticleAPI2 {
         }
 
         ret.put(Common.DATA, data);
-
-        context.renderJSON(ret);
     }
 }
