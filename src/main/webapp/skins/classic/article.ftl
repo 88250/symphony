@@ -38,7 +38,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content" id="article-pjax-container"><#if pjax><!---- pjax {#article-pjax-container} start ----></#if>
+                <div class="content">
                     <div class="module">
                         <div class="article-module">
                             <h1 class="article-title" itemprop="name">
@@ -284,7 +284,7 @@
                         </div>
                     </div>
                     </#if>
-
+                    <#if pjax><!---- pjax {#comments} start ----></#if>
                     <div class="module comments" id="comments">
                         <div class="comments-header module-header">
                             <span class="article-cmt-cnt">${article.articleCommentCount} ${cmtLabel}</span>
@@ -317,6 +317,7 @@
                         </div>
                         <@pagination url="${servePath}${article.articlePermalink}" query="m=${userCommentViewMode}#comments" pjaxTitle="${article.articleTitle} - ${symphonyLabel}" />
                     </div>
+                    <#if pjax><!---- pjax {#comments} end ----></#if>
 
                     <div class="ft-center fn-pointer <#if article.articleComments?size == 0> fn-none</#if>" title="${cmtLabel}"
                         <#if permissions["commonAddComment"].permissionGrant>
@@ -352,7 +353,6 @@
                             </div>
                         </div>
                     </#if>
-                <#if pjax><!---- pjax {#article-pjax-container} end ----></#if>
                 </div>
                 <div class="side">
                     <#include 'common/person-info.ftl'/>
@@ -446,9 +446,6 @@
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script src="${staticServePath}/js/lib/jquery/jquery.pjax.js?${staticResourceVersion}"></script>
-        <script src='${staticServePath}/js/lib/nprogress/nprogress.js?${staticResourceVersion}'></script>
-        <link rel='stylesheet' href='${staticServePath}/js/lib/nprogress/nprogress.css?${staticResourceVersion}'/>
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";
@@ -483,54 +480,16 @@
             Label.qiniuDomain = '${qiniuDomain}';
             Label.qiniuUploadToken = '${qiniuUploadToken}';
             Label.noPermissionLabel = '${noPermissionLabel}';
+            Label.imgMaxSize = ${imgMaxSize?c};
+            Label.fileMaxSize = ${fileMaxSize?c};
+            Label.articleChannel = "${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}";
             <#if isLoggedIn>
                 Label.currentUserName = '${currentUser.userName}';
-                Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
-
-                setTimeout(function() {
-                    Util.setUnreadNotificationCount();
-                }, 1000);
+                Label.notificationCmtIds = '${notificationCmtIds}';
             </#if>
-            // Init [Article] channel
-            ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
-            $(document).ready(function () {
-                Comment.init();
-                 // jQuery File Upload
-                Util.uploadFile({
-                    "type": "img",
-                    "id": "fileUpload",
-                    "pasteZone": $(".CodeMirror"),
-                    "qiniuUploadToken": "${qiniuUploadToken}",
-                    "editor": Comment.editor,
-                    "uploadingLabel": "${uploadingLabel}",
-                    "qiniuDomain": "${qiniuDomain}",
-                    "imgMaxSize": ${imgMaxSize?c},
-                    "fileMaxSize": ${fileMaxSize?c}
-                });
-                <#if 3 == article.articleType>
-                    Article.playThought('${article.articleContent}');
-                </#if>
-            });
-
-            $.pjax({
-                selector: 'a',
-                container: '#article-pjax-container',
-                show: '',
-                cache: false,
-                storage: true,
-                titleSuffix: '',
-                filter: function(href){
-                    return 0 > href.indexOf('${servePath}/article/');
-                },
-                callback: function(){}
-            });
-            NProgress.configure({ showSpinner: false });
-            $('#article-pjax-container').bind('pjax.start', function(){
-                NProgress.start();
-            });
-            $('#article-pjax-container').bind('pjax.end', function(){
-                NProgress.done();
-            });
+            <#if 3 == article.articleType>
+                Article.playThought('${article.articleContent}');
+            </#if>
         </script>
     </body>
 </html>

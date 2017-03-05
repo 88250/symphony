@@ -52,6 +52,7 @@
         <meta name="description" content="${user.userName}${deLabel}${linkForgeLabel}"/>
         </@head>
         </#if>
+        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
     </head>
     <body>
         <#include "../header.ftl">
@@ -138,22 +139,27 @@
         <#include "../footer.ftl">
         <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                    Label.followLabel = "${followLabel}";
-                    Label.unfollowLabel = "${unfollowLabel}";
-                    Label.invalidPasswordLabel = "${invalidPasswordLabel}";
-                    Label.amountNotEmpty = "${amountNotEmpty}";
-                    Label.invalidUserNameLabel = "${invalidUserNameLabel}";
-                    Label.loginNameErrorLabel = "${loginNameErrorLabel}";
-                    Label.updateSuccLabel = "${updateSuccLabel}";
-                    Label.transferSuccLabel = "${transferSuccLabel}";
-                    Label.invalidUserURLLabel = "${invalidUserURLLabel}";
-                    Label.tagsErrorLabel = "${tagsErrorLabel}";
-                    Label.invalidUserQQLabel = "${invalidUserQQLabel}";
-                    Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
-                    Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
-                    Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
-                    Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
-                    Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}";
+            Label.followLabel = "${followLabel}";
+            Label.unfollowLabel = "${unfollowLabel}";
+            Label.invalidPasswordLabel = "${invalidPasswordLabel}";
+            Label.amountNotEmpty = "${amountNotEmpty}";
+            Label.invalidUserNameLabel = "${invalidUserNameLabel}";
+            Label.loginNameErrorLabel = "${loginNameErrorLabel}";
+            Label.updateSuccLabel = "${updateSuccLabel}";
+            Label.transferSuccLabel = "${transferSuccLabel}";
+            Label.invalidUserURLLabel = "${invalidUserURLLabel}";
+            Label.tagsErrorLabel = "${tagsErrorLabel}";
+            Label.invalidUserQQLabel = "${invalidUserQQLabel}";
+            Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
+            Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
+            Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
+            Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
+            Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}";
+            Label.forgeUploadSuccLabel = "${forgeUploadSuccLabel}";
+            Label.type = '${type}';
+            Label.userName = '${userName}';
+
+            Settings.initHome();
         </script>
     </body>
 </html>
