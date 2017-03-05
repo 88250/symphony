@@ -10,7 +10,6 @@
         <#elseif type == "comments">
         <@head title="${cmtLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${cmtLabel}"/>
-        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
         </@head>
         <#elseif type == "followingUsers">
         <@head title="${followingUsersLabel} - ${user.userName} - ${symphonyLabel}">
@@ -47,7 +46,6 @@
         <#elseif type == "commentsAnonymous">
         <@head title="${anonymousCommentLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${anonymousCommentLabel}"/>
-        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
         </@head>
         <#elseif type == "linkForge">
         <@head title="${linkForgeLabel} - ${user.userName} - ${symphonyLabel}">
@@ -55,6 +53,7 @@
         </@head>
         </#if>
         <link rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
+        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
     </head>
     <body>
         <#include "../header.ftl">
@@ -106,64 +105,11 @@
             Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
             Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}";
             Label.forgeUploadSuccLabel = "${forgeUploadSuccLabel}";
-            <#if type == 'commentsAnonymous' || 'comments' == type>
-            Settings.initHljs();
-            </#if>
-            <#if type == 'linkForge'>
-                Util.linkForge();
-            </#if>
-            Settings.homeScroll();
+            Label.type = '${type}';
+            Label.userName = '${userName}';
 
-            $.pjax({
-                selector: 'a',
-                container: '#home-pjax-container',
-                show: '',
-                cache: false,
-                storage: true,
-                titleSuffix: '',
-                filter: function(href){
-                    return 0 > href.indexOf('${servePath}/member/${user.userName}');
-                },
-                callback: function(status){
-                    switch(status.type){
-                        case 'success':
-                        case 'cache':
-                            $('.nav-tabs a').removeClass('current');
-                            switch (this.pathname) {
-                                case '/member/${user.userName}':
-                                case '/member/${user.userName}/comments':
-                                case '/member/${user.userName}/articles/anonymous':
-                                case '/member/${user.userName}/comments/anonymous':
-                                    $($('.nav-tabs a')[0]).addClass('current');
-                                    break;
-                                case '/member/${user.userName}/watching/articles':
-                                case '/member/${user.userName}/following/users':
-                                case '/member/${user.userName}/following/tags':
-                                case '/member/${user.userName}/following/articles':
-                                case '/member/${user.userName}/followers':
-                                    $($('.nav-tabs a')[1]).addClass('current');
-                                    break;
-                                case '/member/${user.userName}/points':
-                                    $($('.nav-tabs a')[2]).addClass('current');
-                                    break;
-                                case '/member/${user.userName}/forge/link':
-                                    $($('.nav-tabs a')[3]).addClass('current');
-                                    break;
-                            }
-                        case 'error':
-                            break;
-                        case 'hash':
-                            break;
-                    }
-                }
-            });
-            NProgress.configure({ showSpinner: false });
-            $('#home-pjax-container').bind('pjax.start', function(){
-                NProgress.start();
-            });
-            $('#home-pjax-container').bind('pjax.end', function(){
-                NProgress.done();
-            });
+            Settings.initHome();
+            Settings.homeScroll();
         </script>
     </body>
 </html>

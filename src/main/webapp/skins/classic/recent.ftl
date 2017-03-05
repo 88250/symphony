@@ -60,8 +60,7 @@
                 titleSuffix: '',
                 filter: function(href){
                     return 0 > href.indexOf('${servePath}/recent');
-                },
-                callback: function(){}
+                }
             });
             NProgress.configure({ showSpinner: false });
             $('#recent-pjax-container').bind('pjax.start', function(){

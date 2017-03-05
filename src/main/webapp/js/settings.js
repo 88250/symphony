@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.20.11.17, Feb 18, 2017
+ * @version 1.20.11.18, Mar 5, 2017
  */
 
 /**
@@ -678,6 +678,71 @@ var Settings = {
             } else {
                 $("#emotionList").val(emoji);
             }
+        });
+    },
+    /**
+     * 个人主页初始化
+     */
+    initHome: function () {
+        if (Label.type === 'commentsAnonymous' || 'comments' === Label.type) {
+            Settings.initHljs();
+        }
+        if (Label.type === 'linkForge') {
+            Util.linkForge();
+        }
+
+        $.pjax({
+            selector: 'a',
+            container: '#home-pjax-container',
+            show: '',
+            cache: false,
+            storage: true,
+            titleSuffix: '',
+            filter: function(href){
+                return 0 > href.indexOf(Label.servePath + '/member/' + Label.userName);
+            },
+            callback: function(status){
+                switch(status.type){
+                    case 'success':
+                    case 'cache':
+                        $('.nav-tabs a').removeClass('current');
+                        switch (this.pathname) {
+                            case '/member/' + Label.userName:
+                            case '/member/' + Label.userName + '/comments':
+                                Settings.initHljs();
+                            case '/member/' + Label.userName + '/articles/anonymous':
+                            case '/member/' + Label.userName + '/comments/anonymous':
+                                Settings.initHljs();
+                                $($('.nav-tabs a')[0]).addClass('current');
+                                break;
+                            case '/member/' + Label.userName + '/watching/articles':
+                            case '/member/' + Label.userName + '/following/users':
+                            case '/member/' + Label.userName + '/following/tags':
+                            case '/member/' + Label.userName + '/following/articles':
+                            case '/member/' + Label.userName + '/followers':
+                                $($('.nav-tabs a')[1]).addClass('current');
+                                break;
+                            case '/member/' + Label.userName + '/points':
+                                $($('.nav-tabs a')[2]).addClass('current');
+                                break;
+                            case '/member/' + Label.userName + '/forge/link':
+                                $($('.nav-tabs a')[3]).addClass('current');
+                                Util.linkForge();
+                                break;
+                        }
+                    case 'error':
+                        break;
+                    case 'hash':
+                        break;
+                }
+            }
+        });
+        NProgress.configure({ showSpinner: false });
+        $('#home-pjax-container').bind('pjax.start', function(){
+            NProgress.start();
+        });
+        $('#home-pjax-container').bind('pjax.end', function(){
+            NProgress.done();
         });
     }
 };
