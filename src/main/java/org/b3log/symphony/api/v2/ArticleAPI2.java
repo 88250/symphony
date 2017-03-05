@@ -30,6 +30,7 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
@@ -38,6 +39,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.DomainQueryService;
+import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
@@ -52,7 +54,7 @@ import java.util.List;
  * <ul>
  * <li>Gets latest articles (/api/v2/articles/latest), GET</li>
  * <li>Gets domain articles (/api/v2/articles/domain/{domainURI}), GET</li>
- * <li>Gets tag articles (/api/v2/articles/tag), GET</li>
+ * <li>Gets tag articles (/api/v2/articles/tag/{tagURI}), GET</li>
  * <li>Gets an article (/api/v2/article), GET</li>
  * <li>Adds an article (/api/v2/article), POST</li>
  * <li>Updates an article (/api/v2/article), PUT</li>
@@ -61,7 +63,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 4, 2016
+ * @version 1.2.0.0, Mar 5, 2016
  * @since 2.0.0
  */
 @RequestProcessor
@@ -71,6 +73,10 @@ public class ArticleAPI2 {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleAPI2.class);
+    /**
+     * Pagination window size.
+     */
+    private static final int WINDOW_SIZE = 10;
     /**
      * Pagination page size.
      */
@@ -85,6 +91,105 @@ public class ArticleAPI2 {
      */
     @Inject
     private DomainQueryService domainQueryService;
+    /**
+     * Tag query service.
+     */
+    @Inject
+    private TagQueryService tagQueryService;
+
+    /**
+     * Gets tag articles.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     */
+    @RequestProcessing(value = {"/api/v2/articles/tag/{tagURI}", "/api/v2/articles/tag/{tagURI}/hot",
+            "/api/v2/articles/tag/{tagURI}/good", "/api/v2/articles/tag/{tagURI}/reply",
+            "/api/v2/articles/tag/{tagURI}/perfect"}, method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void getTagArticles(final HTTPRequestContext context, final HttpServletRequest request,
+                               final String tagURI) {
+        int page = 1;
+        final String p = request.getParameter("p");
+        if (Strings.isNumeric(p)) {
+            page = Integer.parseInt(p);
+        }
+
+        final JSONObject ret = new JSONObject();
+        ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
+        ret.put(Keys.MSG, "");
+
+        JSONObject data = null;
+        try {
+            final JSONObject tag = tagQueryService.getTagByURI(tagURI);
+            if (null == tag) {
+                ret.put(Keys.MSG, "Tag not found");
+                ret.put(Keys.STATUS_CODE, StatusCodes.NOT_FOUND);
+
+                return;
+            }
+
+            data = new JSONObject();
+
+            data.put(Tag.TAG, tag);
+            cleanTag(tag);
+
+            String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/tag/" + tagURI);
+            int sortMode;
+            switch (sortModeStr) {
+                case "":
+                    sortMode = 0;
+
+                    break;
+                case "/hot":
+                    sortMode = 1;
+
+                    break;
+                case "/good":
+                    sortMode = 2;
+
+                    break;
+                case "/reply":
+                    sortMode = 3;
+
+                    break;
+                case "/perfect":
+                    sortMode = 4;
+
+                    break;
+                default:
+                    sortMode = 0;
+            }
+
+            final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+            final List<JSONObject> articles = articleQueryService.getArticlesByTag(avatarViewMode, sortMode, tag,
+                    page, PAGE_SIZE);
+            data.put(Article.ARTICLES, articles);
+            cleanArticles(articles);
+
+            final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_CNT);
+            final int pageCount = (int) Math.ceil(tagRefCnt / (double) PAGE_SIZE);
+
+            final JSONObject pagination = new JSONObject();
+            final List<Integer> pageNums = Paginator.paginate(page, PAGE_SIZE, pageCount, WINDOW_SIZE);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+            data.put(Pagination.PAGINATION, pagination);
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
+        } catch (final Exception e) {
+            final String msg = "Gets tag [uri=" + tagURI + "] articles failed";
+
+            LOGGER.log(Level.ERROR, msg, e);
+            ret.put(Keys.MSG, msg);
+        }
+
+        ret.put(Common.DATA, data);
+
+        context.renderJSON(ret);
+    }
 
     /**
      * Gets domain articles.
@@ -255,8 +360,10 @@ public class ArticleAPI2 {
         domain.put(Domain.DOMAIN_URI, Latkes.getServePath() + "/domain/" + uri);
 
         final List<JSONObject> tags = (List<JSONObject>) domain.opt(Domain.DOMAIN_T_TAGS);
-        for (final JSONObject tag : tags) {
-            cleanTag(tag);
+        if (null != tags) {
+            for (final JSONObject tag : tags) {
+                cleanTag(tag);
+            }
         }
 
         domain.remove(Domain.DOMAIN_TYPE);
@@ -280,6 +387,13 @@ public class ArticleAPI2 {
         tag.put(Tag.TAG_URI, Latkes.getServePath() + "/tag/" + uri);
 
         Tag.fillDescription(tag);
+
+        final List<JSONObject> domains = (List<JSONObject>) tag.opt(Tag.TAG_T_DOMAINS);
+        if (null != domains) {
+            for (final JSONObject domain : domains) {
+                cleanDomain(domain);
+            }
+        }
 
         tag.remove(Tag.TAG_STATUS);
         tag.remove(Tag.TAG_RANDOM_DOUBLE);
