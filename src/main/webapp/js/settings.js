@@ -47,6 +47,7 @@ var Settings = {
             beforeScorllTop = currentScrollTop;
         });
 
+        $('.nav-tabs').html($('.home-menu').html());
         $('.nav').css('position', 'fixed');
         $('.main').css('paddingTop', '89px');
     },
