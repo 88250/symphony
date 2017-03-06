@@ -947,14 +947,6 @@ var Article = {
         });
 
         this.initToc();
-
-        if (Label.isLoggedIn) {
-            Article.makeNotificationRead(Label.articleOId, Label.notificationCmtIds);
-
-            setTimeout(function() {
-                Util.setUnreadNotificationCount();
-            }, 1000);
-        }
     },
     /**
      * 历史版本对比
@@ -1505,4 +1497,13 @@ $(document).ready(function () {
 
     // Init [Article] channel
     ArticleChannel.init(Label.articleChannel);
+
+    // make nogification read
+    if (Label.isLoggedIn) {
+        Article.makeNotificationRead(Label.articleOId, Label.notificationCmtIds);
+
+        setTimeout(function() {
+            Util.setUnreadNotificationCount();
+        }, 1000);
+    }
 });
