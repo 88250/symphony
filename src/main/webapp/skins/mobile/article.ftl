@@ -380,7 +380,7 @@
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <#include "footer.ftl">
-        <script src="${staticServePath}/js/lib/compress/article-libs.min.js"></script>
+        <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>

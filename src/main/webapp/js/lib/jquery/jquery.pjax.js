@@ -227,7 +227,7 @@
 						url : null
 					}), document.title);
 				}
-			} else {
+			} else if (location.search.length > 1) {
 				window.scrollTo(0, 0);
 			}
 			fn && fn.call(this, data, isCached);
