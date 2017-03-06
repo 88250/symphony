@@ -443,6 +443,9 @@
             </div>
         </div>
         <#include "footer.ftl">
+        <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";
@@ -488,8 +491,5 @@
                 Article.playThought('${article.articleContent}');
             </#if>
         </script>
-        <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
-        <script src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
     </body>
 </html>
