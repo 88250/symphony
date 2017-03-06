@@ -149,7 +149,7 @@
             Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
             Label.articleContentErrorLabel = "${articleContentErrorLabel}";
             Label.tagsErrorLabel = "${tagsErrorLabel}";
-            Label.userName = "${userName}";
+            Label.userName = "${currentUser.userName}";
             Label.recordDeniedLabel = "${recordDeniedLabel}";
             Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
             Label.uploadLabel = "${uploadLabel}";

@@ -5,13 +5,12 @@
             <div class="fn-clear">
                 <div class="fn-right">
                     <a href="/settings">
-                        <img class="avatar" 
-                             title="${userName}" src="${currentUser.userAvatarURL}" />
+                        <img class="avatar" title="${currentUser.userName}" src="${currentUser.userAvatarURL}" />
                     </a>
                 </div>
                 <div class="fn-left">
                     <div class="fn-hr5"></div>
-                    <a href="/member/${currentUser.userName}">${userName}</a>  &nbsp;
+                    <a href="/member/${currentUser.userName}">${currentUser.userName}</a>  &nbsp;
                     <a href="/member/${currentUser.userName}/points" class="ft-small" title="${pointLabel} ${currentUser.userPoint?c}">
                         <#if 0 == currentUser.userAppRole>
                         0x${currentUser.userPointHex}
