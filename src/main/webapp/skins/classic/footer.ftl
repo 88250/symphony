@@ -40,7 +40,7 @@
 <div class="go-top tooltipped tooltipped-w" aria-label="${goTopLabel}" onclick="Util.goTop()">
     <span class="icon-go-top"></span>
 </div>
-<script src="${staticServePath}/js/lib/compress/libs.min.js"></script>
+<script src="${staticServePath}/js/lib/compress/libs.min.js?${staticResourceVersion}"></script>
 <script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     var Label = {
