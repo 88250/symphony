@@ -89,7 +89,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.16.35, Mar 6, 2017
+ * @version 1.26.17.35, Mar 6, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -279,8 +279,6 @@ public class UserProcessor {
         renderer.setTemplateName("/home/link-forge.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        dataModel.put(User.USER_NAME, userName);
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
@@ -706,8 +704,6 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
-        dataModel.put(User.USER_NAME, userName);
-
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         JSONObject currentUser = null;
         if (isLoggedIn) {
@@ -797,8 +793,6 @@ public class UserProcessor {
         renderer.setTemplateName("/home/home.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        dataModel.put(User.USER_NAME, userName);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         JSONObject currentUser = null;
@@ -929,8 +923,6 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
-        dataModel.put(User.USER_NAME, userName);
-
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
@@ -1006,8 +998,6 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
-        dataModel.put(User.USER_NAME, userName);
-
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
             pageNumStr = "1";
@@ -1080,8 +1070,6 @@ public class UserProcessor {
         renderer.setTemplateName("/home/following-users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        dataModel.put(User.USER_NAME, userName);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -1162,8 +1150,6 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
-        dataModel.put(User.USER_NAME, userName);
-
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
             pageNumStr = "1";
@@ -1241,8 +1227,6 @@ public class UserProcessor {
         renderer.setTemplateName("/home/following-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        dataModel.put(User.USER_NAME, userName);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -1323,8 +1307,6 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
-        dataModel.put(User.USER_NAME, userName);
-
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
             pageNumStr = "1";
@@ -1403,8 +1385,6 @@ public class UserProcessor {
         renderer.setTemplateName("/home/followers.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        dataModel.put(User.USER_NAME, userName);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -1487,8 +1467,6 @@ public class UserProcessor {
         renderer.setTemplateName("/home/points.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        dataModel.put(User.USER_NAME, userName);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {

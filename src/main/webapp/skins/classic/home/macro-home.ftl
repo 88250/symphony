@@ -106,7 +106,7 @@
             Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}";
             Label.forgeUploadSuccLabel = "${forgeUploadSuccLabel}";
             Label.type = '${type}';
-            Label.userName = '${userName}';
+            Label.userName = '${user.userName}';
 
             Settings.initHome();
         </script>

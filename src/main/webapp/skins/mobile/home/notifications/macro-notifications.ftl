@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${messageLabel} - ${userName} - ${symphonyLabel}">
+        <@head title="${messageLabel} - ${currentUser.userName} - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
     </head>

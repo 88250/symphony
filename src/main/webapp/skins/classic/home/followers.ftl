@@ -29,7 +29,7 @@
                     <#if follower.userNickname != ''>
                     <a class='ft-fade' rel="nofollow" href="${servePath}/member/${follower.userName}" >${follower.userName}</a>
                     </#if>
-                    <#if isLoggedIn && (userName != follower.userName)> 
+                    <#if isLoggedIn && (currentUser.userName != follower.userName)>
                     <#if follower.isFollowing>
                     <button class="fn-right mid" onclick="Util.unfollow(this, '${follower.oId}', 'user')"> 
                         ${unfollowLabel}

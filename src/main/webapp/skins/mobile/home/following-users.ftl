@@ -13,7 +13,7 @@
                 <h3 class="fn-inline">
                     <a rel="nofollow" href="${servePath}/member/${followingUser.userName}" >${followingUser.userName}</a>
                 </h3> &nbsp;
-                <#if isLoggedIn && (userName != followingUser.userName)> 
+                <#if isLoggedIn && (currentUser.userName != followingUser.userName)>
                 <#if followingUser.isFollowing>
                 <button class="red small fn-right" onclick="Util.unfollow(this, '${followingUser.oId}', 'user')"> 
                     ${unfollowLabel}
