@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.20.11.18, Mar 5, 2017
+ * @version 1.20.11.19, Mar 6, 2017
  */
 
 /**
@@ -38,6 +38,7 @@ var Settings = {
 
         $(window).scroll(function () {
             var currentScrollTop = $(window).scrollTop();
+
             if (currentScrollTop > beforeScorllTop) {
                 $('.nav-tabs').html($('.home-menu').html());
             } else {
@@ -720,10 +721,11 @@ var Settings = {
                 return 0 > href.indexOf(Label.servePath + '/member/' + Label.userName);
             },
             callback: function(status){
+                $('.nav-tabs').html($('.home-menu').html());
                 switch(status.type){
                     case 'success':
                     case 'cache':
-                        $('.nav-tabs a').removeClass('current');
+                        $('.nav-tabs a, .home-menu a').removeClass('current');
                         switch (this.pathname) {
                             case '/member/' + Label.userName:
                             case '/member/' + Label.userName + '/comments':
@@ -731,20 +733,20 @@ var Settings = {
                             case '/member/' + Label.userName + '/articles/anonymous':
                             case '/member/' + Label.userName + '/comments/anonymous':
                                 Settings.initHljs();
-                                $($('.nav-tabs a')[0]).addClass('current');
+                                $('.nav-tabs a:eq(0), .home-menu a:eq(0)').addClass('current');
                                 break;
                             case '/member/' + Label.userName + '/watching/articles':
                             case '/member/' + Label.userName + '/following/users':
                             case '/member/' + Label.userName + '/following/tags':
                             case '/member/' + Label.userName + '/following/articles':
                             case '/member/' + Label.userName + '/followers':
-                                $($('.nav-tabs a')[1]).addClass('current');
+                                $('.nav-tabs a:eq(1), .home-menu a:eq(1)').addClass('current');
                                 break;
                             case '/member/' + Label.userName + '/points':
-                                $($('.nav-tabs a')[2]).addClass('current');
+                                $('.nav-tabs a:eq(2), .home-menu a:eq(2)').addClass('current');
                                 break;
                             case '/member/' + Label.userName + '/forge/link':
-                                $($('.nav-tabs a')[3]).addClass('current');
+                                $('.nav-tabs a:eq(3), .home-menu a:eq(3)').addClass('current');
                                 Util.linkForge();
                                 break;
                         }
