@@ -19,11 +19,9 @@ package org.b3log.symphony.api.v2;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Domain;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.json.JSONObject;
 
 import java.util.Date;
@@ -54,6 +52,41 @@ public final class V2s {
     }
 
     /**
+     * Cleans unused fields of the specified comments.
+     *
+     * @param comments the specified comments
+     */
+    public static void cleanComments(final List<JSONObject> comments) {
+        for (final JSONObject comment: comments) {
+            cleanComment(comment);
+        }
+    }
+
+    /**
+     * Cleans unused fields of the specified comment.
+     */
+    public static void cleanComment(final JSONObject comment) {
+        comment.put(Comment.COMMENT_CREATE_TIME, ((Date) comment.opt(Comment.COMMENT_CREATE_TIME)).getTime());
+        final String permalink = Latkes.getServePath() + comment.optString(Comment.COMMENT_T_ARTICLE_PERMALINK);
+        comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, permalink);
+        final String sharpURL = Latkes.getServePath() + comment.optString(Comment.COMMENT_SHARP_URL);
+        comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
+
+        final JSONObject commenter = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
+        cleanUser(commenter);
+
+        comment.remove(Comment.COMMENT_T_ARTICLE_AUTHOR_URL);
+        comment.remove(Comment.COMMENT_ANONYMOUS);
+        comment.remove(Comment.COMMENT_T_ARTICLE_TYPE);
+        comment.remove(Comment.COMMENT_IP);
+        comment.remove(Comment.COMMENT_STATUS);
+        comment.remove(Common.FROM_CLIENT);
+        comment.remove(Comment.COMMENT_SCORE);
+        comment.remove(Pagination.PAGINATION_PAGE_COUNT);
+        comment.remove(Pagination.PAGINATION_RECORD_COUNT);
+    }
+
+    /**
      * Cleans unused fields of the specified articles.
      *
      * @param articles the specified articles
@@ -79,6 +112,8 @@ public final class V2s {
         article.put(Article.ARTICLE_CREATE_TIME, ((Date) article.opt(Article.ARTICLE_CREATE_TIME)).getTime());
         article.put(Article.ARTICLE_UPDATE_TIME, ((Date) article.opt(Article.ARTICLE_UPDATE_TIME)).getTime());
         article.put(Article.ARTICLE_LATEST_CMT_TIME, ((Date) article.opt(Article.ARTICLE_LATEST_CMT_TIME)).getTime());
+        final String permalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+        article.put(Article.ARTICLE_PERMALINK, permalink);
 
         article.remove(Article.ARTICLE_T_LATEST_CMT);
         article.remove(Article.ARTICLE_LATEST_CMT_TIME);
