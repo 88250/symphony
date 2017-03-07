@@ -58,7 +58,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, Mar 1, 2017
+ * @version 1.3.0.4, Mar 7, 2017
  * @since 0.2.5
  */
 @RequestProcessor
@@ -263,7 +263,8 @@ public class FollowProcessor {
         final JSONObject article = articleQueryService.getArticle(followingArticleId);
         final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
-        if (!FOLLOWS.contains(articleAuthorId + followingArticleId + "-" + followerUserId)) {
+        if (!FOLLOWS.contains(articleAuthorId + followingArticleId + "-" + followerUserId) &&
+                !articleAuthorId.equals(followerUserId)) {
             final JSONObject notification = new JSONObject();
             notification.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
             notification.put(Notification.NOTIFICATION_DATA_ID, followingArticleId + "-" + followerUserId);
@@ -342,7 +343,8 @@ public class FollowProcessor {
         final JSONObject article = articleQueryService.getArticle(followingArticleId);
         final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
-        if (!FOLLOWS.contains(articleAuthorId + followingArticleId + "-" + followerUserId)) {
+        if (!FOLLOWS.contains(articleAuthorId + followingArticleId + "-" + followerUserId) &&
+                !articleAuthorId.equals(followerUserId)) {
             final JSONObject notification = new JSONObject();
             notification.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
             notification.put(Notification.NOTIFICATION_DATA_ID, followingArticleId + "-" + followerUserId);
