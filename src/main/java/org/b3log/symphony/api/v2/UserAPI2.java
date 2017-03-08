@@ -52,11 +52,15 @@ import java.util.List;
  * <li>Gets a user's articles (/api/v2/user/{userName}/articles), GET</li>
  * <li>Gets a user's comments (/api/v2/user/{userName}/comments), GET</li>
  * <li>Gets a user's watching articles (/api/v2/user/{userName}/watching/articles), GET</li>
+ * <li>Gets a user's following users (/api/v2/user/{userName}/following/users), GET</li>
+ * <li>Gets a user's following tags (/api/v2/user/{userName}/following/tags), GET</li>
+ * <li>Gets a user's following articles (/api/v2/user/{userName}/following/articles), GET</li>
+ * <li>Gets a user's followers (/api/v2/user/{userName}/followers), GET</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Mar 7, 2016
+ * @version 1.2.0.0, Mar 8, 2016
  * @since 2.1.0
  */
 @RequestProcessor
