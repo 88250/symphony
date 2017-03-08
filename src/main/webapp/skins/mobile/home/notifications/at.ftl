@@ -64,6 +64,9 @@
             </div>
             </#if>
         <#else>
+            <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.followerName}">
+            <div class="avatar tooltipped tooltipped-se" aria-label="${notification.followerName}" style="background-image:url('${notification.thumbnailURL}')"></div>
+            </a>
             <div class="fn-flex-1">
                 <div>
                     <h2>${notification.description}</h2>

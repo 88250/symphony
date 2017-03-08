@@ -65,16 +65,19 @@
             </div>
             </#if>
         <#else>
-            <div class="fn-flex-1">
-                <div class="fn-flex">
-                    <h2 class="fn-flex-1">
-                    ${notification.description}
-                    </h2>
-                    <span class="ft-gray">
-                        ${notification.createTime?string('yyyy-MM-dd HH:mm')}
-                    </span>
-                </div>
+        <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.followerName}">
+            <div class="avatar tooltipped tooltipped-se" aria-label="${notification.followerName}" style="background-image:url('${notification.thumbnailURL}')"></div>
+        </a>
+        <div class="fn-flex-1">
+            <div class="fn-flex">
+                <h2 class="fn-flex-1">
+                ${notification.description}
+                </h2>
+                <span class="ft-gray">
+                    ${notification.createTime?string('yyyy-MM-dd HH:mm')}
+                </span>
             </div>
+        </div>
         </#if>
     </li>
     </#list>
