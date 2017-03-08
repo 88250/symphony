@@ -42,7 +42,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.3.10, Mar 1, 2017
+ * @version 1.12.3.11, Mar 8, 2017
  * @since 0.2.5
  */
 @Service
@@ -980,13 +980,18 @@ public class NotificationQueryService {
                     }
 
                     final JSONObject followerUser = userRepository.get(followerUserId);
+                    final String followerUserName = followerUser.optString(User.USER_NAME);
+                    atNotification.put(Common.FOLLOWER_NAME, followerUserName);
 
-                    final String userLink = "<a href=\"/member/" + followerUser.optString(User.USER_NAME) + "\">"
-                            + followerUser.optString(User.USER_NAME) + "</a> ";
+                    final String thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, followerUser, "48");
+                    atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
+                    atNotification.put(Common.THUMBNAIL_UPDATE_TIME, followerUser.optLong(UserExt.USER_UPDATE_TIME));
+
+                    final String userLink = "<a href=\"/member/" + followerUserName + "\">" + followerUserName + "</a> ";
                     description = description.replace("{user}", userLink);
 
                     final String articleLink = " <a href=\"" + article.optString(Article.ARTICLE_PERMALINK) + "\">"
-                            + article.optString(Article.ARTICLE_TITLE) + "</a>";
+                            + Emotions.convert(article.optString(Article.ARTICLE_TITLE)) + "</a>";
                     description = description.replace("{article}", articleLink);
 
                     atNotification.put(Common.DESCRIPTION, description);

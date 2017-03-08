@@ -70,7 +70,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Lo</a>
- * @version 1.10.1.7, Mar 1, 2017
+ * @version 1.10.1.8, Mar 8, 2017
  * @since 0.2.5
  */
 @RequestProcessor
@@ -79,7 +79,7 @@ public class NotificationProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(NotificationProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NotificationProcessor.class);
 
     /**
      * User query service.
@@ -636,7 +636,6 @@ public class NotificationProcessor {
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject result = notificationQueryService.getAtNotifications(avatarViewMode, userId, pageNum, pageSize);
-        @SuppressWarnings("unchecked")
         final List<JSONObject> atNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.AT_NOTIFICATIONS, atNotifications);
