@@ -31,7 +31,7 @@ import java.util.List;
  * V2 API related constants and utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 5, 2016
+ * @version 1.1.0.0, Mar 8, 2016
  * @since 2.0.0
  */
 public final class V2s {
@@ -193,6 +193,17 @@ public final class V2s {
         tag.remove(Tag.TAG_SEO_KEYWORDS);
         tag.remove(Tag.TAG_T_DESCRIPTION_TEXT);
         tag.remove(Tag.TAG_T_CREATE_TIME);
+    }
+
+    /**
+     * Cleans unused fields of the specified users.
+     *
+     * @param users the specified users
+     */
+    public static void cleanUsers(final List<JSONObject> users) {
+        for (final JSONObject user : users) {
+            cleanUser(user);
+        }
     }
 
     /**
