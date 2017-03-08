@@ -22,7 +22,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -39,10 +38,8 @@ import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * Login API v2.
@@ -81,24 +78,35 @@ public class LoginAPI2 {
     private LangPropsService langPropsService;
 
     /**
-     * Logins user.
+     * Logout.
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/api/v2/logout"}, method = HTTPRequestMethod.POST)
+    public void logout(final HTTPRequestContext context) {
+        final HttpServletRequest httpServletRequest = context.getRequest();
+
+        Sessions.logout(httpServletRequest, context.getResponse());
+
+        context.renderJSON().renderJSONValue(Keys.STATUS_CODE, 0);
+    }
+
+    /**
+     * Login.
      *
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @throws ServletException servlet exception
-     * @throws IOException      io exception
      */
     @RequestProcessing(value = "/api/v2/login", method = HTTPRequestMethod.POST)
-    public void login(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+    public void login(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         context.renderJSON().renderMsg(langPropsService.get("loginFailLabel"));
         context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.NOT_FOUND);
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-        final String nameOrEmail = requestJSONObject.optString(User.USER_NAME);
-
         try {
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            final String nameOrEmail = requestJSONObject.optString(User.USER_NAME);
+
             JSONObject user = userQueryService.getUserByName(nameOrEmail);
             if (null == user) {
                 user = userQueryService.getUserByEmail(nameOrEmail);
@@ -171,7 +179,7 @@ public class LoginAPI2 {
             LoginProcessor.WRONG_PWD_TRIES.put(userId, wrong);
 
             context.renderMsg(langPropsService.get("wrongPwdLabel"));
-        } catch (final ServiceException e) {
+        } catch (final Exception e) {
             context.renderMsg(langPropsService.get("loginFailLabel"));
         }
     }
