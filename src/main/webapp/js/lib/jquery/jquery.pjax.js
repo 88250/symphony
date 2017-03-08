@@ -392,12 +392,8 @@
 	$.pjax.util = Util;
 
 	// extra
-	if ($.inArray('state', $.event.props) < 0) {
-	    try {
-		    $.event.props.push('state');
-		} catch (e) {
-		    delete e; // FIXME: 不知道为啥报错，求助 Vanessa
-		}
-	}
+	if ( ! ('state' in $.Event.prototype) ) {
+      $.event.addProp('state');
+    }
 
 })(jQuery);

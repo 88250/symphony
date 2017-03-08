@@ -50,12 +50,12 @@ import java.util.Map;
  * <p>
  * <ul>
  * <li>Gets tags (/api/v2/tags), GET</li>
- * <li>Gets a tag (/api/v2/tag), GET</li>
+ * <li>Gets a tag (/api/v2/tag/{tagURI}), GET</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 5, 2016
+ * @version 1.1.0.1, Mar 8, 2016
  * @since 2.0.0
  */
 @RequestProcessor
@@ -70,6 +70,48 @@ public class TagAPI2 {
      */
     @Inject
     private TagQueryService tagQueryService;
+
+    /**
+     * Gets a tag.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param tagURI  the specified tag URI
+     */
+    @RequestProcessing(value = {"/api/v2/tag/{tagURI}"}, method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void getTags(final HTTPRequestContext context, final HttpServletRequest request, final String tagURI) {
+        final JSONObject ret = new JSONObject();
+        context.renderJSONPretty(ret);
+
+        ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
+        ret.put(Keys.MSG, "");
+
+        JSONObject data = null;
+        try {
+            final JSONObject tag = tagQueryService.getTagByURI(tagURI);
+            if (null == tag) {
+                ret.put(Keys.MSG, "Tag not found");
+                ret.put(Keys.STATUS_CODE, StatusCodes.NOT_FOUND);
+
+                return;
+            }
+
+            data = new JSONObject();
+            data.put(Tag.TAG, tag);
+            V2s.cleanTag(tag);
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
+        } catch (final Exception e) {
+            final String msg = "Gets a tag failed";
+
+            LOGGER.log(Level.ERROR, msg, e);
+            ret.put(Keys.MSG, msg);
+        }
+
+        ret.put(Common.DATA, data);
+    }
 
     /**
      * Gets tags.
@@ -117,9 +159,7 @@ public class TagAPI2 {
 
             data = new JSONObject();
             final List<JSONObject> tags = CollectionUtils.jsonArrayToList(result.optJSONArray(Tag.TAGS));
-            for (final JSONObject tag : tags) {
-                V2s.cleanTag(tag);
-            }
+            V2s.cleanTags(tags);
 
             data.put(Tag.TAGS, tags);
             data.put(Pagination.PAGINATION, result.optJSONObject(Pagination.PAGINATION));

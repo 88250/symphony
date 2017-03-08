@@ -19,11 +19,9 @@ package org.b3log.symphony.api.v2;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Domain;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.json.JSONObject;
 
 import java.util.Date;
@@ -33,7 +31,7 @@ import java.util.List;
  * V2 API related constants and utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 5, 2016
+ * @version 1.1.0.0, Mar 8, 2016
  * @since 2.0.0
  */
 public final class V2s {
@@ -51,6 +49,41 @@ public final class V2s {
      * Private constructor.
      */
     private V2s() {
+    }
+
+    /**
+     * Cleans unused fields of the specified comments.
+     *
+     * @param comments the specified comments
+     */
+    public static void cleanComments(final List<JSONObject> comments) {
+        for (final JSONObject comment: comments) {
+            cleanComment(comment);
+        }
+    }
+
+    /**
+     * Cleans unused fields of the specified comment.
+     */
+    public static void cleanComment(final JSONObject comment) {
+        comment.put(Comment.COMMENT_CREATE_TIME, ((Date) comment.opt(Comment.COMMENT_CREATE_TIME)).getTime());
+        final String permalink = Latkes.getServePath() + comment.optString(Comment.COMMENT_T_ARTICLE_PERMALINK);
+        comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, permalink);
+        final String sharpURL = Latkes.getServePath() + comment.optString(Comment.COMMENT_SHARP_URL);
+        comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
+
+        final JSONObject commenter = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
+        cleanUser(commenter);
+
+        comment.remove(Comment.COMMENT_T_ARTICLE_AUTHOR_URL);
+        comment.remove(Comment.COMMENT_ANONYMOUS);
+        comment.remove(Comment.COMMENT_T_ARTICLE_TYPE);
+        comment.remove(Comment.COMMENT_IP);
+        comment.remove(Comment.COMMENT_STATUS);
+        comment.remove(Common.FROM_CLIENT);
+        comment.remove(Comment.COMMENT_SCORE);
+        comment.remove(Pagination.PAGINATION_PAGE_COUNT);
+        comment.remove(Pagination.PAGINATION_RECORD_COUNT);
     }
 
     /**
@@ -79,6 +112,8 @@ public final class V2s {
         article.put(Article.ARTICLE_CREATE_TIME, ((Date) article.opt(Article.ARTICLE_CREATE_TIME)).getTime());
         article.put(Article.ARTICLE_UPDATE_TIME, ((Date) article.opt(Article.ARTICLE_UPDATE_TIME)).getTime());
         article.put(Article.ARTICLE_LATEST_CMT_TIME, ((Date) article.opt(Article.ARTICLE_LATEST_CMT_TIME)).getTime());
+        final String permalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+        article.put(Article.ARTICLE_PERMALINK, permalink);
 
         article.remove(Article.ARTICLE_T_LATEST_CMT);
         article.remove(Article.ARTICLE_LATEST_CMT_TIME);
@@ -101,6 +136,17 @@ public final class V2s {
     }
 
     /**
+     * Cleans unused fields of the specified domains.
+     *
+     * @param domains the specified domains
+     */
+    public static void cleanDomains(final List<JSONObject> domains) {
+        for (final JSONObject domain : domains) {
+            cleanDomain(domain);
+        }
+    }
+
+    /**
      * Cleans unused fields of the specified domain.
      *
      * @param domain the specified domain
@@ -111,9 +157,7 @@ public final class V2s {
 
         final List<JSONObject> tags = (List<JSONObject>) domain.opt(Domain.DOMAIN_T_TAGS);
         if (null != tags) {
-            for (final JSONObject tag : tags) {
-                cleanTag(tag);
-            }
+            cleanTags(tags);
         }
 
         domain.remove(Domain.DOMAIN_TYPE);
@@ -123,6 +167,17 @@ public final class V2s {
         domain.remove(Domain.DOMAIN_SEO_TITLE);
         domain.remove(Domain.DOMAIN_CSS);
         domain.remove(Domain.DOMAIN_SORT);
+    }
+
+    /**
+     * Cleans unused fields of the specified tags.
+     *
+     * @param tags the specified tags
+     */
+    public static void cleanTags(final List<JSONObject> tags) {
+        for (final JSONObject tag : tags) {
+            cleanTag(tag);
+        }
     }
 
     /**
@@ -158,6 +213,17 @@ public final class V2s {
         tag.remove(Tag.TAG_SEO_KEYWORDS);
         tag.remove(Tag.TAG_T_DESCRIPTION_TEXT);
         tag.remove(Tag.TAG_T_CREATE_TIME);
+    }
+
+    /**
+     * Cleans unused fields of the specified users.
+     *
+     * @param users the specified users
+     */
+    public static void cleanUsers(final List<JSONObject> users) {
+        for (final JSONObject user : users) {
+            cleanUser(user);
+        }
     }
 
     /**

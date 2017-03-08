@@ -725,7 +725,7 @@ var Settings = {
                     case 'success':
                     case 'cache':
                         $('.home-menu a').removeClass('current');
-                        switch (this.pathname) {
+                        switch (location.pathname) {
                             case '/member/' + Label.userName:
                             case '/member/' + Label.userName + '/comments':
                                 Settings.initHljs();
