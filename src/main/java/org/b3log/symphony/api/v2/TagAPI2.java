@@ -55,7 +55,7 @@ import java.util.Map;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 5, 2016
+ * @version 1.0.0.1, Mar 8, 2016
  * @since 2.0.0
  */
 @RequestProcessor
@@ -117,9 +117,7 @@ public class TagAPI2 {
 
             data = new JSONObject();
             final List<JSONObject> tags = CollectionUtils.jsonArrayToList(result.optJSONArray(Tag.TAGS));
-            for (final JSONObject tag : tags) {
-                V2s.cleanTag(tag);
-            }
+            V2s.cleanTags(tags);
 
             data.put(Tag.TAGS, tags);
             data.put(Pagination.PAGINATION, result.optJSONObject(Pagination.PAGINATION));

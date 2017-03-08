@@ -146,9 +146,7 @@ public final class V2s {
 
         final List<JSONObject> tags = (List<JSONObject>) domain.opt(Domain.DOMAIN_T_TAGS);
         if (null != tags) {
-            for (final JSONObject tag : tags) {
-                cleanTag(tag);
-            }
+            cleanTags(tags);
         }
 
         domain.remove(Domain.DOMAIN_TYPE);
@@ -158,6 +156,17 @@ public final class V2s {
         domain.remove(Domain.DOMAIN_SEO_TITLE);
         domain.remove(Domain.DOMAIN_CSS);
         domain.remove(Domain.DOMAIN_SORT);
+    }
+
+    /**
+     * Cleans unused fields of the specified tags.
+     *
+     * @param tags the specified tags
+     */
+    public static void cleanTags(final List<JSONObject> tags) {
+        for (final JSONObject tag : tags) {
+            cleanTag(tag);
+        }
     }
 
     /**
