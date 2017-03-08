@@ -50,12 +50,12 @@ import java.util.Map;
  * <p>
  * <ul>
  * <li>Gets domains (/api/v2/domains), GET</li>
- * <li>Gets a domain (/api/v2/domain), GET</li>
+ * <li>Gets a domain (/api/v2/domain/{domainURI}), GET</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 5, 2016
+ * @version 1.1.0.0, Mar 8, 2016
  * @since 2.0.0
  */
 @RequestProcessor
@@ -70,6 +70,46 @@ public class DomainAPI2 {
      */
     @Inject
     private DomainQueryService domainQueryService;
+
+    /**
+     * Gets a domain.
+     *
+     * @param context   the specified context
+     * @param request   the specified request
+     * @param domainURI the specified domain URI
+     */
+    @RequestProcessing(value = {"/api/v2/domain/{domainURI}"}, method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void getDomain(final HTTPRequestContext context, final HttpServletRequest request, final String domainURI) {
+        final JSONObject ret = new JSONObject();
+        context.renderJSONPretty(ret);
+
+        ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
+        ret.put(Keys.MSG, "");
+
+        JSONObject data = null;
+        try {
+            final JSONObject domain = domainQueryService.getByURI(domainURI);
+
+            final List<JSONObject> tags = domainQueryService.getTags(domain.optString(Keys.OBJECT_ID));
+            domain.put(Domain.DOMAIN_T_TAGS, (Object) tags);
+
+            V2s.cleanDomain(domain);
+
+            data = new JSONObject();
+            data.put(Domain.DOMAIN, domain);
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
+        } catch (final Exception e) {
+            final String msg = "Gets a domain failed";
+
+            LOGGER.log(Level.ERROR, msg, e);
+            ret.put(Keys.MSG, msg);
+        }
+
+        ret.put(Common.DATA, data);
+    }
 
     /**
      * Gets domains.
@@ -116,9 +156,7 @@ public class DomainAPI2 {
 
             final JSONObject result = domainQueryService.getDomains(requestJSONObject, domainFields);
             final List<JSONObject> domains = CollectionUtils.jsonArrayToList(result.optJSONArray(Domain.DOMAINS));
-            for (final JSONObject domain : domains) {
-                V2s.cleanDomain(domain);
-            }
+            V2s.cleanDomains(domains);
 
             data = new JSONObject();
             data.put(Domain.DOMAINS, domains);

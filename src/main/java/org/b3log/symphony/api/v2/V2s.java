@@ -136,6 +136,17 @@ public final class V2s {
     }
 
     /**
+     * Cleans unused fields of the specified domains.
+     *
+     * @param domains the specified domains
+     */
+    public static void cleanDomains(final List<JSONObject> domains) {
+        for (final JSONObject domain : domains) {
+            cleanDomain(domain);
+        }
+    }
+
+    /**
      * Cleans unused fields of the specified domain.
      *
      * @param domain the specified domain
