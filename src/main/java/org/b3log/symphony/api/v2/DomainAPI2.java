@@ -91,6 +91,12 @@ public class DomainAPI2 {
         JSONObject data = null;
         try {
             final JSONObject domain = domainQueryService.getByURI(domainURI);
+            if (null == domain) {
+                ret.put(Keys.MSG, "Domain not found");
+                ret.put(Keys.STATUS_CODE, StatusCodes.NOT_FOUND);
+
+                return;
+            }
 
             final List<JSONObject> tags = domainQueryService.getTags(domain.optString(Keys.OBJECT_ID));
             domain.put(Domain.DOMAIN_T_TAGS, (Object) tags);
