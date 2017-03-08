@@ -59,7 +59,7 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.13.19, Feb 16, 2017
+ * @version 1.10.13.20, Mar 8, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -80,7 +80,7 @@ public final class Markdowns {
     /**
      * Markdown to HTML timeout.
      */
-    private static final int MD_TIMEOUT = 800;
+    private static final int MD_TIMEOUT = 2000;
     /**
      * Marked engine serve path.
      */
