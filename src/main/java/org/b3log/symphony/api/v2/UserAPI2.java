@@ -93,6 +93,79 @@ public class UserAPI2 {
     private FollowQueryService followQueryService;
 
     /**
+     * Gets a user's followers.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param userName the specified username
+     */
+    @RequestProcessing(value = {"/api/v2/user/{userName}/followers"}, method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void getUserFollowers(final HTTPRequestContext context, final HttpServletRequest request, final String userName) {
+        int page = 1;
+        final String p = request.getParameter("p");
+        if (Strings.isNumeric(p)) {
+            page = Integer.parseInt(p);
+        }
+
+        final JSONObject ret = new JSONObject();
+        context.renderJSONPretty(ret);
+
+        ret.put(Keys.STATUS_CODE, StatusCodes.ERR);
+        ret.put(Keys.MSG, "");
+
+        if (UserRegisterValidation.invalidUserName(userName)) {
+            ret.put(Keys.MSG, "User not found");
+            ret.put(Keys.STATUS_CODE, StatusCodes.NOT_FOUND);
+
+            return;
+        }
+
+        JSONObject data = null;
+        try {
+            final JSONObject user = userQueryService.getUserByName(userName);
+            if (null == user) {
+                ret.put(Keys.MSG, "User not found");
+                ret.put(Keys.STATUS_CODE, StatusCodes.NOT_FOUND);
+
+                return;
+            }
+
+            final String followerId = user.optString(Keys.OBJECT_ID);
+            final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+            final JSONObject followersResult = followQueryService.getFollowerUsers(avatarViewMode,
+                    followerId, page, V2s.PAGE_SIZE);
+            final List<JSONObject> followers = (List<JSONObject>) followersResult.opt(Keys.RESULTS);
+            V2s.cleanUsers(followers);
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
+            data = new JSONObject();
+            data.put(User.USERS, followers);
+
+            final int followerUserCnt = followersResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
+            final int pageCount = (int) Math.ceil((double) followerUserCnt / (double) V2s.PAGE_SIZE);
+
+            final JSONObject pagination = new JSONObject();
+            final List<Integer> pageNums = Paginator.paginate(page, V2s.PAGE_SIZE, pageCount, V2s.WINDOW_SIZE);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+            data.put(Pagination.PAGINATION, pagination);
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
+        } catch (final Exception e) {
+            final String msg = "Gets a user's followers failed";
+
+            LOGGER.log(Level.ERROR, msg, e);
+            ret.put(Keys.MSG, msg);
+        }
+
+        ret.put(Common.DATA, data);
+    }
+
+    /**
      * Gets a user's following articles.
      *
      * @param context  the specified context
