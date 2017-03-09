@@ -21,7 +21,7 @@ package org.b3log.symphony.util;
  * Status code constants and utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 4, 2017
+ * @version 1.0.0.1, Mar 9, 2017
  * @since 2.0.0
  */
 public final class StatusCodes {
@@ -39,6 +39,6 @@ public final class StatusCodes {
     /**
      * Indicates an error occurred.
      */
-    public static final int ERR = 2;
-
+    public static final int ERR = -1;
+    
 }

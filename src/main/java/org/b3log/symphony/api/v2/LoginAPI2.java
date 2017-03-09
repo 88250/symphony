@@ -51,7 +51,7 @@ import javax.servlet.http.HttpServletResponse;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 8, 2016
+ * @version 1.0.0.1, Mar 9, 2016
  * @since 2.1.0
  */
 @RequestProcessor
@@ -181,6 +181,7 @@ public class LoginAPI2 {
             context.renderMsg(langPropsService.get("wrongPwdLabel"));
         } catch (final Exception e) {
             context.renderMsg(langPropsService.get("loginFailLabel"));
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
         }
     }
 }

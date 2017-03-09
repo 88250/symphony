@@ -17,14 +17,12 @@
  */
 package org.b3log.symphony.processor.advice.validate;
 
-import java.util.Map;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
@@ -37,7 +35,14 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionQueryService;
+import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * Validates for comment adding locally.
@@ -51,23 +56,24 @@ import org.json.JSONObject;
 public class CommentAddValidation extends BeforeRequestProcessAdvice {
 
     /**
+     * Max comment content length.
+     */
+    public static final int MAX_COMMENT_CONTENT_LENGTH = 2000;
+    /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
-
     /**
      * Comment query service.
      */
     @Inject
     private CommentQueryService commentQueryService;
-
     /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
-
     /**
      * Option query service.
      */
@@ -75,9 +81,56 @@ public class CommentAddValidation extends BeforeRequestProcessAdvice {
     private OptionQueryService optionQueryService;
 
     /**
-     * Max comment content length.
+     * Validates comment fields.
+     *
+     * @param requestJSONObject the specified request object
+     * @throws RequestProcessAdviceException if validate failed
      */
-    public static final int MAX_COMMENT_CONTENT_LENGTH = 2000;
+    public static void validateCommentFields(final JSONObject requestJSONObject) throws RequestProcessAdviceException {
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+        final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+        final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
+        final CommentQueryService commentQueryService = beanManager.getReference(CommentQueryService.class);
+
+        final JSONObject exception = new JSONObject();
+        exception.put(Keys.STATUS_CODE, StatusCodes.ERR);
+
+        final String commentContent = StringUtils.trim(requestJSONObject.optString(Comment.COMMENT_CONTENT));
+        if (Strings.isEmptyOrNull(commentContent) || commentContent.length() > MAX_COMMENT_CONTENT_LENGTH) {
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentErrorLabel")));
+        }
+
+        if (optionQueryService.containReservedWord(commentContent)) {
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
+        }
+
+        try {
+            final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
+            if (Strings.isEmptyOrNull(articleId)) {
+                throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
+            }
+
+            final JSONObject article = articleQueryService.getArticleById(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleId);
+            if (null == article) {
+                throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
+            }
+
+            if (!article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
+                throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("notAllowCmtLabel")));
+            }
+
+            final String originalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+            if (StringUtils.isNotBlank(originalCommentId)) {
+                final JSONObject originalCmt = commentQueryService.getComment(originalCommentId);
+                if (null == originalCmt) {
+                    throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
+                }
+            }
+        } catch (final ServiceException e) {
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, "Unknown Error"));
+        }
+    }
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
@@ -88,42 +141,10 @@ public class CommentAddValidation extends BeforeRequestProcessAdvice {
             requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             request.setAttribute(Keys.REQUEST, requestJSONObject);
         } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()).
+                    put(Keys.STATUS_CODE, StatusCodes.ERR));
         }
 
-        final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
-        if (Strings.isEmptyOrNull(commentContent) || commentContent.length() > MAX_COMMENT_CONTENT_LENGTH) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentErrorLabel")));
-        }
-
-        if (optionQueryService.containReservedWord(commentContent)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
-        }
-
-        try {
-            final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
-            if (Strings.isEmptyOrNull(articleId)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
-            }
-
-            final JSONObject article = articleQueryService.getArticleById(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleId);
-            if (null == article) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
-            }
-
-            if (!article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("notAllowCmtLabel")));
-            }
-
-            final String originalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
-            if (StringUtils.isNotBlank(originalCommentId)) {
-                final JSONObject originalCmt = commentQueryService.getComment(originalCommentId);
-                if (null == originalCmt) {
-                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
-                }
-            }
-        } catch (final ServiceException e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Unknown Error"));
-        }
+        validateCommentFields(requestJSONObject);
     }
 }
