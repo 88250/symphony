@@ -55,12 +55,12 @@ import java.util.List;
  * <li>Gets an article (/api/v2/article/{articleId}), GET</li>
  * <li>Adds an article (/api/v2/article), POST</li>
  * <li>Updates an article (/api/v2/article/{articleId}), PUT</li>
- * <li>Adds a comment (/api/v2/comment), POST</li>
+ * <li>Adds a comment (/api/v2/article/comment), POST</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Mar 5, 2016
+ * @version 1.3.0.0, Mar 9, 2016
  * @since 2.0.0
  */
 @RequestProcessor
