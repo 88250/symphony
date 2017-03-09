@@ -51,6 +51,7 @@ import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
+import org.b3log.symphony.util.StatusCodes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -96,7 +97,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.27.40, Mar 1, 2017
+ * @version 1.24.27.41, Mar 9, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -915,12 +916,13 @@ public class ArticleProcessor {
 
             articleMgmtService.addArticle(article);
 
-            context.renderTrueResult();
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
             LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed: {0}", e.getMessage());
 
             context.renderMsg(msg);
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
         }
     }
 
