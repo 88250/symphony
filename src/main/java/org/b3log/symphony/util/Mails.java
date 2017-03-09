@@ -151,6 +151,10 @@ public final class Mails {
             if ("aliyun".equals(MAIL_CHANNEL)) {
                 aliSendHtml(ALIYUN_FROM, fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
                 return;
+            }else if("local".equals(MAIL_CHANNEL.toLowerCase())){
+            	// 使用SMTP  MailSender发邮件
+    			MailSender.getInstance().sendHTML(fromName, subject, toMail, html);
+    			return;
             }
 
             if (StringUtils.isBlank(SENDCLOUD_API_USER) || StringUtils.isBlank(SENDCLOUD_API_KEY)) {
@@ -294,6 +298,9 @@ public final class Mails {
                         final String toMail = getStringToMailByList(batch);
                         aliSendHtml(ALIYUN_BATCH_FROM, fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
                         LOGGER.info("Sent [" + batch.size() + "] mails");
+                    } else if("local".equals(MAIL_CHANNEL.toLowerCase())){
+                    	// 使用SMTP  MailSender发邮件
+            			MailSender.getInstance().sendHTML(fromName, subject, batch, html);
                     } else {
                         try {
                             final JSONObject xsmtpapi = new JSONObject();
@@ -320,6 +327,9 @@ public final class Mails {
                     final String toMail = getStringToMailByList(batch);
                     aliSendHtml(ALIYUN_BATCH_FROM, fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
                     LOGGER.info("Sent [" + batch.size() + "] mails");
+                }else if("local".equals(MAIL_CHANNEL.toLowerCase())){
+                	// 使用SMTP  MailSender发邮件
+        			MailSender.getInstance().sendHTML(fromName, subject, batch, html);
                 } else {
                     try {
                         final JSONObject xsmtpapi = new JSONObject();

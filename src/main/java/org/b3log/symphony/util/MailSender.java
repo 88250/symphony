@@ -1,23 +1,27 @@
 package org.b3log.symphony.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.activation.DataHandler;
-import javax.activation.UrlDataSource;
+import javax.activation.DataSource;
+import javax.activation.FileTypeMap;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -29,20 +33,13 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateExceptionHandler;
-
 /**
- * Send Email use SMTP 
- * 功能：三种类型的邮件
- * SIMPLE  简单类型，可以发送html格式文本,遵从freemarker模板的设置
-   IMAGE  html格式类型，同时会保存html里面的  image 到磁盘，并生成eml保存到服务器的配置目录 , 
-   MULTI  带附件的 Attachment，TODO 
+ * Send Email use SMTP 功能：三种类型的邮件 SIMPLE 简单类型，可以发送html格式文本,遵从freemarker模板的设置
+ * IMAGE html格式类型，同时会保存html里面的 image 到磁盘，并生成eml保存到服务器的配置目录 , MULTI 带附件的
+ * Attachment，TODO
  * 
  * @author snowflake
  * @version 1.0.0.0, Mar 9, 2016
@@ -53,7 +50,7 @@ import freemarker.template.TemplateExceptionHandler;
 public final class MailSender implements java.io.Serializable {
 
 	private static final long serialVersionUID = -1000794424345267933L;
-	
+
 	private static MailSender mailSender;
 
 	private static class MailSenderHolder {
@@ -61,125 +58,53 @@ public final class MailSender implements java.io.Serializable {
 	}
 
 	public static final MailSender getInstance() {
-		if(null == mailSender){
-			mailSender=MailSenderHolder.INSTANCE;
+		if (null == mailSender) {
+			mailSender = MailSenderHolder.INSTANCE;
 		}
 		return mailSender;
 	}
-	
-	private Object readResolve() {     
-        return MailSenderHolder.INSTANCE;     
-	}  
-	
-	 
+
+	private Object readResolve() {
+		return MailSenderHolder.INSTANCE;
+	}
 
 	public static enum MailType {
-		SIMPLE, 
-		IMAGE /* html with image */, 
-		MULTI/* Attachment TODO*/
+		SIMPLE, IMAGE /* html with image */, MULTI/* Attachment TODO */
 	}
-	
 
 	private static final String CHARSET = "text/html;charset=UTF-8";
-	private static final String CONFIG_PATH = "/email.properties";
 	private static final Logger LOGGER = Logger.getLogger(Markdowns.class);
 
+	private static final boolean is_debug = Boolean.valueOf(Symphonys.get("isdebug"));
+	private static final String mail_transport_protocol = Symphonys.get("mail.transport.protocol");
+	private static final String mail_host = Symphonys.get("mail.host");
+	private static final String mail_port = Symphonys.get("mail.port");
+	private static final boolean mail_smtp_auth = Boolean.valueOf(Symphonys.get("mail.smtp.auth"));
+	private static final boolean mail_smtp_ssl = Boolean.valueOf(Symphonys.get("mail.smtp.ssl"));
+	public static final String sender = Symphonys.get("mail.smtp.sender");
+	public static final String username = Symphonys.get("mail.smtp.username");
+	private static final String password = Symphonys.get("mail.smtp.passsword");/* 换成自己的密码哦 */
+	private static final String saved_path = Symphonys.get("saved.eml.path");
 	private static Properties prop = new Properties();
 
-	private static boolean smtpEnable = false;
-	private static boolean isdebug = false;
-	private static String mail_transport_protocol = "smtp";
-	private static String mail_host = "smtp.163.com";
-	private static int mail_port = 25;
-	private static boolean mail_smtp_auth = true;
-	private static boolean mail_smtp_ssl = true;
-	private static boolean mail_smtp_starttls_enable = true;
-	public static String sender = "snowflake3721@163.com";
-	public static String username = "snowflake3721";
-	private static String password = "snowflake3721";/*换成自己的密码哦*/
-	private static String saved_path = "../mail";
-
 	private MailSender() {
-		init();
+		prop.setProperty("mail.transport.protocol", mail_transport_protocol);
+		prop.setProperty("mail.host", mail_host);
+		prop.setProperty("mail.port", mail_port);
+		prop.setProperty("mail.smtp.auth", Symphonys.get("mail.smtp.auth"));
+		prop.setProperty("mail.smtp.ssl", Symphonys.get("mail.smtp.ssl"));
+		prop.setProperty("mail.smtp.sender", sender);
+		prop.setProperty("mail.smtp.username", username);
+		prop.setProperty("mail.smtp.passsword", password);
 	}
-	
-	public boolean getSmtpEnable(){
-		if(isdebug){
-			init();
-		}
-		return smtpEnable;
-		
-	}
-
-	public void init() {
-		InputStream fis = MailSender.class.getResourceAsStream(CONFIG_PATH);
-		try {
-			prop.load(fis);
-			smtpEnable = Boolean.valueOf(prop.getProperty("smtp.enable"));
-			isdebug = Boolean.valueOf(prop.getProperty("isdebug"));
-			mail_transport_protocol = prop.getProperty("mail.transport.protocol");
-			String mailPort = prop.getProperty("mail.port");
-			if (StringUtils.isNotEmpty(mailPort)) {
-				mail_port = Integer.valueOf(mailPort);
-			}
-
-			mail_host = prop.getProperty("mail.host");
-			mail_smtp_auth = Boolean.valueOf(prop.getProperty("mail.smtp.auth"));
-			mail_smtp_ssl = Boolean.valueOf(prop.getProperty("mail.smtp.ssl"));
-			sender = prop.getProperty("mail.smtp.sender");
-			username = prop.getProperty("mail.smtp.username");
-			password = prop.getProperty("mail.smtp.passsword");
-			String savedPath = prop.getProperty("saved.eml.path");
-			if (StringUtils.isNotEmpty(savedPath)) {
-				saved_path = savedPath;
-			} else {
-				saved_path = System.getProperty("user.dir");
-				// String path = MailSender.class.getResource("/").getPath();
-			}
-			LOGGER.info("email EML stored path: " + saved_path);
-
-		} catch (IOException e) {
-			LOGGER.error("加载" + CONFIG_PATH + "出错" + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				fis.close();
-
-			} catch (IOException e) {
-				LOGGER.error("关闭输入流出错:" + e.getMessage());
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	
-	/**
-     * Template configuration.
-     */
-    private static final Configuration TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_23);
-
-    static {
-        try {
-            TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(MailSender.class.getResource("/mail_tpl").toURI()));
-            TEMPLATE_CFG.setDefaultEncoding("UTF-8");
-            TEMPLATE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-            TEMPLATE_CFG.setLogTemplateExceptions(false);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Loads mail templates failed", e);
-        }
-    }
 
 	public void sendMessage(String[] tos, String subject, String content, String savedEmlPath, MailType mailType)
 			throws Exception {
-		//MailSender mailSender = getInstance();
-		if(isdebug){
-			init();//debug模式下可动态加载配置
-		}
-		
+
 		// 1、创建session
 		Session session = Session.getInstance(prop);
 		// 开启Session的debug模式，这样就可以查看到程序发送Email的运行状态
-		session.setDebug(isdebug);
+		session.setDebug(is_debug);
 		// 2、通过session得到transport对象
 		Transport ts = session.getTransport();
 		// 3、使用邮箱的用户名和密码连上邮件服务器，发送邮件时，发件人需要提交邮箱的用户名和密码给smtp服务器，用户名和密码都通过验证之后才能够正常发送邮件给收件人。
@@ -192,6 +117,9 @@ public final class MailSender implements java.io.Serializable {
 			createTextMail(message, sender, tos, subject, content, savedEmlPath);
 		} else if (MailType.IMAGE.equals(mailType)) {
 			message = createImageMail(message, sender, tos, subject, content, savedEmlPath);
+		} else {
+			// TODO MULTI
+			createTextMail(message, sender, tos, subject, content, savedEmlPath);
 		}
 
 		// 5、发送邮件
@@ -211,8 +139,8 @@ public final class MailSender implements java.io.Serializable {
 	 * @return
 	 * @throws Exception
 	 */
-	public MimeMessage createTextMail(MimeMessage message, String from, String[] to, String subject,
-			String content, String savedEmlPathName) throws Exception {
+	public MimeMessage createTextMail(MimeMessage message, String from, String[] to, String subject, String content,
+			String savedEmlPathName) throws Exception {
 
 		long currentTime = System.currentTimeMillis();
 		if (!savedEmlPathName.endsWith("/")) {
@@ -243,7 +171,7 @@ public final class MailSender implements java.io.Serializable {
 		message.setSubject(StringUtils.trimToEmpty(subject));
 		// 邮件的文本内容
 		message.setContent(content, CHARSET);
-		
+
 		saveMessageFile(message, fileName);
 		// 返回创建好的邮件对象
 		return message;
@@ -258,8 +186,8 @@ public final class MailSender implements java.io.Serializable {
 	 * @return
 	 * @throws Exception
 	 */
-	public MimeMessage createImageMail(MimeMessage message, String from, String[] to, String subject,
-			String content, String savedEmlPath) throws Exception {
+	public MimeMessage createImageMail(MimeMessage message, String from, String[] to, String subject, String content,
+			String savedEmlPath) throws Exception {
 		// 创建邮件
 		// MimeMessage message = new MimeMessage(session);
 		// 设置邮件的基本信息
@@ -347,7 +275,7 @@ public final class MailSender implements java.io.Serializable {
 			message.writeTo(fos);
 			fos.flush();
 		} finally {
-			if(fos != null){
+			if (fos != null) {
 				fos.close();
 			}
 		}
@@ -363,7 +291,7 @@ public final class MailSender implements java.io.Serializable {
 		return sb.toString();
 	}
 
-	public static Set<String> getImgStr(String htmlStr) {
+	private static Set<String> getImgStr(String htmlStr) {
 		Set<String> pics = new HashSet<>();
 		String img = "";
 		Pattern p_image;
@@ -402,49 +330,198 @@ public final class MailSender implements java.io.Serializable {
 		}
 
 	}
-	
-	
+
 	/**
-     * Sends a HTML mail.
-     *
-     * @param fromName     the specified from name
-     * @param subject      the specified subject
-     * @param toMail       the specified receiver mail
-     * @param templateName the specified template name
-     * @param dataModel    the specified data model
-     */
-    @SuppressWarnings("static-access")
-	public  void sendHTML(final String fromName, final String subject, final String toMail,
-                                final String templateName, final Map<String, Object> dataModel) {
+	 * Sends a HTML mail for toMailList.
+	 * 
+	 * @param fromName
+	 * @param subject
+	 * @param toMailList
+	 * @param html
+	 */
+	public void sendHTML(final String fromName, final String subject, final List<String> toMailList, String html) {
+		if (null != toMailList && toMailList.size() > 0) {
+			sendHTML(fromName, subject, toMailList.toArray(new String[toMailList.size()]), html);
+		}
 
+	}
 
-        Keys.fillServer(dataModel);
-        Keys.fillRuntime(dataModel);
+	/**
+	 * Sends a HTML mail.
+	 * 
+	 * @param fromName
+	 * @param subject
+	 * @param toMailSingle
+	 * @param html
+	 */
+	public void sendHTML(final String fromName, final String subject, final String toMailSingle, String html) {
 
-        try {
-            final Template template = TEMPLATE_CFG.getTemplate(templateName + ".ftl");
-            final StringWriter stringWriter = new StringWriter();
-            template.process(dataModel, stringWriter);
-            stringWriter.close();
-            final String content = stringWriter.toString();
+		sendHTML(fromName, subject, new String[] { toMailSingle }, html);
 
-            getInstance().sendMessage(new String[]{toMail}, subject, content, saved_path, MailType.IMAGE);
-            LOGGER.debug(content);
-           
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Send mail error", e);
-        }
-    }
-	
+	}
+
+	public void sendHTML(final String fromName, final String subject, final String[] toMail, final String html) {
+
+		try {
+			/*
+			 * Keys.fillServer(dataModel); Keys.fillRuntime(dataModel);
+			 * 
+			 * 
+			 * final Template template = TEMPLATE_CFG.getTemplate(templateName +
+			 * ".ftl"); final StringWriter stringWriter = new StringWriter();
+			 * template.process(dataModel, stringWriter); stringWriter.close();
+			 * final String content = stringWriter.toString();
+			 */
+
+			getInstance().sendMessage(toMail, subject, html, saved_path, MailType.IMAGE);
+			LOGGER.debug(html);
+
+		} catch (Exception e) {
+			LOGGER.log(Level.ERROR, "Send mail error", e);
+		}
+	}
+
 	public static void main(String[] args) throws Exception {
 
-		MailSender mailSender = getInstance();
+		System.out.println(CHARSET.toLowerCase());
 
-		String subject = "eml with Image";
-		String content = "这是一封邮件正文带图片<img width=\"60px\" src=\"http://localhost:8080/images/logo-M301-161X105.png\" />的邮件";
-		String[] tos = { "bruceyang_it@163.com" };
-		mailSender.sendMessage(tos, subject, content, saved_path, MailType.IMAGE);
+		/*
+		 * MailSender mailSender = getInstance();
+		 * 
+		 * String subject = "eml with Image"; String content =
+		 * "这是一封邮件正文带图片<img width=\"60px\" src=\"http://localhost:8080/images/logo-M301-161X105.png\" />的邮件"
+		 * ; String[] tos = { "bruceyang_it@163.com" };
+		 * mailSender.sendMessage(tos, subject, content, saved_path,
+		 * MailType.IMAGE);
+		 */
 
+	}
+
+}
+
+class UrlDataSource implements DataSource {
+
+	private String urlPath;
+	private String savedFileName;
+	private boolean saved;
+	private FileTypeMap typeMap = null;
+	private File _file;
+
+	public UrlDataSource(String urlPath, String savedFileName, boolean saved) {
+		this.urlPath = urlPath;
+		this.savedFileName = savedFileName;
+		this.saved = saved;
+		File imageFile = new File(this.savedFileName);
+		this._file = imageFile;
+	}
+
+	@Override
+	public InputStream getInputStream() throws IOException {
+
+		return getInputStreamFromURL(this.urlPath, this.saved);
+	}
+
+	@Override
+	public OutputStream getOutputStream() throws IOException {
+
+		if (this._file.isDirectory()) {
+			if (!this._file.exists()) {
+				this._file.mkdirs();
+			}
+		}
+
+		String parentPath = this._file.getParent();
+		File _filePath = new File(parentPath);
+		_filePath.mkdirs();
+
+		return new FileOutputStream(this._file);
+	}
+
+	@Override
+	public String getContentType() {
+
+		// check to see if the type map is null?
+		if (typeMap == null)
+			return FileTypeMap.getDefaultFileTypeMap().getContentType(_file);
+		else
+			return typeMap.getContentType(_file);
+	}
+
+	@Override
+	public String getName() {
+		return _file.getName();
+	}
+
+	private InputStream getInputStreamFromURL(String urlPath, boolean saved) throws IOException {
+		// new一个URL对象
+		URL url = new URL(urlPath);
+		// 打开链接
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		// 设置请求方式为"GET"
+		conn.setRequestMethod("GET");
+		// 超时响应时间为5秒
+		conn.setConnectTimeout(5 * 1000);
+		// 通过输入流获取图片数据
+		InputStream inStream = conn.getInputStream();
+		// 得到图片的二进制数据，以二进制封装得到数据，具有通用性
+		if (saved) {
+			try {
+				saveFile(inStream);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		InputStream fis = new FileInputStream(_file);
+		return fis;
+	}
+
+	// 得到图片的二进制数据，以二进制封装得到数据，具有通用性
+	public void saveFile(InputStream inStream) throws IOException {
+		byte[] data = readInputStream(inStream);
+		// new一个文件对象用来保存图片，默认保存当前工程根目录
+		// File imageFile = new File(fileName);
+		// 创建输出流
+		FileOutputStream outStream = (FileOutputStream) getOutputStream();
+		// 写入数据
+		outStream.write(data);
+		// 关闭输出流
+		outStream.close();
+	}
+
+	public static byte[] readInputStream(InputStream inStream) throws IOException {
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+		// 创建一个Buffer字符串
+		byte[] buffer = new byte[1024];
+		// 每次读取的字符串长度，如果为-1，代表全部读取完毕
+		int len = 0;
+		// 使用一个输入流从buffer里把数据读取出来
+		while ((len = inStream.read(buffer)) != -1) {
+			// 用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
+			outStream.write(buffer, 0, len);
+		}
+		// 关闭输入流
+		inStream.close();
+		// 把outStream里的数据写入内存
+		return outStream.toByteArray();
+	}
+
+	/**
+	 * Return the File object that corresponds to this FileDataSource.
+	 * 
+	 * @return the File object for the file represented by this object.
+	 */
+	public File getFile() {
+		return _file;
+	}
+
+	/**
+	 * Set the FileTypeMap to use with this FileDataSource
+	 *
+	 * @param map
+	 *            The FileTypeMap for this object.
+	 */
+	public void setFileTypeMap(FileTypeMap map) {
+		typeMap = map;
 	}
 
 }
