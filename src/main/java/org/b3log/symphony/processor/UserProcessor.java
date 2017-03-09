@@ -89,7 +89,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.17.35, Mar 6, 2017
+ * @version 1.26.18.35, Mar 9, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1972,7 +1972,9 @@ public class UserProcessor {
             return;
         }
 
-        final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
+        String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
+        maybeIP = StringUtils.substringBefore(maybeIP, "/");
+
         if (Networks.isIPv4(maybeIP)) {
             LOGGER.log(Level.WARN, "Sync add user[name={0}, host={1}] error, caused by the client host is IPv4",
                     name, clientHost);
