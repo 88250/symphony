@@ -40,5 +40,5 @@ public final class StatusCodes {
      * Indicates an error occurred.
      */
     public static final int ERR = -1;
-    
+
 }

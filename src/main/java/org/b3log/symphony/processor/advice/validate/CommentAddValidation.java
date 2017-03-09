@@ -48,7 +48,7 @@ import java.util.Map;
  * Validates for comment adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.1, Aug 28, 2016
+ * @version 1.3.0.2, Mar 9, 2017
  * @since 0.2.0
  */
 @Named
