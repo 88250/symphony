@@ -1104,14 +1104,15 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_TAGS, articleTags);
 
         try {
-
             articleMgmtService.updateArticle(article);
-            context.renderTrueResult();
+
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
             LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed: {0}", e.getMessage());
 
             context.renderMsg(msg);
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
         }
     }
 

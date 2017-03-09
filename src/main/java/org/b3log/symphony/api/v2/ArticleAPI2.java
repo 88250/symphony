@@ -34,10 +34,14 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.*;
+import org.b3log.symphony.processor.advice.AnonymousViewCheck;
+import org.b3log.symphony.processor.advice.LoginCheck;
+import org.b3log.symphony.processor.advice.PermissionCheck;
+import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ArticleAddValidation;
+import org.b3log.symphony.processor.advice.validate.ArticleUpdateValidation;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.DomainQueryService;
@@ -97,16 +101,113 @@ public class ArticleAPI2 {
     private ArticleMgmtService articleMgmtService;
 
     /**
-     * Adds an article.
+     * Updates an article.
      *
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
+     * @param id       the specified article id
+     */
+    @RequestProcessing(value = "/api/v2/article/{id}", method = HTTPRequestMethod.PUT)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, ArticleUpdateValidation.class, PermissionCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                              final String id) {
+        try {
+            if (Strings.isEmptyOrNull(id)) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return;
+            }
+
+            context.renderJSON();
+
+            final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+            final JSONObject oldArticle = articleQueryService.getArticleById(avatarViewMode, id);
+            if (null == oldArticle) {
+                context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.NOT_FOUND);
+                context.renderMsg("Article not found");
+
+                return;
+            }
+
+            final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+
+            final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
+            String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
+            final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
+            final boolean articleCommentable = true;
+            final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
+            final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
+            final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
+            final String ip = Requests.getRemoteAddr(request);
+            final String ua = request.getHeader("User-Agent");
+
+            final JSONObject article = new JSONObject();
+            article.put(Keys.OBJECT_ID, id);
+            article.put(Article.ARTICLE_TITLE, articleTitle);
+            article.put(Article.ARTICLE_CONTENT, articleContent);
+            article.put(Article.ARTICLE_EDITOR_TYPE, 0);
+            article.put(Article.ARTICLE_COMMENTABLE, articleCommentable);
+            article.put(Article.ARTICLE_TYPE, articleType);
+            article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
+            article.put(Article.ARTICLE_REWARD_POINT, articleRewardPoint);
+            article.put(Article.ARTICLE_IP, "");
+            if (StringUtils.isNotBlank(ip)) {
+                article.put(Article.ARTICLE_IP, ip);
+            }
+            article.put(Article.ARTICLE_UA, "");
+            if (StringUtils.isNotBlank(ua)) {
+                article.put(Article.ARTICLE_UA, ua);
+            }
+
+            final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+            if (null == currentUser
+                    || !currentUser.optString(Keys.OBJECT_ID).equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+                return;
+            }
+
+            article.put(Article.ARTICLE_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
+
+            if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
+                articleTags = articleMgmtService.filterReservedTags(articleTags);
+            }
+
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType && StringUtils.isBlank(articleTags)) {
+                articleTags = "小黑屋";
+            }
+
+            if (Article.ARTICLE_TYPE_C_THOUGHT == articleType && StringUtils.isBlank(articleTags)) {
+                articleTags = "思绪";
+            }
+
+            article.put(Article.ARTICLE_TAGS, articleTags);
+
+            articleMgmtService.updateArticle(article);
+
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+        } catch (final Exception e) {
+            final String msg = e.getMessage();
+            LOGGER.log(Level.ERROR, "Updates article[id=" + id + "] failed: {0}", e.getMessage());
+
+            context.renderMsg(msg);
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+        }
+    }
+
+    /**
+     * Adds an article.
+     *
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/api/v2/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, ArticleAddValidation.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void addArticle(final HTTPRequestContext context, final HttpServletRequest request) {
         context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
