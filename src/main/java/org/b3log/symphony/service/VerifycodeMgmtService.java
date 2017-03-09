@@ -22,7 +22,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.inject.Inject;
+
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -43,6 +45,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Verifycode;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.VerifycodeRepository;
+import org.b3log.symphony.util.MailSender;
 import org.b3log.symphony.util.Mails;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -51,8 +54,11 @@ import org.json.JSONObject;
  * Verifycode management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Oct 28, 2016
+ * @version 1.1.0.5, Oct 28, 2016
  * @since 1.3.0
+ * 
+ * function description  modifier  date
+ * add smtp sendmail by snowflake 2017-03-09
  */
 @Service
 public class VerifycodeMgmtService {
@@ -186,11 +192,23 @@ public class VerifycodeMgmtService {
 
                 final String fromName = langPropsService.get("symphonyEnLabel")
                         + " " + langPropsService.get("verifycodeEmailFromNameLabel", Latkes.getLocale());
-                Mails.sendHTML(fromName, subject, toMail,
-                        Mails.TEMPLATE_NAME_VERIFYCODE, dataModel);
+              
+				sendMail(dataModel, toMail, subject, fromName);
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Sends verifycode failed", e);
         }
     }
+    
+    private void sendMail(final Map<String, Object> dataModel, final String toMail, String subject,
+			final String fromName) {
+		if (MailSender.getInstance().getSmtpEnable()) {
+			
+			// 使用SMTP  MailSender发邮件
+			MailSender.getInstance().sendHTML(fromName, subject, toMail, Mails.TEMPLATE_NAME_VERIFYCODE, dataModel);
+		} else {
+			// 使用Mails发送邮件
+			Mails.sendHTML(fromName, subject, toMail, Mails.TEMPLATE_NAME_VERIFYCODE, dataModel);
+		}
+	}
 }
