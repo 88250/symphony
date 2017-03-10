@@ -22,7 +22,7 @@
                    href="${servePath}/member/${followingUser.userName}">
                     <div class="avatar fn-left tooltipped tooltipped-se" 
                          aria-label="${followingUser.userName} <#if followingUser.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" 
-                         style="background-image:url('${followingUser.userAvatarURL}')"></div>
+                         style="background-image:url('${followingUser.userAvatarURL48}')"></div>
                 </a>
                 <div class="fn-flex-1">
                     <h2 class="fn-inline">
