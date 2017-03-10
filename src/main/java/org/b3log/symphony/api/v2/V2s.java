@@ -31,7 +31,7 @@ import java.util.List;
  * V2 API related constants and utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Mar 8, 2016
+ * @version 1.1.0.1, Mar 10, 2016
  * @since 2.0.0
  */
 public final class V2s {
@@ -57,7 +57,7 @@ public final class V2s {
      * @param comments the specified comments
      */
     public static void cleanComments(final List<JSONObject> comments) {
-        for (final JSONObject comment: comments) {
+        for (final JSONObject comment : comments) {
             cleanComment(comment);
         }
     }
@@ -114,6 +114,11 @@ public final class V2s {
         article.put(Article.ARTICLE_LATEST_CMT_TIME, ((Date) article.opt(Article.ARTICLE_LATEST_CMT_TIME)).getTime());
         final String permalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
         article.put(Article.ARTICLE_PERMALINK, permalink);
+
+        final List<JSONObject> comments = (List<JSONObject>) article.opt(Article.ARTICLE_T_COMMENTS);
+        if (null != comments) {
+            cleanComments(comments);
+        }
 
         article.remove(Article.ARTICLE_T_LATEST_CMT);
         article.remove(Article.ARTICLE_LATEST_CMT_TIME);

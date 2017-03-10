@@ -42,10 +42,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ArticleAddValidation;
 import org.b3log.symphony.processor.advice.validate.ArticleUpdateValidation;
-import org.b3log.symphony.service.ArticleMgmtService;
-import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.DomainQueryService;
-import org.b3log.symphony.service.TagQueryService;
+import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
@@ -69,7 +66,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Mar 9, 2016
+ * @version 1.3.0.1, Mar 10, 2016
  * @since 2.0.0
  */
 @RequestProcessor
@@ -99,6 +96,11 @@ public class ArticleAPI2 {
      */
     @Inject
     private ArticleMgmtService articleMgmtService;
+    /**
+     * Comment query service.
+     */
+    @Inject
+    private CommentQueryService commentQueryService;
 
     /**
      * Updates an article.
@@ -288,6 +290,12 @@ public class ArticleAPI2 {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void getArticle(final HTTPRequestContext context, final HttpServletRequest request, final String articleId) {
+        int page = 1;
+        final String p = request.getParameter("p");
+        if (Strings.isNumeric(p)) {
+            page = Integer.parseInt(p);
+        }
+
         final JSONObject ret = new JSONObject();
         context.renderJSONPretty(ret);
 
@@ -307,7 +315,22 @@ public class ArticleAPI2 {
 
             data = new JSONObject();
             data.put(Article.ARTICLE, article);
+
+            final List<JSONObject> articleComments = commentQueryService.getArticleComments(
+                    avatarViewMode, articleId, page, V2s.PAGE_SIZE, UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL);
+            article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
+
             V2s.cleanArticle(article);
+
+            final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_CNT);
+            final int pageCount = (int) Math.ceil((double) commentCnt / (double) V2s.PAGE_SIZE);
+
+            final JSONObject pagination = new JSONObject();
+            final List<Integer> pageNums = Paginator.paginate(page, V2s.PAGE_SIZE, pageCount, V2s.WINDOW_SIZE);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+            data.put(Pagination.PAGINATION, pagination);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
