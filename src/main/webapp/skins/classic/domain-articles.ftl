@@ -36,9 +36,9 @@
                         <#else>
                             <div class="no-list"> ${systemEmptyLabel}</div>
                         </#if>
-                    </div><#if pjax><!---- pjax {#domain-pjax-container} end ----></#if>
+                    </div>
 
-                    <#include "common/domains.ftl">
+                    <#include "common/domains.ftl"><#if pjax><!---- pjax {#domain-pjax-container} end ----></#if>
                 </div>
                 <div class="side">
                     <#include "side.ftl">
