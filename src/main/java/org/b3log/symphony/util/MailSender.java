@@ -38,8 +38,8 @@ import org.b3log.latke.logging.Logger;
 
 /**
  * Send Email use SMTP 功能：三种类型的邮件 SIMPLE 简单类型，可以发送html格式文本,遵从freemarker模板的设置
- * IMAGE html格式类型，同时会保存html里面的 image 到磁盘，并生成eml保存到服务器的配置目录 , MULTI 带附件的
- * Attachment，TODO
+ * IMAGE html格式类型，同时会保存html里面的 image 到磁盘，并生成eml保存到服务器的配置目录 , 
+ * MULTI 带附件的  Attachment，TODO
  * 
  * @author snowflake
  * @version 1.0.0.0, Mar 9, 2016
@@ -399,6 +399,14 @@ public final class MailSender implements java.io.Serializable {
 
 }
 
+/**
+ *加载网络资源图片保存到本地
+ * 
+ * @author snowflake
+ * @version 1.0.0.0, Mar 9, 2016
+ * @since 2.0.0
+ *
+ */
 class UrlDataSource implements DataSource {
 
 	private String urlPath;
