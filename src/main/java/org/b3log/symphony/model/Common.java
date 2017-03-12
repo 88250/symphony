@@ -21,15 +21,10 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.58.1.11, Mar 8, 2017
+ * @version 1.58.1.12, Mar 12, 2017
  * @since 0.2.0
  */
 public final class Common {
-
-    /**
-     * Follower username.
-     */
-    public static final String FOLLOWER_NAME = "followerName";
 
     /**
      * Key of data.

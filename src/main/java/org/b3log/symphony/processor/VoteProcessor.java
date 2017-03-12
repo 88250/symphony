@@ -27,18 +27,17 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Requests;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Role;
-import org.b3log.symphony.model.Vote;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionCheck;
-import org.b3log.symphony.service.VoteMgmtService;
-import org.b3log.symphony.service.VoteQueryService;
+import org.b3log.symphony.service.*;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Vote processor.
@@ -52,7 +51,7 @@ import javax.servlet.http.HttpServletResponse;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.2, Dec 12, 2016
+ * @version 1.3.0.2, Mar 12, 2017
  * @since 1.3.0
  */
 @RequestProcessor
@@ -61,25 +60,41 @@ public class VoteProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(VoteProcessor.class.getName());
-
+    private static final Logger LOGGER = Logger.getLogger(VoteProcessor.class);
+    /**
+     * Holds votes.
+     */
+    private static final Set<String> VOTES = new HashSet<>();
     /**
      * Vote management service.
      */
     @Inject
     private VoteMgmtService voteMgmtService;
-
     /**
      * Vote query service.
      */
     @Inject
     private VoteQueryService voteQueryService;
-
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
+    /**
+     * Comment query service.
+     */
+    @Inject
+    private CommentQueryService commentQueryService;
+    /**
+     * Article query service.
+     */
+    @Inject
+    private ArticleQueryService articleQueryService;
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
 
     /**
      * Votes up a comment.
@@ -121,6 +136,19 @@ public class VoteProcessor {
             voteMgmtService.voteCancel(userId, dataId, Vote.DATA_TYPE_C_COMMENT);
         } else {
             voteMgmtService.voteUp(userId, dataId, Vote.DATA_TYPE_C_COMMENT);
+
+            final JSONObject comment = commentQueryService.getComment(dataId);
+            final String commenterId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+
+            if (!VOTES.contains(userId + dataId)) {
+                final JSONObject notification = new JSONObject();
+                notification.put(Notification.NOTIFICATION_USER_ID, commenterId);
+                notification.put(Notification.NOTIFICATION_DATA_ID, dataId + "-" + userId);
+
+                notificationMgmtService.addCommentVoteUpNotification(notification);
+            }
+
+            VOTES.add(userId + dataId);
         }
 
         context.renderTrueResult().renderJSONValue(Vote.TYPE, vote);
@@ -166,6 +194,19 @@ public class VoteProcessor {
             voteMgmtService.voteCancel(userId, dataId, Vote.DATA_TYPE_C_COMMENT);
         } else {
             voteMgmtService.voteDown(userId, dataId, Vote.DATA_TYPE_C_COMMENT);
+
+            final JSONObject comment = commentQueryService.getComment(dataId);
+            final String commenterId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+
+            if (!VOTES.contains(userId + dataId)) {
+                final JSONObject notification = new JSONObject();
+                notification.put(Notification.NOTIFICATION_USER_ID, commenterId);
+                notification.put(Notification.NOTIFICATION_DATA_ID, dataId + "-" + userId);
+
+                notificationMgmtService.addCommentVoteDownNotification(notification);
+            }
+
+            VOTES.add(userId + dataId);
         }
 
         context.renderTrueResult().renderJSONValue(Vote.TYPE, vote);
@@ -211,6 +252,19 @@ public class VoteProcessor {
             voteMgmtService.voteCancel(userId, dataId, Vote.DATA_TYPE_C_ARTICLE);
         } else {
             voteMgmtService.voteUp(userId, dataId, Vote.DATA_TYPE_C_ARTICLE);
+
+            final JSONObject article = articleQueryService.getArticle(dataId);
+            final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+
+            if (!VOTES.contains(userId + dataId)) {
+                final JSONObject notification = new JSONObject();
+                notification.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
+                notification.put(Notification.NOTIFICATION_DATA_ID, dataId + "-" + userId);
+
+                notificationMgmtService.addArticleVoteUpNotification(notification);
+            }
+
+            VOTES.add(userId + dataId);
         }
 
         context.renderTrueResult().renderJSONValue(Vote.TYPE, vote);
@@ -256,6 +310,19 @@ public class VoteProcessor {
             voteMgmtService.voteCancel(userId, dataId, Vote.DATA_TYPE_C_ARTICLE);
         } else {
             voteMgmtService.voteDown(userId, dataId, Vote.DATA_TYPE_C_ARTICLE);
+
+            final JSONObject article = articleQueryService.getArticle(dataId);
+            final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+
+            if (!VOTES.contains(userId + dataId)) {
+                final JSONObject notification = new JSONObject();
+                notification.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
+                notification.put(Notification.NOTIFICATION_DATA_ID, dataId + "-" + userId);
+
+                notificationMgmtService.addArticleVoteDownNotification(notification);
+            }
+
+            VOTES.add(userId + dataId);
         }
 
         context.renderTrueResult().renderJSONValue(Vote.TYPE, vote);
