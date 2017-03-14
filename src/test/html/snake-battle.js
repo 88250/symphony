@@ -79,7 +79,7 @@ var Gobang = {
     },
     drawChessMan:function(){
         //向上或向下取整
-        
+        //鼠标点击位置距离棋盘交叉点的距离只能小于半径，通过此可以确定落在哪里
     },
     initMap: function (oMarkId, chessCanvasId) {
         // Gobang.oMark = document.getElementById(oMarkId);
