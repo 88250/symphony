@@ -1,5 +1,5 @@
 //单位长度
-unitSize=50
+unitSize=10
 chessLength=30
 
 //画棋盘

@@ -22,16 +22,21 @@
  * @version 1.0.0 Mar 14, 2017
  */
 var Gobang = {
+    unitSize: 30,
+    chessLength: 20,
+    hight:600,
+    width:600,
+/////upNew downOld///
     dir: null,
     lastDir: null,
     map: null,
     food: null,
     R: 10, // 圆半径或者外接正方形尺寸的一半
-    size: 30,
+    
     snake: null,
     oMark: null, // 分数显示框
     isPause: false, // 是否暂停
-    snakeCanvas: null,
+    chessCanvas: null,
     interval: null,
     currTime: 200,
     stepTime: 5,
@@ -41,27 +46,46 @@ var Gobang = {
     countTime: null,
     snakeColor: 0,
     appleColor: 255,
-    // 1: snake
-    // 0: nothing
-    // 2: apple
-    // 3: block
-    setupMap: function () {
-        for (var x = 1; x <= Gobang.size; x++) {
-            Gobang.map[x] = new Array();
-            for (var y = 1; y <= Gobang.size; y++) {
-                if (x == 1 || x == Gobang.size || y == 1 || y == Gobang.size)
-                    Gobang.map[x][y] = 3
-                else
-                    Gobang.map[x][y] = 0
-            }
+    drawChessBoard:function(){
+        Gobang.chessCanvas.strokeStyle = "gray";
+        Gobang.chessCanvas.fillStyle = "gray";
+        Gobang.chessCanvas.lineWidth=10;
+        Gobang.chessCanvas.strokeRect(0,0,Gobang.unitSize*Gobang.chessLength,Gobang.unitSize*Gobang.chessLength);
+        Gobang.chessCanvas.lineWidth=1;
+        for(var i=1;i<Gobang.chessLength;i++){
+            Gobang.chessCanvas.moveTo(0, i*Gobang.unitSize);
+            Gobang.chessCanvas.lineTo(Gobang.width, i*Gobang.unitSize);
+            Gobang.chessCanvas.stroke();
+
+            Gobang.chessCanvas.moveTo(i*Gobang.unitSize,0);
+            Gobang.chessCanvas.lineTo(i*Gobang.unitSize,Gobang.hight);
+            Gobang.chessCanvas.stroke();
         }
+        Gobang.chessCanvas.beginPath();
+        Gobang.chessCanvas.arc(5*Gobang.unitSize,5*Gobang.unitSize,5, 0, Math.PI*2, true);
+        Gobang.chessCanvas.fill();
+
+        Gobang.chessCanvas.beginPath();
+        Gobang.chessCanvas.arc(15*Gobang.unitSize,5*Gobang.unitSize,5, 0, Math.PI*2, true);
+        Gobang.chessCanvas.fill();
+
+        Gobang.chessCanvas.beginPath();
+        Gobang.chessCanvas.arc(5*Gobang.unitSize,15*Gobang.unitSize,5, 0, Math.PI*2, true);
+        Gobang.chessCanvas.fill();
+
+        Gobang.chessCanvas.beginPath();
+        Gobang.chessCanvas.arc(15*Gobang.unitSize,15*Gobang.unitSize,5, 0, Math.PI*2, true);
+        Gobang.chessCanvas.fill();
     },
-    initMap: function (oMarkId, snakeCanvasId) {
+    drawChessMan:function(){
+        //向上或向下取整
+        
+    },
+    initMap: function (oMarkId, chessCanvasId) {
         // Gobang.oMark = document.getElementById(oMarkId);
-        Gobang.snakeCanvas = document.getElementById(snakeCanvasId).getContext('2d');
-        Gobang.map = new Array();
-        Gobang.setupMap();
-        if (Gobang.snakeCanvas != null)
+        Gobang.chessCanvas = document.getElementById(chessCanvasId).getContext('2d');
+        Gobang.drawChessBoard();
+        if (Gobang.chessCanvas != null)
             Gobang.Clear();
         for (var x = 1; x <= Gobang.size; x++) {
             for (var y = 1; y <= Gobang.size; y++) {
@@ -77,12 +101,6 @@ var Gobang = {
             }
         }
     },
-    check: function (x, y) {
-        if (Gobang.map[x][y] != 0)
-            return true; // true代表此处有填充p
-        else
-            return false;
-    },
     setupSnake: function () {
         for (var i = 1; i <= 5; i++) {
             Gobang.snake[i] = {
@@ -90,18 +108,6 @@ var Gobang = {
                 y: 7
             };
         }
-    },
-    drawSnake: function (toggle) {
-        for (var i = 1; i < Gobang.snake.length; i++) {
-            Gobang.map[Gobang.snake[i].x][Gobang.snake[i].y] = toggle;
-        }
-    },
-    newFood: function () {
-        do {
-            Gobang.food.x = Math.floor(Math.random() * (Gobang.size - 1) + 1);
-            Gobang.food.y = Math.floor(Math.random() * (Gobang.size - 1) + 1);
-        } while (Gobang.check(Gobang.food.x, Gobang.food.y) == true)
-        Gobang.map[Gobang.food.x][Gobang.food.y] = 2;
     },
     gameover: function () {
         clearInterval(Gobang.interval);
@@ -126,18 +132,18 @@ var Gobang = {
                     return;
                 }
 
-                Gobang.snakeCanvas.fillStyle = "black";
-                Gobang.snakeCanvas.fillRect(150, 100, 300, 200);
-                Gobang.snakeCanvas.clearRect(155, 105, 290, 190);
-                Gobang.snakeCanvas.font = '36px serif';
-                var textWidth = Gobang.snakeCanvas.measureText("Game Over!").width;
-                Gobang.snakeCanvas.fillText("Game Over!", 155 + (290 - textWidth) / 2, 150);
-                Gobang.snakeCanvas.font = '24px serif';
+                Gobang.chessCanvas.fillStyle = "black";
+                Gobang.chessCanvas.fillRect(150, 100, 300, 200);
+                Gobang.chessCanvas.clearRect(155, 105, 290, 190);
+                Gobang.chessCanvas.font = '36px serif';
+                var textWidth = Gobang.chessCanvas.measureText("Game Over!").width;
+                Gobang.chessCanvas.fillText("Game Over!", 155 + (290 - textWidth) / 2, 150);
+                Gobang.chessCanvas.font = '24px serif';
                 var score = Gobang.snake.length - Gobang.baseLen;
-                textWidth = Gobang.snakeCanvas.measureText("Your Score: " + score).width;
-                Gobang.snakeCanvas.fillText("Your Score: " + score, 155 + (290 - textWidth) / 2, 200);
-                Gobang.snakeCanvas.fillStyle = "red";
-                Gobang.snakeCanvas.font = "18px serif";
+                textWidth = Gobang.chessCanvas.measureText("Your Score: " + score).width;
+                Gobang.chessCanvas.fillText("Your Score: " + score, 155 + (290 - textWidth) / 2, 200);
+                Gobang.chessCanvas.fillStyle = "red";
+                Gobang.chessCanvas.font = "18px serif";
 //                ctx.measureText(txt).width
                 var resultText;
                 if (score <= 10) {
@@ -153,8 +159,8 @@ var Gobang = {
                 } else {
                     resultText = "太假了！(╯‵□′)╯︵┻━┻";
                 }
-                textWidth = Gobang.snakeCanvas.measureText(resultText).width;
-                Gobang.snakeCanvas.fillText(resultText, 155 + (290 - textWidth) / 2, 250);
+                textWidth = Gobang.chessCanvas.measureText(resultText).width;
+                Gobang.chessCanvas.fillText(resultText, 155 + (290 - textWidth) / 2, 250);
             },
             complete: function () {
                 var $btn = $("button.green");
@@ -169,7 +175,6 @@ var Gobang = {
             x: Gobang.snake[1].x,
             y: Gobang.snake[1].y
         };
-        Gobang.newFood();
         Gobang.snakeColor += 5;
         Gobang.appleColor -= 5;
         clearInterval(Gobang.interval);
@@ -183,23 +188,12 @@ var Gobang = {
         Gobang.lastDir.y = Gobang.dir.y
         var targetX = Gobang.snake[1].x + Gobang.dir.x,
             targetY = Gobang.snake[1].y + Gobang.dir.y;
-        if (Gobang.check(targetX, targetY)) {
-            if (targetX == Gobang.food.x && targetY == Gobang.food.y) { // eat
-                Gobang.eat();
-            } else { // hit
-                Gobang.gameover();
-                return;
-            }
-        }
-        Gobang.drawSnake(0)
         for (var i = Gobang.snake.length - 1; i >= 2; i--) {
             Gobang.snake[i].x = Gobang.snake[i - 1].x
             Gobang.snake[i].y = Gobang.snake[i - 1].y
         }
         Gobang.snake[1].x = targetX
         Gobang.snake[1].y = targetY
-
-        Gobang.drawSnake(1)
     },
     input: function (keyCode) {
         switch (keyCode) {
@@ -259,10 +253,7 @@ var Gobang = {
         Gobang.currTime = 200;
 
         Gobang.snake = new Array();
-        Gobang.setupMap();
         Gobang.setupSnake();
-        Gobang.drawSnake(1);
-        Gobang.newFood();
         clearInterval(Gobang.interval);
     },
     gameRun: function () {
@@ -307,24 +298,24 @@ var Gobang = {
     DrawMethod:function(mapPos,x,y){
         switch (mapPos) {
             case 0:
-                Gobang.snakeCanvas.strokeStyle = "gray";
-                Gobang.snakeCanvas.strokeRect((x - 1) * 2 * Gobang.R, (y - 1) * 2 * Gobang.R, 2 * Gobang.R, 2 * Gobang.R);
+                Gobang.chessCanvas.strokeStyle = "gray";
+                Gobang.chessCanvas.strokeRect((x - 1) * 2 * Gobang.R, (y - 1) * 2 * Gobang.R, 2 * Gobang.R, 2 * Gobang.R);
                 break;
             case 1:
-                Gobang.snakeCanvas.fillStyle = "rgb(" + Gobang.snakeColor + ",0,0)";
-                Gobang.snakeCanvas.fillRect((x - 1) * 2 * Gobang.R, (y - 1) * 2 * Gobang.R, 2 * Gobang.R, 2 * Gobang.R);
+                Gobang.chessCanvas.fillStyle = "rgb(" + Gobang.snakeColor + ",0,0)";
+                Gobang.chessCanvas.fillRect((x - 1) * 2 * Gobang.R, (y - 1) * 2 * Gobang.R, 2 * Gobang.R, 2 * Gobang.R);
                 break;
             case 2:
-                Gobang.snakeCanvas.fillStyle = "rgb(" + Gobang.appleColor + ",0,0)";
-                Gobang.snakeCanvas.fillRect((x - 1) * 2 * Gobang.R, (y - 1) * 2 * Gobang.R, 2 * Gobang.R, 2 * Gobang.R);
+                Gobang.chessCanvas.fillStyle = "rgb(" + Gobang.appleColor + ",0,0)";
+                Gobang.chessCanvas.fillRect((x - 1) * 2 * Gobang.R, (y - 1) * 2 * Gobang.R, 2 * Gobang.R, 2 * Gobang.R);
                 break;
             case 3:
-                Gobang.snakeCanvas.fillStyle = "gray";
-                Gobang.snakeCanvas.fillRect((x - 1) * 2 * Gobang.R, (y - 1) * 2 * Gobang.R, 2 * Gobang.R, 2 * Gobang.R);
+                Gobang.chessCanvas.fillStyle = "gray";
+                Gobang.chessCanvas.fillRect((x - 1) * 2 * Gobang.R, (y - 1) * 2 * Gobang.R, 2 * Gobang.R, 2 * Gobang.R);
                 break;
         }
     },
     Clear:function(){
-        Gobang.snakeCanvas.clearRect(0, 0, (Gobang.size - 1) * 2 * Gobang.R, (Gobang.size - 1) * 2 * Gobang.R);
+        Gobang.chessCanvas.clearRect(0, 0, (Gobang.size - 1) * 2 * Gobang.R, (Gobang.size - 1) * 2 * Gobang.R);
     }
 };
