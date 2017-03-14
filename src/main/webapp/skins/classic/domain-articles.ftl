@@ -36,9 +36,9 @@
                         <#else>
                             <div class="no-list"> ${systemEmptyLabel}</div>
                         </#if>
-                    </div><#if pjax><!---- pjax {#domain-pjax-container} end ----></#if>
+                    </div>
 
-                    <#include "common/domains.ftl">
+                    <#include "common/domains.ftl"><#if pjax><!---- pjax {#domain-pjax-container} end ----></#if>
                 </div>
                 <div class="side">
                     <#include "side.ftl">
@@ -47,9 +47,6 @@
         </div>
         <#include "footer.ftl">
         <@listScript/>
-        <script src="${staticServePath}/js/lib/jquery/jquery.pjax.js?${staticResourceVersion}"></script>
-        <script src='${staticServePath}/js/lib/nprogress/nprogress.js?${staticResourceVersion}'></script>
-        <link rel='stylesheet' href='${staticServePath}/js/lib/nprogress/nprogress.css?${staticResourceVersion}'/>
         <script>
             $.pjax({
                 selector: 'a',

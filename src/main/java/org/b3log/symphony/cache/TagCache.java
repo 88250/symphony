@@ -55,7 +55,7 @@ import org.jsoup.Jsoup;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.5.0, Nov 24, 2016
+ * @version 1.5.5.1, Mar 4, 2017
  * @since 1.4.0
  */
 @Named
@@ -243,17 +243,7 @@ public class TagCache {
             }
 
             for (final JSONObject tag : tags) {
-                String description = tag.optString(Tag.TAG_DESCRIPTION);
-                String descriptionText = tag.optString(Tag.TAG_TITLE);
-                if (StringUtils.isNotBlank(description)) {
-                    description = shortLinkQueryService.linkTag(description);
-                    description = Markdowns.toHTML(description);
-
-                    tag.put(Tag.TAG_DESCRIPTION, description);
-                    descriptionText = Jsoup.parse(description).text();
-                }
-
-                tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
+                Tag.fillDescription(tag);
             }
 
             ICON_TAGS.clear();
@@ -331,17 +321,7 @@ public class TagCache {
                     }
                 }
 
-                String description = tag.optString(Tag.TAG_DESCRIPTION);
-                String descriptionText = title;
-                if (StringUtils.isNotBlank(description)) {
-                    description = shortLinkQueryService.linkTag(description);
-                    description = Markdowns.toHTML(description);
-
-                    tag.put(Tag.TAG_DESCRIPTION, description);
-                    descriptionText = Jsoup.parse(description).text();
-                }
-
-                tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
+                Tag.fillDescription(tag);
                 tag.put(Tag.TAG_T_TITLE_LOWER_CASE, tag.optString(Tag.TAG_TITLE).toLowerCase());
             }
 

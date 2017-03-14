@@ -35,19 +35,19 @@
         <span class="count">${unreadNotificationCount}</span>
         </#if>
         <a href="/settings">
-            <img class="avatar" title="${userName}" src="${currentUser.userAvatarURL}" />
+            <img class="avatar" title="${currentUser.userName}" src="${currentUser.userAvatarURL}" />
         </a>
         <span class="ico-down" onclick="$(this).next().toggle()"></span>
         <div class="fn-none">
             <ul class="fn-list">
                 <li>
-                    <a href="/member/${userName}">${myArticleLabel}</a>
+                    <a href="/member/${currentUser.userName}">${myArticleLabel}</a>
                 </li>
                 <li>
-                    <a href="/member/${userName}/comments">${myCommentLabel}</a>
+                    <a href="/member/${currentUser.userName}/comments">${myCommentLabel}</a>
                 </li>
                 <li>
-                    <a href="/member/${userName}/points">${myPointLabel}</a>
+                    <a href="/member/${currentUser.userName}/points">${myPointLabel}</a>
                 </li>
                 <li>
                     <a href="/settings">${settingsLabel}</a>

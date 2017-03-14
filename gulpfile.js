@@ -20,7 +20,7 @@
  * 
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.3.2, Mar 1, 2017
+ * @version 1.6.3.2, Mar 5, 2017
  */
 
 'use strict';
@@ -91,7 +91,9 @@ gulp.task('build', ['sass', 'clean'], function () {
         './src/main/webapp/js/lib/reconnecting-websocket.min.js',
         './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
         './src/main/webapp/js/lib/ua-parser.min.js',
-        './src/main/webapp/js/lib/jquery/jquery.hotkeys.js'];
+        './src/main/webapp/js/lib/jquery/jquery.hotkeys.js',
+        './src/main/webapp/js/lib/jquery/jquery.pjax.js',
+        './src/main/webapp/js/lib/nprogress/nprogress.js'];
     gulp.src(jsCommonLib)
             .pipe(uglify())
             .pipe(concat('libs.min.js'))

@@ -380,7 +380,7 @@
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <#include "footer.ftl">
-        <script src="${staticServePath}/js/lib/compress/article-libs.min.js"></script>
+        <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
@@ -417,35 +417,16 @@
             Label.qiniuDomain = '${qiniuDomain}';
             Label.qiniuUploadToken = '${qiniuUploadToken}';
             Label.noPermissionLabel = '${noPermissionLabel}';
+            Label.imgMaxSize = ${imgMaxSize?c};
+            Label.fileMaxSize = ${fileMaxSize?c};
+            Label.articleChannel = "${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}";
             <#if isLoggedIn>
-                Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
-                setTimeout(function() {
-                    Util.setUnreadNotificationCount();
-                }, 1000);
                 Label.currentUserName = '${currentUser.userName}';
-            </#if>            
-            // Init [Article] channel
-            ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
-            
-            $(document).ready(function () {
-                Comment.init();
-                
-                // jQuery File Upload
-                Util.uploadFile({
-                    "type": "img",
-                    "id": "fileUpload",
-                    "pasteZone": $(".CodeMirror"),
-                    "qiniuUploadToken": "${qiniuUploadToken}",
-                    "editor": Comment.editor,
-                    "uploadingLabel": "${uploadingLabel}",
-                    "qiniuDomain": "${qiniuDomain}",
-                    "imgMaxSize": ${imgMaxSize?c},
-                    "fileMaxSize": ${fileMaxSize?c}
-                });
-            });
+                Label.notificationCmtIds = '${notificationCmtIds}';
+            </#if>
             <#if 3 == article.articleType>
                 Article.playThought('${article.articleContent}');
-            </#if>           
+            </#if>
         </script>
     </body>
 </html>

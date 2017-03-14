@@ -17,13 +17,6 @@
  */
 package org.b3log.symphony.processor.advice.validate;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Named;
-import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -42,14 +35,23 @@ import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.TagQueryService;
+import org.b3log.symphony.util.StatusCodes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.10, Nov 27, 2016
+ * @version 1.3.4.11, Mar 9, 2017
  * @since 0.2.0
  */
 @Named
@@ -81,60 +83,48 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
      */
     public static final int MIN_ARTICLE_REWARD_CONTENT_LENGTH = 4;
 
-    @Override
-    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
-        final HttpServletRequest request = context.getRequest();
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
-        }
-
-        validateArticleFields(request, requestJSONObject);
-    }
-
     /**
      * Validates article fields.
      *
-     * @param request the specified HTTP servlet request
+     * @param request           the specified HTTP servlet request
      * @param requestJSONObject the specified request object
      * @throws RequestProcessAdviceException if validate failed
      */
     public static void validateArticleFields(final HttpServletRequest request,
-            final JSONObject requestJSONObject) throws RequestProcessAdviceException {
+                                             final JSONObject requestJSONObject) throws RequestProcessAdviceException {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
         final TagQueryService tagQueryService = beanManager.getReference(TagQueryService.class);
         final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
 
+        final JSONObject exception = new JSONObject();
+        exception.put(Keys.STATUS_CODE, StatusCodes.ERR);
+
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         articleTitle = StringUtils.trim(articleTitle);
         if (Strings.isEmptyOrNull(articleTitle) || articleTitle.length() > MAX_ARTICLE_TITLE_LENGTH) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTitleErrorLabel")));
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("articleTitleErrorLabel")));
         }
         if (optionQueryService.containReservedWord(articleTitle)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
         }
 
         requestJSONObject.put(Article.ARTICLE_TITLE, articleTitle);
 
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE);
         if (Article.isInvalidArticleType(articleType)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTypeErrorLabel")));
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("articleTypeErrorLabel")));
         }
 
         String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
         articleTags = Tag.formatTags(articleTags);
 
         if (StringUtils.isBlank(articleTags)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsEmptyErrorLabel")));
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("tagsEmptyErrorLabel")));
         }
 
         if (optionQueryService.containReservedWord(articleTags)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
         }
 
         if (StringUtils.isNotBlank(articleTags)) {
@@ -148,28 +138,28 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
                 final String tagTitle = tagTitles[i].trim();
 
                 if (Strings.isEmptyOrNull(tagTitle)) {
-                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                    throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
                 }
 
                 if (!Tag.containsWhiteListTags(tagTitle)) {
                     if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
-                        throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                        throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
                     }
 
                     if (tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH) {
-                        throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                        throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
                     }
                 }
 
                 final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
                 if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
-                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagReservedLabel")
+                    throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("articleTagReservedLabel")
                             + " [" + tagTitle + "]"));
                 }
 
                 if (invalidTags.contains(tagTitle)) {
-                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagInvalidLabel")
+                    throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("articleTagInvalidLabel")
                             + " [" + tagTitle + "]"));
                 }
 
@@ -188,16 +178,16 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
             String msg = langPropsService.get("articleContentErrorLabel");
             msg = msg.replace("{maxArticleContentLength}", String.valueOf(MAX_ARTICLE_CONTENT_LENGTH));
 
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, msg));
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, msg));
         }
 
         if (optionQueryService.containReservedWord(articleContent)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
         }
 
         final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
         if (rewardPoint < 0) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidRewardPointLabel")));
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("invalidRewardPointLabel")));
         }
 
         if (rewardPoint > 0) {
@@ -207,8 +197,23 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
                 String msg = langPropsService.get("articleRewardContentErrorLabel");
                 msg = msg.replace("{maxArticleRewardContentLength}", String.valueOf(MAX_ARTICLE_REWARD_CONTENT_LENGTH));
 
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, msg));
+                throw new RequestProcessAdviceException(exception.put(Keys.MSG, msg));
             }
         }
+    }
+
+    @Override
+    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+        final HttpServletRequest request = context.getRequest();
+
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+            request.setAttribute(Keys.REQUEST, requestJSONObject);
+        } catch (final Exception e) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
+        }
+
+        validateArticleFields(request, requestJSONObject);
     }
 }

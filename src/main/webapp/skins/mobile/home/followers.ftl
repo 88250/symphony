@@ -7,13 +7,13 @@
         <#list userHomeFollowerUsers as follower>
         <li class="fn-clear">
             <a rel="nofollow" title="${follower.userName} <#if follower.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" href="${servePath}/member/${follower.userName}" >
-                <div class="avatar fn-left" style="background-image:url('${follower.userAvatarURL}')"></div>
+                <div class="avatar fn-left" style="background-image:url('${follower.userAvatarURL48}')"></div>
             </a>
             <div class="fn-left">
                 <h3 class="fn-inline">
                     <a rel="nofollow" href="${servePath}/member/${follower.userName}" >${follower.userName}</a>
                 </h3> &nbsp;
-                <#if isLoggedIn && (userName != follower.userName)> 
+                <#if isLoggedIn && (currentUser.userName != follower.userName)>
                 <#if follower.isFollowing>
                 <button class="red small" onclick="Util.unfollow(this, '${follower.oId}', 'user')"> 
                     ${unfollowLabel}

@@ -17,13 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import java.io.IOException;
-import java.util.*;
-import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Logger;
@@ -39,21 +32,24 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Notification processor.
@@ -70,7 +66,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Lo</a>
- * @version 1.10.1.7, Mar 1, 2017
+ * @version 1.10.1.9, Mar 12, 2017
  * @since 0.2.5
  */
 @RequestProcessor
@@ -79,7 +75,7 @@ public class NotificationProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(NotificationProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NotificationProcessor.class);
 
     /**
      * User query service.
@@ -228,6 +224,10 @@ public class NotificationProcessor {
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_AT);
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_FOLLOWER);
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER);
+                notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_COMMENT_VOTE_UP);
+                notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_COMMENT_VOTE_DOWN);
+                notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_UP);
+                notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN);
 
                 break;
             case "following":
@@ -327,7 +327,11 @@ public class NotificationProcessor {
         final int unreadAtNotificationCnt
                 = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT)
                 + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_FOLLOWER)
-                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER);
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER)
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENT_VOTE_UP)
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENT_VOTE_DOWN)
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_UP)
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN);
         if (unreadAtNotificationCnt > 0) {
             response.sendRedirect(Latkes.getServePath() + "/notifications/at");
 
@@ -445,7 +449,11 @@ public class NotificationProcessor {
         final int unreadAtNotificationCnt
                 = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT)
                 + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_FOLLOWER)
-                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER);
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER)
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENT_VOTE_UP)
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENT_VOTE_DOWN)
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_UP)
+                + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN);
         dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
 
         final int unreadFollowingNotificationCnt
@@ -636,14 +644,13 @@ public class NotificationProcessor {
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject result = notificationQueryService.getAtNotifications(avatarViewMode, userId, pageNum, pageSize);
-        @SuppressWarnings("unchecked")
         final List<JSONObject> atNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.AT_NOTIFICATIONS, atNotifications);
 
         final List<JSONObject> articleFollowAndWatchNotifications = new ArrayList<>();
         for (final JSONObject notification : atNotifications) {
-            if (!notification.optBoolean(Notification.NOTIFICATION_T_IS_AT)) {
+            if (Notification.DATA_TYPE_C_AT != notification.optInt(Notification.NOTIFICATION_DATA_TYPE)) {
                 articleFollowAndWatchNotifications.add(notification);
             }
         }
@@ -679,7 +686,7 @@ public class NotificationProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showFollowingNotifications(final HTTPRequestContext context, final HttpServletRequest request,
-                                               final HttpServletResponse response) throws Exception {
+                                           final HttpServletResponse response) throws Exception {
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);

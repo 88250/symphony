@@ -6,7 +6,7 @@
             <div class="ft-gray">${user.userName}</div>
 
             <div>
-                <#if isLoggedIn && (userName != user.userName)>
+                <#if isLoggedIn && (currentUser.userName != user.userName)>
                     <button class="green small" onclick="location.href = '${servePath}/post?type=1&at=${user.userName}'">
                         ${privateMessageLabel}
                     </button>
@@ -27,7 +27,7 @@
                 </#if>
             </div>
             
-            <#if isLoggedIn && (userName != user.userName)>
+            <#if isLoggedIn && (currentUser.userName != user.userName)>
             <#if isFollowing>
             <button class="follow" onclick="Util.unfollow(this, '${followingId}', 'user')"> 
                 ${unfollowLabel}

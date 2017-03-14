@@ -37,6 +37,7 @@ import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.processor.advice.validate.ClientCommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentAddValidation;
 import org.b3log.symphony.service.*;
+import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
@@ -221,7 +222,7 @@ public class CommentProcessor {
     @Before(adviceClass = {CSRFCheck.class, CommentAddValidation.class, PermissionCheck.class})
     public void addComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
-        context.renderJSON();
+        context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
@@ -289,7 +290,8 @@ public class CommentProcessor {
                     ? Comment.COMMENT_ANONYMOUS_C_ANONYMOUS : Comment.COMMENT_ANONYMOUS_C_PUBLIC);
 
             commentMgmtService.addComment(comment);
-            context.renderTrueResult();
+
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }

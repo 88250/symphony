@@ -22,7 +22,7 @@
                    href="${servePath}/member/${followingUser.userName}">
                     <div class="avatar fn-left tooltipped tooltipped-se" 
                          aria-label="${followingUser.userName} <#if followingUser.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" 
-                         style="background-image:url('${followingUser.userAvatarURL}')"></div>
+                         style="background-image:url('${followingUser.userAvatarURL48}')"></div>
                 </a>
                 <div class="fn-flex-1">
                     <h2 class="fn-inline">
@@ -31,7 +31,7 @@
                     <#if followingUser.userNickname != ''>
                     <a class='ft-fade' rel="nofollow" href="${servePath}/member/${followingUser.userName}" >${followingUser.userName}</a>
                     </#if>
-                    <#if isLoggedIn && (userName != followingUser.userName)> 
+                    <#if isLoggedIn && (currentUser.userName != followingUser.userName)>
                     <#if followingUser.isFollowing>
                     <button class="fn-right mid" onclick="Util.unfollow(this, '${followingUser.oId}', 'user')"> 
                         ${unfollowLabel}

@@ -4,7 +4,7 @@
 <ul class="notification">
     <#list atNotifications as notification>
     <li class="comment-list-item fn-flex<#if notification.hasRead> read</#if>">
-        <#if notification.isAt>
+        <#if 2 == notification.dataType>
             <#if "someone" != notification.authorName>
             <a rel="nofollow" href="${servePath}/member/${notification.authorName}"
                title="${notification.authorName}"></#if>
@@ -64,6 +64,9 @@
             </div>
             </#if>
         <#else>
+            <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.userName}">
+            <div class="avatar tooltipped tooltipped-se" aria-label="${notification.userName}" style="background-image:url('${notification.thumbnailURL}')"></div>
+            </a>
             <div class="fn-flex-1">
                 <div>
                     <h2>${notification.description}</h2>

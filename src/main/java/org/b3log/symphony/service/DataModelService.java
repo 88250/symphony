@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.25, Dec 27, 2016
+ * @version 1.12.2.26, Mar 6, 2017
  * @since 0.2.0
  */
 @Service
@@ -386,8 +386,6 @@ public class DataModelService {
 
             dataModel.put("logoutLabel", langPropsService.get("logoutLabel"));
 
-            final String userName = curUser.optString(User.USER_NAME);
-            dataModel.put(User.USER_NAME, userName);
             final String userRole = curUser.optString(User.USER_ROLE);
             dataModel.put(User.USER_ROLE, userRole);
 

@@ -20,7 +20,7 @@
             <div class="fn-flex">
                 <a rel="nofollow" class="tooltipped tooltipped-se fn-left" aria-label="${follower.userName} <#if follower.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" 
                    href="${servePath}/member/${follower.userName}" >
-                    <div class="avatar" style="background-image:url('${follower.userAvatarURL}')"></div>
+                    <div class="avatar" style="background-image:url('${follower.userAvatarURL48}')"></div>
                 </a>
                 <div class="fn-flex-1">
                     <h2 class="fn-inline">
@@ -29,7 +29,7 @@
                     <#if follower.userNickname != ''>
                     <a class='ft-fade' rel="nofollow" href="${servePath}/member/${follower.userName}" >${follower.userName}</a>
                     </#if>
-                    <#if isLoggedIn && (userName != follower.userName)> 
+                    <#if isLoggedIn && (currentUser.userName != follower.userName)>
                     <#if follower.isFollowing>
                     <button class="fn-right mid" onclick="Util.unfollow(this, '${follower.oId}', 'user')"> 
                         ${unfollowLabel}

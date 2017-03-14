@@ -6,3 +6,7 @@ node_modules/
 .idea/
 symphony.iml
 nb-configuration.xml
+/bin/
+/.settings/
+/.classpath
+/.project

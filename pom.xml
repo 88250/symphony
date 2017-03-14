@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.14.6.50, Feb 5, 2017
+    Version: 2.14.6.51, Mar 7, 2017
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -11,7 +11,7 @@
     <groupId>org.b3log</groupId>
     <artifactId>symphony</artifactId>
     <packaging>war</packaging>
-    <version>1.9.0</version>
+    <version>2.0.0</version>
     <name>Symphony</name>
     <url>https://github.com/b3log/symphony</url>
     <description>
@@ -21,7 +21,7 @@
 
     <!-- Properties -->
     <properties>
-        <latke.version>2.3.7</latke.version>
+        <latke.version>2.3.8</latke.version>
         
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.2.7.v20150116</jetty.version>
@@ -229,6 +229,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/lib/net/pusuo/patchca-0.5.0.jar</systemPath>
         </dependency>
+        
+         <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>mail</artifactId>
+		    <version>1.4.7</version>
+		</dependency>
         
     </dependencies>
 
