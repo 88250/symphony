@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
+        <script src="snake-battle.js"></script>
+        <script src="jquery.min.js"></script>
+        <script>
+            SnakeBattle.initMap('oMark', 'snakeCanvas');
+            $(document).unbind("keyup");
+        	SnakeBattle.start('test');
+        	document.onkeydown = function (event) {
+            var event = event || window.event;
+            SnakeBattle.input(event.keyCode);
+        };
+        </script>
+    </body>
+</html>
