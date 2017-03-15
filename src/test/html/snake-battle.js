@@ -46,7 +46,7 @@ var Gobang = {
     snakeColor: 0,
     appleColor: 255,
     drawChessBoard:function(){
-        Gobang.chessCanvas.fillStyle = "gray";
+        Gobang.chessCanvas.fillStyle = "darkorange";
         Gobang.chessCanvas.fillRect(0,0,Gobang.chessLength,Gobang.chessLength);
         Gobang.chessCanvas.strokeStyle = "black";
         Gobang.chessCanvas.lineWidth=10;
@@ -77,8 +77,6 @@ var Gobang = {
         Gobang.chessCanvas.stroke();
     },
     drawChessMan:function(x,y,raidus,color){
-        //向上或向下取整
-        //鼠标点击位置距离棋盘交叉点的距离只能小于半径，通过此可以确定落在哪里
         Gobang.chessCanvas.fillStyle = color;
         Gobang.chessCanvas.beginPath();
         Gobang.chessCanvas.arc(x,y,raidus, 0, Math.PI*2, true);
@@ -135,82 +133,103 @@ var Gobang = {
         }
     },
     checkChessMan:function(num){
-        // var flag=false;
         //横向检查
         for(var i=0;i<Gobang.chess.length;i++){
             var count=0;
             for(var j=0;j<Gobang.chess[i].length;j++){
                 if(Gobang.chess[i][j]==num){
                     count++;
-                }else if(Gobang.chess[i][j]!=num && count!=5){
+                }else if(Gobang.chess[i][j]!=num && count<5){
                     count=0;
                 }
             }
             if(count>=5){
-                alert("五子连星:"+num);
+                console.log("五子连星:"+num);
                 return;
             }
         }
         //纵向检查
-        for(var j=0;i<Gobang.chess[j].length;j++){
+        for(var j=0;j<Gobang.chess[0].length;j++){
             var count=0;
-            for(var i=0;j<Gobang.chess.length;i++){
+            for(var i=0;i<Gobang.chess.length;i++){
                 if(Gobang.chess[i][j]==num){
                     count++;
-                }else if(Gobang.chess[i][j]!=num && count!=5){
+                }else if(Gobang.chess[i][j]!=num && count<5){
                     count=0;
                 }
             }
             if(count>=5){
-                alert("五子连星:"+num);
+                console.log("五子连星:"+num);
                 return;
             }
         }
-        //左上右下检查
-        // for(var i=Gobang.chess.length-5;i--;i>=0){
-        //     for(var j=i+1;j<Gobang.chess[i].length;j++){
-        //         if(Gobang.chess[i][j]==2){
-        //             count++;
-        //         }else if(Gobang.chess[i][j]==1 && count!=5){
-        //             count=0;
-        //         }
-        //         if(count==5){
-        //             alert("五子连星");
-        //             break;
-        //         }
-        //     }
-        // }
-        // for(var j=Gobang.chess[0].length-5;j--;j>=0){
-        //     for(var i=j+1;j<Gobang.chess[i].length;j++){
-        //         if(Gobang.chess[i][j]==2){
-        //             count++;
-        //         }else if(Gobang.chess[i][j]==1 && count!=5){
-        //             count=0;
-        //         }
-        //         if(count==5){
-        //             alert("五子连星");
-        //             break;
-        //         }
-        //     }
-        // }
-        //左下右上检查
+        //左上右下检查，下一个检查点时上一个检查点横纵坐标均＋1
+        //横向增长，横坐标先行出局
+        for(var x=0,y=0;x<Gobang.chess.length;x++){
+            var count=0;
+            for(i=x,j=y;i<Gobang.chess.length;i++,j++){
+                if(Gobang.chess[i][j]==num){
+                    count++;
+                }else if(Gobang.chess[i][j]!=num && count<5){
+                    count=0;
+                }
+            }
+            if(count>=5){
+                console.log("五星连珠："+num);
+                return;
+            }
+        }
+        //纵向增长，纵坐标先出局
+        for(var x=0,y=0;y<Gobang.chess[0].length;y++){
+            var count=0;
+            for(i=x,j=y;j<Gobang.chess.length;i++,j++){
+                if(Gobang.chess[i][j]==num){
+                    count++;
+                }else if(Gobang.chess[i][j]!=num && count<5){
+                    count=0;
+                }
+            }
+            if(count>=5){
+                console.log("五星连珠："+num);
+                return;
+            }
+        }
+        //左下右上检查x-1,y+1
+        //横向增长，横坐标先行出局
+        for(var x=0,y=0;x<Gobang.chess.length;x++){
+            var count=0;
+            for(i=x,j=y;i>=0;i--,j++){
+                if(Gobang.chess[i][j]==num){
+                    count++;
+                }else if(Gobang.chess[i][j]!=num && count<5){
+                    count=0;
+                }
+            }
+            if(count>=5){
+                console.log("五星连珠："+num);
+                return;
+            }
+        }
+        //纵向增长，纵坐标先出局
+        for(var x=Gobang.chess.length-1,y=0;y<Gobang.chess[0].length;y++){
+            var count=0;
+            for(i=x,j=y;j<Gobang.chess.length;i--,j++){
+                if(Gobang.chess[i][j]==num){
+                    count++;
+                }else if(Gobang.chess[i][j]!=num && count<5){
+                    count=0;
+                }
+            }
+            if(count>=5){
+                console.log("五星连珠："+num);
+                return;
+            }
+        }
 
     },
-    initMap: function (oMarkId, chessCanvasId) {
+    initCanvas: function (oMarkId, chessCanvasId) {
         // Gobang.oMark = document.getElementById(oMarkId);
         Gobang.chessCanvas = document.getElementById(chessCanvasId).getContext('2d');
         Gobang.drawChessBoard();
-        if (Gobang.chessCanvas != null)
-            Gobang.Clear();
-        for (var x = 1; x <= Gobang.size; x++) {
-            for (var y = 1; y <= Gobang.size; y++) {
-                Gobang.DrawMethod(Gobang.map[x][y],x,y);
-            }
-        }
-    },
-    start: function (csrfToken) {
-    },
-    Clear:function(){
-        Gobang.chessCanvas.clearRect(0, 0, (Gobang.size - 1) * 2 * Gobang.R, (Gobang.size - 1) * 2 * Gobang.R);
     }
 };

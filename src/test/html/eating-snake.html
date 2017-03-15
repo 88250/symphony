@@ -8,17 +8,14 @@
         <script src="snake-battle.js"></script>
         <script src="jquery.min.js"></script>
         <script>
-            Gobang.initMap('oMark', 'gobangCanvas');
-            $(document).unbind("keyup");
-        	Gobang.start('test');
-            //report the mouse position on click
+            Gobang.initCanvas('oMark', 'gobangCanvas');
+            
             var player=0;
             document.getElementById("gobangCanvas").addEventListener("click", function (evt) {
                 var mousePos = getMousePos(document.getElementById("gobangCanvas"), evt);
                 Gobang.getChessManPoint(mousePos,player);
                 player++;
             }, false);
-
 
             //Get Mouse Position
             function getMousePos(canvas, evt) {
