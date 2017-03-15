@@ -4,17 +4,30 @@
     <meta charset="utf-8">
     </head>
     <body>
-        <canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
+        <canvas id="gobangCanvas" height="600px" width="600px"></canvas></div>
         <script src="snake-battle.js"></script>
         <script src="jquery.min.js"></script>
         <script>
-            Gobang.initMap('oMark', 'snakeCanvas');
+            Gobang.initMap('oMark', 'gobangCanvas');
             $(document).unbind("keyup");
         	Gobang.start('test');
-        	document.onkeydown = function (event) {
-            var event = event || window.event;
-            Gobang.input(event.keyCode);
-        };
+            //report the mouse position on click
+            var player=0;
+            document.getElementById("gobangCanvas").addEventListener("click", function (evt) {
+                var mousePos = getMousePos(document.getElementById("gobangCanvas"), evt);
+                Gobang.getChessManPoint(mousePos,player);
+                player++;
+            }, false);
+
+
+            //Get Mouse Position
+            function getMousePos(canvas, evt) {
+                var rect = canvas.getBoundingClientRect();
+                return {
+                    x: evt.clientX - rect.left * (canvas.width / rect.width),
+                    y: evt.clientY - rect.top * (canvas.height / rect.height)
+                }
+            }
         </script>
     </body>
 </html>
