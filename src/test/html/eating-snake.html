@@ -5,14 +5,27 @@
     </head>
     <body>
         <canvas id="gobangCanvas" height="600px" width="600px"></canvas></div>
+        <input type="text" id="player" name="player"/>
+        <button onclick="initGobangChannel();">开始</button>
+
         <script src="snake-battle.js"></script>
         <script src="jquery.min.js"></script>
+        <script src="channel.js"></script>
+        <script src="reconnecting-websocket.min.js"></script>
         <script>
             Gobang.initCanvas('oMark', 'gobangCanvas');
-            
+            function initGobangChannel(){
+                if($("#player").val()!=""){
+                    GobangChannel.init("ws://localhost:8080/gobang-game-channel?player="+$("#player").val());
+                }else{
+                    alert("请填写昵称");
+                }
+            }
+
             var player=0;
             document.getElementById("gobangCanvas").addEventListener("click", function (evt) {
                 var mousePos = getMousePos(document.getElementById("gobangCanvas"), evt);
+                GobangChannel.ws.send(mousePos);
                 Gobang.getChessManPoint(mousePos,player);
                 player++;
             }, false);

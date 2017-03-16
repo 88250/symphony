@@ -862,6 +862,10 @@ public final class Common {
     public static final String TOP_CHECKIN_USERS = "topCheckinUsers";
 
     /**
+     *
+     */
+    public static final String GOBANG_STATE = "gobangState";
+    /**
      * Private constructor.
      */
     private Common() {

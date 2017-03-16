@@ -368,22 +368,11 @@ var GobangChannel = {
         GobangChannel.ws.reconnectInterval = 10000;
 
         GobangChannel.ws.onopen = function () {
-            setInterval(function () {
-                GobangChannel.ws.send('zephyr test');
-            }, 1000 * 60 * 3);
+            GobangChannel.ws.send('zephyr test');
         };
 
         GobangChannel.ws.onmessage = function (evt) {
-            var data = JSON.parse(evt.data);
-
-            switch (data.type) {
-                case "gobangPlayer":
-                    console.log("data.type:>gobangPlayer");
-                    break;
-                case "msg":
-                    console.log("data.type:>msg");
-                    break;
-            }
+            console.log("response from server:>"+evt)
         };
 
         GobangChannel.ws.onclose = function () {
