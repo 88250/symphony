@@ -25,7 +25,7 @@
             var player=0;
             document.getElementById("gobangCanvas").addEventListener("click", function (evt) {
                 var mousePos = getMousePos(document.getElementById("gobangCanvas"), evt);
-                GobangChannel.ws.send(mousePos);
+                GobangChannel.ws.send(JSON.stringify(mousePos));
                 Gobang.getChessManPoint(mousePos,player);
                 player++;
             }, false);

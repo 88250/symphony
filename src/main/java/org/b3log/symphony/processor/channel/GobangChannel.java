@@ -18,6 +18,8 @@
 package org.b3log.symphony.processor.channel;
 
 import org.b3log.latke.logging.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
@@ -26,7 +28,6 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -108,8 +109,10 @@ public class GobangChannel {
      * @param message message
      */
     @OnMessage
-    public void onMessage(final String message) throws IOException{
-        LOGGER.info("message:>"+message);
+    public void onMessage(final String message) throws JSONException {
+        JSONObject jsonObject= new JSONObject(message);
+
+        LOGGER.info("message:>"+jsonObject.optString("x"));
 //        session.getBasicRemote().sendText("response");
     }
 
