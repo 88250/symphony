@@ -68,7 +68,15 @@ public class GobangChannel {
         String player=(String) Channels.getHttpParameter(session,"player");
         LOGGER.info("new connection from "+player);
         SESSIONS.put(session,player);
-        if(chessRandomWait.size()!=0){
+        ChessGame playing=chessPlaying.get(player);
+        if(playing!=null){
+            LOGGER.info("正在游戏中...");
+            synchronized (session) {
+                if(session.isOpen() ){
+                    session.getAsyncRemote().sendText("");
+                }
+            }
+        }else if(chessRandomWait.size()!=0){
             ChessGame chessGame=chessRandomWait.poll();
             chessGame.setPlayer2(player);
             chessPlaying.put(player,chessGame);
@@ -76,20 +84,6 @@ public class GobangChannel {
             ChessGame chessGame=new ChessGame(player);
             chessRandomWait.add(chessGame);
         }
-//        synchronized (SESSIONS) {
-//            for (final Map.Entry<Session, String> entry : SESSIONS.entrySet()) {
-//                final Session session = entry.getKey();
-//                final String articleIds = entry.getValue();
-//
-//                if (!StringUtils.contains(articleIds, articleId)) {
-//                    continue;
-//                }
-//
-//                if (session.isOpen()) {
-//                    session.getAsyncRemote().sendText(msgStr);
-//                }
-//            }
-//        }
     }
 
     /**
