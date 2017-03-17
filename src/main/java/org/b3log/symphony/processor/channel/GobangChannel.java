@@ -70,7 +70,7 @@ public class GobangChannel {
         SESSIONS.put(session,player);
         ChessGame playing=chessPlaying.get(player);
         if(playing!=null){
-            LOGGER.info("正在游戏中...");
+            LOGGER.info("ING...");
             synchronized (session) {
                 if(session.isOpen() ){
                     session.getAsyncRemote().sendText("");
