@@ -97,7 +97,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.24.27.41, Mar 9, 2017
+ * @version 1.25.27.41, Mar 17, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -823,6 +823,12 @@ public class ArticleProcessor {
             referral.put(Referral.REFERRAL_USER, referralUserName);
 
             referralMgmtService.updateReferral(referral);
+        }
+
+        if (StringUtils.isBlank(article.optString(Article.ARTICLE_AUDIO_URL))) {
+            final String uid = StringUtils.isBlank(currentUserId) ? "visitor" : currentUserId;
+
+            articleMgmtService.genArticleAudio(article, uid);
         }
     }
 

@@ -1,9 +1,28 @@
+/*
+ * Symphony - A modern community (forum/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-2017,  b3log.org & hacpai.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.b3log.symphony.service;
 
+import com.qiniu.common.QiniuException;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -17,7 +36,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * Audio management service.
@@ -33,6 +54,8 @@ public class AudioMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AudioMgmtService.class);
+
+    private static final Set<String> DOING = new ConcurrentSkipListSet<>();
 
     private static final String BAIDU_API_KEY = Symphonys.get("baidu.yuyin.apiKey");
     private static final String BAIDU_SECRET_KEY = Symphonys.get("baidu.yuyin.secretKey");
@@ -138,15 +161,16 @@ public class AudioMgmtService {
 
         String ret;
 
+        DOING.add(textId);
         try {
             if (Symphonys.getBoolean("qiniu.enabled")) {
                 final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
                 final UploadManager uploadManager = new UploadManager();
 
-
-                uploadManager.put(bytes, "audio/" + type + "/" + textId + ".mp3", auth.uploadToken(Symphonys.get("qiniu.bucket")),
+                final int seq = RandomUtils.nextInt(10);
+                uploadManager.put(bytes, "audio/" + type + "/" + textId + seq + ".mp3", auth.uploadToken(Symphonys.get("qiniu.bucket")),
                         null, "audio/mp3", false);
-                ret = Symphonys.get("qiniu.domain") + "audio/" + type + "/" + textId + ".mp3";
+                ret = Symphonys.get("qiniu.domain") + "/audio/" + type + "/" + textId + seq + ".mp3";
             } else {
                 final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".mp3";
                 final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName);
@@ -158,7 +182,18 @@ public class AudioMgmtService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Uploads audio failed [type=" + type + ", textId=" + textId + "]", e);
+            if (e instanceof QiniuException) {
+                try {
+                    LOGGER.log(Level.ERROR, "Uploads audio failed [type=" + type + ", textId=" + textId + "]",
+                            ((QiniuException) e).response.bodyString());
+                } catch (final Exception qe) {
+                    LOGGER.log(Level.ERROR, "Uploads audio and parse result exception", qe);
+                }
+            } else {
+                LOGGER.log(Level.ERROR, "Uploads audio failed [type=" + type + ", textId=" + textId + "]", e);
+            }
+        } finally {
+            DOING.remove(textId);
         }
 
         return null;
