@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "4.36.7.22, Jan 21, 2017",
+    "version": "4.37.7.22, Mar 17, 2017",
     "authors": [
         "Liang Ding",
         "Zephyr",
@@ -827,6 +827,12 @@
                 {
                     "name": "commentReplyCnt",
                     "type": "int"
+                },
+                {
+                    "name": "commentAudioURL",
+                    "type": "String",
+                    "length": 256,
+                    "nullable": true
                 }
             ]
         },
@@ -1509,6 +1515,11 @@
                     "name": "articleAnonymousView",
                     "type": "int",
                     "description": "0: allow anonymous view, 1: not allow"
+                },
+                {
+                    "name": "articleAudioURL",
+                    "type": "String",
+                    "length": 256
                 }
             ]
         },
@@ -1551,7 +1562,8 @@
                 {
                     "name": "clientAdminEmail",
                     "type": "String",
-                    "length": 255
+                    "length": 255,
+                    "nullable": true
                 }
             ]
         },
