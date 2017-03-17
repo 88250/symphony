@@ -51,7 +51,7 @@ import javax.servlet.http.HttpServletResponse;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Mar 9, 2016
+ * @version 1.0.0.2, Mar 16, 2016
  * @since 2.1.0
  */
 @RequestProcessor
@@ -165,6 +165,7 @@ public class LoginAPI2 {
 
                 context.renderMsg("").renderJSONValue(Keys.STATUS_CODE, 0);
                 context.renderJSONValue(Common.TOKEN, token);
+                context.renderJSONValue(User.USER_NAME, user.optString(User.USER_NAME));
 
                 LoginProcessor.WRONG_PWD_TRIES.remove(userId);
 
