@@ -39,7 +39,6 @@ import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Pangu;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
@@ -200,7 +199,7 @@ public class ArticleMgmtService {
      * Generates article's audio.
      *
      * @param article the specified article
-     * @param userId the specified user id
+     * @param userId  the specified user id
      */
     public void genArticleAudio(final JSONObject article, final String userId) {
         final String articleId = article.optString(Keys.OBJECT_ID);
@@ -211,7 +210,7 @@ public class ArticleMgmtService {
         threadService.submit(() -> {
             String previewContent = article.optString(Article.ARTICLE_CONTENT);
             previewContent = Emotions.clear(Jsoup.parse(previewContent).text());
-
+            previewContent = StringUtils.substring(previewContent, 0, 512);
             final String audioURL = audioMgmtService.tts(previewContent, Article.ARTICLE, articleId, userId);
             article.put(Article.ARTICLE_AUDIO_URL, audioURL);
 

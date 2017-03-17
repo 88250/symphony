@@ -36,9 +36,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Set;
+import java.net.URLEncoder;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * Audio management service.
@@ -54,8 +53,6 @@ public class AudioMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AudioMgmtService.class);
-
-    private static final Set<String> DOING = new ConcurrentSkipListSet<>();
 
     private static final String BAIDU_API_KEY = Symphonys.get("baidu.yuyin.apiKey");
     private static final String BAIDU_SECRET_KEY = Symphonys.get("baidu.yuyin.secretKey");
@@ -115,7 +112,8 @@ public class AudioMgmtService {
             conn.setDoOutput(true);
 
             final OutputStream outputStream = conn.getOutputStream();
-            IOUtils.write("tex=" + StringUtils.substring(text, 0, 1024) + "&lan=zh&cuid=" + uid + "&ctp=1&tok=" + BAIDU_ACCESS_TOKEN, outputStream);
+            IOUtils.write("tex=" + URLEncoder.encode(StringUtils.substring(text, 0, 1024), "UTF-8")
+                    + "&lan=zh&cuid=" + uid + "&ctp=1&tok=" + BAIDU_ACCESS_TOKEN, outputStream);
             IOUtils.closeQuietly(outputStream);
 
             final InputStream inputStream = conn.getInputStream();
@@ -160,8 +158,6 @@ public class AudioMgmtService {
         }
 
         String ret;
-
-        DOING.add(textId);
         try {
             if (Symphonys.getBoolean("qiniu.enabled")) {
                 final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
@@ -192,8 +188,6 @@ public class AudioMgmtService {
             } else {
                 LOGGER.log(Level.ERROR, "Uploads audio failed [type=" + type + ", textId=" + textId + "]", e);
             }
-        } finally {
-            DOING.remove(textId);
         }
 
         return null;
