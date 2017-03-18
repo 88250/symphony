@@ -13,7 +13,6 @@
         <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css?${staticResourceVersion}">
-        <link rel="stylesheet" href="${staticServePath}/js/lib/aplayer/APlayer.min.css">
         <link rel="canonical" href="${servePath}${article.articlePermalink}?p=${paginationCurrentPageNum}&m=${userCommentViewMode}">
 
         <!-- Open Graph -->
@@ -129,8 +128,13 @@
                                 </div>
                             </div>
 
+                            <#if article.articleAudioURL??>
+                                <div id="articleAudio" class="aplayer article-content"></div>
+                            </#if>
                             <#if 3 != article.articleType>
-                            <div class="content-reset article-content">${article.articleContent}</div>
+                                <div class="content-reset article-content">
+                                    ${article.articleContent}
+                                </div>
                             <#else>
                             <div id="thoughtProgress"><span class="bar"></span><span class="icon-video"></span><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
                             <div class="content-reset article-content"></div>
@@ -472,8 +476,9 @@
             Label.isAdminLoggedIn = ${isAdminLoggedIn?c};
             Label.adminLabel = '${adminLabel}';
             Label.thankSelfLabel = '${thankSelfLabel}';
-            Label.articleAuthorName = '${article.articleAuthorName}';
             Label.replyLabel = '${replyLabel}';
+            Label.articleAuthorName = '${article.articleAuthorName}';
+            Label.articleAudioURL = '${article.articleAudioURL}';
             Label.referenceLabel = '${referenceLabel}';
             Label.goCommentLabel = '${goCommentLabel}';
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';

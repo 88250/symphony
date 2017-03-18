@@ -37,10 +37,7 @@ import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
-import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.util.Markdowns;
-import org.b3log.symphony.util.Symphonys;
-import org.b3log.symphony.util.Times;
+import org.b3log.symphony.util.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -55,7 +52,7 @@ import java.util.regex.Pattern;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.10.9.24, Feb 16, 2017
+ * @version 2.10.9.25, Mar 19, 2017
  * @since 0.2.0
  */
 @Service
@@ -867,45 +864,7 @@ public class CommentQueryService {
         commentContent = Emotions.convert(commentContent);
         commentContent = Markdowns.toHTML(commentContent);
         commentContent = Markdowns.clean(commentContent, "");
-
-        final String commentId = comment.optString(Keys.OBJECT_ID);
-        // MP3 player render
-        final StringBuffer contentBuilder = new StringBuffer();
-        final String MP3_URL_REGEX = "<p>( )*<a href.*\\.mp3.*</a>( )*</p>";
-        final Pattern p = Pattern.compile(MP3_URL_REGEX);
-        final Matcher m = p.matcher(commentContent);
-
-        int i = 0;
-        while (m.find()) {
-            String mp3URL = m.group();
-            String mp3Name = StringUtils.substringBetween(mp3URL, "\">", ".mp3</a>");
-            mp3URL = StringUtils.substringBetween(mp3URL, "href=\"", "\" rel=");
-            final String playerId = "player" + commentId + i++;
-
-            m.appendReplacement(contentBuilder, "<div id=\"" + playerId + "\" class=\"aplayer\"></div>\n"
-                    + "<script>\n"
-                    + "var " + playerId + " = new APlayer({\n"
-                    + "    element: document.getElementById('" + playerId + "'),\n"
-                    + "    narrow: false,\n"
-                    + "    autoplay: false,\n"
-                    + "    showlrc: false,\n"
-                    + "    mutex: true,\n"
-                    + "    theme: '#e6d0b2',\n"
-                    + "    music: {\n"
-                    + "        title: '" + mp3Name + "',\n"
-                    + "        author: '" + mp3URL + "',\n"
-                    + "        url: '" + mp3URL + "',\n"
-                    + "        pic: '" + Latkes.getStaticServePath() + "/js/lib/aplayer/default.jpg'\n"
-                    + "    }\n"
-                    + "});\n"
-                    + playerId + ".init();\n"
-                    + "</script>");
-        }
-        m.appendTail(contentBuilder);
-
-        commentContent = contentBuilder.toString();
-        commentContent = commentContent.replaceFirst("<div id=\"player",
-                "<script src=\"" + Latkes.getStaticServePath() + "/js/lib/aplayer/APlayer.min.js\"></script>\n<div id=\"player");
+        commentContent = MP3Players.render(commentContent);
 
         if (sync) {
             // "<i class='ft-small'>by 88250</i>"

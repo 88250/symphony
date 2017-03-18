@@ -28,9 +28,12 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Transactional;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.thread.ThreadService;
+import org.b3log.latke.thread.ThreadServiceFactory;
 import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.*;
@@ -53,7 +56,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.15.31.37, Mar 3, 2017
+ * @version 2.16.31.38, Mar 18, 2017
  * @since 0.2.0
  */
 @Service
@@ -169,6 +172,12 @@ public class ArticleMgmtService {
     private SearchMgmtService searchMgmtService;
 
     /**
+     * Audio management service.
+     */
+    @Inject
+    private AudioMgmtService audioMgmtService;
+
+    /**
      * Determines whether the specified tag title exists in the specified tags.
      *
      * @param tagTitle the specified tag title
@@ -184,6 +193,49 @@ public class ArticleMgmtService {
         }
 
         return false;
+    }
+
+    /**
+     * Generates article's audio.
+     *
+     * @param article the specified article
+     * @param userId  the specified user id
+     */
+    public void genArticleAudio(final JSONObject article, final String userId) {
+        if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
+            return;
+        }
+
+        final String articleId = article.optString(Keys.OBJECT_ID);
+
+        final ThreadService threadService = ThreadServiceFactory.getThreadService();
+        threadService.submit(() -> {
+            String previewContent = article.optString(Article.ARTICLE_CONTENT);
+            previewContent = Emotions.clear(Jsoup.parse(previewContent).text());
+            previewContent = StringUtils.substring(previewContent, 0, 512);
+            final String audioURL = audioMgmtService.tts(previewContent, Article.ARTICLE, articleId, userId);
+            article.put(Article.ARTICLE_AUDIO_URL, audioURL);
+
+            final Transaction transaction = articleRepository.beginTransaction();
+            try {
+                final JSONObject toUpdate = articleRepository.get(articleId);
+                toUpdate.put(Article.ARTICLE_AUDIO_URL, audioURL);
+
+                articleRepository.update(articleId, toUpdate);
+
+                transaction.commit();
+            } catch (final Exception e) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+
+                LOGGER.log(Level.ERROR, "Updates article's audio URL failed", e);
+            }
+
+            JdbcRepository.dispose();
+
+            LOGGER.debug("Generated article [id=" + articleId + "] audio");
+        }, 1000 * 30);
     }
 
     /**

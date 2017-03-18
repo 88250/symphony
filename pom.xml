@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.14.6.51, Mar 7, 2017
+    Version: 2.15.6.52, Mar 18, 2017
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -21,8 +21,9 @@
 
     <!-- Properties -->
     <properties>
-        <latke.version>2.3.8</latke.version>
-        
+        <!-- Latke 的快照版没有发布中央库，请自行编译 https://github.com/b3log/latke -->
+        <latke.version>2.3.9-SNAPSHOT</latke.version>
+
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.2.7.v20150116</jetty.version>
         <slf4j.version>1.7.7</slf4j.version>
@@ -85,7 +86,7 @@
             <organizationUrl>http://b3log.org</organizationUrl>
             <timezone>+8</timezone>
         </developer>
-        
+
         <developer>
             <id>wmainlove@gmail.com</id>
             <name>Liceng Yao</name>
@@ -98,7 +99,7 @@
             <organizationUrl>http://b3log.org</organizationUrl>
             <timezone>+8</timezone>
         </developer>
-        
+
     </developers>
 
     <issueManagement>
@@ -116,7 +117,7 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke</artifactId>
@@ -126,47 +127,44 @@
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
                 </exclusion>
-                <exclusion>
-                    <artifactId>mail</artifactId>
-                    <groupId>javax.mail</groupId>
-                </exclusion>
+
                 <exclusion>
                     <groupId>org.jboss</groupId>
                     <artifactId>jboss-vfs</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
             <version>2.3.23</version>
         </dependency>
-        
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${servlet.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>javax.websocket</groupId>
             <artifactId>javax.websocket-api</artifactId>
             <version>1.1</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-repository-mysql</artifactId>
             <version>${latke.version}</version>
         </dependency>
-        
-        <dependency>         
+
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector-java.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -179,25 +177,25 @@
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
         </dependency>
-            
+
         <dependency>
             <groupId>org.pegdown</groupId>
             <artifactId>pegdown</artifactId>
             <version>${pegdown.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>
             <version>${qiniu.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.jodd</groupId>
             <artifactId>jodd-http</artifactId>
             <version>${jodd.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>com.vdurmont</groupId>
             <artifactId>emoji-java</artifactId>
@@ -209,19 +207,19 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
         <dependency>
             <groupId>eu.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
             <version>${user-agent-utils.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>${commons-codec.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.patchca</groupId>
             <artifactId>patchca</artifactId>
@@ -229,14 +227,7 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/lib/net/pusuo/patchca-0.5.0.jar</systemPath>
         </dependency>
-        
-         <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
-		<dependency>
-		    <groupId>javax.mail</groupId>
-		    <artifactId>mail</artifactId>
-		    <version>1.4.7</version>
-		</dependency>
-        
+
     </dependencies>
 
     <build>
@@ -248,7 +239,7 @@
                 </excludes>
             </resource>
         </resources>
-        
+
         <plugins>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -266,7 +257,7 @@
                     <scanIntervalSeconds>1</scanIntervalSeconds>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -275,18 +266,18 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -295,7 +286,7 @@
                     <skipTests>false</skipTests>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
@@ -349,7 +340,7 @@
                     -->
                 </executions>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -357,17 +348,17 @@
                 <configuration>
                     <webResources>
                         <resource>
-                            <directory>${project.basedir}/src/main/resources/lib/net/pusuo</directory>  
+                            <directory>${project.basedir}/src/main/resources/lib/net/pusuo</directory>
                             <targetPath>WEB-INF/lib</targetPath>
                             <filtering>false</filtering>
                             <includes>
-                                <include>**/*.jar</include>  
-                            </includes>  
-                        </resource>  
-                    </webResources>  
-                </configuration>  
+                                <include>**/*.jar</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
             </plugin>
-            
+
         </plugins>
 
         <finalName>symphony</finalName>
@@ -386,6 +377,6 @@
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </pluginRepository>
     </pluginRepositories>
-    
+
 </project>
 
