@@ -809,6 +809,30 @@ var Comment = {
 };
 
 var Article = {
+    initAudio: function () {
+        if (!Label.articleAudioURL) {
+            return false;
+        }
+
+        var img = $('.article-info .avatar').attr('style');
+        img = img.substring(22, img.length - 2);
+
+        new APlayer({
+            element: document.getElementById('articleAudio'),                       // Optional, player element
+            narrow: false,                                                     // Optional, narrow style
+            autoplay: false,                                                    // Optional, autoplay song(s), not supported by mobile browsers
+            showlrc: 0,                                                        // Optional, show lrc, can be 0, 1, 2, see: ###With lrc
+            mutex: true,                                                       // Optional, pause other players when this player playing
+            theme: '#e6d0b2',                                                  // Optional, theme color, default: #b7daff
+            mode: 'order',                                                    // Optional, play mode, can be `random` `single` `circulation`(loop) `order`(no loop), default: `circulation`
+            music: {                                                           // Required, music info, see: ###With playlist
+                title: Label.articleTitle,                                          // Required, music title
+                author: Label.articleAuthorName,                          // Required, music author
+                url: Label.articleAudioURL,
+                pic: img
+            }
+        });
+    },
     /**
      * @description 没有权限的提示
      * @param {String} tip 提示内容
@@ -1481,6 +1505,7 @@ var Article = {
 Article.init();
 
 $(document).ready(function () {
+    Article.initAudio();
     Comment.init();
     // jQuery File Upload
     Util.uploadFile({

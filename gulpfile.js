@@ -118,7 +118,8 @@ gulp.task('build', ['sass', 'clean'], function () {
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-validate.js',
         // end jquery.fileupload.min.js
         './src/main/webapp/js/lib/sound-recorder/SoundRecorder.js',
-        './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js'];
+        './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js',
+        './src/main/webapp/js/lib/aplayer/APlayer.min.js'];
     gulp.src(jsArticleLib)
             .pipe(uglify())
             .pipe(concat('article-libs.min.js'))

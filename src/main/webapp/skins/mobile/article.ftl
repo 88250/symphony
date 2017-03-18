@@ -12,7 +12,6 @@
         </@head>
         <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
-        <link rel="stylesheet" href="${staticServePath}/js/lib/aplayer/APlayer.min.css">
     </head>
     <body itemscope itemtype="http://schema.org/Product">
         <img itemprop="image" class="fn-none"  src="${staticServePath}/images/faviconH.png" />

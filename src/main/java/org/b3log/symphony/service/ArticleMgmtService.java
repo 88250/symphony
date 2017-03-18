@@ -56,7 +56,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.16.31.37, Mar 17, 2017
+ * @version 2.16.31.38, Mar 18, 2017
  * @since 0.2.0
  */
 @Service
@@ -202,11 +202,13 @@ public class ArticleMgmtService {
      * @param userId  the specified user id
      */
     public void genArticleAudio(final JSONObject article, final String userId) {
+        if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
+            return;
+        }
+
         final String articleId = article.optString(Keys.OBJECT_ID);
 
-
         final ThreadService threadService = ThreadServiceFactory.getThreadService();
-
         threadService.submit(() -> {
             String previewContent = article.optString(Article.ARTICLE_CONTENT);
             previewContent = Emotions.clear(Jsoup.parse(previewContent).text());
@@ -231,6 +233,8 @@ public class ArticleMgmtService {
             }
 
             JdbcRepository.dispose();
+
+            LOGGER.debug("Generated article [id=" + articleId + "] audio");
         }, 1000 * 30);
     }
 
