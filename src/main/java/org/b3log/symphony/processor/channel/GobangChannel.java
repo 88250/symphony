@@ -101,6 +101,7 @@ public class GobangChannel {
      */
     @OnClose
     public void onClose(final Session session, final CloseReason closeReason) {
+
         removeSession(session);
     }
 
@@ -112,24 +113,43 @@ public class GobangChannel {
     @OnMessage
     public void onMessage(final String message) throws JSONException {
         JSONObject jsonObject= new JSONObject(message);
-        String anti=getAntiPlayer(jsonObject.optString("player"));
+        final String player=jsonObject.optString("player");
+        final String anti=getAntiPlayer(player);
+        JSONObject sendText= new JSONObject();
         switch(jsonObject.optInt("type")){
             case 1: //聊天
-                JSONObject sendText= new JSONObject();
                 sendText.put("type",1);
-                sendText.put("player",jsonObject.optString("player"));
+                sendText.put("player",player);
                 sendText.put("message",jsonObject.optString("message"));
                 SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
                 break;
             case 2: //落子
-                ChessGame chessGame=chessPlaying.keySet().contains(jsonObject.optString("player"))?chessPlaying.get(jsonObject.optString("player")):chessPlaying.get(anti);
+                ChessGame chessGame=chessPlaying.keySet().contains(player)?chessPlaying.get(player):chessPlaying.get(anti);
                 int x=jsonObject.optInt("x");
                 int y=jsonObject.optInt("y");
                 int size=jsonObject.optInt("size");
                 if(chessGame!=null){
-                    chessGame.getChess()[x/size][y/size]=1;
-                    Gobang.drawChessMan(x,y,Gobang/2,"black");
-                    Gobang.checkChessMan(1);
+                    if(player.equals(chessGame.getPlayer1())){
+                        sendText.put("color","black");
+                        chessGame.getChess()[x/size][y/size]=1;
+                        chessGame.setStep(1);
+                    }else{
+                        sendText.put("color","white");
+                        chessGame.getChess()[x/size][y/size]=2;
+                        chessGame.setStep(2);
+                    }
+                    sendText.put("type",2);
+                    sendText.put("player",player);
+                    sendText.put("posX",x);
+                    sendText.put("posY",y);
+                    if(chessGame.chessCheck()){
+                        sendText.put("result","You win");
+                    }
+                    SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
+                    if(chessGame.chessCheck()){
+                        sendText.put("result","You Lose");
+                    }
+                    SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
                 }
                 break;
         }
@@ -155,19 +175,13 @@ public class GobangChannel {
      * @param session the specified session
      */
     private void removeSession(final Session session) {
-//        SESSIONS.remove(session);
-//
-//        synchronized (SESSIONS) {
-//            final Iterator<Session> i = SESSIONS.iterator();
-//            while (i.hasNext()) {
-//                final Session s = i.next();
-//
-//                if (s.isOpen()) {
-//                    final String msgStr = new JSONObject().put(Common.GOBANG_PLAYER, SESSIONS.size()).put(Common.TYPE, "gobangPlayer").toString();
-//                    s.getAsyncRemote().sendText(msgStr);
-//                }
-//            }
-//        }
+        for(String temp:SESSIONS.keySet()){
+            if(session.equals(SESSIONS.get(temp))){
+                chessPlaying.remove(temp);
+                chessPlaying.remove(getAntiPlayer(temp));
+                SESSIONS.remove(temp);
+            }
+        }
     }
 
     private String getAntiPlayer(String player){

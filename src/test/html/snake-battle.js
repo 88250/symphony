@@ -264,12 +264,13 @@ var GobangChannel = {
             switch(resp.type){
                 case 1:$("#chatArea").append(resp.player+" : "+resp.message+"<br/>");break;
                 case 2:
-                    Gobang.chess[posX/Gobang.unitSize][posY/Gobang.unitSize]=1;
-                    Gobang.drawChessMan(posX,posY,Gobang.unitSize/2,"black");
-                    Gobang.checkChessMan(1);
+                    Gobang.drawChessMan(resp.posX,resp.posY,Gobang.unitSize/2,resp.color);
+                    if(resp.result!=null && resp.result!=""){
+                        alert(resp.result);
+                        document.getElementById("gobangCanvas").removeEventListener("click",moveChess);
+                    }
                     break;
             }
-
         };
 
         GobangChannel.ws.onclose = function () {

@@ -29,13 +29,12 @@
                 }
             }
 
-            document.getElementById("gobangCanvas").addEventListener("click", function (evt) {
+            document.getElementById("gobangCanvas").addEventListener("click",moveChess, false);
+
+            function moveChess(evt) {
                 var mousePos = getMousePos(document.getElementById("gobangCanvas"), evt);
-
-                Gobang.getChessManPoint(mousePos,player);
-                player++;
-            }, false);
-
+                Gobang.getChessManPoint(mousePos,$("#player").val());
+            }
             //Get Mouse Position
             function getMousePos(canvas, evt) {
                 var rect = canvas.getBoundingClientRect();
