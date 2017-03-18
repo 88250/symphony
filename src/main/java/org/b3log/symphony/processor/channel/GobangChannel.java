@@ -51,12 +51,15 @@ public class GobangChannel {
     /**
      * Session set.
      */
-    public static final Map<Session, String> SESSIONS = new ConcurrentHashMap<Session, String>();
+    public static final Map<String,Session> SESSIONS = new ConcurrentHashMap<String,Session>();
 
     //正在进行中的棋局
-    public static final Map<String,ChessGame> chessPlaying=new ConcurrentHashMap<String,ChessGame>();
+    public static final Map<Long,ChessGame> chessPlaying=new ConcurrentHashMap<Long,ChessGame>();
     //等待的棋局队列
     public static final Queue<ChessGame> chessRandomWait=new ConcurrentLinkedQueue<ChessGame>();
+    //对手
+    public static final Map<String,String> antiPlayer=new ConcurrentHashMap<String,String>();
+
     //等待指定用户的棋局（暂不实现）
     /**
      * Called when the socket connection with the browser is established.
@@ -67,7 +70,7 @@ public class GobangChannel {
     public void onConnect(final Session session) {
         String player=(String) Channels.getHttpParameter(session,"player");
         LOGGER.info("new connection from "+player);
-        SESSIONS.put(session,player);
+        SESSIONS.put(player,session);
         ChessGame playing=chessPlaying.get(player);
         if(playing!=null){
             LOGGER.info("ING...");
@@ -79,7 +82,8 @@ public class GobangChannel {
         }else if(chessRandomWait.size()!=0){
             ChessGame chessGame=chessRandomWait.poll();
             chessGame.setPlayer2(player);
-            chessPlaying.put(player,chessGame);
+            chessPlaying.put(chessGame.getChessId(),chessGame);
+            antiPlayer.put(chessGame.getPlayer1(),chessGame.getPlayer2());
         }else{
             ChessGame chessGame=new ChessGame(player);
             chessRandomWait.add(chessGame);
@@ -105,9 +109,21 @@ public class GobangChannel {
     @OnMessage
     public void onMessage(final String message) throws JSONException {
         JSONObject jsonObject= new JSONObject(message);
-
-        LOGGER.info("message:>"+jsonObject.optString("x"));
-//        session.getBasicRemote().sendText("response");
+        switch(jsonObject.optInt("type")){
+            case 1: //聊天
+                JSONObject sendText= new JSONObject();
+                String anti=getAntiPlayer(jsonObject.optString("player"));
+                sendText.put("type",1);
+                sendText.put("player",anti);
+                sendText.put("message",jsonObject.optString("message"));
+                SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
+                break;
+            case 2: //落子
+                break;
+        }
+        if(jsonObject.optString("type").equals("chat")){
+            LOGGER.info("chat:>"+jsonObject.optString("message"));
+        }
     }
 
     /**
@@ -140,6 +156,18 @@ public class GobangChannel {
 //                }
 //            }
 //        }
+    }
+
+    private String getAntiPlayer(String player){
+        String anti=antiPlayer.get("player");
+        if(null==anti||anti.equals("")){
+            for(String temp:antiPlayer.keySet()){
+                if(player.equals(antiPlayer.get(temp))){
+                    anti=temp;
+                }
+            }
+        }
+        return anti;
     }
 }
 class ChessGame{
