@@ -60,12 +60,12 @@ var Gobang = {
         Gobang.drawChessMan(5*Gobang.unitSize,15*Gobang.unitSize,5,"black");
         Gobang.drawChessMan(15*Gobang.unitSize,15*Gobang.unitSize,5,"black");
         //初始化记录落子的数组
-        for(var i=0;i<Gobang.chessLength/Gobang.unitSize;i++){
-            Gobang.chess[i]=new Array();
-            for(var j=0;j<Gobang.chessLength/Gobang.unitSize;j++){
-                Gobang.chess[i][j]=0;
-            }
-        }
+        // for(var i=0;i<Gobang.chessLength/Gobang.unitSize;i++){
+        //     Gobang.chess[i]=new Array();
+        //     for(var j=0;j<Gobang.chessLength/Gobang.unitSize;j++){
+        //         Gobang.chess[i][j]=0;
+        //     }
+        // }
     },
     drawChessLine:function(i){
         Gobang.chessCanvas.moveTo(0, i*Gobang.unitSize);
@@ -92,6 +92,8 @@ var Gobang = {
         var xn=mouse.x;
         var ym=mouse.y;
         var yn=mouse.y;//定义任意落点相邻的四个坐标，应能整除unitSize
+        var posX=0;
+        var posY=0;
         while(xn%30!=0){
             xn=xn-10;
         };
@@ -118,19 +120,20 @@ var Gobang = {
         radius.sort(function(a,b){
             return a-b;
         });
+        posX=result[radius[0]].x;
+        posY=result[radius[0]].y;
         // console.log("<ZephyrTest>数组排序结果："+radius[0]+","+radius[1]+","+radius[2]+","+radius[3]);
-        // console.log("<ZephyrTest>半径计算结果："+result[radius[0]].x+","+result[radius[0]].y);
-        if(result[radius[0]].x==0||result[radius[0]].x==600||result[radius[0]].y==0||result[radius[0]].y==600)
+        // console.log("<ZephyrTest>半径计算结果："+posX+","+posY);
+        if(posX==0||posX==600||posY==0||posY==600)
             return;
-        if(player==1 && Gobang.chess[result[radius[0]].x/Gobang.unitSize][result[radius[0]].y/Gobang.unitSize]==0){
-            Gobang.chess[result[radius[0]].x/Gobang.unitSize][result[radius[0]].y/Gobang.unitSize]=2;
-            Gobang.drawChessMan(result[radius[0]].x,result[radius[0]].y,Gobang.unitSize/2,"black");
-            Gobang.checkChessMan(2);
-        }else if(player==2 && Gobang.chess[result[radius[0]].x/Gobang.unitSize][result[radius[0]].y/Gobang.unitSize]==0){
-            Gobang.chess[result[radius[0]].x/Gobang.unitSize][result[radius[0]].y/Gobang.unitSize]=1;
-            Gobang.drawChessMan(result[radius[0]].x,result[radius[0]].y,Gobang.unitSize/2,"white");
-            Gobang.checkChessMan(1);
-        }
+        var message={
+            type:2,
+            x:posX,
+            y:posY,
+            size:Gobang.unitSize,
+            player:player
+        };
+        GobangChannel.ws.send(JSON.stringify(message));
     },
     checkChessMan:function(num){
         //横向检查
@@ -231,5 +234,50 @@ var Gobang = {
         // Gobang.oMark = document.getElementById(oMarkId);
         Gobang.chessCanvas = document.getElementById(chessCanvasId).getContext('2d');
         Gobang.drawChessBoard();
+    }
+};
+
+/**
+ * @description gobang game channel.
+ * @static
+ */
+var GobangChannel = {
+    /**
+     * WebSocket instance.
+     *
+     * @type WebSocket
+     */
+    ws: undefined,
+    /**
+     * @description Initializes message channel
+     */
+    init: function (channelServer) {
+        GobangChannel.ws = new ReconnectingWebSocket(channelServer);
+        GobangChannel.ws.reconnectInterval = 10000;
+
+        GobangChannel.ws.onopen = function () {
+            // GobangChannel.ws.send('zephyr test');
+        };
+
+        GobangChannel.ws.onmessage = function (evt) {
+            var resp=JSON.parse(evt.data);
+            switch(resp.type){
+                case 1:$("#chatArea").append(resp.player+" : "+resp.message+"<br/>");break;
+                case 2:
+                    Gobang.chess[posX/Gobang.unitSize][posY/Gobang.unitSize]=1;
+                    Gobang.drawChessMan(posX,posY,Gobang.unitSize/2,"black");
+                    Gobang.checkChessMan(1);
+                    break;
+            }
+
+        };
+
+        GobangChannel.ws.onclose = function () {
+            GobangChannel.ws.close();
+        };
+
+        GobangChannel.ws.onerror = function (err) {
+            console.log("ERROR", err);
+        };
     }
 };
