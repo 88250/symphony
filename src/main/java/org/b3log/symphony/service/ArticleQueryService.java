@@ -36,10 +36,7 @@ import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.repository.*;
-import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.util.Markdowns;
-import org.b3log.symphony.util.Symphonys;
-import org.b3log.symphony.util.Times;
+import org.b3log.symphony.util.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,14 +51,12 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.26.26.46, Mar 4, 2017
+ * @version 2.26.26.47, Mar 19, 2017
  * @since 0.2.0
  */
 @Service
@@ -2463,47 +2458,7 @@ public class ArticleQueryService {
             }
 
             markdown(article);
-
-            final String articleId = article.optString(Keys.OBJECT_ID);
-
-            // MP3 player render
-            final StringBuffer contentBuilder = new StringBuffer();
-            articleContent = article.optString(Article.ARTICLE_CONTENT);
-            final String MP3_URL_REGEX = "<p>( )*<a href.*\\.mp3.*</a>( )*</p>";
-            final Pattern p = Pattern.compile(MP3_URL_REGEX);
-            final Matcher m = p.matcher(articleContent);
-
-            int i = 0;
-            while (m.find()) {
-                String mp3URL = m.group();
-                String mp3Name = StringUtils.substringBetween(mp3URL, "\">", ".mp3</a>");
-                mp3URL = StringUtils.substringBetween(mp3URL, "href=\"", "\" rel=");
-                final String playerId = "player" + articleId + i++;
-
-                m.appendReplacement(contentBuilder, "<div id=\"" + playerId + "\" class=\"aplayer\"></div>\n"
-                        + "<script>\n"
-                        + "var " + playerId + " = new APlayer({\n"
-                        + "    element: document.getElementById('" + playerId + "'),\n"
-                        + "    narrow: false,\n"
-                        + "    autoplay: false,\n"
-                        + "    showlrc: false,\n"
-                        + "    mutex: true,\n"
-                        + "    theme: '#e6d0b2',\n"
-                        + "    music: {\n"
-                        + "        title: '" + mp3Name + "',\n"
-                        + "        author: '" + mp3URL + "',\n"
-                        + "        url: '" + mp3URL + "',\n"
-                        + "        pic: '" + Latkes.getStaticServePath() + "/js/lib/aplayer/default.jpg'\n"
-                        + "    }\n"
-                        + "});\n"
-                        + playerId + ".init();\n"
-                        + "</script>");
-            }
-            m.appendTail(contentBuilder);
-
-            articleContent = contentBuilder.toString();
-            articleContent = articleContent.replaceFirst("<div id=\"player",
-                    "<script src=\"" + Latkes.getStaticServePath() + "/js/lib/aplayer/APlayer.min.js\"></script>\n<div id=\"player");
+            articleContent = MP3Players.render(articleContent);
 
             article.put(Article.ARTICLE_CONTENT, articleContent);
             article.put(Article.ARTICLE_T_PREVIEW_CONTENT, getArticleMetaDesc(article));
