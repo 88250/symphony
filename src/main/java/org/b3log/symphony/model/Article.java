@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.0.13, Feb 18, 2017
+ * @version 1.25.0.13, Mar 17, 2017
  * @since 0.2.0
  */
 public final class Article {
@@ -200,6 +200,11 @@ public final class Article {
      * Key of article anonymous view.
      */
     public static final String ARTICLE_ANONYMOUS_VIEW = "articleAnonymousView";
+
+    /**
+     * Key of article audio URL.
+     */
+    public static final String ARTICLE_AUDIO_URL = "articleAudioURL";
 
     //// Transient ////
     /**
@@ -418,6 +423,12 @@ public final class Article {
     public static final int ARTICLE_TYPE_C_BOOK = 4;
 
     /**
+     * Private constructor.
+     */
+    private Article() {
+    }
+
+    /**
      * Checks the specified article type is whether invalid.
      *
      * @param articleType the specified article type
@@ -425,11 +436,5 @@ public final class Article {
      */
     public static boolean isInvalidArticleType(final int articleType) {
         return articleType < 0 || articleType > Article.ARTICLE_TYPE_C_BOOK;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Article() {
     }
 }
