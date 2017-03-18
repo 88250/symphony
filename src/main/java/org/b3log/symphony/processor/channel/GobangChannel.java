@@ -54,7 +54,7 @@ public class GobangChannel {
     public static final Map<String,Session> SESSIONS = new ConcurrentHashMap<String,Session>();
 
     //正在进行中的棋局
-    public static final Map<Long,ChessGame> chessPlaying=new ConcurrentHashMap<Long,ChessGame>();
+    public static final Map<String,ChessGame> chessPlaying=new ConcurrentHashMap<String,ChessGame>();
     //对手，与正在进行的棋局Map配套使用
     public static final Map<String,String> antiPlayer=new ConcurrentHashMap<String,String>();
 
@@ -71,21 +71,21 @@ public class GobangChannel {
     @OnOpen
     public void onConnect(final Session session) {
         String player=(String) Channels.getHttpParameter(session,"player");
-        long playing=-1;
+        boolean playing=false;
         LOGGER.info("new connection from "+player);
         SESSIONS.put(player,session);
-        for(long chessGameId:chessPlaying.keySet()){
-            if(player.equals(chessPlaying.get(chessGameId).getPlayer1())
-                    ||player.equals(chessPlaying.get(chessGameId).getPlayer2())){
-                playing=chessGameId;
+        for(String temp:chessPlaying.keySet()){
+            if(player.equals(chessPlaying.get(temp).getPlayer1())
+                    ||player.equals(chessPlaying.get(temp).getPlayer2())){
+                playing=true;
             }
         }
-        if(playing!=-1){
-            //do nothing
-        }else if(chessRandomWait.size()!=0){
+        if(playing){
+            return;
+        }else if(playing == false && chessRandomWait.size()!=0){
             ChessGame chessGame=chessRandomWait.poll();
             chessGame.setPlayer2(player);
-            chessPlaying.put(chessGame.getChessId(),chessGame);
+            chessPlaying.put(chessGame.getPlayer1(),chessGame);
             antiPlayer.put(chessGame.getPlayer1(),chessGame.getPlayer2());
         }else{
             ChessGame chessGame=new ChessGame(player);
@@ -112,16 +112,25 @@ public class GobangChannel {
     @OnMessage
     public void onMessage(final String message) throws JSONException {
         JSONObject jsonObject= new JSONObject(message);
+        String anti=getAntiPlayer(jsonObject.optString("player"));
         switch(jsonObject.optInt("type")){
             case 1: //聊天
                 JSONObject sendText= new JSONObject();
-                String anti=getAntiPlayer(jsonObject.optString("player"));
                 sendText.put("type",1);
                 sendText.put("player",jsonObject.optString("player"));
                 sendText.put("message",jsonObject.optString("message"));
                 SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
                 break;
             case 2: //落子
+                ChessGame chessGame=chessPlaying.keySet().contains(jsonObject.optString("player"))?chessPlaying.get(jsonObject.optString("player")):chessPlaying.get(anti);
+                int x=jsonObject.optInt("x");
+                int y=jsonObject.optInt("y");
+                int size=jsonObject.optInt("size");
+                if(chessGame!=null){
+                    chessGame.getChess()[x/size][y/size]=1;
+                    Gobang.drawChessMan(x,y,Gobang/2,"black");
+                    Gobang.checkChessMan(1);
+                }
                 break;
         }
         if(jsonObject.optString("type").equals("chat")){
@@ -189,6 +198,97 @@ class ChessGame{
                 chess[i][j]=0;
             }
         }
+    }
+    
+    public boolean chessCheck(){
+        //横向检查
+        for(int i=0;i<this.chess.length;i++){
+            int count=0;
+            for(int j=0;j<this.chess[i].length;j++){
+                if(this.chess[i][j]==this.step){
+                    count++;
+                }else if(this.chess[i][j]!=this.step && count<5){
+                    count=0;
+                }
+            }
+            if(count>=5){
+                return true;
+            }
+        }
+        //纵向检查
+        for(int j=0;j<this.chess[0].length;j++){
+            int count=0;
+            for(int i=0;i<this.chess.length;i++){
+                if(this.chess[i][j]==this.step){
+                    count++;
+                }else if(this.chess[i][j]!=this.step && count<5){
+                    count=0;
+                }
+            }
+            if(count>=5){
+                return true;
+            }
+        }
+        //左上右下检查，下一个检查点时上一个检查点横纵坐标均＋1
+        //横向增长，横坐标先行出局
+        for(int x=0,y=0;x<this.chess.length;x++){
+            int count=0;
+            for(int i=x,j=y;i<this.chess.length;i++,j++){
+                if(this.chess[i][j]==this.step){
+                    count++;
+                }else if(this.chess[i][j]!=this.step && count<5){
+                    count=0;
+                }
+            }
+            if(count>=5){
+                return true;
+            }
+        }
+        //纵向增长，纵坐标先出局
+        for(int x=0,y=0;y<this.chess[0].length;y++){
+            int count=0;
+            for(int i=x,j=y;j<this.chess.length;i++,j++){
+                if(this.chess[i][j]==this.step){
+                    count++;
+                }else if(this.chess[i][j]!=this.step && count<5){
+                    count=0;
+                }
+            }
+            if(count>=5){
+                return true;
+            }
+        }
+        //左下右上检查x-1,y+1
+        //横向增长，横坐标先行出局
+        for(int x=0,y=0;x<this.chess.length;x++){
+            int count=0;
+            for(int i=x,j=y;i>=0;i--,j++){
+                if(this.chess[i][j]==this.step){
+                    count++;
+                }else if(this.chess[i][j]!=this.step && count<5){
+                    count=0;
+                }
+            }
+            if(count>=5){
+                return true;
+            }
+        }
+        //纵向增长，纵坐标先出局
+        for(int x=this.chess.length-1,y=0;y<this.chess[0].length;y++){
+            int count=0;
+            for(int i=x,j=y;j<this.chess.length;i--,j++){
+                if(this.chess[i][j]==this.step){
+                    count++;
+                }else if(this.chess[i][j]!=this.step && count<5){
+                    count=0;
+                }
+            }
+            if(count>=5){
+//                console.log("五星连珠："+this.step);
+                return true;
+            }
+        }
+        return false;
     }
 
     public long getChessId() {

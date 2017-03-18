@@ -31,14 +31,8 @@
 
             document.getElementById("gobangCanvas").addEventListener("click", function (evt) {
                 var mousePos = getMousePos(document.getElementById("gobangCanvas"), evt);
-                var message={
-                    type:2,
-                    x:mousePos.x,
-                    y:mousePos.y,
-                    player:player
-                };
-                GobangChannel.ws.send(JSON.stringify(message));
 
+                Gobang.getChessManPoint(mousePos,player);
                 player++;
             }, false);
 
