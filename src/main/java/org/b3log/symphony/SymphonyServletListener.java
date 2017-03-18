@@ -63,7 +63,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.17.9.31, Mar 7, 2017
+ * @version 3.18.9.31, Mar 18, 2017
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -128,6 +128,12 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         final ArticleSearchUpdater articleSearchUpdater = beanManager.getReference(ArticleSearchUpdater.class);
         eventManager.registerListener(articleSearchUpdater);
+
+        final ArticleAddAudioHandler articleAddAudioHandler = beanManager.getReference(ArticleAddAudioHandler.class);
+        eventManager.registerListener(articleAddAudioHandler);
+
+        final ArticleUpdateAudioHandler articleUpdateAudioHandler = beanManager.getReference(ArticleUpdateAudioHandler.class);
+        eventManager.registerListener(articleUpdateAudioHandler);
 
         final TagCache tagCache = beanManager.getReference(TagCache.class);
         tagCache.loadTags();
