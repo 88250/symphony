@@ -373,7 +373,14 @@ var GobangChannel = {
 
         GobangChannel.ws.onmessage = function (evt) {
             var resp=JSON.parse(evt.data);
-            $("#chatArea").append(resp.player+" : "+resp.message+"<br/>");
+            switch(resp.type){
+                case 1:$("#chatArea").append(resp.player+" : "+resp.message+"<br/>");break;
+                case 2:
+                    Gobang.getChessManPoint(mousePos,resp.playerId);
+
+                    break;
+            }
+
         };
 
         GobangChannel.ws.onclose = function () {

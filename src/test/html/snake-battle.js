@@ -122,11 +122,11 @@ var Gobang = {
         // console.log("<ZephyrTest>半径计算结果："+result[radius[0]].x+","+result[radius[0]].y);
         if(result[radius[0]].x==0||result[radius[0]].x==600||result[radius[0]].y==0||result[radius[0]].y==600)
             return;
-        if(player%2==0 && Gobang.chess[result[radius[0]].x/Gobang.unitSize][result[radius[0]].y/Gobang.unitSize]==0){
+        if(player==1 && Gobang.chess[result[radius[0]].x/Gobang.unitSize][result[radius[0]].y/Gobang.unitSize]==0){
             Gobang.chess[result[radius[0]].x/Gobang.unitSize][result[radius[0]].y/Gobang.unitSize]=2;
             Gobang.drawChessMan(result[radius[0]].x,result[radius[0]].y,Gobang.unitSize/2,"black");
             Gobang.checkChessMan(2);
-        }else if(player%2!=0 && Gobang.chess[result[radius[0]].x/Gobang.unitSize][result[radius[0]].y/Gobang.unitSize]==0){
+        }else if(player==2 && Gobang.chess[result[radius[0]].x/Gobang.unitSize][result[radius[0]].y/Gobang.unitSize]==0){
             Gobang.chess[result[radius[0]].x/Gobang.unitSize][result[radius[0]].y/Gobang.unitSize]=1;
             Gobang.drawChessMan(result[radius[0]].x,result[radius[0]].y,Gobang.unitSize/2,"white");
             Gobang.checkChessMan(1);

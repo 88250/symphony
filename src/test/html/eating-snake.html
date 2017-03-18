@@ -29,11 +29,16 @@
                 }
             }
 
-            var player=0;
             document.getElementById("gobangCanvas").addEventListener("click", function (evt) {
                 var mousePos = getMousePos(document.getElementById("gobangCanvas"), evt);
-                GobangChannel.ws.send(JSON.stringify(mousePos));
-                Gobang.getChessManPoint(mousePos,player);
+                var message={
+                    type:2,
+                    x:mousePos.x,
+                    y:mousePos.y,
+                    player:player
+                };
+                GobangChannel.ws.send(JSON.stringify(message));
+
                 player++;
             }, false);
 

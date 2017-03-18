@@ -55,10 +55,12 @@ public class GobangChannel {
 
     //正在进行中的棋局
     public static final Map<Long,ChessGame> chessPlaying=new ConcurrentHashMap<Long,ChessGame>();
+    //对手，与正在进行的棋局Map配套使用
+    public static final Map<String,String> antiPlayer=new ConcurrentHashMap<String,String>();
+
     //等待的棋局队列
     public static final Queue<ChessGame> chessRandomWait=new ConcurrentLinkedQueue<ChessGame>();
-    //对手
-    public static final Map<String,String> antiPlayer=new ConcurrentHashMap<String,String>();
+
 
     //等待指定用户的棋局（暂不实现）
     /**
@@ -69,16 +71,17 @@ public class GobangChannel {
     @OnOpen
     public void onConnect(final Session session) {
         String player=(String) Channels.getHttpParameter(session,"player");
+        long playing=-1;
         LOGGER.info("new connection from "+player);
         SESSIONS.put(player,session);
-        ChessGame playing=chessPlaying.get(player);
-        if(playing!=null){
-            LOGGER.info("ING...");
-            synchronized (session) {
-                if(session.isOpen() ){
-                    session.getAsyncRemote().sendText("");
-                }
+        for(long chessGameId:chessPlaying.keySet()){
+            if(player.equals(chessPlaying.get(chessGameId).getPlayer1())
+                    ||player.equals(chessPlaying.get(chessGameId).getPlayer2())){
+                playing=chessGameId;
             }
+        }
+        if(playing!=-1){
+            //do nothing
         }else if(chessRandomWait.size()!=0){
             ChessGame chessGame=chessRandomWait.poll();
             chessGame.setPlayer2(player);
@@ -114,7 +117,7 @@ public class GobangChannel {
                 JSONObject sendText= new JSONObject();
                 String anti=getAntiPlayer(jsonObject.optString("player"));
                 sendText.put("type",1);
-                sendText.put("player",anti);
+                sendText.put("player",jsonObject.optString("player"));
                 sendText.put("message",jsonObject.optString("message"));
                 SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
                 break;
@@ -159,7 +162,7 @@ public class GobangChannel {
     }
 
     private String getAntiPlayer(String player){
-        String anti=antiPlayer.get("player");
+        String anti=antiPlayer.get(player);
         if(null==anti||anti.equals("")){
             for(String temp:antiPlayer.keySet()){
                 if(player.equals(antiPlayer.get(temp))){
@@ -176,6 +179,7 @@ class ChessGame{
     private String player2;
     private int state;//0空桌，1，等待，2满员
     private int[][] chess=null;
+    private int step;//1-player1,2-player2;
     public ChessGame(String player1){
         this.chessId=System.currentTimeMillis();
         this.player1=player1;
@@ -217,5 +221,21 @@ class ChessGame{
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
+    }
+
+    public int[][] getChess() {
+        return chess;
+    }
+
+    public void setChess(int[][] chess) {
+        this.chess = chess;
     }
 }
