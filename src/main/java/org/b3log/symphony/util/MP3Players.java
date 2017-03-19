@@ -28,7 +28,8 @@ import java.util.regex.Pattern;
  * MP3 player utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 19, 2017
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.0.1.0, Mar 19, 2017
  * @since 2.1.0
  */
 public final class MP3Players {
@@ -52,25 +53,9 @@ public final class MP3Players {
             String mp3URL = m.group();
             String mp3Name = StringUtils.substringBetween(mp3URL, "\">", ".mp3</a>");
             mp3URL = StringUtils.substringBetween(mp3URL, "href=\"", "\" rel=");
-            final String playerId = "player" + id + i++;
 
-            m.appendReplacement(contentBuilder, "<div id=\"" + playerId + "\" class=\"aplayer\"></div>\n"
-                    + "<script>\n"
-                    + "new APlayer({\n"
-                    + "    element: document.getElementById('" + playerId + "'),\n"
-                    + "    narrow: false,\n"
-                    + "    autoplay: false,\n"
-                    + "    showlrc: false,\n"
-                    + "    mutex: true,\n"
-                    + "    theme: '#e6d0b2',\n"
-                    + "    music: {\n"
-                    + "        title: '" + mp3Name + "',\n"
-                    + "        author: '" + mp3URL + "',\n"
-                    + "        url: '" + mp3URL + "',\n"
-                    + "        pic: '" + Latkes.getStaticServePath() + "/images/sym-logo300.png'\n"
-                    + "    }\n"
-                    + "});\n"
-                    + "</script>");
+            m.appendReplacement(contentBuilder, "<div class=\"aplayer content-audio\" data-title=\""
+                    + mp3Name + "\" data-url=\"" + mp3URL + "\" ></div>\n");
         }
         m.appendTail(contentBuilder);
 

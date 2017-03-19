@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.29.21.56, Mar 5, 2017
+ * @version 2.30.21.56, Mar 19, 2017
  */
 
 @import "variables";
@@ -2128,3 +2128,18 @@ ul.CodeMirror-hints {
   height: 2px;
 }
 /* end nprogress */
+
+/* start aplayer */
+.aplayer {
+    margin: 2px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+
+    .aplayer-pic {
+        background-size: cover;
+    }
+
+    svg {
+        vertical-align: initial;
+    }
+}
+/* end aplayer */
