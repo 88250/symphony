@@ -43,7 +43,7 @@ import java.util.UUID;
  * Audio management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 17, 2017
+ * @version 1.0.0.1, Mar 19, 2017
  * @since 2.1.0
  */
 @Service
@@ -113,7 +113,7 @@ public class AudioMgmtService {
 
             final OutputStream outputStream = conn.getOutputStream();
             IOUtils.write("tex=" + URLEncoder.encode(StringUtils.substring(text, 0, 1024), "UTF-8")
-                    + "&lan=zh&cuid=" + uid + "&ctp=1&tok=" + BAIDU_ACCESS_TOKEN, outputStream);
+                    + "&lan=zh&cuid=" + uid + "&spd=6&pit=6&ctp=1&tok=" + BAIDU_ACCESS_TOKEN, outputStream);
             IOUtils.closeQuietly(outputStream);
 
             final InputStream inputStream = conn.getInputStream();
