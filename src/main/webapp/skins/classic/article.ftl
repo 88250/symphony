@@ -129,7 +129,8 @@
                             </div>
 
                             <#if article.articleAudioURL??>
-                                <div id="articleAudio" class="aplayer article-content"></div>
+                                <div id="articleAudio" data-url="${article.articleAudioURL}"
+                                     data-author="${article.articleAuthorName}" class="aplayer article-content"></div>
                             </#if>
                             <#if 3 != article.articleType>
                                 <div class="content-reset article-content">
@@ -478,7 +479,6 @@
             Label.thankSelfLabel = '${thankSelfLabel}';
             Label.replyLabel = '${replyLabel}';
             Label.articleAuthorName = '${article.articleAuthorName}';
-            Label.articleAudioURL = '${article.articleAudioURL}';
             Label.referenceLabel = '${referenceLabel}';
             Label.goCommentLabel = '${goCommentLabel}';
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';

@@ -56,7 +56,8 @@ import java.util.*;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.26.26.47, Mar 19, 2017
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 2.26.27.47, Mar 19, 2017
  * @since 0.2.0
  */
 @Service
@@ -2458,7 +2459,7 @@ public class ArticleQueryService {
             }
 
             markdown(article);
-            articleContent = MP3Players.render(articleContent);
+            articleContent = MP3Players.render(article.optString(Article.ARTICLE_CONTENT));
 
             article.put(Article.ARTICLE_CONTENT, articleContent);
             article.put(Article.ARTICLE_T_PREVIEW_CONTENT, getArticleMetaDesc(article));

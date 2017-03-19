@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.21.52, Mar 6, 2017
+ * @version 2.26.21.52, Mar 19, 2017
  */
 
 @import "variables";
@@ -86,21 +86,8 @@
 .article-content {
     margin: 15px;
 
-    .aplayer {
-        margin: 2px;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-
-        .aplayer-pic {
-            background-size: cover;
-        }
-
-        svg {
-            vertical-align: initial;
-        }
-    }
-
     &#articleAudio {
-        margin: 17px;
+        margin: 19px;
     }
 }
 

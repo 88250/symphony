@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.28.42.32, Mar 9, 2017
+ * @version 1.29.42.32, Mar 19, 2017
  */
 
 /**
@@ -810,7 +810,27 @@ var Comment = {
 
 var Article = {
     initAudio: function () {
-        if (!Label.articleAudioURL) {
+        $('.content-audio').each(function () {
+            var $it = $(this);
+            new APlayer({
+                element: this,
+                narrow: false,
+                autoplay: false,
+                mutex: true,
+                theme: '#4285f4',
+                preload: 'none',
+                mode: 'circulation',
+                music: {
+                    title: $it.data('title'),
+                    author: 'hacpai',
+                    url: $it.data('url'),
+                    pic: Label.staticServePath + '/images/sym-logo300.png'
+                }
+            });
+        });
+
+        var $articleAudio = $('#articleAudio');
+        if ($articleAudio.length === 0) {
             return false;
         }
 
@@ -818,17 +838,17 @@ var Article = {
         img = img.substring(22, img.length - 2);
 
         new APlayer({
-            element: document.getElementById('articleAudio'),                       // Optional, player element
-            narrow: false,                                                     // Optional, narrow style
-            autoplay: false,                                                    // Optional, autoplay song(s), not supported by mobile browsers
-            showlrc: 0,                                                        // Optional, show lrc, can be 0, 1, 2, see: ###With lrc
-            mutex: true,                                                       // Optional, pause other players when this player playing
-            theme: '#e6d0b2',                                                  // Optional, theme color, default: #b7daff
-            mode: 'order',                                                    // Optional, play mode, can be `random` `single` `circulation`(loop) `order`(no loop), default: `circulation`
-            music: {                                                           // Required, music info, see: ###With playlist
-                title: Label.articleTitle,                                          // Required, music title
-                author: Label.articleAuthorName,                          // Required, music author
-                url: Label.articleAudioURL,
+            element: document.getElementById('articleAudio'),
+            narrow: false,
+            autoplay: false,
+            mutex: true,
+            theme: '#4285f4',
+            mode: 'order',
+            preload: 'none',
+            music: {
+                title: $('.article-title').text(),
+                author: $articleAudio.data('author'),
+                url: $articleAudio.data('url'),
                 pic: img
             }
         });
@@ -971,6 +991,7 @@ var Article = {
         });
 
         this.initToc();
+        this.initAudio();
     },
     /**
      * 历史版本对比
@@ -1505,7 +1526,6 @@ var Article = {
 Article.init();
 
 $(document).ready(function () {
-    Article.initAudio();
     Comment.init();
     // jQuery File Upload
     Util.uploadFile({
