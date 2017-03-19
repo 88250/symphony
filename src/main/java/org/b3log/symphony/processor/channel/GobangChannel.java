@@ -85,6 +85,7 @@ public class GobangChannel {
         }else if(playing == false && chessRandomWait.size()!=0){
             ChessGame chessGame=chessRandomWait.poll();
             chessGame.setPlayer2(player);
+            chessGame.setStep(1);
             chessPlaying.put(chessGame.getPlayer1(),chessGame);
             antiPlayer.put(chessGame.getPlayer1(),chessGame.getPlayer2());
         }else{
@@ -130,13 +131,21 @@ public class GobangChannel {
                 int size=jsonObject.optInt("size");
                 if(chessGame!=null){
                     if(player.equals(chessGame.getPlayer1())){
+                        if(chessGame.getStep()!=1){
+                            return;
+                        }else{
+                            chessGame.setStep(2);
+                        }
                         sendText.put("color","black");
                         chessGame.getChess()[x/size][y/size]=1;
-                        chessGame.setStep(1);
                     }else{
+                        if(chessGame.getStep()!=2){
+                            return;
+                        }else{
+                            chessGame.setStep(1);
+                        }
                         sendText.put("color","white");
                         chessGame.getChess()[x/size][y/size]=2;
-                        chessGame.setStep(2);
                     }
                     sendText.put("type",2);
                     sendText.put("player",player);
@@ -178,7 +187,10 @@ public class GobangChannel {
         for(String temp:SESSIONS.keySet()){
             if(session.equals(SESSIONS.get(temp))){
                 chessPlaying.remove(temp);
-                chessPlaying.remove(getAntiPlayer(temp));
+                String anti=getAntiPlayer(temp);
+                if(anti!=null && !anti.equals("")){
+                    chessPlaying.remove(anti);
+                }
                 SESSIONS.remove(temp);
             }
         }
