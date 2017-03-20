@@ -85,10 +85,11 @@
 
 .article-content {
     padding: 15px;
+    margin-top: 15px;
     border-top: 1px solid #eee;
 
     &#articleAudio {
-        padding: 0 15px 15px;
+        padding: 0 15px;
         border-top-width: 0;
     }
 }
@@ -422,7 +423,7 @@ label.cmt-anonymous {
 }
 
 .editor-panel {
-    background-color: rgba(241, 247, 254, 1);
+    background-color: #f1f7fe;
     border-top: 1px solid #eee;
     padding: 5px 0 10px 0;
     position: fixed;

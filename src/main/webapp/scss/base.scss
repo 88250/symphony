@@ -1071,8 +1071,9 @@ a[class*=" icon-"]:hover {
 /* start tip */
 .tip.error {
     color: $red;
-    background-color: #fcdede;
-    border: 1px solid #d2b2b2;
+    background-color: #ffdce0;
+    border: 1px solid rgba(27,31,35,0.15);
+    border-radius: 2px;
 }
 
 .tip ul {
@@ -1081,9 +1082,10 @@ a[class*=" icon-"]:hover {
 }
 
 .tip.succ {
-    background-color: #D4F6FA;
-    border: 1px solid #1D2B3D;
-    color: #1D2B3D;
+    background-color: #dbedff;
+    border: 1px solid rgba(27,31,35,0.15);
+    border-radius: 2px;
+    color: #032f62;
 }
 
 #registerTip,
