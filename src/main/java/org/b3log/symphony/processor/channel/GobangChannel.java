@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Char room channel.
+ * Gobang game channel.
  *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @version 1.0.0.0, Mar 16, 2017
