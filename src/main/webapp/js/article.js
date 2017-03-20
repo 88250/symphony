@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.29.42.32, Mar 19, 2017
+ * @version 1.29.42.33, Mar 20, 2017
  */
 
 /**
@@ -822,9 +822,9 @@ var Article = {
                 mode: 'circulation',
                 music: {
                     title: $it.data('title'),
-                    author: 'hacpai',
+                    author: '<a href="https://hacpai.com/article/1464416402922" target="_blank">音乐分享</a>',
                     url: $it.data('url'),
-                    pic: Label.staticServePath + '/images/sym-logo300.png'
+                    pic: Label.staticServePath + '/images/music.png'
                 }
             });
         });
@@ -833,9 +833,6 @@ var Article = {
         if ($articleAudio.length === 0) {
             return false;
         }
-
-        var img = $('.article-info .avatar').attr('style');
-        img = img.substring(22, img.length - 2);
 
         new APlayer({
             element: document.getElementById('articleAudio'),
@@ -846,10 +843,10 @@ var Article = {
             mode: 'order',
             preload: 'none',
             music: {
-                title: $('.article-title').text(),
-                author: $articleAudio.data('author'),
+                title: '语音预览',
+                author: '<a href="https://hacpai.com/member/v" target="_blank">小薇</a>',
                 url: $articleAudio.data('url'),
-                pic: img
+                pic: 'https://img.hacpai.com/avatar/1435731394327?imageView2/1/w/80/h/80/interlace/0/q/100'
             }
         });
     },
