@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.26.21.52, Mar 19, 2017
+ * @version 2.26.21.53, Mar 20, 2017
  */
 
 @import "variables";
@@ -84,10 +84,13 @@
 }
 
 .article-content {
-    margin: 15px;
+    padding: 15px;
+    margin-top: 15px;
+    border-top: 1px solid #eee;
 
     &#articleAudio {
-        margin: 19px;
+        padding: 0 15px;
+        border-top-width: 0;
     }
 }
 
@@ -101,20 +104,19 @@
 
 h1.article-title {
     word-break: break-all;
-    font-size: 24px;
+    font-size: 32px;
     font-weight: normal;
-    margin: 0 15px;
-    line-height: 36px;
+    padding: 15px 15px 0px;
+    text-align: center;
 }
 
 .article-info {
-    border-bottom: 1px solid #eee;
     font-size: 12px;
     line-height: 20px;
-    padding: 15px;
+    padding: 0 15px;
 
     .article-actions {
-        line-height: 40px;
+        line-height: 60px;
     }
 
     .share {
@@ -421,7 +423,7 @@ label.cmt-anonymous {
 }
 
 .editor-panel {
-    background-color: rgba(241, 247, 254, 0.88);
+    background-color: #f1f7fe;
     border-top: 1px solid #eee;
     padding: 5px 0 10px 0;
     position: fixed;

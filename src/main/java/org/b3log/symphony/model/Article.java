@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.0.13, Mar 17, 2017
+ * @version 1.25.0.14, Mar 20, 2017
  * @since 0.2.0
  */
 public final class Article {
@@ -336,6 +336,11 @@ public final class Article {
      * Key of article title with Emoj.
      */
     public static final String ARTICLE_T_TITLE_EMOJI = "articleTitleEmoj";
+
+    /**
+     * Key of article title with Emoji unicode.
+     */
+    public static final String ARTICLE_T_TITLE_EMOJI_UNICODE = "articleTitleEmojUnicode";
 
     /**
      * Key of article heat.
