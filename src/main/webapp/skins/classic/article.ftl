@@ -128,7 +128,7 @@
                                 </div>
                             </div>
 
-                            <#if article.articleAudioURL??>
+                            <#if "" != article.articleAudioURL>
                                 <div id="articleAudio" data-url="${article.articleAudioURL}"
                                      data-author="${article.articleAuthorName}" class="aplayer article-content"></div>
                             </#if>
@@ -221,6 +221,7 @@
                                 </span>
                             </div>
                         </div>
+                        <#if articlePrevious?? || articleNext??>
                         <div class="module-header article-module-bottom fn-clear">
                             <#if articlePrevious??>
                                 <a rel="prev" class="fn-left fn-ellipsis" href="${servePath}${articlePrevious.articlePermalink}">
@@ -232,6 +233,7 @@
                                 </a>
                             </#if>
                         </div>
+                        </#if>
                     </div>
 
                     <#if article.articleNiceComments?size != 0>

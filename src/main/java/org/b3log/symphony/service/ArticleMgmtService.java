@@ -40,6 +40,7 @@ import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Pangu;
+import org.b3log.symphony.util.Runes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,7 +57,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.16.31.38, Mar 18, 2017
+ * @version 2.16.31.39, Mar 19, 2017
  * @since 0.2.0
  */
 @Service
@@ -213,6 +214,14 @@ public class ArticleMgmtService {
             String previewContent = article.optString(Article.ARTICLE_CONTENT);
             previewContent = Emotions.clear(Jsoup.parse(previewContent).text());
             previewContent = StringUtils.substring(previewContent, 0, 512);
+
+            if (Runes.getChinesePercent(previewContent) < 40) {
+                LOGGER.debug("Chinese is insufficent, so do not TTS [previewContent=" + previewContent
+                        + "]");
+
+                return;
+            }
+
             final String audioURL = audioMgmtService.tts(previewContent, Article.ARTICLE, articleId, userId);
             article.put(Article.ARTICLE_AUDIO_URL, audioURL);
 
@@ -531,6 +540,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_PERFECT, Article.ARTICLE_PERFECT_C_NOT_PERFECT);
             article.put(Article.ARTICLE_ANONYMOUS_VIEW,
                     requestJSONObject.optInt(Article.ARTICLE_ANONYMOUS_VIEW, Article.ARTICLE_ANONYMOUS_VIEW_C_USE_GLOBAL));
+            article.put(Article.ARTICLE_AUDIO_URL, "");
 
             String articleTags = article.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
@@ -1674,6 +1684,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_ANONYMOUS, Article.ARTICLE_ANONYMOUS_C_PUBLIC);
             article.put(Article.ARTICLE_PERFECT, Article.ARTICLE_PERFECT_C_NOT_PERFECT);
             article.put(Article.ARTICLE_ANONYMOUS_VIEW, Article.ARTICLE_ANONYMOUS_VIEW_C_USE_GLOBAL);
+            article.put(Article.ARTICLE_AUDIO_URL, "");
 
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
