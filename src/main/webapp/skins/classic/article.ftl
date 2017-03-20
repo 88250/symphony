@@ -52,7 +52,11 @@
                                         <span id="articltVia" class="ft-fade" data-ua="${article.articleUA}"></span>
                                     </#if>
                                     <br/>
-                                    <span class="ft-gray">${article.articleAuthorIntro}</span>
+                                    <#if "" != article.articleAuthorIntro>
+                                        <span class="ft-gray">${article.articleAuthorIntro}</span>
+                                    <#else>
+                                        <span class="ft-gray">${symphonyLabel} <#if article.articleAnonymous == 0>${article.articleAuthor.userNo?c}<#else>?</#if> ${numVIPLabel}</span>
+                                    </#if>
                                     <br/>
                                     <#list article.articleTagObjs as articleTag>
                                         <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a>&nbsp;
