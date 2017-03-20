@@ -846,7 +846,7 @@ var Article = {
                 title: '语音预览',
                 author: '<a href="https://hacpai.com/member/v" target="_blank">小薇</a>',
                 url: $articleAudio.data('url'),
-                pic: 'https://img.hacpai.com/avatar/1435731394327?imageView2/1/w/80/h/80/interlace/0/q/100'
+                pic: Label.staticServePath + '/images/blank.png'
             }
         });
     },

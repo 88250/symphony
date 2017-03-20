@@ -40,30 +40,25 @@
                 <div class="content">
                     <div class="module">
                         <div class="article-module">
-                            <h1 class="article-title" itemprop="name">
-                                <#if 1 == article.articlePerfect>
-                                <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="24" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
-                                </#if>
-                                <#if 1 == article.articleType>
-                                <span class="tooltipped tooltipped-n" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
-                                <#elseif 2 == article.articleType>
-                                <span class="tooltipped tooltipped-n" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
-                                <#elseif 3 == article.articleType>
-                                <span class="tooltipped tooltipped-n" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
-                                </#if>
-                                <a class="ft-a-title" href="${servePath}${article.articlePermalink}" rel="bookmark">
-                                    ${article.articleTitleEmoj}
-                                </a>
-                            </h1>
                             <div class="article-info fn-flex">
                                 <#if article.articleAnonymous == 0>
                                 <a rel="author" href="${servePath}/member/${article.articleAuthorName}"></#if><div
-                                   class="avatar tooltipped tooltipped-se" aria-label="${article.articleAuthorName}" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
+                                   class="avatar-mid tooltipped tooltipped-se" aria-label="${article.articleAuthorName}" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
                                 <div class="fn-flex-1">
                                     <#if article.articleAnonymous == 0>
                                     <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-gray"></#if><strong class="ft-gray">${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
+
+                                    <#if 0 == article.articleAuthor.userUAStatus>
+                                        <span id="articltVia" class="ft-fade" data-ua="${article.articleUA}"></span>
+                                    </#if>
+                                    <br/>
+                                    <span class="ft-gray">${article.articleAuthorIntro}</span>
+                                    <br/>
+                                    <#list article.articleTagObjs as articleTag>
+                                        <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a>&nbsp;
+                                    </#list>
                                     <span class="ft-gray">
-                                        &nbsp;•&nbsp;
+                                        •&nbsp;
                                         <a rel="nofollow" class="ft-gray" href="#comments">
                                             <b class="article-level<#if article.articleCommentCount lt 40>${(article.articleCommentCount/10)?int}<#else>4</#if>">${article.articleCommentCount}</b> ${cmtLabel}</a>
                                         &nbsp;•&nbsp;
@@ -72,7 +67,7 @@
                                         ${article.articleViewCount}
                                         <#else>
                                         ${article.articleViewCntDisplayFormat}
-                                        </#if>
+                                            </#if>
                                         </span>
                                         ${viewLabel}
                                         &nbsp;•&nbsp;
@@ -81,14 +76,8 @@
                                         &nbsp;•&nbsp; <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
                                         </#if>
                                     </span>
-                                    <br/>
-                                    <#list article.articleTagObjs as articleTag>
-                                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a>&nbsp;
-                                    </#list>
-                                    <#if 0 == article.articleAuthor.userUAStatus>
-                                    <span id="articltVia" class="ft-fade" data-ua="${article.articleUA}"></span>
-                                    </#if>
                                 </div>
+
                                 <div class="article-actions action-btns">
 
                                     <#if "" != article.articleToC>
@@ -127,6 +116,23 @@
                                     </div>
                                 </div>
                             </div>
+
+
+                            <h1 class="article-title" itemprop="name">
+                                <#if 1 == article.articlePerfect>
+                                    <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="24" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
+                                </#if>
+                                <#if 1 == article.articleType>
+                                    <span class="tooltipped tooltipped-n" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
+                                    <#elseif 2 == article.articleType>
+                                        <span class="tooltipped tooltipped-n" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
+                                        <#elseif 3 == article.articleType>
+                                            <span class="tooltipped tooltipped-n" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
+                                </#if>
+                                <a class="ft-a-title" href="${servePath}${article.articlePermalink}" rel="bookmark">
+                                    ${article.articleTitleEmoj}
+                                </a>
+                            </h1>
 
                             <#if "" != article.articleAudioURL>
                                 <div id="articleAudio" data-url="${article.articleAudioURL}"

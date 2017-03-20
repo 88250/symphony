@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.30.21.56, Mar 19, 2017
+ * @version 2.30.21.57, Mar 20, 2017
  */
 
 @import "variables";
@@ -1121,6 +1121,12 @@ a[class*=" icon-"]:hover {
     width: 20px;
 }
 
+.avatar-mid {
+    height: 60px;
+    width: 60px;
+    margin-right: 15px;
+}
+
 .avatar-big {
     border: 1px solid #EEEEEE;
     height: 210px;
@@ -2130,9 +2136,9 @@ ul.CodeMirror-hints {
 /* end nprogress */
 
 /* start aplayer */
-.aplayer {
-    margin: 2px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+.wrapper .aplayer {
+    margin: 0;
+    box-shadow: 0 0 0;
 
     .aplayer-pic {
         background-size: cover;
