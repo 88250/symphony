@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${article.articleTitle} - ${symphonyLabel}">
+        <@head title="${article.articleTitleEmojUnicode} - ${symphonyLabel}">
         <meta name="keywords" content="<#list article.articleTagObjs as articleTag>${articleTag.tagTitle}<#if articleTag?has_next>,</#if></#list>" />
         <meta name="description" content="${article.articlePreviewContent}"/>
         <#if 1 == article.articleStatus || 1 == article.articleAuthor.userStatus || 1 == article.articleType>

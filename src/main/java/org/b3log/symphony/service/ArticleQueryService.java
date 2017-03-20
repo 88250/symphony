@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.service;
 
+import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -57,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.27.47, Mar 19, 2017
+ * @version 2.26.27.48, Mar 20, 2017
  * @since 0.2.0
  */
 @Service
@@ -720,6 +721,7 @@ public class ArticleQueryService {
                 article.remove(Article.ARTICLE_UPDATE_TIME);
                 article.remove(Article.ARTICLE_T_HEAT);
                 article.remove(Article.ARTICLE_T_TITLE_EMOJI);
+                article.remove(Article.ARTICLE_T_TITLE_EMOJI_UNICODE);
                 article.remove(Common.TIME_AGO);
                 article.remove(Common.CMT_TIME_AGO);
                 article.remove(Article.ARTICLE_T_TAG_OBJS);
@@ -1725,6 +1727,7 @@ public class ArticleQueryService {
                     if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
                         article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
                         article.put(Article.ARTICLE_T_TITLE_EMOJI, langPropsService.get("articleTitleBlockLabel"));
+                        article.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, langPropsService.get("articleTitleBlockLabel"));
                     }
                 }
             } finally {
@@ -2095,10 +2098,12 @@ public class ArticleQueryService {
         article.put(Article.ARTICLE_TITLE, title);
 
         article.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
+        article.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, EmojiParser.parseToUnicode(title));
 
         if (Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
             article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
             article.put(Article.ARTICLE_T_TITLE_EMOJI, langPropsService.get("articleTitleBlockLabel"));
+            article.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, langPropsService.get("articleTitleBlockLabel"));
             article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
         }
 
@@ -2387,6 +2392,7 @@ public class ArticleQueryService {
                     || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
                 article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
                 article.put(Article.ARTICLE_T_TITLE_EMOJI, langPropsService.get("articleTitleBlockLabel"));
+                article.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, langPropsService.get("articleTitleBlockLabel"));
                 article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
                 article.put(Article.ARTICLE_T_PREVIEW_CONTENT, langPropsService.get("articleContentBlockLabel"));
                 article.put(Article.ARTICLE_T_TOC, "");
