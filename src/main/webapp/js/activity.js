@@ -20,7 +20,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @author Zephyr
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @version 1.4.2.3, Sep 19, 2016
  */
 
@@ -206,6 +206,15 @@ var Activity = {
             var event = event || window.event;
             EatingSnake.input(event.keyCode);
         };
+    },
+    initGobang:function(){
+        if($("#player").val()!=""){
+            GobangChannel.init("ws://localhost:8080/gobang-game-channel?player="+$("#player").val());
+            $("#chatInput").show();
+            $("#chatSubmit").show();
+        }else{
+            alert("请填写昵称");
+        }
     }
 };
 

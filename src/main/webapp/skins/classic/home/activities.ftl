@@ -83,6 +83,20 @@
                                         </div>
                                     </div>
                                 </li>
+                                <li>
+                                    <div class='fn-flex'>
+                                        <div class="avatar tooltipped tooltipped-ne"
+                                             aria-label="${gobangLabel}" style="background-image:url('${staticServePath}/images/activities/snak.png')"></div>
+                                        <div class="fn-flex-1">
+                                            <h2>
+                                                <a href="${servePath}/activity/gobang">${gobangLabel}</a>
+                                            </h2>
+                                            <span class="ft-fade content-reset">
+                                            ${activityGobangTitleLabel}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                     </div>
