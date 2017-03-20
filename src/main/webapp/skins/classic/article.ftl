@@ -221,6 +221,7 @@
                                 </span>
                             </div>
                         </div>
+                        <#if articlePrevious?? || articleNext??>
                         <div class="module-header article-module-bottom fn-clear">
                             <#if articlePrevious??>
                                 <a rel="prev" class="fn-left fn-ellipsis" href="${servePath}${articlePrevious.articlePermalink}">
@@ -232,6 +233,7 @@
                                 </a>
                             </#if>
                         </div>
+                        </#if>
                     </div>
 
                     <#if article.articleNiceComments?size != 0>
