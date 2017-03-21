@@ -12,7 +12,7 @@
         <div class="main">
             <div class="wrapper guide">
                 <div class="module">
-                    <div class="module-header">Markdown ${tutorialLabel}</div>
+                    <div class="module-header ft-center"><strong>Markdown ${tutorialLabel}</strong></div>
                     <div class="module-panel fn-flex">
                         <div class="md">
                             <pre>

@@ -99,7 +99,9 @@ var a = 1
 
 如果在 ``` 后面更随语言名称，可以有语法高亮的效果哦，比如:
 
+
 ##### 演示 Go 代码高亮
+
 
 ```go
 package main
@@ -113,6 +115,7 @@ func main() {
 
 
 ##### 演示 Java 高亮
+
 
 ```java
 public class HelloWorld {
@@ -170,7 +173,6 @@ public class HelloWorld {
 
 
 
-
 ### 表格
 
 如果需要展示数据什么的，可以选择使用表格。
@@ -188,6 +190,7 @@ public class HelloWorld {
 
 ### 段落
 
+
 留空白的换行，将会被自动转换成一个段落，会有一定的段落间距，便于阅读。
 
 请注意后面 Markdown 源代码的换行留空情况。
@@ -196,3 +199,7 @@ public class HelloWorld {
 ### 排版
 
 请注意单词拼写，以及中英文排版，[https://github.com/sparanoid/chinese-copywriting-guidelines](https://github.com/sparanoid/chinese-copywriting-guidelines)，特别是关于空格的使用。
+
+## 快捷键
+
+我们的编辑器支持很多快捷键，具体请参考 [键盘快捷键](https://hacpai.com/article/1474030007391)（或者按 `?` :smirk_cat:）
