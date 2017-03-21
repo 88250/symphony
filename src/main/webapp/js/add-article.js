@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.21.16.18, Mar 9, 2017
+ * @version 2.22.16.18, Mar 21, 2017
  */
 
 /**
@@ -171,18 +171,15 @@ var AddArticle = {
                 toolbar: [
                     {name: 'bold'},
                     {name: 'italic'},
-                    '|',
                     {name: 'quote'},
                     {name: 'unordered-list'},
                     {name: 'ordered-list'},
-                    '|',
                     {name: 'link'},
-                    {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form>'},
-                    '|',
+                    {name: 'image', html: '<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form>'},
                     {name: 'redo'},
                     {name: 'undo'},
-                    '|',
                     {name: 'view'},
+                    {name: 'question', action: 'https://hacpai.com/guide/markdown'},
                     {name: 'fullscreen'}
                 ],
                 status: false
@@ -403,20 +400,17 @@ var AddArticle = {
                 lineWrapping: true,
                 htmlURL: Label.servePath + "/markdown",
                 toolbar: [
-                     {name: 'bold'},
+                    {name: 'bold'},
                     {name: 'italic'},
-                    '|',
                     {name: 'quote'},
                     {name: 'unordered-list'},
                     {name: 'ordered-list'},
-                    '|',
                     {name: 'link'},
                     {name: 'image', html: '<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form>'},
-                    '|',
                     {name: 'redo'},
                     {name: 'undo'},
-                    '|',
                     {name: 'view'},
+                    {name: 'question', action: 'https://hacpai.com/guide/markdown'},
                     {name: 'fullscreen'}
                 ],
                 extraKeys: {

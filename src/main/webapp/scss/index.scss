@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.26.21.53, Mar 20, 2017
+ * @version 2.27.21.53, Mar 21, 2017
  */
 
 @import "variables";
@@ -104,7 +104,7 @@
 
 h1.article-title {
     word-break: break-all;
-    font-size: 32px;
+    font-size: 28px;
     font-weight: normal;
     padding: 15px 15px 0px;
     text-align: center;
@@ -331,7 +331,7 @@ label.cmt-anonymous {
 #commentContent,
 #chatContent {
     background-color: #FAFAFA;
-    margin: 51px 0 0 0;
+    margin: 32px 0 0 0;
     overflow: hidden;
     padding: 4px;
     height: 102px;
