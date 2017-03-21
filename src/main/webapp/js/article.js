@@ -1113,7 +1113,7 @@ var Article = {
 
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
                     url = encodeURIComponent(shareURL),
-                    picCSS = $(".article-info .avatar").css('background-image');
+                    picCSS = $(".article-info .avatar-mid").css('background-image');
                     pic = picCSS.substring(5, picCSS.length - 2);
 
             var urls = {};
