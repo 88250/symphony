@@ -56,72 +56,43 @@
 /* end list */
 
 /* start article */
-.article-module {
-    padding: 30px 15px;
-}
-
-.article-module-bottom {
-    border-top: 1px solid #e5e5e5;
-    border-bottom: 0;
-    border-radius: 0 0 3px 3px;
-    font-weight: bold;
-    padding: 15px 30px;
-
-    a {
-        text-decoration: none;
-        transition: all 0.2s ease-out 0s;
-        color: #666;
-        width: 45%;
+.article {
+    .wrapper {
+        display: block;
+        max-width: 768px;
     }
 
-    a.fn-right {
-        text-align: right;
+    .article-body {
+        background-color: #fff;
+        margin: 40px 0;
     }
 
-    a:hover {
-        color: #333;
+    .article-info {
+        font-size: 12px;
+        line-height: 20px;
+
+        .article-actions {
+            line-height: 60px;
+        }
     }
-}
 
-.article-content {
-    padding: 15px;
-    margin-top: 15px;
-    border-top: 1px solid #eee;
-
-    &#articleAudio {
-        padding: 0 15px;
-        border-top-width: 0;
+    h1.article-title {
+        word-break: break-all;
+        font-size: 28px;
+        font-weight: normal;
+        padding-top: 15px;
+        text-align: center;
     }
-}
 
-#heatBar {
-    position: fixed;
-    top: 2px;
-    right: 0px;
-    width: 100%;
-    z-index: 84;
-}
-
-h1.article-title {
-    word-break: break-all;
-    font-size: 28px;
-    font-weight: normal;
-    padding: 15px 15px 0px;
-    text-align: center;
-}
-
-.article-info {
-    font-size: 12px;
-    line-height: 20px;
-    padding: 0 15px;
-
-    .article-actions {
-        line-height: 60px;
+    .article-content {
+        padding-top: 15px;
     }
 
     .share {
-        position: relative;
-        display: inline;
+        position: fixed;
+        top: 50%;
+        left: 20px;
+        width: 10px;
 
         .article-clipboard {
             position: absolute;
@@ -148,7 +119,24 @@ h1.article-title {
             width: 90px;
         }
     }
+
+    .article-footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #f1f7fe;
+    }
 }
+
+#heatBar {
+    position: fixed;
+    top: 2px;
+    right: 0px;
+    width: 100%;
+    z-index: 84;
+}
+
+
 
 .article-bottom {
     margin: 0 15px;
