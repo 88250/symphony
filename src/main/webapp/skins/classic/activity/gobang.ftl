@@ -24,6 +24,7 @@
                             <button class="green fn-right" onclick="Activity.initGobang('${csrfToken}')">${gameStartLabel}</button>
                         </div>
                         <div id="yard"><canvas id="gobangCanvas" height="600px" width="600px"></canvas></div>
+                        <input  type="text" id="player"/>
                         <input  type="text" id="chatInput" style="display: none;"/>
                         <input type="submit" id="chatSubmit" value="发送" onclick="Gobang.chatSend()" style="display: none;"/>
                         <div id="chatArea">
@@ -43,7 +44,7 @@
         <script>
             Label.activityStartGobnagTipLabel = '${activityStartGobangTipLabel}';
             Gobang.initCanvas('oMark', 'gobangCanvas');
-            document.getElementById("gobangCanvas").addEventListener("click",moveChess, false);
+            document.getElementById("gobangCanvas").addEventListener("click",Gobang.moveChess, false);
         </script>
     </body>
 </html>

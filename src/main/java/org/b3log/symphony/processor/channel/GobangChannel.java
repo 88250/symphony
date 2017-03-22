@@ -130,7 +130,9 @@ public class GobangChannel {
                 int y=jsonObject.optInt("y");
                 int size=jsonObject.optInt("size");
                 if(chessGame!=null){
+                    boolean flag=false;
                     if(player.equals(chessGame.getPlayer1())){
+                        flag=chessGame.chessCheck(1);
                         if(chessGame.getStep()!=1){
                             return;
                         }else{
@@ -139,6 +141,7 @@ public class GobangChannel {
                         sendText.put("color","black");
                         chessGame.getChess()[x/size][y/size]=1;
                     }else{
+                        flag=chessGame.chessCheck(2);
                         if(chessGame.getStep()!=2){
                             return;
                         }else{
@@ -151,11 +154,11 @@ public class GobangChannel {
                     sendText.put("player",player);
                     sendText.put("posX",x);
                     sendText.put("posY",y);
-                    if(chessGame.chessCheck()){
+                    if(flag){
                         sendText.put("result","You win");
                     }
                     SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
-                    if(chessGame.chessCheck()){
+                    if(flag){
                         sendText.put("result","You Lose");
                     }
                     SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
@@ -226,14 +229,14 @@ class ChessGame{
         }
     }
     
-    public boolean chessCheck(){
+    public boolean chessCheck(int step){
         //横向检查
         for(int i=0;i<this.chess.length;i++){
             int count=0;
             for(int j=0;j<this.chess[i].length;j++){
-                if(this.chess[i][j]==this.step){
+                if(this.chess[i][j]==step){
                     count++;
-                }else if(this.chess[i][j]!=this.step && count<5){
+                }else if(this.chess[i][j]!=step && count<5){
                     count=0;
                 }
             }
@@ -245,9 +248,9 @@ class ChessGame{
         for(int j=0;j<this.chess[0].length;j++){
             int count=0;
             for(int i=0;i<this.chess.length;i++){
-                if(this.chess[i][j]==this.step){
+                if(this.chess[i][j]==step){
                     count++;
-                }else if(this.chess[i][j]!=this.step && count<5){
+                }else if(this.chess[i][j]!=step && count<5){
                     count=0;
                 }
             }
@@ -260,9 +263,9 @@ class ChessGame{
         for(int x=0,y=0;x<this.chess.length;x++){
             int count=0;
             for(int i=x,j=y;i<this.chess.length;i++,j++){
-                if(this.chess[i][j]==this.step){
+                if(this.chess[i][j]==step){
                     count++;
-                }else if(this.chess[i][j]!=this.step && count<5){
+                }else if(this.chess[i][j]!=step && count<5){
                     count=0;
                 }
             }
@@ -274,9 +277,9 @@ class ChessGame{
         for(int x=0,y=0;y<this.chess[0].length;y++){
             int count=0;
             for(int i=x,j=y;j<this.chess.length;i++,j++){
-                if(this.chess[i][j]==this.step){
+                if(this.chess[i][j]==step){
                     count++;
-                }else if(this.chess[i][j]!=this.step && count<5){
+                }else if(this.chess[i][j]!=step && count<5){
                     count=0;
                 }
             }
@@ -289,9 +292,9 @@ class ChessGame{
         for(int x=0,y=0;x<this.chess.length;x++){
             int count=0;
             for(int i=x,j=y;i>=0;i--,j++){
-                if(this.chess[i][j]==this.step){
+                if(this.chess[i][j]==step){
                     count++;
-                }else if(this.chess[i][j]!=this.step && count<5){
+                }else if(this.chess[i][j]!=step && count<5){
                     count=0;
                 }
             }
@@ -303,14 +306,13 @@ class ChessGame{
         for(int x=this.chess.length-1,y=0;y<this.chess[0].length;y++){
             int count=0;
             for(int i=x,j=y;j<this.chess.length;i--,j++){
-                if(this.chess[i][j]==this.step){
+                if(this.chess[i][j]==step){
                     count++;
-                }else if(this.chess[i][j]!=this.step && count<5){
+                }else if(this.chess[i][j]!=step && count<5){
                     count=0;
                 }
             }
             if(count>=5){
-//                console.log("五星连珠："+this.step);
                 return true;
             }
         }
