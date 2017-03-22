@@ -30,6 +30,7 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,7 +43,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.3.11, Mar 12, 2017
+ * @version 1.13.3.12, Mar 22, 2017
  * @since 0.2.5
  */
 @Service
@@ -685,6 +686,9 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
         try {
+            final JSONObject user = userRepository.get(userId);
+            final int cmtViewMode = user.optInt(UserExt.USER_COMMENT_VIEW_MODE);
+
             final JSONObject queryResult = notificationRepository.get(query);
             final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
 
@@ -718,10 +722,13 @@ public class NotificationQueryService {
                         optLong(UserExt.USER_UPDATE_TIME));
                 commentedNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, Emotions.convert(articleTitle));
                 commentedNotification.put(Comment.COMMENT_T_ARTICLE_TYPE, articleType);
-                commentedNotification.put(Comment.COMMENT_SHARP_URL, comment.optString(Comment.COMMENT_SHARP_URL));
                 commentedNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
                 commentedNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                 commentedNotification.put(Comment.COMMENT_T_ARTICLE_PERFECT, articlePerfect);
+                final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                final int cmtPage = commentQueryService.getCommentPage(articleId, commentId, cmtViewMode, Symphonys.getInt("articleCommentsPageSize"));
+                commentedNotification.put(Comment.COMMENT_SHARP_URL, "/article/" + articleId + "?p=" + cmtPage
+                        + "&m=" + cmtViewMode + "#" + commentId);
 
                 rslts.add(commentedNotification);
             }
