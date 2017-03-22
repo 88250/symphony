@@ -63,7 +63,11 @@
                         case 'success':
                         case 'cache':
                             $('.nav-tabs a').removeClass('current');
-                            $(this).addClass('current');
+                            $('.nav-tabs a').each(function () {
+                                if ($(this).attr('href') === location.href) {
+                                    $(this).addClass('current');
+                                }
+                            });
                         case 'error':
                             break;
                         case 'hash':
