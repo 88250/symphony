@@ -19,21 +19,21 @@
  * variables.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.0.2, Jan 15, 2017
+ * @version 0.2.0.2, Mar 23, 2017
  */
 
 /**
 z-index rule
 footer 40~59
-go-top 50~59
-article-toc 60~69
 article-editor 80~89
 article-editor-preview 81
 add afrticle tag tip 82
 header 83
 heatBar 84
+article-toc 85
 editor-fullscreen 90~99
 editor-hints 100~109
+go-top, article-footer 110
 dialog 200~209
 */
 
@@ -45,6 +45,7 @@ dialog 200~209
 
 // Colors
 $blue: #4285f4 !default;
+$light-blue: #f1f7fe !default;
 $red: #d23f31 !default;
 $fade: #ccc !default;
 $gray: #999 !default;
