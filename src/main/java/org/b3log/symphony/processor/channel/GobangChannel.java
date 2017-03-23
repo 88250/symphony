@@ -97,15 +97,22 @@ public class GobangChannel {
             antiPlayer.put(chessGame.getPlayer1(),chessGame.getPlayer2());
             JSONObject sendText= new JSONObject();
             sendText.put("type",4);
-            sendText.put("message","游戏开始~！");
-            session.getAsyncRemote().sendText(sendText.toString());
+
+            //针对开局玩家的消息
             sendText.put("message","玩家<"+userName+">已加入，游戏开始，请落子");
+            sendText.put("player",chessGame.getPlayer1());
             SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
+            //针对参与玩家的消息
+            sendText.put("message","游戏开始~！");
+            sendText.put("player",chessGame.getPlayer2());
+            session.getAsyncRemote().sendText(sendText.toString());
+
         }else{
             ChessGame chessGame=new ChessGame(userId);
             chessRandomWait.add(chessGame);
             JSONObject sendText= new JSONObject();
             sendText.put("type",3);
+            sendText.put("chessId",chessGame.getChessId());
             sendText.put("message","请等待另一名玩家加入游戏");
             session.getAsyncRemote().sendText(sendText.toString());
         }
@@ -131,13 +138,7 @@ public class GobangChannel {
     @OnMessage
     public void onMessage(final String message) throws JSONException {
         JSONObject jsonObject= new JSONObject(message);
-        //前台需要传递一个userId
-        final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
-        if (null == user) {
-            return;
-        }
-        final String userId = user.optString(Keys.OBJECT_ID);
-        final String userName = user.optString(User.USER_NAME);
+        final String player=jsonObject.optString("player");
         final String anti=getAntiPlayer(player);
         JSONObject sendText= new JSONObject();
         switch(jsonObject.optInt("type")){
