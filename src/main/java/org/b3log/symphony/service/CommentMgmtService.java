@@ -62,7 +62,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.10.19, Feb 2, 2017
+ * @version 2.12.10.20, Mar 19, 2017
  * @since 0.2.0
  */
 @Service
@@ -445,6 +445,7 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_BAD_CNT, 0);
             comment.put(Comment.COMMENT_SCORE, 0D);
             comment.put(Comment.COMMENT_REPLY_CNT, 0);
+            comment.put(Comment.COMMENT_AUDIO_URL, "");
 
             // Adds the comment
             final String commentId = commentRepository.add(comment);

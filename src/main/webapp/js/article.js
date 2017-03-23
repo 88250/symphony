@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.28.42.32, Mar 9, 2017
+ * @version 1.30.43.33, Mar 22, 2017
  */
 
 /**
@@ -332,18 +332,15 @@ var Comment = {
                 toolbar: [
                     {name: 'bold'},
                     {name: 'italic'},
-                    '|',
                     {name: 'quote'},
                     {name: 'unordered-list'},
                     {name: 'ordered-list'},
-                    '|',
                     {name: 'link'},
                     {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form>'},
-                    '|',
                     {name: 'redo'},
                     {name: 'undo'},
-                    '|',
                     {name: 'view'},
+                    {name: 'question', action: 'https://hacpai.com/guide/markdown'},
                     {name: 'fullscreen'}
                 ],
                 extraKeys: {
@@ -810,26 +807,43 @@ var Comment = {
 
 var Article = {
     initAudio: function () {
-        if (!Label.articleAudioURL) {
+        $('.content-audio').each(function () {
+            var $it = $(this);
+            new APlayer({
+                element: this,
+                narrow: false,
+                autoplay: false,
+                mutex: true,
+                theme: '#4285f4',
+                preload: 'none',
+                mode: 'circulation',
+                music: {
+                    title: $it.data('title'),
+                    author: '<a href="https://hacpai.com/article/1464416402922" target="_blank">音乐分享</a>',
+                    url: $it.data('url'),
+                    pic: Label.staticServePath + '/images/music.png'
+                }
+            });
+        });
+
+        var $articleAudio = $('#articleAudio');
+        if ($articleAudio.length === 0) {
             return false;
         }
 
-        var img = $('.article-info .avatar').attr('style');
-        img = img.substring(22, img.length - 2);
-
         new APlayer({
-            element: document.getElementById('articleAudio'),                       // Optional, player element
-            narrow: false,                                                     // Optional, narrow style
-            autoplay: false,                                                    // Optional, autoplay song(s), not supported by mobile browsers
-            showlrc: 0,                                                        // Optional, show lrc, can be 0, 1, 2, see: ###With lrc
-            mutex: true,                                                       // Optional, pause other players when this player playing
-            theme: '#e6d0b2',                                                  // Optional, theme color, default: #b7daff
-            mode: 'order',                                                    // Optional, play mode, can be `random` `single` `circulation`(loop) `order`(no loop), default: `circulation`
-            music: {                                                           // Required, music info, see: ###With playlist
-                title: Label.articleTitle,                                          // Required, music title
-                author: Label.articleAuthorName,                          // Required, music author
-                url: Label.articleAudioURL,
-                pic: img
+            element: document.getElementById('articleAudio'),
+            narrow: false,
+            autoplay: false,
+            mutex: true,
+            theme: '#4285f4',
+            mode: 'order',
+            preload: 'none',
+            music: {
+                title: '语音预览',
+                author: '<a href="https://hacpai.com/member/v" target="_blank">小薇</a>',
+                url: $articleAudio.data('url'),
+                pic: Label.staticServePath + '/images/blank.png'
             }
         });
     },
@@ -971,6 +985,7 @@ var Article = {
         });
 
         this.initToc();
+        this.initAudio();
     },
     /**
      * 历史版本对比
@@ -1095,7 +1110,7 @@ var Article = {
 
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
                     url = encodeURIComponent(shareURL),
-                    picCSS = $(".article-info .avatar").css('background-image');
+                    picCSS = $(".article-info .avatar-mid").css('background-image');
                     pic = picCSS.substring(5, picCSS.length - 2);
 
             var urls = {};
@@ -1505,7 +1520,6 @@ var Article = {
 Article.init();
 
 $(document).ready(function () {
-    Article.initAudio();
     Comment.init();
     // jQuery File Upload
     Util.uploadFile({

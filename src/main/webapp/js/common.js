@@ -549,36 +549,71 @@ var Util = {
         var emojString = '';
 
         $.ajax({
-            async: false,
             url: Label.servePath + "/users/emotions",
             type: "GET",
             success: function (result) {
                 emojString = result.emotions;
+
+                if ("" === emojString) {
+                    emojString = allEmoj;
+                } else {
+                    var temp = emojString.split(",");
+                    for (var ti = 0; ti < temp.length; ti++) {
+                        allEmoj = allEmoj.replace(temp[ti] + ',', ',');
+                    }
+                    emojString = emojString + ',' + allEmoj;
+                }
+                emojString = emojString.replace(/,+/g, ','); // 全局替换重复的逗号
+
+                var emojis = emojString.split(/,/);
+                var emojiAutocompleteHints = [];
+                for (var i = 0; i < emojis.length; i++) {
+                    var displayText = emojis[i];
+                    var text = emojis[i];
+                    emojiAutocompleteHints.push({
+                        displayText: "<span>" + displayText +
+                                '&nbsp;<img style="width: 16px" src="' + Label.staticServePath + '/emoji/graphics/' + text + '.png"></span>',
+                        text: text + ": "
+                    });
+                }
+
+                CodeMirror.registerHelper("hint", "emoji", function (cm) {
+                    var word = /[\w$]+/;
+                    var cur = cm.getCursor(), curLine = cm.getLine(cur.line);
+                    var start = cur.ch, end = start;
+                    while (end < curLine.length && word.test(curLine.charAt(end))) {
+                        ++end;
+                    }
+                    while (start && word.test(curLine.charAt(start - 1))) {
+                        --start;
+                    }
+                    var tok = cm.getTokenAt(cur);
+                    var autocompleteHints = [];
+                    var input = tok.string.trim();
+                    var matchCnt = 0;
+                    for (var i = 0; i < emojis.length; i++) {
+                        var displayText = emojis[i];
+                        var text = emojis[i];
+                        if (Util.startsWith(text, input)) {
+                            autocompleteHints.push({
+                                displayText: '<span style="font-size: 1rem;line-height:22px"><img style="width: 1rem;margin:3px 0;float:left" src="' + Label.staticServePath + '/emoji/graphics/' + text + '.png"> ' +
+                                        displayText.toString() + '</span>',
+                                text: ":" + text + ": "
+                            });
+                            matchCnt++;
+                        }
+
+                        if (matchCnt > 10) {
+                            break;
+                        }
+                    }
+
+                    return {list: autocompleteHints, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
+                });
             }
         });
 
-        if ("" === emojString) {
-            emojString = allEmoj;
-        } else {
-            var temp = emojString.split(",");
-            for (var ti = 0; ti < temp.length; ti++) {
-                allEmoj = allEmoj.replace(temp[ti] + ',', ',');
-            }
-            emojString = emojString + ',' + allEmoj;
-        }
-        emojString = emojString.replace(/,+/g, ','); // 全局替换重复的逗号
 
-        var emojis = emojString.split(/,/);
-        var emojiAutocompleteHints = [];
-        for (var i = 0; i < emojis.length; i++) {
-            var displayText = emojis[i];
-            var text = emojis[i];
-            emojiAutocompleteHints.push({
-                displayText: "<span>" + displayText +
-                        '&nbsp;<img style="width: 16px" src="' + Label.staticServePath + '/emoji/graphics/' + text + '.png"></span>',
-                text: text + ": "
-            });
-        }
 
         if (Label.commonAtUser && Label.commonAtUser === 'true') {
             CodeMirror.registerHelper("hint", "userName", function (cm) {
@@ -632,40 +667,6 @@ var Util = {
                 return {list: autocompleteHints, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
             });
         }
-
-        CodeMirror.registerHelper("hint", "emoji", function (cm) {
-            var word = /[\w$]+/;
-            var cur = cm.getCursor(), curLine = cm.getLine(cur.line);
-            var start = cur.ch, end = start;
-            while (end < curLine.length && word.test(curLine.charAt(end))) {
-                ++end;
-            }
-            while (start && word.test(curLine.charAt(start - 1))) {
-                --start;
-            }
-            var tok = cm.getTokenAt(cur);
-            var autocompleteHints = [];
-            var input = tok.string.trim();
-            var matchCnt = 0;
-            for (var i = 0; i < emojis.length; i++) {
-                var displayText = emojis[i];
-                var text = emojis[i];
-                if (Util.startsWith(text, input)) {
-                    autocompleteHints.push({
-                        displayText: '<span style="font-size: 1rem;line-height:22px"><img style="width: 1rem;margin:3px 0;float:left" src="' + Label.staticServePath + '/emoji/graphics/' + text + '.png"> ' +
-                                displayText.toString() + '</span>',
-                        text: ":" + text + ": "
-                    });
-                    matchCnt++;
-                }
-
-                if (matchCnt > 10) {
-                    break;
-                }
-            }
-
-            return {list: autocompleteHints, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
-        });
 
         CodeMirror.commands.autocompleteUserName = function (cm) {
             cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});

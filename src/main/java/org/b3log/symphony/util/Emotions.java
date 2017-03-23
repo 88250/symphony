@@ -27,124 +27,23 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.2.1.3, Dec 13, 2016
+ * @version 1.2.1.4, Mar 20, 2017
  * @since 0.2.0
  */
 public final class Emotions {
 
     /**
+     * Emoji pattern.
+     */
+    public static final Pattern EMOJI_PATTERN = Pattern.compile(":.+:");
+    /**
      * Emotion count.
      */
     private static final int EMOTION_CNT = 15;
-
     /**
      * Ten.
      */
     private static final int TEN = 10;
-
-    /**
-     * Emoji pattern.
-     */
-    public static final Pattern EMOJI_PATTERN = Pattern.compile(":.+:");
-
-    /**
-     * Determines whether the specified string is a emoji or not.
-     *
-     * @param string the specified string
-     * @return {@code true} if it is a emoji, returns {@code false} otherwise
-     */
-    public static boolean isEmoji(final String string) {
-        for (final String emoji : EMOJIS) {
-            if (emoji.equals(string)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Replaces the emoji's unicode occurrences by one of their alias (between 2 ':'). Example: "😄" gives ":smile:".
-     *
-     * @param content the string to parse
-     * @return the string with the emojis replaced by their alias.
-     */
-    public static String toAliases(final String content) {
-        return EmojiParser.parseToAliases(content);
-    }
-
-    /**
-     * Clears the emotions ({@literal [em00], :heart:}) with specified content.
-     *
-     * @param content the specified content
-     * @return cleared content
-     */
-    public static String clear(final String content) {
-        String ret = content.replaceAll("\\[em\\d+]", "");
-        for (final String emojiCode : EMOJIS) {
-            final String emoji = ":" + emojiCode + ":";
-            ret = ret.replace(emoji, "");
-        }
-
-        return ret;
-    }
-
-    /**
-     * Converts the specified content with emotions.
-     * <p>
-     * <ol>
-     * <li>{@literal [em00]} into content with {@literal <img src='em00.png'/>}</li>
-     * <li>Emoji: http://www.emoji-cheat-sheet.com</li>
-     * </ol>
-     * </p>
-     *
-     * @param content the specified content
-     * @return converted content
-     */
-    public static String convert(final String content) {
-        final String staticServePath = Latkes.getStaticServePath();
-
-        String ret = content;
-
-        String emotionName;
-        for (int i = 0; i < EMOTION_CNT; i++) {
-            if (i < TEN) {
-                emotionName = "em0" + i;
-            } else {
-                emotionName = "em" + i;
-            }
-
-            ret = ret.replace('[' + emotionName + ']',
-                    "<img src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
-        }
-
-        if (!EMOJI_PATTERN.matcher(ret).find()) {
-            return ret;
-        }
-
-        for (final String emojiCode : EMOJIS) {
-            ret = ret.replace(":"+emojiCode+":", "<img align=\"absmiddle\" alt=\"" + emojiCode + "\" class=\"emoji\" src=\""
-                    + staticServePath + "/emoji/graphics/" + emojiCode
-                    + ".png\" title=\"" + emojiCode + "\"></img>");
-        }
-
-//        ret = ret.replaceAll("\ufe0f", "");
-//        ret = ret.replaceAll("\ufffd", "");
-//        ret = ret.replaceAll("⃣", "");
-        return ret;
-    }
-
-    public static void main(String[] args) {
-        String str1 = "Here is a boy: \uD83D\uDC66\uD83C\uDFFF!";
-        String str2 = EmojiParser.parseToAliases(str1, EmojiParser.FitzpatrickAction.REMOVE);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Emotions() {
-    }
-
     /**
      * Emoji list.
      */
@@ -1020,4 +919,102 @@ public final class Emotions {
             "zero",
             "zzz"
     };
+
+    /**
+     * Private constructor.
+     */
+    private Emotions() {
+    }
+
+    /**
+     * Determines whether the specified string is a emoji or not.
+     *
+     * @param string the specified string
+     * @return {@code true} if it is a emoji, returns {@code false} otherwise
+     */
+    public static boolean isEmoji(final String string) {
+        for (final String emoji : EMOJIS) {
+            if (emoji.equals(string)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Replaces the emoji's unicode occurrences by one of their alias (between 2 ':'). Example: "😄" gives ":smile:".
+     *
+     * @param content the string to parse
+     * @return the string with the emojis replaced by their alias.
+     */
+    public static String toAliases(final String content) {
+        return EmojiParser.parseToAliases(content);
+    }
+
+    /**
+     * Clears the emotions ({@literal [em00], :heart:}) with specified content.
+     *
+     * @param content the specified content
+     * @return cleared content
+     */
+    public static String clear(final String content) {
+        String ret = content.replaceAll("\\[em\\d+]", "");
+        for (final String emojiCode : EMOJIS) {
+            final String emoji = ":" + emojiCode + ":";
+            ret = ret.replace(emoji, "");
+        }
+
+        return ret;
+    }
+
+    /**
+     * Converts the specified content with emotions.
+     * <p>
+     * <ol>
+     * <li>{@literal [em00]} into content with {@literal <img src='em00.png'/>}</li>
+     * <li>Emoji: http://www.emoji-cheat-sheet.com</li>
+     * </ol>
+     * </p>
+     *
+     * @param content the specified content
+     * @return converted content
+     */
+    public static String convert(final String content) {
+        final String staticServePath = Latkes.getStaticServePath();
+
+        String ret = content;
+
+        String emotionName;
+        for (int i = 0; i < EMOTION_CNT; i++) {
+            if (i < TEN) {
+                emotionName = "em0" + i;
+            } else {
+                emotionName = "em" + i;
+            }
+
+            ret = ret.replace('[' + emotionName + ']',
+                    "<img src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
+        }
+
+        if (!EMOJI_PATTERN.matcher(ret).find()) {
+            return ret;
+        }
+
+        for (final String emojiCode : EMOJIS) {
+            ret = ret.replace(":" + emojiCode + ":", "<img align=\"absmiddle\" alt=\"" + emojiCode + "\" class=\"emoji\" src=\""
+                    + staticServePath + "/emoji/graphics/" + emojiCode
+                    + ".png\" title=\"" + emojiCode + "\"></img>");
+        }
+
+//        ret = ret.replaceAll("\ufe0f", "");
+//        ret = ret.replaceAll("\ufffd", "");
+//        ret = ret.replaceAll("⃣", "");
+        return ret;
+    }
+
+    public static void main(String[] args) {
+        String str1 = "Here is a boy: \uD83D\uDC66\uD83C\uDFFF!";
+        String str2 = EmojiParser.parseToAliases(str1, EmojiParser.FitzpatrickAction.REMOVE);
+    }
 }

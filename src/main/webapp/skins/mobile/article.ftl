@@ -143,6 +143,10 @@
                     </div>
                 </div>
 
+                <#if article.articleAudioURL??>
+                    <div id="articleAudio" data-url="${article.articleAudioURL}"
+                         data-author="${article.articleAuthorName}" class="aplayer article-content"></div>
+                </#if>
                 <#if 3 != article.articleType>
                 <div class="content-reset article-content">${article.articleContent}</div>
                 <#else>

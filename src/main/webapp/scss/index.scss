@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.21.52, Mar 6, 2017
+ * @version 2.27.21.53, Mar 21, 2017
  */
 
 @import "variables";
@@ -84,23 +84,13 @@
 }
 
 .article-content {
-    margin: 15px;
-
-    .aplayer {
-        margin: 2px;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-
-        .aplayer-pic {
-            background-size: cover;
-        }
-
-        svg {
-            vertical-align: initial;
-        }
-    }
+    padding: 15px;
+    margin-top: 15px;
+    border-top: 1px solid #eee;
 
     &#articleAudio {
-        margin: 17px;
+        padding: 0 15px;
+        border-top-width: 0;
     }
 }
 
@@ -114,20 +104,19 @@
 
 h1.article-title {
     word-break: break-all;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: normal;
-    margin: 0 15px;
-    line-height: 36px;
+    padding: 15px 15px 0px;
+    text-align: center;
 }
 
 .article-info {
-    border-bottom: 1px solid #eee;
     font-size: 12px;
     line-height: 20px;
-    padding: 15px;
+    padding: 0 15px;
 
     .article-actions {
-        line-height: 40px;
+        line-height: 60px;
     }
 
     .share {
@@ -342,7 +331,7 @@ label.cmt-anonymous {
 #commentContent,
 #chatContent {
     background-color: #FAFAFA;
-    margin: 51px 0 0 0;
+    margin: 32px 0 0 0;
     overflow: hidden;
     padding: 4px;
     height: 102px;
@@ -434,7 +423,7 @@ label.cmt-anonymous {
 }
 
 .editor-panel {
-    background-color: rgba(241, 247, 254, 0.88);
+    background-color: #f1f7fe;
     border-top: 1px solid #eee;
     padding: 5px 0 10px 0;
     position: fixed;

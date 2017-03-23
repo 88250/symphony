@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.12.24, Feb 18, 2017
+ * @version 1.6.12.25, Mar 20, 2017
  */
 
 @import "variables";
@@ -1171,6 +1171,21 @@ a[class*=" icon-"]:hover {
     background-color: #F7F7F7;
 }
 /* end completed */
+
+/* start aplayer */
+.wrapper .aplayer {
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+
+    .aplayer-pic {
+        background-size: cover;
+    }
+
+    svg {
+        vertical-align: initial;
+    }
+}
+/* end aplayer */
 
 /* start framework */
 .wrapper {
@@ -2736,6 +2751,11 @@ code .dec { color: initial; } /* decimal - blue */
 .article-content {
     width: 100%;
     position: relative;
+
+    &#articleAudio {
+        width: auto;
+        margin-bottom: 10px;
+    }
 }
 
 #showReward {
