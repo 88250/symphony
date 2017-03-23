@@ -115,7 +115,7 @@ var Gobang = {
         }
     },
     chatSend:function(){
-        if($("#player").val()!=""){
+        // if($("#player").val()!=""){
             var message={
                 type:1,
                 player:$("#player").val(),
@@ -123,9 +123,9 @@ var Gobang = {
             }
             $("#chatArea").append($("#player").val()+" : "+$("#chatInput").val()+"<br/>");
             GobangChannel.ws.send(JSON.stringify(message));
-        }else{
-            alert("请填写昵称");
-        }
+        // }else{
+        //     alert("请填写昵称");
+        // }
     },
     moveChess:function(evt){
         var mousePos = Gobang.getMousePos(document.getElementById("gobangCanvas"), evt);
@@ -163,9 +163,13 @@ var GobangChannel = {
                     Gobang.drawChessMan(resp.posX,resp.posY,Gobang.unitSize/2,resp.color);
                     if(resp.result!=null && resp.result!=""){
                         alert(resp.result);
-                        document.getElementById("gobangCanvas").removeEventListener("click",moveChess);
+                        document.getElementById("gobangCanvas").removeEventListener("click",Gobang.moveChess);
                     }
                     break;
+                case 3:
+                    $("#chatArea").append("【系统】 : "+resp.message+"<br/>");break;
+                case 4:
+                    $("#chatArea").append("【系统】 : "+resp.message+"<br/>");break;
             }
         };
 

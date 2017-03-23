@@ -208,13 +208,13 @@ var Activity = {
         };
     },
     initGobang:function(){
-        if($("#player").val()!=""){
+        // if($("#player").val()!=""){
             GobangChannel.init("ws://localhost:8080/gobang-game-channel?player="+$("#player").val());
             $("#chatInput").show();
             $("#chatSubmit").show();
-        }else{
-            alert("请填写昵称");
-        }
+        // }else{
+        //     alert("请填写昵称");
+        // }
     }
 };
 

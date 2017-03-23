@@ -17,7 +17,9 @@
  */
 package org.b3log.symphony.processor.channel;
 
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,13 +72,18 @@ public class GobangChannel {
      */
     @OnOpen
     public void onConnect(final Session session) {
-        String player=(String) Channels.getHttpParameter(session,"player");
+        final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
+        if (null == user) {
+            return;
+        }
+        final String userId = user.optString(Keys.OBJECT_ID);
+        final String userName = user.optString(User.USER_NAME);
         boolean playing=false;
-        LOGGER.info("new connection from "+player);
-        SESSIONS.put(player,session);
+        LOGGER.info("new connection from "+userName);
+        SESSIONS.put(userId,session);
         for(String temp:chessPlaying.keySet()){
-            if(player.equals(chessPlaying.get(temp).getPlayer1())
-                    ||player.equals(chessPlaying.get(temp).getPlayer2())){
+            if(userId.equals(chessPlaying.get(temp).getPlayer1())
+                    ||userId.equals(chessPlaying.get(temp).getPlayer2())){
                 playing=true;
             }
         }
@@ -84,13 +91,23 @@ public class GobangChannel {
             return;
         }else if(playing == false && chessRandomWait.size()!=0){
             ChessGame chessGame=chessRandomWait.poll();
-            chessGame.setPlayer2(player);
+            chessGame.setPlayer2(userId);
             chessGame.setStep(1);
             chessPlaying.put(chessGame.getPlayer1(),chessGame);
             antiPlayer.put(chessGame.getPlayer1(),chessGame.getPlayer2());
+            JSONObject sendText= new JSONObject();
+            sendText.put("type",4);
+            sendText.put("message","游戏开始~！");
+            session.getAsyncRemote().sendText(sendText.toString());
+            sendText.put("message","玩家<"+userName+">已加入，游戏开始，请落子");
+            SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
         }else{
-            ChessGame chessGame=new ChessGame(player);
+            ChessGame chessGame=new ChessGame(userId);
             chessRandomWait.add(chessGame);
+            JSONObject sendText= new JSONObject();
+            sendText.put("type",3);
+            sendText.put("message","请等待另一名玩家加入游戏");
+            session.getAsyncRemote().sendText(sendText.toString());
         }
     }
 
@@ -114,7 +131,13 @@ public class GobangChannel {
     @OnMessage
     public void onMessage(final String message) throws JSONException {
         JSONObject jsonObject= new JSONObject(message);
-        final String player=jsonObject.optString("player");
+        //前台需要传递一个userId
+        final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
+        if (null == user) {
+            return;
+        }
+        final String userId = user.optString(Keys.OBJECT_ID);
+        final String userName = user.optString(User.USER_NAME);
         final String anti=getAntiPlayer(player);
         JSONObject sendText= new JSONObject();
         switch(jsonObject.optInt("type")){
@@ -132,23 +155,23 @@ public class GobangChannel {
                 if(chessGame!=null){
                     boolean flag=false;
                     if(player.equals(chessGame.getPlayer1())){
-                        flag=chessGame.chessCheck(1);
                         if(chessGame.getStep()!=1){
                             return;
                         }else{
+                            sendText.put("color","black");
+                            chessGame.getChess()[x/size][y/size]=1;
+                            flag=chessGame.chessCheck(1);
                             chessGame.setStep(2);
                         }
-                        sendText.put("color","black");
-                        chessGame.getChess()[x/size][y/size]=1;
                     }else{
-                        flag=chessGame.chessCheck(2);
                         if(chessGame.getStep()!=2){
                             return;
                         }else{
+                            sendText.put("color","white");
+                            chessGame.getChess()[x/size][y/size]=2;
+                            flag=chessGame.chessCheck(2);
                             chessGame.setStep(1);
                         }
-                        sendText.put("color","white");
-                        chessGame.getChess()[x/size][y/size]=2;
                     }
                     sendText.put("type",2);
                     sendText.put("player",player);
