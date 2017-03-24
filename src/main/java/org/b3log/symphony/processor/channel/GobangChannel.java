@@ -20,9 +20,12 @@ package org.b3log.symphony.processor.channel;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.service.ActivityMgmtService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -62,6 +65,9 @@ public class GobangChannel {
 
     //等待的棋局队列
     public static final Queue<ChessGame> chessRandomWait=new ConcurrentLinkedQueue<ChessGame>();
+
+    @Inject
+    private ActivityMgmtService activityMgmtService;
 
 
     //等待指定用户的棋局（暂不实现）
@@ -180,10 +186,12 @@ public class GobangChannel {
                     sendText.put("posY",y);
                     if(flag){
                         sendText.put("result","You win");
+                        activityMgmtService.collectEatingSnake(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START*2);
                     }
                     SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
                     if(flag){
                         sendText.put("result","You Lose");
+                        activityMgmtService.collectEatingSnake(anti, 0);
                     }
                     SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
                 }

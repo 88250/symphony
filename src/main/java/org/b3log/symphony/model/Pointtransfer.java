@@ -336,6 +336,21 @@ public final class Pointtransfer {
     public static final int TRANSFER_SUM_C_PERFECT_ARTICLE = Symphonys.getInt("pointPerfectArticle");
 
     /**
+     * Transfer type - Activity - Gobang.
+     */
+    public static final int TRANSFER_TYPE_C_ACTIVITY_GOBANG = 30;
+
+    /**
+     * Transfer type - Activity - Gobang Income.
+     */
+    public static final int TRANSFER_TYPE_C_ACTIVITY_GOBANG_COLLECT = 31;
+
+    /**
+     * Transfer sum - Activity - start gobang .
+     */
+    public static final int TRANSFER_SUM_C_ACTIVITY_GOBANG_START = Symphonys.getInt("pointActivityGobang");
+
+    /**
      * Private constructor.
      */
     private Pointtransfer() {

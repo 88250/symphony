@@ -622,10 +622,6 @@ public class ActivityProcessor {
         dataModelService.fillRandomArticles(avatarViewMode, dataModel);
         dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
         dataModelService.fillSideTags(dataModel);
-        dataModelService.fillLatestCmts(dataModel);
-
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        final String userId = user.optString(Keys.OBJECT_ID);
     }
 
     /**
@@ -644,19 +640,20 @@ public class ActivityProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
 
-        final JSONObject ret = activityMgmtService.startEatingSnake(fromId);
+        final JSONObject ret = activityMgmtService.startGobang(fromId);
 
         context.renderJSON(ret);
     }
 
     /**
      * Collects eating snake.
-     *
+     * 积分回收位于GobangChannel判断输赢处
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws Exception exception
      */
+    /*
     @RequestProcessing(value = "/activity/gobang/collect", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
@@ -681,5 +678,5 @@ public class ActivityProcessor {
 
             context.renderJSON(false).renderMsg("err....");
         }
-    }
+    }*/
 }
