@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.16.31.39, Mar 19, 2017
+ * @version 2.16.32.39, Mar 25, 2017
  * @since 0.2.0
  */
 @Service
@@ -223,6 +223,10 @@ public class ArticleMgmtService {
             }
 
             final String audioURL = audioMgmtService.tts(previewContent, Article.ARTICLE, articleId, userId);
+            if (StringUtils.isBlank(audioURL)) {
+                return;
+            }
+
             article.put(Article.ARTICLE_AUDIO_URL, audioURL);
 
             final Transaction transaction = articleRepository.beginTransaction();
