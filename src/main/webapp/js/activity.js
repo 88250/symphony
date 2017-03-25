@@ -207,14 +207,18 @@ var Activity = {
             EatingSnake.input(event.keyCode);
         };
     },
-    initGobang:function(){
-        // if($("#player").val()!=""){
-            GobangChannel.init("ws://localhost:8080/gobang-game-channel?player="+$("#player").val());
-            $("#chatInput").show();
-            $("#chatSubmit").show();
-        // }else{
-        //     alert("请填写昵称");
-        // }
+    initGobang:function(wsurl){
+        $.ajax({
+            url: Label.servePath + "/activity/gobang/start",
+            type: "POST",
+            cache: false,
+            success: function () {
+                GobangChannel.init(wsurl+"/gobang-game-channel?player="+$("#player").val());
+                $("#chatInput").show();
+                $("#chatSubmit").show();
+            }
+        });
+
     }
 };
 

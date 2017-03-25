@@ -15,13 +15,13 @@
                     <div class="module article-module">
                         <h2 class="sub-head">
                             <div class="avatar-small tooltipped tooltipped-ne"
-                                 aria-label="${gobangLabel}" style="background-image:url('${staticServePath}/images/activities/snak.png')"></div>
+                                 aria-label="${gobangLabel}" style="background-image:url('${staticServePath}/images/activities/gobang.png')"></div>
                             ${gobangLabel}
                             <span class="ft-13 ft-gray">${activityGobangTitleLabel}</span>
                         </h2>
                         <br>
                         <div class="fn-clear fn-m10">
-                            <button class="green fn-right" onclick="Activity.initGobang('${csrfToken}')">${gameStartLabel}</button>
+                            <button class="green fn-right" onclick="Activity.initGobang('${wsScheme}://${serverHost}:${serverPort}${contextPath}')">${gameStartLabel}</button>
                         </div>
                         <div id="yard"><canvas id="gobangCanvas" height="600px" width="600px"></canvas></div>
                         <input  type="hidden" id="player"/>

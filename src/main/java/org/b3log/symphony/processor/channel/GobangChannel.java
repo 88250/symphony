@@ -18,6 +18,8 @@
 package org.b3log.symphony.processor.channel;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.symphony.model.Pointtransfer;
@@ -186,14 +188,19 @@ public class GobangChannel {
                     sendText.put("posY",y);
                     if(flag){
                         sendText.put("result","You win");
-                        activityMgmtService.collectEatingSnake(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START*2);
                     }
                     SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
                     if(flag){
                         sendText.put("result","You Lose");
-                        activityMgmtService.collectEatingSnake(anti, 0);
                     }
                     SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
+                    if(flag){
+                        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                        final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
+                        activityMgmtService.collectEatingSnake(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START*2);
+                        activityMgmtService.collectEatingSnake(anti, 0);
+                        chessPlaying.remove(chessGame);
+                    }
                 }
                 break;
         }

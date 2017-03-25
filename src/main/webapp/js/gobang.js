@@ -169,8 +169,10 @@ var GobangChannel = {
                 case 3:
                     $("#chatArea").append("【系统】 : "+resp.message+"<br/>");break;
                 case 4:
-                    $("#chatArea").append("【系统】 : "+resp.message+"<br/>");break;
+                    $("#chatArea").append("【系统】 : "+resp.message+"<br/>");
+                    console.log(resp.player);
                     $("#player").val(resp.player);
+                    break;
             }
         };
 

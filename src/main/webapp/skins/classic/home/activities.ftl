@@ -86,7 +86,7 @@
                                 <li>
                                     <div class='fn-flex'>
                                         <div class="avatar tooltipped tooltipped-ne"
-                                             aria-label="${gobangLabel}" style="background-image:url('${staticServePath}/images/activities/snak.png')"></div>
+                                             aria-label="${gobangLabel}" style="background-image:url('${staticServePath}/images/activities/gobang.png')"></div>
                                         <div class="fn-flex-1">
                                             <h2>
                                                 <a href="${servePath}/activity/gobang">${gobangLabel}</a>

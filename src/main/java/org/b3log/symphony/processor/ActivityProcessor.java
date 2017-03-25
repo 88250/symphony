@@ -633,7 +633,7 @@ public class ActivityProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/activity/gobang/start", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void startGobang(final HTTPRequestContext context,
                                  final HttpServletRequest request, final HttpServletResponse response) throws Exception {

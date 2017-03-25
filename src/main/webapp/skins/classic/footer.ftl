@@ -55,6 +55,7 @@
         uncollectLabel: "${uncollectLabel}",
         desktopNotificationTemplateLabel: "${desktopNotificationTemplateLabel}",
         servePath: "${servePath}",
+
         staticServePath: "${staticServePath}",
         isLoggedIn: ${isLoggedIn?c},
         funNeedLoginLabel: '${funNeedLoginLabel}',
