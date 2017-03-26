@@ -373,6 +373,8 @@ var Comment = {
             commentEditor.codemirror['for'] = 'comment';
 
             Comment.editor = commentEditor.codemirror;
+
+            $("#commentContent").next().next().height(280);
         }
 
         if (window.localStorage && window.localStorage[Label.articleOId]) {
