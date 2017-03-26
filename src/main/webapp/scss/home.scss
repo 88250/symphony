@@ -146,7 +146,7 @@
 
 /* start add article */
 .pre-post-wrap {
-    background-color: #f1f7fe;
+    background-color: $light-blue;
 }
 
 .pre-post > div {
@@ -231,7 +231,7 @@ label.article-anonymous {
             margin-bottom: 0;
             width: auto;
             right: 10px;
-            background-color: #f1f7fe;
+            background-color: $light-blue;
     }
 
     #articleContent {

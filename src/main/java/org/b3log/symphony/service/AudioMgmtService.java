@@ -43,7 +43,7 @@ import java.util.UUID;
  * Audio management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Mar 19, 2017
+ * @version 1.0.1.1, Mar 25, 2017
  * @since 2.1.0
  */
 @Service
@@ -149,12 +149,12 @@ public class AudioMgmtService {
      * @param type   specified type, "article"/"comment"
      * @param textId the specified id of text, article id or comment id
      * @param uid    the specified user id
-     * @return speech URL
+     * @return speech URL, returns {@code ""} if TTS failed
      */
     public String tts(final String text, final String type, final String textId, final String uid) {
         final byte[] bytes = baiduTTS(text, uid);
         if (null == bytes) {
-            return null;
+            return "";
         }
 
         String ret;

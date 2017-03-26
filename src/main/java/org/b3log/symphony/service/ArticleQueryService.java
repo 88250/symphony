@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.28.48, Mar 20, 2017
+ * @version 2.26.28.51, Mar 27, 2017
  * @since 0.2.0
  */
 @Service
@@ -271,7 +271,8 @@ public class ArticleQueryService {
      * {
      *     "articlePermalink": "",
      *     "articleTitle": "",
-     *     "articleTitleEmoj": ""
+     *     "articleTitleEmoj": "",
+     *     "articleTitleEmojUnicode": ""
      * }
      * </pre>, returns {@code null} if not found
      */
@@ -298,6 +299,7 @@ public class ArticleQueryService {
 
             String title = ret.optString(Article.ARTICLE_TITLE);
             ret.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
+            ret.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, EmojiParser.parseToUnicode(title));
 
             return ret;
         } catch (final RepositoryException e) {
@@ -317,7 +319,8 @@ public class ArticleQueryService {
      * {
      *     "articlePermalink": "",
      *     "articleTitle": "",
-     *     "articleTitleEmoj": ""
+     *     "articleTitleEmoj": "",
+     *     "articleTitleEmojUnicode": ""
      * }
      * </pre>, returns {@code null} if not found
      */
@@ -344,6 +347,7 @@ public class ArticleQueryService {
 
             String title = ret.optString(Article.ARTICLE_TITLE);
             ret.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
+            ret.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, EmojiParser.parseToUnicode(title));
 
             return ret;
         } catch (final RepositoryException e) {
@@ -1147,7 +1151,7 @@ public class ArticleQueryService {
                 data.put(Article.ARTICLE_TITLE, articleTitle);
 
                 String articleContent = data.optString(Article.ARTICLE_CONTENT);
-                articleContent = Markdowns.toHTML(articleContent);
+                // articleContent = Markdowns.toHTML(articleContent); https://hacpai.com/article/1490233597586
                 articleContent = Markdowns.clean(articleContent, "");
                 data.put(Article.ARTICLE_CONTENT, articleContent);
 
@@ -2755,7 +2759,7 @@ public class ArticleQueryService {
 
             final Elements hs = doc.select("h1, h2, h3, h4, h5");
 
-            if (hs.isEmpty()) {
+            if (hs.size() < 3) {
                 return "";
             }
 

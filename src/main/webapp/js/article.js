@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.30.43.33, Mar 22, 2017
+ * @version 1.31.44.33, Mar 26, 2017
  */
 
 /**
@@ -96,11 +96,22 @@ var Comment = {
      */
     _initEditorPanel: function () {
         // 回复按钮设置
-        $('.article-actions .icon-reply-btn').click(function () {
+        $('#replyBtn').click(function () {
             if (!Label.isLoggedIn) {
                 Util.needLogin();
                 return false;
             }
+            if ($(this).data('hasPermission') === 'false') {
+                Article.permissionTip(Label.noPermissionLabel)
+                return false;
+            }
+
+            if ($('.footer').attr('style')) {
+                $('.editor-panel').slideUp();
+                $('.footer').removeAttr('style');
+                return false;
+            }
+
             $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
             $('#replyUseName').html('<a href="javascript:void(0)" onclick="Util.goTop();Comment._bgFade($(\'.article-module\'))" class="ft-a-title"><span class="icon-reply-to"></span>' 
                 + $('.article-title').text() + '</a>').removeData();
@@ -146,10 +157,10 @@ var Comment = {
         }).bind('keydown', 'r', function assets(event) {
             if (!Util.prevKey) {
                 // r 回复帖子
-                $('.article-actions .icon-reply-btn').click();
+                $('#replyBtn').click();
             } else if (Util.prevKey === 'v') {
                 // v r 打赏帖子
-                $('.article-actions .icon-points').parent().click();
+                $('#articleRewardContent .icon-points').parent().click();
             } else if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
                 // x r 回复回帖
                 $('#comments .list > ul > li.focus .icon-reply').parent().click();
@@ -206,31 +217,31 @@ var Comment = {
         }).bind('keyup', 't', function assets() {
             // v t 赞同帖子
             if (Util.prevKey === 'v') {
-                $('.article-actions .icon-thumbs-up').parent().click();
+                $('.article-header .icon-thumbs-up').parent().click();
             }
             return false;
         }).bind('keyup', 'd', function assets() {
             // v d 反对帖子
             if (Util.prevKey === 'v') {
-                $('.article-actions .icon-thumbs-down').parent().click();
+                $('.article-header .icon-thumbs-down').parent().click();
             }
             return false;
         }).bind('keyup', 'i', function assets() {
               // v i 关注帖子
               if (Util.prevKey === 'v') {
-                  $('.article-actions .icon-view').parent().click();
+                  $('.article-header .icon-view').parent().click();
               }
               return false;
         }).bind('keyup', 'c', function assets() {
             // v c 收藏帖子
             if (Util.prevKey === 'v') {
-                $('.article-actions .icon-star').parent().click();
+                $('.article-header .icon-star').parent().click();
             }
             return false;
         }).bind('keyup', 'l', function assets() {
             // v h 查看帖子历史
             if (Util.prevKey === 'v') {
-                $('.article-actions .icon-history').parent().click();
+                $('.article-header .icon-history').parent().click();
             }
             return false;
         }).bind('keyup', 'e', function assets() {
@@ -240,7 +251,7 @@ var Comment = {
             }
             return false;
         }).bind('keyup', 's', function assets() {
-            // v p 置顶帖子
+            // v s 置顶帖子
             if (Util.prevKey === 'v' && $('.article-actions .icon-chevron-up').length === 1) {
                 Article.stick(Label.articleOId);
             }
@@ -253,14 +264,14 @@ var Comment = {
             return false;
         }).bind('keyup', 'p', function assets() {
             // v p 跳转到上一篇帖子 prev
-            if (Util.prevKey === 'v' && $('.article-module-bottom a[rel=prev]').length === 1) {
-                window.location = $('.article-module-bottom a[rel=prev]').attr('href');
+            if (Util.prevKey === 'v' && $('.article-header a[rel=prev]').length === 1) {
+                window.location = $('.article-header a[rel=prev]').attr('href');
             }
             return false;
         }).bind('keyup', 'n', function assets() {
             // v n 跳转到下一篇帖子 next
-            if (Util.prevKey === 'v' && $('.article-module-bottom a[rel=next]').length === 1) {
-                window.location = $('.article-module-bottom a[rel=next]').attr('href');
+            if (Util.prevKey === 'v' && $('.article-header a[rel=next]').length === 1) {
+                window.location = $('.article-header a[rel=next]').attr('href');
             }
             return false;
         });
@@ -961,9 +972,11 @@ var Article = {
      * @description 初始化文章
      */
     init: function () {
+        this.initToc();
         this.share();
         this.parseLanguage();
 
+        // img
         $(".content-reset.article-content").on('dblclick', 'img', function () {
             if ($(this).hasClass('emoji')) {
                 return false;
@@ -971,12 +984,14 @@ var Article = {
             window.open($(this).attr('src'));
         });
 
+        // UA
         var ua = $('#articltVia').data('ua'),
                 name = Util.getDeviceByUa(ua);
         if (name !== '') {
             $('#articltVia').text('via ' + name);
         }
 
+        // his
         $('#revision').dialog({
             "width": $(window).width() - 50,
             "height": $(window).height() - 50,
@@ -984,8 +999,28 @@ var Article = {
             "hideFooter": true
         });
 
-        this.initToc();
         this.initAudio();
+
+        // scroll
+        $(window).scroll(function () {
+            var currentScrollTop = $(window).scrollTop();
+
+            // share
+            if (currentScrollTop > 48 && currentScrollTop < $('.comments').offset().top + $('.comments').height()) {
+                $('.share').show();
+            } else {
+                $('.share').hide();
+            }
+        });
+
+        // nav
+        window.addEventListener('mousewheel', function(event) {
+            if (event.deltaY > 0) {
+                $('.article-header').css('top', 0);
+            } else if (event.deltaY < -5) {
+                $('.article-header').css('top', '-56px');
+            }
+        }, false);
     },
     /**
      * 历史版本对比
@@ -1086,6 +1121,8 @@ var Article = {
      * @description 分享按钮
      */
     share: function () {
+        $('.share').css('left',  ($('.article-content').offset().left / 2 - 15) + 'px');
+
         var shareURL = $('#qrCode').data('shareurl');
         $('#qrCode').qrcode({
             width: 90,
@@ -1099,6 +1136,7 @@ var Article = {
 
         $(".share > span").click(function () {
             var key = $(this).data("type");
+            if (!key) return false;
             if (key === 'wechat') {
                 $('#qrCode').slideToggle();
                 return false;
@@ -1155,7 +1193,7 @@ var Article = {
                 cache: false,
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        $("#articleRewardContent").removeClass("reward").html(result.articleRewardContent);
+                        $("#articleRewardContent .content-reset").html(result.articleRewardContent);
                         Article.parseLanguage();
 
                         var cnt = parseInt($('.article-actions .icon-points').parent().text());
@@ -1198,7 +1236,7 @@ var Article = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     var thxCnt = parseInt($('#thankArticle').text());
-                    $("#thankArticle").removeAttr("onclick").html('<span class="icon-heart"></span> ' + (thxCnt + 1))
+                    $("#thankArticle").removeAttr("onclick").html('<span class="icon-heart"></span><span class="ft-13">' + (thxCnt + 1) + '</span>')
                     .addClass('ft-red');
 
                     var $heart = $("<i class='icon-heart ft-red'></i>"),
@@ -1378,25 +1416,24 @@ var Article = {
         if ($('#articleToC').length === 0) {
             return false;
         }
-        $('.side').height($('.side').height());
+
+        $('#articleToC').width(($(window).width() - $('.article-title').width()) / 2 - 15).animate({
+            right: 0
+        }, function () {
+            $(window).scroll();
+            $articleTocUl.scrollTop($articleToc.find('li.current')[0].offsetTop).scroll(function () {
+                isUlScroll = true;
+            });
+        });
+        $('#articleToC > .module-panel').height($(window).height() - 49 - 48);
 
         // 样式
         var $articleToc = $('#articleToC'),
             $articleTocUl = $('.article-toc'),
             $articleTocs = $('.article-content [id^=toc]'),
             isUlScroll = false,
-            top = $articleToc.offset().top;
-
-        $articleToc.css('width', $('.side').width() + 'px');
-        $articleToc.next().css({
-            'width': $('.side').width() + 'px',
-            'top': ($articleToc.height() + 41) + 'px'
-        });
-        $articleTocUl.css({
-            'overflow': 'auto',
-            'max-height': $(window).height() - 90 + 'px',
-            'position': 'relative'
-        });
+            top = $articleToc.offset().top
+            toc = [];
 
         // 目录点击
         $articleToc.find('li').click(function () {
@@ -1408,9 +1445,10 @@ var Article = {
         });
 
         $(window).scroll(function (event) {
-            if ($('#articleToC').css('display') === 'none') {
+            if (parseInt($('#articleToC').css('right')) < 0) {
                 return false;
             }
+            $('#articleToC > .module-panel').height($(window).height() - 49);
 
             // 界面各种图片加载会导致帖子目录定位
             toc = [];
@@ -1436,15 +1474,6 @@ var Article = {
                 $articleToc.find('li:last').addClass('current');
             }
 
-            // 位置是否固定
-            if ($(window).scrollTop() > top - 20) {
-                $articleToc.css('position', 'fixed');
-                $articleToc.next().css('position', 'fixed');
-            } else {
-                $articleToc.css('position', 'initial');
-                $articleToc.next().css('position', 'initial');
-            }
-
             // auto scroll to current toc
             var liOffsetTop = $articleToc.find('li.current')[0].offsetTop;
             if (!isUlScroll) {
@@ -1461,16 +1490,6 @@ var Article = {
             setTimeout(function () {
                 isUlScroll = false;
             }, 600);
-        }).resize(function () {
-            $articleToc.css('width', $('.side').width() + 'px');
-            $articleToc.next().css({
-                'width': $('.side').width() + 'px'
-            });
-        });
-
-        $(window).scroll();
-        $articleTocUl.scrollTop($articleToc.find('li.current')[0].offsetTop).scroll(function () {
-            isUlScroll = true;
         });
     },
     /**
@@ -1482,21 +1501,17 @@ var Article = {
             return false;
         }
 
-        var $menu = $('.article-actions .icon-unordered-list');
+        var $menu = $('.article-header .icon-unordered-list');
         if ($menu.hasClass('ft-red')) {
-            $articleToc.hide();
+            $articleToc.animate({
+                right: '-300px'
+            });
             $menu.removeClass('ft-red');
-            $articleToc.css('position', 'initial');
-            $articleToc.next().css('position', 'initial');
-            $('.side').height('auto');
         } else {
-            $articleToc.show();
+            $articleToc.animate({
+                right: 0
+            });
             $menu.addClass('ft-red');
-            if ($(window).scrollTop() > $('#articleToC').offset().top - 20) {
-                $articleToc.css('position', 'fixed');
-                $articleToc.next().css('position', 'fixed');
-            }
-            $('.side').height($('.side').height());
         }
     },
     /**

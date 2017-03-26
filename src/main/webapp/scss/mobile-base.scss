@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.12.25, Mar 20, 2017
+ * @version 1.6.12.26, Mar 23, 2017
  */
 
 @import "variables";
@@ -2327,7 +2327,7 @@ label.cmt-anonymous {
     }
 
     .md {
-        background-color: #f1f7fe;
+        background-color: $light-blue;
 
         pre {
             white-space: pre-wrap;
@@ -2342,7 +2342,7 @@ label.cmt-anonymous {
 
     .intro {
         padding: 30px;
-        background-color: #f1f7fe;
+        background-color: $light-blue;
         color: #666;
     }
 
