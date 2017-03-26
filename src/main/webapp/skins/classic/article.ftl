@@ -362,13 +362,13 @@
             </#if>
 
             <#if articlePrevious??>
-                <a rel="prev" class="tooltipped tooltipped-w" aria-label="${prevPostLabel}: ${articlePrevious.articleTitleEmoj}"
+                <a rel="prev" class="tooltipped tooltipped-w" aria-label="${prevPostLabel}: ${articlePrevious.articleTitleEmojUnicode}"
                    href="${servePath}${articlePrevious.articlePermalink}">
                     <span class="icon-chevron-left"></span></a>
             </#if>
 
             <#if articleNext??>
-                <a rel="next" class="tooltipped tooltipped-w" aria-label="${nextPostLabel}: ${articleNext.articleTitleEmoj}"
+                <a rel="next" class="tooltipped tooltipped-w" aria-label="${nextPostLabel}: ${articleNext.articleTitleEmojUnicode}"
                    href="${servePath}${articleNext.articlePermalink}">
                     <span class="icon-chevron-right"></span>
                 </a>
