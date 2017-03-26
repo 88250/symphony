@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.16.31.39, Mar 19, 2017
+ * @version 2.16.32.40, Mar 26, 2017
  * @since 0.2.0
  */
 @Service
@@ -208,31 +208,34 @@ public class ArticleMgmtService {
         }
 
         final String articleId = article.optString(Keys.OBJECT_ID);
+        String previewContent = article.optString(Article.ARTICLE_CONTENT);
+        previewContent = Emotions.clear(Jsoup.parse(previewContent).text());
+        previewContent = StringUtils.substring(previewContent, 0, 512);
+        final String contentToTTS = previewContent;
 
         final ThreadService threadService = ThreadServiceFactory.getThreadService();
         threadService.submit(() -> {
-            String previewContent = article.optString(Article.ARTICLE_CONTENT);
-            previewContent = Emotions.clear(Jsoup.parse(previewContent).text());
-            previewContent = StringUtils.substring(previewContent, 0, 512);
+            final Transaction transaction = articleRepository.beginTransaction();
 
-            if (Runes.getChinesePercent(previewContent) < 40) {
-                LOGGER.debug("Chinese is insufficent, so do not TTS [previewContent=" + previewContent
-                        + "]");
-
-                return;
+            String audioURL = "";
+            if (StringUtils.length(contentToTTS) < 96 || Runes.getChinesePercent(contentToTTS) < 40) {
+                LOGGER.debug("Content is too short to TTS [contentToTTS=" + contentToTTS + "]");
+            } else {
+                audioURL = audioMgmtService.tts(contentToTTS, Article.ARTICLE, articleId, userId);
             }
 
-            final String audioURL = audioMgmtService.tts(previewContent, Article.ARTICLE, articleId, userId);
             article.put(Article.ARTICLE_AUDIO_URL, audioURL);
 
-            final Transaction transaction = articleRepository.beginTransaction();
             try {
                 final JSONObject toUpdate = articleRepository.get(articleId);
                 toUpdate.put(Article.ARTICLE_AUDIO_URL, audioURL);
 
                 articleRepository.update(articleId, toUpdate);
-
                 transaction.commit();
+
+                if (StringUtils.isNotBlank(audioURL)) {
+                    LOGGER.debug("Generated article [id=" + articleId + "] audio");
+                }
             } catch (final Exception e) {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -242,8 +245,6 @@ public class ArticleMgmtService {
             }
 
             JdbcRepository.dispose();
-
-            LOGGER.debug("Generated article [id=" + articleId + "] audio");
         }, 1000 * 30);
     }
 
