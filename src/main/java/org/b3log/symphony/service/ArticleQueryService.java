@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.28.50, Mar 26, 2017
+ * @version 2.26.28.51, Mar 27, 2017
  * @since 0.2.0
  */
 @Service
@@ -2759,7 +2759,7 @@ public class ArticleQueryService {
 
             final Elements hs = doc.select("h1, h2, h3, h4, h5");
 
-            if (hs.isEmpty()) {
+            if (hs.size() < 3) {
                 return "";
             }
 
