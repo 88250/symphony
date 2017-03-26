@@ -645,38 +645,4 @@ public class ActivityProcessor {
         context.renderJSON(ret);
     }
 
-    /**
-     * Collects eating snake.
-     * 积分回收位于GobangChannel判断输赢处
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    /*
-    @RequestProcessing(value = "/activity/gobang/collect", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
-    public void collectGobang(final HTTPRequestContext context,
-                                   final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("/activity/gobang.ftl");
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
-            final int score = requestJSONObject.optInt("score");
-
-            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-
-            final JSONObject ret = activityMgmtService.collectEatingSnake(user.optString(Keys.OBJECT_ID), score);
-
-            context.renderJSON(ret);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Collects gobang game failed", e);
-
-            context.renderJSON(false).renderMsg("err....");
-        }
-    }*/
 }

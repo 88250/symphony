@@ -28,73 +28,73 @@ var Gobang = {
         Gobang.chessCanvas.fillStyle = "darkorange";
         Gobang.chessCanvas.fillRect(0,0,Gobang.chessLength,Gobang.chessLength);
         Gobang.chessCanvas.strokeStyle = "black";
-        Gobang.chessCanvas.lineWidth=10;
+        Gobang.chessCanvas.lineWidth = 10;
         Gobang.chessCanvas.strokeRect(0,0,Gobang.chessLength,Gobang.chessLength);
-        Gobang.chessCanvas.lineWidth=1;
-        for(var i=1;i<Gobang.chessLength/Gobang.unitSize;i++){
+        Gobang.chessCanvas.lineWidth = 1;
+        for(var i = 1;i < Gobang.chessLength / Gobang.unitSize;i++){
             Gobang.drawChessLine(i);
         }
-        Gobang.drawChessMan(5*Gobang.unitSize,5*Gobang.unitSize,5,"black");
-        Gobang.drawChessMan(15*Gobang.unitSize,5*Gobang.unitSize,5,"black");
-        Gobang.drawChessMan(5*Gobang.unitSize,15*Gobang.unitSize,5,"black");
-        Gobang.drawChessMan(15*Gobang.unitSize,15*Gobang.unitSize,5,"black");
+        Gobang.drawChessMan(5 * Gobang.unitSize,5 * Gobang.unitSize,5,"black");
+        Gobang.drawChessMan(15 * Gobang.unitSize,5 * Gobang.unitSize,5,"black");
+        Gobang.drawChessMan(5 * Gobang.unitSize,15 * Gobang.unitSize,5,"black");
+        Gobang.drawChessMan(15 * Gobang.unitSize,15 * Gobang.unitSize,5,"black");
     },
     drawChessLine:function(i){
-        Gobang.chessCanvas.moveTo(0, i*Gobang.unitSize);
-        Gobang.chessCanvas.lineTo(Gobang.chessLength, i*Gobang.unitSize);
+        Gobang.chessCanvas.moveTo(0, i * Gobang.unitSize);
+        Gobang.chessCanvas.lineTo(Gobang.chessLength, i * Gobang.unitSize);
         Gobang.chessCanvas.stroke();
 
-        Gobang.chessCanvas.moveTo(i*Gobang.unitSize,0);
-        Gobang.chessCanvas.lineTo(i*Gobang.unitSize,Gobang.chessLength);
+        Gobang.chessCanvas.moveTo(i * Gobang.unitSize,0);
+        Gobang.chessCanvas.lineTo(i * Gobang.unitSize,Gobang.chessLength);
         Gobang.chessCanvas.stroke();
     },
     drawChessMan:function(x,y,raidus,color){
         Gobang.chessCanvas.fillStyle = color;
         Gobang.chessCanvas.beginPath();
-        Gobang.chessCanvas.arc(x,y,raidus, 0, Math.PI*2, true);
+        Gobang.chessCanvas.arc(x,y,raidus, 0, Math.PI * 2, true);
         Gobang.chessCanvas.fill();
     },
     getChessManPoint:function(mouse,player){
-        var xo=mouse.x;
-        var yo=mouse.y;
-        mouse.x=Math.floor(mouse.x/10)*10;//取整
-        mouse.y=Math.floor(mouse.y/10)*10;
-        var xm=mouse.x;
-        var xn=mouse.x;
-        var ym=mouse.y;
-        var yn=mouse.y;//定义任意落点相邻的四个坐标，应能整除unitSize
-        var posX=0;
-        var posY=0;
-        while(xn%30!=0){
-            xn=xn-10;
+        var xo = mouse.x;
+        var yo = mouse.y;
+        mouse.x = Math.floor(mouse.x / 10) * 10;//取整
+        mouse.y = Math.floor(mouse.y / 10) * 10;
+        var xm = mouse.x;
+        var xn = mouse.x;
+        var ym = mouse.y;
+        var yn = mouse.y;//定义任意落点相邻的四个坐标，应能整除unitSize
+        var posX = 0;
+        var posY = 0;
+        while(xn % 30 != 0){
+            xn = xn-10;
         };
-        while(xm%30!=0){
-            xm=xm+10;
+        while(xm % 30 != 0){
+            xm = xm+10;
         };
-        while(yn%30!=0){
-            yn=yn-10;
+        while(yn % 30 != 0){
+            yn = yn-10;
         };
-        while(ym%30!=0){
-            ym=ym+10;
+        while(ym % 30 != 0){
+            ym = ym+10;
         };
-        var radius=new Array();
-        var result=new Array();
-        radius[0]=(xm-xo)*(xm-xo)+(ym-yo)*(ym-yo);
-        result[radius[0]]={x:xm,y:ym};
-        radius[1]=(xm-xo)*(xm-xo)+(yn-yo)*(yn-yo);
-        result[radius[1]]={x:xm,y:yn};
-        radius[2]=(xn-xo)*(xn-xo)+(ym-yo)*(ym-yo);
-        result[radius[2]]={x:xn,y:ym};
-        radius[3]=(xn-xo)*(xn-xo)+(yn-yo)*(yn-yo);
-        result[radius[3]]={x:xn,y:yn};
+        var radius = new Array();
+        var result = new Array();
+        radius[0] = (xm - xo) * (xm - xo) + (ym - yo) * (ym-yo);
+        result[radius[0]] = {x:xm,y:ym};
+        radius[1] = (xm-xo) * (xm - xo) + (yn - yo) * (yn - yo);
+        result[radius[1]] = {x:xm,y:yn};
+        radius[2] = (xn-xo) * (xn - xo) + (ym - yo) * (ym - yo);
+        result[radius[2]] = {x:xn,y:ym};
+        radius[3] = (xn-xo) * (xn - xo) + (yn - yo) * (yn - yo);
+        result[radius[3]] = {x:xn,y:yn};
         radius.sort(function(a,b){
-            return a-b;
+            return a - b;
         });
-        posX=result[radius[0]].x;
-        posY=result[radius[0]].y;
-        if(posX==0||posX==600||posY==0||posY==600)
+        posX = result[radius[0]].x;
+        posY = result[radius[0]].y;
+        if(posX == 0 || posX == 600 || posY == 0 || posY == 600)
             return;
-        var message={
+        var message = {
             type:2,
             x:posX,
             y:posY,
@@ -115,17 +115,13 @@ var Gobang = {
         }
     },
     chatSend:function(){
-        // if($("#player").val()!=""){
-            var message={
-                type:1,
-                player:$("#player").val(),
-                message:$("#chatInput").val()
-            }
-            $("#chatArea").append($("#player").val()+" : "+$("#chatInput").val()+"<br/>");
-            GobangChannel.ws.send(JSON.stringify(message));
-        // }else{
-        //     alert("请填写昵称");
-        // }
+        var message = {
+            type:1,
+            player:$("#player").val(),
+            message:$("#chatInput").val()
+        }
+        $("#chatArea").html($("#player").val() + " : "+$("#chatInput").val());
+        GobangChannel.ws.send(JSON.stringify(message));
     },
     moveChess:function(evt){
         var mousePos = Gobang.getMousePos(document.getElementById("gobangCanvas"), evt);
@@ -156,20 +152,20 @@ var GobangChannel = {
         };
 
         GobangChannel.ws.onmessage = function (evt) {
-            var resp=JSON.parse(evt.data);
+            var resp = JSON.parse(evt.data);
             switch(resp.type){
-                case 1:$("#chatArea").append(resp.player+" : "+resp.message+"<br/>");break;
+                case 1:$("#chatArea").html(resp.player+" : "+resp.message);break;
                 case 2:
                     Gobang.drawChessMan(resp.posX,resp.posY,Gobang.unitSize/2,resp.color);
-                    if(resp.result!=null && resp.result!=""){
+                    if(resp.result != null && resp.result != ""){
                         alert(resp.result);
                         document.getElementById("gobangCanvas").removeEventListener("click",Gobang.moveChess);
                     }
                     break;
                 case 3:
-                    $("#chatArea").append("【系统】 : "+resp.message+"<br/>");break;
+                    $("#chatArea").html("【系统】 : "+resp.message);break;
                 case 4:
-                    $("#chatArea").append("【系统】 : "+resp.message+"<br/>");
+                    $("#chatArea").html("【系统】 : "+resp.message);
                     console.log(resp.player);
                     $("#player").val(resp.player);
                     break;

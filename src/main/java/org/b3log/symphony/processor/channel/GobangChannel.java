@@ -22,8 +22,10 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.service.ActivityMgmtService;
+import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -86,19 +88,19 @@ public class GobangChannel {
         }
         final String userId = user.optString(Keys.OBJECT_ID);
         final String userName = user.optString(User.USER_NAME);
-        boolean playing=false;
-        LOGGER.info("new connection from "+userName);
+        boolean playing = false;
+        LOGGER.debug("new connection from "+userName);
         SESSIONS.put(userId,session);
         for(String temp:chessPlaying.keySet()){
             if(userId.equals(chessPlaying.get(temp).getPlayer1())
-                    ||userId.equals(chessPlaying.get(temp).getPlayer2())){
-                playing=true;
+                    || userId.equals(chessPlaying.get(temp).getPlayer2())){
+                playing = true;
             }
         }
         if(playing){
             return;
         }else if(playing == false && chessRandomWait.size()!=0){
-            ChessGame chessGame=chessRandomWait.poll();
+            ChessGame chessGame = chessRandomWait.poll();
             chessGame.setPlayer2(userId);
             chessGame.setStep(1);
             chessPlaying.put(chessGame.getPlayer1(),chessGame);
@@ -118,7 +120,7 @@ public class GobangChannel {
         }else{
             ChessGame chessGame=new ChessGame(userId);
             chessRandomWait.add(chessGame);
-            JSONObject sendText= new JSONObject();
+            JSONObject sendText = new JSONObject();
             sendText.put("type",3);
             sendText.put("chessId",chessGame.getChessId());
             sendText.put("message","请等待另一名玩家加入游戏");
@@ -145,14 +147,20 @@ public class GobangChannel {
      */
     @OnMessage
     public void onMessage(final String message) throws JSONException {
-        JSONObject jsonObject= new JSONObject(message);
-        final String player=jsonObject.optString("player");
-        final String anti=getAntiPlayer(player);
-        JSONObject sendText= new JSONObject();
+        JSONObject jsonObject = new JSONObject(message);
+        final String player = jsonObject.optString("player");
+        final String anti = getAntiPlayer(player);
+        JSONObject sendText = new JSONObject();
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         switch(jsonObject.optInt("type")){
             case 1: //聊天
+                final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
                 sendText.put("type",1);
-                sendText.put("player",player);
+                try {
+                    sendText.put("player", userQueryService.getUser(player).optString(User.USER_NAME));
+                }catch(ServiceException e){
+                    LOGGER.error("service not avaliable");
+                }
                 sendText.put("message",jsonObject.optString("message"));
                 SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
                 break;
@@ -161,23 +169,23 @@ public class GobangChannel {
                 int x=jsonObject.optInt("x");
                 int y=jsonObject.optInt("y");
                 int size=jsonObject.optInt("size");
-                if(chessGame!=null){
+                if(chessGame != null){
                     boolean flag=false;
                     if(player.equals(chessGame.getPlayer1())){
-                        if(chessGame.getStep()!=1){
+                        if(chessGame.getStep() != 1){
                             return;
                         }else{
                             sendText.put("color","black");
-                            chessGame.getChess()[x/size][y/size]=1;
+                            chessGame.getChess()[x / size][y / size] = 1;
                             flag=chessGame.chessCheck(1);
                             chessGame.setStep(2);
                         }
                     }else{
-                        if(chessGame.getStep()!=2){
+                        if(chessGame.getStep() != 2){
                             return;
                         }else{
                             sendText.put("color","white");
-                            chessGame.getChess()[x/size][y/size]=2;
+                            chessGame.getChess()[x / size][y / size] = 2;
                             flag=chessGame.chessCheck(2);
                             chessGame.setStep(1);
                         }
@@ -195,17 +203,13 @@ public class GobangChannel {
                     }
                     SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
                     if(flag){
-                        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
                         final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
-                        activityMgmtService.collectEatingSnake(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START*2);
-                        activityMgmtService.collectEatingSnake(anti, 0);
+                        activityMgmtService.collectGobang(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START*2);
+                        activityMgmtService.collectGobang(anti, 0);
                         chessPlaying.remove(chessGame);
                     }
                 }
                 break;
-        }
-        if(jsonObject.optString("type").equals("chat")){
-            LOGGER.info("chat:>"+jsonObject.optString("message"));
         }
     }
 
@@ -229,8 +233,8 @@ public class GobangChannel {
         for(String temp:SESSIONS.keySet()){
             if(session.equals(SESSIONS.get(temp))){
                 chessPlaying.remove(temp);
-                String anti=getAntiPlayer(temp);
-                if(anti!=null && !anti.equals("")){
+                String anti = getAntiPlayer(temp);
+                if(anti != null && !anti.equals("")){
                     chessPlaying.remove(anti);
                 }
                 SESSIONS.remove(temp);
@@ -239,11 +243,11 @@ public class GobangChannel {
     }
 
     private String getAntiPlayer(String player){
-        String anti=antiPlayer.get(player);
-        if(null==anti||anti.equals("")){
+        String anti = antiPlayer.get(player);
+        if(null == anti || anti.equals("")){
             for(String temp:antiPlayer.keySet()){
                 if(player.equals(antiPlayer.get(temp))){
-                    anti=temp;
+                    anti = temp;
                 }
             }
         }
@@ -255,15 +259,17 @@ class ChessGame{
     private String player1;
     private String player2;
     private int state;//0空桌，1，等待，2满员
-    private int[][] chess=null;
+    private int[][] chess = null;
     private int step;//1-player1,2-player2;
+    private long starttime;
     public ChessGame(String player1){
-        this.chessId=System.currentTimeMillis();
-        this.player1=player1;
-        this.chess=new int[20][20];
-        for(int i=0;i<20;i++){
-            for(int j=0;j<20;j++){
-                chess[i][j]=0;
+        this.chessId = System.currentTimeMillis();
+        this.player1 =player1;
+        this.chess = new int[20][20];
+        this.starttime=System.currentTimeMillis();
+        for(int i = 0;i < 20;i++){
+            for(int j = 0;j < 20;j++){
+                chess[i][j] = 0;
             }
         }
     }
@@ -273,13 +279,13 @@ class ChessGame{
         for(int i=0;i<this.chess.length;i++){
             int count=0;
             for(int j=0;j<this.chess[i].length;j++){
-                if(this.chess[i][j]==step){
+                if(this.chess[i][j] == step){
                     count++;
-                }else if(this.chess[i][j]!=step && count<5){
-                    count=0;
+                }else if(this.chess[i][j] != step && count < 5){
+                    count = 0;
                 }
             }
-            if(count>=5){
+            if(count >= 5){
                 return true;
             }
         }
@@ -404,5 +410,13 @@ class ChessGame{
 
     public void setChess(int[][] chess) {
         this.chess = chess;
+    }
+
+    public long getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(long starttime) {
+        this.starttime = starttime;
     }
 }
