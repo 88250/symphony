@@ -96,7 +96,6 @@ var Comment = {
      */
     _initEditorPanel: function () {
         // 回复按钮设置
-        var cnt = 0;
         $('#replyBtn').click(function () {
             if (!Label.isLoggedIn) {
                 Util.needLogin();
@@ -104,6 +103,12 @@ var Comment = {
             }
             if ($(this).data('hasPermission') === 'false') {
                 Article.permissionTip(Label.noPermissionLabel)
+                return false;
+            }
+
+            if ($('.footer').attr('style')) {
+                $('.editor-panel').slideUp();
+                $('.footer').removeAttr('style');
                 return false;
             }
 
@@ -118,13 +123,6 @@ var Comment = {
             $('.editor-panel').slideDown(function () {
                 Comment.editor.focus();
             });
-        }).hover(function () {
-            $('.article-footer').show();
-        }, function () {
-            cnt++;
-            if (cnt % 2 === 0) {
-                $('.article-footer').hide();
-            }
         });
 
         // 评论框控制
@@ -219,31 +217,31 @@ var Comment = {
         }).bind('keyup', 't', function assets() {
             // v t 赞同帖子
             if (Util.prevKey === 'v') {
-                $('.article-footer .icon-thumbs-up').parent().click();
+                $('.article-header .icon-thumbs-up').parent().click();
             }
             return false;
         }).bind('keyup', 'd', function assets() {
             // v d 反对帖子
             if (Util.prevKey === 'v') {
-                $('.article-footer .icon-thumbs-down').parent().click();
+                $('.article-header .icon-thumbs-down').parent().click();
             }
             return false;
         }).bind('keyup', 'i', function assets() {
               // v i 关注帖子
               if (Util.prevKey === 'v') {
-                  $('.article-footer .icon-view').parent().click();
+                  $('.article-header .icon-view').parent().click();
               }
               return false;
         }).bind('keyup', 'c', function assets() {
             // v c 收藏帖子
             if (Util.prevKey === 'v') {
-                $('.article-footer .icon-star').parent().click();
+                $('.article-header .icon-star').parent().click();
             }
             return false;
         }).bind('keyup', 'l', function assets() {
             // v h 查看帖子历史
             if (Util.prevKey === 'v') {
-                $('.article-footer .icon-history').parent().click();
+                $('.article-header .icon-history').parent().click();
             }
             return false;
         }).bind('keyup', 'e', function assets() {
@@ -266,14 +264,14 @@ var Comment = {
             return false;
         }).bind('keyup', 'p', function assets() {
             // v p 跳转到上一篇帖子 prev
-            if (Util.prevKey === 'v' && $('.article-footer a[rel=prev]').length === 1) {
-                window.location = $('.article-footer a[rel=prev]').attr('href');
+            if (Util.prevKey === 'v' && $('.article-header a[rel=prev]').length === 1) {
+                window.location = $('.article-header a[rel=prev]').attr('href');
             }
             return false;
         }).bind('keyup', 'n', function assets() {
             // v n 跳转到下一篇帖子 next
-            if (Util.prevKey === 'v' && $('.article-footer a[rel=next]').length === 1) {
-                window.location = $('.article-footer a[rel=next]').attr('href');
+            if (Util.prevKey === 'v' && $('.article-header a[rel=next]').length === 1) {
+                window.location = $('.article-header a[rel=next]').attr('href');
             }
             return false;
         });
@@ -1004,27 +1002,8 @@ var Article = {
         this.initAudio();
 
         // scroll
-        // var beforeScorllTop = $(window).scrollTop();
         $(window).scroll(function () {
             var currentScrollTop = $(window).scrollTop();
-            // nav
-//            if (currentScrollTop < 56 && currentScrollTop > beforeScorllTop) {
-//                $('.nav').css({
-//                    top: '-' + currentScrollTop + 'px'
-//                });
-//            } else if (currentScrollTop > beforeScorllTop) {
-//                $('.nav').css({
-//                    top: '-56px'
-//                });
-//            } else {
-//                $('.nav').animate({
-//                    top: 0
-//                }, {
-//                     queue: false,
-//                     duration: 300
-//                });
-//            }
-//            beforeScorllTop = currentScrollTop;
 
             // share
             if (currentScrollTop > 48 && currentScrollTop < $('.comments').offset().top + $('.comments').height()) {
@@ -1033,6 +1012,15 @@ var Article = {
                 $('.share').hide();
             }
         });
+
+        // nav
+        window.addEventListener('mousewheel', function(event) {
+            if (event.deltaY > 0) {
+                $('.article-header').css('top', 0);
+            } else if (event.deltaY < -5) {
+                $('.article-header').css('top', '-56px');
+            }
+        }, false);
     },
     /**
      * 历史版本对比
@@ -1144,7 +1132,6 @@ var Article = {
 
         $('body').click(function () {
             $('#qrCode').slideUp();
-            $('.article-footer').hide();
         });
 
         $(".share > span").click(function () {
@@ -1432,8 +1419,13 @@ var Article = {
 
         $('#articleToC').width(($(window).width() - $('.article-title').width()) / 2 - 15).animate({
             right: 0
-        }, 800);
-        $('#articleToC > module-panel').height($(window).height() - 49);
+        }, function () {
+            $(window).scroll();
+            $articleTocUl.scrollTop($articleToc.find('li.current')[0].offsetTop).scroll(function () {
+                isUlScroll = true;
+            });
+        });
+        $('#articleToC > .module-panel').height($(window).height() - 49 - 48);
 
         // 样式
         var $articleToc = $('#articleToC'),
@@ -1453,7 +1445,7 @@ var Article = {
         });
 
         $(window).scroll(function (event) {
-            if ($('#articleToC').css('display') === 'none') {
+            if (parseInt($('#articleToC').css('right')) < 0) {
                 return false;
             }
             $('#articleToC > .module-panel').height($(window).height() - 49);
@@ -1498,13 +1490,6 @@ var Article = {
             setTimeout(function () {
                 isUlScroll = false;
             }, 600);
-        }).resize(function () {
-            $('#articleToC > .module-panel').height($(window).height() - 49);
-        });
-
-        $(window).scroll();
-        $articleTocUl.scrollTop($articleToc.find('li.current')[0].offsetTop).scroll(function () {
-            isUlScroll = true;
         });
     },
     /**
@@ -1516,12 +1501,16 @@ var Article = {
             return false;
         }
 
-        var $menu = $('.article-footer .icon-unordered-list');
+        var $menu = $('.article-header .icon-unordered-list');
         if ($menu.hasClass('ft-red')) {
-            $articleToc.hide();
+            $articleToc.animate({
+                right: '-300px'
+            });
             $menu.removeClass('ft-red');
         } else {
-            $articleToc.show();
+            $articleToc.animate({
+                right: 0
+            });
             $menu.addClass('ft-red');
         }
     },

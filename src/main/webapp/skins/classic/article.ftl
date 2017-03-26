@@ -350,85 +350,87 @@
             <input type="text" class="article-clipboard"
                    value="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"/>
         </div>
-        <div class="article-footer">
-            <#if "" != article.articleToC>
-                <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
-                      class="tooltipped tooltipped-w"><span class="icon-unordered-list ft-red"></span></span>
-            </#if>
+        <div class="nav article-header">
+            <h1>
+                ${logoIcon}
+            </h1>
+            <h2>
+                ${article.articleTitleEmojUnicode}
+            </h2>
+            <div class="user-nav">
+                <#if "" != article.articleToC>
+                    <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
+                          class="tooltipped tooltipped-w"><span class="icon-unordered-list ft-red"></span></span>
+                </#if>
 
-            <#if permissions["commonViewArticleHistory"].permissionGrant>
-                <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
-                      class="tooltipped tooltipped-w"><span class="icon-history"></span></span>
-            </#if>
+                <#if permissions["commonViewArticleHistory"].permissionGrant>
+                    <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
+                          class="tooltipped tooltipped-w"><span class="icon-history"></span></span>
+                </#if>
 
-            <#if articlePrevious??>
-                <a rel="prev" class="tooltipped tooltipped-w" aria-label="${prevPostLabel}: ${articlePrevious.articleTitleEmojUnicode}"
-                   href="${servePath}${articlePrevious.articlePermalink}">
-                    <span class="icon-chevron-left"></span></a>
-            </#if>
+                <#if articlePrevious??>
+                    <a rel="prev" class="tooltipped tooltipped-w" aria-label="${prevPostLabel}: ${articlePrevious.articleTitleEmojUnicode}"
+                       href="${servePath}${articlePrevious.articlePermalink}">
+                        <span class="icon-chevron-left"></span></a>
+                </#if>
 
-            <#if articleNext??>
-                <a rel="next" class="tooltipped tooltipped-w" aria-label="${nextPostLabel}: ${articleNext.articleTitleEmojUnicode}"
-                   href="${servePath}${articleNext.articlePermalink}">
-                    <span class="icon-chevron-right"></span>
-                </a>
-            </#if>
+                <#if articleNext??>
+                    <a rel="next" class="tooltipped tooltipped-w" aria-label="${nextPostLabel}: ${articleNext.articleTitleEmojUnicode}"
+                       href="${servePath}${articleNext.articlePermalink}">
+                        <span class="icon-chevron-right"></span>
+                    </a>
+                </#if>
 
-            <span class="tooltipped tooltipped-w<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>" aria-label="${upLabel}"
-            <#if permissions["commonGoodArticle"].permissionGrant>
-                onclick="Article.voteUp('${article.oId}', 'article', this)"
-                <#else>
-                    onclick="Article.permissionTip(Label.noPermissionLabel)"
-            </#if>><span class="icon-thumbs-up"></span> ${article.articleGoodCnt}</span>
-
-            <span  class="tooltipped tooltipped-w<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>" aria-label="${downLabel}"
-            <#if permissions["commonBadArticle"].permissionGrant>
-                onclick="Article.voteDown('${article.oId}', 'article', this)"
-            <#else>
-                onclick="Article.permissionTip(Label.noPermissionLabel)"
-            </#if>><span class="icon-thumbs-down"></span> ${article.articleBadCnt}</span>
-
-            <#if isLoggedIn && isFollowing>
-                <span class="tooltipped tooltipped-w ft-red" aria-label="${uncollectLabel}"
-                <#if permissions["commonFollowArticle"].permissionGrant>
-                    onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
+                <span class="tooltipped tooltipped-w<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>" aria-label="${upLabel}"
+                <#if permissions["commonGoodArticle"].permissionGrant>
+                    onclick="Article.voteUp('${article.oId}', 'article', this)"
                     <#else>
                         onclick="Article.permissionTip(Label.noPermissionLabel)"
-                </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                </#if>><span class="icon-thumbs-up"></span> ${article.articleGoodCnt}</span>
+
+                <span  class="tooltipped tooltipped-w<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>" aria-label="${downLabel}"
+                <#if permissions["commonBadArticle"].permissionGrant>
+                    onclick="Article.voteDown('${article.oId}', 'article', this)"
                 <#else>
-                    <span class="tooltipped tooltipped-w" aria-label="${collectLabel}"
+                    onclick="Article.permissionTip(Label.noPermissionLabel)"
+                </#if>><span class="icon-thumbs-down"></span> ${article.articleBadCnt}</span>
+
+                <#if isLoggedIn && isFollowing>
+                    <span class="tooltipped tooltipped-w ft-red" aria-label="${uncollectLabel}"
                     <#if permissions["commonFollowArticle"].permissionGrant>
-                        onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
+                        onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
                     </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
-            </#if>
-
-            <#if isLoggedIn && isWatching>
-                <span class="tooltipped tooltipped-w ft-red" aria-label="${unfollowLabel}"
-                <#if permissions["commonWatchArticle"].permissionGrant>
-                    onclick="Util.unfollow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
                     <#else>
-                        onclick="Article.permissionTip(Label.noPermissionLabel)"
-                </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
-                <#else>
-                    <span class="tooltipped tooltipped-w" aria-label="${followLabel}"
+                        <span class="tooltipped tooltipped-w" aria-label="${collectLabel}"
+                        <#if permissions["commonFollowArticle"].permissionGrant>
+                            onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
+                            <#else>
+                                onclick="Article.permissionTip(Label.noPermissionLabel)"
+                        </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                </#if>
+
+                <#if isLoggedIn && isWatching>
+                    <span class="tooltipped tooltipped-w ft-red" aria-label="${unfollowLabel}"
                     <#if permissions["commonWatchArticle"].permissionGrant>
-                        onclick="Util.follow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
+                        onclick="Util.unfollow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
                     </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
-            </#if>
+                    <#else>
+                        <span class="tooltipped tooltipped-w" aria-label="${followLabel}"
+                        <#if permissions["commonWatchArticle"].permissionGrant>
+                            onclick="Util.follow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
+                            <#else>
+                                onclick="Article.permissionTip(Label.noPermissionLabel)"
+                        </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
+                </#if>
+            </div>
         </div>
 
         <#if "" != article.articleToC && 3 != article.articleType>
             <div class="module" id="articleToC">
-                <div class="module-header">
-                    <h2>
-                        ${ToCLabel}
-                        <a href="javascript:Article.toggleToc()" class="fn-right ft-13 ft-fade icon-close"></a>
-                    </h2>
-                </div>
                 <div class="module-panel">
                     ${article.articleToC}
                 </div>
