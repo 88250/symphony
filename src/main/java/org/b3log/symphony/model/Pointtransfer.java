@@ -23,7 +23,8 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines all pointtransfer model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.1.0, Feb 13, 2017
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.22.1.1, Mar 27, 2017
  * @since 1.3.0
  */
 public final class Pointtransfer {
@@ -346,7 +347,7 @@ public final class Pointtransfer {
     public static final int TRANSFER_TYPE_C_ACTIVITY_GOBANG_COLLECT = 31;
 
     /**
-     * Transfer sum - Activity - start gobang .
+     * Transfer sum - Activity - Start Gobang.
      */
     public static final int TRANSFER_SUM_C_ACTIVITY_GOBANG_START = Symphonys.getInt("pointActivityGobang");
 
