@@ -208,6 +208,9 @@ var Activity = {
         };
     },
     initGobang:function(wsurl){
+        if (!confirm(Label.activityStartGobangTipLabel)) {
+            return;
+        }
         $.ajax({
             url: Label.servePath + "/activity/gobang/start",
             type: "POST",

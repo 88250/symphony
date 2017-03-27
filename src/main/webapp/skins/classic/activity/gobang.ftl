@@ -41,7 +41,7 @@
         <script src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
         <script src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
         <script>
-            Label.activityStartGobnagTipLabel = '${activityStartGobangTipLabel}';
+            Label.activityStartGobangTipLabel = '${activityStartGobangTipLabel}';
             Gobang.initCanvas('oMark', 'gobangCanvas');
             document.getElementById("gobangCanvas").addEventListener("click",Gobang.moveChess, false);
         </script>

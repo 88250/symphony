@@ -8,10 +8,15 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by Zephyr on 2017/2/18.
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.0.0.0, Mar 27, 2017
+ * @since 2.0.1
  */
-public class redditScoreTest {
+public class RedditScoreTest {
 
+    /**
+     * Reddit Score compute mock
+     */
     @Test
     public void redditScore(){
         List<vote> votes=new ArrayList<vote>();
