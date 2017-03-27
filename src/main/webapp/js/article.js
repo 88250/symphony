@@ -1073,7 +1073,8 @@ var Article = {
                                 '\n\n' + result.revisions[result.revisions.length - 2].revisionData.articleContent,
                         revertButtons: false,
                         mode: "text/html",
-                        collapseIdentical: true
+                        collapseIdentical: true,
+                        lineWrapping: true
                     });
                     Article._revisionsControls();
                     return false;

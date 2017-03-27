@@ -271,6 +271,16 @@
         }
     }
 
+    #revision .pagination {
+        margin-bottom: 10px;
+        float: right;
+
+        span.current {
+            border-radius: 3px;
+            line-height: 30px;
+        }
+    }
+
     .editor-panel {
         background-color: $light-blue;
         border-top: 1px solid #eee;
@@ -279,23 +289,23 @@
         width: 100%;
         z-index: 80;
         max-height: 80%;
-        overflow: auto
-    }
+        overflow: auto;
 
-    .editor-panel .form {
-        width: 100%
-    }
+        .form {
+            width: 100%
+        }
 
-    .editor-panel .editor-hide {
-        width: 20px;
-        text-align: center;
-        height: 20px;
-        color: #ccc;
-        margin-top: 5px;
-    }
+        .editor-hide {
+            width: 20px;
+            text-align: center;
+            height: 20px;
+            color: #ccc;
+            margin-top: 5px;
+        }
 
-    .editor-panel .editor-hide:hover {
-        color: $gray;
+        .editor-hide:hover {
+            color: $gray;
+        }
     }
 
     .cm-s-default.CodeMirror {
@@ -317,26 +327,21 @@
     position: relative;
     margin-bottom: 10px;
     margin-top: -1px;
-}
 
-#thoughtProgress .bar {
-    position: absolute;
-    background-color: #e0e0e0;
-    height: 2px
-}
+    .bar {
+        position: absolute;
+        background-color: #e0e0e0;
+        height: 2px
+    }
 
-#thoughtProgress .icon-video {
-    position: absolute;
-    top: -8px;
-    left: 0;
-    cursor: pointer;
-    color: $red;
-    margin-left: -10px;
-}
-
-#revision .pagination {
-    margin-bottom: 10px;
-    float: right;
+    .icon-video {
+        position: absolute;
+        top: -8px;
+        left: 0;
+        cursor: pointer;
+        color: $red;
+        margin-left: -10px;
+    }
 }
 
 label.cmt-anonymous {
