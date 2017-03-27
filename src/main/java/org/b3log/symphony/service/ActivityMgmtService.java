@@ -26,12 +26,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
@@ -62,7 +57,8 @@ import java.util.Random;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.9.6, Nov 1, 2016
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.6.9.6, Mar 27, 2017
  * @since 1.3.0
  */
 @Service
@@ -187,7 +183,7 @@ public class ActivityMgmtService {
      * Collects eating snake.
      *
      * @param userId the specified user id
-     * @param score the specified score
+     * @param score  the specified score
      * @return result
      */
     public synchronized JSONObject collectEatingSnake(final String userId, final int score) {
@@ -218,9 +214,9 @@ public class ActivityMgmtService {
     /**
      * Submits the specified character to recognize.
      *
-     * @param userId the specified user id
+     * @param userId       the specified user id
      * @param characterImg the specified character image encoded by Base64
-     * @param character the specified character
+     * @param character    the specified character
      * @return recognition result
      */
     public synchronized JSONObject submitCharacter(final String userId, final String characterImg, final String character) {
@@ -454,8 +450,8 @@ public class ActivityMgmtService {
     /**
      * Bets 1A0001.
      *
-     * @param userId the specified user id
-     * @param amount the specified amount
+     * @param userId       the specified user id
+     * @param amount       the specified amount
      * @param smallOrLarge the specified small or large
      * @return result
      */
@@ -670,7 +666,7 @@ public class ActivityMgmtService {
      * Collects Gobang.
      *
      * @param userId the specified user id
-     * @param score the specified score
+     * @param score  the specified score
      * @return result
      */
     public synchronized JSONObject collectGobang(final String userId, final int score) {

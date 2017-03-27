@@ -30,12 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
-import javax.websocket.CloseReason;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
 import java.util.Queue;
@@ -47,34 +42,39 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @version 1.0.0.0, Mar 16, 2017
- * @since 2.0.1
+ * @since 2.1.0
  */
 @ServerEndpoint(value = "/gobang-game-channel", configurator = Channels.WebSocketConfigurator.class)
 public class GobangChannel {
 
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(GobangChannel.class.getName());
-
-    /**
      * Session set.
      */
-    public static final Map<String,Session> SESSIONS = new ConcurrentHashMap<String,Session>();
-
-    //正在进行中的棋局
-    public static final Map<String,ChessGame> chessPlaying=new ConcurrentHashMap<String,ChessGame>();
-    //对手，与正在进行的棋局Map配套使用
-    public static final Map<String,String> antiPlayer=new ConcurrentHashMap<String,String>();
-
-    //等待的棋局队列
-    public static final Queue<ChessGame> chessRandomWait=new ConcurrentLinkedQueue<ChessGame>();
-
+    public static final Map<String, Session> SESSIONS = new ConcurrentHashMap<String, Session>();
+    /**
+     * 正在进行中的棋局.
+     */
+    public static final Map<String, ChessGame> chessPlaying = new ConcurrentHashMap<String, ChessGame>();
+    /**
+     * 对手，与正在进行的棋局Map配套使用.
+     */
+    public static final Map<String, String> antiPlayer = new ConcurrentHashMap<String, String>();
+    /**
+     * 等待的棋局队列.
+     */
+    public static final Queue<ChessGame> chessRandomWait = new ConcurrentLinkedQueue<ChessGame>();
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(GobangChannel.class);
+    /**
+     * Activity management service.
+     */
     @Inject
     private ActivityMgmtService activityMgmtService;
 
+    // 等待指定用户的棋局（暂不实现）
 
-    //等待指定用户的棋局（暂不实现）
     /**
      * Called when the socket connection with the browser is established.
      *
@@ -89,41 +89,41 @@ public class GobangChannel {
         final String userId = user.optString(Keys.OBJECT_ID);
         final String userName = user.optString(User.USER_NAME);
         boolean playing = false;
-        LOGGER.debug("new connection from "+userName);
-        SESSIONS.put(userId,session);
-        for(String temp:chessPlaying.keySet()){
-            if(userId.equals(chessPlaying.get(temp).getPlayer1())
-                    || userId.equals(chessPlaying.get(temp).getPlayer2())){
+        LOGGER.debug("new connection from " + userName);
+        SESSIONS.put(userId, session);
+        for (String temp : chessPlaying.keySet()) {
+            if (userId.equals(chessPlaying.get(temp).getPlayer1())
+                    || userId.equals(chessPlaying.get(temp).getPlayer2())) {
                 playing = true;
             }
         }
-        if(playing){
+        if (playing) {
             return;
-        }else if(playing == false && chessRandomWait.size()!=0){
+        } else if (playing == false && chessRandomWait.size() != 0) {
             ChessGame chessGame = chessRandomWait.poll();
             chessGame.setPlayer2(userId);
             chessGame.setStep(1);
-            chessPlaying.put(chessGame.getPlayer1(),chessGame);
-            antiPlayer.put(chessGame.getPlayer1(),chessGame.getPlayer2());
-            JSONObject sendText= new JSONObject();
-            sendText.put("type",4);
+            chessPlaying.put(chessGame.getPlayer1(), chessGame);
+            antiPlayer.put(chessGame.getPlayer1(), chessGame.getPlayer2());
+            JSONObject sendText = new JSONObject();
+            sendText.put("type", 4);
 
             //针对开局玩家的消息
-            sendText.put("message","玩家<"+userName+">已加入，游戏开始，请落子");
-            sendText.put("player",chessGame.getPlayer1());
+            sendText.put("message", "玩家<" + userName + ">已加入，游戏开始，请落子");
+            sendText.put("player", chessGame.getPlayer1());
             SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
             //针对参与玩家的消息
-            sendText.put("message","游戏开始~！");
-            sendText.put("player",chessGame.getPlayer2());
+            sendText.put("message", "游戏开始~！");
+            sendText.put("player", chessGame.getPlayer2());
             session.getAsyncRemote().sendText(sendText.toString());
 
-        }else{
-            ChessGame chessGame=new ChessGame(userId);
+        } else {
+            ChessGame chessGame = new ChessGame(userId);
             chessRandomWait.add(chessGame);
             JSONObject sendText = new JSONObject();
-            sendText.put("type",3);
-            sendText.put("chessId",chessGame.getChessId());
-            sendText.put("message","请等待另一名玩家加入游戏");
+            sendText.put("type", 3);
+            sendText.put("chessId", chessGame.getChessId());
+            sendText.put("message", "请等待另一名玩家加入游戏");
             session.getAsyncRemote().sendText(sendText.toString());
         }
     }
@@ -131,12 +131,11 @@ public class GobangChannel {
     /**
      * Called when the connection closed.
      *
-     * @param session session
+     * @param session     session
      * @param closeReason close reason
      */
     @OnClose
     public void onClose(final Session session, final CloseReason closeReason) {
-
         removeSession(session);
     }
 
@@ -152,59 +151,59 @@ public class GobangChannel {
         final String anti = getAntiPlayer(player);
         JSONObject sendText = new JSONObject();
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-        switch(jsonObject.optInt("type")){
+        switch (jsonObject.optInt("type")) {
             case 1: //聊天
                 final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
-                sendText.put("type",1);
+                sendText.put("type", 1);
                 try {
                     sendText.put("player", userQueryService.getUser(player).optString(User.USER_NAME));
-                }catch(ServiceException e){
+                } catch (ServiceException e) {
                     LOGGER.error("service not avaliable");
                 }
-                sendText.put("message",jsonObject.optString("message"));
+                sendText.put("message", jsonObject.optString("message"));
                 SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
                 break;
             case 2: //落子
-                ChessGame chessGame=chessPlaying.keySet().contains(player)?chessPlaying.get(player):chessPlaying.get(anti);
-                int x=jsonObject.optInt("x");
-                int y=jsonObject.optInt("y");
-                int size=jsonObject.optInt("size");
-                if(chessGame != null){
-                    boolean flag=false;
-                    if(player.equals(chessGame.getPlayer1())){
-                        if(chessGame.getStep() != 1){
+                ChessGame chessGame = chessPlaying.keySet().contains(player) ? chessPlaying.get(player) : chessPlaying.get(anti);
+                int x = jsonObject.optInt("x");
+                int y = jsonObject.optInt("y");
+                int size = jsonObject.optInt("size");
+                if (chessGame != null) {
+                    boolean flag = false;
+                    if (player.equals(chessGame.getPlayer1())) {
+                        if (chessGame.getStep() != 1) {
                             return;
-                        }else{
-                            sendText.put("color","black");
+                        } else {
+                            sendText.put("color", "black");
                             chessGame.getChess()[x / size][y / size] = 1;
-                            flag=chessGame.chessCheck(1);
+                            flag = chessGame.chessCheck(1);
                             chessGame.setStep(2);
                         }
-                    }else{
-                        if(chessGame.getStep() != 2){
+                    } else {
+                        if (chessGame.getStep() != 2) {
                             return;
-                        }else{
-                            sendText.put("color","white");
+                        } else {
+                            sendText.put("color", "white");
                             chessGame.getChess()[x / size][y / size] = 2;
-                            flag=chessGame.chessCheck(2);
+                            flag = chessGame.chessCheck(2);
                             chessGame.setStep(1);
                         }
                     }
-                    sendText.put("type",2);
-                    sendText.put("player",player);
-                    sendText.put("posX",x);
-                    sendText.put("posY",y);
-                    if(flag){
-                        sendText.put("result","You win");
+                    sendText.put("type", 2);
+                    sendText.put("player", player);
+                    sendText.put("posX", x);
+                    sendText.put("posY", y);
+                    if (flag) {
+                        sendText.put("result", "You win");
                     }
                     SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
-                    if(flag){
-                        sendText.put("result","You Lose");
+                    if (flag) {
+                        sendText.put("result", "You Lose");
                     }
                     SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
-                    if(flag){
+                    if (flag) {
                         final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
-                        activityMgmtService.collectGobang(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START*2);
+                        activityMgmtService.collectGobang(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START * 2);
                         activityMgmtService.collectGobang(anti, 0);
                         chessPlaying.remove(chessGame);
                     }
@@ -217,7 +216,7 @@ public class GobangChannel {
      * Called in case of an error.
      *
      * @param session session
-     * @param error error
+     * @param error   error
      */
     @OnError
     public void onError(final Session session, final Throwable error) {
@@ -230,11 +229,11 @@ public class GobangChannel {
      * @param session the specified session
      */
     private void removeSession(final Session session) {
-        for(String temp:SESSIONS.keySet()){
-            if(session.equals(SESSIONS.get(temp))){
+        for (String temp : SESSIONS.keySet()) {
+            if (session.equals(SESSIONS.get(temp))) {
                 chessPlaying.remove(temp);
                 String anti = getAntiPlayer(temp);
-                if(anti != null && !anti.equals("")){
+                if (anti != null && !anti.equals("")) {
                     chessPlaying.remove(anti);
                 }
                 SESSIONS.remove(temp);
@@ -242,11 +241,11 @@ public class GobangChannel {
         }
     }
 
-    private String getAntiPlayer(String player){
+    private String getAntiPlayer(String player) {
         String anti = antiPlayer.get(player);
-        if(null == anti || anti.equals("")){
-            for(String temp:antiPlayer.keySet()){
-                if(player.equals(antiPlayer.get(temp))){
+        if (null == anti || anti.equals("")) {
+            for (String temp : antiPlayer.keySet()) {
+                if (player.equals(antiPlayer.get(temp))) {
                     anti = temp;
                 }
             }
@@ -254,7 +253,8 @@ public class GobangChannel {
         return anti;
     }
 }
-class ChessGame{
+
+class ChessGame {
     private long chessId;
     private String player1;
     private String player2;
@@ -262,102 +262,103 @@ class ChessGame{
     private int[][] chess = null;
     private int step;//1-player1,2-player2;
     private long starttime;
-    public ChessGame(String player1){
+
+    public ChessGame(String player1) {
         this.chessId = System.currentTimeMillis();
-        this.player1 =player1;
+        this.player1 = player1;
         this.chess = new int[20][20];
-        this.starttime=System.currentTimeMillis();
-        for(int i = 0;i < 20;i++){
-            for(int j = 0;j < 20;j++){
+        this.starttime = System.currentTimeMillis();
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
                 chess[i][j] = 0;
             }
         }
     }
-    
-    public boolean chessCheck(int step){
+
+    public boolean chessCheck(int step) {
         //横向检查
-        for(int i=0;i<this.chess.length;i++){
-            int count=0;
-            for(int j=0;j<this.chess[i].length;j++){
-                if(this.chess[i][j] == step){
+        for (int i = 0; i < this.chess.length; i++) {
+            int count = 0;
+            for (int j = 0; j < this.chess[i].length; j++) {
+                if (this.chess[i][j] == step) {
                     count++;
-                }else if(this.chess[i][j] != step && count < 5){
+                } else if (this.chess[i][j] != step && count < 5) {
                     count = 0;
                 }
             }
-            if(count >= 5){
+            if (count >= 5) {
                 return true;
             }
         }
         //纵向检查
-        for(int j=0;j<this.chess[0].length;j++){
-            int count=0;
-            for(int i=0;i<this.chess.length;i++){
-                if(this.chess[i][j]==step){
+        for (int j = 0; j < this.chess[0].length; j++) {
+            int count = 0;
+            for (int i = 0; i < this.chess.length; i++) {
+                if (this.chess[i][j] == step) {
                     count++;
-                }else if(this.chess[i][j]!=step && count<5){
-                    count=0;
+                } else if (this.chess[i][j] != step && count < 5) {
+                    count = 0;
                 }
             }
-            if(count>=5){
+            if (count >= 5) {
                 return true;
             }
         }
         //左上右下检查，下一个检查点时上一个检查点横纵坐标均＋1
         //横向增长，横坐标先行出局
-        for(int x=0,y=0;x<this.chess.length;x++){
-            int count=0;
-            for(int i=x,j=y;i<this.chess.length;i++,j++){
-                if(this.chess[i][j]==step){
+        for (int x = 0, y = 0; x < this.chess.length; x++) {
+            int count = 0;
+            for (int i = x, j = y; i < this.chess.length; i++, j++) {
+                if (this.chess[i][j] == step) {
                     count++;
-                }else if(this.chess[i][j]!=step && count<5){
-                    count=0;
+                } else if (this.chess[i][j] != step && count < 5) {
+                    count = 0;
                 }
             }
-            if(count>=5){
+            if (count >= 5) {
                 return true;
             }
         }
         //纵向增长，纵坐标先出局
-        for(int x=0,y=0;y<this.chess[0].length;y++){
-            int count=0;
-            for(int i=x,j=y;j<this.chess.length;i++,j++){
-                if(this.chess[i][j]==step){
+        for (int x = 0, y = 0; y < this.chess[0].length; y++) {
+            int count = 0;
+            for (int i = x, j = y; j < this.chess.length; i++, j++) {
+                if (this.chess[i][j] == step) {
                     count++;
-                }else if(this.chess[i][j]!=step && count<5){
-                    count=0;
+                } else if (this.chess[i][j] != step && count < 5) {
+                    count = 0;
                 }
             }
-            if(count>=5){
+            if (count >= 5) {
                 return true;
             }
         }
         //左下右上检查x-1,y+1
         //横向增长，横坐标先行出局
-        for(int x=0,y=0;x<this.chess.length;x++){
-            int count=0;
-            for(int i=x,j=y;i>=0;i--,j++){
-                if(this.chess[i][j]==step){
+        for (int x = 0, y = 0; x < this.chess.length; x++) {
+            int count = 0;
+            for (int i = x, j = y; i >= 0; i--, j++) {
+                if (this.chess[i][j] == step) {
                     count++;
-                }else if(this.chess[i][j]!=step && count<5){
-                    count=0;
+                } else if (this.chess[i][j] != step && count < 5) {
+                    count = 0;
                 }
             }
-            if(count>=5){
+            if (count >= 5) {
                 return true;
             }
         }
         //纵向增长，纵坐标先出局
-        for(int x=this.chess.length-1,y=0;y<this.chess[0].length;y++){
-            int count=0;
-            for(int i=x,j=y;j<this.chess.length;i--,j++){
-                if(this.chess[i][j]==step){
+        for (int x = this.chess.length - 1, y = 0; y < this.chess[0].length; y++) {
+            int count = 0;
+            for (int i = x, j = y; j < this.chess.length; i--, j++) {
+                if (this.chess[i][j] == step) {
                     count++;
-                }else if(this.chess[i][j]!=step && count<5){
-                    count=0;
+                } else if (this.chess[i][j] != step && count < 5) {
+                    count = 0;
                 }
             }
-            if(count>=5){
+            if (count >= 5) {
                 return true;
             }
         }
