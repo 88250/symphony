@@ -191,7 +191,7 @@ var Activity = {
      * Eating snake
      */
     initSnake: function () {
-        EatingSnake.initMap('oMark', 'snakeCanvas');
+        EatingSnake.initMap('snakeCanvas');
     },
     startSnake: function (csrfToken) {
         if (!confirm(Label.activityStartEatingSnakeTipLabel)) {
