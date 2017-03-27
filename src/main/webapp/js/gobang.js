@@ -18,8 +18,8 @@
 /**
  * @fileOverview
  *
- * @author Zephyr
- * @version 1.0.0 Mar 14, 2017
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.0.0.1, Mar 27, 2017
  */
 var Gobang = {
     unitSize: 30,
