@@ -45,7 +45,7 @@
         newFollowerLabel: '${newFollowerLabel}',
         makeAsReadLabel: '${makeAsReadLabel}',
         checkIcon: '${checkIcon}'<#if isLoggedIn>,
-        currentUserName: '${currentUser.userName}'</#if>,
+        currentUserName: '${currentUser.userName}'</#if>
     };
     Util.init(${isLoggedIn?c});
     
