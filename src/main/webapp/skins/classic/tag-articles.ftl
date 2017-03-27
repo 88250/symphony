@@ -16,7 +16,7 @@
         <div class="main tag-articles">
             <div class="wrapper">
                 <div class="content" id="tag-pjax-container">
-                    <#if pjax><!---- pjax {#tag-pjax-container} start ----></#if><div class="module article-module">
+                    <#if pjax><!---- pjax {#tag-pjax-container} start ----></#if><div class="module">
                         <div class="article-info fn-flex">
                             <#if tag.tagIconPath != "">
                             <div class="avatar" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>

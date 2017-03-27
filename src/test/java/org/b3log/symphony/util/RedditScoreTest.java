@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * Reddit score algorithm test.
+ *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @version 1.0.0.0, Mar 27, 2017
- * @since 2.0.1
+ * @since 2.1.0
  */
 public class RedditScoreTest {
 
