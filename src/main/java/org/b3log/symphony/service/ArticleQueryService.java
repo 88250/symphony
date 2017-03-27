@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.28.51, Mar 27, 2017
+ * @version 2.26.28.52, Mar 27, 2017
  * @since 0.2.0
  */
 @Service
@@ -2772,7 +2772,7 @@ public class ArticleQueryService {
 
                 element.before("<span id='" + id + "'></span>");
 
-                listBuilder.append("<li class='toc-").append(tagName).append("'><a href='#").append(id).append("'>").append(text).append(
+                listBuilder.append("<li class='toc-").append(tagName).append("'><a data-id=\"").append(id).append("\" href=\"javascript:Comment._bgFade($('#").append(id).append("'))\">").append(text).append(
                         "</a></li>");
             }
             listBuilder.append("</ul>");

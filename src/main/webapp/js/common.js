@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.41.29.45, Feb 18, 2017
+ * @version 1.42.29.45, Mar 27, 2017
  */
 
 /**
@@ -121,19 +121,20 @@ var Util = {
          * @returns {undefined}
          */
         var goFocus = function (type) {
-            var $focus = $('.list > ul > li.focus');
+            var $focus = $('.list > ul > li.focus'),
+            offsetHeight = $('#replyBtn').length === 0 ? 0 : 48;
             if ($focus.length === 1) {
                 if (type === 'top' || type === 'bottom') {
-                    $(window).scrollTop($focus.offset().top);
+                    $(window).scrollTop($focus.offset().top - offsetHeight);
                     return false;
                 }
 
                 if ($(window).height() + $(window).scrollTop() < $focus.offset().top + $focus.outerHeight()
                         || $(window).scrollTop() > $focus.offset().top) {
                     if (type === 'down') {
-                        $(window).scrollTop($focus.offset().top - ($(window).height() - $focus.outerHeight()));
+                        $(window).scrollTop($focus.offset().top - ($(window).height() - $focus.outerHeight()) - offsetHeight);
                     } else {
-                        $(window).scrollTop($focus.offset().top);
+                        $(window).scrollTop($focus.offset().top - offsetHeight);
                     }
                 }
             }
@@ -1145,7 +1146,7 @@ var Util = {
 
 
         $(window).scroll(function () {
-            if ($(window).scrollTop() > 20) {
+            if ($(window).scrollTop() > 20 && $('#replyBtn').length === 0) {
                 $(".go-top").show();
             } else {
                 $(".go-top").hide();

@@ -11,7 +11,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="module article-module">
+                <div class="module">
                     <h2 class="sub-head">${reloginLabel}</h2>
                     <div class="need-login">
                         <button onclick="Util.goLogin()" class="red">${loginLabel}</button> &nbsp;

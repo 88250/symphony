@@ -11,7 +11,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="module article-module">
+                    <div class="module">
                         <h2 class="sub-head">Hacker's Manual</h2>
                         <div class="article-content">
                             <i class="ft-gray">Command manual for hackers, with <span class="ft-red">&hearts;</span> from <a

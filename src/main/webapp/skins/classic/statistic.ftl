@@ -12,7 +12,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="module article-module">
+                    <div class="module">
                         <h2 class="sub-head">${dataStatLabel}
                             <span class="ft-gray ft-13">${dataStatSubLabel}</span>
                         </h2>
