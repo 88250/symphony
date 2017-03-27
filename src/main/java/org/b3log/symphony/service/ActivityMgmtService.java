@@ -623,7 +623,7 @@ public class ActivityMgmtService {
     }
 
     /**
-     * Starts eating snake.
+     * Starts Gobang.
      *
      * @param userId the specified user id
      * @return result
@@ -667,7 +667,7 @@ public class ActivityMgmtService {
     }
 
     /**
-     * Collects eating snake.
+     * Collects Gobang.
      *
      * @param userId the specified user id
      * @param score the specified score

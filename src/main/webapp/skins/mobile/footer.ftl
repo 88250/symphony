@@ -46,7 +46,6 @@
         makeAsReadLabel: '${makeAsReadLabel}',
         checkIcon: '${checkIcon}'<#if isLoggedIn>,
         currentUserName: '${currentUser.userName}'</#if>,
-        websocketPath:${wsScheme}+"://"+${serverHost}:${serverPort}${contextPath}
     };
     Util.init(${isLoggedIn?c});
     

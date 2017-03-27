@@ -599,7 +599,7 @@ public class ActivityProcessor {
     }
 
     /**
-     * Shows eating snake.
+     * Shows Gobang.
      *
      * @param context the specified context
      * @param request the specified request
@@ -622,6 +622,10 @@ public class ActivityProcessor {
         dataModelService.fillRandomArticles(avatarViewMode, dataModel);
         dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
         dataModelService.fillSideTags(dataModel);
+
+        String pointActivityGobang = langPropsService.get("activityStartGobangTipLabel");
+        pointActivityGobang = pointActivityGobang.replace("{point}", String.valueOf(Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START));
+        dataModel.put("activityStartGobangTipLabel", pointActivityGobang);
     }
 
     /**
