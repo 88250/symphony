@@ -858,7 +858,8 @@ code .dec { color: initial; } /* decimal - blue */
     margin: 20px auto;
 }
 
-#snakeCanvas {
+#snakeCanvas,
+#gobangCanvas {
     margin: 20px auto;
     display: block;
 }

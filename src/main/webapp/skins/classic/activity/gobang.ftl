@@ -25,6 +25,7 @@
                             <button class="green fn-right" onclick="Activity.initGobang('${wsScheme}://${serverHost}:${serverPort}${contextPath}')">${gameStartLabel}</button>
                         </div>
                         <div id="yard"><canvas id="gobangCanvas" height="600px" width="600px"></canvas></div>
+                        <br>
                         <input  type="hidden" id="player"/>
                         <input  type="text" id="chatInput" style="display: none;"/>
                         <input type="submit" id="chatSubmit" value="Chat" onclick="Gobang.chatSend()" style="display: none;"/>
@@ -38,8 +39,6 @@
         <#include "../footer.ftl">
         <script src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/gobang${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
-        <script src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
         <script>
             Label.activityStartGobangTipLabel = '${activityStartGobangTipLabel}';
             Gobang.initCanvas('oMark', 'gobangCanvas');
