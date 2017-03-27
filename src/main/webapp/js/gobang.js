@@ -160,6 +160,8 @@ var GobangChannel = {
                     if(resp.result != null && resp.result != ""){
                         alert(resp.result);
                         document.getElementById("gobangCanvas").removeEventListener("click",Gobang.moveChess);
+                        var $btn = $("button.green");
+                        $btn.removeAttr("disabled").css("opacity", "1").text($btn.text().substr(0, $btn.text().length - 3));
                     }
                     break;
                 case 3:

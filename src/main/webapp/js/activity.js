@@ -219,6 +219,8 @@ var Activity = {
                 GobangChannel.init(wsurl+"/gobang-game-channel?player="+$("#player").val());
                 $("#chatInput").show();
                 $("#chatSubmit").show();
+                var $btn = $("button.green");
+                $btn.attr("disabled", "disabled").css("opacity", "0.3").text($btn.text() + 'ing');
             }
         });
 
