@@ -17,14 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.util.GeetestLib;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -46,6 +38,7 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.CSRFToken;
 import org.b3log.symphony.processor.advice.LoginCheck;
+import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.Activity1A0001CollectValidation;
@@ -53,10 +46,18 @@ import org.b3log.symphony.processor.advice.validate.Activity1A0001Validation;
 import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.CharacterQueryService;
-import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.service.DataModelService;
+import org.b3log.symphony.service.PointtransferQueryService;
+import org.b3log.symphony.util.GeetestLib;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Activity processor.
@@ -596,4 +597,56 @@ public class ActivityProcessor {
             context.renderJSON(false).renderMsg("err....");
         }
     }
+
+    /**
+     * Shows Gobang.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/activity/gobang", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
+    public void initGobang(final HTTPRequestContext context,
+                                final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/activity/gobang.ftl");
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideTags(dataModel);
+
+        String pointActivityGobang = langPropsService.get("activityStartGobangTipLabel");
+        pointActivityGobang = pointActivityGobang.replace("{point}", String.valueOf(Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START));
+        dataModel.put("activityStartGobangTipLabel", pointActivityGobang);
+    }
+
+    /**
+     * Starts eatings snake..
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/activity/gobang/start", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void startGobang(final HTTPRequestContext context,
+                                 final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String fromId = currentUser.optString(Keys.OBJECT_ID);
+
+        final JSONObject ret = activityMgmtService.startGobang(fromId);
+
+        context.renderJSON(ret);
+    }
+
 }

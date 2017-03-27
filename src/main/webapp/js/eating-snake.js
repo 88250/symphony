@@ -32,7 +32,7 @@ var EatingSnake = {
     R: 10, // 圆半径或者外接正方形尺寸的一半
     size: 30,
     snake: null,
-    oMark: null, // 分数显示框
+    // oMark: null, // 分数显示框
     isPause: false, // 是否暂停
     snakeCanvas: null,
     interval: null,
@@ -59,8 +59,8 @@ var EatingSnake = {
             }
         }
     },
-    initMap: function (oMarkId, snakeCanvasId) {
-        EatingSnake.oMark = document.getElementById(oMarkId);
+    initMap: function (snakeCanvasId) {
+        // EatingSnake.oMark = document.getElementById(oMarkId);
         EatingSnake.snakeCanvas = document.getElementById(snakeCanvasId).getContext('2d');
         EatingSnake.map = new Array();
         EatingSnake.setupMap();
