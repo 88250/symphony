@@ -156,7 +156,7 @@ var GobangChannel = {
             var resp = JSON.parse(evt.data);
             switch(resp.type){
                 case 1:
-                    $("#chatArea").html(resp.player+" : "+resp.message);
+                    $("#chatArea > textarea").text($("#chatArea > textarea").text()+resp.player+" : "+resp.message+"\n");
                     break;
                 case 2:
                     Gobang.drawChessMan(resp.posX,resp.posY,Gobang.unitSize/2,resp.color);
@@ -168,11 +168,11 @@ var GobangChannel = {
                     }
                     break;
                 case 3:
-                    $("#chatArea").html("【系统】 : "+resp.message);
+                    $("#chatArea > textarea").text($("#chatArea > textarea").text()+"【系统】 : "+resp.message+"\n");
                     $("#playerName").val(resp.playerName);
                     break;
                 case 4:
-                    $("#chatArea").html("【系统】 : "+resp.message);
+                    $("#chatArea > textarea").text($("#chatArea > textarea").text()+"【系统】 : "+resp.message+"\n");
                     // console.log(resp.player);
                     $("#player").val(resp.player);
                     break;

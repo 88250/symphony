@@ -21,15 +21,21 @@
                         </h2>
                         <br>
                         <div class="fn-clear fn-m10">
-                            <div id="chatArea"></div>
+
+                            <input  type="text" id="chatInput" style="display: none;"/>
+                            <button class="green fn-right" id="chatSubmit" value="Chat" onclick="Gobang.chatSend()" style="display: none;">发送</button>
                             <button class="green fn-right" onclick="Activity.initGobang('${wsScheme}://${serverHost}:${serverPort}${contextPath}')">${gameStartLabel}</button>
                         </div>
-                        <div id="yard"><canvas id="gobangCanvas" height="600px" width="600px"></canvas></div>
+                        <div id="yard">
+                            <canvas id="gobangCanvas" height="600px" width="600px"></canvas>
+                            <div style="float:left" id="chatArea">
+                                <textarea rows="10" cols="20"></textarea>
+                            </div>
+                        </div>
                         <br>
                         <input  type="hidden" id="player"/>
                         <input  type="hidden" id="playerName"/>
-                        <input  type="text" id="chatInput" style="display: none;"/>
-                        <input type="submit" id="chatSubmit" value="Chat" onclick="Gobang.chatSend()" style="display: none;"/>
+
                     </div>
                 </div>
                 <div class="side">
@@ -44,6 +50,9 @@
             Label.activityStartGobangTipLabel = '${activityStartGobangTipLabel}';
             Gobang.initCanvas('oMark', 'gobangCanvas');
             document.getElementById("gobangCanvas").addEventListener("click",Gobang.moveChess, false);
+            window.onbeforeunload(function(){
+                alert('byebyte')
+            });
         </script>
     </body>
 </html>

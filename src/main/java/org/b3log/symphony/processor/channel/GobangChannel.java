@@ -101,11 +101,18 @@ public class GobangChannel {
         if (playing) {
             return;
         } else if (playing == false && chessRandomWait.size() != 0) {
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+
             ChessGame chessGame = chessRandomWait.poll();
             chessGame.setPlayer2(userId);
             chessGame.setStep(1);
             chessPlaying.put(chessGame.getPlayer1(), chessGame);
             antiPlayer.put(chessGame.getPlayer1(), chessGame.getPlayer2());
+
+            final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
+            activityMgmtService.startGobang(chessGame.getPlayer1());
+            activityMgmtService.startGobang(chessGame.getPlayer2());
+
             JSONObject sendText = new JSONObject();
             sendText.put("type", 4);
 
