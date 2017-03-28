@@ -123,6 +123,7 @@ public class GobangChannel {
             chessRandomWait.add(chessGame);
             JSONObject sendText = new JSONObject();
             sendText.put("type", 3);
+            sendText.put("playerName", userName);
             sendText.put("chessId", chessGame.getChessId());
             sendText.put("message", "请等待另一名玩家加入游戏");
             session.getAsyncRemote().sendText(sendText.toString());

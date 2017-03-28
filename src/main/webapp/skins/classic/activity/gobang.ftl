@@ -27,6 +27,7 @@
                         <div id="yard"><canvas id="gobangCanvas" height="600px" width="600px"></canvas></div>
                         <br>
                         <input  type="hidden" id="player"/>
+                        <input  type="hidden" id="playerName"/>
                         <input  type="text" id="chatInput" style="display: none;"/>
                         <input type="submit" id="chatSubmit" value="Chat" onclick="Gobang.chatSend()" style="display: none;"/>
                     </div>
