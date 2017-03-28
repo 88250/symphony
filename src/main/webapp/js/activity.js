@@ -20,8 +20,8 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @author Zephyr
- * @version 1.4.2.3, Sep 19, 2016
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.4.2.4, Mar 27, 2017
  */
 
 /**
@@ -191,7 +191,7 @@ var Activity = {
      * Eating snake
      */
     initSnake: function () {
-        EatingSnake.initMap('oMark', 'snakeCanvas');
+        EatingSnake.initMap('snakeCanvas');
     },
     startSnake: function (csrfToken) {
         if (!confirm(Label.activityStartEatingSnakeTipLabel)) {
@@ -206,6 +206,24 @@ var Activity = {
             var event = event || window.event;
             EatingSnake.input(event.keyCode);
         };
+    },
+    initGobang:function(wsurl){
+        if (!confirm(Label.activityStartGobangTipLabel)) {
+            return;
+        }
+        $.ajax({
+            url: Label.servePath + "/activity/gobang/start",
+            type: "POST",
+            cache: false,
+            success: function () {
+                GobangChannel.init(wsurl+"/gobang-game-channel?player="+$("#player").val());
+                $("#chatInput").show();
+                $("#chatSubmit").show();
+                var $btn = $("button.green");
+                $btn.attr("disabled", "disabled").css("opacity", "0.3").text($btn.text() + 'ing');
+            }
+        });
+
     }
 };
 

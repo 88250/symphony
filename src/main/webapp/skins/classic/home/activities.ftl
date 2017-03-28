@@ -11,7 +11,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content activity">
-                    <div class="module article-module">
+                    <div class="module">
                         <h2 class="sub-head">${activityLabel}</h2>
                         <div class="list">
                             <ul>
@@ -79,6 +79,20 @@
                                             </h2>
                                             <span class="ft-fade content-reset">
                                                 ${activityEatingSnakeTitleLabel}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class='fn-flex'>
+                                        <div class="avatar tooltipped tooltipped-ne"
+                                             aria-label="${gobangLabel}" style="background-image:url('${staticServePath}/images/activities/gobang.png')"></div>
+                                        <div class="fn-flex-1">
+                                            <h2>
+                                                <a href="${servePath}/activity/gobang">${gobangLabel}</a>
+                                            </h2>
+                                            <span class="ft-fade content-reset">
+                                            ${activityGobangTitleLabel}
                                             </span>
                                         </div>
                                     </div>

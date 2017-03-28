@@ -205,7 +205,7 @@
                         <span class="fn-right<#if article.articleComments?size == 0> fn-none</#if>">
                             <a class="tooltipped tooltipped-nw" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
                                aria-label="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"><span class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if>"></span></a>&nbsp;
-                            <a class="tooltipped tooltipped-nw" href="#bottomComment" aria-label="${jumpToBottomCommentLabel}"><span class="icon-chevron-down"></span></a>
+                            <a class="tooltipped tooltipped-nw" href="javascript:Comment._bgFade($('#bottomComment'))" aria-label="${jumpToBottomCommentLabel}"><span class="icon-chevron-down"></span></a>
                         </span>
                     </div>
                     <div class="list">
@@ -354,7 +354,7 @@
             <h1>
                 ${logoIcon}
             </h1>
-            <h2>
+            <h2 class="fn-ellipsis fn-pointer" onclick="Util.goTop()">
                 ${article.articleTitleEmojUnicode}
             </h2>
             <div class="user-nav">

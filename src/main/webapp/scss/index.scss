@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.28.21.54, Mar 26, 2017
+ * @version 2.28.21.55, Mar 27, 2017
  */
 
 @import "variables";
@@ -74,7 +74,7 @@
 
     .article-body {
         background-color: #fff;
-        margin: 88px 0;
+        margin: 88px 0 40px;
     }
 
     .article-info {
@@ -162,6 +162,7 @@
 
     .article-header {
        box-shadow: 0 0 0;
+       top: -56px;
 
        h2 {
             color: #fff;
@@ -170,6 +171,7 @@
             font-weight: normal;
             flex: 1;
             margin: 0 20px;
+            text-align: center;
        }
 
        .user-nav > span {
@@ -182,7 +184,6 @@
     }
 
     #replyBtn {
-        bottom: 86px;
         display: block;
         background-color: $blue;
         color: #fff;
@@ -193,7 +194,7 @@
         top: 48px;
         min-width: 200px;
         max-width: 280px;
-        z-index: 85;
+        z-index: 79;
         right: -300px;
         height: 100%;
         border-radius: 0;
@@ -270,6 +271,16 @@
         }
     }
 
+    #revision .pagination {
+        margin-bottom: 10px;
+        float: right;
+
+        span.current {
+            border-radius: 3px;
+            line-height: 30px;
+        }
+    }
+
     .editor-panel {
         background-color: $light-blue;
         border-top: 1px solid #eee;
@@ -278,28 +289,27 @@
         width: 100%;
         z-index: 80;
         max-height: 80%;
-        overflow: auto
-    }
+        overflow: auto;
 
-    .editor-panel .form {
-        width: 100%
-    }
+        .form {
+            width: 100%
+        }
 
-    .editor-panel .editor-hide {
-        width: 20px;
-        text-align: center;
-        height: 20px;
-        color: #ccc;
-        margin-top: 5px;
-    }
+        .editor-hide {
+            width: 20px;
+            text-align: center;
+            height: 20px;
+            color: #ccc;
+            margin-top: 5px;
+        }
 
-    .editor-panel .editor-hide:hover {
-        color: $gray;
+        .editor-hide:hover {
+            color: $gray;
+        }
     }
 
     .cm-s-default.CodeMirror {
-        height: auto;
-        min-height: 300px;
+        height: 300px;
     }
 }
 
@@ -316,26 +326,21 @@
     position: relative;
     margin-bottom: 10px;
     margin-top: -1px;
-}
 
-#thoughtProgress .bar {
-    position: absolute;
-    background-color: #e0e0e0;
-    height: 2px
-}
+    .bar {
+        position: absolute;
+        background-color: #e0e0e0;
+        height: 2px
+    }
 
-#thoughtProgress .icon-video {
-    position: absolute;
-    top: -8px;
-    left: 0;
-    cursor: pointer;
-    color: $red;
-    margin-left: -10px;
-}
-
-#revision .pagination {
-    margin-bottom: 10px;
-    float: right;
+    .icon-video {
+        position: absolute;
+        top: -8px;
+        left: 0;
+        cursor: pointer;
+        color: $red;
+        margin-left: -10px;
+    }
 }
 
 label.cmt-anonymous {
@@ -852,7 +857,8 @@ code .dec { color: initial; } /* decimal - blue */
     margin: 20px auto;
 }
 
-#snakeCanvas {
+#snakeCanvas,
+#gobangCanvas {
     margin: 20px auto;
     display: block;
 }
@@ -875,7 +881,7 @@ code .dec { color: initial; } /* decimal - blue */
 .sub-head .avatar-small {
     height: 24px;
     width: 24px;
-    vertical-align: sub;
+    vertical-align: -3px;
 }
 
 .sub-head .ft-13 {

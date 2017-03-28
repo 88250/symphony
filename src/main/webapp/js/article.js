@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.31.44.33, Mar 26, 2017
+ * @version 1.31.45.34, Mar 28, 2017
  */
 
 /**
@@ -45,7 +45,11 @@ var Comment = {
      * @returns {undefined}
      */
     _bgFade: function ($obj) {
-        $(window).scrollTop($obj.offset().top);
+        if ($obj.length === 0) {
+            return false;
+        }
+
+        $(window).scrollTop($obj[0].offsetTop - 48);
 
         if ($obj.attr('id') === 'comments') {
             return false;
@@ -286,9 +290,9 @@ var Comment = {
         });
 
         if ($(window.location.hash).length === 1) {
-            if (!isNaN(parseInt(window.location.hash.substr(1)))) {
+            // if (!isNaN(parseInt(window.location.hash.substr(1)))) {
                 Comment._bgFade($(window.location.hash));
-            }
+            //}
         }
 
         this._setCmtVia();
@@ -745,9 +749,9 @@ var Comment = {
                     // 定为到回贴位置
                     if (Label.userCommentViewMode === 1) {
                         // 实时模式
-                        window.location.hash = '#comments';
+                        Comment._bgFade($('#comments'));
                     } else {
-                        window.location.hash = '#bottomComment';
+                        Comment._bgFade($('#bottomComment'));
                     }
                 } else {
                     $("#addCommentTip").addClass("error").html('<ul><li>' + result.msg + '</li></ul>');
@@ -1015,7 +1019,13 @@ var Article = {
 
         // nav
         window.addEventListener('mousewheel', function(event) {
-            if (event.deltaY > 0) {
+            var currentScrollTop = $(window).scrollTop();
+            if (currentScrollTop < 150) {
+                $('.article-header').css('top', '-56px');
+                return false;
+            }
+
+            if (event.deltaY > 0 && currentScrollTop >= 150) {
                 $('.article-header').css('top', 0);
             } else if (event.deltaY < -5) {
                 $('.article-header').css('top', '-56px');
@@ -1062,7 +1072,8 @@ var Article = {
                                 '\n\n' + result.revisions[result.revisions.length - 2].revisionData.articleContent,
                         revertButtons: false,
                         mode: "text/html",
-                        collapseIdentical: true
+                        collapseIdentical: true,
+                        lineWrapping: true
                     });
                     Article._revisionsControls();
                     return false;
@@ -1462,14 +1473,14 @@ var Article = {
             // 当前目录样式
             var scrollTop = $(window).scrollTop();
             for (var i = 0, iMax = toc.length; i < iMax; i++) {
-                if (scrollTop < toc[i].offsetTop - 5) {
+                if (scrollTop < toc[i].offsetTop - 53) {
                     $articleToc.find('li').removeClass('current');
                     var index = i > 0 ? i - 1 : 0;
-                    $articleToc.find('a[href="#' + toc[index].id + '"]').parent().addClass('current');
+                    $articleToc.find('a[data-id="' + toc[index].id + '"]').parent().addClass('current');
                     break;
                 }
             }
-            if (scrollTop >= toc[toc.length - 1].offsetTop - 5) {
+            if (scrollTop >= toc[toc.length - 1].offsetTop - 53) {
                 $articleToc.find('li').removeClass('current');
                 $articleToc.find('li:last').addClass('current');
             }

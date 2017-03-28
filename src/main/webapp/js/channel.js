@@ -20,7 +20,8 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.11.16.19, Jan 17, 2017
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.12.16.19, Mar 27, 2017
  */
 
 /**
@@ -344,6 +345,53 @@ var ChatRoomChannel = {
         };
 
         ChatRoomChannel.ws.onerror = function (err) {
+            console.log("ERROR", err);
+        };
+    }
+};
+
+/**
+ * @description gobang game channel.
+ * @static
+ */
+var GobangChannel = {
+    /**
+     * WebSocket instance.
+     *
+     * @type WebSocket
+     */
+    ws: undefined,
+    /**
+     * @description Initializes message channel
+     */
+    init: function (channelServer) {
+        GobangChannel.ws = new ReconnectingWebSocket(channelServer);
+        GobangChannel.ws.reconnectInterval = 10000;
+
+        GobangChannel.ws.onopen = function () {
+            setInterval(function () {
+                GobangChannel.ws.send('zephyr test');
+            }, 1000 * 60 * 3);
+        };
+
+        GobangChannel.ws.onmessage = function (evt) {
+            var data = JSON.parse(evt.data);
+
+            switch (data.type) {
+                case "gobangPlayer":
+                    console.log("data.type:>gobangPlayer");
+                    break;
+                case "msg":
+                    console.log("data.type:>msg");
+                    break;
+            }
+        };
+
+        GobangChannel.ws.onclose = function () {
+            GobangChannel.ws.close();
+        };
+
+        GobangChannel.ws.onerror = function (err) {
             console.log("ERROR", err);
         };
     }

@@ -11,7 +11,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="module article-module">
+                <div class="module">
                 <h2 class="sub-head">404 Not Found!</h2>
                 <div class="ft-center"></div>
                 </div>
