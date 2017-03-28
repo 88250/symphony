@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.28.21.55, Mar 27, 2017
+ * @version 2.29.21.55, Mar 28, 2017
  */
 
 @import "variables";
@@ -63,7 +63,8 @@
         top: 0;
     }
 
-    .wrapper {
+    .article-body .wrapper,
+    .main .wrapper{
         display: block;
         max-width: 768px;
     }
@@ -306,10 +307,6 @@
         .editor-hide:hover {
             color: $gray;
         }
-    }
-
-    .cm-s-default.CodeMirror {
-        height: 300px;
     }
 }
 
