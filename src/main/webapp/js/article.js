@@ -111,7 +111,7 @@ var Comment = {
             }
 
             if ($('.footer').attr('style')) {
-                $('.editor-panel').slideUp();
+                $('.editor-panel').hide();
                 $('.footer').removeAttr('style');
                 return false;
             }
@@ -124,15 +124,14 @@ var Comment = {
             if ($('.editor-panel').css('bottom') !== '0px') {
                 $('.editor-panel').hide().css('bottom', 0);
             }
-            $('.editor-panel').slideDown(function () {
-                Comment.editor.focus();
-            });
+
+            $('.editor-panel').show();
+            Comment.editor.focus();
         });
 
         // 评论框控制
         $('.editor-panel .editor-hide').click(function () {
-            $('.editor-panel').slideUp();
-            $('.footer').removeAttr('style');
+             $('#replyBtn').click();
         });
     },
     /**

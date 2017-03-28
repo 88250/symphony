@@ -413,30 +413,29 @@
         <span class="tooltipped tooltipped-w radio-btn" id="replyBtn"
               data-hasPermission="${permissions['commonAddComment'].permissionGrant?c}"
               aria-label="${cmtLabel}"><span class="icon-reply"></span></span>
-            
+
         <div class="editor-panel">
+            <div class="editor-bg"></div>
             <div class="wrapper">
-                <#if isLoggedIn>
-                    <#if discussionViewable && article.articleCommentable>
-                        <div class="form fn-clear comment-wrap">
-                            <div class="fn-clear">
-                                <div id="replyUseName" class="fn-left"></div>
-                                <span class="tooltipped tooltipped-w fn-right fn-pointer editor-hide" aria-label="${hideLabel}"><span class="icon-chevron-down"></span></span>
-                            </div>
-                            <div class="article-comment-content">
-                                <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
-                                <div class="fn-clear comment-submit">
-                                    <div class="tip fn-left" id="addCommentTip"></div>
-                                    <div class="fn-right">
-                                        <#if permissions["commonAddCommentAnonymous"].permissionGrant>
-                                            <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                                        </#if>
-                                        <button class="red mid" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
-                                    </div>
+                <#if isLoggedIn && discussionViewable && article.articleCommentable>
+                    <div class="form fn-clear comment-wrap">
+                        <div class="fn-clear">
+                            <div id="replyUseName" class="fn-left"></div>
+                            <span class="tooltipped tooltipped-w fn-right fn-pointer editor-hide" aria-label="${hideLabel}"><span class="icon-chevron-down"></span></span>
+                        </div>
+                        <div class="article-comment-content">
+                            <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
+                            <div class="fn-clear comment-submit">
+                                <div class="tip fn-left" id="addCommentTip"></div>
+                                <div class="fn-right">
+                                    <#if permissions["commonAddCommentAnonymous"].permissionGrant>
+                                        <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                                    </#if>
+                                    <button class="red mid" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
                                 </div>
                             </div>
                         </div>
-                    </#if>
+                    </div>
                 </#if>
             </div>
         </div>
