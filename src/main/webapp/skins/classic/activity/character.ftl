@@ -12,7 +12,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="module article-module">
+                    <div class="module">
                         <h2 class="sub-head">
                             <div class="avatar-small tooltipped tooltipped-ne"
                                  aria-label="${characterLabel}" style="background-image:url('${staticServePath}/images/activities/char.png')"></div>

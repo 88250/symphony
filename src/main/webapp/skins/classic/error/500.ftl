@@ -11,7 +11,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="module article-module">
+                <div class="module">
                     <h2 class="sub-head">500 Internal Server Error!</h2>
                     <div class="no-list">${err500Label}</div>
                 </div>

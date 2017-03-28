@@ -41,7 +41,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Gobang game channel.
  *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.0.0.0, Mar 16, 2017
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.1, Mar 27, 2017
  * @since 2.1.0
  */
 @ServerEndpoint(value = "/gobang-game-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -194,7 +195,7 @@ public class GobangChannel {
                     sendText.put("posX", x);
                     sendText.put("posY", y);
                     if (flag) {
-                        sendText.put("result", "You win");
+                        sendText.put("result", "You Win");
                     }
                     SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
                     if (flag) {
@@ -204,7 +205,7 @@ public class GobangChannel {
                     if (flag) {
                         final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
                         activityMgmtService.collectGobang(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START * 2);
-                        activityMgmtService.collectGobang(anti, 0);
+
                         chessPlaying.remove(chessGame);
                     }
                 }
