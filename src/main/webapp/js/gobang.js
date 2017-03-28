@@ -124,6 +124,9 @@ var Gobang = {
         $("#chatArea").html($("#playerName").val() + " : "+$("#chatInput").val());
         GobangChannel.ws.send(JSON.stringify(message));
     },
+    quit:function(){
+        //如果无人应战，可以通过放弃匹配来回收积分
+    },
     moveChess:function(evt){
         var mousePos = Gobang.getMousePos(document.getElementById("gobangCanvas"), evt);
         Gobang.getChessManPoint(mousePos,$("#player").val());
