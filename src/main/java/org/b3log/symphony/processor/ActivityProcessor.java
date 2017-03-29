@@ -639,8 +639,8 @@ public class ActivityProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
 
-        final JSONObject ret = activityMgmtService.startGobang(fromId);
-
+        final JSONObject ret = new JSONObject();
+        ret.put(Keys.MSG, "started");
         context.renderJSON(ret);
     }
 
