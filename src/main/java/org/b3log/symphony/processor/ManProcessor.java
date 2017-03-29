@@ -46,7 +46,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.0.2, Dec 25, 2016
+ * @version 1.0.0.3, Mar 29, 2017
  * @since 1.8.0
  */
 @RequestProcessor
@@ -64,7 +64,6 @@ public class ManProcessor {
     @Inject
     private DataModelService dataModelService;
 
-
     /**
      * Shows man.
      *
@@ -79,7 +78,7 @@ public class ManProcessor {
     public void showMan(final HTTPRequestContext context,
                         final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         if (!ManQueryService.TLDR_ENABLED) {
-            response.sendRedirect(Latkes.getServePath());
+            response.sendRedirect("https://hacpai.com/man");
 
             return;
         }
