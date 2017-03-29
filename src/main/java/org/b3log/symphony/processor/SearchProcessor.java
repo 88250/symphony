@@ -61,7 +61,7 @@ import java.util.Map;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.4, Jan 10, 2017
+ * @version 1.1.2.4, Mar 29, 2017
  * @since 1.4.0
  */
 @RequestProcessor
@@ -184,6 +184,9 @@ public class SearchProcessor {
             }
 
             total = result.optInt("nbHits");
+            if (total > 1000) {
+                total = 1000; // Algolia limits the maximum number of search results to 1000
+            }
         }
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
