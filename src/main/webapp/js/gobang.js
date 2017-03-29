@@ -121,9 +121,18 @@ var Gobang = {
             player:$("#player").val(),
             message:$("#chatInput").val()
         }
-        $("#chatArea").html($("#player").val() + " : "+$("#chatInput").val());
+        // $("#chatArea").html($("#playerName").val() + " : "+$("#chatInput").val());
+        $("#chatArea > textarea").text($("#playerName").val()+" : "+$("#chatInput").val()+"\n"+$("#chatArea > textarea").text());
         GobangChannel.ws.send(JSON.stringify(message));
     },
+    // quit:function(){
+    //     //如果无人应战，可以通过放弃匹配来回收积分
+    //     var message = {
+    //         type:5,
+    //         player:$("#player").val()
+    //     }
+    //     GobangChannel.ws.send(JSON.stringify(message));
+    // },
     moveChess:function(evt){
         var mousePos = Gobang.getMousePos(document.getElementById("gobangCanvas"), evt);
         Gobang.getChessManPoint(mousePos,$("#player").val());
@@ -155,21 +164,25 @@ var GobangChannel = {
         GobangChannel.ws.onmessage = function (evt) {
             var resp = JSON.parse(evt.data);
             switch(resp.type){
-                case 1:$("#chatArea").html(resp.player+" : "+resp.message);break;
+                case 1:
+                    $("#chatArea > textarea").text(resp.player+" : "+resp.message+"\n"+$("#chatArea > textarea").text());
+                    break;
                 case 2:
                     Gobang.drawChessMan(resp.posX,resp.posY,Gobang.unitSize/2,resp.color);
                     if(resp.result != null && resp.result != ""){
                         alert(resp.result);
                         document.getElementById("gobangCanvas").removeEventListener("click",Gobang.moveChess);
-                        var $btn = $("button.green");
-                        $btn.removeAttr("disabled").css("opacity", "1").text($btn.text().substr(0, $btn.text().length - 3));
+                        // var $btn = $("#gameStart");
+                        // $btn.removeAttr("disabled").css("opacity", "1").text($btn.text().substr(0, $btn.text().length - 3));
                     }
                     break;
                 case 3:
-                    $("#chatArea").html("【系统】 : "+resp.message);break;
+                    $("#chatArea > textarea").text("【系统】 : "+resp.message+"\n"+$("#chatArea > textarea").text());
+                    $("#playerName").val(resp.playerName);
+                    break;
                 case 4:
-                    $("#chatArea").html("【系统】 : "+resp.message);
-                    console.log(resp.player);
+                    $("#chatArea > textarea").text("【系统】 : "+resp.message+"\n"+$("#chatArea > textarea").text());
+                    // console.log(resp.player);
                     $("#player").val(resp.player);
                     break;
             }

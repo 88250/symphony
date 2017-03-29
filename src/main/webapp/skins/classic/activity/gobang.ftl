@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         <link rel="canonical" href="${servePath}/activity/gobang">
     </head>
-    <body>
+    <body onbeforeunload="closing();">
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
@@ -21,14 +21,22 @@
                         </h2>
                         <br>
                         <div class="fn-clear fn-m10">
-                            <div id="chatArea"></div>
-                            <button class="green fn-right" onclick="Activity.initGobang('${wsScheme}://${serverHost}:${serverPort}${contextPath}')">${gameStartLabel}</button>
+
+                            <input  type="text" id="chatInput" style="display: none;"/>
+                            <button class="green fn-right" id="chatSubmit" value="Chat" onclick="Gobang.chatSend()" style="display: none;">发送消息</button>
+                            <#--<button class="green fn-right" id="quitSubmit" value="Quit" onclick="Gobang.quit()" style="display: none;">放弃游戏</button>-->
+                            <button class="green fn-right" id="gameStart" onclick="Activity.initGobang('${wsScheme}://${serverHost}:${serverPort}${contextPath}')">${gameStartLabel}</button>
                         </div>
-                        <div id="yard"><canvas id="gobangCanvas" height="600px" width="600px"></canvas></div>
+                        <div id="yard">
+                            <canvas id="gobangCanvas" height="600px" width="600px"></canvas>
+                            <div style="float:left" id="chatArea">
+                                <textarea rows="10" cols="10"></textarea>
+                            </div>
+                        </div>
                         <br>
                         <input  type="hidden" id="player"/>
-                        <input  type="text" id="chatInput" style="display: none;"/>
-                        <input type="submit" id="chatSubmit" value="Chat" onclick="Gobang.chatSend()" style="display: none;"/>
+                        <input  type="hidden" id="playerName"/>
+
                     </div>
                 </div>
                 <div class="side">
@@ -43,6 +51,12 @@
             Label.activityStartGobangTipLabel = '${activityStartGobangTipLabel}';
             Gobang.initCanvas('oMark', 'gobangCanvas');
             document.getElementById("gobangCanvas").addEventListener("click",Gobang.moveChess, false);
+            window.onunload=function(){
+                alert("bye");
+            }
+            function closing(){
+                alert('hello');
+            }
         </script>
     </body>
 </html>
