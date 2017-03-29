@@ -23,15 +23,15 @@
                         <div class="fn-clear fn-m10">
 
                             <input  type="text" id="chatInput" style="display: none;"/>
-                            <button class="green fn-right" id="chatSubmit" value="Chat" onclick="Gobang.chatSend()" style="display: none;">发送</button>
-                            <button class="green fn-right" id="quitSubmit" value="Quit" onclick="Gobang.quit()" style="display: none;">放弃游戏</button>
-                            <button class="green fn-right" onclick="Activity.initGobang('${wsScheme}://${serverHost}:${serverPort}${contextPath}')">${gameStartLabel}</button>
+                            <button class="green fn-right" id="chatSubmit" value="Chat" onclick="Gobang.chatSend()" style="display: none;">发送消息</button>
+                            <#--<button class="green fn-right" id="quitSubmit" value="Quit" onclick="Gobang.quit()" style="display: none;">放弃游戏</button>-->
+                            <button class="green fn-right" id="gameStart" onclick="Activity.initGobang('${wsScheme}://${serverHost}:${serverPort}${contextPath}')">${gameStartLabel}</button>
                         </div>
                         <div id="yard">
                             <canvas id="gobangCanvas" height="600px" width="600px"></canvas>
-                            <#--<div style="float:left" id="chatArea">-->
-                                <#--<textarea rows="10" cols="10"></textarea>-->
-                            <#--</div>-->
+                            <div style="float:left" id="chatArea">
+                                <textarea rows="10" cols="10"></textarea>
+                            </div>
                         </div>
                         <br>
                         <input  type="hidden" id="player"/>

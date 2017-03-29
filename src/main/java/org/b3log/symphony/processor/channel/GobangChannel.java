@@ -40,6 +40,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Gobang game channel.
  *
+ * 状态值约定（为取值方便不做enum或者常量值了，当然日后或许重构）
+ * 1：聊天，2：下子，3：创建游戏，等待加入，4：加入游戏，游戏开始，5：无人加入，放弃游戏
+ *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Mar 27, 2017
@@ -162,6 +165,7 @@ public class GobangChannel {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         switch (jsonObject.optInt("type")) {
             case 1: //聊天
+                LOGGER.debug(jsonObject.optString("message"));
                 final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
                 sendText.put("type", 1);
                 try {
@@ -218,6 +222,15 @@ public class GobangChannel {
                     }
                 }
                 break;
+            /*逻辑看起来写重了，既然在匹配成功后才扣几分，就无需手工点击了放弃回收了
+             *case 5://放弃
+                for(ChessGame cg:chessRandomWait){
+                    if(cg.getPlayer1().equals(jsonObject.optString("player"))){
+                        chessRandomWait.remove(cg);
+                        break;
+                    }
+                }
+                break;*/
         }
     }
 
