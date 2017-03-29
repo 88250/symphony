@@ -437,7 +437,7 @@ public final class Mails {
  *
  * @author <a href="https://github.com/snowflake3721">snowflake</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Mar 10, 2016
+ * @version 1.0.1.1, Mar 29, 2017
  * @since 2.1.0
  */
 final class MailSender implements java.io.Serializable {
@@ -453,8 +453,8 @@ final class MailSender implements java.io.Serializable {
     private static final String mail_transport_protocol = Symphonys.get("mail.local.transport.protocol");
     private static final String mail_host = Symphonys.get("mail.local.host");
     private static final String mail_port = Symphonys.get("mail.local.port");
-    private static final boolean mail_smtp_auth = Boolean.valueOf(Symphonys.get("mail.local.smtp.auth"));
-    private static final boolean mail_smtp_ssl = Boolean.valueOf(Symphonys.get("mail.local.smtp.ssl"));
+    private static final String mail_smtp_auth = Symphonys.get("mail.local.smtp.auth");
+    private static final String mail_smtp_ssl = Symphonys.get("mail.local.smtp.ssl");
     private static final String saved_path = Symphonys.get("mail.local.saved.eml.path");
     private static MailSender mailSender;
     private static Properties prop = new Properties();
@@ -463,8 +463,8 @@ final class MailSender implements java.io.Serializable {
         prop.setProperty("mail.transport.protocol", mail_transport_protocol);
         prop.setProperty("mail.host", mail_host);
         prop.setProperty("mail.port", mail_port);
-        prop.setProperty("mail.smtp.auth", Symphonys.get("mail.smtp.auth"));
-        prop.setProperty("mail.smtp.ssl", Symphonys.get("mail.smtp.ssl"));
+        prop.setProperty("mail.smtp.auth", mail_smtp_auth);
+        prop.setProperty("mail.smtp.ssl", mail_smtp_ssl);
         prop.setProperty("mail.smtp.sender", sender);
         prop.setProperty("mail.smtp.username", username);
         prop.setProperty("mail.smtp.passsword", password);
