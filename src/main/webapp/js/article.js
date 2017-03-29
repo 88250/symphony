@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.31.45.34, Mar 28, 2017
+ * @version 1.32.45.34, Mar 30, 2017
  */
 
 /**
@@ -111,7 +111,7 @@ var Comment = {
             }
 
             if ($('.footer').attr('style')) {
-                $('.editor-panel').slideUp();
+                $('.editor-panel').hide();
                 $('.footer').removeAttr('style');
                 return false;
             }
@@ -124,15 +124,14 @@ var Comment = {
             if ($('.editor-panel').css('bottom') !== '0px') {
                 $('.editor-panel').hide().css('bottom', 0);
             }
-            $('.editor-panel').slideDown(function () {
-                Comment.editor.focus();
-            });
+
+            $('.editor-panel').show();
+            Comment.editor.focus();
         });
 
         // 评论框控制
         $('.editor-panel .editor-hide').click(function () {
-            $('.editor-panel').slideUp();
-            $('.footer').removeAttr('style');
+             $('#replyBtn').click();
         });
     },
     /**
@@ -1031,6 +1030,26 @@ var Article = {
                 $('.article-header').css('top', '-56px');
             }
         }, false);
+
+        $(window).resize(function () {
+            var shareL = $('.article-content')[0].offsetLeft / 2 - 15;
+            $('.share').css('left',  (shareL < 0 ? 0 : shareL) + 'px');
+            $('#articleToC > .module-panel').height($(window).height() - 48);
+
+            if ($(window).width() < 1024) {
+                if ($('#articleToC').length === 0) {
+                    return false;
+                }
+                $('.article-body .wrapper').removeAttr('style');
+                return false;
+            }
+
+            if ($('#articleToC').length === 1) {
+                var articleToCW = $('#articleToC').width(),
+                    articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
+                $('.article-body .wrapper').css('margin-right', articleMR + 'px');
+            }
+        });
     },
     /**
      * 历史版本对比
@@ -1132,7 +1151,8 @@ var Article = {
      * @description 分享按钮
      */
     share: function () {
-        $('.share').css('left',  ($('.article-content').offset().left / 2 - 15) + 'px');
+        var shareL = $('.article-content').offset().left / 2 - 15;
+        $('.share').css('left',  (shareL < 20 ? 20 : shareL) + 'px');
 
         var shareURL = $('#qrCode').data('shareurl');
         $('#qrCode').qrcode({
@@ -1428,15 +1448,11 @@ var Article = {
             return false;
         }
 
-        $('#articleToC').width(($(window).width() - $('.article-title').width()) / 2 - 15).animate({
-            right: 0
-        }, function () {
-            $(window).scroll();
-            $articleTocUl.scrollTop($articleToc.find('li.current')[0].offsetTop).scroll(function () {
-                isUlScroll = true;
-            });
-        });
-        $('#articleToC > .module-panel').height($(window).height() - 49 - 48);
+        var articleToCW = $('#articleToC').width(),
+            articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
+        $('.article-body .wrapper').css('margin-right', articleMR + 'px');
+
+        $('#articleToC > .module-panel').height($(window).height() - 48);
 
         // 样式
         var $articleToc = $('#articleToC'),
@@ -1501,6 +1517,12 @@ var Article = {
             setTimeout(function () {
                 isUlScroll = false;
             }, 600);
+        });
+
+        $(window).scroll();
+
+        $articleTocUl.scrollTop($articleToc.find('li.current')[0].offsetTop).scroll(function () {
+            isUlScroll = true;
         });
     },
     /**

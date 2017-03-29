@@ -17,9 +17,7 @@
                                  aria-label="${activityDailyCheckinLabel}" style="background-image:url('${staticServePath}/images/activities/checkin.png')"></div>
                             ${dailyCheckinLabel}
                         </h2>
-                        <br>
-                        <div id="captcha" class="fn-m10"></div>
-                        <br>
+                        <div id="captcha" class="fn-content"></div>
                     </div>
                 </div>
                 <div class="side">

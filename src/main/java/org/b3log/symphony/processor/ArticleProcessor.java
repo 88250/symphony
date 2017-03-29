@@ -94,7 +94,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.25.27.42, Mar 19, 2017
+ * @version 1.25.27.43, Mar 29, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -917,9 +917,10 @@ public class ArticleProcessor {
             article.put(Article.ARTICLE_TAGS, articleTags);
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
 
-            articleMgmtService.addArticle(article);
+            final String articleId = articleMgmtService.addArticle(article);
 
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Article.ARTICLE_T_ID, articleId);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
             LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed: {0}", e.getMessage());
@@ -1110,6 +1111,7 @@ public class ArticleProcessor {
             articleMgmtService.updateArticle(article);
 
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Article.ARTICLE_T_ID, id);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
             LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed: {0}", e.getMessage());
