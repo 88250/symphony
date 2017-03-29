@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.29.21.55, Mar 28, 2017
+ * @version 2.30.21.55, Mar 30, 2017
  */
 
 @import "variables";
@@ -193,12 +193,12 @@
     #articleToC {
         position: fixed;
         top: 48px;
-        min-width: 200px;
-        max-width: 280px;
+        width: 20%;
         z-index: 79;
-        right: -300px;
+        right: 0;
         height: 100%;
         border-radius: 0;
+        background-color: $light-blue;
 
         .module-panel {
             overflow: auto;
@@ -1223,5 +1223,12 @@ code .dec { color: initial; } /* decimal - blue */
 /* start timeline */
 .timeline.list > ul {
     padding-top: 0;
+}
+/* end timeline */
+
+/* start timeline */
+#captcha .gt_holder {
+    left: 50%;
+    margin-left: -145px;
 }
 /* end timeline */
