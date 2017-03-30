@@ -14,7 +14,7 @@
             <div class="wrapper">
                 <div class="content">
                     <#if 0 == articles?size>
-                        <div class="module ft-center">
+                        <div class="module ft-center fn-content">
                         ${searchEmptyLabel}
                         </div>
                     <#else>

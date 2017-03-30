@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.32.45.34, Mar 30, 2017
+ * @version 1.32.46.34, Mar 30, 2017
  */
 
 /**
@@ -111,8 +111,10 @@ var Comment = {
             }
 
             if ($('.footer').attr('style')) {
-                $('.editor-panel').hide();
-                $('.footer').removeAttr('style');
+                $('.editor-panel .wrapper').slideUp(function () {
+                    $('.editor-panel').hide();
+                    $('.footer').removeAttr('style');
+                });
                 return false;
             }
 
@@ -122,11 +124,14 @@ var Comment = {
 
             // 如果 hide 初始化， focus 无效
             if ($('.editor-panel').css('bottom') !== '0px') {
-                $('.editor-panel').hide().css('bottom', 0);
+                $('.editor-panel .wrapper').hide();
+                $('.editor-panel').css('bottom', 0);
             }
 
             $('.editor-panel').show();
-            Comment.editor.focus();
+            $('.editor-panel .wrapper').slideDown(function () {
+                Comment.editor.focus();
+            });
         });
 
         // 评论框控制

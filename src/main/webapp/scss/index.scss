@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.30.21.55, Mar 30, 2017
+ * @version 2.30.21.56, Mar 30, 2017
  */
 
 @import "variables";
@@ -305,6 +305,7 @@
             padding: 15px 10%;
             box-sizing: border-box;
             width: 100%;
+            max-width: initial;
         }
 
         .form {
@@ -501,10 +502,6 @@ label.cmt-anonymous {
 
 #addCommentTip {
     margin-top: -5px;
-}
-
-.article-charge-point {
-    margin: -15px 10px 10px 10px;
 }
 
 #revision .cm-s-default.CodeMirror {
