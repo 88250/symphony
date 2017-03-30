@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.20.11.19, Mar 6, 2017
+ * @version 1.20.11.20, Mar 30, 2017
  */
 
 /**
@@ -324,6 +324,8 @@ var Settings = {
                 success: function (result, textStatus) {
                     if (result.sc) {
                         $("#pointTransferTip").addClass("succ").removeClass("error").html('<ul><li>' + Label.transferSuccLabel + '</li></ul>');
+                        $("#pointTransferUserName").val('');
+                        $("#pointTransferAmount").val('');
                     } else {
                         $("#pointTransferTip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
                     }
