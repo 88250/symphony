@@ -16,7 +16,7 @@
                         <h2 class="sub-head">${dataStatLabel}
                             <span class="ft-gray ft-13">${dataStatSubLabel}</span>
                         </h2>
-                        <div class="fn-m10 content-reset">
+                        <div class="fn-content content-reset">
                         <br><br>
                         <div id="chart30" style="height:400px"></div>
                         <br><br>

@@ -20,7 +20,7 @@
                             <span class="ft-13 ft-gray">${activityEatingSnakeTitleLabel}</span>
                         </h2>
                         <br>
-                        <div class="fn-clear fn-m10">
+                        <div class="fn-clear fn-content">
                             <button class="green fn-right" onclick="Activity.startSnake('${csrfToken}')">${gameStartLabel}</button>
                         </div>
                         <div id="yard"><canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
