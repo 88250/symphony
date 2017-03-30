@@ -18,8 +18,7 @@
                         <h2 class="sub-head">${communityDynamicLabel}
                             <span class="ft-gray ft-13">${communityDynamicSubLabel}</span>
                         </h2>
-                        <br/>
-                        <div class="form fn-m10">
+                        <div class="form fn-content">
                             <div class="reply">
                                 <#if isLoggedIn>
                                 <textarea id="chatContent" rows="10" placeholder="Say sth...."></textarea>
@@ -35,7 +34,6 @@
                                 </div>
                                 </#if>
                             </div>
-                            <br>
                         </div>
                     </div>
                     <div class="list module" id="comments">

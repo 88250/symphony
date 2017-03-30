@@ -12,31 +12,30 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="module article-module">
+                    <div class="module">
                         <h2 class="sub-head">
                             <div class="avatar-small tooltipped tooltipped-ne"
                                  aria-label="${gobangLabel}" style="background-image:url('${staticServePath}/images/activities/gobang.png')"></div>
                             ${gobangLabel}
                             <span class="ft-13 ft-gray">${activityGobangTitleLabel}</span>
                         </h2>
-                        <br>
-                        <div class="fn-clear fn-m10">
-
-                            <input  type="text" id="chatInput" style="display: none;"/>
-                            <button class="green fn-right" id="chatSubmit" value="Chat" onclick="Gobang.chatSend()" style="display: none;">发送消息</button>
-                            <#--<button class="green fn-right" id="quitSubmit" value="Quit" onclick="Gobang.quit()" style="display: none;">放弃游戏</button>-->
-                            <button class="green fn-right" id="gameStart" onclick="Activity.initGobang('${wsScheme}://${serverHost}:${serverPort}${contextPath}')">${gameStartLabel}</button>
-                        </div>
-                        <div id="yard">
-                            <canvas id="gobangCanvas" height="600px" width="600px"></canvas>
-                            <div style="float:left" id="chatArea">
-                                <textarea rows="10" cols="10"></textarea>
+                        <div class="fn-content">
+                            <div class="fn-clear">
+                                <input  type="text" id="chatInput" class="fn-none"/>
+                                <button class="green fn-right" id="chatSubmit" value="Chat" onclick="Gobang.chatSend()" style="display: none;">发送消息</button>
+                                <#--<button class="green fn-right" id="quitSubmit" value="Quit" onclick="Gobang.quit()" style="display: none;">放弃游戏</button>-->
+                                <button class="green fn-right" id="gameStart" onclick="Activity.initGobang('${wsScheme}://${serverHost}:${serverPort}${contextPath}')">${gameStartLabel}</button>
                             </div>
-                        </div>
-                        <br>
-                        <input  type="hidden" id="player"/>
-                        <input  type="hidden" id="playerName"/>
+                            <div id="yard">
+                                <canvas id="gobangCanvas" height="600px" width="600px"></canvas>
+                                <div id="chatArea">
+                                    <textarea rows="10" cols="10"></textarea>
+                                </div>
+                            </div>
 
+                            <input  type="hidden" id="player"/>
+                            <input  type="hidden" id="playerName"/>
+                        </div>
                     </div>
                 </div>
                 <div class="side">
