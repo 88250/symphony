@@ -19,12 +19,12 @@
  * Base style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.4.11, Sep 28, 2016
+ * @version 1.2.4.11, Mar 30, 2017
  */
 
 @import "variables";
 
-@media (max-width: 1016px) {
+@media (max-width: 1024px) {
     .avatar-big {
         height: 140px;
         width: 140px;
@@ -33,6 +33,11 @@
     .avatar-mid {
         height: 80px;
         width: 80px;
+    }
+
+    #articleToC,
+    .user-nav > span:first-child {
+        display: none;
     }
 }
 

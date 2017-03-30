@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.28.21.55, Mar 27, 2017
+ * @version 2.30.21.55, Mar 30, 2017
  */
 
 @import "variables";
@@ -63,7 +63,8 @@
         top: 0;
     }
 
-    .wrapper {
+    .article-body .wrapper,
+    .main .wrapper{
         display: block;
         max-width: 768px;
     }
@@ -192,12 +193,12 @@
     #articleToC {
         position: fixed;
         top: 48px;
-        min-width: 200px;
-        max-width: 280px;
+        width: 20%;
         z-index: 79;
-        right: -300px;
+        right: 0;
         height: 100%;
         border-radius: 0;
+        background-color: $light-blue;
 
         .module-panel {
             overflow: auto;
@@ -282,14 +283,29 @@
     }
 
     .editor-panel {
-        background-color: $light-blue;
-        border-top: 1px solid #eee;
-        padding: 5px 0 10px 0;
         position: fixed;
         width: 100%;
-        z-index: 80;
-        max-height: 80%;
-        overflow: auto;
+        z-index: 120;
+        height: 100%;
+        box-sizing: border-box;
+
+        .editor-bg {
+            background-color: rgba(0,0,0,0.5);
+            height: 100%;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+
+        .wrapper {
+            background-color: $light-blue;
+            bottom: 0;
+            z-index: 121;
+            position: absolute;
+            padding: 15px 10%;
+            box-sizing: border-box;
+            width: 100%;
+        }
 
         .form {
             width: 100%
@@ -309,7 +325,7 @@
     }
 
     .cm-s-default.CodeMirror {
-        height: 300px;
+        height: 210px;
     }
 }
 
@@ -1207,5 +1223,12 @@ code .dec { color: initial; } /* decimal - blue */
 /* start timeline */
 .timeline.list > ul {
     padding-top: 0;
+}
+/* end timeline */
+
+/* start timeline */
+#captcha .gt_holder {
+    left: 50%;
+    margin-left: -145px;
 }
 /* end timeline */

@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.31.21.59, Mar 26, 2017
+ * @version 2.32.21.59, Mar 30, 2017
  */
 
 @import "variables";
@@ -435,6 +435,10 @@ blockquote {
 
 .fn-m10 {
     margin: 0 10px;
+}
+
+.fn-content {
+    padding: 15px 30px;
 }
 
 .fn-inline {
@@ -1058,7 +1062,7 @@ a[class*=" icon-"]:hover {
     position: fixed;
     width: 56px;
     z-index: 110;
-    right: 15px;
+    right: 20px;
     box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
     padding-top: 15px;
     box-sizing: border-box;

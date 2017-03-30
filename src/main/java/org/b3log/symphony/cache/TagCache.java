@@ -55,7 +55,7 @@ import org.jsoup.Jsoup;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.5.1, Mar 4, 2017
+ * @version 1.5.6.1, Mar 28, 2017
  * @since 1.4.0
  */
 @Named
@@ -244,6 +244,7 @@ public class TagCache {
 
             for (final JSONObject tag : tags) {
                 Tag.fillDescription(tag);
+                tag.put(Tag.TAG_T_TITLE_LOWER_CASE, tag.optString(Tag.TAG_TITLE).toLowerCase());
             }
 
             ICON_TAGS.clear();
@@ -268,7 +269,6 @@ public class TagCache {
     public void loadAllTags() {
         final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
         final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
-        final ShortLinkQueryService shortLinkQueryService = beanManager.getReference(ShortLinkQueryService.class);
 
         final Query query = new Query().setFilter(
                 new PropertyFilter(Tag.TAG_STATUS, FilterOperator.EQUAL, Tag.TAG_STATUS_C_VALID))
@@ -325,14 +325,11 @@ public class TagCache {
                 tag.put(Tag.TAG_T_TITLE_LOWER_CASE, tag.optString(Tag.TAG_TITLE).toLowerCase());
             }
 
-            Collections.sort(tags, new Comparator<JSONObject>() {
-                @Override
-                public int compare(final JSONObject t1, final JSONObject t2) {
-                    final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
-                    final String u2Title = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+            Collections.sort(tags, (t1, t2) -> {
+                final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+                final String u2Title = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
 
-                    return u1Title.compareTo(u2Title);
-                }
+                return u1Title.compareTo(u2Title);
             });
 
             TAGS.clear();

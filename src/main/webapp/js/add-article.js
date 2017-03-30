@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.22.17.18, Mar 22, 2017
+ * @version 2.22.17.19, Mar 29, 2017
  */
 
 /**
@@ -98,7 +98,7 @@ var AddArticle = {
                 success: function (result, textStatus) {
                     $(".form button.red").removeAttr("disabled").css("opacity", "1");
                     if (0 === result.sc) {
-                        window.location.href = Label.servePath + "/member/" + Label.userName;
+                        window.location.href = Label.servePath + "/article/" + result.articleId;
                         localStorage.removeItem('postData');
                     } else {
                         $("#addArticleTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
