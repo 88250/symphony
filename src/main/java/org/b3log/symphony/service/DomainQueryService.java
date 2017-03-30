@@ -259,7 +259,7 @@ public class DomainQueryService {
      *         "paginationPageCount": 100,
      *         "paginationPageNums": [1, 2, 3, 4, 5]
      *     },
-     *     "domain": [{
+     *     "domains": [{
      *         "oId": "",
      *         "domainTitle": "",
      *         "domainDescription": "",
