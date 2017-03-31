@@ -619,6 +619,34 @@ public class ActivityMgmtService {
     }
 
     /**
+     * Try to Starts Gobang.
+     *
+     * @param userId the specified user id
+     * @return result
+     */
+    public synchronized JSONObject tryStartGobang(final String userId) {
+        final JSONObject ret = Results.falseResult();
+
+        final int startPoint = Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START;
+
+        final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
+                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_GOBANG,
+                startPoint, "", System.currentTimeMillis());
+
+        if(succ){
+            pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS,userId,
+                    Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_GOBANG,
+                    startPoint, "", System.currentTimeMillis());
+        }
+        ret.put(Keys.STATUS_CODE, succ);
+
+        final String msg = succ ? "started" : langPropsService.get("activityStartGobangFailLabel");
+        ret.put(Keys.MSG, msg);
+
+        return ret;
+    }
+
+    /**
      * Starts Gobang.
      *
      * @param userId the specified user id
