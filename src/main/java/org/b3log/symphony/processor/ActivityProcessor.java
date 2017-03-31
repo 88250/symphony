@@ -638,9 +638,7 @@ public class ActivityProcessor {
                             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
-
-        final JSONObject ret = new JSONObject();
-        ret.put(Keys.MSG, "started");
+        final JSONObject ret = activityMgmtService.tryStartGobang(fromId);
         context.renderJSON(ret);
     }
 

@@ -30,7 +30,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
-import javax.websocket.*;
+import javax.websocket.CloseReason;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
 import java.util.Queue;
@@ -103,40 +108,46 @@ public class GobangChannel {
         }
         if (playing) {
             return;
-        } else if (playing == false && chessRandomWait.size() != 0) {
-            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-
-            ChessGame chessGame = chessRandomWait.poll();
-            chessGame.setPlayer2(userId);
-            chessGame.setStep(1);
-            chessPlaying.put(chessGame.getPlayer1(), chessGame);
-            antiPlayer.put(chessGame.getPlayer1(), chessGame.getPlayer2());
-
-            final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
-            activityMgmtService.startGobang(chessGame.getPlayer1());
-            activityMgmtService.startGobang(chessGame.getPlayer2());
-
-            JSONObject sendText = new JSONObject();
-            sendText.put("type", 4);
-
-            //针对开局玩家的消息
-            sendText.put("message", "玩家<" + userName + ">已加入，游戏开始，请落子");
-            sendText.put("player", chessGame.getPlayer1());
-            SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
-            //针对参与玩家的消息
-            sendText.put("message", "游戏开始~！");
-            sendText.put("player", chessGame.getPlayer2());
-            session.getAsyncRemote().sendText(sendText.toString());
-
         } else {
-            ChessGame chessGame = new ChessGame(userId);
-            chessRandomWait.add(chessGame);
+            ChessGame chessGame;
             JSONObject sendText = new JSONObject();
-            sendText.put("type", 3);
-            sendText.put("playerName", userName);
-            sendText.put("chessId", chessGame.getChessId());
-            sendText.put("message", "请等待另一名玩家加入游戏");
-            session.getAsyncRemote().sendText(sendText.toString());
+
+            do{
+                chessGame = chessRandomWait.poll();
+            }while(chessRandomWait.size() > 0 && SESSIONS.get(chessGame.getPlayer1()) == null);
+
+            if(chessGame==null){
+                chessGame = new ChessGame(userId);
+                chessRandomWait.add(chessGame);
+                sendText.put("type", 3);
+                sendText.put("playerName", userName);
+                sendText.put("message", "请等待另一名玩家加入游戏");
+                session.getAsyncRemote().sendText(sendText.toString());
+            } else {
+                JSONObject r1=activityMgmtService.startGobang(chessGame.getPlayer1());
+                JSONObject r2=activityMgmtService.startGobang(chessGame.getPlayer2());
+
+                final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                chessGame.setPlayer2(userId);
+                chessGame.setStep(1);
+                chessPlaying.put(chessGame.getPlayer1(), chessGame);
+                antiPlayer.put(chessGame.getPlayer1(), chessGame.getPlayer2());
+
+                final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
+
+
+                sendText.put("type", 4);
+
+                //针对开局玩家的消息
+                sendText.put("message", "玩家<" + userName + ">已加入，游戏开始，请落子");
+                sendText.put("player", chessGame.getPlayer1());
+
+                SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
+                //针对参与玩家的消息
+                sendText.put("message", "游戏开始~！");
+                sendText.put("player", chessGame.getPlayer2());
+                session.getAsyncRemote().sendText(sendText.toString());
+            }
         }
     }
 
