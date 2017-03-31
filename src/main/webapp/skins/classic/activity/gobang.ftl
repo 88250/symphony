@@ -50,12 +50,12 @@
             Label.activityStartGobangTipLabel = '${activityStartGobangTipLabel}';
             Gobang.initCanvas('oMark', 'gobangCanvas');
             document.getElementById("gobangCanvas").addEventListener("click",Gobang.moveChess, false);
-            window.onunload=function(){
-                alert("bye");
-            }
-            function closing(){
-                alert('hello');
-            }
+//            window.onunload=function(){
+//                alert("bye");
+//            }
+//            function closing(){
+//                alert('hello');
+//            }
         </script>
     </body>
 </html>
