@@ -323,7 +323,7 @@ div.CodeMirror-dragcursors {
 
 .CodeMirror-hints {
     position: absolute;
-    z-index: 100;
+    z-index: 123;
     overflow: hidden;
     list-style: none;
 
@@ -364,7 +364,7 @@ li.CodeMirror-hint-active {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     height: auto;
-    z-index: 9;
+    z-index: 122;
 }
 
 @media print {

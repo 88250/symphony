@@ -51,7 +51,7 @@ import org.jsoup.Jsoup;
  * Domain query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Mar 14, 2016
+ * @version 1.0.0.2, Mar 30, 2017
  * @since 1.4.0
  */
 @Service
@@ -259,7 +259,7 @@ public class DomainQueryService {
      *         "paginationPageCount": 100,
      *         "paginationPageNums": [1, 2, 3, 4, 5]
      *     },
-     *     "domain": [{
+     *     "domains": [{
      *         "oId": "",
      *         "domainTitle": "",
      *         "domainDescription": "",
@@ -330,7 +330,7 @@ public class DomainQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets a domain [tagId=" + domainId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets a domain [domainId=" + domainId + "] failed", e);
 
             throw new ServiceException(e);
         }

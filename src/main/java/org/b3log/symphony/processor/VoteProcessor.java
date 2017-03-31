@@ -51,7 +51,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.2, Mar 12, 2017
+ * @version 1.3.0.3, Mar 30, 2017
  * @since 1.3.0
  */
 @RequestProcessor
@@ -140,7 +140,7 @@ public class VoteProcessor {
             final JSONObject comment = commentQueryService.getComment(dataId);
             final String commenterId = comment.optString(Comment.COMMENT_AUTHOR_ID);
 
-            if (!VOTES.contains(userId + dataId)) {
+            if (!VOTES.contains(userId + dataId) && !userId.equals(commenterId)) {
                 final JSONObject notification = new JSONObject();
                 notification.put(Notification.NOTIFICATION_USER_ID, commenterId);
                 notification.put(Notification.NOTIFICATION_DATA_ID, dataId + "-" + userId);
@@ -198,7 +198,7 @@ public class VoteProcessor {
             final JSONObject comment = commentQueryService.getComment(dataId);
             final String commenterId = comment.optString(Comment.COMMENT_AUTHOR_ID);
 
-            if (!VOTES.contains(userId + dataId)) {
+            if (!VOTES.contains(userId + dataId) && !userId.equals(commenterId)) {
                 final JSONObject notification = new JSONObject();
                 notification.put(Notification.NOTIFICATION_USER_ID, commenterId);
                 notification.put(Notification.NOTIFICATION_DATA_ID, dataId + "-" + userId);
@@ -256,7 +256,7 @@ public class VoteProcessor {
             final JSONObject article = articleQueryService.getArticle(dataId);
             final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
-            if (!VOTES.contains(userId + dataId)) {
+            if (!VOTES.contains(userId + dataId) && !userId.equals(articleAuthorId)) {
                 final JSONObject notification = new JSONObject();
                 notification.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
                 notification.put(Notification.NOTIFICATION_DATA_ID, dataId + "-" + userId);
@@ -314,7 +314,7 @@ public class VoteProcessor {
             final JSONObject article = articleQueryService.getArticle(dataId);
             final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
-            if (!VOTES.contains(userId + dataId)) {
+            if (!VOTES.contains(userId + dataId) && !userId.equals(articleAuthorId)) {
                 final JSONObject notification = new JSONObject();
                 notification.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
                 notification.put(Notification.NOTIFICATION_DATA_ID, dataId + "-" + userId);
