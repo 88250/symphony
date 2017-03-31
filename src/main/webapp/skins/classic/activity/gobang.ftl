@@ -28,8 +28,9 @@
                             </div>
                             <div id="yard">
                                 <canvas id="gobangCanvas" height="600px" width="600px"></canvas>
+                                <span id="tip" class="tip-succ" style="top: 307px;">${msg}</span>
                                 <div id="chatArea">
-                                    <textarea rows="10" cols="10"></textarea>
+                                    <textarea rows="10" cols="100"></textarea>
                                 </div>
                             </div>
 

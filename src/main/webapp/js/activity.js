@@ -216,11 +216,16 @@ var Activity = {
             type: "POST",
             cache: false,
             success: function () {
-                GobangChannel.init(wsurl+"/gobang-game-channel?player="+$("#player").val());
-                $("#chatInput").show();
-                $("#chatSubmit").show();
-                var $btn = $("#gameStart");
-                $btn.attr("disabled", "disabled").css("opacity", "0.3").text($btn.text() + 'ing');
+                if (result.sc) {
+                    GobangChannel.init(wsurl+"/gobang-game-channel?player="+$("#player").val());
+                    $("#chatInput").show();
+                    $("#chatSubmit").show();
+                    var $btn = $("#gameStart");
+                    $btn.attr("disabled", "disabled").css("opacity", "0.3").text($btn.text() + 'ing');
+                } else {
+                    $("#tip").addClass("error").removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
+                }
+
             }
         });
 

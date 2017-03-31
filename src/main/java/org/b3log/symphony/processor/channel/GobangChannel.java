@@ -30,7 +30,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
-import javax.websocket.*;
+import javax.websocket.CloseReason;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
 import java.util.Queue;
@@ -105,6 +110,8 @@ public class GobangChannel {
             return;
         } else {
             ChessGame chessGame;
+            JSONObject sendText = new JSONObject();
+
             do{
                 chessGame = chessRandomWait.poll();
             }while(chessRandomWait.size() > 0 && SESSIONS.get(chessGame.getPlayer1()) == null);
@@ -112,12 +119,14 @@ public class GobangChannel {
             if(chessGame==null){
                 chessGame = new ChessGame(userId);
                 chessRandomWait.add(chessGame);
-                JSONObject sendText = new JSONObject();
                 sendText.put("type", 3);
                 sendText.put("playerName", userName);
                 sendText.put("message", "请等待另一名玩家加入游戏");
                 session.getAsyncRemote().sendText(sendText.toString());
             } else {
+                JSONObject r1=activityMgmtService.startGobang(chessGame.getPlayer1());
+                JSONObject r2=activityMgmtService.startGobang(chessGame.getPlayer2());
+
                 final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
                 chessGame.setPlayer2(userId);
                 chessGame.setStep(1);
@@ -126,7 +135,7 @@ public class GobangChannel {
 
                 final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
 
-                JSONObject sendText = new JSONObject();
+
                 sendText.put("type", 4);
 
                 //针对开局玩家的消息
@@ -138,9 +147,6 @@ public class GobangChannel {
                 sendText.put("message", "游戏开始~！");
                 sendText.put("player", chessGame.getPlayer2());
                 session.getAsyncRemote().sendText(sendText.toString());
-
-                activityMgmtService.startGobang(chessGame.getPlayer1());
-                activityMgmtService.startGobang(chessGame.getPlayer2());
             }
         }
     }
