@@ -107,7 +107,7 @@ public class GobangChannel {
             ChessGame chessGame;
             do{
                 chessGame = chessRandomWait.poll();
-            }while(SESSIONS.get(chessGame.getPlayer1())==null);
+            }while(chessRandomWait.size() > 0 && SESSIONS.get(chessGame.getPlayer1()) == null);
 
             if(chessGame==null){
                 chessGame = new ChessGame(userId);
