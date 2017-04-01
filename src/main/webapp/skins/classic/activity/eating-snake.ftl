@@ -23,7 +23,10 @@
                         <div class="fn-clear fn-content">
                             <button class="green fn-right" onclick="Activity.startSnake('${csrfToken}')">${gameStartLabel}</button>
                         </div>
-                        <div id="yard"><canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
+                        <div id="yard">
+                            <canvas id="snakeCanvas" height="600px" width="600px"></canvas>
+                            <#--<span id="tip" class="tip-succ" style="top: 307px;">${msg}</span>-->
+                        </div>
                         <div class="fn-flex snak-rank">
                             <div class="module">
                                 <div class="module-header" style="background-image: url(${hotBgIcon});">${totalRankLabel}</div>
