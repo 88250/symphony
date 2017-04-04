@@ -235,6 +235,10 @@ blockquote {
         cursor: zoom-in;
     }
 
+    img.emoji {
+        cursor: auto;
+    }
+
     h1,
     h2,
     h3,
@@ -1733,7 +1737,6 @@ ul.CodeMirror-hints {
 .CodeMirror pre.CodeMirror-placeholder { color: $gray; }
 
 .img-preview {
-    position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
