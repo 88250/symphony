@@ -977,7 +977,7 @@ var Article = {
 
         // img
         var fixDblclick = null;
-        $(".content-reset").on('dblclick', 'img', function () {
+        $(".article").on('dblclick', '.content-reset img', function () {
             clearTimeout(fixDblclick);
             if ($(this).hasClass('emoji')) {
                 return false;
@@ -988,15 +988,22 @@ var Article = {
             var $it = $(this),
                 it = this;
             fixDblclick = setTimeout(function(){
-                var src = $it.attr('src').split('?imageView2');
+                var top = it.offsetTop,
+                    left = it.offsetLeft;
+                if ($it.closest('.comments').length === 1) {
+                    top = top + $it.closest('li')[0].offsetTop;
+                    left = left + $('.comments')[0].offsetLeft + 15;
+                }
+
                 $('body').append('<div class="img-preview" onclick="$(this).remove()"><img style="transform: translate3d(' +
-                it.offsetLeft + 'px, ' + (it.offsetTop - $(window).scrollTop()) + 'px, 0)" src="' + (src[0]) + '"></div>');
+                left + 'px, ' + (top - $(window).scrollTop()) + 'px, 0)" src="' +
+                ($it.attr('src').split('?imageView2')[0]) + '"></div>');
 
                 $('.img-preview img').css('transform', 'translate3d(' +
                  (($(window).width() - it.naturalWidth) / 2) + 'px, ' +
                  (($(window).height() - it.naturalHeight) / 2) + 'px, 0)');
 
-                 $('.img-preview').css({ 'background-color': '#fff' });
+                $('.img-preview').css({ 'background-color': '#fff' });
 
             }, 100);
         });
