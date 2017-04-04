@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.32.48.34, Mar 30, 2017
+ * @version 1.33.48.34, Apr 4, 2017
  */
 
 /**
@@ -297,10 +297,6 @@ var Comment = {
      * @returns {Boolean}
      */
     init: function () {
-        $("#comments").on('dblclick', 'img', function () {
-            window.open($(this).attr('src'));
-        });
-
         if ($(window.location.hash).length === 1) {
             // if (!isNaN(parseInt(window.location.hash.substr(1)))) {
                 Comment._bgFade($(window.location.hash));
@@ -980,11 +976,36 @@ var Article = {
         this.parseLanguage();
 
         // img
-        $(".content-reset.article-content").on('dblclick', 'img', function () {
+        var fixDblclick = null;
+        $(".article").on('dblclick', '.content-reset img', function () {
+            clearTimeout(fixDblclick);
             if ($(this).hasClass('emoji')) {
                 return false;
             }
             window.open($(this).attr('src'));
+        }).on('click', 'img', function (event) {
+            clearTimeout(fixDblclick);
+            var $it = $(this),
+                it = this;
+            fixDblclick = setTimeout(function(){
+                var top = it.offsetTop,
+                    left = it.offsetLeft;
+                if ($it.closest('.comments').length === 1) {
+                    top = top + $it.closest('li')[0].offsetTop;
+                    left = left + $('.comments')[0].offsetLeft + 15;
+                }
+
+                $('body').append('<div class="img-preview" onclick="$(this).remove()"><img style="transform: translate3d(' +
+                left + 'px, ' + (top - $(window).scrollTop()) + 'px, 0)" src="' +
+                ($it.attr('src').split('?imageView2')[0]) + '"></div>');
+
+                $('.img-preview img').css('transform', 'translate3d(' +
+                 (($(window).width() - it.naturalWidth) / 2) + 'px, ' +
+                 (($(window).height() - it.naturalHeight) / 2) + 'px, 0)');
+
+                $('.img-preview').css({ 'background-color': '#fff' });
+
+            }, 100);
         });
 
         // UA
