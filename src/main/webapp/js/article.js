@@ -985,6 +985,9 @@ var Article = {
             window.open($(this).attr('src'));
         }).on('click', 'img', function (event) {
             clearTimeout(fixDblclick);
+            if ($(this).hasClass('emoji')) {
+                return false;
+            }
             var $it = $(this),
                 it = this;
             fixDblclick = setTimeout(function(){
@@ -1000,11 +1003,15 @@ var Article = {
                 ($it.attr('src').split('?imageView2')[0]) + '"></div>');
 
                 $('.img-preview img').css('transform', 'translate3d(' +
-                 (($(window).width() - it.naturalWidth) / 2) + 'px, ' +
-                 (($(window).height() - it.naturalHeight) / 2) + 'px, 0)');
+                 (Math.max(0, $(window).width() - it.naturalWidth) / 2) + 'px, ' +
+                 (Math.max(0, $(window).height() - it.naturalHeight) / 2) + 'px, 0)');
 
-                $('.img-preview').css({ 'background-color': '#fff' });
-
+                setTimeout(function () {
+                    $('.img-preview').css({
+                        'background-color': '#fff',
+                        'position': 'fixed'
+                    });
+                }, 300);
             }, 100);
         });
 
