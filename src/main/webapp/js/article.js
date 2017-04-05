@@ -979,13 +979,13 @@ var Article = {
         var fixDblclick = null;
         $(".article").on('dblclick', '.content-reset img', function () {
             clearTimeout(fixDblclick);
-            if ($(this).hasClass('emoji') || $(this).closest('.editor-panel')) {
+            if ($(this).hasClass('emoji') || $(this).closest('.editor-panel').length === 1) {
                 return false;
             }
             window.open($(this).attr('src'));
         }).on('click', 'img', function (event) {
             clearTimeout(fixDblclick);
-            if ($(this).hasClass('emoji') || $(this).closest('.editor-panel')) {
+            if ($(this).hasClass('emoji') || $(this).closest('.editor-panel').length === 1) {
                 return false;
             }
             var $it = $(this),
@@ -1006,12 +1006,10 @@ var Article = {
                  (Math.max(0, $(window).width() - it.naturalWidth) / 2) + 'px, ' +
                  (Math.max(0, $(window).height() - it.naturalHeight) / 2) + 'px, 0)');
 
-                setTimeout(function () {
-                    $('.img-preview').css({
-                        'background-color': '#fff',
-                        'position': 'fixed'
-                    });
-                }, 300);
+                $('.img-preview').css({
+                    'background-color': '#fff',
+                    'position': 'fixed'
+                });
             }, 100);
         });
 
