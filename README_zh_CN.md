@@ -70,6 +70,7 @@ Sym 的诞生是有如下几点原因：
 * [贵州IT](http://www.gzit.info)
 * [超级产品经理](https://imspm.com)
 * [Titandb 学习主站](https://titandb.cn)
+* [呆萌狮 - Demo's](http://www.daimengshi.com)
 
 公司维护：
 
