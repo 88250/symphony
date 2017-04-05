@@ -235,7 +235,9 @@ blockquote {
         cursor: zoom-in;
     }
 
-    img.emoji {
+    @at-root .editor-panel .content-reset img,
+    img.emoji
+    {
         cursor: auto;
     }
 
