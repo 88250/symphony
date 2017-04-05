@@ -215,7 +215,7 @@ var Activity = {
             url: Label.servePath + "/activity/gobang/start",
             type: "POST",
             cache: false,
-            success: function () {
+            success: function (result) {
                 if (result.sc) {
                     GobangChannel.init(wsurl+"/gobang-game-channel?player="+$("#player").val());
                     $("#chatInput").show();

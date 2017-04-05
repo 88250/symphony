@@ -46,7 +46,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Gobang game channel.
  *
  * 状态值约定（为取值方便不做enum或者常量值了，当然日后或许重构）
- * 1：聊天，2：下子，3：创建游戏，等待加入，4：加入游戏，游戏开始，5：无人加入，放弃游戏
+ * 1：聊天，2：下子，3：创建游戏，等待加入，4：加入游戏，游戏开始，5：断线重连，恢复棋盘，6：系统通知
  *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -62,10 +62,14 @@ public class GobangChannel {
     public static final Map<String, Session> SESSIONS = new ConcurrentHashMap<String, Session>();
     /**
      * 正在进行中的棋局.
+     * String参数代表开局者（选手1）的userId
+     * ChessGame参数代表棋局
      */
     public static final Map<String, ChessGame> chessPlaying = new ConcurrentHashMap<String, ChessGame>();
     /**
      * 对手，与正在进行的棋局Map配套使用.
+     * 第一个String代表player1,
+     * 第二个String代表player2
      */
     public static final Map<String, String> antiPlayer = new ConcurrentHashMap<String, String>();
     /**
@@ -101,15 +105,18 @@ public class GobangChannel {
         LOGGER.debug("new connection from " + userName);
         SESSIONS.put(userId, session);
         for (String temp : chessPlaying.keySet()) {
-            if (userId.equals(chessPlaying.get(temp).getPlayer1())
-                    || userId.equals(chessPlaying.get(temp).getPlayer2())) {
+            if (userId.equals(chessPlaying.get(temp).getPlayer1())){ //玩家1返回战局
+                recoverGame(userId,userName,chessPlaying.get(temp).getPlayer2(),chessPlaying.get(temp));
+                playing = true;
+            }else if(userId.equals(chessPlaying.get(temp).getPlayer2())){ //玩家2返回战局
+                recoverGame(userId,userName,chessPlaying.get(temp).getPlayer1(),chessPlaying.get(temp));
                 playing = true;
             }
         }
         if (playing) {
             return;
         } else {
-            ChessGame chessGame;
+            ChessGame chessGame=null;
             JSONObject sendText = new JSONObject();
 
             do{
@@ -117,18 +124,22 @@ public class GobangChannel {
             }while(chessRandomWait.size() > 0 && SESSIONS.get(chessGame.getPlayer1()) == null);
 
             if(chessGame==null){
-                chessGame = new ChessGame(userId);
+                chessGame = new ChessGame(userId,userName);
                 chessRandomWait.add(chessGame);
                 sendText.put("type", 3);
                 sendText.put("playerName", userName);
-                sendText.put("message", "请等待另一名玩家加入游戏");
+                sendText.put("message", "【系统】：请等待另一名玩家加入游戏");
+                session.getAsyncRemote().sendText(sendText.toString());
+            }else if(userId.equals(chessGame.getPlayer1())){ //仍然在匹配队列中
+                sendText.put("type", 3);
+                sendText.put("playerName", userName);
+                sendText.put("message", "【系统】：请等待另一名玩家加入游戏");
                 session.getAsyncRemote().sendText(sendText.toString());
             } else {
-                JSONObject r1=activityMgmtService.startGobang(chessGame.getPlayer1());
-                JSONObject r2=activityMgmtService.startGobang(chessGame.getPlayer2());
-
                 final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
                 chessGame.setPlayer2(userId);
+                chessGame.setName2(userName);
+                chessGame.setPlayState2(true);
                 chessGame.setStep(1);
                 chessPlaying.put(chessGame.getPlayer1(), chessGame);
                 antiPlayer.put(chessGame.getPlayer1(), chessGame.getPlayer2());
@@ -139,7 +150,7 @@ public class GobangChannel {
                 sendText.put("type", 4);
 
                 //针对开局玩家的消息
-                sendText.put("message", "玩家<" + userName + ">已加入，游戏开始，请落子");
+                sendText.put("message", "【系统】：玩家<" + userName + ">已加入，游戏开始，请落子");
                 sendText.put("player", chessGame.getPlayer1());
 
                 SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
@@ -147,6 +158,9 @@ public class GobangChannel {
                 sendText.put("message", "游戏开始~！");
                 sendText.put("player", chessGame.getPlayer2());
                 session.getAsyncRemote().sendText(sendText.toString());
+
+                JSONObject r1=activityMgmtService.startGobang(chessGame.getPlayer1());
+                JSONObject r2=activityMgmtService.startGobang(chessGame.getPlayer2());
             }
         }
     }
@@ -262,14 +276,35 @@ public class GobangChannel {
      * @param session the specified session
      */
     private void removeSession(final Session session) {
-        for (String temp : SESSIONS.keySet()) {
-            if (session.equals(SESSIONS.get(temp))) {
-                chessPlaying.remove(temp);
-                String anti = getAntiPlayer(temp);
-                if (anti != null && !anti.equals("")) {
-                    chessPlaying.remove(anti);
+        for (String player : SESSIONS.keySet()) {
+            if (session.equals(SESSIONS.get(player))) {
+                if(chessPlaying.get(player)!=null){ //说明玩家1断开了链接
+                    ChessGame chessGame=chessPlaying.get(player);
+                    chessGame.setPlayState1(false);
+                    if(!chessGame.isPlayState2()){
+                        chessPlaying.remove(player);
+                    }else{
+                        JSONObject sendText = new JSONObject();
+                        sendText.put("type",6);
+                        sendText.put("message","【系统】：对手离开了棋局");
+                        SESSIONS.get(chessGame.getPlayer2()).getAsyncRemote().sendText(sendText.toString());
+                    }
+                }else if(chessPlaying.get(getAntiPlayer(player))!=null){ //说明玩家2断开了链接
+                    String player1=getAntiPlayer(player);
+                    ChessGame chessGame=chessPlaying.get(player1);
+                    chessGame.setPlayState2(false);
+                    if(!chessGame.isPlayState1()){
+                        chessPlaying.remove(player1);
+                    }else{
+                        JSONObject sendText = new JSONObject();
+                        sendText.put("type",6);
+                        sendText.put("message","【系统】：对手离开了棋局");
+                        SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
+                    }
+                }else{
+                    //未参与棋局的链接，按道理不会存在
                 }
-                SESSIONS.remove(temp);
+                SESSIONS.remove(player);
             }
         }
     }
@@ -285,20 +320,41 @@ public class GobangChannel {
         }
         return anti;
     }
+
+    private void recoverGame(String userId,String userName,String antiUserId,ChessGame chessGame){
+        JSONObject sendText = new JSONObject();
+        sendText.put("type", 5);
+        sendText.put("chess",chessGame.getChess());
+        sendText.put("message", "【系统】：恢复棋盘，当前该玩家"+(chessGame.getStep()==1?chessGame.getName1():chessGame.getName2())+"落子");
+        sendText.put("playerName", userName);
+        sendText.put("player", userId);
+        SESSIONS.get(userId).getAsyncRemote().sendText(sendText.toString());
+        sendText=new JSONObject();
+        sendText.put("type",6);
+        sendText.put("message", "【系统】：对手返回了棋局，当前该玩家"+(chessGame.getStep()==1?chessGame.getName1():chessGame.getName2())+"落子");
+        SESSIONS.get(antiUserId).getAsyncRemote().sendText(sendText.toString());
+    }
 }
 
 class ChessGame {
     private long chessId;
     private String player1;
     private String player2;
+    private String name1;
+    private String name2;
+    private boolean playState1;
+    private boolean playState2;
     private int state;//0空桌，1，等待，2满员
     private int[][] chess = null;
     private int step;//1-player1,2-player2;
     private long starttime;
 
-    public ChessGame(String player1) {
+    public ChessGame(String player1,String name1) {
         this.chessId = System.currentTimeMillis();
         this.player1 = player1;
+        this.name1 = name1;
+        this.playState1=true;
+        this.playState2=false;
         this.chess = new int[20][20];
         this.starttime = System.currentTimeMillis();
         for (int i = 0; i < 20; i++) {
@@ -452,5 +508,37 @@ class ChessGame {
 
     public void setStarttime(long starttime) {
         this.starttime = starttime;
+    }
+
+    public boolean isPlayState1() {
+        return playState1;
+    }
+
+    public void setPlayState1(boolean playState1) {
+        this.playState1 = playState1;
+    }
+
+    public boolean isPlayState2() {
+        return playState2;
+    }
+
+    public void setPlayState2(boolean playState2) {
+        this.playState2 = playState2;
+    }
+
+    public String getName1() {
+        return name1;
+    }
+
+    public void setName1(String name1) {
+        this.name1 = name1;
+    }
+
+    public String getName2() {
+        return name2;
+    }
+
+    public void setName2(String name2) {
+        this.name2 = name2;
     }
 }
