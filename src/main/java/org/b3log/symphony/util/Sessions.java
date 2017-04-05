@@ -36,7 +36,7 @@ import javax.servlet.http.HttpSession;
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.2.3, Jan 4, 2017
+ * @version 2.0.2.4, Apr 4, 2017
  */
 public final class Sessions {
 
@@ -48,7 +48,7 @@ public final class Sessions {
     /**
      * Cookie expiry: one year.
      */
-    private static final int COOKIE_EXPIRY = 60 * 60 * 24 * 365;
+    private static final int COOKIE_EXPIRY = 60 * 60 * 24 * 30;
 
     /**
      * Private default constructor.

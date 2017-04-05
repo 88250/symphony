@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.28.52, Mar 27, 2017
+ * @version 2.27.28.52, Apr 2, 2017
  * @since 0.2.0
  */
 @Service
@@ -2078,6 +2078,7 @@ public class ArticleQueryService {
      * <li>builds tag objects</li>
      * <li>generates article preview content</li>
      * <li>extracts the first image URL</li>
+     * <li>image processing if using Qiniu</li>
      * </ul>
      *
      * @param avatarViewMode the specified avatar view mode
@@ -2096,6 +2097,8 @@ public class ArticleQueryService {
         } else {
             article.put(Article.ARTICLE_T_THUMBNAIL_URL, "");
         }
+
+        qiniuImgProcessing(article);
 
         String title = article.optString(Article.ARTICLE_TITLE).replace("<", "&lt;").replace(">", "&gt;");
         title = Markdowns.clean(title, "");
@@ -2208,6 +2211,38 @@ public class ArticleQueryService {
         }
 
         return ret;
+    }
+
+    /**
+     * Qiniu image processing.
+     *
+     * @param article the specified article
+     * @return the first image URL, returns {@code ""} if not found
+     */
+    private void qiniuImgProcessing(final JSONObject article) {
+        final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
+        if (!qiniuEnabled) {
+            return;
+        }
+
+        final String qiniuDomain = Symphonys.get("qiniu.domain");
+        String content = article.optString(Article.ARTICLE_CONTENT);
+        final String html = Markdowns.toHTML(content);
+
+        final String[] imgSrcs = StringUtils.substringsBetween(html, "<img src=\"", "\"");
+        if (null == imgSrcs) {
+            return;
+        }
+
+        for (final String imgSrc : imgSrcs) {
+            if (!StringUtils.startsWith(imgSrc, qiniuDomain) || StringUtils.contains(imgSrc, ".gif")) {
+                continue;
+            }
+
+            content = StringUtils.replaceOnce(content, imgSrc, imgSrc + "?imageView2/2/w/768/format/jpg/interlace/0/q");
+        }
+
+       article.put(Article.ARTICLE_CONTENT, content);
     }
 
     /**
