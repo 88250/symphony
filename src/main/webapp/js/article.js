@@ -1313,7 +1313,7 @@ var Article = {
                 if (result.sc) {
                     var thxCnt = parseInt($('#thankArticle').text());
                     $("#thankArticle").removeAttr("onclick").html('<span class="icon-heart"></span><span class="ft-13">' + (thxCnt + 1) + '</span>')
-                    .addClass('ft-red');
+                    .addClass('ft-red').removeClass('ft-blue');
 
                     var $heart = $("<i class='icon-heart ft-red'></i>"),
                             y = $('#thankArticle').offset().top,
