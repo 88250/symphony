@@ -26,7 +26,7 @@ var Gobang = {
     unitSize: 30,
     chessLength: 600,
     drawChessBoard:function(){
-        Gobang.chessCanvas.fillStyle = "darkorange";
+        Gobang.chessCanvas.fillStyle = "rgb(255,229,143)";
         Gobang.chessCanvas.fillRect(0,0,Gobang.chessLength,Gobang.chessLength);
         Gobang.chessCanvas.strokeStyle = "black";
         Gobang.chessCanvas.lineWidth = 10;
@@ -177,13 +177,22 @@ var GobangChannel = {
                     }
                     break;
                 case 3:
-                    $("#chatArea > textarea").text("【系统】 : "+resp.message+"\n"+$("#chatArea > textarea").text());
+                    $("#chatArea > textarea").text(resp.message+"\n"+$("#chatArea > textarea").text());
                     $("#playerName").val(resp.playerName);
                     break;
                 case 4:
-                    $("#chatArea > textarea").text("【系统】 : "+resp.message+"\n"+$("#chatArea > textarea").text());
+                    $("#chatArea > textarea").text(resp.message+"\n"+$("#chatArea > textarea").text());
                     // console.log(resp.player);
                     $("#player").val(resp.player);
+                    break;
+                case 5:
+                    $("#chatArea > textarea").text(resp.message+"\n"+$("#chatArea > textarea").text());
+                    $("#player").val(resp.player);
+                    $("#playerName").val(resp.playerName);
+                    console.log(resp.chess);
+                    break;
+                case 6:
+                    $("#chatArea > textarea").text(resp.message+"\n"+$("#chatArea > textarea").text());
                     break;
             }
         };

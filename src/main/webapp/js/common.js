@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.42.29.45, Mar 27, 2017
+ * @version 1.42.30.45, Apr 5, 2017
  */
 
 /**
@@ -1288,7 +1288,8 @@ var Util = {
      * @param {Strng} obj.qiniuDomain 七牛 Domain
      */
     uploadFile: function (obj) {
-        var filename = "";
+        var filename = "", fileIndex = 0,
+            filenames = [];
         var ext = "";
         var isImg = false;
 
@@ -1300,6 +1301,7 @@ var Util = {
                 url: Label.servePath + "/upload",
                 paramName: "file",
                 add: function (e, data) {
+                    fileIndex++;
                     if (window.File && window.FileReader && window.FileList && window.Blob) {
                         var reader = new FileReader();
                         reader.readAsArrayBuffer(data.files[0]);
@@ -1330,7 +1332,7 @@ var Util = {
                     return data;
                 },
                 submit: function (e, data) {
-                    if (obj.editor.replaceRange) {
+                    if (obj.editor.replaceRange && fileIndex === 1) {
                         var cursor = obj.editor.getCursor();
                         obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
                     } else {
@@ -1359,6 +1361,7 @@ var Util = {
                         obj.editor.$it.val(obj.editor.$it.val() + '![' + filename + '](' + filePath + ') \n\n');
                         $('#' + obj.id + ' input').prop('disabled', false);
                     }
+                    fileIndex--;
                 },
                 fail: function (e, data) {
                     alert("Upload error: " + data.errorThrown);
@@ -1369,6 +1372,7 @@ var Util = {
                     } else {
                         $('#' + obj.id + ' input').prop('disabled', false);
                     }
+                    fileIndex--;
                 }
             }).on('fileuploadprocessalways', function (e, data) {
                 var currentFile = data.files[data.index];
@@ -1390,7 +1394,6 @@ var Util = {
                 if (data.files[0].name) {
                     var processName = data.files[0].name.match(/[a-zA-Z0-9.]/g).join('');
                     filename = getUUID() + '-' + processName;
-
                     // 文件名称全为中文时，移除 ‘-’
                     if (processName.split('.')[0] === '') {
                         filename = getUUID() + processName;
@@ -1399,6 +1402,7 @@ var Util = {
                     filename = getUUID() + '.' + data.files[0].type.split("/")[1];
                 }
 
+                filenames.push(filename);
 
                 if (window.File && window.FileReader && window.FileList && window.Blob) {
                     var reader = new FileReader();
@@ -1426,7 +1430,8 @@ var Util = {
                 }
             },
             formData: function (form) {
-                var data = form.serializeArray();
+                var data = form.serializeArray(),
+                filename = filenames[fileIndex++];
 
                 data.push({name: 'key', value: "file/" + (new Date()).getFullYear() + "/"
                             + ((new Date()).getMonth() + 1) + '/' + filename});
@@ -1436,7 +1441,7 @@ var Util = {
                 return data;
             },
             submit: function (e, data) {
-                if (obj.editor.replaceRange) {
+                if (obj.editor.replaceRange && fileIndex === 1) {
                     var cursor = obj.editor.getCursor();
                     obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
                 } else {
@@ -1450,6 +1455,12 @@ var Util = {
 
                     return;
                 }
+                filenames.map(function (e, i, data) {
+                    if (qiniuKey.split('/')[3] === e) {
+                        filename = e;
+                        data.splice(i, 1);
+                    }
+                });
 
                 if (obj.editor.replaceRange) {
                     var cursor = obj.editor.getCursor();
@@ -1465,6 +1476,7 @@ var Util = {
                     obj.editor.$it.val('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n');
                     $('#' + obj.id + ' input').prop('disabled', false);
                 }
+                fileIndex--;
             },
             fail: function (e, data) {
                 alert("Upload error: " + data.errorThrown);
@@ -1475,6 +1487,7 @@ var Util = {
                 } else {
                     $('#' + obj.id + ' input').prop('disabled', false);
                 }
+                fileIndex--;
             }
         }).on('fileuploadprocessalways', function (e, data) {
             var currentFile = data.files[data.index];
