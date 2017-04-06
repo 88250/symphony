@@ -58,7 +58,7 @@ import java.util.Random;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.6.9.6, Mar 27, 2017
+ * @version 1.6.9.7, Apr 5, 2017
  * @since 1.3.0
  */
 @Service
@@ -616,34 +616,6 @@ public class ActivityMgmtService {
 
         // Today liveness (activity)
         livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_ACTIVITY);
-    }
-
-    /**
-     * Try to Starts Gobang.
-     *
-     * @param userId the specified user id
-     * @return result
-     */
-    public synchronized JSONObject tryStartGobang(final String userId) {
-        final JSONObject ret = Results.falseResult();
-
-        final int startPoint = Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START;
-
-        final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
-                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_GOBANG,
-                startPoint, "", System.currentTimeMillis());
-
-        if(succ){
-            pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS,userId,
-                    Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_GOBANG,
-                    startPoint, "", System.currentTimeMillis());
-        }
-        ret.put(Keys.STATUS_CODE, succ);
-
-        final String msg = succ ? "started" : langPropsService.get("activityStartGobangFailLabel");
-        ret.put(Keys.MSG, msg);
-
-        return ret;
     }
 
     /**
