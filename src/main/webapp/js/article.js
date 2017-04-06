@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.33.49.34, Apr 5, 2017
+ * @version 1.33.50.34, Apr 6, 2017
  */
 
 /**
@@ -975,7 +975,7 @@ var Article = {
         this.share();
         this.parseLanguage();
 
-        // img
+        // img preview
         var fixDblclick = null;
         $(".article").on('dblclick', '.content-reset img', function () {
             clearTimeout(fixDblclick);
@@ -999,17 +999,22 @@ var Article = {
                 }
 
                 $('body').append('<div class="img-preview" onclick="$(this).remove()"><img style="transform: translate3d(' +
-                left + 'px, ' + (top - $(window).scrollTop()) + 'px, 0)" src="' +
+                Math.max(0, left) + 'px, ' + Math.max(0, (top - $(window).scrollTop())) + 'px, 0)" src="' +
                 ($it.attr('src').split('?imageView2')[0]) + '"></div>');
-
-                $('.img-preview img').css('transform', 'translate3d(' +
-                 (Math.max(0, $(window).width() - it.naturalWidth) / 2) + 'px, ' +
-                 (Math.max(0, $(window).height() - it.naturalHeight) / 2) + 'px, 0)');
 
                 $('.img-preview').css({
                     'background-color': '#fff',
                     'position': 'fixed'
                 });
+
+                $('.img-preview img').css('transform', 'translate3d(' +
+                 (Math.max(0, $(window).width() - it.naturalWidth) / 2) + 'px, ' +
+                 (Math.max(0, $(window).height() - it.naturalHeight) / 2) + 'px, 0)');
+
+                // fixed chrome render transform bug
+                setTimeout(function () {
+                    $('.img-preview').width($(window).width());
+                }, 300);
             }, 100);
         });
 
@@ -1085,14 +1090,14 @@ var Article = {
                 if ($('#articleToC').length === 0) {
                     return false;
                 }
-                $('.article-body .wrapper').removeAttr('style');
+                $('.article-body .wrapper, .main .wrapper').removeAttr('style');
                 return false;
             }
 
             if ($('#articleToC').length === 1) {
                 var articleToCW = $('#articleToC').width(),
                     articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
-                $('.article-body .wrapper').css('margin-right', articleMR + 'px');
+                $('.article-body .wrapper, .main .wrapper').css('margin-right', articleMR + 'px');
             }
         });
     },
@@ -1495,7 +1500,7 @@ var Article = {
 
         var articleToCW = $('#articleToC').width(),
             articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
-        $('.article-body .wrapper').css('margin-right', articleMR + 'px');
+        $('.article-body .wrapper, .main .wrapper').css('margin-right', articleMR + 'px');
 
         $('#articleToC > .module-panel').height($(window).height() - 48);
 
