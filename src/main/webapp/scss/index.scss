@@ -510,6 +510,21 @@ label.cmt-anonymous {
     margin-bottom: 0;
     height: auto;
 }
+
+.img-preview {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: 111;
+    overflow: auto;
+    cursor: zoom-out;
+    transition: background-color .2s ease-in-out;
+
+    img {
+        max-width: inherit;
+        transition: transform .3s ease-in-out;
+    }
+}
 /* end article */
 
 /* start article list */

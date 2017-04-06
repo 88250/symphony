@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.28.52, Apr 2, 2017
+ * @version 2.27.29.52, Apr 5, 2017
  * @since 0.2.0
  */
 @Service
@@ -1152,7 +1152,9 @@ public class ArticleQueryService {
 
                 String articleContent = data.optString(Article.ARTICLE_CONTENT);
                 // articleContent = Markdowns.toHTML(articleContent); https://hacpai.com/article/1490233597586
+                articleContent = articleContent.replace("\n", "_esc_br_");
                 articleContent = Markdowns.clean(articleContent, "");
+                articleContent = articleContent.replace("_esc_br_", "\n");
                 data.put(Article.ARTICLE_CONTENT, articleContent);
 
                 rev.put(Revision.REVISION_DATA, data);

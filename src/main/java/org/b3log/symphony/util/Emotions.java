@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.2.1.4, Mar 20, 2017
+ * @version 1.2.1.5, Apr 5, 2017
  * @since 0.2.0
  */
 public final class Emotions {
@@ -994,7 +994,7 @@ public final class Emotions {
             }
 
             ret = ret.replace('[' + emotionName + ']',
-                    "<img src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
+                    "<img class=\"emoji\" src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
         }
 
         if (!EMOJI_PATTERN.matcher(ret).find()) {
@@ -1002,9 +1002,9 @@ public final class Emotions {
         }
 
         for (final String emojiCode : EMOJIS) {
-            ret = ret.replace(":" + emojiCode + ":", "<img align=\"absmiddle\" alt=\"" + emojiCode + "\" class=\"emoji\" src=\""
+            ret = ret.replace(":" + emojiCode + ":", "<img alt=\"" + emojiCode + "\" class=\"emoji\" src=\""
                     + staticServePath + "/emoji/graphics/" + emojiCode
-                    + ".png\" title=\"" + emojiCode + "\"></img>");
+                    + ".png\" title=\"" + emojiCode + "\" />");
         }
 
 //        ret = ret.replaceAll("\ufe0f", "");

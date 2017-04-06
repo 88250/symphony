@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.33.48.34, Apr 4, 2017
+ * @version 1.33.50.34, Apr 6, 2017
  */
 
 /**
@@ -975,17 +975,17 @@ var Article = {
         this.share();
         this.parseLanguage();
 
-        // img
+        // img preview
         var fixDblclick = null;
         $(".article").on('dblclick', '.content-reset img', function () {
             clearTimeout(fixDblclick);
-            if ($(this).hasClass('emoji')) {
+            if ($(this).hasClass('emoji') || $(this).closest('.editor-panel').length === 1) {
                 return false;
             }
             window.open($(this).attr('src'));
         }).on('click', 'img', function (event) {
             clearTimeout(fixDblclick);
-            if ($(this).hasClass('emoji')) {
+            if ($(this).hasClass('emoji') || $(this).closest('.editor-panel').length === 1) {
                 return false;
             }
             var $it = $(this),
@@ -999,18 +999,21 @@ var Article = {
                 }
 
                 $('body').append('<div class="img-preview" onclick="$(this).remove()"><img style="transform: translate3d(' +
-                left + 'px, ' + (top - $(window).scrollTop()) + 'px, 0)" src="' +
+                Math.max(0, left) + 'px, ' + Math.max(0, (top - $(window).scrollTop())) + 'px, 0)" src="' +
                 ($it.attr('src').split('?imageView2')[0]) + '"></div>');
+
+                $('.img-preview').css({
+                    'background-color': '#fff',
+                    'position': 'fixed'
+                });
 
                 $('.img-preview img').css('transform', 'translate3d(' +
                  (Math.max(0, $(window).width() - it.naturalWidth) / 2) + 'px, ' +
                  (Math.max(0, $(window).height() - it.naturalHeight) / 2) + 'px, 0)');
 
+                // fixed chrome render transform bug
                 setTimeout(function () {
-                    $('.img-preview').css({
-                        'background-color': '#fff',
-                        'position': 'fixed'
-                    });
+                    $('.img-preview').width($(window).width());
                 }, 300);
             }, 100);
         });
@@ -1087,14 +1090,14 @@ var Article = {
                 if ($('#articleToC').length === 0) {
                     return false;
                 }
-                $('.article-body .wrapper').removeAttr('style');
+                $('.article-body .wrapper, .main .wrapper').removeAttr('style');
                 return false;
             }
 
             if ($('#articleToC').length === 1) {
                 var articleToCW = $('#articleToC').width(),
                     articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
-                $('.article-body .wrapper').css('margin-right', articleMR + 'px');
+                $('.article-body .wrapper, .main .wrapper').css('margin-right', articleMR + 'px');
             }
         });
     },
@@ -1315,7 +1318,7 @@ var Article = {
                 if (result.sc) {
                     var thxCnt = parseInt($('#thankArticle').text());
                     $("#thankArticle").removeAttr("onclick").html('<span class="icon-heart"></span><span class="ft-13">' + (thxCnt + 1) + '</span>')
-                    .addClass('ft-red');
+                    .addClass('ft-red').removeClass('ft-blue');
 
                     var $heart = $("<i class='icon-heart ft-red'></i>"),
                             y = $('#thankArticle').offset().top,
@@ -1497,7 +1500,7 @@ var Article = {
 
         var articleToCW = $('#articleToC').width(),
             articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
-        $('.article-body .wrapper').css('margin-right', articleMR + 'px');
+        $('.article-body .wrapper, .main .wrapper').css('margin-right', articleMR + 'px');
 
         $('#articleToC > .module-panel').height($(window).height() - 48);
 
