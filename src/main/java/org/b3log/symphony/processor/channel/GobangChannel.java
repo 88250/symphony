@@ -46,7 +46,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Apr 5, 2017
+ * @version 1.0.0.3, Apr 6, 2017
  * @since 2.1.0
  */
 @ServerEndpoint(value = "/gobang-game-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -150,12 +150,12 @@ public class GobangChannel {
                 sendText.put("type", 4);
 
                 //针对开局玩家的消息
-                sendText.put("message", "【系统】：玩家 <" + userName + "> 已加入，游戏开始，请落子");
+                sendText.put("message", "【系统】：玩家 [" + userName + "] 已加入，游戏开始，请落子");
                 sendText.put("player", chessGame.getPlayer1());
 
                 SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
                 //针对参与玩家的消息
-                sendText.put("message", "游戏开始~！您正在与 <" + chessGame.getName1() + "> 对战");
+                sendText.put("message", "游戏开始~！您正在与 [" + chessGame.getName1() + "] 对战");
                 sendText.put("player", chessGame.getPlayer2());
                 session.getAsyncRemote().sendText(sendText.toString());
 
@@ -346,13 +346,13 @@ public class GobangChannel {
         JSONObject sendText = new JSONObject();
         sendText.put("type", 5);
         sendText.put("chess", chessGame.getChess());
-        sendText.put("message", "【系统】：恢复棋盘，当前轮到玩家 <" + (chessGame.getStep() == 1 ? chessGame.getName1() : chessGame.getName2()) + "> 落子");
+        sendText.put("message", "【系统】：恢复棋盘，当前轮到玩家 [" + (chessGame.getStep() == 1 ? chessGame.getName1() : chessGame.getName2()) + "] 落子");
         sendText.put("playerName", userName);
         sendText.put("player", userId);
         SESSIONS.get(userId).getAsyncRemote().sendText(sendText.toString());
         sendText = new JSONObject();
         sendText.put("type", 6);
-        sendText.put("message", "【系统】：对手返回了棋局，当前轮到玩家 <" + (chessGame.getStep() == 1 ? chessGame.getName1() : chessGame.getName2()) + "> 落子");
+        sendText.put("message", "【系统】：对手返回了棋局，当前轮到玩家 [" + (chessGame.getStep() == 1 ? chessGame.getName1() : chessGame.getName2()) + "] 落子");
         SESSIONS.get(antiUserId).getAsyncRemote().sendText(sendText.toString());
     }
 }
