@@ -300,6 +300,10 @@ public class GobangChannel {
                         if(!chessGame.isPlayState2()){
                             chessPlaying.remove(player);
                             antiPlayer.remove(player);
+                            //由于玩家2先退出，补偿玩家1的积分
+                            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                            final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
+                            activityMgmtService.collectGobang(chessGame.getPlayer1(), Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START);
                         }else{
                             JSONObject sendText = new JSONObject();
                             sendText.put("type",6);
@@ -313,6 +317,10 @@ public class GobangChannel {
                         if(!chessGame.isPlayState1()){
                             chessPlaying.remove(player1);
                             antiPlayer.remove(player1);
+                            //由于玩家1先退出，补偿玩家2的积分
+                            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                            final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
+                            activityMgmtService.collectGobang(chessGame.getPlayer2(), Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START);
                         }else{
                             JSONObject sendText = new JSONObject();
                             sendText.put("type",6);
