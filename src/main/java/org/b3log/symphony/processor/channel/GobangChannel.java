@@ -159,7 +159,7 @@ public class GobangChannel {
 
                 SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
                 //针对参与玩家的消息
-                sendText.put("message", "游戏开始~！");
+                sendText.put("message", "游戏开始~！您正在与<"+chessGame.getName1()+">对战");
                 sendText.put("player", chessGame.getPlayer2());
                 session.getAsyncRemote().sendText(sendText.toString());
 
@@ -238,6 +238,8 @@ public class GobangChannel {
                     sendText.put("player", player);
                     sendText.put("posX", x);
                     sendText.put("posY", y);
+                    sendText.put("chess",chessGame.getChess());
+                    sendText.put("step",chessGame.getStep());
                     if (flag) {
                         sendText.put("result", "You Win");
                     }
@@ -285,31 +287,47 @@ public class GobangChannel {
     private void removeSession(final Session session) {
         for (String player : SESSIONS.keySet()) {
             if (session.equals(SESSIONS.get(player))) {
-                if(chessPlaying.get(player)!=null){ //说明玩家1断开了链接
-                    ChessGame chessGame=chessPlaying.get(player);
-                    chessGame.setPlayState1(false);
-                    if(!chessGame.isPlayState2()){
-                        chessPlaying.remove(player);
-                    }else{
-                        JSONObject sendText = new JSONObject();
-                        sendText.put("type",6);
-                        sendText.put("message","【系统】：对手离开了棋局");
-                        SESSIONS.get(chessGame.getPlayer2()).getAsyncRemote().sendText(sendText.toString());
-                    }
-                }else if(chessPlaying.get(getAntiPlayer(player))!=null){ //说明玩家2断开了链接
-                    String player1=getAntiPlayer(player);
-                    ChessGame chessGame=chessPlaying.get(player1);
-                    chessGame.setPlayState2(false);
-                    if(!chessGame.isPlayState1()){
-                        chessPlaying.remove(player1);
-                    }else{
-                        JSONObject sendText = new JSONObject();
-                        sendText.put("type",6);
-                        sendText.put("message","【系统】：对手离开了棋局");
-                        SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
+                if(getAntiPlayer(player)==null){
+                    for(ChessGame chessGame:chessRandomWait){
+                        if(player.equals(chessGame.getPlayer1())){
+                            chessRandomWait.remove(chessGame);
+                        }
                     }
                 }else{
-                    //未参与棋局的链接，按道理不会存在
+                    if(chessPlaying.get(player)!=null){ //说明玩家1断开了链接
+                        ChessGame chessGame=chessPlaying.get(player);
+                        chessGame.setPlayState1(false);
+                        if(!chessGame.isPlayState2()){
+                            chessPlaying.remove(player);
+                            antiPlayer.remove(player);
+                            //由于玩家2先退出，补偿玩家1的积分
+                            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                            final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
+                            activityMgmtService.collectGobang(chessGame.getPlayer1(), Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START);
+                        }else{
+                            JSONObject sendText = new JSONObject();
+                            sendText.put("type",6);
+                            sendText.put("message","【系统】：对手离开了棋局");
+                            SESSIONS.get(chessGame.getPlayer2()).getAsyncRemote().sendText(sendText.toString());
+                        }
+                    }else if(chessPlaying.get(getAntiPlayer(player))!=null){ //说明玩家2断开了链接
+                        String player1=getAntiPlayer(player);
+                        ChessGame chessGame=chessPlaying.get(player1);
+                        chessGame.setPlayState2(false);
+                        if(!chessGame.isPlayState1()){
+                            chessPlaying.remove(player1);
+                            antiPlayer.remove(player1);
+                            //由于玩家1先退出，补偿玩家2的积分
+                            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                            final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
+                            activityMgmtService.collectGobang(chessGame.getPlayer2(), Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START);
+                        }else{
+                            JSONObject sendText = new JSONObject();
+                            sendText.put("type",6);
+                            sendText.put("message","【系统】：对手离开了棋局");
+                            SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
+                        }
+                    }
                 }
                 SESSIONS.remove(player);
             }
