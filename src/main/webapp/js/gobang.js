@@ -136,6 +136,18 @@ var Gobang = {
     moveChess:function(evt){
         var mousePos = Gobang.getMousePos(document.getElementById("gobangCanvas"), evt);
         Gobang.getChessManPoint(mousePos,$("#player").val());
+    },
+    recoverGame:function(chess){
+        for(var i=1;i<chess.length;i++){
+            for(var j=1;j<chess.length;j++){
+                if(chess[i][j]==1){
+                    Gobang.drawChessMan(i*Gobang.unitSize,j*Gobang.unitSize,Gobang.unitSize/2,"black");
+                }else if(chess[i][j]==2){
+                    Gobang.drawChessMan(i*Gobang.unitSize,j*Gobang.unitSize,Gobang.unitSize/2,"white");
+                }
+            }
+        }
+        // console.log(chess);
     }
 };
 
@@ -189,7 +201,7 @@ var GobangChannel = {
                     $("#chatArea > textarea").text(resp.message+"\n"+$("#chatArea > textarea").text());
                     $("#player").val(resp.player);
                     $("#playerName").val(resp.playerName);
-                    console.log(resp.chess);
+                    Gobang.recoverGame(resp.chess);
                     break;
                 case 6:
                     $("#chatArea > textarea").text(resp.message+"\n"+$("#chatArea > textarea").text());
