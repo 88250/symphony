@@ -159,7 +159,7 @@ public class GobangChannel {
 
                 SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
                 //针对参与玩家的消息
-                sendText.put("message", "游戏开始~！");
+                sendText.put("message", "游戏开始~！您正在与<"+chessGame.getName1()+">对战");
                 sendText.put("player", chessGame.getPlayer2());
                 session.getAsyncRemote().sendText(sendText.toString());
 
@@ -290,6 +290,7 @@ public class GobangChannel {
                     chessGame.setPlayState1(false);
                     if(!chessGame.isPlayState2()){
                         chessPlaying.remove(player);
+                        antiPlayer.remove(player);
                     }else{
                         JSONObject sendText = new JSONObject();
                         sendText.put("type",6);
@@ -302,6 +303,7 @@ public class GobangChannel {
                     chessGame.setPlayState2(false);
                     if(!chessGame.isPlayState1()){
                         chessPlaying.remove(player1);
+                        antiPlayer.remove(player1);
                     }else{
                         JSONObject sendText = new JSONObject();
                         sendText.put("type",6);
@@ -309,7 +311,12 @@ public class GobangChannel {
                         SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
                     }
                 }else{
-                    //未参与棋局的链接，按道理不会存在
+                    //还在匹配中时退出
+                    for(ChessGame chessGame:chessRandomWait){
+                        if(player.equals(chessGame.getPlayer1())){
+                            chessRandomWait.remove(chessGame);
+                        }
+                    }
                 }
                 SESSIONS.remove(player);
             }
