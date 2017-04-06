@@ -37,7 +37,7 @@ var Gobang = {
             cache: false,
             success: function (result) {
                 if (result.sc) {
-                    GobangChannel.init(wsurl + "/gobang-game-channel?player=" + $("#gobangCanvas").data('player'));
+                    GobangChannel.init(wsurl + "/gobang-game-channel?player=" + Label.currentUserName);
                     $(".side button.green").hide();
                     $(".side button.red, #chatInput").show();
                 } else {
