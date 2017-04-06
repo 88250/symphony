@@ -211,6 +211,9 @@ public class GobangChannel {
                 int y = jsonObject.optInt("y");
                 int size = jsonObject.optInt("size");
                 if (chessGame != null) {
+                    if(chessGame.getChess()[x / size][y / size] != 0){
+                        return;
+                    }
                     boolean flag = false;
                     if (player.equals(chessGame.getPlayer1())) {
                         if (chessGame.getStep() != 1) {
