@@ -134,7 +134,6 @@ var Gobang = {
     initCanvas: function (oMarkId, chessCanvasId) {
         Gobang.chessCanvas = document.getElementById(chessCanvasId).getContext('2d');
         Gobang.drawChessBoard();
-        document.getElementById("gobangCanvas").addEventListener("click", Gobang.moveChess, false);
     },
     getMousePos:function(canvas, evt){
         var rect = canvas.getBoundingClientRect();
@@ -153,19 +152,11 @@ var Gobang = {
         GobangChannel.ws.send(JSON.stringify(message));
         $("#chatInput").val('');
     },
-    // quit:function(){
-    //     //如果无人应战，可以通过放弃匹配来回收积分
-    //     var message = {
-    //         type:5,
-    //         player:$("#gobangCanvas").data('player')
-    //     }
-    //     GobangChannel.ws.send(JSON.stringify(message));
-    // },
     moveChess:function(evt){
         var mousePos = Gobang.getMousePos(document.getElementById("gobangCanvas"), evt);
         Gobang.getChessManPoint(mousePos,$("#gobangCanvas").data('player'));
     },
-    recoverGame:function(chess){
+    drawChess:function(chess){
         for(var i=1;i<chess.length;i++){
             for(var j=1;j<chess.length;j++){
                 if(chess[i][j]==1){
@@ -208,7 +199,8 @@ var GobangChannel = {
                     $(".side ul").prepend('<li>' + resp.player + ": " + resp.message + '</li>');
                     break;
                 case 2:
-                    Gobang.drawChessMan(resp.posX,resp.posY,Gobang.unitSize/2,resp.color);
+                    Gobang.drawChess(resp.chess);
+                    Gobang.drawChessMan(resp.posX,resp.posY,5,"red");
                     if(resp.result != null && resp.result != ""){
                         alert(resp.result);
                         document.getElementById("gobangCanvas").removeEventListener("click",Gobang.moveChess);
@@ -227,7 +219,7 @@ var GobangChannel = {
                 case 5:
                     $(".side ul").prepend('<li>' + resp.message + '</li>');
                     $("#gobangCanvas").data('player', resp.player);
-                    Gobang.recoverGame(resp.chess);
+                    Gobang.drawChess(resp.chess);
                     break;
                 case 6:
                     $(".side ul").prepend('<li>' + resp.message + '</li>');
