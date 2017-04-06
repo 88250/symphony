@@ -45,6 +45,7 @@ import org.b3log.symphony.processor.advice.validate.Activity1A0001CollectValidat
 import org.b3log.symphony.processor.advice.validate.Activity1A0001Validation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.GeetestLib;
+import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -69,12 +70,14 @@ import java.util.Map;
  * <li>Shows eating snake (/activity/eating-snake), GET</li>
  * <li>Starts eating snake (/activity/eating-snake/start), POST</li>
  * <li>Collects eating snake(/activity/eating-snake/collect), POST</li>
+ * <li>Shows gobang (/activity/gobang), GET</li>
+ * <li>Starts gobang (/activity/gobang/start), POST</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.9.1.10, Mar 27, 2017
+ * @version 1.9.1.11, Apr 6, 2017
  * @since 1.3.0
  */
 @RequestProcessor
@@ -539,7 +542,7 @@ public class ActivityProcessor {
     }
 
     /**
-     * Starts eatings snake..
+     * Starts eating snake.
      *
      * @param context  the specified context
      * @param request  the specified request
@@ -594,7 +597,7 @@ public class ActivityProcessor {
     }
 
     /**
-     * Shows Gobang.
+     * Shows gobang.
      *
      * @param context  the specified context
      * @param request  the specified request
@@ -604,7 +607,7 @@ public class ActivityProcessor {
     @RequestProcessing(value = "/activity/gobang", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void initGobang(final HTTPRequestContext context,
+    public void showGobang(final HTTPRequestContext context,
                            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
@@ -624,7 +627,7 @@ public class ActivityProcessor {
     }
 
     /**
-     * Starts eatings snake..
+     * Starts gobang.
      *
      * @param context  the specified context
      * @param request  the specified request
@@ -638,8 +641,15 @@ public class ActivityProcessor {
                             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
-        final JSONObject ret = activityMgmtService.tryStartGobang(fromId);
+
+        final JSONObject ret = Results.falseResult();
+
+        final boolean succ = currentUser.optInt(UserExt.USER_POINT) - Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START >= 0;
+        ret.put(Keys.STATUS_CODE, succ);
+
+        final String msg = succ ? "started" : langPropsService.get("activityStartGobangFailLabel");
+        ret.put(Keys.MSG, msg);
+
         context.renderJSON(ret);
     }
-
 }
