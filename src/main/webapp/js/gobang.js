@@ -47,6 +47,9 @@ var Gobang = {
         });
 
         $('#chatInput').keyup(function (event) {
+            if ($.trim($("#chatInput").val()) === '') {
+                return false;
+            }
             if (event.keyCode === 13) {
                 Gobang.chatSend();
             }
