@@ -238,6 +238,8 @@ public class GobangChannel {
                     sendText.put("player", player);
                     sendText.put("posX", x);
                     sendText.put("posY", y);
+                    sendText.put("chess",chessGame.getChess());
+                    sendText.put("step",chessGame.getStep());
                     if (flag) {
                         sendText.put("result", "You Win");
                     }
@@ -285,36 +287,37 @@ public class GobangChannel {
     private void removeSession(final Session session) {
         for (String player : SESSIONS.keySet()) {
             if (session.equals(SESSIONS.get(player))) {
-                if(chessPlaying.get(player)!=null){ //说明玩家1断开了链接
-                    ChessGame chessGame=chessPlaying.get(player);
-                    chessGame.setPlayState1(false);
-                    if(!chessGame.isPlayState2()){
-                        chessPlaying.remove(player);
-                        antiPlayer.remove(player);
-                    }else{
-                        JSONObject sendText = new JSONObject();
-                        sendText.put("type",6);
-                        sendText.put("message","【系统】：对手离开了棋局");
-                        SESSIONS.get(chessGame.getPlayer2()).getAsyncRemote().sendText(sendText.toString());
-                    }
-                }else if(chessPlaying.get(getAntiPlayer(player))!=null){ //说明玩家2断开了链接
-                    String player1=getAntiPlayer(player);
-                    ChessGame chessGame=chessPlaying.get(player1);
-                    chessGame.setPlayState2(false);
-                    if(!chessGame.isPlayState1()){
-                        chessPlaying.remove(player1);
-                        antiPlayer.remove(player1);
-                    }else{
-                        JSONObject sendText = new JSONObject();
-                        sendText.put("type",6);
-                        sendText.put("message","【系统】：对手离开了棋局");
-                        SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
-                    }
-                }else{
-                    //还在匹配中时退出
+                if(getAntiPlayer(player)==null){
                     for(ChessGame chessGame:chessRandomWait){
                         if(player.equals(chessGame.getPlayer1())){
                             chessRandomWait.remove(chessGame);
+                        }
+                    }
+                }else{
+                    if(chessPlaying.get(player)!=null){ //说明玩家1断开了链接
+                        ChessGame chessGame=chessPlaying.get(player);
+                        chessGame.setPlayState1(false);
+                        if(!chessGame.isPlayState2()){
+                            chessPlaying.remove(player);
+                            antiPlayer.remove(player);
+                        }else{
+                            JSONObject sendText = new JSONObject();
+                            sendText.put("type",6);
+                            sendText.put("message","【系统】：对手离开了棋局");
+                            SESSIONS.get(chessGame.getPlayer2()).getAsyncRemote().sendText(sendText.toString());
+                        }
+                    }else if(chessPlaying.get(getAntiPlayer(player))!=null){ //说明玩家2断开了链接
+                        String player1=getAntiPlayer(player);
+                        ChessGame chessGame=chessPlaying.get(player1);
+                        chessGame.setPlayState2(false);
+                        if(!chessGame.isPlayState1()){
+                            chessPlaying.remove(player1);
+                            antiPlayer.remove(player1);
+                        }else{
+                            JSONObject sendText = new JSONObject();
+                            sendText.put("type",6);
+                            sendText.put("message","【系统】：对手离开了棋局");
+                            SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
                         }
                     }
                 }

@@ -125,19 +125,11 @@ var Gobang = {
         $("#chatArea > textarea").text($("#playerName").val()+" : "+$("#chatInput").val()+"\n"+$("#chatArea > textarea").text());
         GobangChannel.ws.send(JSON.stringify(message));
     },
-    // quit:function(){
-    //     //如果无人应战，可以通过放弃匹配来回收积分
-    //     var message = {
-    //         type:5,
-    //         player:$("#player").val()
-    //     }
-    //     GobangChannel.ws.send(JSON.stringify(message));
-    // },
     moveChess:function(evt){
         var mousePos = Gobang.getMousePos(document.getElementById("gobangCanvas"), evt);
         Gobang.getChessManPoint(mousePos,$("#player").val());
     },
-    recoverGame:function(chess){
+    drawChess:function(chess){
         for(var i=1;i<chess.length;i++){
             for(var j=1;j<chess.length;j++){
                 if(chess[i][j]==1){
@@ -180,7 +172,8 @@ var GobangChannel = {
                     $("#chatArea > textarea").text(resp.player+" : "+resp.message+"\n"+$("#chatArea > textarea").text());
                     break;
                 case 2:
-                    Gobang.drawChessMan(resp.posX,resp.posY,Gobang.unitSize/2,resp.color);
+                    Gobang.drawChess(resp.chess);
+                    Gobang.drawChessMan(resp.posX,resp.posY,5,"red");
                     if(resp.result != null && resp.result != ""){
                         alert(resp.result);
                         document.getElementById("gobangCanvas").removeEventListener("click",Gobang.moveChess);
@@ -201,7 +194,7 @@ var GobangChannel = {
                     $("#chatArea > textarea").text(resp.message+"\n"+$("#chatArea > textarea").text());
                     $("#player").val(resp.player);
                     $("#playerName").val(resp.playerName);
-                    Gobang.recoverGame(resp.chess);
+                    Gobang.drawChess(resp.chess);
                     break;
                 case 6:
                     $("#chatArea > textarea").text(resp.message+"\n"+$("#chatArea > textarea").text());
