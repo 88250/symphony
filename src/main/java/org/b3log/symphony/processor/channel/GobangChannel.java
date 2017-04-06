@@ -105,11 +105,14 @@ public class GobangChannel {
         LOGGER.debug("new connection from " + userName);
         SESSIONS.put(userId, session);
         for (String temp : chessPlaying.keySet()) {
-            if (userId.equals(chessPlaying.get(temp).getPlayer1())){ //玩家1返回战局
-                recoverGame(userId,userName,chessPlaying.get(temp).getPlayer2(),chessPlaying.get(temp));
+            ChessGame chessGame = chessPlaying.get(temp);
+            if (userId.equals(chessGame.getPlayer1())){ //玩家1返回战局
+                recoverGame(userId,userName,chessGame.getPlayer2(),chessGame);
+                chessGame.setPlayState1(true);
                 playing = true;
-            }else if(userId.equals(chessPlaying.get(temp).getPlayer2())){ //玩家2返回战局
-                recoverGame(userId,userName,chessPlaying.get(temp).getPlayer1(),chessPlaying.get(temp));
+            }else if(userId.equals(chessGame.getPlayer2())){ //玩家2返回战局
+                recoverGame(userId,userName,chessGame.getPlayer1(),chessGame);
+                chessGame.setPlayState2(true);
                 playing = true;
             }
         }
@@ -131,9 +134,10 @@ public class GobangChannel {
                 sendText.put("message", "【系统】：请等待另一名玩家加入游戏");
                 session.getAsyncRemote().sendText(sendText.toString());
             }else if(userId.equals(chessGame.getPlayer1())){ //仍然在匹配队列中
+                chessRandomWait.add(chessGame);//重新入队
                 sendText.put("type", 3);
                 sendText.put("playerName", userName);
-                sendText.put("message", "【系统】：请等待另一名玩家加入游戏");
+                sendText.put(   "message", "【系统】：请等待另一名玩家加入游戏");
                 session.getAsyncRemote().sendText(sendText.toString());
             } else {
                 final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
