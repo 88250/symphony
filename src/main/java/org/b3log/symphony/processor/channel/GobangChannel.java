@@ -99,7 +99,15 @@ public class GobangChannel {
         final String userName = user.optString(User.USER_NAME);
         boolean playing = false;
         LOGGER.debug("new connection from " + userName);
-        SESSIONS.put(userId, session);
+        if(SESSIONS.containsKey(userId)){
+            JSONObject sendText = new JSONObject();
+            sendText.put("type", 6);
+            sendText.put("message", "【系统】：您已在匹配队列中，请勿开始多个游戏，如需打开新的窗口，请先关闭原窗口再开始");
+            session.getAsyncRemote().sendText(sendText.toString());
+            return;
+        }else{
+            SESSIONS.put(userId, session);
+        }
         for (String temp : chessPlaying.keySet()) {
             ChessGame chessGame = chessPlaying.get(temp);
             if (userId.equals(chessGame.getPlayer1())) { //玩家1返回战局
