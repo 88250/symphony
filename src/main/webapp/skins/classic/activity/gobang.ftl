@@ -49,6 +49,7 @@
         <script>
             Label.activityStartGobangTipLabel = '${activityStartGobangTipLabel}';
             Gobang.initCanvas('oMark', 'gobangCanvas');
+            document.getElementById("gobangCanvas").addEventListener("click",Gobang.moveChess, false);
         </script>
     </body>
 </html>
