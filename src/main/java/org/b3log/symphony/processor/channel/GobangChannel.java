@@ -41,7 +41,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Gobang game channel.
  * <p>
  * 状态值约定（为取值方便不做enum或者常量值了，当然日后或许重构）
- * 1：聊天，2：下子，3：创建游戏，等待加入，4：加入游戏，游戏开始，5：断线重连，恢复棋盘，6：系统通知
+ * 1：聊天，2：下子，3：创建游戏，等待加入，4：加入游戏，游戏开始，5：断线重连，恢复棋盘，6：系统通知，7：请求和棋
  * </p>
  *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
@@ -236,12 +236,18 @@ public class GobangChannel {
                     sendText.put("posY", y);
                     sendText.put("chess", chessGame.getChess());
                     sendText.put("step", chessGame.getStep());
+                    //chessPlaying是一个以玩家1为key的正在游戏的Map
+                    //按道理，两个玩家不会出现在多个棋局（卧槽？好像一个人想跟多个人下也不是不讲道理啊……whatever）
+                    //故当游戏结束时，可以按照player和anti移除两次（因为不知道哪个才是玩家1）
+                    //总有一次能正确移除，分开写只是为了好看，没有逻辑原因
                     if (flag) {
                         sendText.put("result", "You Win");
+                        chessPlaying.remove(player);
                     }
                     SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
                     if (flag) {
                         sendText.put("result", "You Lose");
+                        chessPlaying.remove(anti);
                     }
                     SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
                     if (flag) {
@@ -252,15 +258,28 @@ public class GobangChannel {
                     }
                 }
                 break;
-            /*逻辑看起来写重了，既然在匹配成功后才扣几分，就无需手工点击了放弃回收了
-             *case 5://放弃
-                for(ChessGame cg:chessRandomWait){
-                    if(cg.getPlayer1().equals(jsonObject.optString("player"))){
-                        chessRandomWait.remove(cg);
-                        break;
-                    }
+            case 7://和棋
+                if("request".equals(jsonObject.optString("drawType"))){
+                    sendText.put("type",7);
+                    SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
+                }else if("yes".equals(jsonObject.optString("drawType"))){
+                    sendText.put("type", 6);
+                    sendText.put("message", "【系统】：双方和棋，积分返还，游戏结束");
+                    chessPlaying.remove(player);
+                    chessPlaying.remove(anti);
+                    antiPlayer.remove(player);
+                    antiPlayer.remove(anti);
+                    final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
+                    activityMgmtService.collectGobang(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START );
+                    activityMgmtService.collectGobang(anti, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START);
+                    SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
+                    SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
+                }else if("no".equals(jsonObject.optString("drawType"))){
+                    sendText.put("type", 6);
+                    sendText.put("message", "【系统】：对手拒绝和棋，请继续下棋");
+                    SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
                 }
-                break;*/
+                break;
         }
     }
 
