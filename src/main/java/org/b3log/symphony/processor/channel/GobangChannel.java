@@ -269,6 +269,7 @@ public class GobangChannel {
                     chessPlaying.remove(anti);
                     antiPlayer.remove(player);
                     antiPlayer.remove(anti);
+                    final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
                     activityMgmtService.collectGobang(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START );
                     activityMgmtService.collectGobang(anti, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START);
                     SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());

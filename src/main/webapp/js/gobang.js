@@ -173,6 +173,7 @@ var Gobang = {
     requestDraw:function(){
         var message = {
             type:7,
+            player:$("#gobangCanvas").data('player'),
             drawType:"request"
         };
         GobangChannel.ws.send(JSON.stringify(message));
@@ -236,10 +237,10 @@ var GobangChannel = {
                     break;
                 case 7:
                     var message = {
-                        type: 7,
-                        drawType: ""
-                    }
-                    GobangChannel.ws.send(JSON.stringify(message));
+                        type:7,
+                        player:$("#gobangCanvas").data('player'),
+                        drawType:""
+                    };
                     if (confirm(Label.activityAskForDrawLabel)) {
                         message.drawType="yes";
                     }else{
