@@ -19,8 +19,8 @@ package org.b3log.symphony.event;
 
 import java.net.URL;
 import java.net.URLEncoder;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;

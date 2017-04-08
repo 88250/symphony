@@ -18,8 +18,8 @@
 package org.b3log.symphony.processor.advice;
 
 import java.util.Map;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.AfterRequestProcessAdvice;

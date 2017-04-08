@@ -35,9 +35,9 @@ import org.b3log.symphony.service.RoleQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import org.b3log.latke.ioc.inject.Inject;;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.*;

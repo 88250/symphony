@@ -29,7 +29,7 @@ import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
