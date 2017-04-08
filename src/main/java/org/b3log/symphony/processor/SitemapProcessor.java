@@ -18,7 +18,7 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;

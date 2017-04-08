@@ -17,7 +17,7 @@
  */
 package org.b3log.symphony.repository;
 
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.RepositoryException;

@@ -27,7 +27,7 @@
                 <div class="side">
                     <div class="module">
                         <div class="module-header fn-clear">
-                            <button class="red fn-right fn-none" onclick="Gobang.quit()">放弃游戏</button>
+                            <button class="red fn-right fn-none" onclick="Gobang.requestDraw()">${activityRequestDrawLabel}</button>
                             <button class="fn-right green" onclick="Gobang.initGobang('${wsScheme}://${serverHost}:${serverPort}${contextPath}')">${gameStartLabel}</button>
                         </div>
                         <div class="module-panel list">
@@ -48,7 +48,9 @@
         <script src="${staticServePath}/js/gobang${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Label.activityStartGobangTipLabel = '${activityStartGobangTipLabel}';
+            Label.activityAskForDrawLabel='${activityAskForDrawLabel}';
             Gobang.initCanvas('oMark', 'gobangCanvas');
+            document.getElementById("gobangCanvas").addEventListener("click",Gobang.moveChess, false);
         </script>
     </body>
 </html>

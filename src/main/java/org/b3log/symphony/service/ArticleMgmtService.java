@@ -47,7 +47,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;

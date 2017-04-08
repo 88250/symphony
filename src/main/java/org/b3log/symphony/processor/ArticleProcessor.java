@@ -53,7 +53,7 @@ import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

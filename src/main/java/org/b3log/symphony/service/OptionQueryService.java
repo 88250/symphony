@@ -19,7 +19,7 @@ package org.b3log.symphony.service;
 
 import java.util.List;
 import java.util.Set;
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import javax.websocket.Session;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;

@@ -169,6 +169,14 @@ var Gobang = {
                 }
             }
         }
+    },
+    requestDraw:function(){
+        var message = {
+            type:7,
+            player:$("#gobangCanvas").data('player'),
+            drawType:"request"
+        };
+        GobangChannel.ws.send(JSON.stringify(message));
     }
 };
 
@@ -226,6 +234,19 @@ var GobangChannel = {
                     break;
                 case 6:
                     $(".side ul").prepend('<li>' + resp.message + '</li>');
+                    break;
+                case 7:
+                    var message = {
+                        type:7,
+                        player:$("#gobangCanvas").data('player'),
+                        drawType:""
+                    };
+                    if (confirm(Label.activityAskForDrawLabel)) {
+                        message.drawType="yes";
+                    }else{
+                        message.drawType="no";
+                    }
+                    GobangChannel.ws.send(JSON.stringify(message));
                     break;
             }
         };

@@ -39,7 +39,7 @@ import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import java.util.*;
 
 /**

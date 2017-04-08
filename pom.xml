@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.15.6.53, Mar 20, 2017
+    Version: 2.15.6.54, Apr 9, 2017
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -21,8 +21,7 @@
 
     <!-- Properties -->
     <properties>
-        <!-- Latke 的快照版没有发布中央库，请自行编译 https://github.com/b3log/latke -->
-        <latke.version>2.3.9-SNAPSHOT</latke.version>
+        <latke.version>2.3.10</latke.version>
 
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.2.7.v20150116</jetty.version>
