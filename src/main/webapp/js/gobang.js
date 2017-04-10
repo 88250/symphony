@@ -19,12 +19,42 @@
  * @fileOverview
  *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.0.0.1, Mar 27, 2017
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.0.0.2, Apr 6, 2017
  * @since 2.1.0
  */
 var Gobang = {
     unitSize: 30,
     chessLength: 600,
+    initGobang:function(wsurl){
+        if (!confirm(Label.activityStartGobangTipLabel)) {
+            return;
+        }
+
+        $.ajax({
+            url: Label.servePath + "/activity/gobang/start",
+            type: "POST",
+            cache: false,
+            success: function (result) {
+                if (result.sc) {
+                    GobangChannel.init(wsurl + "/gobang-game-channel?player=" + Label.currentUserName);
+                    $(".side button.green").hide();
+                    $(".side button.red, #chatInput").show();
+                } else {
+                    $(".side ul").prepend('<li>' + result.msg + '</ul>');
+                }
+            }
+        });
+
+        $('#chatInput').keyup(function (event) {
+            if ($.trim($("#chatInput").val()) === '') {
+                return false;
+            }
+            if (event.keyCode === 13) {
+                Gobang.chatSend();
+            }
+        });
+    },
     drawChessBoard:function(){
         Gobang.chessCanvas.fillStyle = "rgb(255,229,143)";
         Gobang.chessCanvas.fillRect(0,0,Gobang.chessLength,Gobang.chessLength);
@@ -117,27 +147,19 @@ var Gobang = {
     },
     chatSend:function(){
         var message = {
-            type:1,
-            player:$("#player").val(),
-            message:$("#chatInput").val()
+            type: 1,
+            player: $("#gobangCanvas").data('player'),
+            message: $("#chatInput").val()
         }
-        // $("#chatArea").html($("#playerName").val() + " : "+$("#chatInput").val());
-        $("#chatArea > textarea").text($("#playerName").val()+" : "+$("#chatInput").val()+"\n"+$("#chatArea > textarea").text());
+        $(".side ul").prepend('<li>' + Label.currentUserName + ": " + $("#chatInput").val() + '</li>');
         GobangChannel.ws.send(JSON.stringify(message));
+        $("#chatInput").val('');
     },
-    // quit:function(){
-    //     //如果无人应战，可以通过放弃匹配来回收积分
-    //     var message = {
-    //         type:5,
-    //         player:$("#player").val()
-    //     }
-    //     GobangChannel.ws.send(JSON.stringify(message));
-    // },
     moveChess:function(evt){
         var mousePos = Gobang.getMousePos(document.getElementById("gobangCanvas"), evt);
-        Gobang.getChessManPoint(mousePos,$("#player").val());
+        Gobang.getChessManPoint(mousePos,$("#gobangCanvas").data('player'));
     },
-    recoverGame:function(chess){
+    drawChess:function(chess){
         for(var i=1;i<chess.length;i++){
             for(var j=1;j<chess.length;j++){
                 if(chess[i][j]==1){
@@ -147,7 +169,14 @@ var Gobang = {
                 }
             }
         }
-        // console.log(chess);
+    },
+    requestDraw:function(){
+        var message = {
+            type:7,
+            player:$("#gobangCanvas").data('player'),
+            drawType:"request"
+        };
+        GobangChannel.ws.send(JSON.stringify(message));
     }
 };
 
@@ -175,36 +204,49 @@ var GobangChannel = {
 
         GobangChannel.ws.onmessage = function (evt) {
             var resp = JSON.parse(evt.data);
+            // 1：聊天，2：下子，3：创建游戏，等待加入，4：加入游戏，游戏开始，5：断线重连，恢复棋盘，6：系统通知
             switch(resp.type){
                 case 1:
-                    $("#chatArea > textarea").text(resp.player+" : "+resp.message+"\n"+$("#chatArea > textarea").text());
+                    $(".side ul").prepend('<li>' + resp.player + ": " + resp.message + '</li>');
                     break;
                 case 2:
-                    Gobang.drawChessMan(resp.posX,resp.posY,Gobang.unitSize/2,resp.color);
+                    Gobang.drawChess(resp.chess);
+                    Gobang.drawChessMan(resp.posX,resp.posY,5,"red");
                     if(resp.result != null && resp.result != ""){
                         alert(resp.result);
                         document.getElementById("gobangCanvas").removeEventListener("click",Gobang.moveChess);
-                        // var $btn = $("#gameStart");
-                        // $btn.removeAttr("disabled").css("opacity", "1").text($btn.text().substr(0, $btn.text().length - 3));
+                        $(".side button.green").show();
+                        $(".side button.red").hide();
+                        $(".side ul").prepend('<li>GG</li>');
                     }
                     break;
                 case 3:
-                    $("#chatArea > textarea").text(resp.message+"\n"+$("#chatArea > textarea").text());
-                    $("#playerName").val(resp.playerName);
+                    $(".side ul").prepend('<li>' + resp.message + '</li>');
                     break;
                 case 4:
-                    $("#chatArea > textarea").text(resp.message+"\n"+$("#chatArea > textarea").text());
-                    // console.log(resp.player);
-                    $("#player").val(resp.player);
+                    $(".side ul").prepend('<li>' + resp.message + '</li>');
+                    $("#gobangCanvas").data('player', resp.player);
                     break;
                 case 5:
-                    $("#chatArea > textarea").text(resp.message+"\n"+$("#chatArea > textarea").text());
-                    $("#player").val(resp.player);
-                    $("#playerName").val(resp.playerName);
-                    Gobang.recoverGame(resp.chess);
+                    $(".side ul").prepend('<li>' + resp.message + '</li>');
+                    $("#gobangCanvas").data('player', resp.player);
+                    Gobang.drawChess(resp.chess);
                     break;
                 case 6:
-                    $("#chatArea > textarea").text(resp.message+"\n"+$("#chatArea > textarea").text());
+                    $(".side ul").prepend('<li>' + resp.message + '</li>');
+                    break;
+                case 7:
+                    var message = {
+                        type:7,
+                        player:$("#gobangCanvas").data('player'),
+                        drawType:""
+                    };
+                    if (confirm(Label.activityAskForDrawLabel)) {
+                        message.drawType="yes";
+                    }else{
+                        message.drawType="no";
+                    }
+                    GobangChannel.ws.send(JSON.stringify(message));
                     break;
             }
         };

@@ -45,9 +45,9 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import org.b3log.latke.ioc.inject.Inject;;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

@@ -48,7 +48,7 @@ import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.util.*;

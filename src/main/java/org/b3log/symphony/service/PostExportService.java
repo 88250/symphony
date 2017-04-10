@@ -24,7 +24,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.UUID;
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import jodd.io.ZipUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;

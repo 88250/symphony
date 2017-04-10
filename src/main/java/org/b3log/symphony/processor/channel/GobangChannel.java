@@ -29,13 +29,8 @@ import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
-import javax.websocket.CloseReason;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import org.b3log.latke.ioc.inject.Inject;;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
 import java.util.Queue;
@@ -44,13 +39,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Gobang game channel.
- *
+ * <p>
  * 状态值约定（为取值方便不做enum或者常量值了，当然日后或许重构）
- * 1：聊天，2：下子，3：创建游戏，等待加入，4：加入游戏，游戏开始，5：断线重连，恢复棋盘，6：系统通知
+ * 1：聊天，2：下子，3：创建游戏，等待加入，4：加入游戏，游戏开始，5：断线重连，恢复棋盘，6：系统通知，7：请求和棋
+ * </p>
  *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Mar 27, 2017
+ * @version 1.0.0.3, Apr 6, 2017
  * @since 2.1.0
  */
 @ServerEndpoint(value = "/gobang-game-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -103,15 +99,23 @@ public class GobangChannel {
         final String userName = user.optString(User.USER_NAME);
         boolean playing = false;
         LOGGER.debug("new connection from " + userName);
-        SESSIONS.put(userId, session);
+        if(SESSIONS.containsKey(userId)){
+            JSONObject sendText = new JSONObject();
+            sendText.put("type", 6);
+            sendText.put("message", "【系统】：您已在匹配队列中，请勿开始多个游戏，如需打开新的窗口，请先关闭原窗口再开始");
+            session.getAsyncRemote().sendText(sendText.toString());
+            return;
+        }else{
+            SESSIONS.put(userId, session);
+        }
         for (String temp : chessPlaying.keySet()) {
             ChessGame chessGame = chessPlaying.get(temp);
-            if (userId.equals(chessGame.getPlayer1())){ //玩家1返回战局
-                recoverGame(userId,userName,chessGame.getPlayer2(),chessGame);
+            if (userId.equals(chessGame.getPlayer1())) { //玩家1返回战局
+                recoverGame(userId, userName, chessGame.getPlayer2(), chessGame);
                 chessGame.setPlayState1(true);
                 playing = true;
-            }else if(userId.equals(chessGame.getPlayer2())){ //玩家2返回战局
-                recoverGame(userId,userName,chessGame.getPlayer1(),chessGame);
+            } else if (userId.equals(chessGame.getPlayer2())) { //玩家2返回战局
+                recoverGame(userId, userName, chessGame.getPlayer1(), chessGame);
                 chessGame.setPlayState2(true);
                 playing = true;
             }
@@ -119,25 +123,25 @@ public class GobangChannel {
         if (playing) {
             return;
         } else {
-            ChessGame chessGame=null;
+            ChessGame chessGame = null;
             JSONObject sendText = new JSONObject();
 
-            do{
+            do {
                 chessGame = chessRandomWait.poll();
-            }while(chessRandomWait.size() > 0 && SESSIONS.get(chessGame.getPlayer1()) == null);
+            } while (chessRandomWait.size() > 0 && SESSIONS.get(chessGame.getPlayer1()) == null);
 
-            if(chessGame==null){
-                chessGame = new ChessGame(userId,userName);
+            if (chessGame == null) {
+                chessGame = new ChessGame(userId, userName);
                 chessRandomWait.add(chessGame);
                 sendText.put("type", 3);
                 sendText.put("playerName", userName);
                 sendText.put("message", "【系统】：请等待另一名玩家加入游戏");
                 session.getAsyncRemote().sendText(sendText.toString());
-            }else if(userId.equals(chessGame.getPlayer1())){ //仍然在匹配队列中
+            } else if (userId.equals(chessGame.getPlayer1())) { //仍然在匹配队列中
                 chessRandomWait.add(chessGame);//重新入队
                 sendText.put("type", 3);
                 sendText.put("playerName", userName);
-                sendText.put(   "message", "【系统】：请等待另一名玩家加入游戏");
+                sendText.put("message", "【系统】：请等待另一名玩家加入游戏");
                 session.getAsyncRemote().sendText(sendText.toString());
             } else {
                 final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
@@ -154,17 +158,17 @@ public class GobangChannel {
                 sendText.put("type", 4);
 
                 //针对开局玩家的消息
-                sendText.put("message", "【系统】：玩家<" + userName + ">已加入，游戏开始，请落子");
+                sendText.put("message", "【系统】：玩家 [" + userName + "] 已加入，游戏开始，请落子");
                 sendText.put("player", chessGame.getPlayer1());
 
                 SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
                 //针对参与玩家的消息
-                sendText.put("message", "游戏开始~！");
+                sendText.put("message", "游戏开始~！您正在与 [" + chessGame.getName1() + "] 对战");
                 sendText.put("player", chessGame.getPlayer2());
                 session.getAsyncRemote().sendText(sendText.toString());
 
-                JSONObject r1=activityMgmtService.startGobang(chessGame.getPlayer1());
-                JSONObject r2=activityMgmtService.startGobang(chessGame.getPlayer2());
+                JSONObject r1 = activityMgmtService.startGobang(chessGame.getPlayer1());
+                JSONObject r2 = activityMgmtService.startGobang(chessGame.getPlayer2());
             }
         }
     }
@@ -211,7 +215,7 @@ public class GobangChannel {
                 int y = jsonObject.optInt("y");
                 int size = jsonObject.optInt("size");
                 if (chessGame != null) {
-                    if(chessGame.getChess()[x / size][y / size] != 0){
+                    if (chessGame.getChess()[x / size][y / size] != 0) {
                         return;
                     }
                     boolean flag = false;
@@ -238,12 +242,20 @@ public class GobangChannel {
                     sendText.put("player", player);
                     sendText.put("posX", x);
                     sendText.put("posY", y);
+                    sendText.put("chess", chessGame.getChess());
+                    sendText.put("step", chessGame.getStep());
+                    //chessPlaying是一个以玩家1为key的正在游戏的Map
+                    //按道理，两个玩家不会出现在多个棋局（卧槽？好像一个人想跟多个人下也不是不讲道理啊……whatever）
+                    //故当游戏结束时，可以按照player和anti移除两次（因为不知道哪个才是玩家1）
+                    //总有一次能正确移除，分开写只是为了好看，没有逻辑原因
                     if (flag) {
                         sendText.put("result", "You Win");
+                        chessPlaying.remove(player);
                     }
                     SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
                     if (flag) {
                         sendText.put("result", "You Lose");
+                        chessPlaying.remove(anti);
                     }
                     SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
                     if (flag) {
@@ -254,15 +266,28 @@ public class GobangChannel {
                     }
                 }
                 break;
-            /*逻辑看起来写重了，既然在匹配成功后才扣几分，就无需手工点击了放弃回收了
-             *case 5://放弃
-                for(ChessGame cg:chessRandomWait){
-                    if(cg.getPlayer1().equals(jsonObject.optString("player"))){
-                        chessRandomWait.remove(cg);
-                        break;
-                    }
+            case 7://和棋
+                if("request".equals(jsonObject.optString("drawType"))){
+                    sendText.put("type",7);
+                    SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
+                }else if("yes".equals(jsonObject.optString("drawType"))){
+                    sendText.put("type", 6);
+                    sendText.put("message", "【系统】：双方和棋，积分返还，游戏结束");
+                    chessPlaying.remove(player);
+                    chessPlaying.remove(anti);
+                    antiPlayer.remove(player);
+                    antiPlayer.remove(anti);
+                    final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
+                    activityMgmtService.collectGobang(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START );
+                    activityMgmtService.collectGobang(anti, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START);
+                    SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
+                    SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
+                }else if("no".equals(jsonObject.optString("drawType"))){
+                    sendText.put("type", 6);
+                    sendText.put("message", "【系统】：对手拒绝和棋，请继续下棋");
+                    SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
                 }
-                break;*/
+                break;
         }
     }
 
@@ -285,31 +310,47 @@ public class GobangChannel {
     private void removeSession(final Session session) {
         for (String player : SESSIONS.keySet()) {
             if (session.equals(SESSIONS.get(player))) {
-                if(chessPlaying.get(player)!=null){ //说明玩家1断开了链接
-                    ChessGame chessGame=chessPlaying.get(player);
-                    chessGame.setPlayState1(false);
-                    if(!chessGame.isPlayState2()){
-                        chessPlaying.remove(player);
-                    }else{
-                        JSONObject sendText = new JSONObject();
-                        sendText.put("type",6);
-                        sendText.put("message","【系统】：对手离开了棋局");
-                        SESSIONS.get(chessGame.getPlayer2()).getAsyncRemote().sendText(sendText.toString());
+                if (getAntiPlayer(player) == null) {
+                    for (ChessGame chessGame : chessRandomWait) {
+                        if (player.equals(chessGame.getPlayer1())) {
+                            chessRandomWait.remove(chessGame);
+                        }
                     }
-                }else if(chessPlaying.get(getAntiPlayer(player))!=null){ //说明玩家2断开了链接
-                    String player1=getAntiPlayer(player);
-                    ChessGame chessGame=chessPlaying.get(player1);
-                    chessGame.setPlayState2(false);
-                    if(!chessGame.isPlayState1()){
-                        chessPlaying.remove(player1);
-                    }else{
-                        JSONObject sendText = new JSONObject();
-                        sendText.put("type",6);
-                        sendText.put("message","【系统】：对手离开了棋局");
-                        SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
+                } else {
+                    if (chessPlaying.get(player) != null) { //说明玩家1断开了链接
+                        ChessGame chessGame = chessPlaying.get(player);
+                        chessGame.setPlayState1(false);
+                        if (!chessGame.isPlayState2()) {
+                            chessPlaying.remove(player);
+                            antiPlayer.remove(player);
+                            //由于玩家2先退出，补偿玩家1的积分
+                            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                            final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
+                            activityMgmtService.collectGobang(chessGame.getPlayer1(), Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START);
+                        } else {
+                            JSONObject sendText = new JSONObject();
+                            sendText.put("type", 6);
+                            sendText.put("message", "【系统】：对手离开了棋局");
+                            SESSIONS.get(chessGame.getPlayer2()).getAsyncRemote().sendText(sendText.toString());
+                        }
+                    } else if (chessPlaying.get(getAntiPlayer(player)) != null) { //说明玩家2断开了链接
+                        String player1 = getAntiPlayer(player);
+                        ChessGame chessGame = chessPlaying.get(player1);
+                        chessGame.setPlayState2(false);
+                        if (!chessGame.isPlayState1()) {
+                            chessPlaying.remove(player1);
+                            antiPlayer.remove(player1);
+                            //由于玩家1先退出，补偿玩家2的积分
+                            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                            final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
+                            activityMgmtService.collectGobang(chessGame.getPlayer2(), Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START);
+                        } else {
+                            JSONObject sendText = new JSONObject();
+                            sendText.put("type", 6);
+                            sendText.put("message", "【系统】：对手离开了棋局");
+                            SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
+                        }
                     }
-                }else{
-                    //未参与棋局的链接，按道理不会存在
                 }
                 SESSIONS.remove(player);
             }
@@ -328,17 +369,17 @@ public class GobangChannel {
         return anti;
     }
 
-    private void recoverGame(String userId,String userName,String antiUserId,ChessGame chessGame){
+    private void recoverGame(String userId, String userName, String antiUserId, ChessGame chessGame) {
         JSONObject sendText = new JSONObject();
         sendText.put("type", 5);
-        sendText.put("chess",chessGame.getChess());
-        sendText.put("message", "【系统】：恢复棋盘，当前该玩家"+(chessGame.getStep()==1?chessGame.getName1():chessGame.getName2())+"落子");
+        sendText.put("chess", chessGame.getChess());
+        sendText.put("message", "【系统】：恢复棋盘，当前轮到玩家 [" + (chessGame.getStep() == 1 ? chessGame.getName1() : chessGame.getName2()) + "] 落子");
         sendText.put("playerName", userName);
         sendText.put("player", userId);
         SESSIONS.get(userId).getAsyncRemote().sendText(sendText.toString());
-        sendText=new JSONObject();
-        sendText.put("type",6);
-        sendText.put("message", "【系统】：对手返回了棋局，当前该玩家"+(chessGame.getStep()==1?chessGame.getName1():chessGame.getName2())+"落子");
+        sendText = new JSONObject();
+        sendText.put("type", 6);
+        sendText.put("message", "【系统】：对手返回了棋局，当前轮到玩家 [" + (chessGame.getStep() == 1 ? chessGame.getName1() : chessGame.getName2()) + "] 落子");
         SESSIONS.get(antiUserId).getAsyncRemote().sendText(sendText.toString());
     }
 }
@@ -356,12 +397,12 @@ class ChessGame {
     private int step;//1-player1,2-player2;
     private long starttime;
 
-    public ChessGame(String player1,String name1) {
+    public ChessGame(String player1, String name1) {
         this.chessId = System.currentTimeMillis();
         this.player1 = player1;
         this.name1 = name1;
-        this.playState1=true;
-        this.playState2=false;
+        this.playState1 = true;
+        this.playState2 = false;
         this.chess = new int[20][20];
         this.starttime = System.currentTimeMillis();
         for (int i = 0; i < 20; i++) {

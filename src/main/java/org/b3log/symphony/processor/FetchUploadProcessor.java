@@ -22,7 +22,7 @@ import com.qiniu.util.Auth;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.UUID;
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import jodd.http.HttpRequest;

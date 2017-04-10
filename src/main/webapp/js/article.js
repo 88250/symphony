@@ -984,7 +984,7 @@ var Article = {
                 return;
             }
             window.open($(this).attr('src'));
-        }).on('click', 'img', function (event) {
+        }).on('click', '.content-reset img', function (event) {
             clearTimeout(fixDblclick);
             if ($(this).hasClass('emoji') || $(this).closest('.editor-panel').length === 1 ||
                 $(this).closest('.ad').length === 1) {

@@ -32,7 +32,7 @@ import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;

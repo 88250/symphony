@@ -17,11 +17,8 @@
  */
 package org.b3log.symphony.api;
 
-import java.io.IOException;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -32,6 +29,10 @@ import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Activity API processor.

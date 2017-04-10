@@ -20,27 +20,26 @@
                             <span class="ft-13 ft-gray">${activityGobangTitleLabel}</span>
                         </h2>
                         <div class="fn-content">
-                            <div class="fn-clear">
-                                <input  type="text" id="chatInput" class="fn-none"/>
-                                <button class="green fn-right" id="chatSubmit" value="Chat" onclick="Gobang.chatSend()" style="display: none;">发送消息</button>
-                                <#--<button class="green fn-right" id="quitSubmit" value="Quit" onclick="Gobang.quit()" style="display: none;">放弃游戏</button>-->
-                                <button class="green fn-right" id="gameStart" onclick="Activity.initGobang('${wsScheme}://${serverHost}:${serverPort}${contextPath}')">${gameStartLabel}</button>
-                            </div>
-                            <div id="yard">
-                                <canvas id="gobangCanvas" height="600px" width="600px"></canvas>
-                                <#--<span id="tip" class="tip-succ" style="top: 307px;">${msg}</span>-->
-                                <div id="chatArea" style="text-align: center">
-                                    <textarea rows="10" cols="100"></textarea>
-                                </div>
-                            </div>
-
-                            <input  type="hidden" id="player"/>
-                            <input  type="hidden" id="playerName"/>
+                            <canvas id="gobangCanvas" height="600px" width="600px"></canvas>
                         </div>
                     </div>
                 </div>
                 <div class="side">
-                    <#include "../side.ftl">
+                    <div class="module">
+                        <div class="module-header fn-clear">
+                            <button class="red fn-right fn-none" onclick="Gobang.requestDraw()">${activityRequestDrawLabel}</button>
+                            <button class="fn-right green" onclick="Gobang.initGobang('${wsScheme}://${serverHost}:${serverPort}${contextPath}')">${gameStartLabel}</button>
+                        </div>
+                        <div class="module-panel list">
+                            <div class="form fn-content">
+                                <input type="text" placeholder="回车发送消息" id="chatInput" class="fn-none"/>
+                            </div>
+                            <ul>
+                                <li class="ft-center">Welcome</li>
+                            </ul>
+                            <br/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,14 +48,9 @@
         <script src="${staticServePath}/js/gobang${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Label.activityStartGobangTipLabel = '${activityStartGobangTipLabel}';
+            Label.activityAskForDrawLabel='${activityAskForDrawLabel}';
             Gobang.initCanvas('oMark', 'gobangCanvas');
             document.getElementById("gobangCanvas").addEventListener("click",Gobang.moveChess, false);
-//            window.onunload=function(){
-//                alert("bye");
-//            }
-//            function closing(){
-//                alert('hello');
-//            }
         </script>
     </body>
 </html>

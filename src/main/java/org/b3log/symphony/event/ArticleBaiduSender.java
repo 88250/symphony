@@ -18,8 +18,8 @@
 package org.b3log.symphony.event;
 
 import java.net.URL;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;

@@ -40,7 +40,7 @@ import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
