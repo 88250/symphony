@@ -14,7 +14,12 @@
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css?${staticResourceVersion}">
         <link rel="canonical" href="${servePath}${article.articlePermalink}?p=${paginationCurrentPageNum}&m=${userCommentViewMode}">
-
+        <#if articlePrevious??>
+            <link rel="prev" title="${articlePrevious.articleTitleEmojUnicode}" href="${servePath}${articlePrevious.articlePermalink}">
+        </#if>
+        <#if articleNext??>
+            <link rel="next" title="${articleNext.articleTitleEmojUnicode}" href="${servePath}${articleNext.articlePermalink}">
+        </#if>
         <!-- Open Graph -->
         <meta property="og:locale" content="zh_CN" />
         <meta property="og:type" content="article" />
