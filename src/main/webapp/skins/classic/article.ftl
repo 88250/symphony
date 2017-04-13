@@ -329,7 +329,7 @@
             <input type="text" class="article-clipboard"
                    value="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"/>
         </div>
-        <div class="nav article-header">
+        <div class="article-header">
             <h1>
                 ${logoIcon}
             </h1>

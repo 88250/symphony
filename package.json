@@ -33,6 +33,7 @@
     "gulp-uglify": "^2.0.0"
   },
   "dependencies": {
+    "gulp": "^3.9.1",
     "marked": "^0.3.6"
   }
 }
