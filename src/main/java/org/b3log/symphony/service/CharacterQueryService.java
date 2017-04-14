@@ -20,7 +20,7 @@ package org.b3log.symphony.service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;

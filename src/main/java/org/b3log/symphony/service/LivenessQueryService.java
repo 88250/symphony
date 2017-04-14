@@ -18,7 +18,7 @@
 package org.b3log.symphony.service;
 
 import java.util.Date;
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.logging.Level;

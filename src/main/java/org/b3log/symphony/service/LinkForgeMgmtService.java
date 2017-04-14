@@ -43,7 +43,7 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;;
 import java.util.List;
 
 /**

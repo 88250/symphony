@@ -1123,6 +1123,11 @@
                 'right': '0'
             });
 
+            $(editor.element).next().css({
+                'background-color': '#fff',
+                'border-bottom': '1px solid #eee'
+            });
+
             cm.state.fullScreenRestore = {scrollTop: window.pageYOffset, scrollLeft: window.pageXOffset,
                                           width: wrap.style.width, height: wrap.style.height};
             wrap.style.height = ($(window).height() - $('.editor-toolbar').outerHeight()) + 'px';
@@ -1146,6 +1151,7 @@
         }
 
         editor.toolbar.fullscreen.className = 'icon-fullscreen';
+        $(editor.element).next().removeAttr('style');
         $(editor.element.parentElement).css({
             'position': 'inherit'
         });
