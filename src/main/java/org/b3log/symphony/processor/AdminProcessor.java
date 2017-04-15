@@ -51,7 +51,7 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.b3log.latke.ioc.inject.Inject;;
+import org.b3log.latke.ioc.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -87,6 +87,7 @@ import java.util.*;
  * <li>Show a domain (/admin/domain/{domainId}, GET</li>
  * <li>Updates a domain (/admin/domain/{domainId}), POST</li>
  * <li>Shows tags (/admin/tags), GET</li>
+ * <li>Removes unused tags (/admin/tags/remove-unused), POST</li>
  * <li>Show a tag (/admin/tag/{tagId}), GET</li>
  * <li>Shows add tag (/admin/add-tag), GET</li>
  * <li>Adds a tag (/admin/add-tag), POST</li>
@@ -107,7 +108,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.25.6.23, Jan 21, 2017
+ * @version 2.26.6.23, Apr 15, 2017
  * @since 1.1.0
  */
 @RequestProcessor
@@ -261,6 +262,21 @@ public class AdminProcessor {
     private DataModelService dataModelService;
 
     /**
+     * Removes unused tags.
+     *
+     * @param context the specified context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/tags/remove-unused", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void removeUnusedTags(final HTTPRequestContext context) throws Exception {
+        context.renderJSON(true);
+
+        tagMgmtService.removeUnusedTags();
+    }
+
+    /**
      * Adds an role.
      *
      * @param context  the specified context
@@ -347,12 +363,7 @@ public class AdminProcessor {
             String category = permission.optString(Permission.PERMISSION_CATEGORY);
             category = langPropsService.get(category + "PermissionLabel");
 
-            List<JSONObject> categoryPermissions = categories.get(category);
-            if (null == categoryPermissions) {
-                categoryPermissions = new ArrayList<>();
-                categories.put(category, categoryPermissions);
-            }
-
+            final List<JSONObject> categoryPermissions = categories.computeIfAbsent(category, k -> new ArrayList<>());
             categoryPermissions.add(permission);
         }
 
@@ -380,7 +391,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject result = roleQueryService.getRoles(1, Integer.MAX_VALUE, 10);
-        final List<JSONObject> roles = (List) result.opt(Role.ROLES);
+        final List<JSONObject> roles = (List<JSONObject>) result.opt(Role.ROLES);
 
         dataModel.put(Role.ROLES, roles);
 
@@ -622,6 +633,7 @@ public class AdminProcessor {
         try {
             quantity = Integer.valueOf(quantityStr);
         } catch (final NumberFormatException e) {
+            // ignore
         }
 
         String memo = request.getParameter("memo");
@@ -1155,7 +1167,7 @@ public class AdminProcessor {
         dataModel.put(User.USER, user);
 
         final JSONObject result = roleQueryService.getRoles(1, Integer.MAX_VALUE, 10);
-        final List<JSONObject> roles = (List) result.opt(Role.ROLES);
+        final List<JSONObject> roles = (List<JSONObject>) result.opt(Role.ROLES);
         dataModel.put(Role.ROLES, roles);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -1274,7 +1286,7 @@ public class AdminProcessor {
         dataModel.put(User.USER, user);
 
         final JSONObject result = roleQueryService.getRoles(1, Integer.MAX_VALUE, 10);
-        final List<JSONObject> roles = (List) result.opt(Role.ROLES);
+        final List<JSONObject> roles = (List<JSONObject>) result.opt(Role.ROLES);
         dataModel.put(Role.ROLES, roles);
 
         final Enumeration<String> parameterNames = request.getParameterNames();
@@ -1311,7 +1323,7 @@ public class AdminProcessor {
 
                     break;
                 case User.USER_PASSWORD:
-                    final String oldPwd = (String) user.getString(name);
+                    final String oldPwd = user.getString(name);
                     if (!oldPwd.equals(value) && !Strings.isEmptyOrNull(value)) {
                         user.put(name, MD5.hash(value));
                     }
@@ -2361,7 +2373,7 @@ public class AdminProcessor {
      */
     @RequestProcessing(value = "/admin/domain/{domainId}/add-tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
-    @After(adviceClass ={PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void addDomainTag(final HTTPRequestContext context,
                              final HttpServletRequest request, final HttpServletResponse response, final String domainId)
             throws Exception {
