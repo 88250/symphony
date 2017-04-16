@@ -23,6 +23,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -48,7 +49,6 @@ import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.29.52, Apr 5, 2017
+ * @version 2.27.29.53, Apr 13, 2017
  * @since 0.2.0
  */
 @Service
@@ -2244,7 +2244,7 @@ public class ArticleQueryService {
             content = StringUtils.replaceOnce(content, imgSrc, imgSrc + "?imageView2/2/w/768/format/jpg/interlace/0/q");
         }
 
-       article.put(Article.ARTICLE_CONTENT, content);
+        article.put(Article.ARTICLE_CONTENT, content);
     }
 
     /**
@@ -2782,24 +2782,20 @@ public class ArticleQueryService {
     private String getArticleToC(final JSONObject article) {
         Stopwatchs.start("ToC");
 
+        if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
+            return "";
+        }
+
         try {
-            String content = article.optString(Article.ARTICLE_CONTENT);
-
-            if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
-                return "";
-            }
-
+            final String content = article.optString(Article.ARTICLE_CONTENT);
             final Document doc = Jsoup.parse(content, StringUtils.EMPTY, Parser.htmlParser());
             doc.outputSettings().prettyPrint(false);
-
-            final StringBuilder listBuilder = new StringBuilder();
-
             final Elements hs = doc.select("h1, h2, h3, h4, h5");
-
             if (hs.size() < 3) {
                 return "";
             }
 
+            final StringBuilder listBuilder = new StringBuilder();
             listBuilder.append("<ul class=\"article-toc\">");
             for (int i = 0; i < hs.size(); i++) {
                 final Element element = hs.get(i);
@@ -2808,7 +2804,6 @@ public class ArticleQueryService {
                 final String id = "toc_" + tagName + "_" + i;
 
                 element.before("<span id='" + id + "'></span>");
-
                 listBuilder.append("<li class='toc-").append(tagName).append("'><a data-id=\"").append(id).append("\" href=\"javascript:Comment._bgFade($('#").append(id).append("'))\">").append(text).append(
                         "</a></li>");
             }
