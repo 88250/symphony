@@ -135,23 +135,32 @@ public class TagMgmtService {
                 final String tagId = tag.optString(Keys.OBJECT_ID);
 
                 if (0 == tag.optInt(Tag.TAG_REFERENCE_CNT) // article ref cnt
-                        && 0 == userTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
-                        .optJSONArray(Keys.RESULTS).length() // userTagRefCnt
                         && 0 == domainTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
                         .optJSONArray(Keys.RESULTS).length() // domainTagRefCnt
                         && 0 == tagUserLinkRepository.countTagLink(tagId) // tagUserLinkRefCnt
                         ) {
-                    tagRepository.remove(tagId);
-                    removedCnt++;
+                    final JSONArray userTagRels = userTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
+                            .optJSONArray(Keys.RESULTS);
+                    if (1 == userTagRels.length()
+                            && Tag.TAG_TYPE_C_CREATOR == userTagRels.optJSONObject(0).optInt(Common.TYPE)) {
+                        // Just the tag's creator but not use it now
+                        tagRepository.remove(tagId);
+                        removedCnt++;
 
-                    LOGGER.info("Removed a unused tag [title=" + tag.optString(Tag.TAG_TITLE) + "]");
+                        LOGGER.info("Removed a unused tag [title=" + tag.optString(Tag.TAG_TITLE) + "]");
+                    }
                 }
             }
+
+            final JSONObject tagCntOption = optionRepository.get(Option.ID_C_STATISTIC_TAG_COUNT);
+            final int tagCnt = tagCntOption.optInt(Option.OPTION_VALUE);
+            tagCntOption.put(Option.OPTION_VALUE, tagCnt - removedCnt);
+            optionRepository.update(Option.ID_C_STATISTIC_TAG_COUNT, tagCntOption);
+
+            LOGGER.info("Removed [" + removedCnt + "] unused tags");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes unused tags failed", e);
         }
-
-        LOGGER.info("Removed [" + removedCnt + "] unused tags");
     }
 
     /**
