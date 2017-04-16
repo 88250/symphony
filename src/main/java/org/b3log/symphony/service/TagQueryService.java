@@ -20,6 +20,7 @@ package org.b3log.symphony.service;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -37,23 +38,22 @@ import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.*;
-import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+
+;
 
 /**
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.5.12, Mar 4, 2017
+ * @version 1.8.6.12, Apr 17, 2017
  * @since 0.2.0
  */
 @Service
@@ -609,12 +609,12 @@ public class TagQueryService {
                 }
             }
 
-            final Map<String, JSONObject> tags = tagRepository.get(tagIds);
-            final Collection<JSONObject> values = tags.values();
-            ret.addAll(values);
-
-            for (final JSONObject tag : ret) {
-                Tag.fillDescription(tag);
+            for (final String tId : tagIds) {
+                final JSONObject tag = tagRepository.get(tId);
+                if (null != tag) {
+                    Tag.fillDescription(tag);
+                    ret.add(tag);
+                }
             }
 
             return ret;
