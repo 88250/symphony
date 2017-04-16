@@ -23,6 +23,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -47,7 +48,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.16.32.40, Mar 26, 2017
+ * @version 2.16.32.41, Apr 17, 2017
  * @since 0.2.0
  */
 @Service
@@ -66,91 +66,109 @@ public class ArticleMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleMgmtService.class);
+
     /**
      * Tag max count.
      */
     private static final int TAG_MAX_CNT = 4;
+
     /**
      * Comment repository.
      */
     @Inject
     private CommentRepository commentRepository;
+
     /**
      * Article repository.
      */
     @Inject
     private ArticleRepository articleRepository;
+
     /**
      * Tag repository.
      */
     @Inject
     private TagRepository tagRepository;
+
     /**
      * Tag-Article repository.
      */
     @Inject
     private TagArticleRepository tagArticleRepository;
+
     /**
      * User repository.
      */
     @Inject
     private UserRepository userRepository;
+
     /**
      * User-Tag repository.
      */
     @Inject
     private UserTagRepository userTagRepository;
+
     /**
      * Option repository.
      */
     @Inject
     private OptionRepository optionRepository;
+
     /**
      * Notification repository.
      */
     @Inject
     private NotificationRepository notificationRepository;
+
     /**
      * Revision repository.
      */
     @Inject
     private RevisionRepository revisionRepository;
+
     /**
      * Tag management service.
      */
     @Inject
     private TagMgmtService tagMgmtService;
+
     /**
      * Event manager.
      */
     @Inject
     private EventManager eventManager;
+
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
+
     /**
      * Pointtransfer management service.
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
+
     /**
      * Reward management service.
      */
     @Inject
     private RewardMgmtService rewardMgmtService;
+
     /**
      * Reward query service.
      */
     @Inject
     private RewardQueryService rewardQueryService;
+
     /**
      * Follow query service.
      */
     @Inject
     private FollowQueryService followQueryService;
+
     /**
      * Tag query service.
      */
@@ -161,11 +179,13 @@ public class ArticleMgmtService {
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
+
     /**
      * Liveness management service.
      */
     @Inject
     private LivenessMgmtService livenessMgmtService;
+
     /**
      * Search management service.
      */
@@ -295,7 +315,6 @@ public class ArticleMgmtService {
             }
 
             tagArticleRepository.removeByArticleId(articleId);
-
             notificationRepository.removeByDataId(articleId);
 
             final Query query = new Query().setFilter(new PropertyFilter(
@@ -310,9 +329,7 @@ public class ArticleMgmtService {
                 final JSONObject commenter = userRepository.get(commentAuthorId);
                 commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) - 1);
                 userRepository.update(commentAuthorId, commenter);
-
                 commentRepository.remove(commentId);
-
                 notificationRepository.removeByDataId(commentId);
             }
 
@@ -351,7 +368,6 @@ public class ArticleMgmtService {
 
                     final int viewCnt = article.optInt(Article.ARTICLE_VIEW_CNT);
                     article.put(Article.ARTICLE_VIEW_CNT, viewCnt + 1);
-
                     article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
                     articleRepository.update(articleId, article);
