@@ -17,13 +17,8 @@
  */
 package org.b3log.symphony.service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -44,11 +39,16 @@ import org.b3log.symphony.repository.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Tag management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.5, Apr 15, 2017
+ * @version 1.3.1.6, Apr 16, 2017
  * @since 1.1.0
  */
 @Service
@@ -134,14 +134,13 @@ public class TagMgmtService {
                 final JSONObject tag = tags.optJSONObject(i);
                 final String tagId = tag.optString(Keys.OBJECT_ID);
 
-                final int articleRefCnt = tag.optInt(Tag.TAG_REFERENCE_CNT);
-                final int userTagRefCnt = userTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
-                        .optJSONArray(Keys.RESULTS).length();
-                final int domainTagRefCnt = domainTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
-                        .optJSONArray(Keys.RESULTS).length();
-                final int tagUserLinkRefCnt = tagUserLinkRepository.countTagLink(tagId);
-
-                if (0 == articleRefCnt && 0 == userTagRefCnt && 0 == domainTagRefCnt && 0 == tagUserLinkRefCnt) {
+                if (0 == tag.optInt(Tag.TAG_REFERENCE_CNT) // article ref cnt
+                        && 0 == userTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
+                        .optJSONArray(Keys.RESULTS).length() // userTagRefCnt
+                        && 0 == domainTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
+                        .optJSONArray(Keys.RESULTS).length() // domainTagRefCnt
+                        && 0 == tagUserLinkRepository.countTagLink(tagId) // tagUserLinkRefCnt
+                        ) {
                     tagRepository.remove(tagId);
                     removedCnt++;
 
@@ -151,7 +150,8 @@ public class TagMgmtService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes unused tags failed", e);
         }
-        LOGGER.info("Completed remove unused tags, [" + removedCnt + "] has been removed");
+
+        LOGGER.info("Removed [" + removedCnt + "] unused tags");
     }
 
     /**
