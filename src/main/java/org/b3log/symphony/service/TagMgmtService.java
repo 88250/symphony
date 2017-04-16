@@ -21,13 +21,16 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import org.b3log.latke.ioc.inject.Inject;;
+
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
@@ -37,18 +40,15 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.repository.OptionRepository;
-import org.b3log.symphony.repository.TagRepository;
-import org.b3log.symphony.repository.TagTagRepository;
-import org.b3log.symphony.repository.UserRepository;
-import org.b3log.symphony.repository.UserTagRepository;
+import org.b3log.symphony.repository.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Tag management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.5, Nov 24, 2016
+ * @version 1.3.1.5, Apr 15, 2017
  * @since 1.1.0
  */
 @Service
@@ -57,7 +57,7 @@ public class TagMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagMgmtService.class);
 
     /**
      * Option repository.
@@ -90,6 +90,18 @@ public class TagMgmtService {
     private UserTagRepository userTagRepository;
 
     /**
+     * Domain-Tag repository.
+     */
+    @Inject
+    private DomainTagRepository domainTagRepository;
+
+    /**
+     * Tag-User-Link repository.
+     */
+    @Inject
+    private TagUserLinkRepository tagUserLinkRepository;
+
+    /**
      * Language service.
      */
     @Inject
@@ -108,11 +120,47 @@ public class TagMgmtService {
     private TagCache tagCache;
 
     /**
+     * Removes unused tags.
+     */
+    @Transactional
+    public synchronized void removeUnusedTags() {
+        LOGGER.info("Starting remove unused tags....");
+
+        int removedCnt = 0;
+        try {
+            final JSONArray tags = tagRepository.get(new Query()).optJSONArray(Keys.RESULTS);
+
+            for (int i = 0; i < tags.length(); i++) {
+                final JSONObject tag = tags.optJSONObject(i);
+                final String tagId = tag.optString(Keys.OBJECT_ID);
+
+                final int articleRefCnt = tag.optInt(Tag.TAG_REFERENCE_CNT);
+                final int userTagRefCnt = userTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
+                        .optJSONArray(Keys.RESULTS).length();
+                final int domainTagRefCnt = domainTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
+                        .optJSONArray(Keys.RESULTS).length();
+                final int tagUserLinkRefCnt = tagUserLinkRepository.countTagLink(tagId);
+
+                if (0 == articleRefCnt && 0 == userTagRefCnt && 0 == domainTagRefCnt && 0 == tagUserLinkRefCnt) {
+                    tagRepository.remove(tagId);
+                    removedCnt++;
+
+                    LOGGER.info("Removed a unused tag [title=" + tag.optString(Tag.TAG_TITLE) + "]");
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Removes unused tags failed", e);
+        }
+        LOGGER.info("Completed remove unused tags, [" + removedCnt + "] has been removed");
+    }
+
+    /**
      * Adds a tag.
-     *
+     * <p>
      * <b>Note</b>: This method just for admin console.
+     * </p>
      *
-     * @param userId the specified user id
+     * @param userId   the specified user id
      * @param tagTitle the specified tag title
      * @return tag id
      * @throws ServiceException service exception
@@ -190,11 +238,12 @@ public class TagMgmtService {
 
     /**
      * Updates the specified tag by the given tag id.
-     *
+     * <p>
      * <b>Note</b>: This method just for admin console.
+     * </p>
      *
      * @param tagId the given tag id
-     * @param tag the specified tag
+     * @param tag   the specified tag
      * @throws ServiceException service exception
      */
     public void updateTag(final String tagId, final JSONObject tag) throws ServiceException {
@@ -226,7 +275,7 @@ public class TagMgmtService {
      * @param tagRelation the specified tag-tag relation
      * @throws ServiceException service exception
      */
-    public void addTagRelation(final JSONObject tagRelation) throws ServiceException {
+    void addTagRelation(final JSONObject tagRelation) throws ServiceException {
         final Transaction transaction = tagTagRepository.beginTransaction();
 
         try {
@@ -247,10 +296,10 @@ public class TagMgmtService {
      * Updates the specified tag-tag relation by the given tag relation id.
      *
      * @param tagRelationId the given tag relation id
-     * @param tagRelation the specified tag-tag relation
+     * @param tagRelation   the specified tag-tag relation
      * @throws ServiceException service exception
      */
-    public void updateTagRelation(final String tagRelationId, final JSONObject tagRelation) throws ServiceException {
+    void updateTagRelation(final String tagRelationId, final JSONObject tagRelation) throws ServiceException {
         final Transaction transaction = tagTagRepository.beginTransaction();
 
         try {

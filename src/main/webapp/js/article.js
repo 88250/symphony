@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.33.50.34, Apr 6, 2017
+ * @version 1.34.50.34, Apr 13, 2017
  */
 
 /**
@@ -49,7 +49,7 @@ var Comment = {
             return false;
         }
 
-        $(window).scrollTop($obj[0].offsetTop - 48);
+        $(window).scrollTop($obj[0].offsetTop - 56);
 
         if ($obj.attr('id') === 'comments') {
             return false;
@@ -1042,51 +1042,57 @@ var Article = {
             var currentScrollTop = $(window).scrollTop();
 
             // share
-            if (currentScrollTop > 48 && currentScrollTop < $('.comments').offset().top + $('.comments').height()) {
+            if (currentScrollTop > 56 && currentScrollTop < $('.comments').offset().top + $('.comments').height()) {
                 $('.share').show();
             } else {
                 $('.share').hide();
             }
-        });
 
-        $(window).on('mousewheel DOMMouseScroll', function(e){
-            var currentScrollTop = $(window).scrollTop();
             if (currentScrollTop < 150) {
                 $('.article-header').css('top', '-56px');
-                return;
+            } else {
+                $('.article-header').css('top', '0');
             }
-
-            var eo = e.originalEvent;
-            var xy = eo.wheelDelta || -eo.detail; //shortest possible code
-            var y = eo.wheelDeltaY || (eo.axis === 2 ? xy : 0); // () necessary!
-
-            if (y < 0 && currentScrollTop >= 150) {
-                $('.article-header').css('top', 0);
-            } else if (y > 0) {
-                $('.article-header').css('top', '-56px');
-            }
-
         });
+
+//        $(window).on('mousewheel DOMMouseScroll', function(e){
+//            var currentScrollTop = $(window).scrollTop();
+//            if (currentScrollTop < 150) {
+//                $('.article-header').css('top', '-56px');
+//                return;
+//            }
+//
+//            var eo = e.originalEvent;
+//            var xy = eo.wheelDelta || -eo.detail; //shortest possible code
+//            var y = eo.wheelDeltaY || (eo.axis === 2 ? xy : 0); // () necessary!
+//
+//            if (y < 0 && currentScrollTop >= 150) {
+//                $('.article-header').css('top', 0);
+//            } else if (y > 0) {
+//                $('.article-header').css('top', '-56px');
+//            }
+//
+//        });
 
         // nav
-        window.addEventListener('mousewheel', function(event) {
-            var currentScrollTop = $(window).scrollTop();
-            if (currentScrollTop < 150) {
-                $('.article-header').css('top', '-56px');
-                return false;
-            }
-
-            if (event.deltaY > 0 && currentScrollTop >= 150) {
-                $('.article-header').css('top', 0);
-            } else if (event.deltaY < -5) {
-                $('.article-header').css('top', '-56px');
-            }
-        }, false);
+//        window.addEventListener('mousewheel', function(event) {
+//            var currentScrollTop = $(window).scrollTop();
+//            if (currentScrollTop < 150) {
+//                $('.article-header').css('top', '-56px');
+//                return false;
+//            }
+//
+//            if (event.deltaY > 0 && currentScrollTop >= 150) {
+//                $('.article-header').css('top', 0);
+//            } else if (event.deltaY < -5) {
+//                $('.article-header').css('top', '-56px');
+//            }
+//        }, false);
 
         $(window).resize(function () {
             var shareL = $('.article-content')[0].offsetLeft / 2 - 15;
             $('.share').css('left',  (shareL < 0 ? 0 : shareL) + 'px');
-            $('#articleToC > .module-panel').height($(window).height() - 48);
+            $('#articleToC > .module-panel').height($(window).height() - 56);
 
             if ($(window).width() < 1024) {
                 if ($('#articleToC').length === 0) {
@@ -1504,7 +1510,7 @@ var Article = {
             articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
         $('.article-body .wrapper, .main .wrapper').css('margin-right', articleMR + 'px');
 
-        $('#articleToC > .module-panel').height($(window).height() - 48);
+        $('#articleToC > .module-panel').height($(window).height() - 56);
 
         // 样式
         var $articleToc = $('#articleToC'),
