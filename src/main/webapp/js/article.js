@@ -49,7 +49,7 @@ var Comment = {
             return false;
         }
 
-        $(window).scrollTop($obj[0].offsetTop - 56);
+        $(window).scrollTop($obj[0].offsetTop - 48);
 
         if ($obj.attr('id') === 'comments') {
             return false;
@@ -968,6 +968,19 @@ var Article = {
         });
     },
     /**
+     * @description 大图预览等待获取大小后重制 translate
+     */
+    previewImgAfterLoading : function () {
+        $('.img-preview img').css('transform', 'translate3d(' +
+            (Math.max(0, $(window).width() - $('.img-preview img').width()) / 2) + 'px, ' +
+            (Math.max(0, $(window).height() - $('.img-preview img').height()) / 2) + 'px, 0)');
+
+        // fixed chrome render transform bug
+        setTimeout(function () {
+            $('.img-preview').width($(window).width());
+        }, 300);
+    },
+    /**
      * @description 初始化文章
      */
     init: function () {
@@ -988,7 +1001,7 @@ var Article = {
             clearTimeout(fixDblclick);
             if ($(this).hasClass('emoji') || $(this).closest('.editor-panel').length === 1 ||
                 $(this).closest('.ad').length === 1) {
-                returngulp;
+                return;
             }
             var $it = $(this),
                 it = this;
@@ -1002,21 +1015,12 @@ var Article = {
 
                 $('body').append('<div class="img-preview" onclick="$(this).remove()"><img style="transform: translate3d(' +
                 Math.max(0, left) + 'px, ' + Math.max(0, (top - $(window).scrollTop())) + 'px, 0)" src="' +
-                ($it.attr('src').split('?imageView2')[0]) + '"></div>');
+                ($it.attr('src').split('?imageView2')[0]) + '" onload="Article.previewImgAfterLoading()"></div>');
 
                 $('.img-preview').css({
                     'background-color': '#fff',
                     'position': 'fixed'
                 });
-
-                $('.img-preview img').css('transform', 'translate3d(' +
-                 (Math.max(0, $(window).width() - it.naturalWidth) / 2) + 'px, ' +
-                 (Math.max(0, $(window).height() - it.naturalHeight) / 2) + 'px, 0)');
-
-                // fixed chrome render transform bug
-                setTimeout(function () {
-                    $('.img-preview').width($(window).width());
-                }, 300);
             }, 100);
         });
 
@@ -1042,7 +1046,7 @@ var Article = {
             var currentScrollTop = $(window).scrollTop();
 
             // share
-            if (currentScrollTop > 56 && currentScrollTop < $('.comments').offset().top + $('.comments').height()) {
+            if (currentScrollTop > 48 && currentScrollTop < $('.comments').offset().top + $('.comments').height()) {
                 $('.share').show();
             } else {
                 $('.share').hide();
@@ -1060,7 +1064,7 @@ var Article = {
 //        $(window).on('mousewheel DOMMouseScroll', function(e){
 //            var currentScrollTop = $(window).scrollTop();
 //            if (currentScrollTop < 150) {
-//                $('.article-header').css('top', '-56px');
+//                $('.article-header').css('top', '-48px');
 //                return;
 //            }
 //
@@ -1071,7 +1075,7 @@ var Article = {
 //            if (y < 0 && currentScrollTop >= 150) {
 //                $('.article-header').css('top', 0);
 //            } else if (y > 0) {
-//                $('.article-header').css('top', '-56px');
+//                $('.article-header').css('top', '-48px');
 //            }
 //
 //        });
@@ -1080,21 +1084,21 @@ var Article = {
 //        window.addEventListener('mousewheel', function(event) {
 //            var currentScrollTop = $(window).scrollTop();
 //            if (currentScrollTop < 150) {
-//                $('.article-header').css('top', '-56px');
+//                $('.article-header').css('top', '-48px');
 //                return false;
 //            }
 //
 //            if (event.deltaY > 0 && currentScrollTop >= 150) {
 //                $('.article-header').css('top', 0);
 //            } else if (event.deltaY < -5) {
-//                $('.article-header').css('top', '-56px');
+//                $('.article-header').css('top', '-48px');
 //            }
 //        }, false);
 
         $(window).resize(function () {
             var shareL = $('.article-content')[0].offsetLeft / 2 - 15;
             $('.share').css('left',  (shareL < 0 ? 0 : shareL) + 'px');
-            $('#articleToC > .module-panel').height($(window).height() - 56);
+            $('#articleToC > .module-panel').height($(window).height() - 48);
 
             if ($(window).width() < 1024) {
                 if ($('#articleToC').length === 0) {
@@ -1512,7 +1516,7 @@ var Article = {
             articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
         $('.article-body .wrapper, .main .wrapper').css('margin-right', articleMR + 'px');
 
-        $('#articleToC > .module-panel').height($(window).height() - 56);
+        $('#articleToC > .module-panel').height($(window).height() - 48);
 
         // 样式
         var $articleToc = $('#articleToC'),
