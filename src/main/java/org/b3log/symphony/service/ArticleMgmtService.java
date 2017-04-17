@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.16.32.41, Apr 17, 2017
+ * @version 2.16.33.41, Apr 17, 2017
  * @since 0.2.0
  */
 @Service
@@ -1405,6 +1405,7 @@ public class ArticleMgmtService {
 
         if (0 != tagIdsDropped.length) {
             removeTagArticleRelations(oldArticleId, tagIdsDropped);
+            removeUserTagRelations(oldArticle.optString(Article.ARTICLE_AUTHOR_ID), Tag.TAG_TYPE_C_ARTICLE, tagIdsDropped);
         }
 
         tagStrings = new String[tagsNeedToAdd.size()];
@@ -1446,6 +1447,20 @@ public class ArticleMgmtService {
                 relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
                 tagArticleRepository.remove(relationId);
             }
+        }
+    }
+
+    /**
+     * Removes User-Tag relations by the specified user id, type and tag ids of the relations to be removed.
+     *
+     * @param userId the specified article id
+     * @param type   the specified type
+     * @param tagIds the specified tag ids of the relations to be removed
+     * @throws RepositoryException repository exception
+     */
+    private void removeUserTagRelations(final String userId, final int type, final String... tagIds) throws RepositoryException {
+        for (final String tagId : tagIds) {
+            userTagRepository.removeByUserIdAndTagId(userId, tagId, type);
         }
     }
 
@@ -1533,6 +1548,7 @@ public class ArticleMgmtService {
 
                 userTagType = Tag.TAG_TYPE_C_ARTICLE;
             }
+
             // Tag-Article relation
             final JSONObject tagArticleRelation = new JSONObject();
             tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID, tagId);
@@ -1541,15 +1557,21 @@ public class ArticleMgmtService {
             tagArticleRelation.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
             tagArticleRelation.put(Article.REDDIT_SCORE, article.optDouble(Article.REDDIT_SCORE, 0D));
             tagArticleRelation.put(Article.ARTICLE_PERFECT, article.optInt(Article.ARTICLE_PERFECT));
-
             tagArticleRepository.add(tagArticleRelation);
+
+            final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+
             // User-Tag relation
+            if (Tag.TAG_TYPE_C_ARTICLE == userTagType) {
+                userTagRepository.removeByUserIdAndTagId(authorId, tagId, Tag.TAG_TYPE_C_ARTICLE);
+            }
+
             final JSONObject userTagRelation = new JSONObject();
             userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, tagId);
             if (Article.ARTICLE_ANONYMOUS_C_ANONYMOUS == article.optInt(Article.ARTICLE_ANONYMOUS)) {
                 userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, "0");
             } else {
-                userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, article.optString(Article.ARTICLE_AUTHOR_ID));
+                userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, authorId);
             }
             userTagRelation.put(Common.TYPE, userTagType);
             userTagRepository.add(userTagRelation);
