@@ -20,6 +20,7 @@ package org.b3log.symphony.processor.channel;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
@@ -29,13 +30,19 @@ import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import org.b3log.latke.ioc.inject.Inject;;
-import javax.websocket.*;
+import javax.websocket.CloseReason;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+;
 
 /**
  * Gobang game channel.
@@ -261,8 +268,8 @@ public class GobangChannel {
                     if (flag) {
                         final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
                         activityMgmtService.collectGobang(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START * 2);
-
-                        chessPlaying.remove(chessGame);
+                        SESSIONS.remove(player);
+                        SESSIONS.remove(anti);
                     }
                 }
                 break;
@@ -282,6 +289,8 @@ public class GobangChannel {
                     activityMgmtService.collectGobang(anti, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START);
                     SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
                     SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
+                    SESSIONS.remove(player);
+                    SESSIONS.remove(anti);
                 }else if("no".equals(jsonObject.optString("drawType"))){
                     sendText.put("type", 6);
                     sendText.put("message", "【系统】：对手拒绝和棋，请继续下棋");
