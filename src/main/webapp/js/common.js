@@ -1159,12 +1159,6 @@ var Util = {
             }
 
             Util.setUnreadNotificationCount();
-
-            // 定时获取并设置未读提醒计数
-            // NOTE: 有了 userChannel，停了观察一下
-//            setInterval(function () {
-//                Util.setUnreadNotificationCount();
-//            }, 1000 * 60 * 10);
         }
 
         this._initCommonHotKey();
