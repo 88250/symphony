@@ -13,7 +13,7 @@
     padding: 4px 0; /* Vertical padding around content */
 }
 .CodeMirror-lines pre {
-    padding: 0 4px; /* Horizontal padding of content */
+    padding: 0 10px; /* Horizontal padding of content */
 }
 
 .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
@@ -580,7 +580,7 @@ span.CodeMirror-selectedtext { background: none; }
     width: 50%;
     height: 100%;
     top: 0;
-    padding: 0px 4px;
+    padding: 0px 10px;
     left: 100%;
     background: #F6f6f6;
     z-index: 81;
