@@ -311,7 +311,7 @@ var AddArticle = {
                 postData.thoughtContent += change;
                 localStorage.postData = JSON.stringify(postData);
 
-                if ($('.article-content .editor-preview-active').length === 0) {
+                    if ($('.post-article-content .editor-preview-active').length === 0) {
                     return false;
                 }
 
@@ -323,7 +323,7 @@ var AddArticle = {
                         markdownText: cm.getValue()
                     },
                     success: function (result, textStatus) {
-                        $('.article-content .editor-preview-active').html(result.html);
+                        $('.post-article-content .editor-preview-active').html(result.html);
                         hljs.initHighlighting.called = false;
                         hljs.initHighlighting();
                     }

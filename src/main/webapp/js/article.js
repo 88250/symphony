@@ -426,7 +426,7 @@ var Comment = {
                 return CodeMirror.Pass;
             }
 
-            if ($('.article-comment-content .editor-preview-active').length === 0) {
+            if ($('.editor-preview-active').length === 0) {
                 return false;
             }
 
