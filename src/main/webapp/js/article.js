@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.34.51.34, Apr 17, 2017
+ * @version 1.34.52.34, Apr 18, 2017
  */
 
 /**
@@ -1096,8 +1096,11 @@ var Article = {
 //        }, false);
 
         $(window).resize(function () {
-            var shareL = $('.article-content')[0].offsetLeft / 2 - 15;
-            $('.share').css('left',  (shareL < 0 ? 0 : shareL) + 'px');
+            if ($.ua.device.type !== 'mobile') {
+                var shareL = $('.article-content')[0].offsetLeft / 2 - 15;
+                $('.share').css('left', (shareL < 0 ? 0 : shareL) + 'px');
+            }
+
             $('#articleToC > .module-panel').height($(window).height() - 48);
 
             if ($(window).width() < 1024) {
@@ -1215,8 +1218,10 @@ var Article = {
      * @description 分享按钮
      */
     share: function () {
-        var shareL = $('.article-content').offset().left / 2 - 15;
-        $('.share').css('left',  (shareL < 20 ? 20 : shareL) + 'px');
+        if ($.ua.device.type !== 'mobile') {
+            var shareL = $('.article-content').offset().left / 2 - 15;
+            $('.share').css('left', (shareL < 20 ? 20 : shareL) + 'px');
+        }
 
         var shareURL = $('#qrCode').data('shareurl');
         $('#qrCode').qrcode({
