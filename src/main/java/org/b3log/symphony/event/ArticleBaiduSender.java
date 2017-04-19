@@ -17,9 +17,6 @@
  */
 package org.b3log.symphony.event;
 
-import java.net.URL;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
@@ -27,23 +24,23 @@ import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.urlfetch.HTTPHeader;
-import org.b3log.latke.urlfetch.HTTPRequest;
-import org.b3log.latke.urlfetch.HTTPResponse;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
+import org.b3log.latke.urlfetch.*;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+
+import java.net.URL;
 
 /**
  * Sends an article URL to Baidu.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.0, Nov 15, 2016
+ * @version 1.1.3.1, Apr 19, 2017
  * @since 1.3.0
  */
 @Named
@@ -59,6 +56,41 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
      * Baidu data token.
      */
     private static final String TOKEN = Symphonys.get("baidu.data.token");
+
+    /**
+     * Sends the specified URLs to Baidu.
+     *
+     * @param urls the specified URLs
+     */
+    public static void sendToBaidu(final String... urls) {
+        if (ArrayUtils.isEmpty(urls)) {
+            return;
+        }
+
+        new Thread(() -> {
+            try {
+                final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
+                final HTTPRequest request = new HTTPRequest();
+                request.setURL(new URL("http://data.zz.baidu.com/urls?site=" + Latkes.getServerHost() + "&token=" + TOKEN));
+                request.setRequestMethod(HTTPRequestMethod.POST);
+                request.addHeader(new HTTPHeader("User-Agent", "curl/7.12.1"));
+                request.addHeader(new HTTPHeader("Host", "data.zz.baidu.com"));
+                request.addHeader(new HTTPHeader("Content-Type", "text/plain"));
+                request.addHeader(new HTTPHeader("Connection", "close"));
+
+                final String urlsStr = StringUtils.join(urls, "\n");
+                request.setPayload(urlsStr.getBytes());
+
+                final HTTPResponse response = urlFetchService.fetch(request);
+                LOGGER.info(new String(response.getContent(), "UTF-8"));
+
+                LOGGER.debug("Sent [" + urlsStr + "] to Baidu");
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Ping Baidu spider failed", e);
+            }
+        }).start();
+    }
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
@@ -83,46 +115,6 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article to Baidu error", e);
         }
-    }
-
-    /**
-     * Sends the specified URLs to Baidu.
-     *
-     * @param urls the specified URLs
-     * @throws Exception exception
-     */
-    public static void sendToBaidu(final String... urls) throws Exception {
-        if (ArrayUtils.isEmpty(urls)) {
-            return;
-        }
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
-
-                    final HTTPRequest request = new HTTPRequest();
-                    request.setURL(new URL("http://data.zz.baidu.com/urls?site=" + Latkes.getServerHost() + "&token=" + TOKEN));
-                    request.setRequestMethod(HTTPRequestMethod.POST);
-                    request.addHeader(new HTTPHeader("User-Agent", "curl/7.12.1"));
-                    request.addHeader(new HTTPHeader("Host", "data.zz.baidu.com"));
-                    request.addHeader(new HTTPHeader("Content-Type", "text/plain"));
-                    request.addHeader(new HTTPHeader("Connection", "close"));
-
-                    final String urlsStr = StringUtils.join(urls, "\n");
-                    request.setPayload(urlsStr.getBytes());
-
-                    final HTTPResponse response = urlFetchService.fetch(request);
-                    LOGGER.info(new String(response.getContent(), "UTF-8"));
-
-                    LOGGER.debug("Sent [" + urlsStr + "] to Baidu");
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Ping Baidu spider failed", e);
-
-                }
-            }
-        }).start();
     }
 
     /**
