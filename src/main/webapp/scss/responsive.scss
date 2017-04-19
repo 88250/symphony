@@ -19,7 +19,7 @@
  * Base style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.4.11, Mar 30, 2017
+ * @version 1.2.5.11, Apr 19, 2017
  */
 
 @import "variables";
@@ -44,7 +44,7 @@
 @media (max-width: 768px) {
     /* start itself */
     /* framework */
-    .wrapper {
+    html .wrapper {
         display: block;
         padding: 0 10px;
         min-width: 300px;
@@ -71,9 +71,12 @@
 
 
     /* header */
+    .nav .nav-tabs {
+        display: none;
+    }
+
     .nav .user-nav {
         position: absolute;
-        top: 10px;
         right: 10px;
     }
 
@@ -88,8 +91,19 @@
         right: 0;
     }
 
+    /* index */
+    html .index .index-main,
+    html .index .index-side {
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 20px;
+    }
 
     /* article */
+    .article .article-header h2 {
+        margin: 0 10px;
+    }
+
     .list .avatar {
         height: 25px;
         width: 25px;

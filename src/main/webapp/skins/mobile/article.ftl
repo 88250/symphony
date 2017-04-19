@@ -271,12 +271,6 @@
                             </span>
                         </div>
                             <ul>
-                                <#if article.articleComments?size == 0>
-                                <li class="ft-center fn-pointer"
-                                    onclick="$('.article-actions .icon-reply-btn').click()">
-                                    <img src="${noCmtImg}" class="article-no-comment-img">
-                                </li>
-                                </#if>
                                 <#assign notificationCmtIds = "">
                                 <#list article.articleComments as comment>
                                 <#assign notificationCmtIds = notificationCmtIds + comment.oId>
@@ -384,7 +378,7 @@
         </div>
         <#include "footer.ftl">
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
-        <script src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/m-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
