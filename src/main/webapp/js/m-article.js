@@ -1178,7 +1178,7 @@ var Article = {
                 cache: false,
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        $("#articleRewardContent .content-reset").html(result.articleRewardContent);
+                        $("#articleRewardContent").html(result.articleRewardContent);
                         Article.parseLanguage();
 
                         var cnt = parseInt($('.article-actions .icon-points').parent().text());
