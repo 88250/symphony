@@ -1023,6 +1023,7 @@ a[class*=" icon-"]:hover {
 .form input[type=file] {
     width: 1px;
     opacity: 0.001;
+    height: 16px;
 }
 /* end form */
 
@@ -1844,8 +1845,8 @@ label.cmt-anonymous {
 .comments > div.comments-header .icon-time {
     font-size: 16px;
     font-weight: bold;
-    margin: 4px 10px 0 0;
-    display: inherit;
+    margin: 4px 5px 0 0;
+    float: left;
 }
 
 .comments li.shield {
@@ -2755,6 +2756,7 @@ code .dec { color: initial; } /* decimal - blue */
 .article-content {
     width: 100%;
     position: relative;
+    overflow: auto;
 
     &#articleAudio {
         width: auto;

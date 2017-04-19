@@ -19,8 +19,8 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.34.53.34, Apr 18, 2017
+ * @version 0.1.0.0, Apr 19, 2017
+ * @since 2.1.0
  */
 
 /**
@@ -218,12 +218,6 @@ var Comment = {
                 window.location = $('#comments .list > ul > li.focus .icon-setting').parent().attr('href');
             }
             return false;
-        }).bind('keyup', 'm', function assets() {
-            // v m 帖子目录
-            if (Util.prevKey === 'v') {
-                Article.toggleToc();
-            }
-            return false;
         }).bind('keyup', 'h', function assets() {
             // v h 感谢帖子
             if (Util.prevKey === 'v') {
@@ -304,7 +298,11 @@ var Comment = {
         }
 
         this._setCmtVia();
+
         this._initEditorPanel();
+
+        $.ua.set(navigator.userAgent);
+
         this._initHotKey();
 
         $.pjax({
@@ -327,45 +325,59 @@ var Comment = {
             return false;
         }
 
-        Util.initCodeMirror();
+        if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
+            $('#commentContent').before('<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
+                    + Label.uploadLabel + '<input type="file"/></label></form>')
+                    .css('margin', 0);
+            Comment.editor = Util.initTextarea('commentContent',
+                    function (editor) {
+                        if (window.localStorage) {
+                            window.localStorage[Label.articleOId] = JSON.stringify({
+                                commentContent: editor.$it.val()
+                            });
+                        }
+                    }
+            );
+        } else {
+            Util.initCodeMirror();
 
-        var commentEditor = new Editor({
-            element: document.getElementById('commentContent'),
-            dragDrop: false,
-            lineWrapping: true,
-            htmlURL: Label.servePath + "/markdown",
-            toolbar: [
-                {name: 'bold'},
-                {name: 'italic'},
-                {name: 'quote'},
-                {name: 'unordered-list'},
-                {name: 'ordered-list'},
-                {name: 'link'},
-                {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form>'},
-                {name: 'redo'},
-                {name: 'undo'},
-                {name: 'view'},
-                {name: 'question', action: 'https://hacpai.com/guide/markdown'},
-                {name: 'fullscreen'}
-            ],
-            extraKeys: {
-                "Alt-/": "autocompleteUserName",
-                "Cmd-/": "autocompleteEmoji",
-                "Ctrl-/": "autocompleteEmoji",
-                "Alt-S": "startAudioRecord",
-                "Alt-R": "endAudioRecord",
-                'Esc': function () {
-                    $('.editor-hide').click();
-                }
-            },
-            status: false
-        });
-        commentEditor.render();
+            var commentEditor = new Editor({
+                element: document.getElementById('commentContent'),
+                dragDrop: false,
+                lineWrapping: true,
+                htmlURL: Label.servePath + "/markdown",
+                toolbar: [
+                    {name: 'bold'},
+                    {name: 'italic'},
+                    {name: 'quote'},
+                    {name: 'unordered-list'},
+                    {name: 'ordered-list'},
+                    {name: 'link'},
+                    {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form>'},
+                    {name: 'redo'},
+                    {name: 'undo'},
+                    {name: 'view'},
+                    {name: 'question', action: 'https://hacpai.com/guide/markdown'},
+                    {name: 'fullscreen'}
+                ],
+                extraKeys: {
+                    "Alt-/": "autocompleteUserName",
+                    "Cmd-/": "autocompleteEmoji",
+                    "Ctrl-/": "autocompleteEmoji",
+                    "Alt-S": "startAudioRecord",
+                    "Alt-R": "endAudioRecord",
+                    'Esc': function () {
+                        $('.editor-hide').click();
+                    }
+                },
+                status: false
+            });
+            commentEditor.render();
 
-        commentEditor.codemirror['for'] = 'comment';
+            commentEditor.codemirror['for'] = 'comment';
 
-        Comment.editor = commentEditor.codemirror;
-
+            Comment.editor = commentEditor.codemirror;
+        }
 
         if (window.localStorage && window.localStorage[Label.articleOId]) {
             var localData = null;
@@ -387,6 +399,10 @@ var Comment = {
         }
 
         this._initMathJax();
+
+        if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
+            return false;
+        }
 
         Comment.editor.on('changes', function (cm) {
             $("#addCommentTip").removeClass("error succ").html('');
@@ -757,32 +773,8 @@ var Comment = {
      * @param {String} userName 用户名称
      */
     reply: function (userName, id) {
-        Comment._toggleReply(function () {
-            // 回帖在底部，当评论框弹出时会被遮住的解决方案
-            if ($(window).height() - ($('#' + id)[0].offsetTop - $(window).scrollTop() + $('#' + id).outerHeight()) <
-             $('.editor-panel .wrapper').outerHeight()) {
-                $(window).scrollTop($('#' + id)[0].offsetTop -
-                ($(window).height() - $('.editor-panel .wrapper').outerHeight() - $('#' + id).outerHeight()));
-            }
-        });
-
-        // 帖子作者 clone 到编辑器左上角
-        var replyUserHTML = '',
-                $avatar = $('#' + id).find('>.fn-flex>div>a').clone();
-        if ($avatar.length === 0) {
-            $avatar = $('#' + id).find('>.fn-flex .avatar').clone();
-            $avatar.removeClass('avatar').addClass('avatar-small');
-            replyUserHTML = '<a rel="nofollow" href="#' + id
-                    + '" class="ft-a-title" onclick="Comment._bgFade($(\'#' + id
-                    + '\'))"><span class="icon-reply-to"></span> '
-                    + $avatar[0].outerHTML + ' ' + userName + '</a>';
-        } else {
-            $avatar.addClass('ft-a-title').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
-            $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<span class="icon-reply-to"></span> ');
-            replyUserHTML = $avatar[0].outerHTML;
-        }
-
-        $('#replyUseName').html(replyUserHTML).data('commentOriginalCommentId', id);
+        $('#replyUseName').data('commentOriginalCommentId', id);
+        Comment.editor.focus();
     }
 };
 
@@ -955,7 +947,6 @@ var Article = {
      * @description 初始化文章
      */
     init: function () {
-        this.initToc();
         this.share();
         this.parseLanguage();
 
@@ -1011,81 +1002,6 @@ var Article = {
         });
 
         this.initAudio();
-
-        // scroll
-        $(window).scroll(function () {
-            var currentScrollTop = $(window).scrollTop();
-
-            // share
-            if (currentScrollTop > 48 && currentScrollTop < $('.comments').offset().top + $('.comments').height()) {
-                $('.share').show();
-            } else {
-                $('.share').hide();
-            }
-
-            if (currentScrollTop < 150) {
-                $('.article-header').css('top', '-48px');
-                $('.nav').show();
-            } else {
-                $('.article-header').css('top', '0');
-                $('.nav').hide();
-            }
-        });
-
-//        $(window).on('mousewheel DOMMouseScroll', function(e){
-//            var currentScrollTop = $(window).scrollTop();
-//            if (currentScrollTop < 150) {
-//                $('.article-header').css('top', '-48px');
-//                return;
-//            }
-//
-//            var eo = e.originalEvent;
-//            var xy = eo.wheelDelta || -eo.detail; //shortest possible code
-//            var y = eo.wheelDeltaY || (eo.axis === 2 ? xy : 0); // () necessary!
-//
-//            if (y < 0 && currentScrollTop >= 150) {
-//                $('.article-header').css('top', 0);
-//            } else if (y > 0) {
-//                $('.article-header').css('top', '-48px');
-//            }
-//
-//        });
-
-        // nav
-//        window.addEventListener('mousewheel', function(event) {
-//            var currentScrollTop = $(window).scrollTop();
-//            if (currentScrollTop < 150) {
-//                $('.article-header').css('top', '-48px');
-//                return false;
-//            }
-//
-//            if (event.deltaY > 0 && currentScrollTop >= 150) {
-//                $('.article-header').css('top', 0);
-//            } else if (event.deltaY < -5) {
-//                $('.article-header').css('top', '-48px');
-//            }
-//        }, false);
-
-        $(window).resize(function () {
-            var shareL = $('.article-content')[0].offsetLeft / 2 - 15;
-            $('.share').css('left', (shareL < 0 ? 0 : shareL) + 'px');
-
-            $('#articleToC > .module-panel').height($(window).height() - 48);
-
-            if ($(window).width() < 1024) {
-                if ($('#articleToC').length === 0) {
-                    return false;
-                }
-                $('.article-body .wrapper, .main .wrapper').removeAttr('style');
-                return false;
-            }
-
-            if ($('#articleToC').length === 1) {
-                var articleToCW = $('#articleToC').width(),
-                    articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
-                $('.article-body .wrapper, .main .wrapper').css('margin-right', articleMR + 'px');
-            }
-        });
     },
     /**
      * 历史版本对比
@@ -1187,8 +1103,10 @@ var Article = {
      * @description 分享按钮
      */
     share: function () {
-        var shareL = $('.article-content').offset().left / 2 - 15;
-        $('.share').css('left', (shareL < 20 ? 20 : shareL) + 'px');
+        if ($.ua.device.type !== 'mobile') {
+            var shareL = $('.article-content').offset().left / 2 - 15;
+            $('.share').css('left', (shareL < 20 ? 20 : shareL) + 'px');
+        }
 
         var shareURL = $('#qrCode').data('shareurl');
         $('#qrCode').qrcode({
@@ -1303,7 +1221,7 @@ var Article = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     var thxCnt = parseInt($('#thankArticle').text());
-                    $("#thankArticle").removeAttr("onclick").html('<span class="icon-heart"></span><span class="ft-13">' + (thxCnt + 1) + '</span>')
+                    $("#thankArticle").removeAttr("onclick").html('<span class="icon-heart"></span> <span class="ft-13">' + (thxCnt + 1) + '</span>')
                     .addClass('ft-red').removeClass('ft-blue');
 
                     var $heart = $("<i class='icon-heart ft-red'></i>"),
@@ -1475,113 +1393,6 @@ var Article = {
 
         // set default height
         $('.article-content').html(articleHTML).height($('.article-content').height()).html('');
-    },
-    /**
-     * @description 初始化目录.
-     */
-    initToc: function () {
-        if ($('#articleToC').length === 0) {
-            return false;
-        }
-
-        var articleToCW = $('#articleToC').width(),
-            articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
-        $('.article-body .wrapper, .main .wrapper').css('margin-right', articleMR + 'px');
-
-        $('#articleToC > .module-panel').height($(window).height() - 48);
-
-        // 样式
-        var $articleToc = $('#articleToC'),
-            $articleTocUl = $('.article-toc'),
-            $articleTocs = $('.article-content [id^=toc]'),
-            isUlScroll = false,
-            top = $articleToc.offset().top
-            toc = [];
-
-        // 目录点击
-        $articleToc.find('li').click(function () {
-            var $it = $(this);
-            setTimeout(function () {
-                $articleToc.find('li').removeClass('current');
-                $it.addClass('current');
-            }, 50);
-        });
-
-        $(window).scroll(function (event) {
-            if (parseInt($('#articleToC').css('right')) < 0) {
-                return false;
-            }
-            $('#articleToC > .module-panel').height($(window).height() - 49);
-
-            // 界面各种图片加载会导致帖子目录定位
-            toc = [];
-            $articleTocs.each(function (i) {
-                toc.push({
-                    id: this.id,
-                    offsetTop: this.offsetTop
-                });
-            });
-
-            // 当前目录样式
-            var scrollTop = $(window).scrollTop();
-            for (var i = 0, iMax = toc.length; i < iMax; i++) {
-                if (scrollTop < toc[i].offsetTop - 53) {
-                    $articleToc.find('li').removeClass('current');
-                    var index = i > 0 ? i - 1 : 0;
-                    $articleToc.find('a[data-id="' + toc[index].id + '"]').parent().addClass('current');
-                    break;
-                }
-            }
-            if (scrollTop >= toc[toc.length - 1].offsetTop - 53) {
-                $articleToc.find('li').removeClass('current');
-                $articleToc.find('li:last').addClass('current');
-            }
-
-            // auto scroll to current toc
-            var liOffsetTop = $articleToc.find('li.current')[0].offsetTop;
-            if (!isUlScroll) {
-                // down scroll
-                if ($articleTocUl.scrollTop() < liOffsetTop - $articleTocUl.height() + 30) {
-                    $articleTocUl.scrollTop(liOffsetTop - $articleTocUl.height() + 30);
-                }
-                // up scroll
-                if ($articleTocUl.scrollTop() > liOffsetTop - 30) {
-                    $articleTocUl.scrollTop(liOffsetTop);
-                }
-            }
-            // 在目录上滚动到边界时，会滚动 window，为了不让 window 滚动触发目录滚动。
-            setTimeout(function () {
-                isUlScroll = false;
-            }, 600);
-        });
-
-        $(window).scroll();
-
-        $articleTocUl.scrollTop($articleToc.find('li.current')[0].offsetTop).scroll(function () {
-            isUlScroll = true;
-        });
-    },
-    /**
-     * @description 目录展现隐藏切换.
-     */
-    toggleToc: function () {
-        var $articleToc = $('#articleToC');
-        if ($articleToc.length === 0) {
-            return false;
-        }
-
-        var $menu = $('.article-header .icon-unordered-list');
-        if ($menu.hasClass('ft-red')) {
-            $articleToc.animate({
-                right: '-' + $('#articleToC').outerWidth() + 'px'
-            });
-            $menu.removeClass('ft-red');
-        } else {
-            $articleToc.animate({
-                right: 0
-            });
-            $menu.addClass('ft-red');
-        }
     },
     /**
      * @description 标记消息通知为已读状态.

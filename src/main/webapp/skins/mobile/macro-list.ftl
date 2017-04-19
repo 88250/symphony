@@ -30,9 +30,6 @@
                         <span class="ft-smaller ft-red stick-remains fn-none">${stickLabel}${remainsLabel} ${article.articleStickRemains?c} ${minuteLabel}</span>
                         </#if>
                     </h2>
-                    <#list article.articleTagObjs as articleTag>
-                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> 
-                    </#list>
                     <div class="ft-smaller">
                     <span class="ft-fade">${article.timeAgo}</span>
                     <#if "" != article.articleLatestCmterName>
