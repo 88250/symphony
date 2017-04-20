@@ -89,7 +89,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.18.35, Mar 9, 2017
+ * @version 1.26.19.35, Apr 20, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -952,8 +952,13 @@ public class UserProcessor {
                 user.optString(Keys.OBJECT_ID), Article.ARTICLE_ANONYMOUS_C_PUBLIC, pageNum, pageSize);
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
 
-        final int articleCnt = user.optInt(UserExt.USER_ARTICLE_COUNT);
-        final int pageCount = (int) Math.ceil((double) articleCnt / (double) pageSize);
+        int recordCount = 0;
+        int pageCount = 0;
+        if (!userArticles.isEmpty()) {
+            final JSONObject first = userArticles.get(0);
+            pageCount = first.optInt(Pagination.PAGINATION_PAGE_COUNT);
+            recordCount = first.optInt(Pagination.PAGINATION_RECORD_COUNT);
+        }
 
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {
@@ -964,7 +969,7 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-        dataModel.put(Pagination.PAGINATION_RECORD_COUNT, articleCnt);
+        dataModel.put(Pagination.PAGINATION_RECORD_COUNT, recordCount);
 
         final JSONObject currentUser = Sessions.currentUser(request);
         if (null == currentUser) {
@@ -1032,8 +1037,13 @@ public class UserProcessor {
                 user.optString(Keys.OBJECT_ID), Comment.COMMENT_ANONYMOUS_C_PUBLIC, pageNum, pageSize, currentUser);
         dataModel.put(Common.USER_HOME_COMMENTS, userComments);
 
-        final int commentCnt = user.optInt(UserExt.USER_COMMENT_COUNT);
-        final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
+        int recordCount = 0;
+        int pageCount = 0;
+        if (!userComments.isEmpty()) {
+            final JSONObject first = userComments.get(0);
+            pageCount = first.optInt(Pagination.PAGINATION_PAGE_COUNT);
+            recordCount = first.optInt(Pagination.PAGINATION_RECORD_COUNT);
+        }
 
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {
@@ -1044,7 +1054,7 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-        dataModel.put(Pagination.PAGINATION_RECORD_COUNT, commentCnt);
+        dataModel.put(Pagination.PAGINATION_RECORD_COUNT, recordCount);
 
         dataModel.put(Common.TYPE, "comments");
     }
