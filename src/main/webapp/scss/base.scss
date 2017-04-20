@@ -1274,7 +1274,6 @@ a[class*=" icon-"]:hover {
     text-align: center;
     color: #616161;
     padding: 0 5px;
-    background-color: #f9fafb;
 }
 
 .pagination a:hover,
@@ -1762,17 +1761,16 @@ ul.CodeMirror-hints {
 
 .module-header {
     border-radius: 3px 3px 0 0;
-    background-color: #f9fafb;
     border-bottom: 1px solid #e5e5e5;
     padding: 15px;
-    text-shadow: 0 1px 0 #FFFFFF;
     font-size: 14px;
     line-height: 18px;
 }
 
 .module-header h2 {
     display: inline;
-    font-size: 15px;
+    font-size: 13px;
+    color: #666;
     font-weight: normal;
 }
 
