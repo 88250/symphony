@@ -30,7 +30,10 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Manual query service.
@@ -39,7 +42,7 @@ import java.util.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Dec 21, 2016
+ * @version 1.0.1.3, Apr 19, 2017
  * @since 1.8.0
  */
 @Service
@@ -61,66 +64,56 @@ public class ManQueryService {
     public static boolean TLDR_ENABLED;
 
     static {
-        init();
+        new Thread(ManQueryService::init).start();
     }
 
     /**
      * Initializes manuals.
      */
     private static void init() {
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                // http://stackoverflow.com/questions/585534/what-is-the-best-way-to-find-the-users-home-directory-in-java
-                final String userHome = System.getProperty("user.home");
-                if (StringUtils.isBlank(userHome)) {
-                    return;
-                }
+        // http://stackoverflow.com/questions/585534/what-is-the-best-way-to-find-the-users-home-directory-in-java
+        final String userHome = System.getProperty("user.home");
+        if (StringUtils.isBlank(userHome)) {
+            return;
+        }
 
+        try {
+            Thread.sleep(5 * 1000);
+
+            final String tldrPagesPath = userHome + File.separator + "tldr" + File.separator + "pages" + File.separator;
+            final Collection<File> mans = FileUtils.listFiles(new File(tldrPagesPath), new String[]{"md"}, true);
+            for (final File manFile : mans) {
+                InputStream is = null;
                 try {
-                    Thread.sleep(5 * 1000);
+                    is = new FileInputStream(manFile);
+                    final String md = IOUtils.toString(is, "UTF-8");
+                    String html = Markdowns.toHTML(md);
 
-                    final String tldrPagesPath = userHome + File.separator + "tldr" + File.separator + "pages" + File.separator;
-                    final Collection<File> mans = FileUtils.listFiles(new File(tldrPagesPath), new String[]{"md"}, true);
-                    for (final File manFile : mans) {
-                        InputStream is = null;
-                        try {
-                            is = new FileInputStream(manFile);
-                            final String md = IOUtils.toString(is, "UTF-8");
-                            String html = Markdowns.toHTML(md);
+                    final JSONObject cmdMan = new JSONObject();
+                    cmdMan.put(Common.MAN_CMD, StringUtils.substringBeforeLast(manFile.getName(), "."));
 
-                            final JSONObject cmdMan = new JSONObject();
-                            cmdMan.put(Common.MAN_CMD, StringUtils.substringBeforeLast(manFile.getName(), "."));
+                    html = html.replace("\n", "").replace("\r", "");
+                    cmdMan.put(Common.MAN_HTML, html);
 
-                            html = html.replace("\n", "").replace("\r", "");
-                            cmdMan.put(Common.MAN_HTML, html);
-
-                            CMD_MANS.add(cmdMan);
-                        } catch (final Exception e) {
-                            LOGGER.log(Level.ERROR, "Loads man [" + manFile.getPath() + "] failed", e);
-                        } finally {
-                            IOUtils.closeQuietly(is);
-                        }
-                    }
+                    CMD_MANS.add(cmdMan);
                 } catch (final Exception e) {
-                    return;
+                    LOGGER.log(Level.ERROR, "Loads man [" + manFile.getPath() + "] failed", e);
+                } finally {
+                    IOUtils.closeQuietly(is);
                 }
-
-                TLDR_ENABLED = !CMD_MANS.isEmpty();
-
-                Collections.sort(CMD_MANS, new Comparator<JSONObject>() {
-                    @Override
-                    public int compare(final JSONObject o1, final JSONObject o2) {
-                        final String c1 = o1.optString(Common.MAN_CMD);
-                        final String c2 = o2.optString(Common.MAN_CMD);
-
-                        return c1.compareToIgnoreCase(c2);
-                    }
-                });
             }
-        };
+        } catch (final Exception e) {
+            return;
+        }
 
-        new Thread(runnable).start();
+        TLDR_ENABLED = !CMD_MANS.isEmpty();
+
+        Collections.sort(CMD_MANS, (o1, o2) -> {
+            final String c1 = o1.optString(Common.MAN_CMD);
+            final String c2 = o2.optString(Common.MAN_CMD);
+
+            return c1.compareToIgnoreCase(c2);
+        });
     }
 
     /**
@@ -140,20 +133,17 @@ public class ManQueryService {
         final JSONObject toSearch = new JSONObject();
         toSearch.put(Common.MAN_CMD, cmdPrefix);
 
-        final int index = Collections.binarySearch(CMD_MANS, toSearch, new Comparator<JSONObject>() {
-            @Override
-            public int compare(final JSONObject o1, final JSONObject o2) {
-                String c1 = o1.optString(Common.MAN_CMD);
-                final String c2 = o2.optString(Common.MAN_CMD);
+        final int index = Collections.binarySearch(CMD_MANS, toSearch, (o1, o2) -> {
+            String c1 = o1.optString(Common.MAN_CMD);
+            final String c2 = o2.optString(Common.MAN_CMD);
 
-                if (c1.length() < c2.length()) {
-                    return c1.compareToIgnoreCase(c2);
-                }
-
-                c1 = c1.substring(0, c2.length());
-
+            if (c1.length() < c2.length()) {
                 return c1.compareToIgnoreCase(c2);
             }
+
+            c1 = c1.substring(0, c2.length());
+
+            return c1.compareToIgnoreCase(c2);
         });
 
         final List<JSONObject> ret = new ArrayList<>();

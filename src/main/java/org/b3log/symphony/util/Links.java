@@ -17,22 +17,6 @@
  */
 package org.b3log.symphony.util;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
@@ -45,11 +29,23 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Sep 26, 2016
+ * @version 1.0.0.5, Apr 19, 2017
  * @since 1.6.0
  */
 public final class Links {
@@ -57,13 +53,13 @@ public final class Links {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Links.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Links.class);
 
     /**
      * Gets links from the specified HTML.
      *
      * @param baseURL the specified base URL
-     * @param html the specified HTML
+     * @param html    the specified HTML
      * @return a list of links, each of them like this:      <pre>
      * {
      *     "linkAddr": "https://hacpai.com/article/1440573175609",
@@ -132,18 +128,23 @@ public final class Links {
             LOGGER.log(Level.ERROR, "Parses URLs failed", e);
         }
 
-        Collections.sort(ret, new Comparator<JSONObject>() {
-            @Override
-            public int compare(final JSONObject link1, final JSONObject link2) {
-                return link1.optInt(Link.LINK_BAIDU_REF_CNT) - link2.optInt(Link.LINK_BAIDU_REF_CNT);
-            }
-        });
+        Collections.sort(ret, Comparator.comparingInt(link -> link.optInt(Link.LINK_BAIDU_REF_CNT)));
 
         return ret;
     }
 
-    static class Spider implements Callable<JSONObject> {
+    private static boolean containsChinese(final String str) {
+        if (StringUtils.isBlank(str)) {
+            return false;
+        }
 
+        final Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+        final Matcher m = p.matcher(str);
+
+        return m.find();
+    }
+
+    static class Spider implements Callable<JSONObject> {
         private final String url;
 
         Spider(final String url) {
@@ -230,16 +231,5 @@ public final class Links {
                 return null;
             }
         }
-    }
-
-    private static boolean containsChinese(final String str) {
-        if (StringUtils.isBlank(str)) {
-            return false;
-        }
-
-        final Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
-        final Matcher m = p.matcher(str);
-
-        return m.find();
     }
 }
