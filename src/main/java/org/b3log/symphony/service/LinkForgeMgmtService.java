@@ -18,11 +18,11 @@
 package org.b3log.symphony.service;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
@@ -43,14 +43,15 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import java.util.List;
+
+;
 
 /**
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.5, Feb 5, 2017
+ * @version 1.1.1.6, Apr 19, 2017
  * @since 1.6.0
  */
 @Service
@@ -208,64 +209,59 @@ public class LinkForgeMgmtService {
      * Purges link forge.
      */
     public void purge() {
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                final Transaction transaction = optionRepository.beginTransaction();
+        new Thread(() -> {
+            final Transaction transaction = optionRepository.beginTransaction();
 
-                try {
-                    Thread.sleep(15 * 1000);
+            try {
+                Thread.sleep(15 * 1000);
 
-                    final JSONObject linkCntOption = optionRepository.get(Option.ID_C_STATISTIC_LINK_COUNT);
-                    int linkCnt = linkCntOption.optInt(Option.OPTION_VALUE);
+                final JSONObject linkCntOption = optionRepository.get(Option.ID_C_STATISTIC_LINK_COUNT);
+                int linkCnt = linkCntOption.optInt(Option.OPTION_VALUE);
 
-                    int slags = 0;
-                    final JSONArray links = linkRepository.get(new Query()).optJSONArray(Keys.RESULTS);
-                    for (int i = 0; i < links.length(); i++) {
-                        final JSONObject link = links.getJSONObject(i);
-                        final String linkAddr = link.optString(Link.LINK_ADDR);
+                int slags = 0;
+                final JSONArray links = linkRepository.get(new Query()).optJSONArray(Keys.RESULTS);
+                for (int i = 0; i < links.length(); i++) {
+                    final JSONObject link = links.getJSONObject(i);
+                    final String linkAddr = link.optString(Link.LINK_ADDR);
 
-                        if (!Link.inAddrBlacklist(linkAddr)) {
-                            continue;
-                        }
-
-                        final String linkId = link.optString(Keys.OBJECT_ID);
-
-                        // clean slags
-
-                        linkRepository.remove(linkId);
-                        ++slags;
-
-                        final List<String> tagIds = tagUserLinkRepository.getTagIdsByLinkId(linkId, Integer.MAX_VALUE);
-                        for (final String tagId : tagIds) {
-                            final JSONObject tag = tagRepository.get(tagId);
-
-                            tagUserLinkRepository.removeByLinkId(linkId);
-
-                            final int tagLinkCnt = tagUserLinkRepository.countTagLink(tagId);
-                            tag.put(Tag.TAG_LINK_CNT, tagLinkCnt);
-                            tagRepository.update(tagId, tag);
-                        }
+                    if (!Link.inAddrBlacklist(linkAddr)) {
+                        continue;
                     }
 
-                    linkCntOption.put(Option.OPTION_VALUE, linkCnt - slags);
-                    optionRepository.update(Option.ID_C_STATISTIC_LINK_COUNT, linkCntOption);
+                    final String linkId = link.optString(Keys.OBJECT_ID);
 
-                    transaction.commit();
+                    // clean slags
 
-                    LOGGER.info("Purged link forge [slags=" + slags + "]");
-                } catch (final Exception e) {
-                    if (null != transaction) {
-                        transaction.rollback();
+                    linkRepository.remove(linkId);
+                    ++slags;
+
+                    final List<String> tagIds = tagUserLinkRepository.getTagIdsByLinkId(linkId, Integer.MAX_VALUE);
+                    for (final String tagId : tagIds) {
+                        final JSONObject tag = tagRepository.get(tagId);
+
+                        tagUserLinkRepository.removeByLinkId(linkId);
+
+                        final int tagLinkCnt = tagUserLinkRepository.countTagLink(tagId);
+                        tag.put(Tag.TAG_LINK_CNT, tagLinkCnt);
+                        tagRepository.update(tagId, tag);
                     }
-
-                    LOGGER.log(Level.ERROR, "Purges link forge failed", e);
-                } finally {
-                    JdbcRepository.dispose();
                 }
-            }
-        };
 
-        new Thread(runnable).start();
+                linkCntOption.put(Option.OPTION_VALUE, linkCnt - slags);
+                optionRepository.update(Option.ID_C_STATISTIC_LINK_COUNT, linkCntOption);
+
+                transaction.commit();
+
+                LOGGER.info("Purged link forge [slags=" + slags + "]");
+            } catch (final Exception e) {
+                if (null != transaction) {
+                    transaction.rollback();
+                }
+
+                LOGGER.log(Level.ERROR, "Purges link forge failed", e);
+            } finally {
+                JdbcRepository.dispose();
+            }
+        }).start();
     }
 }
