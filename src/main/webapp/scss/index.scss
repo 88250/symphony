@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.31.22.56, Apr 17, 2017
+ * @version 2.31.23.56, Apr 20, 2017
  */
 
 @import "variables";
@@ -334,7 +334,8 @@
             text-align: center;
             height: 20px;
             color: #ccc;
-            margin-top: 5px;
+            line-height: 20px;
+            margin-bottom: 10px;
         }
 
         .editor-hide:hover {
@@ -379,6 +380,7 @@
 
 label.cmt-anonymous {
     margin: 5px 20px 0 0;
+    line-height: 28px;
 }
 
 .action-btns > span,
@@ -515,10 +517,6 @@ label.cmt-anonymous {
 #replyUseName {
     line-height: 20px;
     height: 20px;
-}
-
-#addCommentTip {
-    margin-top: -5px;
 }
 
 #revision .cm-s-default.CodeMirror {
