@@ -424,9 +424,9 @@
             <div class="wrapper">
                 <#if isLoggedIn && discussionViewable && article.articleCommentable>
                     <div class="form fn-clear comment-wrap">
-                        <div class="fn-clear">
-                            <div id="replyUseName" class="fn-left"></div>
-                            <span class="tooltipped tooltipped-w fn-right fn-pointer editor-hide" aria-label="${hideLabel}"><span class="icon-chevron-down"></span></span>
+                        <div class="fn-flex">
+                            <div id="replyUseName" class="fn-flex-1 fn-ellipsis"></div>
+                            <span class="tooltipped tooltipped-w fn-pointer editor-hide" aria-label="${hideLabel}"> <span class="icon-chevron-down"></span></span>
                         </div>
                         <div class="article-comment-content">
                             <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
@@ -436,7 +436,7 @@
                                     <#if permissions["commonAddCommentAnonymous"].permissionGrant>
                                         <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
                                     </#if>
-                                    <button class="red mid" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
+                                    <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
                                 </div>
                             </div>
                         </div>

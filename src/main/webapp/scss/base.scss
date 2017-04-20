@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.34.21.60, Apr 13, 2017
+ * @version 2.34.22.60, Apr 20, 2017
  */
 
 @import "variables";
@@ -1230,7 +1230,9 @@ a[class*=" icon-"]:hover {
 
 .form label input[type=checkbox],
 .form label input[type=radio] {
-    vertical-align: middle;
+    vertical-align: text-top;
+    height: 14px;
+    width: 14px;
 }
 
 .form input[type=file] {
@@ -1272,7 +1274,6 @@ a[class*=" icon-"]:hover {
     text-align: center;
     color: #616161;
     padding: 0 5px;
-    background-color: #f9fafb;
 }
 
 .pagination a:hover,
@@ -1760,17 +1761,16 @@ ul.CodeMirror-hints {
 
 .module-header {
     border-radius: 3px 3px 0 0;
-    background-color: #f9fafb;
     border-bottom: 1px solid #e5e5e5;
     padding: 15px;
-    text-shadow: 0 1px 0 #FFFFFF;
     font-size: 14px;
     line-height: 18px;
 }
 
 .module-header h2 {
     display: inline;
-    font-size: 15px;
+    font-size: 13px;
+    color: #666;
     font-weight: normal;
 }
 
