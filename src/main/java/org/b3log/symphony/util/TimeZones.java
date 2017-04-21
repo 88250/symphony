@@ -30,7 +30,7 @@ import java.util.TimeZone;
  *
  * @author <a href="https://github.com/nfergu">Neil Ferguson</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 10, 2016
+ * @version 1.0.0.1, Apr 21, 2017
  * @since 1.7.0
  */
 public class TimeZones {
@@ -160,16 +160,14 @@ public class TimeZones {
                     zoneMapping.getWindowsStandardName()));
         }
 
-        Collections.sort(timeZones, new Comparator<TimeZoneWithDisplayNames>() {
-            public int compare(final TimeZoneWithDisplayNames a, final TimeZoneWithDisplayNames b) {
-                int diff = a.getTimeZone().getRawOffset() - b.getTimeZone().getRawOffset();
-                if (diff < 0) {
-                    return -1;
-                } else if (diff > 0) {
-                    return 1;
-                } else {
-                    return a.getDisplayName().compareTo(b.getDisplayName());
-                }
+        Collections.sort(timeZones, (a, b) -> {
+            int diff = a.getTimeZone().getRawOffset() - b.getTimeZone().getRawOffset();
+            if (diff < 0) {
+                return -1;
+            } else if (diff > 0) {
+                return 1;
+            } else {
+                return a.getDisplayName().compareTo(b.getDisplayName());
             }
         });
     }

@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.29.53, Apr 13, 2017
+ * @version 2.27.29.54, Apr 21, 2017
  * @since 0.2.0
  */
 @Service
@@ -970,69 +970,51 @@ public class ArticleQueryService {
                 default:
                     LOGGER.warn("Unknown sort mode [" + sortMode + "]");
                 case 0:
-                    Collections.sort(ret, new Comparator<JSONObject>() {
-                        @Override
-                        public int compare(final JSONObject o1, final JSONObject o2) {
-                            return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
-                        }
-                    });
+                    Collections.sort(ret, (o1, o2) -> o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID)));
 
                     break;
                 case 1:
-                    Collections.sort(ret, new Comparator<JSONObject>() {
-                        @Override
-                        public int compare(final JSONObject o1, final JSONObject o2) {
-                            final int v = o2.optInt(Article.ARTICLE_COMMENT_CNT) - o1.optInt(Article.ARTICLE_COMMENT_CNT);
-                            if (0 == v) {
-                                return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
-                            }
-
-                            return v > 0 ? 1 : -1;
+                    Collections.sort(ret, (o1, o2) -> {
+                        final int v = o2.optInt(Article.ARTICLE_COMMENT_CNT) - o1.optInt(Article.ARTICLE_COMMENT_CNT);
+                        if (0 == v) {
+                            return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
                         }
+
+                        return v > 0 ? 1 : -1;
                     });
 
                     break;
                 case 2:
-                    Collections.sort(ret, new Comparator<JSONObject>() {
-                        @Override
-                        public int compare(final JSONObject o1, final JSONObject o2) {
-                            final double v = o2.optDouble(Article.REDDIT_SCORE) - o1.optDouble(Article.REDDIT_SCORE);
-                            if (0 == v) {
-                                return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
-                            }
-
-                            return v > 0 ? 1 : -1;
+                    Collections.sort(ret, (o1, o2) -> {
+                        final double v = o2.optDouble(Article.REDDIT_SCORE) - o1.optDouble(Article.REDDIT_SCORE);
+                        if (0 == v) {
+                            return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
                         }
+
+                        return v > 0 ? 1 : -1;
                     });
 
                     break;
                 case 3:
-                    Collections.sort(ret, new Comparator<JSONObject>() {
-                        @Override
-                        public int compare(final JSONObject o1, final JSONObject o2) {
-                            final long v = (o2.optLong(Article.ARTICLE_LATEST_CMT_TIME)
-                                    - o1.optLong(Article.ARTICLE_LATEST_CMT_TIME));
-                            if (0 == v) {
-                                return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
-                            }
-
-                            return v > 0 ? 1 : -1;
+                    Collections.sort(ret, (o1, o2) -> {
+                        final long v = (o2.optLong(Article.ARTICLE_LATEST_CMT_TIME)
+                                - o1.optLong(Article.ARTICLE_LATEST_CMT_TIME));
+                        if (0 == v) {
+                            return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
                         }
+
+                        return v > 0 ? 1 : -1;
                     });
 
                     break;
                 case 4:
-                    Collections.sort(ret, new Comparator<JSONObject>() {
-                        @Override
-                        public int compare(final JSONObject o1, final JSONObject o2) {
-                            final long v = (o2.optLong(Article.ARTICLE_PERFECT)
-                                    - o1.optLong(Article.ARTICLE_PERFECT));
-                            if (0 == v) {
-                                return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
-                            }
-
-                            return v > 0 ? 1 : -1;
+                    Collections.sort(ret, (o1, o2) -> {
+                        final long v = (o2.optLong(Article.ARTICLE_PERFECT) - o1.optLong(Article.ARTICLE_PERFECT));
+                        if (0 == v) {
+                            return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
                         }
+
+                        return v > 0 ? 1 : -1;
                     });
 
                     break;

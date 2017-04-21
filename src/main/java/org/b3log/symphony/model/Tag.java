@@ -44,7 +44,7 @@ import org.jsoup.Jsoup;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.6.10, Mar 4, 2017
+ * @version 1.15.6.11, Apr 21, 2017
  * @since 0.2.0
  */
 public final class Tag {
@@ -441,14 +441,11 @@ public final class Tag {
     private static String normalize(final String title) {
         final TagCache cache = LatkeBeanManagerImpl.getInstance().getReference(TagCache.class);
         final List<JSONObject> iconTags = cache.getIconTags(Integer.MAX_VALUE);
-        Collections.sort(iconTags, new Comparator<JSONObject>() {
-            @Override
-            public int compare(final JSONObject t1, final JSONObject t2) {
-                final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
-                final String u2Title = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+        Collections.sort(iconTags, (t1, t2) -> {
+            final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+            final String u2Title = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
 
-                return u2Title.length() - u1Title.length();
-            }
+            return u2Title.length() - u1Title.length();
         });
 
         for (final JSONObject iconTag : iconTags) {
@@ -463,14 +460,11 @@ public final class Tag {
         }
 
         final List<JSONObject> allTags = cache.getTags();
-        Collections.sort(allTags, new Comparator<JSONObject>() {
-            @Override
-            public int compare(final JSONObject t1, final JSONObject t2) {
-                final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
-                final String u2Title = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+        Collections.sort(allTags, (t1, t2) -> {
+            final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+            final String u2Title = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
 
-                return u2Title.length() - u1Title.length();
-            }
+            return u2Title.length() - u1Title.length();
         });
 
         for (final JSONObject tag : allTags) {

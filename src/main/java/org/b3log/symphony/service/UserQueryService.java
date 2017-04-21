@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.8.6.11, Feb 16, 2017
+ * @version 1.8.6.12, Apr 21, 2017
  * @since 0.2.0
  */
 @Service
@@ -299,14 +299,11 @@ public class UserQueryService {
                 USER_NAMES.add(u);
             }
 
-            Collections.sort(USER_NAMES, new Comparator<JSONObject>() {
-                @Override
-                public int compare(final JSONObject u1, final JSONObject u2) {
-                    final String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
-                    final String u2Name = u2.optString(UserExt.USER_T_NAME_LOWER_CASE);
+            Collections.sort(USER_NAMES, (u1, u2) -> {
+                final String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
+                final String u2Name = u2.optString(UserExt.USER_T_NAME_LOWER_CASE);
 
-                    return u1Name.compareTo(u2Name);
-                }
+                return u1Name.compareTo(u2Name);
             });
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Loads usernames error", e);
@@ -330,20 +327,17 @@ public class UserQueryService {
         final JSONObject nameToSearch = new JSONObject();
         nameToSearch.put(UserExt.USER_T_NAME_LOWER_CASE, namePrefix.toLowerCase());
 
-        int index = Collections.binarySearch(USER_NAMES, nameToSearch, new Comparator<JSONObject>() {
-            @Override
-            public int compare(final JSONObject u1, final JSONObject u2) {
-                String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
-                final String inputName = u2.optString(UserExt.USER_T_NAME_LOWER_CASE);
+        int index = Collections.binarySearch(USER_NAMES, nameToSearch, (u1, u2) -> {
+            String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
+            final String inputName = u2.optString(UserExt.USER_T_NAME_LOWER_CASE);
 
-                if (u1Name.length() < inputName.length()) {
-                    return u1Name.compareTo(inputName);
-                }
-
-                u1Name = u1Name.substring(0, inputName.length());
-
+            if (u1Name.length() < inputName.length()) {
                 return u1Name.compareTo(inputName);
             }
+
+            u1Name = u1Name.substring(0, inputName.length());
+
+            return u1Name.compareTo(inputName);
         });
 
         final List<JSONObject> ret = new ArrayList<>();
