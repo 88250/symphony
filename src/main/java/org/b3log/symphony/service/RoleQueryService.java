@@ -46,7 +46,7 @@ import java.util.*;
  * Role query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.1, Dec 16, 2016
+ * @version 1.4.0.2, Apr 21, 2017
  * @since 1.8.0
  */
 @Service
@@ -369,13 +369,8 @@ public class RoleQueryService {
             throw new ServiceException(e);
         }
 
-        Collections.sort(roles, new Comparator<JSONObject>() {
-            @Override
-            public int compare(final JSONObject o1, final JSONObject o2) {
-                return ((List) o2.opt(Permission.PERMISSIONS)).size()
-                        - ((List) o1.opt(Permission.PERMISSIONS)).size();
-            }
-        });
+        Collections.sort(roles, (o1, o2) -> ((List) o2.opt(Permission.PERMISSIONS)).size()
+                - ((List) o1.opt(Permission.PERMISSIONS)).size());
 
         ret.put(Role.ROLES, (Object) roles);
 

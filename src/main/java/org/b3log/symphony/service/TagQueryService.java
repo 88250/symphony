@@ -53,7 +53,7 @@ import java.util.*;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.6.12, Apr 17, 2017
+ * @version 1.8.6.13, Apr 21, 2017
  * @since 0.2.0
  */
 @Service
@@ -133,20 +133,17 @@ public class TagQueryService {
 
         final List<JSONObject> tags = tagCache.getTags();
 
-        int index = Collections.binarySearch(tags, titleToSearch, new Comparator<JSONObject>() {
-            @Override
-            public int compare(final JSONObject t1, final JSONObject t2) {
-                String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
-                final String inputTitle = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+        int index = Collections.binarySearch(tags, titleToSearch, (t1, t2) -> {
+            String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+            final String inputTitle = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
 
-                if (u1Title.length() < inputTitle.length()) {
-                    return u1Title.compareTo(inputTitle);
-                }
-
-                u1Title = u1Title.substring(0, inputTitle.length());
-
+            if (u1Title.length() < inputTitle.length()) {
                 return u1Title.compareTo(inputTitle);
             }
+
+            u1Title = u1Title.substring(0, inputTitle.length());
+
+            return u1Title.compareTo(inputTitle);
         });
 
         final List<JSONObject> ret = new ArrayList<>();
@@ -171,12 +168,7 @@ public class TagQueryService {
         }
 
         final List<JSONObject> subList = tags.subList(start, end);
-        Collections.sort(subList, new Comparator<JSONObject>() {
-            @Override
-            public int compare(final JSONObject t1, final JSONObject t2) {
-                return t2.optInt(Tag.TAG_REFERENCE_CNT) - t1.optInt(Tag.TAG_REFERENCE_CNT);
-            }
-        });
+        Collections.sort(subList, (t1, t2) -> t2.optInt(Tag.TAG_REFERENCE_CNT) - t1.optInt(Tag.TAG_REFERENCE_CNT));
 
         return subList.subList(0, subList.size() > fetchSize ? fetchSize : subList.size());
     }

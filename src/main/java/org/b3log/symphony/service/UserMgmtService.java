@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.20.23, Jan 21, 2017
+ * @version 1.15.20.24, Apr 21, 2017
  * @since 0.2.0
  */
 @Service
@@ -629,14 +629,11 @@ public class UserMgmtService {
 
                 UserQueryService.USER_NAMES.add(u);
 
-                Collections.sort(UserQueryService.USER_NAMES, new Comparator<JSONObject>() {
-                    @Override
-                    public int compare(final JSONObject u1, final JSONObject u2) {
-                        final String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
-                        final String u2Name = u2.optString(UserExt.USER_T_NAME_LOWER_CASE);
+                Collections.sort(UserQueryService.USER_NAMES, (u1, u2) -> {
+                    final String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
+                    final String u2Name = u2.optString(UserExt.USER_T_NAME_LOWER_CASE);
 
-                        return u1Name.compareTo(u2Name);
-                    }
+                    return u1Name.compareTo(u2Name);
                 });
             }
 

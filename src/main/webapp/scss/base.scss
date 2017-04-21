@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.34.22.60, Apr 20, 2017
+ * @version 2.34.23.60, Apr 21, 2017
  */
 
 @import "variables";
@@ -1325,7 +1325,7 @@ a[class*=" icon-"]:hover {
     height: 100%;
     left: 0;
     opacity: .5;
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 100%;
     z-index: 200;
