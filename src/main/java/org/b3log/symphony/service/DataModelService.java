@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.26, Mar 6, 2017
+ * @version 1.12.2.27, Apr 22, 2017
  * @since 0.2.0
  */
 @Service
@@ -53,7 +53,7 @@ public class DataModelService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(DataModelService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DataModelService.class);
 
     /**
      * Icon configuration.
@@ -423,7 +423,7 @@ public class DataModelService {
 
             final int livenessMax = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");
             final int currentLiveness = livenessQueryService.getCurrentLivenessPoint(userId);
-            dataModel.put(Liveness.LIVENESS, (float) currentLiveness / livenessMax * 100);
+            dataModel.put(Liveness.LIVENESS, (float) (Math.round((float) currentLiveness / livenessMax * 100 * 100)) / 100);
         } finally {
             Stopwatchs.end();
         }
