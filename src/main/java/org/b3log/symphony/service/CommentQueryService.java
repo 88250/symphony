@@ -50,7 +50,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.9.25, Mar 22, 2017
+ * @version 2.11.9.26, Apr 23, 2017
  * @since 0.2.0
  */
 @Service
@@ -59,7 +59,7 @@ public class CommentQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentQueryService.class);
 
     /**
      * Comment repository.
@@ -802,8 +802,6 @@ public class CommentQueryService {
             return;
         }
 
-        genCommentContentUserName(comment);
-
         String commentContent = comment.optString(Comment.COMMENT_CONTENT);
 
         commentContent = shortLinkQueryService.linkArticle(commentContent);
@@ -828,34 +826,5 @@ public class CommentQueryService {
         }
 
         comment.put(Comment.COMMENT_CONTENT, commentContent);
-    }
-
-    /**
-     * Generates &#64;username home URL for the specified comment content.
-     *
-     * @param comment the specified comment
-     */
-    private void genCommentContentUserName(final JSONObject comment) {
-        Stopwatchs.start("Gen cmt content username");
-
-        String commentContent = comment.optString(Comment.COMMENT_CONTENT);
-        try {
-            try {
-                final Set<String> userNames = userQueryService.getUserNames(commentContent);
-                for (final String userName : userNames) {
-                    commentContent = commentContent.replace('@' + userName + " ",
-                            "@<a href='" + Latkes.getServePath() + "/member/" + userName + "'>" + userName + "</a> ");
-                }
-
-                commentContent = commentContent.replace("@participants ",
-                        "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
-            } catch (final ServiceException e) {
-                LOGGER.log(Level.ERROR, "Generates @username home URL for comment content failed", e);
-            }
-
-            comment.put(Comment.COMMENT_CONTENT, commentContent);
-        } finally {
-            Stopwatchs.end();
-        }
     }
 }

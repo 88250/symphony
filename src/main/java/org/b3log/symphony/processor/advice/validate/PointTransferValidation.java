@@ -18,10 +18,13 @@
 package org.b3log.symphony.processor.advice.validate;
 
 import java.util.Map;
+
 import org.b3log.latke.ioc.inject.Inject;;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -41,7 +44,7 @@ import org.json.JSONObject;
  * Validates for user point transfer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Mar 8, 2016
+ * @version 1.0.1.1, Apr 23, 2016
  * @since 1.3.0
  */
 @Named
@@ -83,13 +86,7 @@ public class PointTransferValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("amountInvalidLabel")));
         }
 
-        JSONObject toUser;
-        try {
-            toUser = userQueryService.getUserByName(userName);
-        } catch (final ServiceException e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("notFoundUserLabel")));
-        }
-
+        JSONObject toUser = userQueryService.getUserByName(userName);
         if (null == toUser) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("notFoundUserLabel")));
         }

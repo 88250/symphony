@@ -53,40 +53,46 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.8.6.12, Apr 21, 2017
+ * @version 1.8.6.13, Apr 23, 2017
  * @since 0.2.0
  */
 @Service
 public class UserQueryService {
 
     /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(UserQueryService.class);
+
+    /**
      * All usernames.
      */
     public static final List<JSONObject> USER_NAMES = Collections.synchronizedList(new ArrayList<JSONObject>());
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(UserQueryService.class.getName());
+
     /**
      * User repository.
      */
     @Inject
     private UserRepository userRepository;
+
     /**
      * Follow repository.
      */
     @Inject
     private FollowRepository followRepository;
+
     /**
      * Avatar query service.
      */
     @Inject
     private AvatarQueryService avatarQueryService;
+
     /**
      * Pointtransfer repository.
      */
     @Inject
     private PointtransferRepository pointtransferRepository;
+
     /**
      * Role query service.
      */
@@ -446,7 +452,6 @@ public class UserQueryService {
     /**
      * Gets user names from the specified text.
      * <p>
-     * <p>
      * A user name is between &#64; and a punctuation, a blank or a line break (\n). For example, the specified text is
      * <pre>&#64;88250 It is a nice day. &#64;Vanessa, we are on the way.</pre> There are two user names in the text,
      * 88250 and Vanessa.
@@ -454,18 +459,16 @@ public class UserQueryService {
      *
      * @param text the specified text
      * @return user names, returns an empty set if not found
-     * @throws ServiceException service exception
      */
-    public Set<String> getUserNames(final String text) throws ServiceException {
+    public Set<String> getUserNames(final String text) {
         final Set<String> ret = new HashSet<>();
-        final String mdtext = Markdowns.linkToHtml(text);
-        int idx = mdtext.indexOf('@');
+        int idx = text.indexOf('@');
 
         if (-1 == idx) {
             return ret;
         }
 
-        String copy = mdtext.trim();
+        String copy = text.trim();
         copy = copy.replaceAll("\\n", " ");
         //(?=\\pP)匹配标点符号-http://www.cnblogs.com/qixuejia/p/4211428.html
         copy = copy.replaceAll("(?=\\pP)[^@]", " ");
@@ -520,9 +523,8 @@ public class UserQueryService {
      *
      * @param name the specified name
      * @return user, returns {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getUserByName(final String name) throws ServiceException {
+    public JSONObject getUserByName(final String name) {
         try {
             final JSONObject ret = userRepository.getByName(name);
             if (null == ret) {
@@ -540,7 +542,8 @@ public class UserQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets user by name[" + name + "] failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 

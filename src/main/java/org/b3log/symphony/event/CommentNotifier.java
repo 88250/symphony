@@ -23,13 +23,15 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.processor.channel.ArticleChannel;
@@ -45,9 +47,6 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import org.b3log.latke.ioc.inject.Inject;;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,7 +55,7 @@ import java.util.Set;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.9.21, Feb 16, 2017
+ * @version 1.7.9.22, Apr 23, 2017
  * @since 0.2.0
  */
 @Named
@@ -66,7 +65,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentNotifier.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentNotifier.class);
 
     /**
      * Comment repository.
@@ -229,18 +228,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             cc = Emotions.convert(cc);
             cc = Markdowns.toHTML(cc);
             cc = Markdowns.clean(cc, "");
-            try {
-                final Set<String> userNames = userQueryService.getUserNames(commentContent);
-                for (final String userName : userNames) {
-                    cc = cc.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
-                            + "/member/" + userName + "'>" + userName + "</a> ");
-                }
-            } catch (final ServiceException e) {
-                LOGGER.log(Level.ERROR, "Generates @username home URL for comment content failed", e);
-            }
 
-            cc = cc.replace("@participants ",
-                    "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
             if (fromClient) {
                 // "<i class='ft-small'>by 88250</i>"
                 String syncCommenterName = StringUtils.substringAfter(cc, "<i class=\"ft-small\">by ");

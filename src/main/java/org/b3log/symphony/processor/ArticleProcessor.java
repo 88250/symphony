@@ -1499,21 +1499,6 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
-        if (null == currentUser) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
-        final Set<String> userNames = userQueryService.getUserNames(markdownText);
-        for (final String userName : userNames) {
-            markdownText = markdownText.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
-                    + "/member/" + userName + "'>" + userName + "</a> ");
-        }
-        markdownText = markdownText.replace("@participants ",
-                "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
-
         markdownText = shortLinkQueryService.linkArticle(markdownText);
         markdownText = shortLinkQueryService.linkTag(markdownText);
         markdownText = Emotions.toAliases(markdownText);

@@ -27,7 +27,7 @@
         <jetty.version>9.2.7.v20150116</jetty.version>
         <slf4j.version>1.7.7</slf4j.version>
         <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
-        <jsoup.version>1.10.1</jsoup.version>
+        <jsoup.version>1.10.2</jsoup.version>
         <pegdown.version>1.6.0</pegdown.version>
         <qiniu.version>7.0.4.1</qiniu.version>
         <jodd.version>3.6.6</jodd.version>
