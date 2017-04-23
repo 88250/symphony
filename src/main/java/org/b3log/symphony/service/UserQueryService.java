@@ -17,11 +17,10 @@
  */
 package org.b3log.symphony.service;
 
-import jodd.util.ArraysUtil;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -35,14 +34,12 @@ import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.FollowRepository;
 import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.repository.UserRepository;
-import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Times;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

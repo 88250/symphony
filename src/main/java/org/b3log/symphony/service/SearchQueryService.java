@@ -17,22 +17,19 @@
  */
 package org.b3log.symphony.service;
 
-import java.net.URL;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.urlfetch.HTTPHeader;
-import org.b3log.latke.urlfetch.HTTPRequest;
-import org.b3log.latke.urlfetch.HTTPResponse;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
+import org.b3log.latke.urlfetch.*;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.net.URL;
+import java.net.URLEncoder;
+import java.net.UnknownHostException;
 
 /**
  * Search query service.

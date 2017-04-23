@@ -17,6 +17,9 @@
  */
 package org.b3log.symphony.processor.advice;
 
+import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -30,9 +33,6 @@ import org.b3log.symphony.model.Role;
 import org.b3log.symphony.service.RoleQueryService;
 import org.json.JSONObject;
 
-import org.b3log.latke.ioc.inject.Inject;;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
 import java.util.Map;
 
 /**

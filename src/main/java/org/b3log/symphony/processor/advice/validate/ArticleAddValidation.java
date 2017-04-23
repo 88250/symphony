@@ -22,6 +22,8 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
@@ -39,8 +41,6 @@ import org.b3log.symphony.util.StatusCodes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.LinkedHashSet;

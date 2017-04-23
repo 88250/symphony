@@ -19,9 +19,9 @@ package org.b3log.symphony.api.v2;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
@@ -31,7 +31,6 @@ import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.processor.advice.validate.CommentAddValidation;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -40,7 +39,6 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Set;

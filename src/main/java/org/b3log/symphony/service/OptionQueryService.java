@@ -17,33 +17,25 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.List;
-import java.util.Set;
-import org.b3log.latke.ioc.inject.Inject;;
-import javax.websocket.Session;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Option;
-import org.b3log.symphony.processor.channel.ArticleChannel;
-import org.b3log.symphony.processor.channel.ArticleListChannel;
-import org.b3log.symphony.processor.channel.ChatRoomChannel;
-import org.b3log.symphony.processor.channel.TimelineChannel;
-import org.b3log.symphony.processor.channel.UserChannel;
+import org.b3log.symphony.processor.channel.*;
 import org.b3log.symphony.repository.OptionRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import javax.websocket.Session;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Option query service.

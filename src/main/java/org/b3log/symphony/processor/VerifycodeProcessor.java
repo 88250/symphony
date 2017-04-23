@@ -17,9 +17,7 @@
  */
 package org.b3log.symphony.processor;
 
-import org.b3log.latke.ioc.inject.Inject;;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -27,6 +25,9 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.symphony.service.VerifycodeMgmtService;
 import org.b3log.symphony.util.Symphonys;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Verifycode processor.

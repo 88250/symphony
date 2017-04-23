@@ -17,8 +17,6 @@
  */
 package org.b3log.symphony.repository;
 
-import java.util.List;
-
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.AbstractRepository;
@@ -26,6 +24,8 @@ import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Pointtransfer repository.

@@ -17,14 +17,12 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.List;
-import java.util.Locale;
-import org.b3log.latke.ioc.inject.Inject;;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -36,27 +34,14 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Liveness;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.Option;
-import org.b3log.symphony.model.Pointtransfer;
-import org.b3log.symphony.model.Reward;
-import org.b3log.symphony.model.Role;
-import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.repository.ArticleRepository;
-import org.b3log.symphony.repository.CommentRepository;
-import org.b3log.symphony.repository.NotificationRepository;
-import org.b3log.symphony.repository.OptionRepository;
-import org.b3log.symphony.repository.TagArticleRepository;
-import org.b3log.symphony.repository.TagRepository;
-import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.model.*;
+import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Comment management service.

@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.processor.advice.stopwatch;
 
-import java.util.Map;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
@@ -27,6 +26,8 @@ import org.b3log.latke.servlet.renderer.AbstractHTTPResponseRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
+
+import java.util.Map;
 
 /**
  * Stopwatch end advice for request processors.

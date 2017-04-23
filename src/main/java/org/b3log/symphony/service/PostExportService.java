@@ -19,17 +19,12 @@ package org.b3log.symphony.service;
 
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.UUID;
-import org.b3log.latke.ioc.inject.Inject;;
 import jodd.io.ZipUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.FilterOperator;
@@ -47,6 +42,12 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.UUID;
 
 /**
  * Post (article/comment) export service.

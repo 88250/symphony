@@ -17,11 +17,7 @@
  */
 package org.b3log.symphony.processor;
 
-import java.util.List;
-import java.util.Map;
-import org.b3log.latke.ioc.inject.Inject;;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -41,9 +37,14 @@ import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Top ranking list processor.
- *
+ * <p>
  * <ul>
  * <li>Top balance (/top/balance), GET</li>
  * <li>Top consumption (/top/consumption), GET</li>
@@ -78,8 +79,8 @@ public class TopProcessor {
     /**
      * Shows balance ranking list.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -88,7 +89,7 @@ public class TopProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showBalance(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);;
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
         renderer.setTemplateName("/top/balance.ftl");
@@ -111,8 +112,8 @@ public class TopProcessor {
     /**
      * Shows consumption ranking list.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -121,7 +122,8 @@ public class TopProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showConsumption(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);;
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        ;
         context.setRenderer(renderer);
 
         renderer.setTemplateName("/top/consumption.ftl");
@@ -144,8 +146,8 @@ public class TopProcessor {
     /**
      * Shows checkin ranking list.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -153,8 +155,9 @@ public class TopProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCheckin(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);;
+                            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        ;
         context.setRenderer(renderer);
 
         renderer.setTemplateName("/top/checkin.ftl");

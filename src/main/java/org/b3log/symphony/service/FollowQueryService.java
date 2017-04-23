@@ -19,6 +19,7 @@ package org.b3log.symphony.service;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -34,7 +35,6 @@ import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONObject;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import java.util.ArrayList;
 import java.util.List;
 

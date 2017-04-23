@@ -17,14 +17,10 @@
  */
 package org.b3log.symphony.dev;
 
-import java.io.IOException;
-import java.util.List;
-import org.b3log.latke.ioc.inject.Inject;;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Query;
@@ -39,6 +35,11 @@ import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.TagTagRepository;
 import org.b3log.symphony.service.TagMgmtService;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Generates tag-tag relations.

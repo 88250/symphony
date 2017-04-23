@@ -17,12 +17,12 @@
  */
 package org.b3log.symphony.util;
 
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.util.Execs;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * Tesseract-OCR utilities.

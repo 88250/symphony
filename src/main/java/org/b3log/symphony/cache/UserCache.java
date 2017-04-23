@@ -17,15 +17,15 @@
  */
 package org.b3log.symphony.cache;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
-import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.symphony.util.JSONs;
 import org.json.JSONObject;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * User cache.

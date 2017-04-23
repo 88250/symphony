@@ -18,13 +18,7 @@
 package org.b3log.symphony.repository;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Emotion;
 import org.json.JSONArray;

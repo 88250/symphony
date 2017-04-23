@@ -18,16 +18,9 @@
 package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import org.b3log.latke.ioc.inject.Inject;;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -38,33 +31,29 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
 import org.b3log.symphony.processor.channel.ChatRoomChannel;
-import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
-import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.CommentMgmtService;
-import org.b3log.symphony.service.CommentQueryService;
-import org.b3log.symphony.service.NotificationMgmtService;
-import org.b3log.symphony.service.NotificationQueryService;
-import org.b3log.symphony.service.ShortLinkQueryService;
-import org.b3log.symphony.service.TuringQueryService;
-import org.b3log.symphony.service.UserMgmtService;
-import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
 
 /**
  * Chat room processor.

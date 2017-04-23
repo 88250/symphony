@@ -19,6 +19,7 @@ package org.b3log.symphony.api;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -43,7 +44,6 @@ import org.b3log.symphony.service.BookMgmtService;
 import org.b3log.symphony.service.BookQueryService;
 import org.json.JSONObject;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;

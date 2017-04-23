@@ -17,9 +17,7 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.LinkedList;
-import java.util.List;
-import org.b3log.latke.ioc.inject.Inject;;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -30,6 +28,9 @@ import org.b3log.symphony.processor.channel.TimelineChannel;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Timeline management service.
