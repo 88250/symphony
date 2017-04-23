@@ -22,7 +22,9 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
+import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
@@ -30,14 +32,17 @@ import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.service.UserQueryService;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import org.jsoup.nodes.*;
 import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
+import org.jsoup.select.NodeVisitor;
 import org.pegdown.*;
 import org.pegdown.ast.*;
+import org.pegdown.ast.Node;
+import org.pegdown.ast.TextNode;
 import org.pegdown.plugins.ToHtmlSerializerPlugin;
 
 import java.io.InputStream;
@@ -53,42 +58,47 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  * <p>
  * Uses the <a href="https://github.com/chjj/marked">marked</a> as the processor, if not found this command, try
- * built-in
- * <a href="https://github.com/sirthias/pegdown">pegdown</a> instead.
+ * built-in <a href="https://github.com/sirthias/pegdown">pegdown</a> instead.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.13.20, Mar 8, 2017
+ * @version 1.10.13.21, Apr 23, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Markdowns.class);
 
     /**
      * Language service.
      */
     public static final LangPropsService LANG_PROPS_SERVICE
             = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(Markdowns.class);
+
     /**
      * Markdown cache.
      */
     private static final Cache MD_CACHE = CacheFactory.getCache("markdown");
+
     /**
      * Markdown to HTML timeout.
      */
-    private static final int MD_TIMEOUT = 2000;
+    private static final int MD_TIMEOUT = 2000000;
+
     /**
      * Marked engine serve path.
      */
     private static final String MARKED_ENGINE_URL = "http://localhost:8250";
+
     /**
      * Whether marked is available.
      */
     public static boolean MARKED_AVAILABLE;
+
 
     static {
         MD_CACHE.setMaxCount(1024 * 10 * 4);
@@ -187,86 +197,6 @@ public final class Markdowns {
     }
 
     /**
-     * Converts the email or url text to HTML.
-     *
-     * @param markdownText the specified markdown text
-     * @return converted HTML, returns an empty string "" if the specified markdown text is "" or {@code null}, returns
-     * 'markdownErrorLabel' if exception
-     */
-    public static String linkToHtml(final String markdownText) {
-        if (Strings.isEmptyOrNull(markdownText)) {
-            return "";
-        }
-
-        String ret = getHTML(markdownText);
-        if (null != ret) {
-            return ret;
-        }
-
-        final ExecutorService pool = Executors.newSingleThreadExecutor();
-
-        final long[] threadId = new long[1];
-
-        final Callable<String> call = new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                threadId[0] = Thread.currentThread().getId();
-
-                String ret = LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
-
-                if (MARKED_AVAILABLE) {
-                    ret = toHtmlByMarked(markdownText);
-
-                    if (!StringUtils.startsWith(ret, "<p>")) {
-                        ret = "<p>" + ret + "</p>";
-                    }
-                } else {
-                    final PegDownProcessor pegDownProcessor
-                            = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
-
-                    final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
-                    ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
-                            Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
-
-                    if (!StringUtils.startsWith(ret, "<p>")) {
-                        ret = "<p>" + ret + "</p>";
-                    }
-
-                    ret = formatMarkdown(ret);
-                }
-
-                // cache it
-                putHTML(markdownText, ret);
-
-                return ret;
-            }
-        };
-
-        try {
-            final Future<String> future = pool.submit(call);
-
-            return future.get(MD_TIMEOUT, TimeUnit.MILLISECONDS);
-        } catch (final TimeoutException e) {
-            LOGGER.log(Level.ERROR, "Markdown timeout [md=" + markdownText + "]");
-
-            final Set<Thread> threads = Thread.getAllStackTraces().keySet();
-            for (final Thread thread : threads) {
-                if (thread.getId() == threadId[0]) {
-                    thread.stop();
-
-                    break;
-                }
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Markdown failed [md=" + markdownText + "]", e);
-        } finally {
-            pool.shutdownNow();
-        }
-
-        return "";
-    }
-
-    /**
      * Converts the specified markdown text to HTML.
      *
      * @param markdownText the specified markdown text
@@ -278,48 +208,107 @@ public final class Markdowns {
             return "";
         }
 
-        String ret = getHTML(markdownText);
-        if (null != ret) {
-            return ret;
+        final String cachedHTML = getHTML(markdownText);
+        if (null != cachedHTML) {
+            return cachedHTML;
         }
 
         final ExecutorService pool = Executors.newSingleThreadExecutor();
-
         final long[] threadId = new long[1];
 
-        final Callable<String> call = new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                threadId[0] = Thread.currentThread().getId();
+        final Callable<String> call = () -> {
+            threadId[0] = Thread.currentThread().getId();
 
-                String ret = LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
+            String html = LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
 
-                if (MARKED_AVAILABLE) {
-                    ret = toHtmlByMarked(markdownText);
+            if (MARKED_AVAILABLE) {
+                html = toHtmlByMarked(markdownText);
 
-                    if (!StringUtils.startsWith(ret, "<p>")) {
-                        ret = "<p>" + ret + "</p>";
-                    }
-                } else {
-                    final PegDownProcessor pegDownProcessor
-                            = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
+                if (!StringUtils.startsWith(html, "<p>")) {
+                    html = "<p>" + html + "</p>";
+                }
+            } else {
+                final PegDownProcessor pegDownProcessor
+                        = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS);
 
-                    final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
-                    ret = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
-                            Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
+                final RootNode node = pegDownProcessor.parseMarkdown(markdownText.toCharArray());
+                html = new ToHtmlSerializer(new LinkRenderer(), Collections.<String, VerbatimSerializer>emptyMap(),
+                        Arrays.asList(new ToHtmlSerializerPlugin[0])).toHtml(node);
 
-                    if (!StringUtils.startsWith(ret, "<p>")) {
-                        ret = "<p>" + ret + "</p>";
-                    }
-
-                    ret = formatMarkdown(ret);
+                if (!StringUtils.startsWith(html, "<p>")) {
+                    html = "<p>" + html + "</p>";
                 }
 
-                // cache it
-                putHTML(markdownText, ret);
-
-                return ret;
+                html = formatMarkdown(html);
             }
+
+
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
+
+            final Document doc = Jsoup.parse(html);
+            final List<org.jsoup.nodes.Node> toRemove = new ArrayList<>();
+            doc.traverse(new NodeVisitor() {
+                @Override
+                public void head(final org.jsoup.nodes.Node node, int depth) {
+                    if (node instanceof org.jsoup.nodes.TextNode) {
+                        final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
+
+
+                        final org.jsoup.nodes.Node parent = textNode.parent();
+
+                        if (parent instanceof org.jsoup.nodes.Element) {
+                            final Element parentElem = (Element) parent;
+
+                            if (!parentElem.tagName().equals("code")) {
+                                String text = textNode.getWholeText();
+
+                                final Set<String> userNames = userQueryService.getUserNames(text);
+                                for (final String userName : userNames) {
+                                    text = text.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
+                                            + "/member/" + userName + "'>" + userName + "</a> ");
+
+                                }
+                                text = text.replace("@participants ",
+                                        "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
+
+                                if (text.contains("@<a href=")) {
+                                    final List<org.jsoup.nodes.Node> nodes = Parser.parseFragment(text, parentElem, "");
+                                    final int index = textNode.siblingIndex();
+
+
+
+                                    parentElem.insertChildren(index, nodes);
+                                    toRemove.add(node);
+                                } else {
+                                    textNode.text(Pangu.spacingText(text));
+                                }
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void tail(org.jsoup.nodes.Node node, int depth) {
+                }
+            });
+
+            toRemove.forEach(node -> {
+                node.remove();
+            });
+
+            doc.outputSettings().prettyPrint(false);
+
+            String ret = doc.html();
+
+
+            ret = StringUtils.substringBetween(ret, "<body>", "</body>");
+            ret = StringUtils.trim(ret);
+
+            // cache it
+            putHTML(markdownText, ret);
+
+            return ret;
         };
 
         Stopwatchs.start("Md to HTML");
@@ -365,33 +354,6 @@ public final class Markdowns {
         //conn.disconnect();
 
         return html;
-
-        // Pangu space
-//        final Document doc = Jsoup.parse(html);
-//        doc.traverse(new NodeVisitor() {
-//            @Override
-//            public void head(final org.jsoup.nodes.Node node, int depth) {
-//                if (node instanceof org.jsoup.nodes.TextNode) {
-//                    // final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
-//
-//                    // textNode.text(Pangu.spacingText(textNode.getWholeText()));
-//                    // FIXME: Pangu space
-//                }
-//            }
-//
-//            @Override
-//            public void tail(org.jsoup.nodes.Node node, int depth) {
-//            }
-//        });
-//
-//        doc.outputSettings().prettyPrint(false);
-//
-//        String ret = doc.html();
-//
-//        ret = StringUtils.substringBetween(ret, "<body>", "</body>");
-//        ret = StringUtils.trim(ret);
-//
-//        return ret;
     }
 
     /**

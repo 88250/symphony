@@ -17,17 +17,12 @@
  */
 package org.b3log.symphony.processor.advice;
 
-import java.util.Map;
-import org.b3log.latke.ioc.inject.Inject;;
+import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.model.User;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
@@ -35,11 +30,17 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+
+;
+
 /**
  * User block check. Gets user from request attribute named "user".
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.1, Aug 2, 2016
+ * @version 1.1.3.2, Apr 23, 2017
  * @since 0.2.5
  */
 @Named
@@ -49,7 +50,7 @@ public class UserBlockCheck extends BeforeRequestProcessAdvice {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UserBlockCheck.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserBlockCheck.class);
 
     /**
      * User query service.
@@ -65,35 +66,28 @@ public class UserBlockCheck extends BeforeRequestProcessAdvice {
         exception.put(Keys.MSG, HttpServletResponse.SC_NOT_FOUND);
         exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
 
-        JSONObject user;
         final String userName = (String) args.get("userName");
         if (UserExt.NULL_USER_NAME.equals(userName)) {
             exception.put(Keys.MSG, "Nil User [" + userName + ", requestURI=" + request.getRequestURI() + "]");
             throw new RequestProcessAdviceException(exception);
         }
 
-        try {
-            user = userQueryService.getUserByName(userName);
-            if (null == user) {
-                exception.put(Keys.MSG, "Not found user [" + userName + ", requestURI=" + request.getRequestURI() + "]");
-                throw new RequestProcessAdviceException(exception);
-            }
-
-            if (UserExt.USER_STATUS_C_NOT_VERIFIED == user.optInt(UserExt.USER_STATUS)) {
-                exception.put(Keys.MSG, "Unverified User [" + userName + ", requestURI=" + request.getRequestURI() + "]");
-                throw new RequestProcessAdviceException(exception);
-            }
-
-            if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
-                exception.put(Keys.MSG, "Blocked User [" + userName + ", requestURI=" + request.getRequestURI() + "]");
-                throw new RequestProcessAdviceException(exception);
-            }
-
-            request.setAttribute(User.USER, user);
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, "User block check failed");
-
+        final JSONObject user = userQueryService.getUserByName(userName);
+        if (null == user) {
+            exception.put(Keys.MSG, "Not found user [" + userName + ", requestURI=" + request.getRequestURI() + "]");
             throw new RequestProcessAdviceException(exception);
         }
+
+        if (UserExt.USER_STATUS_C_NOT_VERIFIED == user.optInt(UserExt.USER_STATUS)) {
+            exception.put(Keys.MSG, "Unverified User [" + userName + ", requestURI=" + request.getRequestURI() + "]");
+            throw new RequestProcessAdviceException(exception);
+        }
+
+        if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
+            exception.put(Keys.MSG, "Blocked User [" + userName + ", requestURI=" + request.getRequestURI() + "]");
+            throw new RequestProcessAdviceException(exception);
+        }
+
+        request.setAttribute(User.USER, user);
     }
 }

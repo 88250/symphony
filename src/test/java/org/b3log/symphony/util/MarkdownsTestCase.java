@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.3.1.5, Nov 27, 2016
+ * @version 2.3.1.6, Apr 23, 2017
  * @since 0.1.6
  */
 public class MarkdownsTestCase {
@@ -88,7 +88,7 @@ public class MarkdownsTestCase {
     public void linkToHTML() {
         if (!Markdowns.MARKED_AVAILABLE) {
             String md = "test@test.com";
-            String html = Markdowns.linkToHtml(md);
+            String html = Markdowns.toHTML(md);
 
             Assert.assertEquals(html, "<p><a href=\"mailto:&#116;e&#115;&#x74;&#x40;&#x74;&#x65;&#115;&#x74;&#x2e;c&#111;&#x6d;\">&#116;e&#115;&#x74;&#x40;&#x74;&#x65;&#115;&#x74;&#x2e;c&#111;&#x6d;</a></p>");
         }
