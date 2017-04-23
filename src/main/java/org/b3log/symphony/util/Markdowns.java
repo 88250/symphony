@@ -27,6 +27,7 @@ import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.MD5;
@@ -62,7 +63,7 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.13.21, Apr 23, 2017
+ * @version 1.10.14.21, Apr 23, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -75,7 +76,7 @@ public final class Markdowns {
     /**
      * Language service.
      */
-    public static final LangPropsService LANG_PROPS_SERVICE
+    private static final LangPropsService LANG_PROPS_SERVICE
             = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
 
     /**
@@ -259,19 +260,23 @@ public final class Markdowns {
                             if (!parentElem.tagName().equals("code")) {
                                 String text = textNode.getWholeText();
 
-                                final Set<String> userNames = userQueryService.getUserNames(text);
-                                for (final String userName : userNames) {
-                                    text = text.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
-                                            + "/member/" + userName + "'>" + userName + "</a> ");
-
+                                if (null != userQueryService) {
+                                    try {
+                                        final Set<String> userNames = userQueryService.getUserNames(text);
+                                        for (final String userName : userNames) {
+                                            text = text.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
+                                                    + "/member/" + userName + "'>" + userName + "</a> ");
+                                        }
+                                        text = text.replace("@participants ",
+                                                "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
+                                    } finally {
+                                        JdbcRepository.dispose();
+                                    }
                                 }
-                                text = text.replace("@participants ",
-                                        "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
 
                                 if (text.contains("@<a href=")) {
                                     final List<org.jsoup.nodes.Node> nodes = Parser.parseFragment(text, parentElem, "");
                                     final int index = textNode.siblingIndex();
-
 
                                     parentElem.insertChildren(index, nodes);
                                     toRemove.add(node);
