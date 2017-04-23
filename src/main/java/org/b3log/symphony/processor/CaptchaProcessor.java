@@ -17,15 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.util.HashSet;
-import java.util.Set;
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.image.Image;
@@ -43,6 +34,15 @@ import org.patchca.filter.predefined.CurvesRippleFilterFactory;
 import org.patchca.service.Captcha;
 import org.patchca.service.ConfigurableCaptchaService;
 import org.patchca.word.RandomWordFactory;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Captcha processor.

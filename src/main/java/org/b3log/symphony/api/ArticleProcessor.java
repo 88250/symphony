@@ -17,10 +17,7 @@
  */
 package org.b3log.symphony.api;
 
-import java.util.List;
-import org.b3log.latke.ioc.inject.Inject;;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -32,6 +29,10 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Article processor.

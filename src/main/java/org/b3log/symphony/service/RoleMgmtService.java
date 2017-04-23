@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.service;
 
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.FilterOperator;
@@ -31,7 +32,6 @@ import org.b3log.symphony.repository.RolePermissionRepository;
 import org.b3log.symphony.repository.RoleRepository;
 import org.json.JSONObject;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import java.util.Set;
 
 /**

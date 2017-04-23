@@ -17,17 +17,14 @@
  */
 package org.b3log.symphony.processor.advice;
 
-import java.util.Map;
-import org.b3log.latke.ioc.inject.Inject;;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.logging.Logger;
+import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -43,6 +40,10 @@ import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * Anonymous view check.

@@ -17,23 +17,6 @@
  */
 package org.b3log.symphony.util;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -47,6 +30,20 @@ import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.SymphonyServletListener;
 import org.json.JSONObject;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Symphony utilities.

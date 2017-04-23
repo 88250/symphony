@@ -17,9 +17,10 @@
  */
 package org.b3log.symphony.model.sitemap;
 
+import org.b3log.latke.util.Strings;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.b3log.latke.util.Strings;
 
 /**
  * Sitemap.

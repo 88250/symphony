@@ -17,19 +17,19 @@
  */
 package org.b3log.symphony.processor;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.b3log.symphony.util.GeetestLib;
-import javax.servlet.annotation.WebServlet;
 import org.b3log.latke.Keys;
+import org.b3log.symphony.util.GeetestLib;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * <a href="http://www.geetest.com">极验验证</a>.

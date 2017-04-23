@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -46,7 +47,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
-import org.b3log.latke.ioc.inject.Inject;;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

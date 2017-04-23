@@ -17,11 +17,8 @@
  */
 package org.b3log.symphony.processor;
 
-import org.b3log.symphony.processor.channel.ArticleChannel;
-import org.b3log.latke.ioc.inject.Inject;;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -29,11 +26,15 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
 import org.b3log.symphony.processor.channel.ChatRoomChannel;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Running status processor.

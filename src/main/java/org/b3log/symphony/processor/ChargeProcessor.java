@@ -17,10 +17,7 @@
  */
 package org.b3log.symphony.processor;
 
-import java.util.Map;
-import org.b3log.latke.ioc.inject.Inject;;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -35,6 +32,10 @@ import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * Charge processor.

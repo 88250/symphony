@@ -17,12 +17,10 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.b3log.latke.ioc.inject.Inject;;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.FilterOperator;
@@ -37,6 +35,9 @@ import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Short link query service.

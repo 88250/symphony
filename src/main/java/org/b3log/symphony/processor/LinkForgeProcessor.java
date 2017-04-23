@@ -18,6 +18,7 @@
 package org.b3log.symphony.processor;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -43,7 +44,6 @@ import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;

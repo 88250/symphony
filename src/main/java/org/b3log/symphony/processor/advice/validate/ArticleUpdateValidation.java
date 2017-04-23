@@ -17,16 +17,17 @@
  */
 package org.b3log.symphony.processor.advice.validate;
 
-import java.util.Map;
+import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
-import org.b3log.latke.Keys;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Requests;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * Validates for article updating.

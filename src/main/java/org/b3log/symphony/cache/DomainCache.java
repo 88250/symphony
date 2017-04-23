@@ -17,15 +17,16 @@
  */
 package org.b3log.symphony.cache;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import org.b3log.latke.ioc.inject.Inject;;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.service.DomainQueryService;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Domain cache.

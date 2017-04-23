@@ -17,11 +17,11 @@
  */
 package org.b3log.symphony.cache;
 
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.Keys;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Symphonys;

@@ -17,21 +17,16 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.b3log.latke.ioc.inject.Inject;;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.CompositeFilter;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.Filter;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.repository.RewardRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Reward query service.

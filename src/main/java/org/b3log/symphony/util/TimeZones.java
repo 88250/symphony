@@ -17,13 +17,7 @@
  */
 package org.b3log.symphony.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * https://github.com/nfergu/Java-Time-Zone-List.

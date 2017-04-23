@@ -17,10 +17,9 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.Date;
-import org.b3log.latke.ioc.inject.Inject;;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -29,6 +28,8 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.repository.LivenessRepository;
 import org.json.JSONObject;
+
+import java.util.Date;
 
 /**
  * Liveness query service.

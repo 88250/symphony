@@ -17,14 +17,15 @@
  */
 package org.b3log.symphony.processor.channel;
 
-import java.util.List;
-import java.util.Map;
+import org.b3log.latke.logging.Logger;
+
 import javax.servlet.http.HttpSession;
 import javax.websocket.HandshakeResponse;
 import javax.websocket.Session;
 import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.ServerEndpointConfig;
-import org.b3log.latke.logging.Logger;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Channel utilities.

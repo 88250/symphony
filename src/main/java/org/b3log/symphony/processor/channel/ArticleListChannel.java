@@ -17,19 +17,15 @@
  */
 package org.b3log.symphony.processor.channel;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.websocket.CloseReason;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.ServerEndpoint;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Article;
 import org.json.JSONObject;
+
+import javax.websocket.*;
+import javax.websocket.server.ServerEndpoint;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Article list channel.

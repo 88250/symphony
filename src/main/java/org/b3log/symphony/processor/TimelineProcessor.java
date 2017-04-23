@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.processor;
 
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -35,7 +36,6 @@ import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.util.Symphonys;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;

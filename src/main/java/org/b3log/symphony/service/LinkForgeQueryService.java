@@ -18,6 +18,7 @@
 package org.b3log.symphony.service;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
@@ -28,10 +29,8 @@ import org.b3log.symphony.repository.TagUserLinkRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**

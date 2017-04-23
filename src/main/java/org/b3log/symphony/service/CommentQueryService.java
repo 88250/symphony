@@ -20,6 +20,7 @@ package org.b3log.symphony.service;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -43,7 +44,6 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import org.b3log.latke.ioc.inject.Inject;;
 import java.util.*;
 
 /**

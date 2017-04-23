@@ -17,15 +17,15 @@
  */
 package org.b3log.symphony.service;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * User avatar query service.
