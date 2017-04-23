@@ -86,7 +86,7 @@ public final class Markdowns {
     /**
      * Markdown to HTML timeout.
      */
-    private static final int MD_TIMEOUT = 2000000;
+    private static final int MD_TIMEOUT = 2000;
 
     /**
      * Marked engine serve path.
@@ -97,7 +97,6 @@ public final class Markdowns {
      * Whether marked is available.
      */
     public static boolean MARKED_AVAILABLE;
-
 
     static {
         MD_CACHE.setMaxCount(1024 * 10 * 4);
@@ -289,9 +288,7 @@ public final class Markdowns {
                 }
             });
 
-            toRemove.forEach(node -> {
-                node.remove();
-            });
+            toRemove.forEach(node -> node.remove());
 
             doc.outputSettings().prettyPrint(false);
 
@@ -362,24 +359,24 @@ public final class Markdowns {
         final Document doc = Jsoup.parse(markdownText, "", Parser.htmlParser());
         final Elements tagA = doc.select("a");
 
-        for (int i = 0; i < tagA.size(); i++) {
-            final String search = tagA.get(i).attr("href");
+        for (final Element aTagA : tagA) {
+            final String search = aTagA.attr("href");
             final String replace = StringUtils.replace(search, "_", "[downline]");
 
             ret = StringUtils.replace(ret, search, replace);
         }
 
         final Elements tagImg = doc.select("img");
-        for (int i = 0; i < tagImg.size(); i++) {
-            final String search = tagImg.get(i).attr("src");
+        for (final Element aTagImg : tagImg) {
+            final String search = aTagImg.attr("src");
             final String replace = StringUtils.replace(search, "_", "[downline]");
 
             ret = StringUtils.replace(ret, search, replace);
         }
 
         final Elements tagCode = doc.select("code");
-        for (int i = 0; i < tagCode.size(); i++) {
-            final String search = tagCode.get(i).html();
+        for (final Element aTagCode : tagCode) {
+            final String search = aTagCode.html();
             final String replace = StringUtils.replace(search, "_", "[downline]");
 
             ret = StringUtils.replace(ret, search, replace);
@@ -430,7 +427,7 @@ public final class Markdowns {
      * @param markdownText the specified markdown text
      * @param html         the specified HTML
      */
-    public static void putHTML(final String markdownText, final String html) {
+    private static void putHTML(final String markdownText, final String html) {
         final String hash = MD5.hash(markdownText);
 
         MD_CACHE.put(hash, html);
@@ -949,7 +946,7 @@ public final class Markdowns {
 
                     // ok, legal match so save an expansions "task" for all matches
                     if (expansions == null) {
-                        expansions = new TreeMap<Integer, Map.Entry<String, String>>();
+                        expansions = new TreeMap<>();
                     }
                     expansions.put(sx, entry);
                 }
