@@ -34,15 +34,14 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.service.UserQueryService;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.*;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeVisitor;
 import org.pegdown.*;
 import org.pegdown.ast.*;
-import org.pegdown.ast.Node;
-import org.pegdown.ast.TextNode;
 import org.pegdown.plugins.ToHtmlSerializerPlugin;
 
 import java.io.InputStream;
@@ -253,8 +252,6 @@ public final class Markdowns {
                 public void head(final org.jsoup.nodes.Node node, int depth) {
                     if (node instanceof org.jsoup.nodes.TextNode) {
                         final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
-
-
                         final org.jsoup.nodes.Node parent = textNode.parent();
 
                         if (parent instanceof org.jsoup.nodes.Element) {
@@ -275,7 +272,6 @@ public final class Markdowns {
                                 if (text.contains("@<a href=")) {
                                     final List<org.jsoup.nodes.Node> nodes = Parser.parseFragment(text, parentElem, "");
                                     final int index = textNode.siblingIndex();
-
 
 
                                     parentElem.insertChildren(index, nodes);
@@ -300,8 +296,6 @@ public final class Markdowns {
             doc.outputSettings().prettyPrint(false);
 
             String ret = doc.html();
-
-
             ret = StringUtils.substringBetween(ret, "<body>", "</body>");
             ret = StringUtils.trim(ret);
 

@@ -802,8 +802,6 @@ public class CommentQueryService {
             return;
         }
 
-        genCommentContentUserName(comment);
-
         String commentContent = comment.optString(Comment.COMMENT_CONTENT);
 
         commentContent = shortLinkQueryService.linkArticle(commentContent);
@@ -828,30 +826,5 @@ public class CommentQueryService {
         }
 
         comment.put(Comment.COMMENT_CONTENT, commentContent);
-    }
-
-    /**
-     * Generates &#64;username home URL for the specified comment content.
-     *
-     * @param comment the specified comment
-     */
-    private void genCommentContentUserName(final JSONObject comment) {
-        Stopwatchs.start("Gen cmt content username");
-
-        String commentContent = comment.optString(Comment.COMMENT_CONTENT);
-        try {
-            final Set<String> userNames = userQueryService.getUserNames(commentContent);
-            for (final String userName : userNames) {
-                commentContent = commentContent.replace('@' + userName + " ",
-                        "@<a href='" + Latkes.getServePath() + "/member/" + userName + "'>" + userName + "</a> ");
-            }
-
-            commentContent = commentContent.replace("@participants ",
-                    "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
-
-            comment.put(Comment.COMMENT_CONTENT, commentContent);
-        } finally {
-            Stopwatchs.end();
-        }
     }
 }

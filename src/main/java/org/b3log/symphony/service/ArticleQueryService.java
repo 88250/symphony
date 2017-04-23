@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.29.54, Apr 21, 2017
+ * @version 2.27.29.55, Apr 23, 2017
  * @since 0.2.0
  */
 @Service
@@ -2430,7 +2430,6 @@ public class ArticleQueryService {
             String articleContent = article.optString(Article.ARTICLE_CONTENT);
             article.put(Common.DISCUSSION_VIEWABLE, true);
 
-            final Set<String> userNames = userQueryService.getUserNames(articleContent);
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
             final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
             final String currentRole = null == currentUser ? "" : currentUser.optString(User.USER_ROLE);
@@ -2438,6 +2437,8 @@ public class ArticleQueryService {
             if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
                     && !authorName.equals(currentUserName) && !Role.ROLE_ID_C_ADMIN.equals(currentRole)) {
                 boolean invited = false;
+
+                final Set<String> userNames = userQueryService.getUserNames(articleContent);
                 for (final String userName : userNames) {
                     if (userName.equals(currentUserName)) {
                         invited = true;
@@ -2462,32 +2463,13 @@ public class ArticleQueryService {
                 }
             }
 
-            for (final String userName : userNames) {
-                articleContent = articleContent.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
-                        + "/member/" + userName + "'>" + userName + "</a> ");
-            }
-
             articleContent = shortLinkQueryService.linkArticle(articleContent);
             articleContent = shortLinkQueryService.linkTag(articleContent);
-
             articleContent = Emotions.convert(articleContent);
             article.put(Article.ARTICLE_CONTENT, articleContent);
 
-            if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {
-                String articleRewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
-
-                final Set<String> rewordContentUserNames = userQueryService.getUserNames(articleRewardContent);
-
-                for (final String userName : rewordContentUserNames) {
-                    articleRewardContent = articleRewardContent.replace('@' + userName + " ",
-                            "@<a href='" + Latkes.getServePath() + "/member/" + userName + "'>" + userName + "</a> ");
-                }
-
-                articleRewardContent = Emotions.convert(articleRewardContent);
-                article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
-            }
-
             markdown(article);
+
             articleContent = MP3Players.render(article.optString(Article.ARTICLE_CONTENT));
 
             article.put(Article.ARTICLE_CONTENT, articleContent);

@@ -228,14 +228,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             cc = Emotions.convert(cc);
             cc = Markdowns.toHTML(cc);
             cc = Markdowns.clean(cc, "");
-            final Set<String> userNames = userQueryService.getUserNames(commentContent);
-            for (final String userName : userNames) {
-                cc = cc.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
-                        + "/member/" + userName + "'>" + userName + "</a> ");
-            }
-
-            cc = cc.replace("@participants ",
-                    "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
 
             if (fromClient) {
                 // "<i class='ft-small'>by 88250</i>"
