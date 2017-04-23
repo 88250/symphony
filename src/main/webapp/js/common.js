@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.42.30.45, Apr 5, 2017
+ * @version 1.42.31.45, Apr 23, 2017
  */
 
 /**
@@ -450,6 +450,18 @@ var Util = {
                     }
                 }
             ], gfm: true});
+
+        // code 中 <, > 进行转义
+        var codes = text.split('```');
+        if (codes.length > 1) {
+            for (var i = 0, iMax = codes.length; i < iMax; i++) {
+                if (i % 2 === 1) {
+                    codes[i] = codes[i].replace(/<\/span><span style="color:#\w{6};">/g, '').
+                    replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                }
+            }
+        }
+        text = codes.join('```');
 
         // ascii 160 替换为 30
         text = $('<div>' + text + '</div>').text().replace(/\n{2,}/g, '\n\n').replace(/ /g, ' ');
