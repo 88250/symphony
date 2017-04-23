@@ -80,6 +80,16 @@ public final class Markdowns {
             = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
 
     /**
+     * Bean manager.
+     */
+    private static final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+
+    /**
+     * User query service.
+     */
+    private static final UserQueryService userQueryService;
+
+    /**
      * Markdown cache.
      */
     private static final Cache MD_CACHE = CacheFactory.getCache("markdown");
@@ -101,6 +111,12 @@ public final class Markdowns {
 
     static {
         MD_CACHE.setMaxCount(1024 * 10 * 4);
+
+        if (null != beanManager) {
+            userQueryService = beanManager.getReference(UserQueryService.class);
+        } else {
+            userQueryService = null;
+        }
     }
 
     static {
@@ -240,10 +256,6 @@ public final class Markdowns {
 
                 html = formatMarkdown(html);
             }
-
-
-            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-            final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
 
             final Document doc = Jsoup.parse(html);
             final List<org.jsoup.nodes.Node> toRemove = new ArrayList<>();
