@@ -308,7 +308,7 @@
         <#include "footer.ftl">
         <div class="share fn-none">
             <span id="thankArticle" aria-label="${thankLabel}"
-                  class="tooltipped tooltipped-w<#if article.thanked> ft-red<#else> ft-blue</#if>"
+                  class="tooltipped tooltipped-e<#if article.thanked> ft-red<#else> ft-blue</#if>"
             <#if permissions["commonThankArticle"].permissionGrant>
                 <#if !article.thanked>
                     onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"
@@ -318,11 +318,11 @@
             </#if>><span class="icon-heart"></span> <span class="ft-13">${article.thankedCnt}</span></span>
             <div id="qrCode" class="fn-none"
                  data-shareurl="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"></div>
-            <span class="tooltipped tooltipped-w" aria-label="share to wechat" data-type="wechat"><span class="icon-wechat"></span></span>
-            <span class="tooltipped tooltipped-w" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span>
-            <span class="tooltipped tooltipped-w" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span>
-            <span class="tooltipped tooltipped-w" aria-label="share to google" data-type="google"><span class="icon-google"></span></span>
-            <span class="tooltipped tooltipped-w" data-type="copy"
+            <span class="tooltipped tooltipped-e" aria-label="share to wechat" data-type="wechat"><span class="icon-wechat"></span></span>
+            <span class="tooltipped tooltipped-e" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span>
+            <span class="tooltipped tooltipped-e" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span>
+            <span class="tooltipped tooltipped-e" aria-label="share to google" data-type="google"><span class="icon-google"></span></span>
+            <span class="tooltipped tooltipped-e" data-type="copy"
                   aria-label="${copyLabel}"
                   id="shareClipboard"><span
                     class="icon-link"></span></span>

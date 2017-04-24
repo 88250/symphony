@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.31.23.56, Apr 20, 2017
+ * @version 2.31.24.56, Apr 25, 2017
  */
 
 @import "variables";
@@ -180,12 +180,11 @@
        }
 
        h2 {
-            font-size: 16px;
+            font-size: 24px;
             line-height: 48px;
             font-weight: normal;
             flex: 1;
             margin: 0 20px;
-            text-align: center;
        }
 
        .user-nav > span,
