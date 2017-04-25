@@ -519,6 +519,7 @@ span.CodeMirror-selectedtext { background: none; }
     color: #666;
     padding: 5px 10px;
     cursor: pointer;
+    line-height: 24px;
 }
 .editor-toolbar a:hover,
 .editor-toolbar a.active,
