@@ -38,6 +38,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Networks;
@@ -49,7 +50,7 @@ import java.net.URL;
  * Sends comment to client.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.7, Feb 16, 2017
+ * @version 1.0.2.8, Apr 25, 2017
  * @since 0.2.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -57,7 +58,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentSender.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentSender.class);
 
     /**
      * URL fetch service.
@@ -94,6 +95,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
 
             final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
+            final AvatarQueryService avatarQueryService = beanManager.getReference(AvatarQueryService.class);
 
             final String authorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userQueryService.getUser(authorId);
@@ -126,7 +128,8 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             comment.put(Keys.OBJECT_ID, originalComment.optString(Keys.OBJECT_ID));
             comment.put(Comment.COMMENT_CONTENT, originalComment.optString(Comment.COMMENT_CONTENT));
             comment.put(Comment.COMMENT_T_AUTHOR_EMAIL, commenter.optString(User.USER_EMAIL));
-
+            comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(
+                    UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, commenter, "48"));
             final String authorName = commenter.optString(User.USER_NAME);
             comment.put(Comment.COMMENT_T_AUTHOR_NAME, authorName);
             comment.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
