@@ -36,6 +36,7 @@ import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.*;
+import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.service.UserQueryService;
@@ -51,7 +52,7 @@ import java.net.URL;
  * Sends comment to client.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.2, Feb 16, 2017
+ * @version 1.1.2.3, Apr 25, 2017
  * @since 1.4.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -96,6 +97,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
             final ShortLinkQueryService shortLinkQueryService = beanManager.getReference(ShortLinkQueryService.class);
+            final AvatarQueryService avatarQueryService = beanManager.getReference(AvatarQueryService.class);
 
             final String authorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userQueryService.getUser(authorId);
@@ -145,9 +147,10 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             comment.put(Common.AUTHOR_EMAIL, commenter.optString(User.USER_EMAIL));
             final String authorURL = Latkes.getServePath() + "/member/" + authorName;
             comment.put(Common.AUTHOR_URL, authorURL);
+            comment.put(Common.AUTHOR_AVATAR_URL, avatarQueryService.getAvatarURLByUser(
+                    UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, commenter, "48"));
             comment.put(Common.IS_ARTICLE_AUTHOR,
-                    originalArticle.optString(Article.ARTICLE_AUTHOR_ID)
-                    .equals(commenter.optString(Keys.OBJECT_ID)));
+                    originalArticle.optString(Article.ARTICLE_AUTHOR_ID).equals(commenter.optString(Keys.OBJECT_ID)));
             comment.put(Common.TIME, originalComment.optLong(Comment.COMMENT_CREATE_TIME));
             requestJSONObject.put(Comment.COMMENT, comment);
 
