@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.34.53.35, Apr 25, 2017
+ * @version 1.34.53.34, Apr 25, 2017
  */
 
 /**
@@ -338,15 +338,15 @@ var Comment = {
                 {name: 'bold'},
                 {name: 'italic'},
                 {name: 'quote'},
+                {name: 'link'},
+                {name: 'image', html: '<div class="tooltipped tooltipped-n" aria-label="' + Label.uploadFileLabel + '" ><form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form></div>'},
                 {name: 'unordered-list'},
                 {name: 'ordered-list'},
-                {name: 'link'},
-                {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form>'},
                 {name: 'redo'},
                 {name: 'undo'},
                 {name: 'view'},
-                {name: 'question', action: 'https://hacpai.com/guide/markdown'},
-                {name: 'fullscreen'}
+                {name: 'fullscreen'},
+                {name: 'question', action: 'https://hacpai.com/guide/markdown'}
             ],
             extraKeys: {
                 "Alt-/": "autocompleteUserName",
