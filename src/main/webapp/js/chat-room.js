@@ -186,4 +186,4 @@ var ChatRoom = {
         });
     }
 };
-ChatRoom.init();
+

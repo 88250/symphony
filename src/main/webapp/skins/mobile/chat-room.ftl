@@ -17,6 +17,7 @@
                     <div class="content-reset">
                         <h1>${communityDynamicLabel}</h1>
                         <i class="ft-gray">${communityDynamicSubLabel}</i>
+                        <br><br>
                     </div>
                     <div class="form">
                         <div class="reply">
@@ -86,6 +87,19 @@
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/chat-room${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
+            Label.addBoldLabel = '${addBoldLabel}';
+            Label.addItalicLabel = '${addItalicLabel}';
+            Label.insertQuoteLabel = '${insertQuoteLabel}';
+            Label.addBulletedLabel = '${addBulletedLabel}';
+            Label.addNumberedListLabel = '${addNumberedListLabel}';
+            Label.addLinkLabel = '${addLinkLabel}';
+            Label.undoLabel = '${undoLabel}';
+            Label.redoLabel = '${redoLabel}';
+            Label.previewLabel = '${previewLabel}';
+            Label.helpLabel = '${helpLabel}';
+            Label.fullscreenLabel = '${fullscreenLabel}';
+            Label.uploadFileLabel = '${uploadFileLabel}';
+            ChatRoom.init();
             // Init [ChatRoom] channel
             ChatRoomChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/chat-room-channel");
             var chatRoomMsgCnt = ${chatRoomMsgCnt};
