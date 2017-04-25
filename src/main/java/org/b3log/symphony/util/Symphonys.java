@@ -29,6 +29,8 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.model.Option;
+import org.b3log.symphony.service.OptionQueryService;
 import org.json.JSONObject;
 
 import javax.net.ssl.KeyManager;
@@ -49,15 +51,10 @@ import java.util.concurrent.Executors;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.7, Jan 8, 2017
+ * @version 1.7.0.8, Apr 25, 2017
  * @since 0.1.0
  */
 public final class Symphonys {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(Symphonys.class);
 
     /**
      * Configurations.
@@ -88,6 +85,11 @@ public final class Symphonys {
      * Thread pool.
      */
     public static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(50);
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Symphonys.class);
 
     static {
         // Loads reserved tags
@@ -157,9 +159,16 @@ public final class Symphonys {
 
                 HttpURLConnection httpConn = null;
                 OutputStream outputStream = null;
-
                 try {
                     final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                    final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+
+                    final JSONObject statistic = optionQueryService.getStatistic();
+                    final int articleCount = statistic.optInt(Option.ID_C_STATISTIC_ARTICLE_COUNT);
+                    if (articleCount < 66) {
+                        return;
+                    }
+
                     final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
 
                     httpConn = (HttpURLConnection) new URL("https://rhythm.b3log.org/sym").openConnection();
@@ -167,7 +176,7 @@ public final class Symphonys {
                     httpConn.setReadTimeout(10000);
                     httpConn.setDoOutput(true);
                     httpConn.setRequestMethod("POST");
-                    httpConn.setRequestProperty("User-Agent", "B3log Symphony/" + SymphonyServletListener.VERSION);
+                    httpConn.setRequestProperty("User-Agent", USER_AGENT_BOT);
 
                     httpConn.connect();
 
@@ -195,6 +204,12 @@ public final class Symphonys {
                 }
             }
         }, 1000 * 60 * 60 * 2, 1000 * 60 * 60 * 2);
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private Symphonys() {
     }
 
     /**
@@ -318,11 +333,5 @@ public final class Symphonys {
         }
 
         return Long.valueOf(stringValue);
-    }
-
-    /**
-     * Private default constructor.
-     */
-    private Symphonys() {
     }
 }

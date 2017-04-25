@@ -43,11 +43,11 @@
                                 <div class="fn-flex">
                                     <#if !msg.userAvatarURL?contains("user-thumbnail.png")>
                                     <a rel="nofollow" href="${servePath}/member/${msg.userName}">
-                                        <div class="avatar tooltipped tooltipped-se" 
+                                        <div class="avatar tooltipped tooltipped-n"
                                              aria-label="${msg.userName}" style="background-image:url('${msg.userAvatarURL}')"></div>
                                     </a>
                                     <#else>
-                                    <div class="avatar tooltipped tooltipped-se" 
+                                    <div class="avatar tooltipped tooltipped-n"
                                          aria-label="${msg.userName}" style="background-image:url('${msg.userAvatarURL}')"></div>
                                     </#if>
                                     <div class="fn-flex-1">
@@ -80,11 +80,25 @@
             Label.uploadLabel = "${uploadLabel}";
         </script>
         <script src="${staticServePath}/js/lib/editor/codemirror.min.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/lib/editor/editor.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/lib/highlight.js-9.6.0/highlight.pack.js"></script>
         <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/chat-room${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
+            Label.addBoldLabel = '${addBoldLabel}';
+            Label.addItalicLabel = '${addItalicLabel}';
+            Label.insertQuoteLabel = '${insertQuoteLabel}';
+            Label.addBulletedLabel = '${addBulletedLabel}';
+            Label.addNumberedListLabel = '${addNumberedListLabel}';
+            Label.addLinkLabel = '${addLinkLabel}';
+            Label.undoLabel = '${undoLabel}';
+            Label.redoLabel = '${redoLabel}';
+            Label.previewLabel = '${previewLabel}';
+            Label.helpLabel = '${helpLabel}';
+            Label.fullscreenLabel = '${fullscreenLabel}';
+            Label.uploadFileLabel = '${uploadFileLabel}';
+            ChatRoom.init();
             // Init [ChatRoom] channel
             ChatRoomChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/chat-room-channel");
             var chatRoomMsgCnt = ${chatRoomMsgCnt};

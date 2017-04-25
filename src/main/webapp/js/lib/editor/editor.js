@@ -1065,7 +1065,7 @@
 
         var label = ariaLabels[options.name]
         if (isMac) {
-            label = label.replace('cmd', '⌘').replace('shift', '⇧');
+            label = label.replace('ctrl', '⌘').replace('shift', '⇧');
         }
 
         el.className = 'tooltipped tooltipped-n';
