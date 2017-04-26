@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.34.53.34, Apr 25, 2017
+ * @version 1.34.54.34, Apr 26, 2017
  */
 
 /**
@@ -1263,9 +1263,10 @@ var Article = {
                         $("#articleRewardContent .content-reset").html(result.articleRewardContent);
                         Article.parseLanguage();
 
-                        var cnt = parseInt($('.article-actions .icon-points').parent().text());
-                        $('.article-actions .icon-points').parent().addClass('ft-red')
-                        .html('<span class="icon-points"></span> ' + (cnt + 1)).removeAttr('onclick');
+                        var $rewarcCnt = $("#articleRewardContent > span"),
+                            cnt = parseInt($rewarcCnt.text());
+                        $rewarcCnt.addClass('ft-red').removeClass('ft-blue')
+                        .html((cnt + 1) + ' ' + Label.rewardLabel).removeAttr('onclick');
                         return;
                     }
 

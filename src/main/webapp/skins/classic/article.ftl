@@ -128,9 +128,9 @@
 
                 <#if 0 < article.articleRewardPoint>
                 <div id="articleRewardContent">
-                    <span class="tooltipped tooltipped-w<#if article.rewarded> ft-red<#else> ft-blue</#if>"
-                    <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>
-                    aria-label="${rewardLabel}"><span class="icon-points"></span> ${article.rewardedCnt}</span>
+                    <span class="<#if article.rewarded> ft-red<#else> ft-blue</#if>"
+                    <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>>
+                    ${article.rewardedCnt} ${rewardLabel}</span>
 
                     <div class="content-reset">
                     <#if !article.rewarded>
@@ -493,6 +493,7 @@
             Label.qiniuDomain = '${qiniuDomain}';
             Label.qiniuUploadToken = '${qiniuUploadToken}';
             Label.noPermissionLabel = '${noPermissionLabel}';
+            Label.rewardLabel = '${rewardLabel}';
             Label.imgMaxSize = ${imgMaxSize?c};
             Label.fileMaxSize = ${fileMaxSize?c};
             Label.articleChannel = "${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}";
