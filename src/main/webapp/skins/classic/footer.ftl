@@ -25,11 +25,11 @@
                     <a rel="copyright" href="https://hacpai.com" target="_blank">hacpai.com</a>
                     ${visionLabel}</div>
             </div>
-            <div class="fn-clear ft-smaller ft-fade">
+            <div class="fn-clear ft-smaller">
                        ${sloganLabel}
                     <div class="fn-right">
-                       Powered by <a href="http://b3log.org" class="ft-gray" target="_blank">B3log 开源</a> •
-                            <a href="https://github.com/b3log/symphony" class="ft-gray" target="_blank">Sym</a>
+                       Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> •
+                            <a href="https://github.com/b3log/symphony" target="_blank">Sym</a>
                             ${version} • ${elapsed?c}ms
                     </div>
                 </div>
@@ -37,9 +37,6 @@
     </div>
 </div>
 
-<div class="go-top tooltipped tooltipped-w" aria-label="${goTopLabel}" onclick="Util.goTop()">
-    <span class="icon-go-top"></span>
-</div>
 <script src="${staticServePath}/js/lib/compress/libs.min.js?${staticResourceVersion}"></script>
 <script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>

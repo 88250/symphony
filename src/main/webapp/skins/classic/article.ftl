@@ -204,7 +204,7 @@
                 </#if>
 
                 <#if pjax><!---- pjax {#comments} start ----></#if>
-                <div class="module comments" id="comments">
+                <div class="module comments<#if article.articleComments?size == 0> fn-none</#if>" id="comments">
                     <div class="comments-header module-header">
                         <span class="article-cmt-cnt">${article.articleCommentCount} ${cmtLabel}</span>
                         <span class="fn-right<#if article.articleComments?size == 0> fn-none</#if>">
@@ -221,11 +221,6 @@
                             <#if comment_has_next><#assign notificationCmtIds = notificationCmtIds + ","></#if>
                             <#include 'common/comment.ftl' />
                             </#list>
-                            <#if article.articleComments?size == 0>
-                                <li class="ft-center fn-pointer" onclick="$('#replyBtn').click()">
-                                <img src="${noCmtImg}" class="article-no-comment-img">
-                                </li>
-                            </#if>
                         </ul>
                         <div id="bottomComment"></div>
                     </div>
@@ -489,6 +484,7 @@
             Label.helpLabel = '${helpLabel}';
             Label.fullscreenLabel = '${fullscreenLabel}';
             Label.uploadFileLabel = '${uploadFileLabel}';
+            Label.insertEmojiLabel = '${insertEmojiLabel}';
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
             Label.qiniuDomain = '${qiniuDomain}';
             Label.qiniuUploadToken = '${qiniuUploadToken}';

@@ -22,7 +22,6 @@
                         </div>
                     </#if>
                     <div class="module">
-                        <div class="module-header"><h2>${settingsLabel}</h2></div>
                         <div class="module-panel fn-oh">
                             <nav class="home-menu">
                                 <a href="${servePath}/settings"<#if 'profile' == type> class="current"</#if>>${profilesLabel}</a>

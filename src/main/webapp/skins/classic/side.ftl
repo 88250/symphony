@@ -13,27 +13,6 @@
     </div>
 </div>
 </#if>
-<#--div class="module">
-    <div class="module-header">
-        <h2>开源项目</h2>
-    </div>
-    <div class="module-panel">
-        <ul class="module-list open-source">
-            <li>
-                <a target="_blank" href="https://github.com/b3log/solo"><b class="ft-red slogan">【Solo】</b></a>
-                <a class="title" target="_blank" href="https://github.com/b3log/solo">GitHub 上 Star 数最多的 Java 博客</a>
-            </li>
-            <li>
-                <a target="_blank" href="https://github.com/b3log/wide"><b class="ft-blue slogan">【Wide】</b></a>
-                <a class="title" target="_blank" href="https://github.com/b3log/wide">Golang 黑科技之在线 IDE </a>
-            </li>
-            <li class="last">
-                <a target="_blank" href="https://github.com/b3log/symphony"> <b class="ft-green slogan">【Sym】</b></a>
-                <a class="title" target="_blank" href="https://github.com/b3log/symphony"> 黑客与画家的社区</a>
-            </li>
-        </ul>
-    </div>
-</div-->
 <#--
 <#if navTrendTags?size!=0>
 <div class="module">
@@ -148,6 +127,27 @@
                 <a class="ft-gray ft-13" rel="nofollow" href="${servePath}/tag/${newTag.tagURI}">${newTag.tagTitle}</a> &nbsp;
             </li>
             </#list>
+        </ul>
+    </div>
+</div>
+<div class="module">
+    <div class="module-header">
+        <h2>开源项目</h2>
+    </div>
+    <div class="module-panel">
+        <ul class="module-list open-source">
+            <li>
+                <a target="_blank" href="https://github.com/b3log/solo"><b class="ft-red slogan">【Solo】</b></a>
+                <a class="title" target="_blank" href="https://github.com/b3log/solo">GitHub 上 Star 数最多的 Java 博客</a>
+            </li>
+            <li>
+                <a target="_blank" href="https://github.com/b3log/wide"><b class="ft-blue slogan">【Wide】</b></a>
+                <a class="title" target="_blank" href="https://github.com/b3log/wide">Golang 黑科技之在线 IDE </a>
+            </li>
+            <li class="last">
+                <a target="_blank" href="https://github.com/b3log/symphony"> <b class="ft-green slogan">【Sym】</b></a>
+                <a class="title" target="_blank" href="https://github.com/b3log/symphony"> 黑客与画家的社区</a>
+            </li>
         </ul>
     </div>
 </div>

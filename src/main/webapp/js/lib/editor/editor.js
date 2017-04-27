@@ -1022,7 +1022,8 @@
         'Shift-Cmd-L': toggleOrderedList,
         'Cmd-L': toggleUnOrderedList,
         'Cmd-D': togglePreview,
-        'Shift-Cmd-A': toggleFullScreen
+        'Shift-Cmd-A': toggleFullScreen,
+        'Cmd-J': toggleEmoji
     };
 
 
@@ -1053,8 +1054,7 @@
             'unordered-list': Label.addBulletedLabel + ' <ctrl+l>',
             'ordered-list': Label.addNumberedListLabel + ' <shift+ctrl+l>',
             'link': Label.addLinkLabel + ' <ctrl+k>',
-            redo: Label.redoLabel + ' <shift+ctrl+z>',
-            undo: Label.undoLabel + ' <ctrl+z>',
+            'emoji': Label.insertEmojiLabel + ' <ctrl+j>',
             view: Label.previewLabel + ' <ctrl+d>',
             question: Label.helpLabel,
             fullscreen: Label.fullscreenLabel + ' <shift+ctrl+a>'
@@ -1068,8 +1068,8 @@
             label = label.replace('ctrl', '⌘').replace('shift', '⇧');
         }
 
-        el.className = 'tooltipped tooltipped-n';
-        el.setAttribute('aria-label', label)
+        el.className = 'tooltipped tooltipped-ne';
+        el.setAttribute('aria-label', label);
         el.innerHTML = "<span class='icon-" + options.name + "'></span>"
         return el;
     }
@@ -1353,6 +1353,46 @@
         });
     }
 
+    /**
+     * Action for toggling emoji.
+     */
+    function toggleEmoji(editor) {
+        var $toolbar = $(editor.element).next(),
+            $emojiPanel = $toolbar.find('.editor-toolbar-emoji'),
+            cm = editor.codemirror;
+
+        if ($emojiPanel.length === 1) {
+            if ($emojiPanel.css('display') === 'none') {
+                $emojiPanel.show();
+                editor.toolbar.emoji.className = 'tooltipped tooltipped-ne active';
+            } else {
+                $emojiPanel.hide();
+                editor.toolbar.emoji.className = 'tooltipped tooltipped-ne';
+            }
+            return false;
+        }
+
+        // gen emoji
+        var emojiList = Util.allEmoj.split(','),
+        emojiHTML = '';
+
+        editor.toolbar.emoji.className = 'tooltipped tooltipped-ne active';
+
+        for (var i = 0, iMax = emojiList.length; i < iMax; i++) {
+            emojiHTML += '<img title=":' + emojiList[i]
+                + ':" class="emoji" src="' + Label.staticServePath + '/emoji/graphics/'
+                + emojiList[i] + '.png">';
+        }
+        $toolbar.append('<div class="module editor-toolbar-emoji">' + emojiHTML + '</div>');
+
+        $emojiPanel = $toolbar.find('.editor-toolbar-emoji');
+        $emojiPanel.find('.emoji').click(function () {
+            _replaceSelection(cm, null, this.title, '');
+            $emojiPanel.hide();
+            editor.toolbar.emoji.className = 'tooltipped tooltipped-ne';
+        });
+    }
+
     function _replaceSelection(cm, active, start, end) {
         var text;
         var startPoint = cm.getCursor('start');
@@ -1421,6 +1461,7 @@
     }
 
     var toolbar = [
+        {name: 'emoji', action: toggleEmoji},
         {name: 'bold', action: toggleBold},
         {name: 'italic', action: toggleItalic},
         '|',
@@ -1672,6 +1713,7 @@
     Editor.redo = redo;
     Editor.togglePreview = togglePreview;
     Editor.toggleFullScreen = toggleFullScreen;
+    Editor.toggleEmoji = toggleEmoji;
 
     /**
      * Bind instance methods for exports.
@@ -1708,6 +1750,9 @@
     };
     Editor.prototype.toggleFullScreen = function () {
         toggleFullScreen(this);
+    };
+    Editor.prototype.toggleEmoji = function () {
+        toggleEmoji(this);
     };
 
     global.Editor = Editor;

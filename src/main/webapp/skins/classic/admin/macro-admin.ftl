@@ -62,7 +62,6 @@
                 <#nested>
                 <div class="side">
                     <div class="module">
-                        <div class="module-header"><h2>${adminLabel}</h2></div> 
                         <div class="module-panel fn-oh">
                             <nav class="home-menu">
                                 <#if permissions["menuAdmin"].permissionGrant>

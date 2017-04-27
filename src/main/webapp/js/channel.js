@@ -62,14 +62,12 @@ var ArticleChannel = {
                     $(".comments-header .article-cmt-cnt").text(cmtCount + ' ' + Label.cmtLabel);
 
                     // 新增第一条评论时到底部的锚点
-                    if ($('#comments .list > ul > li.ft-center').length === 1) {
+                    if ($('#comments .list > ul > li').length === 0) {
                         $('.comment-header > .fn-none').show();
                         // 显示预览模式 & 回到底部
                         $('.comments-header > .fn-none').show();
-                        // 移除没有评论的提示
-                        $('#comments .list > ul > li.ft-center').remove();
-                        // 显示评论大图
-                        $('#comments').next().show();
+                        // 显示评论
+                        $("#comments").show();
                     }
 
                     if (0 === Label.userCommentViewMode) { // tranditional view mode

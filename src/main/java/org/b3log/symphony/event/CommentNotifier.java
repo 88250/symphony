@@ -55,7 +55,7 @@ import java.util.Set;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.9.22, Apr 23, 2017
+ * @version 1.7.9.23, Apr 27, 2017
  * @since 0.2.0
  */
 @Named
@@ -337,14 +337,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             atUserNames.remove(commenterName);
 
             final Set<String> watcherIds = new HashSet<>();
-            final int articleWatchCnt = originalArticle.optInt(Article.ARTICLE_WATCH_CNT);
             final JSONObject followerUsersResult =
                     followQueryService.getArticleWatchers(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL,
                             articleId, 1, Integer.MAX_VALUE);
 
             final List<JSONObject> watcherUsers = (List<JSONObject>) followerUsersResult.opt(Keys.RESULTS);
             for (final JSONObject watcherUser : watcherUsers) {
-                final JSONObject requestJSONObject = new JSONObject();
                 final String watcherUserId = watcherUser.optString(Keys.OBJECT_ID);
 
                 watcherIds.add(watcherUserId);
@@ -354,7 +352,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             if (commenterIsArticleAuthor && atUserNames.isEmpty() && watcherIds.isEmpty() && StringUtils.isBlank(originalCmtId)) {
                 return;
             }
-
 
             // 2. 'Commented' Notification
             if (!commenterIsArticleAuthor) {
