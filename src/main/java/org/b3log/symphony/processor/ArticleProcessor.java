@@ -93,7 +93,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.25.27.43, Mar 29, 2017
+ * @version 1.26.27.43, Apr 26, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -102,7 +102,7 @@ public class ArticleProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class);
 
     /**
      * Short link query service.
@@ -416,15 +416,34 @@ public class ArticleProcessor {
      *
      * @param dataModel the specified data model
      */
-    private void fillDomainsWithTags(Map<String, Object> dataModel) {
+    private void fillDomainsWithTags(final Map<String, Object> dataModel) {
         final List<JSONObject> domains = domainCache.getDomains(Integer.MAX_VALUE);
-
-        dataModel.put(Domain.DOMAINS, domains);
-
+        dataModel.put(Common.ADD_ARTICLE_DOMAINS, domains);
         for (final JSONObject domain : domains) {
             final List<JSONObject> tags = domainQueryService.getTags(domain.optString(Keys.OBJECT_ID));
 
             domain.put(Domain.DOMAIN_T_TAGS, (Object) tags);
+        }
+
+        final JSONObject user = (JSONObject) dataModel.get(Common.CURRENT_USER);
+        if (null == user) {
+            return;
+        }
+
+        try {
+            final JSONObject followingTagsResult = followQueryService.getFollowingTags(
+                    user.optString(Keys.OBJECT_ID), 1, 28);
+            final List<JSONObject> followingTags = (List<JSONObject>) followingTagsResult.opt(Keys.RESULTS);
+            if (!followingTags.isEmpty()) {
+                final JSONObject userWatched = new JSONObject();
+                userWatched.put(Keys.OBJECT_ID, String.valueOf(System.currentTimeMillis()));
+                userWatched.put(Domain.DOMAIN_TITLE, langPropsService.get("notificationFollowingLabel"));
+                userWatched.put(Domain.DOMAIN_T_TAGS, (Object) followingTags);
+
+                domains.add(0, userWatched);
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Get user [name=" + user.optString(User.USER_NAME) + "] following tags failed", e);
         }
     }
 
@@ -461,8 +480,6 @@ public class ArticleProcessor {
         dataModel.put("imgMaxSize", imgMaxSize);
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
         dataModel.put("fileMaxSize", fileMaxSize);
-
-        fillDomainsWithTags(dataModel);
 
         String tags = request.getParameter(Tag.TAGS);
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
@@ -553,6 +570,7 @@ public class ArticleProcessor {
         dataModel.put("hasB3Key", !Strings.isEmptyOrNull(b3logKey));
 
         fillPostArticleRequisite(dataModel, currentUser);
+        fillDomainsWithTags(dataModel);
     }
 
     private void fillPostArticleRequisite(final Map<String, Object> dataModel, final JSONObject currentUser) {

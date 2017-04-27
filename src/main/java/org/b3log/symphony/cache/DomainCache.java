@@ -32,7 +32,7 @@ import java.util.List;
  * Domain cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.0, May 15, 2016
+ * @version 1.0.2.1, Apr 26, 2017
  * @since 1.4.0
  */
 @Named
@@ -68,7 +68,7 @@ public class DomainCache {
 
         final int end = fetchSize >= DOMAINS.size() ? DOMAINS.size() : fetchSize;
 
-        return DOMAINS.subList(0, end);
+        return new ArrayList<>(DOMAINS.subList(0, end));
     }
 
     /**
