@@ -43,7 +43,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.3.12, Mar 22, 2017
+ * @version 1.13.4.12, Apr 27, 2017
  * @since 0.2.5
  */
 @Service
@@ -1330,7 +1330,7 @@ public class NotificationQueryService {
                 broadcastNotification.put(Common.THUMBNAIL_URL,
                         avatarQueryService.getAvatarURLByUser(avatarViewMode, author, "48"));
                 broadcastNotification.put(Common.THUMBNAIL_UPDATE_TIME, author.optLong(UserExt.USER_UPDATE_TIME));
-                broadcastNotification.put(Article.ARTICLE_TITLE, articleTitle);
+                broadcastNotification.put(Article.ARTICLE_TITLE, Emotions.convert(articleTitle));
                 broadcastNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
                 broadcastNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
                 broadcastNotification.put(Notification.NOTIFICATION_HAS_READ,
