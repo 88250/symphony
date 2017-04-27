@@ -223,7 +223,7 @@
                             </#list>
                             <#if article.articleComments?size == 0>
                                 <li class="ft-center fn-pointer" onclick="$('#replyBtn').click()">
-                                <img src="${noCmtImg}" class="article-no-comment-img">
+                                <img src="${noCmtImg}">
                                 </li>
                             </#if>
                         </ul>
