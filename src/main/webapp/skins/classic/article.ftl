@@ -489,6 +489,7 @@
             Label.helpLabel = '${helpLabel}';
             Label.fullscreenLabel = '${fullscreenLabel}';
             Label.uploadFileLabel = '${uploadFileLabel}';
+            Label.insertEmojiLabel = '${insertEmojiLabel}';
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
             Label.qiniuDomain = '${qiniuDomain}';
             Label.qiniuUploadToken = '${qiniuUploadToken}';

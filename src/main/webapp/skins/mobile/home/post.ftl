@@ -149,6 +149,7 @@
             Label.uploadingLabel = '${uploadingLabel}';
             Label.articleRewardPointErrorLabel = '${articleRewardPointErrorLabel}';
             Label.discussionLabel = '${discussionLabel}';
+            Label.insertEmojiLabel = '${insertEmojiLabel}';
             Label.addBoldLabel = '${addBoldLabel}';
             Label.addItalicLabel = '${addItalicLabel}';
             Label.insertQuoteLabel = '${insertQuoteLabel}';
