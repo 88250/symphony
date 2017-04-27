@@ -57,15 +57,16 @@ import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
 
 /**
  * Chat room processor.
- *
+ * <p>
  * <ul>
  * <li>Shows char room (/cr, /chat-room, /community), GET</li>
  * <li>Sends chat message (/chat-room/send), POST</li>
  * <li>Receives <a href="https://github.com/b3log/xiaov">XiaoV</a> message (/community/push), POST</li>
  * </ul>
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.10, Jan 21, 2017
+ * @version 1.3.5.11, Apr 27, 2017
  * @since 1.4.0
  */
 @RequestProcessor
@@ -74,7 +75,12 @@ public class ChatRoomProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ChatRoomProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ChatRoomProcessor.class);
+
+    /**
+     * Chat messages.
+     */
+    public static LinkedList<JSONObject> messages = new LinkedList<JSONObject>();
 
     /**
      * Data model service.
@@ -137,17 +143,12 @@ public class ChatRoomProcessor {
     private ArticleQueryService articleQueryService;
 
     /**
-     * Chat messages.
-     */
-    public static LinkedList<JSONObject> messages = new LinkedList<JSONObject>();
-
-    /**
      * XiaoV replies Stm.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @throws IOException io exception
+     * @throws IOException      io exception
      * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/cron/xiaov", method = HTTPRequestMethod.GET)
@@ -164,7 +165,6 @@ public class ChatRoomProcessor {
             final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
             final String xiaoVUserId = xiaoV.optString(Keys.OBJECT_ID);
-            final String xiaoVEmail = xiaoV.optString(User.USER_EMAIL);
             final JSONObject result = notificationQueryService.getAtNotifications(
                     avatarViewMode, xiaoVUserId, 1, 1); // Just get the latest one
             final List<JSONObject> notifications = (List<JSONObject>) result.get(Keys.RESULTS);
@@ -175,12 +175,9 @@ public class ChatRoomProcessor {
                 }
 
                 String xiaoVSaid = "";
-
                 final JSONObject comment = new JSONObject();
-
                 String articleId = StringUtils.substringBetween(notification.optString(Common.URL),
                         "/article/", "#");
-
                 String q = "";
 
                 if (!StringUtils.isBlank(articleId)) {
@@ -228,7 +225,6 @@ public class ChatRoomProcessor {
 
     /**
      * Adds a chat message.
-     *
      * <p>
      * The request json object (a chat message):
      * <pre>
@@ -238,16 +234,16 @@ public class ChatRoomProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
-     * @throws IOException io exception
+     * @throws IOException      io exception
      * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/chat-room/send", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {ChatMsgAddValidation.class})
     public synchronized void addChatRoomMsg(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response)
+                                            final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
         context.renderJSON();
 
@@ -307,8 +303,8 @@ public class ChatRoomProcessor {
     /**
      * Shows chat room.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -316,7 +312,7 @@ public class ChatRoomProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showChatRoom(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("chat-room.ftl");
@@ -350,8 +346,8 @@ public class ChatRoomProcessor {
     /**
      * XiaoV push API.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -359,7 +355,7 @@ public class ChatRoomProcessor {
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
     public synchronized void receiveXiaoV(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                                          final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 //        final String key = Symphonys.get("xiaov.key");
 //        if (!key.equals(request.getParameter("key"))) {
 //            response.sendError(HttpServletResponse.SC_FORBIDDEN);

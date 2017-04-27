@@ -1,6 +1,6 @@
 <#if tipsLabel??>
 <div class="module">
-    <div class="module-header">${smallTipLabel}</div>
+    <div class="module-header"><h2>${smallTipLabel}</h2></div>
     <div class="module-panel">
         <ul class="module-list small-tips">
             <li>
