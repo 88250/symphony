@@ -67,7 +67,7 @@
                 <div class="side">
                     <#include "home-side.ftl">
                     <div class="module fn-none">
-                        <div class="module-header"><h2>${goHomeLabel}</h2></div> 
+                        <div class="module-header"><h2>${goHomeLabel}</h2></div>
                         <div class="module-panel fn-oh">
                             <nav class="home-menu">
                                 <a pjax-title="${articleLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">

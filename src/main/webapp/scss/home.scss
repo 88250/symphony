@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.13.30, Apr 20, 2017
+ * @version 2.11.13.31, Apr 27, 2017
  */
 
 @import "variables";
@@ -401,9 +401,6 @@ label.article-anonymous {
 .admin {
     .form {
         padding: 8px 15px;
-        border-bottom: 1px solid #e5e5e5;
-        background: #f9fafb;
-        border-radius: 3px 3px 0 0;
     }
 
     .tags {
