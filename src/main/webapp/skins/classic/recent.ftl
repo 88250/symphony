@@ -40,7 +40,7 @@
                         <@list listData=latestArticles/>
                         <@pagination url="${servePath}/recent${current}" pjaxTitle="${latestLabel} - ${symphonyLabel}"/>
                     </div><#if pjax><!---- pjax {#recent-pjax-container} end ----></#if>
-                    <#include "common/domains.ftl">
+
                 </div>
 
                 <div class="side">
@@ -48,6 +48,7 @@
                 </div>
             </div>
         </div>
+        <#include "common/domains.ftl">
         <#include "footer.ftl">
         <@listScript/>
         <script>

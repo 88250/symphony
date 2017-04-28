@@ -38,13 +38,14 @@
                         </#if>
                     </div>
 
-                    <#include "common/domains.ftl"><#if pjax><!---- pjax {#domain-pjax-container} end ----></#if>
+                    <#if pjax><!---- pjax {#domain-pjax-container} end ----></#if>
                 </div>
                 <div class="side">
                     <#include "side.ftl">
                 </div>
             </div>
         </div>
+        <#include "common/domains.ftl">
         <#include "footer.ftl">
         <@listScript/>
         <script>

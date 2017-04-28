@@ -23,7 +23,6 @@
                 <div class="side" id="side">
                     <#include '../../common/person-info.ftl'/>
                     <div class="module">
-                        <div class="module-header"><h2>${messageLabel}</h2>
                             <#if unreadNotificationCnt &gt; 0>
                             <span class="count">${unreadNotificationCnt}</span>
                             <span onclick="Settings.makeAllNotificationsRead()" 
@@ -103,7 +102,6 @@
         <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Settings.initHljs();
-            Settings.notiScroll();
             $(document).bind('keyup', 'e', function assets() {
                 if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
                     return false;

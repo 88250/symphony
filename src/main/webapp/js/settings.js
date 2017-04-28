@@ -33,24 +33,9 @@ var Settings = {
      * 个人主页滚动固定
      */
     homeScroll: function () {
-        var beforeScorllTop = $(window).scrollTop(),
-        navHTML = $('.nav-tabs').html();
-
-        $(window).scroll(function () {
-            var currentScrollTop = $(window).scrollTop();
-
-            if (currentScrollTop > beforeScorllTop) {
-                $('.nav-tabs').html($('.home-menu').html());
-            } else {
-                $('.nav-tabs').html(navHTML);
-            }
-
-            beforeScorllTop = currentScrollTop;
-        });
-
         $('.nav-tabs').html($('.home-menu').html());
         $('.nav').css('position', 'fixed');
-        $('.main').css('paddingTop', '89px');
+        $('.main').css('paddingTop', '68px');
     },
     /**
      * 通知页面侧边栏滚动固定

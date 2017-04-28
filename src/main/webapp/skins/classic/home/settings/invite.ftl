@@ -40,7 +40,7 @@
     <div class="module-panel form fn-clear">
         <input id="invitecode" type="text" placeholder="${inputInvitecodeLabel}"/><br/><br/>
         <div class="tip" id="invitecodeStateTip"></div><br/>
-        <button class="green fn-right" onclick="Settings.queryInvitecode('${csrfToken}')">${submitLabel}</button>
+        <button class="fn-right" onclick="Settings.queryInvitecode('${csrfToken}')">${submitLabel}</button>
     </div>
 </div>
 </#if>

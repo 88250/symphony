@@ -540,7 +540,7 @@ button,
     color: #333;
     border-radius: 3px;
     padding: 6px 12px;
-    background-color: #f2f2f2;
+    background-color: rgba(0,0,0,.02);
     border: 1px solid #D5D5D5;
     border-bottom-color: #E1E1E1;
     box-sizing: border-box;
@@ -901,7 +901,7 @@ a[class*=" icon-"]:hover {
     padding: 10px;
     font-size: 18px;
     font-weight: normal;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #eee;
 }
 
 .dialog-header-bg .icon-close {
@@ -930,7 +930,7 @@ a[class*=" icon-"]:hover {
     display: none;
     position: absolute;
     background-color: #FFF;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #eee;
     z-index: 72;
     border-radius: 0 0 3px 3px;
     width: 50%;
@@ -1225,7 +1225,7 @@ ul.CodeMirror-hints {
 
 /* start side module */
 .module {
-    border: 1px solid #e5e5e5;
+    border: 1px solid #eee;
     margin-bottom: 10px;
     background-color: #FFF;
     border-radius: 3px;
@@ -1237,9 +1237,9 @@ ul.CodeMirror-hints {
 .module-header {
     border-radius: 3px 3px 0 0;
     background-color: #F7F7F7;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #eee;
     padding: 9px 10px 10px;
-    text-shadow: 0 1px 0 #FFFFFF;
+    text-shadow: 0 1px 0 #fff;
     font-size: 14px;
     line-height: 17px;
 }
@@ -1415,7 +1415,7 @@ ul.CodeMirror-hints {
 /* algolia */
 .algolia-autocomplete .aa-dropdown-menu {
     background-color: #fff;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #eee;
     margin: 0 0 5px 19px;
 }
 
@@ -1683,7 +1683,7 @@ label.cmt-anonymous {
 
 .comments.nice ul {
     margin-top: 5px;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #eee;
     border-radius: 3px;
 }
 
@@ -1753,7 +1753,7 @@ label.cmt-anonymous {
     position: absolute;
     bottom: 30px;
     right: 0;
-    border: 5px solid #e5e5e5;
+    border: 5px solid #eee;
     z-index: 1;
     height: 90px;
     border-radius: 3px;
@@ -2335,7 +2335,7 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 #charCanvas {
-    border: 1px solid #e5e5e5;
+    border: 1px solid #eee;
     border-radius: 5px;
     background-color: #fff;
     display: block;
@@ -2603,7 +2603,7 @@ code .dec { color: initial; } /* decimal - blue */
     display: none;
     position: absolute;
     background-color: #FFF;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #eee;
     z-index: 10;
     padding: 10px;
     border-radius: 0 0 3px 3px;

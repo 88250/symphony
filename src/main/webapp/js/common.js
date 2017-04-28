@@ -132,7 +132,7 @@ var Util = {
                 if ($(window).height() + $(window).scrollTop() < $focus.offset().top + $focus.outerHeight()
                         || $(window).scrollTop() > $focus.offset().top) {
                     if (type === 'down') {
-                        $(window).scrollTop($focus.offset().top - ($(window).height() - $focus.outerHeight()) - offsetHeight);
+                        $(window).scrollTop($focus.offset().top - ($(window).height() - $focus.outerHeight()));
                     } else {
                         $(window).scrollTop($focus.offset().top - offsetHeight);
                     }

@@ -38,6 +38,7 @@ body {
   font-family: $font-family-base;
   font-size: 14px;
   color: #333;
+  background-color: #fff;
 }
 
 ::-moz-selection {
@@ -560,7 +561,7 @@ blockquote {
 }
 
 .fn-content {
-  padding: 15px 30px;
+  padding: 15px;
 }
 
 .fn-inline {
@@ -626,13 +627,10 @@ blockquote {
 
 .sub-head {
   padding: 15px;
-  border-bottom: 1px solid #e5e5e5;
-  line-height: 31px;
-  /* margin: 15px; */
-  font-size: 24px;
-  color: #666;
+  border-bottom: 1px solid #eee;
+  line-height: 18px;
+  font-size: 18px;
 }
-
 /* end function */
 
 /* start common business */
@@ -847,7 +845,7 @@ button,
   color: #333;
   border-radius: 3px;
   padding: 6px 12px;
-  background-color: #f2f2f2;
+  background-color: rgba(0,0,0,.02);
   border: 1px solid #D5D5D5;
   border-bottom-color: #E1E1E1;
   box-sizing: border-box;
@@ -951,12 +949,11 @@ a[class*=" icon-"]:hover {
 }
 
 .radio-btn {
-  background-color: #f9fafb;
+  background-color: $blue;
   border-radius: 28px;
-  bottom: 15px;
-  color: $gray;
+  bottom: 20px;
+  color: #fff;
   cursor: pointer;
-  display: none;
   height: 56px;
   font-size: 20px;
   text-align: center;
@@ -974,6 +971,35 @@ a[class*=" icon-"]:hover {
   opacity: .84;
 }
 
+
+
+.icon-wechat:hover {
+  color: #3caf36;
+}
+
+.icon-weibo:hover {
+  color: #ff9933;
+}
+
+.icon-google:hover {
+  color: #dc4A3d;
+}
+
+.icon-twitter:hover {
+  color: #18a3fa;
+}
+
+.icon-link:hover {
+  color: $blue;
+}
+
+.icon-qq:hover {
+  color: #47d6fa;
+}
+
+.icon-github:hover {
+  color: #24292e;
+}
 /* end icon */
 
 /* start tip */
@@ -1019,7 +1045,7 @@ a[class*=" icon-"]:hover {
   background-position: center center;
   display: inline-block;
   vertical-align: middle;
-  background-color: #f2f2f2;
+  background-color: rgba(0,0,0,.02);
 }
 
 .avatar {
@@ -1049,7 +1075,6 @@ a[class*=" icon-"]:hover {
 
 /* start status */
 .status {
-  border-top: 1px dotted $fade;
   list-style: none;
   margin-top: 20px;
   padding: 20px 0;
@@ -1197,7 +1222,7 @@ a[class*=" icon-"]:hover {
 
 .pagination a:hover,
 .tabs-sub a:hover {
-  background-color: rgba(0, 0, 0, .06);
+  background-color: rgba(0, 0, 0,.02);
 }
 
 .pagination span.current,
@@ -1216,7 +1241,7 @@ a[class*=" icon-"]:hover {
   display: none;
   position: absolute;
   background-color: #FFF;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #eee;
   z-index: 82;
   border-radius: 0 0 3px 3px;
   width: 50%;
@@ -1267,7 +1292,7 @@ a[class*=" icon-"]:hover {
   padding: 10px;
   font-size: 18px;
   font-weight: normal;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #eee;
 }
 
 .dialog-header-bg .icon-close {
@@ -1306,6 +1331,11 @@ a[class*=" icon-"]:hover {
   padding: 20px 0;
   background-attachment: fixed;
   min-height: 280px;
+}
+
+.main__down {
+  background-color: rgba(0,0,0,.02);
+  padding: 20px 0;
 }
 
 .side {
@@ -1542,8 +1572,8 @@ a[class*=" icon-"]:hover {
     color: #f0f0f0;
     width: 100%;
 
-    svg:hover {
-      color: #888f91;
+    i {
+      font-style: 16px;
     }
   }
 }
@@ -1567,7 +1597,7 @@ a[class*=" icon-"]:hover {
 
 .list > ul {
   list-style: none;
-  padding: 15px 15px 0;
+  padding: 0 15px;
 }
 
 .list > ul > li {
@@ -1680,7 +1710,6 @@ ul.CodeMirror-hints {
 
 .module {
   margin-bottom: 20px;
-  background-color: #FFF;
   border-radius: 3px;
   width: 100%;
   word-wrap: break-word;
@@ -1690,8 +1719,8 @@ ul.CodeMirror-hints {
 
 .module-header {
   border-radius: 3px 3px 0 0;
-  border-bottom: 1px solid #e5e5e5;
-  padding: 9px 15px;
+  border-bottom: 1px solid #eee;
+  padding: 9px 15px 8px;
   font-size: 14px;
   line-height: 18px;
 }
@@ -1803,7 +1832,7 @@ ul.CodeMirror-hints {
   float: left;
   color: $gray;
   padding: 2px 5px;
-  border: 1px solid #DDDDDD;
+  border: 1px solid transparent;
   position: relative;
   height: 20px;
   white-space: nowrap;
@@ -1838,7 +1867,6 @@ ul.CodeMirror-hints {
 
 .tag-desc > li > div {
   background-color: #F7F7F7;
-  border: 1px solid #DDDDDD;
   border-radius: 3px 0 3px 3px;
   display: none;
   right: 0;
@@ -1887,37 +1915,10 @@ ul.CodeMirror-hints {
 }
 
 .person-info {
+  border: 1px solid #eee;
   position: relative;
 
-  .info {
-    position: relative;
-    overflow: hidden;
-    height: 36px;
-  }
-
-  .info button.red {
-    position: absolute;
-    border-radius: 3px 0 0 0;
-    min-width: 35%;
-    color: #FFF;
-    background-color: $red;
-    background-image: none;
-    border-color: #c0372a;
-    letter-spacing: 1px;
-    line-height: 18px;
-    padding: 8px 15px;
-  }
-
-  .info button.red:hover {
-    background-color: #c0372a;
-  }
-
-  .info .fn-right {
-    margin: 8px 15px 0 0;
-  }
-
   .status {
-    border-top-width: 0;
     margin-top: 0;
     margin-bottom: 20px;
     padding-top: 0;

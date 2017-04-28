@@ -40,7 +40,7 @@
         <div class="fn-clear"></div>
         <div id="functionTip" class="tip"></div>
         <div class="fn-hr5"></div>
-        <button class="green fn-right" onclick="Settings.update('function', '${csrfToken}')">${saveLabel}</button>
+        <button class="fn-right" onclick="Settings.update('function', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
 
@@ -67,7 +67,7 @@
         <div class="fn-clear"></div>
         <div id="emotionListTip" class="tip"></div>
         <div class="fn-hr5"></div>
-        <button class="green fn-right" onclick="Settings.update('emotionList', '${csrfToken}')">${saveLabel}</button>
+        <button class="fn-right" onclick="Settings.update('emotionList', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
 </@home>

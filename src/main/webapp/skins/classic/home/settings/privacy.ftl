@@ -104,7 +104,7 @@
 
         <div id="privacyTip" class="tip"></div>
         <div class="fn-hr5"></div>
-        <button class="green fn-right" onclick="Settings.update('privacy', '${csrfToken}')">${saveLabel}</button>
+        <button class="fn-right" onclick="Settings.update('privacy', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
 </@home>

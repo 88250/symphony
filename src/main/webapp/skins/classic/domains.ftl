@@ -32,11 +32,11 @@
                     </#list>
                 </div>
                 <div class="side">
-                    <#include "common/person-info.ftl">
                     <div class='domains-count'>
                         Domains: <b>${domainCnt}</b><br/>
                         Tags: <b>${tagCnt}</b>
                     </div>
+                    <#include "common/person-info.ftl">
                     <#if ADLabel!="">
                     <div class="module">
                         <div class="module-header">

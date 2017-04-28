@@ -1,3 +1,4 @@
+<#-- TODO: RM -->
 <#include "macro-head.ftl">
 <#include "macro-list.ftl">
 <#include "macro-pagination.ftl">
@@ -22,13 +23,14 @@
                             <a href="${servePath}/recent" class="ft-gray">${moreRecentArticleLabel}</a>
                         </div>
                     </div>
-                    <#include "common/domains.ftl">
+
                 </div>
                 <div class="side">
                     <#include "side.ftl">
                 </div>
             </div>
         </div>
+        <#include "common/domains.ftl">
         <#include "footer.ftl">
         <@listScript/>
     </body>

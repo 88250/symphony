@@ -16,13 +16,11 @@
     </tr>
     </#list>
 </table>
-<div class="point-pagination">
 <@pagination url="${servePath}/member/${user.userName}/points" pjaxTitle="${pointLabel} - ${user.userName} - ${symphonyLabel}"/>
-</div>
 <#else>
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
 </#if>
-<br><br>
+<div class="top-ranking">
 <#include "../common/ranking.ftl">
-<br><br>
+</div>
 </@home>
