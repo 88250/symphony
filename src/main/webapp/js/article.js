@@ -1015,13 +1015,13 @@ var Article = {
             var currentScrollTop = $(window).scrollTop();
 
             // share
-            if (currentScrollTop > 48 && currentScrollTop < $('.comments').offset().top + $('.comments').height()) {
+            if (currentScrollTop > 20 && currentScrollTop < $('.article .main').offset().top - 48) {
                 $('.share').show();
             } else {
                 $('.share').hide();
             }
 
-            if (currentScrollTop < 150) {
+            if (currentScrollTop < $('.article-title').offset().top) {
                 $('.article-header').css('top', '-48px');
                 $('.nav').show();
             } else {

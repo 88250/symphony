@@ -94,7 +94,6 @@
     font-size: 20px;
     font-weight: 300;
     line-height: 26px;
-    border-bottom: 1px dotted #CCC;
     margin-bottom: 20px;
     padding: 20px 10px 25px 10px;
 
@@ -262,8 +261,8 @@ label.article-anonymous {
         padding: 5px 10px;
         width: 100%;
         line-height: 20px;
-        border-bottom: 1px solid #f2f2f2;
-        border-top: 1px solid #f2f2f2;
+        border-bottom: 1px solid rgba(0,0,0,.02);
+        border-top: 1px solid rgba(0,0,0,.02);
         box-sizing: border-box;
     }
 
@@ -304,7 +303,7 @@ label.article-anonymous {
         display: none;
         position: absolute;
         background-color: #FFF;
-        border: 1px solid #e5e5e5;
+        border: 1px solid #eee;
         z-index: 82;
         border-radius: 0 0 3px 3px;
         width: 50%;
@@ -360,7 +359,7 @@ label.article-anonymous {
 }
 
 .tabs a:hover {
-    background-color: rgba(0,0,0,.03);
+    background-color: rgba(0,0,0,.02);
 }
 
 .tabs-sub > a > .count {
@@ -491,6 +490,11 @@ label.article-anonymous {
     width: 40px;
     padding: 15px 15px 15px 10px;
 }
+
+.top-ranking {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
 /* end points */
 
 /* start settings */
@@ -526,13 +530,5 @@ label.article-anonymous {
 
 #pointBuyInvitecode {
     padding: 0;
-}
-
-.point-pagination {
-    border-bottom: 1px solid #eee;
-}
-
-.point-pagination .pagination {
-    border-radius: 0;
 }
 /* end settings */

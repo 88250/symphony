@@ -14,7 +14,7 @@
         <label>${confirmPasswordLabel}</label>
         <input id="pwdRepeat" type="password" /> <br/><br/>
         <div id="passwordTip" class="tip"></div><br/>
-        <button class="green fn-right" onclick="Settings.update('password', '${csrfToken}')">${saveLabel}</button>
+        <button class="fn-right" onclick="Settings.update('password', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
 </@home>

@@ -27,34 +27,35 @@
     </#if>
     <div class="user-nav">
         <#if isLoggedIn>
-        <#if permissions["menuAdmin"].permissionGrant>
-        <a href="${servePath}/admin" aria-label="${adminLabel}" class="tooltipped tooltipped-w"><span class="icon-userrole"></span></a>
-        </#if>
-        <a id="aNotifications" class="tooltipped tooltipped-w <#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" aria-label="${messageLabel}">${unreadNotificationCount}</a>
-        <a href="${servePath}/activities" aria-label="${activityLabel}" class="tooltipped tooltipped-w"><span class="icon-flag"></span></a>
-        <a href="javascript:void(0)" id="aPersonListPanel" class="tooltipped tooltipped-w" aria-label="${viewHomeAndProfileLabel}"
-           data-url="${servePath}/member/${currentUser.userName}">
-            <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL20}')"></span>
-        </a>
-        <div class="module person-list" id="personListPanel">
-            <ul>
-                <li>
-                    <a href="${servePath}/member/${currentUser.userName}">${goHomeLabel}</a>
-                </li>
-                <li>
-                    <a href="${servePath}/settings">${settingsLabel}</a>
-                </li>
-                <li>
-                    <a href="${servePath}/settings/help">${helpLabel}</a>
-                </li>
-                <li>
-                    <a href="javascript:Util.logout()">${logoutLabel}</a>
-                </li>
-            </ul>
-        </div>
+            <a href="${servePath}/pre-post" class="tooltipped tooltipped-w" aria-label="${postArticleLabel}"><span class="icon-addfile"></span></a>
+            <#if permissions["menuAdmin"].permissionGrant>
+            <a href="${servePath}/admin" aria-label="${adminLabel}" class="tooltipped tooltipped-w"><span class="icon-userrole"></span></a>
+            </#if>
+            <a id="aNotifications" class="tooltipped tooltipped-w <#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" aria-label="${messageLabel}">${unreadNotificationCount}</a>
+            <a href="${servePath}/activities" aria-label="${activityLabel}" class="tooltipped tooltipped-w"><span class="icon-flag"></span></a>
+            <a href="javascript:void(0)" id="aPersonListPanel" class="tooltipped tooltipped-w" aria-label="${viewHomeAndProfileLabel}"
+               data-url="${servePath}/member/${currentUser.userName}">
+                <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL20}')"></span>
+            </a>
+            <div class="module person-list" id="personListPanel">
+                <ul>
+                    <li>
+                        <a href="${servePath}/member/${currentUser.userName}">${goHomeLabel}</a>
+                    </li>
+                    <li>
+                        <a href="${servePath}/settings">${settingsLabel}</a>
+                    </li>
+                    <li>
+                        <a href="${servePath}/settings/help">${helpLabel}</a>
+                    </li>
+                    <li>
+                        <a href="javascript:Util.logout()">${logoutLabel}</a>
+                    </li>
+                </ul>
+            </div>
         <#else>
-        <a href="javascript: Util.goLogin();" class="unlogin">${loginLabel}</a>
-        <a href="javascript:Util.goRegister()" class="unlogin">${registerLabel}</a>
+            <a href="javascript: Util.goLogin();" class="unlogin">${loginLabel}</a>
+            <a href="javascript:Util.goRegister()" class="unlogin">${registerLabel}</a>
         </#if>
     </div>
 </div>

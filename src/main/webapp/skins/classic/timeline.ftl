@@ -25,13 +25,14 @@
                         </ul>
                     </div>
                     </div>
-                    <#include "common/domains.ftl">
+
                 </div>
                 <div class="side">
                     <#include "side.ftl">
                 </div>
             </div>
         </div>
+        <#include "common/domains.ftl">
         <#include "footer.ftl">
 
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>

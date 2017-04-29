@@ -40,7 +40,7 @@
 }
 
 .domains-module {
-  margin: 20px 0 0;
+  margin: 0;
 }
 
 .module-list.domain .slogan {
@@ -71,11 +71,11 @@
 
   .main {
     min-height: inherit;
+    background-color: rgba(0,0,0,.02);
   }
 
   .article-body {
-    background-color: #fff;
-    margin: 88px 0 40px;
+    padding: 68px 0 20px;
   }
 
   .article-info {
@@ -85,11 +85,12 @@
     .article-actions {
       line-height: 60px;
       font-size: 18px;
+      margin-left: 15px;
     }
   }
 
   h1.article-title {
-    word-break: break-all;
+    word-break: break-word;
     font-size: 28px;
     font-weight: normal;
     padding-top: 15px;
@@ -101,7 +102,7 @@
   }
 
   #articleRewardContent {
-    padding: 10px 10px 36px 10px;
+    padding: 15px 15px 41px 15px;
     background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .9)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .9)), color-stop(.75, rgba(255, 255, 255, .9)), color-stop(.75, transparent), to(transparent));
     background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
     background-image: linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
@@ -127,7 +128,7 @@
     left: 120px;
     width: 30px;
     font-size: 22px;
-    color: $gray;
+    color: #666;
     text-align: center;
     margin-top: -117px;
 
@@ -141,31 +142,11 @@
       margin-bottom: 10px;
     }
 
-    & > span[data-type="wechat"]:hover {
-      color: #3caf36;
-    }
-
-    & > span[data-type="weibo"]:hover {
-      color: #ff9933;
-    }
-
-    & > span[data-type="google"]:hover {
-      color: #dc4A3d;
-    }
-
-    & > span[data-type="twitter"]:hover {
-      color: #18a3fa;
-    }
-
-    & > span[data-type="copy"]:hover {
-      color: $blue;
-    }
-
     #qrCode {
       position: absolute;
       top: 50px;
       left: 35px;
-      border: 5px solid #e5e5e5;
+      border: 5px solid #eee;
       z-index: 1;
       height: 90px;
       border-radius: 3px;
@@ -190,6 +171,7 @@
     background-color: #fff;
     box-sizing: border-box;
     border-bottom: 1px solid #eee;
+    font-style: 16px;
 
     svg {
       color: #333;
@@ -221,12 +203,6 @@
       color: #333;
     }
 
-  }
-
-  #replyBtn {
-    display: block;
-    background-color: $blue;
-    color: #fff;
   }
 
   #articleToC {
@@ -805,7 +781,7 @@ label.cmt-anonymous {
   .tag-desc li.current > a {
     background-color: $blue;
     color: #fff;
-    border-color: #f2f2f2;
+    border-color: rgba(0,0,0,.02);
   }
 
   .intro dl {
@@ -959,7 +935,7 @@ code .dec {
 }
 
 #charCanvas {
-  border: 1px solid #e5e5e5;
+  border: 1px solid #eee;
   border-radius: 5px;
   background-color: #fff;
   display: block;
@@ -1020,7 +996,7 @@ code .dec {
 /* start index */
 .index {
   .main {
-    padding-top: 0;
+    padding: 0;
   }
 
   .index-main {
@@ -1150,23 +1126,8 @@ code .dec {
     display: inline-block;
   }
 
-  .index-tabs-panels {
-    background-color: #FFF;
-    padding: 15px 15px 0;
-  }
-
-  .perfect-panel.list > ul > li:last-child {
-    border-bottom-width: 0;
-  }
-
-  .perfect-panel.list > ul,
-  .index-tabs-panels > ul {
-    padding: 0;
-  }
-
   .perfect-panel {
     background-color: $light-blue;
-    padding: 0 10px;
 
     .avatar-small {
       position: absolute;
@@ -1183,14 +1144,13 @@ code .dec {
     .count {
       position: absolute;
       right: 10px;
-      top: 12px;
+      top: 17px;
     }
   }
 
   .metro-item {
     flex: 1;
     margin-bottom: 2px;
-    background-color: #FFF;
     height: 200px;
     text-align: center;
     overflow: hidden;
@@ -1209,7 +1169,7 @@ code .dec {
     }
 
     .preview:hover {
-      background-color: rgba(0, 0, 0, 0.03);
+      background-color: rgba(0, 0, 0, .02);
       color: #333;
     }
 
@@ -1227,6 +1187,12 @@ code .dec {
       margin-top: 20px;
       font-weight: normal;
     }
+  }
+
+  &__bottom {
+    background-color: rgba(0,0,0,.02);
+    padding: 20px 0;
+    margin-top: 5px;
   }
 
   .metro-item.ad img {
@@ -1271,15 +1237,9 @@ code .dec {
       margin-left: 2px;
     }
 
-    .list {
-      background-color: #FFF;
-      padding: 15px;
-
-      ul {
-        overflow: hidden;
-        height: 402px;
-        padding: 0;
-      }
+    .list ul {
+      overflow: hidden;
+      height: 402px;
     }
   }
 }
@@ -1326,7 +1286,6 @@ code .dec {
   border-top: 1px solid #eee;
   padding-top: 15px;
 }
-
 /* end top */
 
 /* start timeline */

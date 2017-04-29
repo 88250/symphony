@@ -13,19 +13,6 @@
 
 <#if isLoggedIn>
 <div class="module person-info" data-percent="${liveness}">
-    <div class="info fn-clear">
-        <#if permissions["commonAddArticle"].permissionGrant>
-        <button class="btn red tooltipped tooltipped-e" aria-label="${addArticleLabel}"
-                onclick="window.location = '${servePath}/pre-post'">${postArticleLabel}</button>
-        </#if>
-        <#if !isDailyCheckin>
-        <a class="fn-right" href="<#if useCaptchaCheckin>${servePath}/activity/checkin<#else>${servePath}/activity/daily-checkin</#if>">${dailyCheckinLabel}</a>
-        <#else>
-        <a class="ft-gray fn-right tooltipped tooltipped-w" aria-label="${checkinStreakLabel}/${checkinStreakPart0Label}" href="${servePath}/top/checkin">
-            ${currentUser.userCurrentCheckinStreak}/<span class="ft-red">${currentUser.userLongestCheckinStreak}</span>
-        </a>
-        </#if>
-    </div>
     <div class="module-panel tooltipped tooltipped-s" aria-label="${todayActivityLabel} ${liveness}%">
         <ul class="status fn-flex">
             <li class="fn-pointer" onclick="window.location.href = '${servePath}/member/${currentUser.userName}/following/tags'">
@@ -42,12 +29,23 @@
             </li>
         </ul>
 
-        <div class="fn-clear ranking">
-            <span class="ft-red">♠</span> <a href="${servePath}/top/balance"><span class="ft-gray">${wealthRankLabel}</span></a>
-            <span class="ft-green">♥</span> <a href="${servePath}/top/consumption"><span class="ft-gray">${consumptionRankLabel}</span></a>
-            <a href="${servePath}/member/${currentUser.userName}/points" class="ft-gray fn-right tooltipped tooltipped-w"
-               aria-label="${pointLabel} ${currentUser.userPoint?c}">
-                <#if 0 == currentUser.userAppRole>0x${currentUser.userPointHex}<#else><div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div></#if></a>
+        <div class="fn-clear">
+            <span class="ft-red">♠</span> <a href="${servePath}/top/balance">${wealthRankLabel}</a>
+            <span class="ft-green">♥</span> <a href="${servePath}/top/consumption">${consumptionRankLabel}</a>
+
+            <div class="fn-right">
+                <#if !isDailyCheckin>
+                    <a class="ft-gray" href="<#if useCaptchaCheckin>${servePath}/activity/checkin<#else>${servePath}/activity/daily-checkin</#if>">${dailyCheckinLabel}</a>
+                <#else>
+                    <a class="tooltipped tooltipped-w ft-fade" aria-label="${checkinStreakLabel}/${checkinStreakPart0Label}" href="${servePath}/top/checkin">
+                    ${currentUser.userCurrentCheckinStreak}/<span class="ft-gray">${currentUser.userLongestCheckinStreak}</span>
+                    </a>
+                </#if>
+
+                <a href="${servePath}/member/${currentUser.userName}/points" class="tooltipped tooltipped-w ft-fade"
+                   aria-label="${pointLabel} ${currentUser.userPoint?c}">
+                    <#if 0 == currentUser.userAppRole>0x${currentUser.userPointHex}<#else><div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div></#if></a>
+            </div>
         </div>
     </div> 
     <div class="top-left activity-board"></div>

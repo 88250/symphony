@@ -44,6 +44,5 @@
         </li>
         </#list>
     </ul>
-    <br/>
 </div>
 </@top>
