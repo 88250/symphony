@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.16.33.41, Apr 17, 2017
+ * @version 2.16.34.41, Apr 30, 2017
  * @since 0.2.0
  */
 @Service
@@ -317,7 +317,7 @@ public class ArticleMgmtService {
             tagArticleRepository.removeByArticleId(articleId);
             notificationRepository.removeByDataId(articleId);
 
-            final Query query = new Query().setFilter(new PropertyFilter(
+            Query query = new Query().setFilter(new PropertyFilter(
                     Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).setPageCount(1);
             final JSONArray comments = commentRepository.get(query).optJSONArray(Keys.RESULTS);
             final int commentCnt = comments.length();
@@ -331,11 +331,34 @@ public class ArticleMgmtService {
                 userRepository.update(commentAuthorId, commenter);
                 commentRepository.remove(commentId);
                 notificationRepository.removeByDataId(commentId);
+
+                // Remove comment revisions
+                query = new Query().setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, commentId),
+                        new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_COMMENT)
+                ));
+                final JSONArray commentRevisions = revisionRepository.get(query).optJSONArray(Keys.RESULTS);
+                for (int j = 0; j < commentRevisions.length(); j++) {
+                    final JSONObject articleRevision = commentRevisions.optJSONObject(j);
+                    revisionRepository.remove(articleRevision.optString(Keys.OBJECT_ID));
+                }
             }
 
             final JSONObject commentCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
             commentCntOption.put(Option.OPTION_VALUE, commentCntOption.optInt(Option.OPTION_VALUE) - commentCnt);
             optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, commentCntOption);
+
+            // Remove article revisions
+            query = new Query().setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, articleId),
+                    new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_ARTICLE)
+            ));
+            final JSONArray articleRevisions = revisionRepository.get(query).optJSONArray(Keys.RESULTS);
+            for (int i = 0; i < articleRevisions.length(); i++) {
+                final JSONObject articleRevision = articleRevisions.optJSONObject(i);
+                revisionRepository.remove(articleRevision.optString(Keys.OBJECT_ID));
+            }
+
 
             if (Symphonys.getBoolean("algolia.enabled")) {
                 searchMgmtService.removeAlgoliaDocument(article);
