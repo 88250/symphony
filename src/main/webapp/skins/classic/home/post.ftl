@@ -130,6 +130,9 @@
                             <button class="red" tabindex="10"<#if requisite> readonly disabled</#if>
                                 onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
                             </#if>
+                            <#if permissions["commonRemoveArticle"].permissionGrant>
+                                <button class="red" tabindex="11" onclick="AddArticle.remove('${csrfToken}')">${removeArticleLabel}</button>
+                            </#if>
                         <#else>
                             <#if permissions["commonAddArticle"].permissionGrant>
                             <button class="red" tabindex="10"<#if requisite> readonly disabled</#if>
@@ -177,6 +180,7 @@
             Label.requisite = ${requisite?c};
             <#if article??>Label.articleOId = '${article.oId}' ;</#if>
             Label.articleType = ${articleType};
+            Label.confirmRemoveLabel = '${confirmRemoveLabel}';
         </script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>

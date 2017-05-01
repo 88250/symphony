@@ -175,7 +175,7 @@
     <#if permissions["articleRemoveArticle"].permissionGrant>
     <div class="module">
         <div class="module-header">
-            <h2 class="ft-red">${removeLabel}</h2>
+            <h2 class="ft-red">${removeDataLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
             <form action="${servePath}/admin/remove-article" method="POST" onsubmit="return window.confirm('Sure?')">
