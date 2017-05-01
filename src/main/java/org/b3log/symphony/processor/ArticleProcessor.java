@@ -84,6 +84,7 @@ import java.util.List;
  * <li>Gets article revisions (/article/{articleId}/revisions), GET</li>
  * <li>Gets article image (/article/{articleId}/image), GET</li>
  * <li>Checks article title (/article/check-title), POST</li>
+ * <li>Removes an article (/article/{id}/remove), POST</li>
  * </ul>
  * </p>
  * <p>
@@ -211,6 +212,56 @@ public class ArticleProcessor {
      */
     @Inject
     private DataModelService dataModelService;
+
+    /**
+     * Removes an article.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/article/{id}/remove", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {StopwatchEndAdvice.class})
+    public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                              final String id) throws Exception {
+        if (StringUtils.isBlank(id)) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
+        final JSONObject article = articleQueryService.getArticle(id);
+        if (null == article) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
+        final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+        if (!authorId.equals(currentUserId)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        try {
+            articleMgmtService.removeArticle(id);
+
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Article.ARTICLE_T_ID, id);
+        } catch (final ServiceException e) {
+            final String msg = e.getMessage();
+            LOGGER.log(Level.ERROR, "Remove article [id=" + id + "] failed: {0}", e.getMessage());
+
+            context.renderMsg(msg);
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+        }
+
+    }
 
     /**
      * Checks article title.

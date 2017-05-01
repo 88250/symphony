@@ -130,6 +130,9 @@
                             <button class="red" tabindex="10"<#if requisite> readonly disabled</#if>
                                 onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
                             </#if>
+                            <#if permissions["commonRemoveArticle"].permissionGrant>
+                                <button class="red" tabindex="11" onclick="AddArticle.remove('${csrfToken}')">${removeArticleLabel}</button>
+                            </#if>
                         <#else>
                             <#if permissions["commonAddArticle"].permissionGrant>
                             <button class="red" tabindex="10"<#if requisite> readonly disabled</#if>

@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.16.34.41, Apr 30, 2017
+ * @version 2.17.34.41, May 1, 2017
  * @since 0.2.0
  */
 @Service
@@ -199,6 +199,60 @@ public class ArticleMgmtService {
     private AudioMgmtService audioMgmtService;
 
     /**
+     * Removes an article specified with the given article id. An article is removable if:
+     * <ul>
+     * <li>No comments</li>
+     * <li>No watches, collects, ups, downs</li>
+     * <li>No rewards</li>
+     * <li>No thanks</li>
+     * </ul>
+     * Sees https://github.com/b3log/symphony/issues/450 for more details.
+     *
+     * @param articleId the given article id
+     * @throws ServiceException service exception
+     */
+    public void removeArticle(final String articleId) throws ServiceException {
+        JSONObject article = null;
+
+        try {
+            article = articleRepository.get(articleId);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets article [id=" + articleId + "] failed", e);
+        }
+
+        if (null == article) {
+            return;
+        }
+
+        final int commentCnt = article.optInt(Article.ARTICLE_COMMENT_CNT);
+        if (commentCnt > 0) {
+            throw new ServiceException(langPropsService.get("removeArticleFoundCmtLabel"));
+        }
+
+        final int watchCnt = article.optInt(Article.ARTICLE_WATCH_CNT);
+        final int collectCnt = article.optInt(Article.ARTICLE_COLLECT_CNT);
+        final int ups = article.optInt(Article.ARTICLE_GOOD_CNT);
+        final int downs = article.optInt(Article.ARTICLE_BAD_CNT);
+        if (watchCnt > 0 || collectCnt > 0 || ups > 0 || downs > 0) {
+            throw new ServiceException("removeArticleFoundWatchEtcLabel");
+        }
+
+        final int rewardCnt = (int) rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_ARTICLE);
+        if (rewardCnt > 0) {
+            throw new ServiceException("removeArticleFoundRewardLabel");
+        }
+
+        final int thankCnt = (int) rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_THANK_ARTICLE);
+        if (thankCnt > 0) {
+            throw new ServiceException("removeArticleFoundThankLabel");
+        }
+
+        // Perform removal
+        removeArticleByAdmin(articleId);
+    }
+
+
+    /**
      * Determines whether the specified tag title exists in the specified tags.
      *
      * @param tagTitle the specified tag title
@@ -269,15 +323,18 @@ public class ArticleMgmtService {
     }
 
     /**
-     * Removes an article specified with the given article id.
+     * Removes an article specified with the given article id. Calls this method will remove all existed data related
+     * with the specified article forcibly.
+     * <p>
+     * <b>Note</b>: This method just for admin console.
+     * </p>
      *
      * @param articleId the given article id
      */
     @Transactional
-    public void removeArticle(final String articleId) {
+    public void removeArticleByAdmin(final String articleId) {
         try {
             final JSONObject article = articleRepository.get(articleId);
-
             if (null == article) {
                 return;
             }

@@ -32,6 +32,37 @@ var AddArticle = {
     editor: undefined,
     rewardEditor: undefined,
     /**
+     * @description 删除文章
+     * @csrfToken [string] CSRF 令牌
+     */
+    remove: function (csrfToken) {
+        $.ajax({
+            url: Label.servePath + "/article/" + Label.articleOId + "/remove",
+            type: "POST",
+            headers: {"csrfToken": csrfToken},
+            cache: false,
+            beforeSend: function () {
+                $(".form button.red").attr("disabled", "disabled").css("opacity", "0.3");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $("#addArticleTip").addClass('error').html('<ul><li>' + errorThrown + '</li></ul>');
+            },
+            success: function (result, textStatus) {
+                $(".form button.red").removeAttr("disabled").css("opacity", "1");
+                if (0 === result.sc) {
+                 //   window.location.href = Label.servePath + "/article/" + result.articleId;
+                 //   localStorage.removeItem('postData');
+                    alert('删除成功！');
+                } else {
+                    $("#addArticleTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
+                }
+            },
+            complete: function () {
+                $(".form button.red").removeAttr("disabled").css("opacity", "1");
+            }
+        });
+    },
+    /**
      * @description 发布文章
      * @csrfToken [string] CSRF 令牌
      */
