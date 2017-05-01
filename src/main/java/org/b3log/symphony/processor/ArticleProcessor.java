@@ -248,6 +248,7 @@ public class ArticleProcessor {
             return;
         }
 
+        context.renderJSON();
         try {
             articleMgmtService.removeArticle(id);
 
@@ -255,7 +256,6 @@ public class ArticleProcessor {
             context.renderJSONValue(Article.ARTICLE_T_ID, id);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
-            LOGGER.log(Level.ERROR, "Remove article [id=" + id + "] failed: {0}", e.getMessage());
 
             context.renderMsg(msg);
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);

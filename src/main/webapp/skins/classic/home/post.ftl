@@ -180,6 +180,7 @@
             Label.requisite = ${requisite?c};
             <#if article??>Label.articleOId = '${article.oId}' ;</#if>
             Label.articleType = ${articleType};
+            Label.confirmRemoveLabel = '${confirmRemoveLabel}';
         </script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
