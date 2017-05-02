@@ -34,7 +34,10 @@ var Settings = {
      */
     homeScroll: function () {
         $('.nav-tabs').html($('.home-menu').html());
-        $('.nav').css('position', 'fixed');
+        $('.nav').css({
+            'position': 'fixed',
+            'box-shadow': '0 1px 2px rgba(0,0,0,.2)'
+        });
         $('.main').css('paddingTop', '68px');
     },
     /**
