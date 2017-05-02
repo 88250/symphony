@@ -20,8 +20,9 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.31.27.56, Apr 27, 2017
+ * @version 2.31.28.56, Mar 2, 2017
  */
+
 @import "variables";
 
 /* start list */
@@ -171,7 +172,8 @@
     background-color: #fff;
     box-sizing: border-box;
     border-bottom: 1px solid #eee;
-    font-style: 16px;
+    font-size: 16px;
+    top: -48px;
 
     svg {
       color: #333;
