@@ -27,26 +27,18 @@
     </#if>
     <div class="user-nav">
         <#if isLoggedIn>
+            <a href="${servePath}/pre-post" class="tooltipped tooltipped-w" aria-label="${postArticleLabel}"><span class="icon-addfile"></span></a>
             <#if permissions["menuAdmin"].permissionGrant>
             <a href="${servePath}/admin" aria-label="${adminLabel}" class="tooltipped tooltipped-w"><span class="icon-userrole"></span></a>
             </#if>
             <a id="aNotifications" class="tooltipped tooltipped-w <#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" aria-label="${messageLabel}">${unreadNotificationCount}</a>
-
-            <#if !isDailyCheckin>
-                <a class="tooltipped tooltipped-w" aria-label="${dailyCheckinLabel}" href="<#if useCaptchaCheckin>${servePath}/activity/checkin<#else>${servePath}/activity/daily-checkin</#if>"><span class="icon-flag"></span></a>
-            <#else>
-                <a href="${servePath}/activities" aria-label="${activityLabel}" class="tooltipped tooltipped-w"><span class="icon-flag"></span></a>
-            </#if>
-
+            <a href="${servePath}/activities" aria-label="${activityLabel}" class="tooltipped tooltipped-w"><span class="icon-flag"></span></a>
             <a href="javascript:void(0)" id="aPersonListPanel" class="tooltipped tooltipped-w" aria-label="${viewHomeAndProfileLabel}"
                data-url="${servePath}/member/${currentUser.userName}">
                 <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL20}')"></span>
             </a>
             <div class="module person-list" id="personListPanel">
                 <ul>
-                    <li>
-                        <a href="${servePath}/pre-post">${postArticleLabel}</a>
-                    </li>
                     <li>
                         <a href="${servePath}/member/${currentUser.userName}">${goHomeLabel}</a>
                     </li>

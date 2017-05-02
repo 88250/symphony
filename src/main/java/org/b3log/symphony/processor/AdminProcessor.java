@@ -1058,7 +1058,7 @@ public class AdminProcessor {
     public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
-        articleMgmtService.removeArticle(articleId);
+        articleMgmtService.removeArticleByAdmin(articleId);
 
         response.sendRedirect(Latkes.getServePath() + "/admin/articles");
     }

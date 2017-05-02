@@ -52,6 +52,7 @@ public class InitMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(InitMgmtService.class);
+
     private static Set<String> VISITOR_PERMISSIONS = new HashSet<>();
     private static Set<String> DEFAULT_PERMISSIONS = new HashSet<>();
     private static Set<String> MEMBER_PERMISSIONS = new HashSet<>();
@@ -61,9 +62,13 @@ public class InitMgmtService {
 
     static { // Init built-in roles' permissions, see https://github.com/b3log/symphony/issues/358 for more details
         // Visitor
+        // no permissions at present
+
+        // Default
         DEFAULT_PERMISSIONS.addAll(VISITOR_PERMISSIONS);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_UPDATE_ARTICLE);
+        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_REMOVE_ARTICLE);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_UPDATE_COMMENT);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_THANK_ARTICLE);
@@ -146,41 +151,49 @@ public class InitMgmtService {
      */
     @Inject
     private PermissionRepository permissionRepository;
+
     /**
      * Role repository.
      */
     @Inject
     private RoleRepository roleRepository;
+
     /**
      * Role-permission repository.
      */
     @Inject
     private RolePermissionRepository rolePermissionRepository;
+
     /**
      * Option repository.
      */
     @Inject
     private OptionRepository optionRepository;
+
     /**
      * Tag repository.
      */
     @Inject
     private TagRepository tagRepository;
+
     /**
      * Tag management service.
      */
     @Inject
     private TagMgmtService tagMgmtService;
+
     /**
      * Article management service.
      */
     @Inject
     private ArticleMgmtService articleMgmtService;
+
     /**
      * User management service.
      */
     @Inject
     private UserMgmtService userMgmtService;
+
     /**
      * User query service.
      */
@@ -336,6 +349,8 @@ public class InitMgmtService {
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_ADD_ARTICLE_ANONYMOUS);
             permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_UPDATE_ARTICLE);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_REMOVE_ARTICLE);
             permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
             permissionRepository.add(permission);

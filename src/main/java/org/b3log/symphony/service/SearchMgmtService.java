@@ -240,7 +240,6 @@ public class SearchMgmtService {
                 }
 
                 request.setURL(new URL("https://" + host + "/1/indexes/" + index + "/" + id));
-
                 request.setPayload(data);
 
                 final HTTPResponse response = URL_FETCH_SVC.fetch(request);

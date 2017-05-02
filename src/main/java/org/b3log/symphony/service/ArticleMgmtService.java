@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.16.33.41, Apr 17, 2017
+ * @version 2.17.34.41, May 1, 2017
  * @since 0.2.0
  */
 @Service
@@ -199,6 +199,60 @@ public class ArticleMgmtService {
     private AudioMgmtService audioMgmtService;
 
     /**
+     * Removes an article specified with the given article id. An article is removable if:
+     * <ul>
+     * <li>No comments</li>
+     * <li>No watches, collects, ups, downs</li>
+     * <li>No rewards</li>
+     * <li>No thanks</li>
+     * </ul>
+     * Sees https://github.com/b3log/symphony/issues/450 for more details.
+     *
+     * @param articleId the given article id
+     * @throws ServiceException service exception
+     */
+    public void removeArticle(final String articleId) throws ServiceException {
+        JSONObject article = null;
+
+        try {
+            article = articleRepository.get(articleId);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets article [id=" + articleId + "] failed", e);
+        }
+
+        if (null == article) {
+            return;
+        }
+
+        final int commentCnt = article.optInt(Article.ARTICLE_COMMENT_CNT);
+        if (commentCnt > 0) {
+            throw new ServiceException(langPropsService.get("removeArticleFoundCmtLabel"));
+        }
+
+        final int watchCnt = article.optInt(Article.ARTICLE_WATCH_CNT);
+        final int collectCnt = article.optInt(Article.ARTICLE_COLLECT_CNT);
+        final int ups = article.optInt(Article.ARTICLE_GOOD_CNT);
+        final int downs = article.optInt(Article.ARTICLE_BAD_CNT);
+        if (watchCnt > 0 || collectCnt > 0 || ups > 0 || downs > 0) {
+            throw new ServiceException("removeArticleFoundWatchEtcLabel");
+        }
+
+        final int rewardCnt = (int) rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_ARTICLE);
+        if (rewardCnt > 0) {
+            throw new ServiceException("removeArticleFoundRewardLabel");
+        }
+
+        final int thankCnt = (int) rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_THANK_ARTICLE);
+        if (thankCnt > 0) {
+            throw new ServiceException("removeArticleFoundThankLabel");
+        }
+
+        // Perform removal
+        removeArticleByAdmin(articleId);
+    }
+
+
+    /**
      * Determines whether the specified tag title exists in the specified tags.
      *
      * @param tagTitle the specified tag title
@@ -269,15 +323,18 @@ public class ArticleMgmtService {
     }
 
     /**
-     * Removes an article specified with the given article id.
+     * Removes an article specified with the given article id. Calls this method will remove all existed data related
+     * with the specified article forcibly.
+     * <p>
+     * <b>Note</b>: This method just for admin console.
+     * </p>
      *
      * @param articleId the given article id
      */
     @Transactional
-    public void removeArticle(final String articleId) {
+    public void removeArticleByAdmin(final String articleId) {
         try {
             final JSONObject article = articleRepository.get(articleId);
-
             if (null == article) {
                 return;
             }
@@ -317,7 +374,7 @@ public class ArticleMgmtService {
             tagArticleRepository.removeByArticleId(articleId);
             notificationRepository.removeByDataId(articleId);
 
-            final Query query = new Query().setFilter(new PropertyFilter(
+            Query query = new Query().setFilter(new PropertyFilter(
                     Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).setPageCount(1);
             final JSONArray comments = commentRepository.get(query).optJSONArray(Keys.RESULTS);
             final int commentCnt = comments.length();
@@ -331,11 +388,34 @@ public class ArticleMgmtService {
                 userRepository.update(commentAuthorId, commenter);
                 commentRepository.remove(commentId);
                 notificationRepository.removeByDataId(commentId);
+
+                // Remove comment revisions
+                query = new Query().setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, commentId),
+                        new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_COMMENT)
+                ));
+                final JSONArray commentRevisions = revisionRepository.get(query).optJSONArray(Keys.RESULTS);
+                for (int j = 0; j < commentRevisions.length(); j++) {
+                    final JSONObject articleRevision = commentRevisions.optJSONObject(j);
+                    revisionRepository.remove(articleRevision.optString(Keys.OBJECT_ID));
+                }
             }
 
             final JSONObject commentCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
             commentCntOption.put(Option.OPTION_VALUE, commentCntOption.optInt(Option.OPTION_VALUE) - commentCnt);
             optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, commentCntOption);
+
+            // Remove article revisions
+            query = new Query().setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, articleId),
+                    new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_ARTICLE)
+            ));
+            final JSONArray articleRevisions = revisionRepository.get(query).optJSONArray(Keys.RESULTS);
+            for (int i = 0; i < articleRevisions.length(); i++) {
+                final JSONObject articleRevision = articleRevisions.optJSONObject(i);
+                revisionRepository.remove(articleRevision.optString(Keys.OBJECT_ID));
+            }
+
 
             if (Symphonys.getBoolean("algolia.enabled")) {
                 searchMgmtService.removeAlgoliaDocument(article);

@@ -1212,7 +1212,7 @@ a[class*=" icon-"]:hover {
 .pagination a,
 .pagination span,
 .tabs-sub a {
-  line-height: 36px;
+  line-height: 35px;
   text-decoration: none;
   flex: 1;
   text-align: center;
@@ -1720,9 +1720,9 @@ ul.CodeMirror-hints {
 .module-header {
   border-radius: 3px 3px 0 0;
   border-bottom: 1px solid #eee;
-  padding: 9px 15px 8px;
+  padding: 8px 15px;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 19px;
 }
 
 .module-header h2 {

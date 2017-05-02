@@ -26,7 +26,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.1.1, Jan 18, 2017
+ * @version 1.9.1.1, May 1, 2017
  * @since 1.8.0
  */
 public final class Permission {
@@ -82,6 +82,11 @@ public final class Permission {
      * Id - common - update article.
      */
     public static final String PERMISSION_ID_C_COMMON_UPDATE_ARTICLE = "commonUpdateArticle";
+
+    /**
+     * Id - common - remove article.
+     */
+    public static final String PERMISSION_ID_C_COMMON_REMOVE_ARTICLE = "commonRemoveArticle";
 
     /**
      * Id - common - add comment.
