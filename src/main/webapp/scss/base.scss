@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.35.23.61, Apr 27, 2017
+ * @version 2.35.23.62, May 2, 2017
  */
 @import "variables";
 @import "icon";
@@ -1830,7 +1830,7 @@ ul.CodeMirror-hints {
 
 .tag-desc > li > a {
   float: left;
-  color: $gray;
+  color: #666;
   padding: 2px 5px;
   border: 1px solid transparent;
   position: relative;
@@ -1849,8 +1849,8 @@ ul.CodeMirror-hints {
 .tag-desc > li:hover > a {
   border-bottom-style: dotted;
   border-radius: 3px 3px 0 0;
-  opacity: 0.7;
   z-index: 3;
+  color: #333;
 }
 
 .tag-desc > li > a > span {
@@ -1875,7 +1875,6 @@ ul.CodeMirror-hints {
   position: absolute;
   top: 25px;
   z-index: 2;
-  opacity: 0.9;
   width: 200px;
   min-width: 150px;
 }
