@@ -35,8 +35,9 @@ var AddArticle = {
     /**
      * @description 删除文章
      * @csrfToken [string] CSRF 令牌
+     * @it [bom] 调用事件的元素
      */
-    remove: function (csrfToken) {
+    remove: function (csrfToken, it) {
         if (!confirm(Label.confirmRemoveLabel)) {
             return;
         }
@@ -47,13 +48,13 @@ var AddArticle = {
             headers: {"csrfToken": csrfToken},
             cache: false,
             beforeSend: function () {
-                $(".form button.red").attr("disabled", "disabled").css("opacity", "0.3");
+                $(it).attr("disabled", "disabled").css("opacity", "0.3");
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 $("#addArticleTip").addClass('error').html('<ul><li>' + errorThrown + '</li></ul>');
             },
             success: function (result, textStatus) {
-                $(".form button.red").removeAttr("disabled").css("opacity", "1");
+                $(it).removeAttr("disabled").css("opacity", "1");
                 if (0 === result.sc) {
                     window.location.href = Label.servePath + "/member/" + Label.userName;
                 } else {
@@ -61,15 +62,16 @@ var AddArticle = {
                 }
             },
             complete: function () {
-                $(".form button.red").removeAttr("disabled").css("opacity", "1");
+                $(it).removeAttr("disabled").css("opacity", "1");
             }
         });
     },
     /**
      * @description 发布文章
      * @csrfToken [string] CSRF 令牌
+     * @it [Bom] 触发事件的元素
      */
-    add: function (csrfToken) {
+    add: function (csrfToken, it) {
         if (Validate.goValidate({
                 target: $('#addArticleTip'),
                 data: [{
@@ -126,13 +128,13 @@ var AddArticle = {
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 beforeSend: function () {
-                    $(".form button.red").attr("disabled", "disabled").css("opacity", "0.3");
+                    $(it).attr("disabled", "disabled").css("opacity", "0.3");
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     $("#addArticleTip").addClass('error').html('<ul><li>' + errorThrown + '</li></ul>');
                 },
                 success: function (result, textStatus) {
-                    $(".form button.red").removeAttr("disabled").css("opacity", "1");
+                    $(it).removeAttr("disabled").css("opacity", "1");
                     if (0 === result.sc) {
                         window.location.href = Label.servePath + "/article/" + result.articleId;
                         localStorage.removeItem('postData');
@@ -141,7 +143,7 @@ var AddArticle = {
                     }
                 },
                 complete: function () {
-                    $(".form button.red").removeAttr("disabled").css("opacity", "1");
+                    $(it).removeAttr("disabled").css("opacity", "1");
                 }
             });
         }

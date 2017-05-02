@@ -114,6 +114,9 @@
                         <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
                     </#if>
                     <div class="fn-right">
+                        <#if article?? && permissions["commonRemoveArticle"].permissionGrant>
+                            <span class="ft-red article-anonymous fn-pointer" tabindex="11" onclick="AddArticle.remove('${csrfToken}', this)">${removeArticleLabel}</span>
+                        </#if>
                         <#if hasB3Key>
                         <label class="article-anonymous">${syncLabel}<input<#if requisite> readonly disabled</#if>
                                 <#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked</#if></#if>
@@ -127,16 +130,13 @@
 
                         <#if article??>
                             <#if permissions["commonUpdateArticle"].permissionGrant>
-                            <button class="red" tabindex="10"<#if requisite> readonly disabled</#if>
-                                onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
-                            </#if>
-                            <#if permissions["commonRemoveArticle"].permissionGrant>
-                                <button class="red" tabindex="11" onclick="AddArticle.remove('${csrfToken}')">${removeArticleLabel}</button>
+                            <button id="addArticleBtn" tabindex="10"<#if requisite> readonly disabled</#if>
+                                onclick="AddArticle.add('${csrfToken}', this)">${submitLabel}</button>
                             </#if>
                         <#else>
                             <#if permissions["commonAddArticle"].permissionGrant>
-                            <button class="red" tabindex="10"<#if requisite> readonly disabled</#if>
-                                onclick="AddArticle.add('${csrfToken}')">${postLabel}</button>
+                            <button id="addArticleBtn" tabindex="10"<#if requisite> readonly disabled</#if>
+                                onclick="AddArticle.add('${csrfToken}', this)">${postLabel}</button>
                             </#if>
                         </#if>
                     </div>
