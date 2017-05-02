@@ -1714,7 +1714,6 @@ ul.CodeMirror-hints {
   width: 100%;
   word-wrap: break-word;
   box-sizing: border-box;
-  // box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
 
 .module-header {
@@ -1849,8 +1848,9 @@ ul.CodeMirror-hints {
 .tag-desc > li:hover > a {
   border-bottom-style: dotted;
   border-radius: 3px 3px 0 0;
-  z-index: 3;
+  z-index: 2;
   color: #333;
+  box-shadow: 0px 1px 1px rgba(0,0,0,0.2);
 }
 
 .tag-desc > li > a > span {
@@ -1873,10 +1873,15 @@ ul.CodeMirror-hints {
   margin-left: 3px;
   padding: 5px 10px;
   position: absolute;
-  top: 25px;
-  z-index: 2;
+  top: 26px;
+  z-index: 3;
   width: 200px;
   min-width: 150px;
+  box-shadow: 0px 1px 1px rgba(0,0,0,0.2);
+
+  ul, li {
+    margin-left: 15px;
+  }
 }
 
 /* end side tags */
