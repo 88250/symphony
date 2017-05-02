@@ -184,8 +184,10 @@
     line-height: 22px;
 }
 
-label.article-anonymous {
+.fn-right > .article-anonymous {
     margin: 7px 15px 0 0;
+    line-height: 20px;
+    float: left;
 }
 
 .post {
@@ -261,8 +263,8 @@ label.article-anonymous {
         padding: 5px 10px;
         width: 100%;
         line-height: 20px;
-        border-bottom: 1px solid rgba(0,0,0,.02);
-        border-top: 1px solid rgba(0,0,0,.02);
+        border-bottom: 1px solid #f2f2f2;
+        border-top: 1px solid #f2f2f2;
         box-sizing: border-box;
     }
 

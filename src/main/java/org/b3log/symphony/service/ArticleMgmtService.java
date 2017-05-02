@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.17.34.41, May 1, 2017
+ * @version 2.17.34.42, May 2, 2017
  * @since 0.2.0
  */
 @Service
@@ -199,6 +199,24 @@ public class ArticleMgmtService {
     private AudioMgmtService audioMgmtService;
 
     /**
+     * Determines whether the specified tag title exists in the specified tags.
+     *
+     * @param tagTitle the specified tag title
+     * @param tags     the specified tags
+     * @return {@code true} if it exists, {@code false} otherwise
+     * @throws JSONException json exception
+     */
+    private static boolean tagExists(final String tagTitle, final List<JSONObject> tags) throws JSONException {
+        for (final JSONObject tag : tags) {
+            if (tag.getString(Tag.TAG_TITLE).equals(tagTitle)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Removes an article specified with the given article id. An article is removable if:
      * <ul>
      * <li>No comments</li>
@@ -249,25 +267,6 @@ public class ArticleMgmtService {
 
         // Perform removal
         removeArticleByAdmin(articleId);
-    }
-
-
-    /**
-     * Determines whether the specified tag title exists in the specified tags.
-     *
-     * @param tagTitle the specified tag title
-     * @param tags     the specified tags
-     * @return {@code true} if it exists, {@code false} otherwise
-     * @throws JSONException json exception
-     */
-    private static boolean tagExists(final String tagTitle, final List<JSONObject> tags) throws JSONException {
-        for (final JSONObject tag : tags) {
-            if (tag.getString(Tag.TAG_TITLE).equals(tagTitle)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -881,6 +880,7 @@ public class ArticleMgmtService {
             articleTitle = Emotions.toAliases(articleTitle);
             articleTitle = Pangu.spacingText(articleTitle);
 
+            final String oldTitle = oldArticle.optString(Article.ARTICLE_TITLE);
             oldArticle.put(Article.ARTICLE_TITLE, articleTitle);
 
             oldArticle.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
@@ -892,6 +892,8 @@ public class ArticleMgmtService {
             //articleContent = StringUtils.trim(articleContent) + " "; https://github.com/b3log/symphony/issues/389
             articleContent = articleContent.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             articleContent = articleContent.replace(langPropsService.get("uploadingLabel", Locale.US), "");
+
+            final String oldContent = oldArticle.optString(Article.ARTICLE_CONTENT);
             oldArticle.put(Article.ARTICLE_CONTENT, articleContent);
 
             final long currentTimeMillis = System.currentTimeMillis();
@@ -923,7 +925,8 @@ public class ArticleMgmtService {
 
             articleRepository.update(articleId, oldArticle);
 
-            if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+            if (Article.ARTICLE_TYPE_C_THOUGHT != articleType
+                    && (!oldContent.equals(articleContent) || !oldTitle.equals(articleTitle))) {
                 // Revision
                 final JSONObject revision = new JSONObject();
                 revision.put(Revision.REVISION_AUTHOR_ID, authorId);

@@ -60,6 +60,7 @@ var ChatRoom = {
                 dragDrop: false,
                 lineWrapping: true,
                 toolbar: [
+                    {name: 'emoji'},
                     {name: 'bold'},
                     {name: 'italic'},
                     {name: 'quote'},

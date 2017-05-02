@@ -88,6 +88,9 @@
                         </#if>
                     </div>
                     <div class="fn-clear">
+                        <#if article?? && permissions["commonRemoveArticle"].permissionGrant>
+                            <label class="ft-red fn-pointer" tabindex="11" onclick="AddArticle.remove('${csrfToken}', this)">${removeArticleLabel} &nbsp; &nbsp;</label>
+                        </#if>
                         <#if hasB3Key>
                             <label class="article-anonymous">${syncLabel}<input
                                 <#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked</#if></#if>
@@ -101,14 +104,11 @@
 
                         <#if article??>
                             <#if permissions["commonUpdateArticle"].permissionGrant>
-                                <button class="red fn-right" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${submitLabel}</button>
-                            </#if>
-                            <#if permissions["commonRemoveArticle"].permissionGrant>
-                                <button class="red" tabindex="11" onclick="AddArticle.remove('${csrfToken}')">${removeArticleLabel}</button>
+                                <button class="fn-right" tabindex="10" onclick="AddArticle.add('${csrfToken}', this)">${submitLabel}</button>
                             </#if>
                         <#else>
                             <#if permissions["commonAddArticle"].permissionGrant>
-                                <button class="red fn-right" tabindex="10" onclick="AddArticle.add('${csrfToken}')">${postLabel}</button>
+                                <button class="fn-right" tabindex="10" onclick="AddArticle.add('${csrfToken}', this)">${postLabel}</button>
                             </#if>
                         </#if>
                     </div>

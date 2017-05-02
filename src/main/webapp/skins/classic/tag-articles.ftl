@@ -9,7 +9,6 @@
         <meta name="description" content="${tag.tagSeoDesc}"/>
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
-        ${tag.tagCSS}
     </head>
     <body>
         <#include "header.ftl">
@@ -17,6 +16,7 @@
             <div class="wrapper">
                 <div class="content" id="tag-pjax-container">
                     <#if pjax><!---- pjax {#tag-pjax-container} start ----></#if><div class="module">
+                        ${tag.tagCSS}
                         <div class="article-info fn-flex">
                             <#if tag.tagIconPath != "">
                             <div class="avatar" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>

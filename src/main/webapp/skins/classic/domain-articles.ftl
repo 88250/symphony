@@ -9,7 +9,6 @@
         <meta name="description" content="${domain.domainSeoDesc}"/>
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
-        ${domain.domainCSS}
     </head>
     <body>
         <#include "header.ftl">
@@ -17,6 +16,7 @@
             <div class="wrapper">
                 <div class="content" id="domain-pjax-container">
                     <#if pjax><!---- pjax {#domain-pjax-container} start ----></#if><div class="module">
+                    ${domain.domainCSS}
                     <div class="tabs-sub fn-clear">
                         <#list domains as navDomain>
                         <#if navDomain.domainURI == domain.domainURI>

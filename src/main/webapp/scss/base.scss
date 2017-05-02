@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.35.23.61, Apr 27, 2017
+ * @version 2.35.23.62, May 2, 2017
  */
 @import "variables";
 @import "icon";
@@ -1109,15 +1109,23 @@ a[class*=" icon-"]:hover {
 
 .module.editor-toolbar-emoji {
   position: absolute;
-  bottom: 15px;
-  height: 100px;
+  bottom: 14px;
+  height: 111px;
   overflow: auto;
   z-index: 124;
+  background-color: #fff;
+  box-shadow: $shadow-tip;
   width: 50%;
 
   .emoji {
     cursor: pointer;
-    margin: 5px;
+    padding: 5px;
+    border-radius: 2px;
+    margin-bottom: 0;
+
+    &:hover {
+      background-color: $fade;
+    }
   }
 }
 
@@ -1684,7 +1692,7 @@ ul.CodeMirror-hints {
 }
 
 .CodeMirror-hint:hover {
-  background: #08f;
+  background: $blue;
   color: white;
 }
 
@@ -1714,7 +1722,6 @@ ul.CodeMirror-hints {
   width: 100%;
   word-wrap: break-word;
   box-sizing: border-box;
-  // box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
 
 .module-header {
@@ -1830,7 +1837,7 @@ ul.CodeMirror-hints {
 
 .tag-desc > li > a {
   float: left;
-  color: $gray;
+  color: #666;
   padding: 2px 5px;
   border: 1px solid transparent;
   position: relative;
@@ -1849,8 +1856,9 @@ ul.CodeMirror-hints {
 .tag-desc > li:hover > a {
   border-bottom-style: dotted;
   border-radius: 3px 3px 0 0;
-  opacity: 0.7;
-  z-index: 3;
+  z-index: 2;
+  color: #333;
+  box-shadow: 0px 1px 1px rgba(0,0,0,0.2);
 }
 
 .tag-desc > li > a > span {
@@ -1873,11 +1881,15 @@ ul.CodeMirror-hints {
   margin-left: 3px;
   padding: 5px 10px;
   position: absolute;
-  top: 25px;
-  z-index: 2;
-  opacity: 0.9;
+  top: 26px;
+  z-index: 3;
   width: 200px;
   min-width: 150px;
+  box-shadow: 0px 1px 1px rgba(0,0,0,0.2);
+
+  ul, li {
+    margin-left: 15px;
+  }
 }
 
 /* end side tags */

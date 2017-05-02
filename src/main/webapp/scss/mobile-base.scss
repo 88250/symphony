@@ -790,6 +790,10 @@ a[class*=" icon-"]:hover {
     float: left;
 }
 
+.form label.ft-red {
+    color: $red;
+}
+
 .form label > a {
     font-weight: normal;
 }
@@ -2535,7 +2539,6 @@ code .dec { color: initial; } /* decimal - blue */
 .article-content {
     width: 100%;
     position: relative;
-    overflow: auto;
 
     &#articleAudio {
         width: auto;
@@ -2833,6 +2836,36 @@ code .dec { color: initial; } /* decimal - blue */
 /* start editor */
 .editor-toolbar a.icon-fullscreen {
     display: none;
+}
+
+.module.editor-toolbar-emoji {
+    position: absolute;
+    bottom: 14px;
+    height: 111px;
+    overflow: auto;
+    z-index: 124;
+    background-color: #fff;
+    box-shadow: $shadow-tip;
+    width: 50%;
+
+    .emoji {
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 2px;
+        margin-bottom: 0;
+
+        &:hover {
+            background-color: $fade;
+        }
+    }
+}
+
+.wrapper .editor-toolbar {
+    border: 1px solid #ccc;
+
+    & > a:last-child {
+        display: none;
+    }
 }
 /* end editor */
 

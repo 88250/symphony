@@ -20,8 +20,9 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.31.27.56, Apr 27, 2017
+ * @version 2.31.28.56, Mar 2, 2017
  */
+
 @import "variables";
 
 /* start list */
@@ -170,8 +171,9 @@
     padding: 0 10px;
     background-color: #fff;
     box-sizing: border-box;
-    border-bottom: 1px solid #eee;
-    font-style: 16px;
+    box-shadow: $shadow-tip;
+    font-size: 16px;
+    top: -48px;
 
     svg {
       color: #333;
@@ -835,13 +837,13 @@ label.cmt-anonymous {
 /* start tag-article.html */
 .tag-articles {
   .article-info {
-    padding: 15px 30px 0;
+    padding: 15px 15px 0;
     margin-bottom: 15px;
   }
 
   .desc,
   .tag-articles-tag-desc.tag-desc {
-    margin: 0 30px;
+    margin: 0 15px;
   }
 
   .tag-articles-tag-desc.tag-desc > li {

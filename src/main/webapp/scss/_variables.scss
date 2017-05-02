@@ -19,7 +19,7 @@
  * variables.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.4.0.2, Apr 27, 2017
+ * @version 0.5.0.2, Mar 2, 2017
  */
 
 /**
@@ -40,11 +40,6 @@ dialog 200~209
 */
 
 // Table of Contents
-//
-// Colors
-// Fonts
-
-
 // Colors
 $blue: #4285f4 !default;
 $light-blue: #f1f7fe !default;
@@ -56,3 +51,6 @@ $green: #569e3d !default;
 // Fonts
 $font-family-base: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif !default;
 $font-family-code: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monospace !default;
+
+// shadow
+$shadow-tip: 0 1px 2px rgba(0,0,0,.2) !default;

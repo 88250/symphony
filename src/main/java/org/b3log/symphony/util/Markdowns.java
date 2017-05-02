@@ -63,7 +63,7 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.14.21, Apr 23, 2017
+ * @version 1.10.15.21, May 2, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -310,7 +310,7 @@ public final class Markdowns {
             doc.outputSettings().prettyPrint(false);
 
             String ret = doc.html();
-            ret = StringUtils.substringBetween(ret, "<body>", "</body>");
+            ret = StringUtils.substringBetween(ret, "body>", "</body>");
             ret = StringUtils.trim(ret);
 
             // cache it
