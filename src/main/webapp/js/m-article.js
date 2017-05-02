@@ -347,6 +347,7 @@ var Comment = {
                 lineWrapping: true,
                 htmlURL: Label.servePath + "/markdown",
                 toolbar: [
+                    {name: 'emoji'},
                     {name: 'bold'},
                     {name: 'italic'},
                     {name: 'quote'},

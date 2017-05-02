@@ -1088,6 +1088,11 @@
     function getState(cm, pos) {
         pos = pos || cm.getCursor('start');
         var stat = cm.getTokenAt(pos);
+        if (stat.string[0] === ':' && stat.string[stat.string.length - 1] === ':') {
+            return {
+                'emoji': true
+            }
+        }
         if (!stat.type)
             return {};
 
@@ -1109,6 +1114,8 @@
                 ret.quote = true;
             } else if (data === 'em') {
                 ret.italic = true;
+            } else if (data === 'link') {
+                ret.link = true;
             }
         }
         return ret;
@@ -1387,7 +1394,7 @@
 
         $emojiPanel = $toolbar.find('.editor-toolbar-emoji');
         $emojiPanel.find('.emoji').click(function () {
-            _replaceSelection(cm, null, this.title, '');
+            _replaceSelection(cm, null, ' ' + this.title, '');
             $emojiPanel.hide();
             editor.toolbar.emoji.className = 'tooltipped tooltipped-ne';
         });
@@ -1504,6 +1511,15 @@
         if (this.element) {
             this.render();
         }
+
+        $(window).click(function (event) {
+            if (event.target.className === 'icon-emoji' ||
+                (event.target.children[0] && event.target.children[0].className === 'icon-emoji') ||
+                $(event.target).closest('.editor-toolbar-emoji').length === 1) {
+                return false;
+            }
+            $('.editor-toolbar-emoji').hide();
+        });
     }
 
     /**
@@ -1634,7 +1650,7 @@
                             el.className += ' active';
                         }
                     } else {
-                        if (el.className.indexOf('icon-view') === -1) {
+                        if (el.children[0].className !== 'icon-view') {
                             el.className = el.className.replace(/\s*active\s*/g, '');
                         }
                     }

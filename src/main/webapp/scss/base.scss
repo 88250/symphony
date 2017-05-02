@@ -1109,15 +1109,23 @@ a[class*=" icon-"]:hover {
 
 .module.editor-toolbar-emoji {
   position: absolute;
-  bottom: 15px;
-  height: 100px;
+  bottom: 14px;
+  height: 111px;
   overflow: auto;
   z-index: 124;
+  background-color: #fff;
+  box-shadow: $shadow-tip;
   width: 50%;
 
   .emoji {
     cursor: pointer;
-    margin: 5px;
+    padding: 5px;
+    border-radius: 2px;
+    margin-bottom: 0;
+
+    &:hover {
+      background-color: $fade;
+    }
   }
 }
 
@@ -1684,7 +1692,7 @@ ul.CodeMirror-hints {
 }
 
 .CodeMirror-hint:hover {
-  background: #08f;
+  background: $blue;
   color: white;
 }
 
