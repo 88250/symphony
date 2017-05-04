@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.29.55, Apr 23, 2017
+ * @version 2.27.30.55, May 4, 2017
  * @since 0.2.0
  */
 @Service
@@ -2434,7 +2434,9 @@ public class ArticleQueryService {
             final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
             final String currentRole = null == currentUser ? "" : currentUser.optString(User.USER_ROLE);
             final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
-            if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+
+            final int articleType = article.optInt(Article.ARTICLE_TYPE);
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType
                     && !authorName.equals(currentUserName) && !Role.ROLE_ID_C_ADMIN.equals(currentRole)) {
                 boolean invited = false;
 
@@ -2463,14 +2465,19 @@ public class ArticleQueryService {
                 }
             }
 
-            articleContent = shortLinkQueryService.linkArticle(articleContent);
-            articleContent = shortLinkQueryService.linkTag(articleContent);
-            articleContent = Emotions.convert(articleContent);
-            article.put(Article.ARTICLE_CONTENT, articleContent);
+            if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+                articleContent = shortLinkQueryService.linkArticle(articleContent);
+                articleContent = shortLinkQueryService.linkTag(articleContent);
+                articleContent = Emotions.convert(articleContent);
+                article.put(Article.ARTICLE_CONTENT, articleContent);
+            }
 
             markdown(article);
+            articleContent = article.optString(Article.ARTICLE_CONTENT);
 
-            articleContent = MP3Players.render(article.optString(Article.ARTICLE_CONTENT));
+            if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+                articleContent = MP3Players.render(articleContent);
+            }
 
             article.put(Article.ARTICLE_CONTENT, articleContent);
             article.put(Article.ARTICLE_T_PREVIEW_CONTENT, getArticleMetaDesc(article));
