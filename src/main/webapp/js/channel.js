@@ -21,7 +21,7 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.12.16.19, Mar 27, 2017
+ * @version 1.13.16.19, May 4, 2017
  */
 
 /**
@@ -67,7 +67,7 @@ var ArticleChannel = {
                         // 显示预览模式 & 回到底部
                         $('.comments-header > .fn-none').show();
                         // 显示评论
-                        $("#comments").show();
+                        $("#articleCommentsPanel").parent().show();
                     }
 
                     if (0 === Label.userCommentViewMode) { // tranditional view mode

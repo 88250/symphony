@@ -145,8 +145,8 @@
                 </#if>
             </div>
         </div>
-        <div class="main">
-            <div class="wrapper">
+        <div class="main <#if article.articleComments?size == 0> fn-none</#if>">
+            <div class="wrapper" id="articleCommentsPanel">
                 <#if article.articleNiceComments?size != 0>
                 <div class="module nice">
                     <div class="module-header">
@@ -204,7 +204,7 @@
                 </#if>
 
                 <#if pjax><!---- pjax {#comments} start ----></#if>
-                <div class="module comments<#if article.articleComments?size == 0> fn-none</#if>" id="comments">
+                <div class="module comments" id="comments">
                     <div class="comments-header module-header">
                         <span class="article-cmt-cnt">${article.articleCommentCount} ${cmtLabel}</span>
                         <span class="fn-right<#if article.articleComments?size == 0> fn-none</#if>">
@@ -227,78 +227,78 @@
                     <@pagination url="${servePath}${article.articlePermalink}" query="m=${userCommentViewMode}#comments" pjaxTitle="${article.articleTitle} - ${symphonyLabel}" />
                 </div>
                 <#if pjax><!---- pjax {#comments} end ----></#if>
-
-                <#if sideRelevantArticles?size != 0>
-                    <div class="module">
-                        <div class="module-header">
-                            <h2>
-                                ${relativeArticleLabel}
-                            </h2>
-                        </div>
-                        <div class="module-panel">
-                            <ul class="module-list">
-                                <#list sideRelevantArticles as relevantArticle>
-                                    <li<#if !relevantArticle_has_next> class="last"</#if>>
+                <div id="heatBar" class="tooltipped tooltipped-s" aria-label="${postActivityLabel}">
+                    <i class="heat" style="width:${article.articleHeat*3}px"></i>
+                </div>
+                <div id="revision"><div id="revisions"></div></div>
+            </div>
+        </div>
+        <div class="wrapper article-footer">
+            <#if sideRelevantArticles?size != 0>
+                <div class="module">
+                    <div class="module-header">
+                        <h2>
+                        ${relativeArticleLabel}
+                        </h2>
+                    </div>
+                    <div class="module-panel">
+                        <ul class="module-list">
+                            <#list sideRelevantArticles as relevantArticle>
+                                <li<#if !relevantArticle_has_next> class="last"</#if>>
                                     <#if "someone" != relevantArticle.articleAuthorName>
-                                        <a rel="nofollow"
-                                           href="${servePath}/member/${relevantArticle.articleAuthorName}"></#if>
+                                    <a rel="nofollow"
+                                       href="${servePath}/member/${relevantArticle.articleAuthorName}"></#if>
                                     <span class="avatar-small slogan tooltipped tooltipped-se" aria-label="${relevantArticle.articleAuthorName}"
                                           style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"
                                     ></span>
                                     <#if "someone" != relevantArticle.articleAuthorName></a></#if>
                                     <a rel="nofollow" class="title" href="${servePath}${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
-                                    </li>
-                                </#list>
-                            </ul>
-                        </div>
+                                </li>
+                            </#list>
+                        </ul>
                     </div>
-                </#if>
+                </div>
+            </#if>
 
-                <#if sideRandomArticles?size != 0>
-                    <div class="module">
-                        <div class="module-header">
-                            <h2>
-                                ${randomArticleLabel}
-                            </h2>
-                        </div>
-                        <div class="module-panel">
-                            <ul class="module-list">
-                                <#list sideRandomArticles as randomArticle>
-                                    <li<#if !randomArticle_has_next> class="last"</#if>>
+            <#if sideRandomArticles?size != 0>
+                <div class="module">
+                    <div class="module-header">
+                        <h2>
+                        ${randomArticleLabel}
+                        </h2>
+                    </div>
+                    <div class="module-panel">
+                        <ul class="module-list">
+                            <#list sideRandomArticles as randomArticle>
+                                <li<#if !randomArticle_has_next> class="last"</#if>>
                                     <#if "someone" != randomArticle.articleAuthorName>
-                                        <a  rel="nofollow"
-                                            href="${servePath}/member/${randomArticle.articleAuthorName}"></#if>
+                                    <a  rel="nofollow"
+                                        href="${servePath}/member/${randomArticle.articleAuthorName}"></#if>
                                     <span class="avatar-small slogan tooltipped tooltipped-se"
                                           aria-label="${randomArticle.articleAuthorName}"
                                           style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
                                     <a class="title" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
-                                    </li>
-                                </#list>
-                            </ul>
-                        </div>
+                                </li>
+                            </#list>
+                        </ul>
                     </div>
-                </#if>
+                </div>
+            </#if>
 
-                <#if ADLabel!="">
-                    <div class="module">
-                        <div class="module-header">
-                            <h2>
-                                ${sponsorLabel}
-                                <a href="https://hacpai.com/article/1460083956075" class="fn-right ft-13 ft-gray" target="_blank">${wantPutOnLabel}</a>
-                            </h2>
-                        </div>
-                        <div class="module-panel ad fn-clear">
-                            ${ADLabel}
-                        </div>
+            <#if ADLabel!="">
+                <div class="module">
+                    <div class="module-header">
+                        <h2>
+                        ${sponsorLabel}
+                            <a href="https://hacpai.com/article/1460083956075" class="fn-right ft-13 ft-gray" target="_blank">${wantPutOnLabel}</a>
+                        </h2>
                     </div>
-                </#if>
-            </div>
-
-            <div id="heatBar" class="tooltipped tooltipped-s" aria-label="${postActivityLabel}">
-                <i class="heat" style="width:${article.articleHeat*3}px"></i>
-            </div>
-            <div id="revision"><div id="revisions"></div></div>
+                    <div class="module-panel ad fn-clear">
+                    ${ADLabel}
+                    </div>
+                </div>
+            </#if>
         </div>
         <#include "footer.ftl">
         <div class="share fn-none">

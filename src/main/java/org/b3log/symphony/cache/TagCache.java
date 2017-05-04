@@ -34,8 +34,6 @@ import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,7 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.1, Mar 28, 2017
+ * @version 1.5.6.2, May 4, 2017
  * @since 1.4.0
  */
 @Named
@@ -266,36 +264,38 @@ public class TagCache {
             final List<JSONObject> tags = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             // for legacy data migration
-            final Transaction transaction = tagRepository.beginTransaction();
-            try {
-                for (final JSONObject tag : tags) {
-                    String uri = tag.optString(Tag.TAG_URI);
-                    if (StringUtils.isBlank(uri)) {
-                        final String tagTitle = tag.optString(Tag.TAG_TITLE);
-                        tag.put(Tag.TAG_URI, URLEncoder.encode(tagTitle, "UTF-8"));
-                        tag.put(Tag.TAG_CSS, "");
-
-                        tagRepository.update(tag.optString(Keys.OBJECT_ID), tag);
-
-                        LOGGER.info("Migrated tag [title=" + tagTitle + "]");
-                    }
-                }
-
-                transaction.commit();
-            } catch (final RepositoryException | UnsupportedEncodingException e) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                LOGGER.log(Level.ERROR, "Migrates tag data failed", e);
-            }
+//            final Transaction transaction = tagRepository.beginTransaction();
+//            try {
+//                for (final JSONObject tag : tags) {
+//                    String uri = tag.optString(Tag.TAG_URI);
+//                    if (StringUtils.isBlank(uri)) {
+//                        final String tagTitle = tag.optString(Tag.TAG_TITLE);
+//                        tag.put(Tag.TAG_URI, URLEncoder.encode(tagTitle, "UTF-8"));
+//                        tag.put(Tag.TAG_CSS, "");
+//
+//                        tagRepository.update(tag.optString(Keys.OBJECT_ID), tag);
+//
+//                        LOGGER.info("Migrated tag [title=" + tagTitle + "]");
+//                    }
+//                }
+//
+//                transaction.commit();
+//            } catch (final RepositoryException | UnsupportedEncodingException e) {
+//                if (transaction.isActive()) {
+//                    transaction.rollback();
+//                }
+//
+//                LOGGER.log(Level.ERROR, "Migrates tag data failed", e);
+//            }
 
             final Iterator<JSONObject> iterator = tags.iterator();
             while (iterator.hasNext()) {
                 final JSONObject tag = iterator.next();
 
                 String title = tag.optString(Tag.TAG_TITLE);
-                if (StringUtils.contains(title, " ") || StringUtils.contains(title, "　")) { // filter legacy data
+                if ("".equals(title)
+                        || StringUtils.contains(title, " ")
+                        || StringUtils.contains(title, "　")) { // filter legacy data
                     iterator.remove();
 
                     continue;

@@ -44,7 +44,7 @@ import java.util.UUID;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.4.3, Dec 19, 2016
+ * @version 1.1.4.4, May 4, 2017
  * @since 1.4.0
  */
 @WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
@@ -65,20 +65,27 @@ public class FileUploadServlet extends HttpServlet {
      */
     private static final String UPLOAD_DIR = Symphonys.get("upload.dir");
 
-    static {
-        if (!FileUtil.isExistingFolder(new File(UPLOAD_DIR))) {
-            try {
-                FileUtil.mkdirs(UPLOAD_DIR);
-            } catch (IOException ex) {
-                LOGGER.log(Level.ERROR, "Init upload dir error", ex);
-            }
-        }
-    }
-
     /**
      * Qiniu enabled.
      */
     private static final Boolean QN_ENABLED = Symphonys.getBoolean("qiniu.enabled");
+
+    static {
+        if (!QN_ENABLED) {
+            final File file = new File(UPLOAD_DIR);
+            if (!FileUtil.isExistingFolder(file)) {
+                try {
+                    FileUtil.mkdirs(UPLOAD_DIR);
+                } catch (IOException ex) {
+                    LOGGER.log(Level.ERROR, "Init upload dir error", ex);
+
+                    System.exit(-1);
+                }
+            }
+
+            LOGGER.info("Uses dir [" + file.getAbsolutePath() + "] for saving files uploaded");
+        }
+    }
 
     @Override
     public void doGet(final HttpServletRequest req, final HttpServletResponse resp)
