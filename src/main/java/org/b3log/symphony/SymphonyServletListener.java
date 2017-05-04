@@ -146,7 +146,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
-        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
         Stopwatchs.release();
     }
 
