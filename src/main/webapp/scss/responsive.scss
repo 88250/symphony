@@ -19,7 +19,7 @@
  * Base style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.5.11, Apr 19, 2017
+ * @version 1.2.6.11, May 4, 2017
  */
 
 @import "variables";
@@ -101,8 +101,12 @@
     }
 
     /* article */
-    .article .article-header h2 {
-        margin: 0 10px;
+    .article div.article-header {
+        display: none;
+    }
+
+    .wrapper.article-footer > .module {
+        margin-left: 0;
     }
 
     .list .avatar {

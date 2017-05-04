@@ -1076,11 +1076,11 @@ var Article = {
             $('#articleToC > .module-panel').height($(window).height() - 48);
 
             if ($(window).width() < 1024) {
+                $('.article-header > h2').removeAttr('style');
                 if ($('#articleToC').length === 0) {
                     return false;
                 }
                 $('.article-body .wrapper, #articleCommentsPanel, .article-footer').css('margin-right', 'auto');
-                $('.article-header > h2').removeAttr('style');
                 return false;
             }
 
@@ -1088,8 +1088,8 @@ var Article = {
                 var articleToCW = $('#articleToC').width(),
                     articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
                 $('.article-body .wrapper, #articleCommentsPanel, .article-footer').css('margin-right', articleMR + 'px');
-                $('.article-header > h2').css('margin-left', ($('.article-footer').offset().left - 58) + 'px');
             }
+            $('.article-header > h2').css('margin-left', Math.max(20, ($('.article-footer').offset().left - 58)) + 'px');
         });
     },
     /**
@@ -1487,7 +1487,8 @@ var Article = {
      */
     initToc: function () {
         if ($('#articleToC').length === 0) {
-            $('.article-header > h2').css('margin-left', ($('.article-footer').offset().left - 58) + 'px');
+            $('.article-header > h2').css('margin-left', Math.max(20, ($('.article-footer').offset().left - 58)) + 'px');
+            $('.article-body .wrapper, #articleCommentsPanel, .article-footer').css('margin-right', 'auto');
             return false;
         }
 
@@ -1495,7 +1496,7 @@ var Article = {
             articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
         $('.article-body .wrapper, #articleCommentsPanel, .article-footer').css('margin-right', articleMR + 'px');
 
-        $('.article-header > h2').css('margin-left', ($('.article-footer').offset().left - 58) + 'px');
+        $('.article-header > h2').css('margin-left', Math.max(20, ($('.article-footer').offset().left - 58)) + 'px');
         $('#articleToC > .module-panel').height($(window).height() - 48);
 
         // 样式
