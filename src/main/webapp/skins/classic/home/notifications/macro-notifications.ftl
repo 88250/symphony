@@ -23,22 +23,22 @@
                 <div class="side" id="side">
                     <#include '../../common/person-info.ftl'/>
                     <div class="module">
-                            <#if unreadNotificationCnt &gt; 0>
-                            <span class="count">${unreadNotificationCnt}</span>
+                        <div class="module-header fn-clear">
+                            <#if unreadNotificationCnt == 0>
                             <span onclick="Settings.makeAllNotificationsRead()" 
-                                  aria-label="${makeAllAsReadLabel}" class="fn-right tooltipped tooltipped-nw home-side-read">
+                                  aria-label="${makeAllAsReadLabel}" class="fn-right tooltipped tooltipped-w home-side-read">
                                 <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                             </span>
                             </#if>
                         </div>
-                        <div class="module-panel fn-oh">
+                        <div class="module-panel">
                             <nav class="home-menu">
                                 <a href="${servePath}/notifications/commented"<#if type == "commented"> class="current"</#if>>
                                    <span>${notificationCommentedLabel}</span>
-                                    <#if unreadCommentedNotificationCnt &gt; 0>
+                                    <#if unreadCommentedNotificationCnt == 0>
                                     <span class="count">${unreadCommentedNotificationCnt}</span>
                                     <span onclick="Util.makeNotificationRead('commented')"
-                                          aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
+                                          aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-w">
                                         <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                     </span>
                                     </#if>
@@ -48,7 +48,7 @@
                                     <#if unreadReplyNotificationCnt &gt; 0>
                                     <span class="count">${unreadReplyNotificationCnt}</span>
                                     <span onclick="Util.makeNotificationRead('reply')"
-                                          aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
+                                          aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-w">
                                         <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                     </span>
                                     </#if>
@@ -58,7 +58,7 @@
                                     <#if unreadAtNotificationCnt &gt; 0>
                                     <span class="count">${unreadAtNotificationCnt}</span>
                                     <span onclick="Util.makeNotificationRead('at')"
-                                          aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
+                                          aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-w">
                                         <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                     </span>
                                     </#if>
@@ -68,7 +68,7 @@
                                     <#if unreadFollowingNotificationCnt &gt; 0>
                                     <span class="count">${unreadFollowingNotificationCnt}</span>
                                     <span onclick="Util.makeNotificationRead('following')"
-                                          aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
+                                          aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-w">
                                         <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                     </span>
                                     </#if>
@@ -94,7 +94,6 @@
                             </nav>
                         </div>
                     </div>
-                </div>
                 </div>
             </div>
         </div>
