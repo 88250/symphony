@@ -70,7 +70,7 @@ var Comment = {
     },
     /**
      * 跳转到指定的评论处
-     * @param {string} url 跳转的 url 
+     * @param {string} url 跳转的 url
      */
     goComment: function (url) {
         if ($(url.substr(url.length - 14, 14)).length === 0) {
@@ -88,7 +88,7 @@ var Comment = {
     _setCmtVia: function () {
         $('.cmt-via').each(function () {
             var ua = $(this).data('ua'),
-                    name = Util.getDeviceByUa(ua);
+                name = Util.getDeviceByUa(ua);
             if (name !== '') {
                 $(this).html('via ' + name);
             }
@@ -144,7 +144,7 @@ var Comment = {
 
         // 评论框控制
         $('.editor-panel .editor-hide').click(function () {
-             $('#replyBtn').click();
+            $('#replyBtn').click();
         });
     },
     /**
@@ -243,11 +243,11 @@ var Comment = {
             }
             return false;
         }).bind('keyup', 'i', function assets() {
-              // v i 关注帖子
-              if (Util.prevKey === 'v') {
-                  $('.article-header .icon-view').parent().click();
-              }
-              return false;
+            // v i 关注帖子
+            if (Util.prevKey === 'v') {
+                $('.article-header .icon-view').parent().click();
+            }
+            return false;
         }).bind('keyup', 'c', function assets() {
             // v c 收藏帖子
             if (Util.prevKey === 'v') {
@@ -299,7 +299,7 @@ var Comment = {
     init: function () {
         if ($(window.location.hash).length === 1) {
             // if (!isNaN(parseInt(window.location.hash.substr(1)))) {
-                Comment._bgFade($(window.location.hash));
+            Comment._bgFade($(window.location.hash));
             //}
         }
 
@@ -315,11 +315,11 @@ var Comment = {
             storage: true,
             titleSuffix: ''
         });
-        NProgress.configure({ showSpinner: false });
-        $('#comments').bind('pjax.start', function(){
+        NProgress.configure({showSpinner: false});
+        $('#comments').bind('pjax.start', function () {
             NProgress.start();
         });
-        $('#comments').bind('pjax.end', function(){
+        $('#comments').bind('pjax.end', function () {
             NProgress.done();
         });
 
@@ -340,7 +340,10 @@ var Comment = {
                 {name: 'italic'},
                 {name: 'quote'},
                 {name: 'link'},
-                {name: 'image', html: '<div class="tooltipped tooltipped-n" aria-label="' + Label.uploadFileLabel + '" ><form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form></div>'},
+                {
+                    name: 'image',
+                    html: '<div class="tooltipped tooltipped-n" aria-label="' + Label.uploadFileLabel + '" ><form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form></div>'
+                },
                 {name: 'unordered-list'},
                 {name: 'ordered-list'},
                 {name: 'view'},
@@ -445,7 +448,7 @@ var Comment = {
                 token = cm.getTokenAt(preCursor);
                 if (/^:\S+:$/.test(token.string)) {
                     cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
-                            CodeMirror.Pos(cursor.line, token.end - 1));
+                        CodeMirror.Pos(cursor.line, token.end - 1));
                 }
             }
         });
@@ -526,8 +529,8 @@ var Comment = {
                 if (result.sc) {
                     $(it).removeAttr('onclick');
                     var $heart = $("<i class='icon-heart ft-red'></i>"),
-                            y = $(it).offset().top,
-                            x = $(it).offset().left;
+                        y = $(it).offset().top,
+                        x = $(it).offset().left;
                     $heart.css({
                         "z-index": 9999,
                         "top": y,
@@ -541,14 +544,14 @@ var Comment = {
                     $("body").append($heart);
 
                     $heart.animate({"left": x - 150, "top": y - 60, "opacity": 0},
-                            1000,
-                            function () {
-                                var cnt = parseInt($(it).text());
+                        1000,
+                        function () {
+                            var cnt = parseInt($(it).text());
 
-                                $(it).html('<span class="icon-heart"></span> ' + (cnt + 1)).addClass('ft-red');
+                            $(it).html('<span class="icon-heart"></span> ' + (cnt + 1)).addClass('ft-red');
 
-                                $heart.remove();
-                            }
+                            $heart.remove();
+                        }
                     );
 
                 } else {
@@ -606,7 +609,7 @@ var Comment = {
                 }
 
                 var comments = result.commentReplies,
-                        template = '';
+                    template = '';
                 if (!(comments instanceof Array)) {
                     comments = [comments];
                 }
@@ -619,13 +622,13 @@ var Comment = {
                         template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
                     }
                     template += '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.commentAuthorName + '" style="background-image:url('
-                            + data.commentAuthorThumbnailURL + ')"></div>';
+                        + data.commentAuthorThumbnailURL + ')"></div>';
                     if (data.commentAuthorName !== 'someone') {
                         template += '</a>';
                     }
 
                     template += '<div class="fn-flex-1">'
-                            + '<div class="comment-info ft-smaller">';
+                        + '<div class="comment-info ft-smaller">';
 
                     if (data.commentAuthorName !== 'someone') {
                         template += '<a class="ft-gray" rel="nofollow" href="/member/' + data.commentAuthorName + '">';
@@ -638,19 +641,19 @@ var Comment = {
                     template += '<span class="ft-fade"> • ' + data.timeAgo;
                     if (data.rewardedCnt > 0) {
                         template += '<span aria-label="'
-                                + (data.rewarded ? Label.thankedLabel : Label.thankLabel + ' ' + data.rewardedCnt)
-                                + '" class="tooltipped tooltipped-n '
-                                + (data.rewarded ? 'ft-red' : 'ft-fade') + '">'
-                                + ' <span class="icon-heart"></span>' + data.rewardedCnt + '</span> ';
+                            + (data.rewarded ? Label.thankedLabel : Label.thankLabel + ' ' + data.rewardedCnt)
+                            + '" class="tooltipped tooltipped-n '
+                            + (data.rewarded ? 'ft-red' : 'ft-fade') + '">'
+                            + ' <span class="icon-heart"></span>' + data.rewardedCnt + '</span> ';
                     }
 
                     template += ' ' + Util.getDeviceByUa(data.commentUA) + '</span>';
 
                     template += '<a class="tooltipped tooltipped-nw ft-a-title fn-right" aria-label="' + Label.referenceLabel + '" href="javascript:Comment.goComment(\''
-                            + Label.servePath + '/article/' + Label.articleOId + '?p=' + data.paginationCurrentPageNum
-                            + '&m=' + Label.userCommentViewMode + '#' + data.oId
-                            + '\')"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
-                            + data.commentContent + '</div></div></div></li>';
+                        + Label.servePath + '/article/' + Label.articleOId + '?p=' + data.paginationCurrentPageNum
+                        + '&m=' + Label.userCommentViewMode + '#' + data.oId
+                        + '\')"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
+                        + data.commentContent + '</div></div></div></li>';
                 }
                 $commentReplies.html('<ul>' + template + '</ul>');
                 Article.parseLanguage();
@@ -673,14 +676,14 @@ var Comment = {
      */
     add: function (id, csrfToken) {
         if (!Validate.goValidate({
-            target: $("#addCommentTip"),
-            data: [{
+                target: $("#addCommentTip"),
+                data: [{
                     "target": Comment.editor,
                     "type": 'editor',
                     'max': 2000,
                     "msg": Label.commentErrorLabel
                 }]
-        })) {
+            })) {
             return false;
         }
 
@@ -759,22 +762,22 @@ var Comment = {
         Comment._toggleReply(function () {
             // 回帖在底部，当评论框弹出时会被遮住的解决方案
             if ($(window).height() - ($('#' + id)[0].offsetTop - $(window).scrollTop() + $('#' + id).outerHeight()) <
-             $('.editor-panel .wrapper').outerHeight()) {
+                $('.editor-panel .wrapper').outerHeight()) {
                 $(window).scrollTop($('#' + id)[0].offsetTop -
-                ($(window).height() - $('.editor-panel .wrapper').outerHeight() - $('#' + id).outerHeight()));
+                    ($(window).height() - $('.editor-panel .wrapper').outerHeight() - $('#' + id).outerHeight()));
             }
         });
 
         // 帖子作者 clone 到编辑器左上角
         var replyUserHTML = '',
-                $avatar = $('#' + id).find('>.fn-flex>div>a').clone();
+            $avatar = $('#' + id).find('>.fn-flex>div>a').clone();
         if ($avatar.length === 0) {
             $avatar = $('#' + id).find('>.fn-flex .avatar').clone();
             $avatar.removeClass('avatar').addClass('avatar-small');
             replyUserHTML = '<a rel="nofollow" href="#' + id
-                    + '" class="ft-a-title" onclick="Comment._bgFade($(\'#' + id
-                    + '\'))"><span class="icon-reply-to"></span> '
-                    + $avatar[0].outerHTML + ' ' + userName + '</a>';
+                + '" class="ft-a-title" onclick="Comment._bgFade($(\'#' + id
+                + '\'))"><span class="icon-reply-to"></span> '
+                + $avatar[0].outerHTML + ' ' + userName + '</a>';
         } else {
             $avatar.addClass('ft-a-title').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
             $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<span class="icon-reply-to"></span> ');
@@ -870,7 +873,7 @@ var Article = {
             success: function (result, textStatus) {
                 $voteUp.removeClass("disabled");
                 var upCnt = parseInt($voteUp.text()),
-                        downCnt = parseInt($voteDown.text());
+                    downCnt = parseInt($voteDown.text());
                 if (result.sc) {
                     if (0 === result.type) { // cancel up
                         $voteUp.html('<span class="icon-thumbs-up"></span> ' + (upCnt - 1)).removeClass('ft-red');
@@ -919,12 +922,13 @@ var Article = {
             success: function (result, textStatus) {
                 $voteDown.removeClass("disabled");
                 var upCnt = parseInt($voteUp.text()),
-                        downCnt = parseInt($voteDown.text());
+                    downCnt = parseInt($voteDown.text());
                 if (result.sc) {
                     if (1 === result.type) { // cancel down
                         $voteDown.html('<span class="icon-thumbs-down"></span> ' + (downCnt - 1)).removeClass('ft-red');
                     } else {
-                        $voteDown.html('<span class="icon-thumbs-down"></span> ' + (downCnt + 1)).addClass('ft-red');;
+                        $voteDown.html('<span class="icon-thumbs-down"></span> ' + (downCnt + 1)).addClass('ft-red');
+                        ;
                         if ($voteUp.hasClass('ft-red')) {
                             $voteUp.html('<span class="icon-thumbs-up"></span> ' + (upCnt - 1)).removeClass('ft-red');
                         }
@@ -940,7 +944,7 @@ var Article = {
     /**
      * @description 大图预览等待获取大小后重制 translate
      */
-    previewImgAfterLoading : function () {
+    previewImgAfterLoading: function () {
         $('.img-preview img').css('transform', 'translate3d(' +
             (Math.max(0, $(window).width() - $('.img-preview img').width()) / 2) + 'px, ' +
             (Math.max(0, $(window).height() - $('.img-preview img').height()) / 2) + 'px, 0)');
@@ -975,7 +979,7 @@ var Article = {
             }
             var $it = $(this),
                 it = this;
-            fixDblclick = setTimeout(function(){
+            fixDblclick = setTimeout(function () {
                 var top = it.offsetTop,
                     left = it.offsetLeft;
                 if ($it.closest('.comments').length === 1) {
@@ -984,8 +988,8 @@ var Article = {
                 }
 
                 $('body').append('<div class="img-preview" onclick="$(this).remove()"><img style="transform: translate3d(' +
-                Math.max(0, left) + 'px, ' + Math.max(0, (top - $(window).scrollTop())) + 'px, 0)" src="' +
-                ($it.attr('src').split('?imageView2')[0]) + '" onload="Article.previewImgAfterLoading()"></div>');
+                    Math.max(0, left) + 'px, ' + Math.max(0, (top - $(window).scrollTop())) + 'px, 0)" src="' +
+                    ($it.attr('src').split('?imageView2')[0]) + '" onload="Article.previewImgAfterLoading()"></div>');
 
                 $('.img-preview').css({
                     'background-color': '#fff',
@@ -996,7 +1000,7 @@ var Article = {
 
         // UA
         var ua = $('#articltVia').data('ua'),
-                name = Util.getDeviceByUa(ua);
+            name = Util.getDeviceByUa(ua);
         if (name !== '') {
             $('#articltVia').text('via ' + name);
         }
@@ -1015,14 +1019,11 @@ var Article = {
         $(window).scroll(function () {
             var currentScrollTop = $(window).scrollTop();
 
-            var $share = $('.share');
             // share
-            var shareMaxHeight = $('.article-footer').offset().top -
-                ($(window).height() - ($(window).height() - $share.height()) / 2) - 10;
-            if (currentScrollTop < shareMaxHeight || currentScrollTop < 30) {
-                $share.show();
+            if (currentScrollTop > 20 && currentScrollTop < $('.article .main').offset().top - 48) {
+                $('.share').show();
             } else {
-                $share.hide();
+                $('.share').hide();
             }
 
             if (currentScrollTop < $('.article-title').offset().top) {
@@ -1069,7 +1070,7 @@ var Article = {
 //        }, false);
 
         $(window).resize(function () {
-            var shareL = $('.article-content')[0].offsetLeft / 2 - 15;
+            var shareL = parseInt($('.article-footer').css('margin-left')) / 2 - 15;
             $('.share').css('left', (shareL < 0 ? 0 : shareL) + 'px');
 
             $('#articleToC > .module-panel').height($(window).height() - 48);
@@ -1078,7 +1079,8 @@ var Article = {
                 if ($('#articleToC').length === 0) {
                     return false;
                 }
-                $('.article-body .wrapper, #articleCommentsPanel, .article-footer').removeAttr('style');
+                $('.article-body .wrapper, #articleCommentsPanel, .article-footer').css('margin-right', 'auto');
+                $('.article-header > h2').removeAttr('style');
                 return false;
             }
 
@@ -1086,6 +1088,7 @@ var Article = {
                 var articleToCW = $('#articleToC').width(),
                     articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
                 $('.article-body .wrapper, #articleCommentsPanel, .article-footer').css('margin-right', articleMR + 'px');
+                $('.article-header > h2').css('margin-left', ($('.article-footer').offset().left - 58) + 'px');
             }
         });
     },
@@ -1108,25 +1111,24 @@ var Article = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     if (0 === result.revisions.length // for legacy data
-                            || 1 === result.revisions.length) {
+                        || 1 === result.revisions.length) {
                         $('#revisions').html('<b>' + Label.noRevisionLabel + '</b>');
                         return false;
                     }
 
-                    $('#revisions').data('revisions', result.revisions).
-                            before('<div class="fn-clear"><div class="pagination">' +
-                                    '<a href="javascript:void(0)">&lt;</a><span class="current">' +
-                                    (result.revisions.length - 1) + '~' + result.revisions.length + '/' +
-                                    result.revisions.length + '</span><a href="javascript:void(0)" class="fn-none">&gt;</a>' +
-                                    '</div></div>');
+                    $('#revisions').data('revisions', result.revisions).before('<div class="fn-clear"><div class="pagination">' +
+                        '<a href="javascript:void(0)">&lt;</a><span class="current">' +
+                        (result.revisions.length - 1) + '~' + result.revisions.length + '/' +
+                        result.revisions.length + '</span><a href="javascript:void(0)" class="fn-none">&gt;</a>' +
+                        '</div></div>');
                     if (result.revisions.length <= 2) {
                         $('#revision a').first().hide();
                     }
                     Article.mergeEditor = CodeMirror.MergeView(document.getElementById('revisions'), {
                         value: result.revisions[result.revisions.length - 1].revisionData.articleTitle +
-                                '\n\n' + result.revisions[result.revisions.length - 1].revisionData.articleContent,
+                        '\n\n' + result.revisions[result.revisions.length - 1].revisionData.articleContent,
                         origLeft: result.revisions[result.revisions.length - 2].revisionData.articleTitle +
-                                '\n\n' + result.revisions[result.revisions.length - 2].revisionData.articleContent,
+                        '\n\n' + result.revisions[result.revisions.length - 2].revisionData.articleContent,
                         revertButtons: false,
                         mode: "text/html",
                         collapseIdentical: true,
@@ -1162,9 +1164,9 @@ var Article = {
 
             $('#revision .current').html((prevVersion - 1) + '~' + prevVersion + '/' + revisions.length);
             Article.mergeEditor.edit.setValue(revisions[prevVersion - 1].revisionData.articleTitle + '\n\n' +
-                    revisions[prevVersion - 1].revisionData.articleContent);
+                revisions[prevVersion - 1].revisionData.articleContent);
             Article.mergeEditor.leftOriginal().setValue(revisions[prevVersion - 2].revisionData.articleTitle + '\n\n' +
-                    revisions[prevVersion - 2].revisionData.articleContent);
+                revisions[prevVersion - 2].revisionData.articleContent);
         });
 
         $('#revision a').last().click(function () {
@@ -1180,16 +1182,16 @@ var Article = {
             $('#revision a').first().show();
             $('#revision .current').html((prevVersion + 1) + '~' + (prevVersion + 2) + '/' + revisions.length);
             Article.mergeEditor.edit.setValue(revisions[prevVersion + 1].revisionData.articleTitle + '\n\n' +
-                    revisions[prevVersion + 1].revisionData.articleContent);
+                revisions[prevVersion + 1].revisionData.articleContent);
             Article.mergeEditor.leftOriginal().setValue(revisions[prevVersion].revisionData.articleTitle + '\n\n' +
-                    revisions[prevVersion].revisionData.articleContent);
+                revisions[prevVersion].revisionData.articleContent);
         });
     },
     /**
      * @description 分享按钮
      */
     share: function () {
-        var shareL = $('.article-content').offset().left / 2 - 15;
+        var shareL = parseInt($('.article-footer').css('margin-left')) / 2 - 15;
         $('.share').css('left', (shareL < 20 ? 20 : shareL) + 'px').show();
 
         var shareURL = $('#qrCode').data('shareurl');
@@ -1216,15 +1218,15 @@ var Article = {
             }
 
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
-                    url = encodeURIComponent(shareURL),
-                    picCSS = $(".article-info .avatar-mid").css('background-image');
-                    pic = picCSS.substring(5, picCSS.length - 2);
+                url = encodeURIComponent(shareURL),
+                picCSS = $(".article-info .avatar-mid").css('background-image');
+            pic = picCSS.substring(5, picCSS.length - 2);
 
             var urls = {};
             urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
-                    "&url=" + url + "&pic=" + pic;
+                "&url=" + url + "&pic=" + pic;
             urls.weibo = "http://v.t.sina.com.cn/share/share.php?title=" +
-                    title + "&url=" + url + "&pic=" + pic;
+                title + "&url=" + url + "&pic=" + pic;
             urls.google = "https://plus.google.com/share?url=" + url;
             urls.twitter = "https://twitter.com/intent/tweet?status=" + title + " " + url;
             window.open(urls[key], "_blank", "top=100,left=200,width=648,height=618");
@@ -1269,7 +1271,7 @@ var Article = {
                         var $rewarcCnt = $("#articleRewardContent > span"),
                             cnt = parseInt($rewarcCnt.text());
                         $rewarcCnt.addClass('ft-red').removeClass('ft-blue')
-                        .html((cnt + 1) + ' ' + Label.rewardLabel).removeAttr('onclick');
+                            .html((cnt + 1) + ' ' + Label.rewardLabel).removeAttr('onclick');
                         return;
                     }
 
@@ -1308,11 +1310,11 @@ var Article = {
                 if (result.sc) {
                     var thxCnt = parseInt($('#thankArticle').text());
                     $("#thankArticle").removeAttr("onclick").html('<span class="icon-heart"></span><span class="ft-13">' + (thxCnt + 1) + '</span>')
-                    .addClass('ft-red').removeClass('ft-blue');
+                        .addClass('ft-red').removeClass('ft-blue');
 
                     var $heart = $("<i class='icon-heart ft-red'></i>"),
-                            y = $('#thankArticle').offset().top,
-                            x = $('#thankArticle').offset().left;
+                        y = $('#thankArticle').offset().top,
+                        x = $('#thankArticle').offset().left;
                     $heart.css({
                         "z-index": 9999,
                         "top": y - 20,
@@ -1326,10 +1328,10 @@ var Article = {
                     $("body").append($heart);
 
                     $heart.animate({"top": y - 180, "opacity": 0},
-                            1500,
-                            function () {
-                                $heart.remove();
-                            }
+                        1500,
+                        function () {
+                            $heart.remove();
+                        }
                     );
 
                     return false;
@@ -1373,8 +1375,8 @@ var Article = {
                 units.splice(0, 0, '');
             }
             var srcLinesContent = units[0],
-                    from = units[2].split('-'),
-                    to = units[3].split('-');
+                from = units[2].split('-'),
+                to = units[3].split('-');
             from[0] = parseInt(from[0]);    // from.ch
             from[1] = parseInt(from[1]);    // from.line
             to[0] = parseInt(to[0]);    // to.ch
@@ -1386,7 +1388,7 @@ var Article = {
                 for (var n = from[1], m = 0; n <= to[1]; n++, m++) {
                     if (from[1] === to[1]) {
                         articleLinesList[n] = articleLinesList[n].substring(0, from[0]) +
-                                articleLinesList[n].substr(to[0]);
+                            articleLinesList[n].substr(to[0]);
                         break;
                     }
 
@@ -1404,15 +1406,15 @@ var Article = {
                 }
             } else {
                 var addLines = srcLinesContent.split(String.fromCharCode(29))[0],
-                        removedLines = srcLinesContent.split(String.fromCharCode(29))[1];
+                    removedLines = srcLinesContent.split(String.fromCharCode(29))[1];
 
                 if (removedLines === '') {
                     articleLinesList[from[1]] = articleLinesList[from[1]].substring(0, from[0]) +
-                            articleLinesList[to[1]].substr(to[0]);
+                        articleLinesList[to[1]].substr(to[0]);
                 }
 
                 articleLinesList[from[1]] = articleLinesList[from[1]].substring(0, from[0]) + addLines
-                        + articleLinesList[from[1]].substr(from[0]);
+                    + articleLinesList[from[1]].substr(from[0]);
             }
             return articleLinesList;
         };
@@ -1433,8 +1435,8 @@ var Article = {
 
                 var articleText = articleLinesList.join(String.fromCharCode(10));
                 var articleHTML = articleText.replace(/\n/g, "<br>")
-                        .replace(/ /g, "&nbsp;")
-                        .replace(/	/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
+                    .replace(/ /g, "&nbsp;")
+                    .replace(/	/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
 
                 $('.article-content').data('text', articleText).html(articleHTML);
 
@@ -1444,7 +1446,7 @@ var Article = {
         // progress
         var currentTime = 0,
             step = 20, // 间隔速度
-                amountTime = parseInt(records[i - 1].split("")[1]) / fast + step * 6;
+            amountTime = parseInt(records[i - 1].split("")[1]) / fast + step * 6;
         var interval = setInterval(function () {
             if (currentTime >= amountTime) {
                 $('#thoughtProgress .bar').width('100%');
@@ -1464,8 +1466,8 @@ var Article = {
 
             var articleText = articleLinesList.join(String.fromCharCode(10));
             var articleHTML = articleText.replace(/\n/g, "<br>")
-                    .replace(/ /g, "&nbsp;")
-                    .replace(/	/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
+                .replace(/ /g, "&nbsp;")
+                .replace(/	/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
 
             $('#thoughtProgressPreview').data('text', articleText).html(articleHTML);
         }
@@ -1485,7 +1487,7 @@ var Article = {
      */
     initToc: function () {
         if ($('#articleToC').length === 0) {
-            $('.article-header > h2').css('margin-left', ($('.article-body .wrapper').offset().left - 58) + 'px');
+            $('.article-header > h2').css('margin-left', ($('.article-footer').offset().left - 58) + 'px');
             return false;
         }
 
@@ -1493,7 +1495,7 @@ var Article = {
             articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
         $('.article-body .wrapper, #articleCommentsPanel, .article-footer').css('margin-right', articleMR + 'px');
 
-        $('.article-header > h2').css('margin-left', ($('.article-body .wrapper').offset().left - 58) + 'px');
+        $('.article-header > h2').css('margin-left', ($('.article-footer').offset().left - 58) + 'px');
         $('#articleToC > .module-panel').height($(window).height() - 48);
 
         // 样式
@@ -1502,7 +1504,7 @@ var Article = {
             $articleTocs = $('.article-content [id^=toc]'),
             isUlScroll = false,
             top = $articleToc.offset().top
-            toc = [];
+        toc = [];
 
         // 目录点击
         $articleToc.find('li').click(function () {
@@ -1631,7 +1633,7 @@ $(document).ready(function () {
     if (Label.isLoggedIn) {
         Article.makeNotificationRead(Label.articleOId, Label.notificationCmtIds);
 
-        setTimeout(function() {
+        setTimeout(function () {
             Util.setUnreadNotificationCount();
         }, 1000);
     }
