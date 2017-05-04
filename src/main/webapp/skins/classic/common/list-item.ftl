@@ -43,14 +43,11 @@
                     ${article.articleAuthorName}
                     <#if article.articleAnonymous == 0></a></#if>
 
-                    <#if article.articleAuthor.userIntro != ''>
+                    <#if article.articleAuthor.userIntro != '' && article.articleAnonymous == 0>
                         - ${article.articleAuthor.userIntro}
                     </#if>
                     <br>
-                    ${article.timeAgo}
-                    <span class="fn-hidden">
                     <#if "" != article.articleLatestCmterName>
-                    &nbsp;•&nbsp;
                         <#if "" != article.articleLatestCmt.clientCommentId>
                             <span class="author">${article.articleLatestCmterName}</span>
                         <#else>
@@ -60,7 +57,6 @@
                         </#if>
                         ${article.cmtTimeAgo}${cmtLabel}
                     </#if>
-                    </span>
                 </div>
             </div>
 
