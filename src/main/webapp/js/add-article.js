@@ -22,7 +22,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.24.18.20, May 2, 2017
+ * @version 2.24.19.20, May 4, 2017
  */
 
 /**
@@ -230,7 +230,7 @@ var AddArticle = {
         }
 
         // 默认使用 preview
-        $('.editor-toolbar .icon-view:eq(0)').click();
+        $('.post-article-content .editor-toolbar .icon-view:eq(0)').parent().click();
 
         // 私信 at 默认值
         var atIdx = location.href.indexOf("at=");

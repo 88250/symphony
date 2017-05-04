@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.35.54.34, May 5, 2017
+ * @version 1.36.54.34, May 4, 2017
  */
 
 /**
@@ -1015,11 +1015,14 @@ var Article = {
         $(window).scroll(function () {
             var currentScrollTop = $(window).scrollTop();
 
+            var $share = $('.share');
             // share
-            if (currentScrollTop > 20 && currentScrollTop < $('.article .main').offset().top - 48) {
-                $('.share').show();
+            var shareMaxHeight = $('.article-footer').offset().top -
+                ($(window).height() - ($(window).height() - $share.height()) / 2) - 10;
+            if (currentScrollTop < shareMaxHeight || currentScrollTop < 30) {
+                $share.show();
             } else {
-                $('.share').hide();
+                $share.hide();
             }
 
             if (currentScrollTop < $('.article-title').offset().top) {
@@ -1075,14 +1078,14 @@ var Article = {
                 if ($('#articleToC').length === 0) {
                     return false;
                 }
-                $('.article-body .wrapper, .main .wrapper').removeAttr('style');
+                $('.article-body .wrapper, #articleCommentsPanel').removeAttr('style');
                 return false;
             }
 
             if ($('#articleToC').length === 1) {
                 var articleToCW = $('#articleToC').width(),
                     articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
-                $('.article-body .wrapper, .main .wrapper').css('margin-right', articleMR + 'px');
+                $('.article-body .wrapper, #articleCommentsPanel').css('margin-right', articleMR + 'px');
             }
         });
     },
@@ -1187,7 +1190,7 @@ var Article = {
      */
     share: function () {
         var shareL = $('.article-content').offset().left / 2 - 15;
-        $('.share').css('left', (shareL < 20 ? 20 : shareL) + 'px');
+        $('.share').css('left', (shareL < 20 ? 20 : shareL) + 'px').show();
 
         var shareURL = $('#qrCode').data('shareurl');
         $('#qrCode').qrcode({
@@ -1488,7 +1491,7 @@ var Article = {
 
         var articleToCW = $('#articleToC').width(),
             articleMR = ($(window).width() - articleToCW - $('.article-info').width() - 30) / 3 + articleToCW;
-        $('.article-body .wrapper, .main .wrapper').css('margin-right', articleMR + 'px');
+        $('.article-body .wrapper, #articleCommentsPanel').css('margin-right', articleMR + 'px');
 
         $('.article-header > h2').css('margin-left', ($('.article-body .wrapper').offset().left - 58) + 'px');
         $('#articleToC > .module-panel').height($(window).height() - 48);
