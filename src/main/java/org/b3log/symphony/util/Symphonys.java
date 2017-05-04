@@ -25,6 +25,7 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.CollectionUtils;
@@ -51,7 +52,7 @@ import java.util.concurrent.Executors;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.8, Apr 25, 2017
+ * @version 1.7.1.8, May 4, 2017
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -201,6 +202,8 @@ public final class Symphonys {
                             // ignore
                         }
                     }
+
+                    JdbcRepository.dispose();
                 }
             }
         }, 1000 * 60 * 60 * 2, 1000 * 60 * 60 * 2);

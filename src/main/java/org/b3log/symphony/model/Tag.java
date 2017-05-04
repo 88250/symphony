@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.6.11, Apr 21, 2017
+ * @version 1.15.6.12, May 4, 2017
  * @since 0.2.0
  */
 public final class Tag {
@@ -280,15 +280,23 @@ public final class Tag {
 
     static {
         NORMALIZE_MAPPINGS.put("JavaScript", new HashSet<>(Arrays.asList("JS")));
-        NORMALIZE_MAPPINGS.put("Elasticsearch", new HashSet<>(Arrays.asList("ES搜索引擎", "ES搜索")));
+        NORMALIZE_MAPPINGS.put("Elasticsearch", new HashSet<>(Arrays.asList("ES搜索引擎", "ES搜索", "ES")));
         NORMALIZE_MAPPINGS.put("golang", new HashSet<>(Arrays.asList("Go", "Go语言")));
+        NORMALIZE_MAPPINGS.put("线程", new HashSet<>(Arrays.asList("多线程", "Thread")));
+        NORMALIZE_MAPPINGS.put("Vue.js", new HashSet<>(Arrays.asList("Vue")));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Tag() {
     }
 
     /**
      * Uses the head tags.
      *
      * @param tagStr the specified tags
-     * @param num the specified used number
+     * @param num    the specified used number
      * @return head tags
      */
     public static String useHead(final String tagStr, final int num) {
@@ -308,11 +316,12 @@ public final class Tag {
 
     /**
      * Formats the specified tags.
-     *
+     * <p>
      * <ul>
      * <li>Trims every tag</li>
      * <li>Deduplication</li>
      * </ul>
+     * </p>
      *
      * @param tagStr the specified tags
      * @return formatted tags string
@@ -412,7 +421,7 @@ public final class Tag {
      * Checks the specified title exists in the specified title set.
      *
      * @param titles the specified title set
-     * @param title the specified title to check
+     * @param title  the specified title to check
      * @return {@code true} if exists, returns {@code false} otherwise
      */
     private static boolean exists(final Set<String> titles, final String title) {
@@ -503,11 +512,5 @@ public final class Tag {
             descriptionText = Jsoup.parse(description).text();
         }
         tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Tag() {
     }
 }
