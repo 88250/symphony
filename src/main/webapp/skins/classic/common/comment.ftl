@@ -15,8 +15,8 @@
         </#if>
         <div class="fn-flex-1">
             <div class="comment-get-comment list"></div>
-            <div class="fn-clear comment-info ft-smaller">
-                <span class="fn-left">
+            <div class="fn-clear comment-info">
+                <span class="fn-left ft-smaller">
                     <#if !comment.fromClient>
                     <#if comment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${comment.commentAuthorName}</span><#if comment.commentAnonymous == 0></a></#if>
                     <#else><span class="ft-gray">${comment.commentAuthorName}</span>
@@ -27,12 +27,6 @@
                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade hover-show fn-hidden" data-ua="${comment.commentUA}"></span></#if>
                 </span>
                 <span class="fn-right">
-                    <#if comment.commentOriginalCommentId != ''>
-                    <span class="fn-pointer ft-fade tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
-                          onclick="Comment.showReply('${comment.commentOriginalCommentId}', this, 'comment-get-comment')"><span class="icon-reply-to"></span>
-                        <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
-                    </span>
-                    </#if>
                     <#if isLoggedIn>
                         <span onclick="Article.revision('1493814851007')" aria-label="${historyLabel}"
                               class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden">
@@ -44,7 +38,13 @@
                     </#if>
                     <#if permissions["commentUpdateCommentBasic"].permissionGrant>
                     <a class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}"
-                       aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                       aria-label="${adminLabel}"><span class="icon-setting"></span></a> &nbsp;
+                    </#if>
+                    <#if comment.commentOriginalCommentId != ''>
+                        <span class="fn-pointer ft-a-title tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
+                              onclick="Comment.showReply('${comment.commentOriginalCommentId}', this, 'comment-get-comment')"><span class="icon-reply-to"></span>
+                        <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
+                    </span>
                     </#if>
                 </span>
             </div>
