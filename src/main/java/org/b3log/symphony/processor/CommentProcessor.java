@@ -55,7 +55,7 @@ import java.util.Set;
  * <ul>
  * <li>Adds a comment (/comment) <em>locally</em>, POST</li>
  * <li>Updates a comment (/comment/{id}) <em>locally</em>, PUT</li>
- * <li>Gets a comment's content (/comment/{id}), GET</li>
+ * <li>Gets a comment's content (/comment/{id}/content), GET</li>
  * <li>Adds a comment (/solo/comment) <em>remotely</em>, POST</li>
  * <li>Thanks a comment (/comment/thank), POST</li>
  * <li>Gets a comment's replies (/comment/replies), GET </li>
