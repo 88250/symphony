@@ -37,6 +37,7 @@ import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.processor.advice.validate.ClientCommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentAddValidation;
+import org.b3log.symphony.processor.advice.validate.CommentUpdateValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
@@ -53,6 +54,8 @@ import java.util.Set;
  * <p>
  * <ul>
  * <li>Adds a comment (/comment) <em>locally</em>, POST</li>
+ * <li>Updates a comment (/comment/{id}) <em>locally</em>, PUT</li>
+ * <li>Gets a comment's content (/comment/{id}), GET</li>
  * <li>Adds a comment (/solo/comment) <em>remotely</em>, POST</li>
  * <li>Thanks a comment (/comment/thank), POST</li>
  * <li>Gets a comment's replies (/comment/replies), GET </li>
@@ -64,7 +67,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.13, Jan 21, 2017
+ * @version 1.6.1.13, May 6, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -73,7 +76,7 @@ public class CommentProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class);
 
     /**
      * User query service.
@@ -122,6 +125,103 @@ public class CommentProcessor {
      */
     @Inject
     private RewardQueryService rewardQueryService;
+
+    /**
+     * Gets a comment's content.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws IOException io exception
+     */
+    @RequestProcessing(value = "/comment/{id}/content", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {LoginCheck.class})
+    public void getCommentContent(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                                  final String id) throws IOException {
+        context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+
+        try {
+            final JSONObject comment = commentQueryService.getComment(id);
+            if (null == comment) {
+                LOGGER.warn("Not found comment [id=" + id + "] to update");
+
+                return;
+            }
+
+            final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+            if (!currentUser.optString(Keys.OBJECT_ID).equals(comment.optString(Comment.COMMENT_AUTHOR_ID))) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+                return;
+            }
+
+            context.renderJSONValue(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+        } catch (final ServiceException e) {
+            context.renderMsg(e.getMessage());
+        }
+    }
+
+    /**
+     * Updates a comment locally.
+     * <p>
+     * The request json object:
+     * <pre>
+     * {
+     *     "commentContent": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws IOException io exception
+     */
+    @RequestProcessing(value = "/comment/{id}", method = HTTPRequestMethod.PUT)
+    @Before(adviceClass = {CSRFCheck.class, LoginCheck.class, CommentUpdateValidation.class, PermissionCheck.class})
+    public void updateComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                              final String id) throws IOException {
+        context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+
+        try {
+            final JSONObject comment = commentQueryService.getComment(id);
+            if (null == comment) {
+                LOGGER.warn("Not found comment [id=" + id + "] to update");
+
+                return;
+            }
+
+            final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+            if (!currentUser.optString(Keys.OBJECT_ID).equals(comment.optString(Comment.COMMENT_AUTHOR_ID))) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+                return;
+            }
+
+            final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+
+            final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
+            final String ip = Requests.getRemoteAddr(request);
+            final String ua = request.getHeader(Common.USER_AGENT);
+
+            comment.put(Comment.COMMENT_CONTENT, commentContent);
+            comment.put(Comment.COMMENT_IP, "");
+            if (StringUtils.isNotBlank(ip)) {
+                comment.put(Comment.COMMENT_IP, ip);
+            }
+            comment.put(Comment.COMMENT_UA, "");
+            if (StringUtils.isNotBlank(ua)) {
+                comment.put(Comment.COMMENT_UA, ua);
+            }
+
+            commentMgmtService.updateComment(comment.optString(Keys.OBJECT_ID), comment);
+
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+        } catch (final ServiceException e) {
+            context.renderMsg(e.getMessage());
+        }
+    }
 
     /**
      * Gets a comment's original comment.
@@ -231,7 +331,7 @@ public class CommentProcessor {
         final String commentOriginalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
         final int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         final String ip = Requests.getRemoteAddr(request);
-        final String ua = request.getHeader("User-Agent");
+        final String ua = request.getHeader(Common.USER_AGENT);
 
         final boolean isAnonymous = requestJSONObject.optBoolean(Comment.COMMENT_ANONYMOUS, false);
 
@@ -284,7 +384,6 @@ public class CommentProcessor {
             }
 
             comment.put(Comment.COMMENT_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
-
             comment.put(Comment.COMMENT_T_COMMENTER, currentUser);
             comment.put(Comment.COMMENT_ANONYMOUS, isAnonymous
                     ? Comment.COMMENT_ANONYMOUS_C_ANONYMOUS : Comment.COMMENT_ANONYMOUS_C_PUBLIC);

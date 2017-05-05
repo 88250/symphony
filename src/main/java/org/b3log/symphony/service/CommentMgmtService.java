@@ -47,7 +47,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.10.20, Mar 19, 2017
+ * @version 2.12.11.20, May 6, 2017
  * @since 0.2.0
  */
 @Service
@@ -56,7 +56,7 @@ public class CommentMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentMgmtService.class);
 
     /**
      * Comment repository.
@@ -184,7 +184,7 @@ public class CommentMgmtService {
      * A user specified by the given sender id thanks the author of a comment specified by the given comment id.
      *
      * @param commentId the given comment id
-     * @param senderId the given sender id
+     * @param senderId  the given sender id
      * @throws ServiceException service exception
      */
     public void thankComment(final String commentId, final String senderId) throws ServiceException {
@@ -264,24 +264,21 @@ public class CommentMgmtService {
     /**
      * Adds a comment with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "commentContent": "",
-     *     "commentAuthorId": "",
-     *     "commentOnArticleId": "",
-     *     "commentOriginalCommentId": "", // optional
-     *     "clientCommentId": "" // optional,
-     *     "commentAuthorName": "" // If from client
-     *     "commenter": {
-     *         // User model
-     *     },
-     *     "commentIP": "", // optional, default to ""
-     *     "commentUA": "", // optional, default to ""
-     *     "commentAnonymous": int, // optional, default to 0 (public)
-     *     "userCommentViewMode": int
-     * }
-     * </pre>, see {@link Comment} for more details
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "commentContent": "",
+     *                          "commentAuthorId": "",
+     *                          "commentOnArticleId": "",
+     *                          "commentOriginalCommentId": "", // optional
+     *                          "clientCommentId": "" // optional,
+     *                          "commentAuthorName": "" // If from client
+     *                          "commenter": {
+     *                          // User model
+     *                          },
+     *                          "commentIP": "", // optional, default to ""
+     *                          "commentUA": "", // optional, default to ""
+     *                          "commentAnonymous": int, // optional, default to 0 (public)
+     *                          "userCommentViewMode": int
+     *                          , see {@link Comment} for more details
      * @return generated comment id
      * @throws ServiceException service exception
      */
@@ -385,7 +382,8 @@ public class CommentMgmtService {
             }
 
             content = Emotions.toAliases(content);
-            // content = StringUtils.trim(content) + " "; https://github.com/b3log/symphony/issues/389
+            content = content.replaceAll("\\s+$", ""); // https://github.com/b3log/symphony/issues/389
+            content += " "; // in case of tailing @user
             content = content.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             content = content.replace(langPropsService.get("uploadingLabel", Locale.US), "");
 
@@ -492,7 +490,7 @@ public class CommentMgmtService {
      * Updates the specified comment by the given comment id.
      *
      * @param commentId the given comment id
-     * @param comment the specified comment
+     * @param comment   the specified comment
      * @throws ServiceException service exception
      */
     public void updateComment(final String commentId, final JSONObject comment) throws ServiceException {
@@ -501,7 +499,8 @@ public class CommentMgmtService {
         try {
             String content = comment.optString(Comment.COMMENT_CONTENT);
             content = Emotions.toAliases(content);
-            content = StringUtils.trim(content) + " ";
+            content = content.replaceAll("\\s+$", ""); // https://github.com/b3log/symphony/issues/389
+            content += " "; // in case of tailing @user
             content = content.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             content = content.replace(langPropsService.get("uploadingLabel", Locale.US), "");
             comment.put(Comment.COMMENT_CONTENT, content);
