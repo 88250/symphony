@@ -43,7 +43,7 @@ import java.util.UUID;
  * Audio management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Mar 25, 2017
+ * @version 1.0.2.1, May 5, 2017
  * @since 2.1.0
  */
 @Service
@@ -180,8 +180,8 @@ public class AudioMgmtService {
         } catch (final Exception e) {
             if (e instanceof QiniuException) {
                 try {
-                    LOGGER.log(Level.ERROR, "Uploads audio failed [type=" + type + ", textId=" + textId + "]",
-                            ((QiniuException) e).response.bodyString());
+                    LOGGER.log(Level.ERROR, "Uploads audio failed [type=" + type + ", textId=" + textId + "], Qiniu exception body [" +
+                            ((QiniuException) e).response.bodyString() + "]");
                 } catch (final Exception qe) {
                     LOGGER.log(Level.ERROR, "Uploads audio and parse result exception", qe);
                 }
@@ -190,6 +190,6 @@ public class AudioMgmtService {
             }
         }
 
-        return null;
+        return "";
     }
 }
