@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.42.31.46, Apr 29, 2017
+ * @version 1.42.32.46, May 5, 2017
  */
 
 /**
@@ -122,7 +122,7 @@ var Util = {
          */
         var goFocus = function (type) {
             var $focus = $('.list > ul > li.focus'),
-            offsetHeight = $('#replyBtn').length === 0 ? 0 : 48;
+            offsetHeight = $('.radio-btn').length === 0 ? 0 : 48;
             if ($focus.length === 1) {
                 if (type === 'top' || type === 'bottom') {
                     $(window).scrollTop($focus.offset().top - offsetHeight);
@@ -1158,7 +1158,7 @@ var Util = {
 
 
         $(window).scroll(function () {
-            if ($(window).scrollTop() > 20 && $('#replyBtn').length === 0) {
+            if ($(window).scrollTop() > 20 && $('.radio-btn').length === 0) {
                 $(".go-top").show();
             } else {
                 $(".go-top").hide();
