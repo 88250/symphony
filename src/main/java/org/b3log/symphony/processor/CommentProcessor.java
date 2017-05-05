@@ -479,7 +479,7 @@ public class CommentProcessor {
         final JSONObject originalCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
         final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
         final String ip = Requests.getRemoteAddr(request);
-        final String ua = request.getHeader("User-Agent");
+        final String ua = request.getHeader(Common.USER_AGENT);
 
         final JSONObject defaultCommenter = userQueryService.getDefaultCommenter();
         final JSONObject comment = new JSONObject();

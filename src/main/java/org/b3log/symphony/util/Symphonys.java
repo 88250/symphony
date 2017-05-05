@@ -30,6 +30,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.service.OptionQueryService;
 import org.json.JSONObject;
@@ -177,7 +178,7 @@ public final class Symphonys {
                     httpConn.setReadTimeout(10000);
                     httpConn.setDoOutput(true);
                     httpConn.setRequestMethod("POST");
-                    httpConn.setRequestProperty("User-Agent", USER_AGENT_BOT);
+                    httpConn.setRequestProperty(Common.USER_AGENT, USER_AGENT_BOT);
 
                     httpConn.connect();
 
@@ -229,7 +230,7 @@ public final class Symphonys {
             httpConn.setConnectTimeout(10000);
             httpConn.setReadTimeout(10000);
             httpConn.setRequestMethod("GET");
-            httpConn.setRequestProperty("User-Agent", "B3log Symphony/" + SymphonyServletListener.VERSION);
+            httpConn.setRequestProperty(Common.USER_AGENT, "B3log Symphony/" + SymphonyServletListener.VERSION);
 
             httpConn.connect();
 

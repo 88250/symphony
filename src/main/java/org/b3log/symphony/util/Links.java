@@ -21,6 +21,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Link;
 import org.json.JSONObject;
 import org.jsoup.Connection;
@@ -192,7 +193,7 @@ public final class Links {
                 HttpURLConnection conn = (HttpURLConnection) baiduURL.openConnection();
                 conn.setConnectTimeout(TIMEOUT);
                 conn.setReadTimeout(TIMEOUT);
-                conn.addRequestProperty("User-Agent", Symphonys.USER_AGENT_BOT);
+                conn.addRequestProperty(Common.USER_AGENT, Symphonys.USER_AGENT_BOT);
 
                 InputStream inputStream = conn.getInputStream();
                 String baiduRes = IOUtils.toString(inputStream, "UTF-8");
@@ -210,7 +211,7 @@ public final class Links {
                     conn = (HttpURLConnection) baiduURL.openConnection();
                     conn.setConnectTimeout(TIMEOUT);
                     conn.setReadTimeout(TIMEOUT);
-                    conn.addRequestProperty("User-Agent", Symphonys.USER_AGENT_BOT);
+                    conn.addRequestProperty(Common.USER_AGENT, Symphonys.USER_AGENT_BOT);
 
                     inputStream = conn.getInputStream();
                     baiduRes = IOUtils.toString(inputStream, "UTF-8");

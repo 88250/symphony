@@ -60,7 +60,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentSender.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentSender.class);
 
     /**
      * URL fetch service.
@@ -127,7 +127,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final HTTPRequest httpRequest = new HTTPRequest();
             httpRequest.setURL(new URL(clientURL));
             httpRequest.setRequestMethod(HTTPRequestMethod.POST);
-            httpRequest.addHeader(new HTTPHeader("User-Agent", Symphonys.USER_AGENT_BOT));
+            httpRequest.addHeader(new HTTPHeader(Common.USER_AGENT, Symphonys.USER_AGENT_BOT));
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject comment = new JSONObject();
 

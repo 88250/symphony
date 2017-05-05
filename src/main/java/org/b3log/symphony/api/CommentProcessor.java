@@ -31,6 +31,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
@@ -132,7 +133,7 @@ public class CommentProcessor {
         final String httpBody = getBody(request);
         final String content = httpBody.substring("comment[body]=".length());
         final String ip = Requests.getRemoteAddr(request);
-        final String ua = request.getHeader("User-Agent");
+        final String ua = request.getHeader(Common.USER_AGENT);
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);

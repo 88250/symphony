@@ -32,6 +32,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Book;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.BookRepository;
@@ -192,7 +193,7 @@ public class BookQueryService {
 
         final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
         final HTTPRequest request = new HTTPRequest();
-        request.addHeader(new HTTPHeader("User-Agent", Symphonys.USER_AGENT_BOT));
+        request.addHeader(new HTTPHeader(Common.USER_AGENT, Symphonys.USER_AGENT_BOT));
 
         try {
             request.setURL(new URL(url));

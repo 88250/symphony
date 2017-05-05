@@ -144,7 +144,7 @@ public class ArticleAPI2 {
             final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
             final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
             final String ip = Requests.getRemoteAddr(request);
-            final String ua = request.getHeader("User-Agent");
+            final String ua = request.getHeader(Common.USER_AGENT);
 
             final JSONObject article = new JSONObject();
             article.put(Keys.OBJECT_ID, id);
@@ -222,7 +222,7 @@ public class ArticleAPI2 {
         final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
         final String ip = Requests.getRemoteAddr(request);
-        final String ua = request.getHeader("User-Agent");
+        final String ua = request.getHeader(Common.USER_AGENT);
         final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
         final int articleAnonymous = isAnonymous
                 ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;

@@ -194,7 +194,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         httpServletRequest.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
 
-        final String userAgentStr = httpServletRequest.getHeader("User-Agent");
+        final String userAgentStr = httpServletRequest.getHeader(Common.USER_AGENT);
 
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
         BrowserType browserType = userAgent.getBrowser().getBrowserType();
@@ -220,7 +220,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         }
 
         if (BrowserType.ROBOT == browserType) {
-            LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
+            LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]",
+                    httpServletRequest.getHeader(Common.USER_AGENT));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
 
             return;
@@ -239,8 +240,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         // Gets the session of this request
         final HttpSession session = httpServletRequest.getSession();
         LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
-                new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
-                        session.isNew()});
+                new Object[]{session.getId(), httpServletRequest.getRemoteAddr(),
+                        httpServletRequest.getHeader(Common.USER_AGENT), session.isNew()});
 
         resolveSkinDir(httpServletRequest);
     }
