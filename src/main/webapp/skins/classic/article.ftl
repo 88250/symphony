@@ -252,7 +252,7 @@
                                           style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"
                                     ></span>
                                     <#if "someone" != relevantArticle.articleAuthorName></a></#if>
-                                    <a rel="nofollow" class="title" href="${servePath}${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
+                                    <a rel="nofollow" class="title fn-ellipsis" href="${servePath}${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                 </li>
                             </#list>
                         </ul>
@@ -278,7 +278,7 @@
                                           aria-label="${randomArticle.articleAuthorName}"
                                           style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
-                                    <a class="title" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
+                                    <a class="title fn-ellipsis" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                                 </li>
                             </#list>
                         </ul>
@@ -410,7 +410,7 @@
                 </div>
             </div>
         </#if>
-        <span class="tooltipped tooltipped-w radio-btn" id="replyBtn"
+        <span class="tooltipped tooltipped-w radio-btn" onclick="Comment._toggleReply()"
               data-hasPermission="${permissions['commonAddComment'].permissionGrant?c}"
               aria-label="${cmtLabel}"><span class="icon-reply"></span></span>
 
@@ -421,7 +421,7 @@
                     <div class="form fn-clear comment-wrap">
                         <div class="fn-flex">
                             <div id="replyUseName" class="fn-flex-1 fn-ellipsis"></div>
-                            <span class="tooltipped tooltipped-w fn-pointer editor-hide" aria-label="${hideLabel}"> <span class="icon-chevron-down"></span></span>
+                            <span class="tooltipped tooltipped-w fn-pointer editor-hide" onclick="Comment._toggleReply()" aria-label="${hideLabel}"> <span class="icon-chevron-down"></span></span>
                         </div>
                         <div class="article-comment-content">
                             <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
@@ -484,6 +484,7 @@
             Label.helpLabel = '${helpLabel}';
             Label.fullscreenLabel = '${fullscreenLabel}';
             Label.uploadFileLabel = '${uploadFileLabel}';
+            Label.commonUpdateCommentPermissionLabel = '${commonUpdateCommentPermissionLabel}';
             Label.insertEmojiLabel = '${insertEmojiLabel}';
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
             Label.qiniuDomain = '${qiniuDomain}';

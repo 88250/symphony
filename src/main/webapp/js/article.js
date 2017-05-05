@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.36.54.34, May 4, 2017
+ * @version 1.37.54.34, May 5, 2017
  */
 
 /**
@@ -67,6 +67,29 @@ var Comment = {
         setTimeout(function () {
             $obj.removeAttr('style');
         }, 3100);
+    },
+    /**
+     * 编辑评论
+     * @param {string} id 评论 id
+     */
+    edit: function (id) {
+        Comment._toggleReply();
+        $('.cmt-anonymous').hide();
+        $.ajax({
+            url: Label.servePath + '/comment/' + id + '/content',
+            type: "GET",
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc === 0) {
+                    // doc.lineCount
+                    Comment.editor.setValue(result.commentContent);
+                }
+            }
+        });
+
+        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'#' +
+            id + '\'))" class="ft-a-title"><span class="icon-edit"></span> ' +
+            Label.commonUpdateCommentPermissionLabel + '</a>').data('commentId', id);
     },
     /**
      * 跳转到指定的评论处
@@ -116,8 +139,10 @@ var Comment = {
             return false;
         }
 
+        $('.cmt-anonymous').show();
+
         $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
-        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Util.goTop();Comment._bgFade($(\'.article-module\'))" class="ft-a-title"><span class="icon-reply-to"></span>'
+        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'.article-content\'))" class="ft-a-title"><span class="icon-reply-to"></span>'
             + $('.article-title').text() + '</a>').removeData();
 
         // 如果 hide 初始化， focus 无效
@@ -130,21 +155,6 @@ var Comment = {
         $('.editor-panel .wrapper').slideDown(function () {
             Comment.editor.focus();
             cb ? cb() : '';
-        });
-    },
-    /**
-     * 评论面板事件绑定
-     * @returns {undefined}
-     */
-    _initEditorPanel: function () {
-        // 回复按钮设置
-        $('#replyBtn').click(function () {
-            Comment._toggleReply();
-        });
-
-        // 评论框控制
-        $('.editor-panel .editor-hide').click(function () {
-            $('#replyBtn').click();
         });
     },
     /**
@@ -173,7 +183,7 @@ var Comment = {
         }).bind('keydown', 'r', function assets(event) {
             if (!Util.prevKey) {
                 // r 回复帖子
-                $('#replyBtn').click();
+                Comment._toggleReply();
             } else if (Util.prevKey === 'v') {
                 // v r 打赏帖子
                 $('#articleRewardContent .icon-points').parent().click();
@@ -304,7 +314,6 @@ var Comment = {
         }
 
         this._setCmtVia();
-        this._initEditorPanel();
         this._initHotKey();
 
         $.pjax({
@@ -698,9 +707,16 @@ var Comment = {
             requestJSONObject.commentOriginalCommentId = $('#replyUseName').data('commentOriginalCommentId');
         }
 
+        var url =  Label.servePath + "/comment",
+        type = 'POST';
+        if ($('#replyUseName').data('commentId')) {
+            url =  Label.servePath + "/comment/" + $('#replyUseName').data('commentId');
+            type = 'PUT';
+        }
+
         $.ajax({
-            url: Label.servePath + "/comment",
-            type: "POST",
+            url: url,
+            type: type,
             headers: {"csrfToken": csrfToken},
             cache: false,
             data: JSON.stringify(requestJSONObject),
@@ -1020,7 +1036,8 @@ var Article = {
             var currentScrollTop = $(window).scrollTop();
 
             // share
-            if (currentScrollTop > 20 && currentScrollTop < $('.article .main').offset().top - 48) {
+            if (currentScrollTop > $('.article-title').offset().top &&
+                currentScrollTop < $('.article .article-body').outerHeight() - 48) {
                 $('.share').show();
             } else {
                 $('.share').hide();
@@ -1192,7 +1209,7 @@ var Article = {
      */
     share: function () {
         var shareL = parseInt($('.article-footer').css('margin-left')) / 2 - 15;
-        $('.share').css('left', (shareL < 20 ? 20 : shareL) + 'px').show();
+        $('.share').css('left', (shareL < 20 ? 20 : shareL) + 'px');
 
         var shareURL = $('#qrCode').data('shareurl');
         $('#qrCode').qrcode({

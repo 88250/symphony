@@ -33,6 +33,15 @@
                         <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
                     </span>
                     </#if>
+                    <#if isLoggedIn>
+                        <span onclick="Article.revision('1493814851007')" aria-label="${historyLabel}"
+                              class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden">
+                            <span class="icon-history"></span></span> &nbsp;
+                    </#if>
+                    <#if isLoggedIn && comment.commentAuthorName == currentUser.userName>
+                        <span class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden" onclick="Comment.edit('${comment.oId}')"
+                           aria-label="${editLabel}"><span class="icon-edit"></span></span> &nbsp;
+                    </#if>
                     <#if permissions["commentUpdateCommentBasic"].permissionGrant>
                     <a class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}"
                        aria-label="${adminLabel}"><span class="icon-setting"></span></a>
