@@ -168,6 +168,7 @@ public class ArticleChannel {
                 message.put(Common.REWARED_COUNT, 0);
                 message.put(Comment.COMMENT_T_VOTE, -1);
                 message.put(Common.REWARDED, false);
+                message.put(Comment.COMMENT_REVISION_COUNT, 1);
 
                 final Map dataModel = new HashMap();
                 dataModel.put(Common.IS_LOGGED_IN, isLoggedIn);
