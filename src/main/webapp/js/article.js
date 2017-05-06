@@ -1112,9 +1112,11 @@ var Article = {
     },
     /**
      * 历史版本对比
+     * @param {string} id 文章/评论 id
+     * @param {string} type 类型[comment, article]
      * @returns {undefined}
      */
-    revision: function (articleId) {
+    revision: function (id, type) {
         if (!Label.isLoggedIn) {
             Util.needLogin();
             return false;
@@ -1123,8 +1125,12 @@ var Article = {
             $('#revision').dialog('open');
             return false;
         }
+        if (!type) {
+            type = 'article';
+        }
+
         $.ajax({
-            url: Label.servePath + '/article/' + articleId + '/revisions',
+            url: Label.servePath + '/' + type + '/' + id + '/revisions',
             cache: false,
             success: function (result, textStatus) {
                 if (result.sc) {
