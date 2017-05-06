@@ -227,10 +227,6 @@
                     <@pagination url="${servePath}${article.articlePermalink}" query="m=${userCommentViewMode}#comments" pjaxTitle="${article.articleTitle} - ${symphonyLabel}" />
                 </div>
                 <#if pjax><!---- pjax {#comments} end ----></#if>
-                <div id="heatBar" class="tooltipped tooltipped-s" aria-label="${postActivityLabel}">
-                    <i class="heat" style="width:${article.articleHeat*3}px"></i>
-                </div>
-                <div id="revision"><div id="revisions"></div></div>
             </div>
         </div>
         <div class="wrapper article-footer">
@@ -300,6 +296,11 @@
                 </div>
             </#if>
         </div>
+
+        <div id="heatBar" class="tooltipped tooltipped-s" aria-label="${postActivityLabel}">
+            <i class="heat" style="width:${article.articleHeat*3}px"></i>
+        </div>
+        <div id="revision"><div id="revisions"></div></div>
         <#include "footer.ftl">
         <div class="share fn-none">
             <span id="thankArticle" aria-label="${thankLabel}"

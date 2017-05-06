@@ -161,7 +161,6 @@
   }
 
   .article-header {
-    box-shadow: 0 0 0;
     height: 48px;
     width: 100%;
     position: fixed;
@@ -173,7 +172,7 @@
     box-sizing: border-box;
     box-shadow: $shadow-tip;
     font-size: 16px;
-    top: -48px;
+    top: -50px;
 
     svg {
       color: #333;

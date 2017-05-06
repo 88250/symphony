@@ -1044,7 +1044,7 @@ var Article = {
             }
 
             if (currentScrollTop < $('.article-title').offset().top) {
-                $('.article-header').css('top', '-48px');
+                $('.article-header').css('top', '-50px');
                 $('.nav').show();
             } else {
                 $('.article-header').css('top', '0');
