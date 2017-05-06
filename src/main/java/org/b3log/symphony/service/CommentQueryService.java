@@ -601,7 +601,7 @@ public class CommentQueryService {
                 // Fill revision count
                 comment.put(Comment.COMMENT_REVISION_COUNT,
                         revisionQueryService.count(commentId, Revision.DATA_TYPE_C_COMMENT));
-                
+
                 final String originalCmtId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
                 if (StringUtils.isBlank(originalCmtId)) {
                     continue;
