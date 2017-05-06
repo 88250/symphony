@@ -338,7 +338,7 @@
                           class="tooltipped tooltipped-w"><span class="icon-unordered-list ft-red"></span></span>
                 </#if>
 
-                <#if permissions["commonViewArticleHistory"].permissionGrant>
+                <#if permissions["commonViewArticleHistory"].permissionGrant && article.articleRevisionCount &gt; 0>
                     <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
                           class="tooltipped tooltipped-w"><span class="icon-history"></span></span>
                 </#if>

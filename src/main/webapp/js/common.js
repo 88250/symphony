@@ -629,7 +629,7 @@ var Util = {
 
 
         if (Label.commonAtUser && Label.commonAtUser === 'true') {
-            CodeMirror.registerHelper("hint", "userName", function (cm) {
+            var userNameFunction = function (cm, cb) {
                 var word = /[\w$]+/;
                 var cur = cm.getCursor(), curLine = cm.getLine(cur.line);
                 var start = cur.ch, end = start;
@@ -647,7 +647,6 @@ var Util = {
                 }
 
                 $.ajax({
-                    async: false,
                     url: Label.servePath + "/users/names?name=" + tok.string.substring(1),
                     type: "GET",
                     success: function (result) {
@@ -662,23 +661,27 @@ var Util = {
 
                             autocompleteHints.push({
                                 displayText: "<span style='font-size: 1rem;line-height:22px'><img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='" + avatar
-                                        + "'> " + name + "</span>",
+                                + "'> " + name + "</span>",
                                 text: name + " "
                             });
                         }
 
-                        if ('comment' === cm['for']) {
+                        if ('comment' === cm['for'] && ('@participants'.indexOf(tok.string) > -1)) {
                             autocompleteHints.push({
                                 displayText: "<span style='font-size: 1rem;line-height:22px'>"
-                                        + "<img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='/images/user-thumbnail.png'> @参与者</span>",
+                                + "<img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='/images/user-thumbnail.png'> @参与者</span>",
                                 text: "participants "
                             });
                         }
+
+
+                        cb( {list: autocompleteHints, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)});
                     }
                 });
+            };
+            userNameFunction.async = true;
 
-                return {list: autocompleteHints, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
-            });
+            CodeMirror.registerHelper("hint", "userName", userNameFunction);
         }
 
         CodeMirror.commands.autocompleteUserName = function (cm) {

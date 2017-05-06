@@ -265,7 +265,7 @@ var Comment = {
             }
             return false;
         }).bind('keyup', 'l', function assets() {
-            // v h 查看帖子历史
+            // v l 查看帖子历史
             if (Util.prevKey === 'v') {
                 $('.article-header .icon-history').parent().click();
             }
@@ -410,9 +410,10 @@ var Comment = {
 
             var cursor = cm.getCursor();
             var token = cm.getTokenAt(cursor);
+
             if (token.string.indexOf('@') === 0) {
                 cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
-                return CodeMirror.Pass;
+                return;
             }
 
             if ($('.editor-preview-active').length === 0) {
