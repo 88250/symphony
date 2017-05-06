@@ -59,6 +59,12 @@ public class CommentMgmtService {
     private static final Logger LOGGER = Logger.getLogger(CommentMgmtService.class);
 
     /**
+     * Revision repository.
+     */
+    @Inject
+    private RevisionRepository revisionRepository;
+
+    /**
      * Comment repository.
      */
     @Inject
@@ -442,6 +448,19 @@ public class CommentMgmtService {
                 tagArticleRepository.update(tagArticleRel.optString(Keys.OBJECT_ID), tagArticleRel);
             }
 
+            // Revision
+            final JSONObject revision = new JSONObject();
+            revision.put(Revision.REVISION_AUTHOR_ID, comment.optString(Comment.COMMENT_AUTHOR_ID));
+
+            final JSONObject revisionData = new JSONObject();
+            revisionData.put(Comment.COMMENT_CONTENT, content);
+
+            revision.put(Revision.REVISION_DATA, revisionData.toString());
+            revision.put(Revision.REVISION_DATA_ID, commentId);
+            revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_COMMENT);
+
+            revisionRepository.add(revision);
+
             transaction.commit();
 
             if (!fromClient && Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous
@@ -497,6 +516,9 @@ public class CommentMgmtService {
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
+            final JSONObject oldComment = commentRepository.get(commentId);
+            final String oldContent = oldComment.optString(Comment.COMMENT_CONTENT);
+
             String content = comment.optString(Comment.COMMENT_CONTENT);
             content = Emotions.toAliases(content);
             content = content.replaceAll("\\s+$", ""); // https://github.com/b3log/symphony/issues/389
@@ -506,6 +528,21 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_CONTENT, content);
 
             commentRepository.update(commentId, comment);
+
+            if (!oldContent.equals(content)) {
+                // Revision
+                final JSONObject revision = new JSONObject();
+                revision.put(Revision.REVISION_AUTHOR_ID, comment.optString(Comment.COMMENT_AUTHOR_ID));
+
+                final JSONObject revisionData = new JSONObject();
+                revisionData.put(Comment.COMMENT_CONTENT, content);
+
+                revision.put(Revision.REVISION_DATA, revisionData.toString());
+                revision.put(Revision.REVISION_DATA_ID, commentId);
+                revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_COMMENT);
+
+                revisionRepository.add(revision);
+            }
 
             transaction.commit();
         } catch (final RepositoryException e) {

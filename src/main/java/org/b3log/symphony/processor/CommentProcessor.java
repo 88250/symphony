@@ -27,6 +27,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -35,6 +36,8 @@ import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionCheck;
+import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ClientCommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentUpdateValidation;
@@ -59,6 +62,7 @@ import java.util.Set;
  * <li>Adds a comment (/solo/comment) <em>remotely</em>, POST</li>
  * <li>Thanks a comment (/comment/thank), POST</li>
  * <li>Gets a comment's replies (/comment/replies), GET </li>
+ * <li>Gets a comment's revisions (/commment/{id}/revisions), GET</li>
  * </ul>
  * </p>
  * <p>
@@ -77,6 +81,12 @@ public class CommentProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class);
+
+    /**
+     * Revision query service.
+     */
+    @Inject
+    private RevisionQueryService revisionQueryService;
 
     /**
      * User query service.
@@ -125,6 +135,24 @@ public class CommentProcessor {
      */
     @Inject
     private RewardQueryService rewardQueryService;
+
+    /**
+     * Gets a comment's revisions.
+     *
+     * @param context  the specified context
+     * @param id       the specified comment id
+     */
+    @RequestProcessing(value = "/comment/{id}/revisions", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
+    @After(adviceClass = {StopwatchEndAdvice.class})
+    public void getCommentRevisions(final HTTPRequestContext context, final String id) {
+        final List<JSONObject> revisions = revisionQueryService.getCommentRevisions(id);
+        final JSONObject ret = new JSONObject();
+        ret.put(Keys.STATUS_CODE, true);
+        ret.put(Revision.REVISIONS, (Object) revisions);
+
+        context.renderJSON(ret);
+    }
 
     /**
      * Gets a comment's content.

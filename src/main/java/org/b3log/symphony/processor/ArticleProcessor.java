@@ -81,7 +81,7 @@ import java.util.List;
  * <li>Rewards an article (/article/reward), POST</li>
  * <li>Gets an article preview content (/article/{articleId}/preview), GET</li>
  * <li>Sticks an article (/article/stick), POST</li>
- * <li>Gets article revisions (/article/{articleId}/revisions), GET</li>
+ * <li>Gets an article's revisions (/article/{id}/revisions), GET</li>
  * <li>Gets article image (/article/{articleId}/image), GET</li>
  * <li>Checks article title (/article/check-title), POST</li>
  * <li>Removes an article (/article/{id}/remove), POST</li>
@@ -423,20 +423,16 @@ public class ArticleProcessor {
     }
 
     /**
-     * Gets article revisions.
+     * Gets an article's revisions.
      *
-     * @param context   the specified context
-     * @param request   the specified request
-     * @param response  the specified response
-     * @param articleId the specified article id
-     * @throws Exception exception
+     * @param context the specified context
+     * @param id      the specified article id
      */
-    @RequestProcessing(value = "/article/{articleId}/revisions", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/article/{id}/revisions", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void getArticleRevisions(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                    final String articleId) throws Exception {
-        final List<JSONObject> revisions = revisionQueryService.getArticleRevisions(articleId);
+    public void getArticleRevisions(final HTTPRequestContext context, final String id) {
+        final List<JSONObject> revisions = revisionQueryService.getArticleRevisions(id);
         final JSONObject ret = new JSONObject();
         ret.put(Keys.STATUS_CODE, true);
         ret.put(Revision.REVISIONS, (Object) revisions);
@@ -844,8 +840,8 @@ public class ArticleProcessor {
         }
 
         // Load comments
-        final List<JSONObject> articleComments = commentQueryService.getArticleComments(
-                avatarViewMode, articleId, pageNum, pageSize, cmtViewMode);
+        final List<JSONObject> articleComments =
+                commentQueryService.getArticleComments(avatarViewMode, articleId, pageNum, pageSize, cmtViewMode);
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
         // Fill comment thank
