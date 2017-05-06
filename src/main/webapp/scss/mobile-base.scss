@@ -1749,7 +1749,7 @@ label.cmt-anonymous {
 }
 
 .share {
-    margin-top: 10px;
+    margin: 10px 0;
     position: relative;
 }
 
@@ -2834,10 +2834,6 @@ code .dec { color: initial; } /* decimal - blue */
 }
 /* end 403 */
 /* start editor */
-.editor-toolbar a.icon-fullscreen {
-    display: none;
-}
-
 .module.editor-toolbar-emoji {
     position: absolute;
     bottom: 14px;

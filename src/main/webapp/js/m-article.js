@@ -40,6 +40,29 @@ var Comment = {
         window.location.href = window.location.pathname + "?m=" + mode;
     },
     /**
+     * 编辑评论
+     * @param {string} id 评论 id
+     */
+    edit: function (id) {
+        Comment._toggleReply();
+        $('.cmt-anonymous').hide();
+        $.ajax({
+            url: Label.servePath + '/comment/' + id + '/content',
+            type: "GET",
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc === 0) {
+                    // doc.lineCount
+                    Comment.editor.setValue(result.commentContent);
+                }
+            }
+        });
+
+        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'#' +
+            id + '\'))" class="ft-a-title"><span class="icon-edit"></span> ' +
+            Label.commonUpdateCommentPermissionLabel + '</a>').data('commentId', id);
+    },
+    /**
      * 背景渐变
      * @param {jQuery} $obj 背景渐变对象
      * @returns {undefined}
@@ -355,8 +378,6 @@ var Comment = {
                     {name: 'image', html: '<div class="tooltipped tooltipped-n" aria-label="' + Label.uploadFileLabel + '" ><form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form></div>'},
                     {name: 'unordered-list'},
                     {name: 'ordered-list'},
-                    {name: 'view'},
-                    {name: 'fullscreen'},
                     {name: 'question', action: 'https://hacpai.com/guide/markdown'}
                 ],
                 extraKeys: {
@@ -711,6 +732,14 @@ var Comment = {
             requestJSONObject.commentOriginalCommentId = $('#replyUseName').data('commentOriginalCommentId');
         }
 
+        var url = Label.servePath + "/comment",
+            type = 'POST',
+            commentId = $('#replyUseName').data('commentId');
+        if (commentId) {
+            url = Label.servePath + "/comment/" + commentId;
+            type = 'PUT';
+        }
+
         $.ajax({
             url: Label.servePath + "/comment",
             type: "POST",
@@ -725,6 +754,11 @@ var Comment = {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");
 
                 if (0 === result.sc) {
+                    // edit cmt
+                    if (commentId) {
+                        $('#' + commentId + ' > .fn-flex > .fn-flex-1 > .content-reset').html(result.commentContent);
+                    }
+
                     // reset comment editor
                     Comment.editor.setValue('');
                     $('.editor-preview').html('');
