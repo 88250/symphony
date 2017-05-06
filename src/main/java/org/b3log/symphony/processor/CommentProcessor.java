@@ -42,6 +42,9 @@ import org.b3log.symphony.processor.advice.validate.ClientCommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentUpdateValidation;
 import org.b3log.symphony.service.*;
+import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.MP3Players;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
@@ -137,10 +140,16 @@ public class CommentProcessor {
     private RewardQueryService rewardQueryService;
 
     /**
+     * Short link query service.
+     */
+    @Inject
+    private ShortLinkQueryService shortLinkQueryService;
+
+    /**
      * Gets a comment's revisions.
      *
-     * @param context  the specified context
-     * @param id       the specified comment id
+     * @param context the specified context
+     * @param id      the specified comment id
      */
     @RequestProcessing(value = "/comment/{id}/revisions", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
@@ -229,7 +238,7 @@ public class CommentProcessor {
 
             final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
-            final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
+            String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
             final String ip = Requests.getRemoteAddr(request);
             final String ua = request.getHeader(Common.USER_AGENT);
 
@@ -245,7 +254,17 @@ public class CommentProcessor {
 
             commentMgmtService.updateComment(comment.optString(Keys.OBJECT_ID), comment);
 
+            commentContent = comment.optString(Comment.COMMENT_CONTENT);
+            commentContent = shortLinkQueryService.linkArticle(commentContent);
+            commentContent = shortLinkQueryService.linkTag(commentContent);
+            commentContent = Emotions.toAliases(commentContent);
+            commentContent = Emotions.convert(commentContent);
+            commentContent = Markdowns.toHTML(commentContent);
+            commentContent = Markdowns.clean(commentContent, "");
+            commentContent = MP3Players.render(commentContent);
+
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Comment.COMMENT_CONTENT, commentContent);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
