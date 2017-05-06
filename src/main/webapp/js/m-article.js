@@ -19,7 +19,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.0.1, Apr 25, 2017
+ * @version 0.2.0.1, May 7, 2017
  * @since 2.1.0
  */
 
@@ -45,7 +45,7 @@ var Comment = {
      */
     edit: function (id) {
         Comment._toggleReply();
-        $('.cmt-anonymous').hide();
+        $('.anonymous-check').hide();
         $.ajax({
             url: Label.servePath + '/comment/' + id + '/content',
             type: "GET",
@@ -138,6 +138,8 @@ var Comment = {
             });
             return false;
         }
+
+        $('.anonymous-check').show();
 
         $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
         $('#replyUseName').html('<a href="javascript:void(0)" onclick="Util.goTop();Comment._bgFade($(\'.article-module\'))" class="ft-a-title"><span class="icon-reply-to"></span>'
@@ -741,8 +743,8 @@ var Comment = {
         }
 
         $.ajax({
-            url: Label.servePath + "/comment",
-            type: "POST",
+            url: url,
+            type: type,
             headers: {"csrfToken": csrfToken},
             cache: false,
             data: JSON.stringify(requestJSONObject),

@@ -247,7 +247,7 @@
                         <#if permissions["commonAddCommentAnonymous"].permissionGrant>
                         <label class="anonymous-check">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
                         </#if>
-                        <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
+                        <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
                     </div>
                 </div>
                 </#if>
@@ -295,7 +295,7 @@
                         <#if permissions["commonAddCommentAnonymous"].permissionGrant>
                         <label class="anonymous-check">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
                         </#if>
-                        <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
+                        <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
                     </div>
                     <div class="fn-hr10"></div>
                     <div class="fn-hr10"></div>
