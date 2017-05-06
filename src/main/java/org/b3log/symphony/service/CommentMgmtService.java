@@ -529,10 +529,11 @@ public class CommentMgmtService {
 
             commentRepository.update(commentId, comment);
 
+            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
             if (!oldContent.equals(content)) {
                 // Revision
                 final JSONObject revision = new JSONObject();
-                revision.put(Revision.REVISION_AUTHOR_ID, comment.optString(Comment.COMMENT_AUTHOR_ID));
+                revision.put(Revision.REVISION_AUTHOR_ID, commentAuthorId);
 
                 final JSONObject revisionData = new JSONObject();
                 revisionData.put(Comment.COMMENT_CONTENT, content);
@@ -545,6 +546,35 @@ public class CommentMgmtService {
             }
 
             transaction.commit();
+
+            final JSONObject article = articleRepository.get(comment.optString(Comment.COMMENT_ON_ARTICLE_ID));
+            final int articleAnonymous = article.optInt(Article.ARTICLE_ANONYMOUS);
+            final int commentAnonymous = comment.optInt(Comment.COMMENT_ANONYMOUS);
+
+            if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous
+                    && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
+                // Point
+                final long now = System.currentTimeMillis();
+                final long createTime = comment.optLong(Keys.OBJECT_ID);
+                if (now - createTime > 1000 * 60 * 5) {
+                    pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
+                            Pointtransfer.TRANSFER_TYPE_C_UPDATE_COMMENT,
+                            Pointtransfer.TRANSFER_SUM_C_UPDATE_COMMENT, commentId, now);
+                }
+            }
+
+            final boolean fromClient = comment.has(Comment.COMMENT_CLIENT_COMMENT_ID);
+
+            // Event
+            final JSONObject eventData = new JSONObject();
+            eventData.put(Common.FROM_CLIENT, fromClient);
+            eventData.put(Article.ARTICLE, article);
+            eventData.put(Comment.COMMENT, comment);
+            try {
+                eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_COMMENT, eventData));
+            } catch (final EventException e) {
+                LOGGER.log(Level.ERROR, e.getMessage(), e);
+            }
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();

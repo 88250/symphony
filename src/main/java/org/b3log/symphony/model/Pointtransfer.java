@@ -352,6 +352,11 @@ public final class Pointtransfer {
     public static final int TRANSFER_SUM_C_ACTIVITY_GOBANG_START = Symphonys.getInt("pointActivityGobang");
 
     /**
+     * Transfer type - Update Comment Outcome.
+     */
+    public static final int TRANSFER_TYPE_C_UPDATE_COMMENT = 32;
+
+    /**
      * Transfer sum - Update Comment.
      */
     public static final int TRANSFER_SUM_C_UPDATE_COMMENT = Symphonys.getInt("pointUpdateComment");
