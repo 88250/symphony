@@ -317,7 +317,7 @@ var Comment = {
         this._initHotKey();
 
         $.pjax({
-            selector: '.pagination a',
+            selector: '#comments .pagination a',
             container: '#comments',
             show: '',
             cache: false,
@@ -708,10 +708,11 @@ var Comment = {
             requestJSONObject.commentOriginalCommentId = $('#replyUseName').data('commentOriginalCommentId');
         }
 
-        var url =  Label.servePath + "/comment",
-        type = 'POST';
-        if ($('#replyUseName').data('commentId')) {
-            url =  Label.servePath + "/comment/" + $('#replyUseName').data('commentId');
+        var url = Label.servePath + "/comment",
+            type = 'POST',
+            commentId = $('#replyUseName').data('commentId');
+        if (commentId) {
+            url = Label.servePath + "/comment/" + commentId;
             type = 'PUT';
         }
 
@@ -729,6 +730,12 @@ var Comment = {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");
 
                 if (0 === result.sc) {
+                    // edit cmt
+                    if (commentId) {
+                        $('#' + commentId + ' > .fn-flex > .fn-flex-1 > .content-reset').html(result.commentContent);
+                        $('#' + commentId + ' .icon-history').parent().show();
+                    }
+
                     // reset comment editor
                     Comment.editor.setValue('');
                     $('.editor-preview').html('');
@@ -1121,10 +1128,6 @@ var Article = {
             Util.needLogin();
             return false;
         }
-        if ($('.CodeMirror-merge').length > 0) {
-            $('#revision').dialog('open');
-            return false;
-        }
         if (!type) {
             type = 'article';
         }
@@ -1140,6 +1143,9 @@ var Article = {
                         return false;
                     }
 
+                    // clear data
+                    $('#revisions').html('').prev().remove();
+
                     $('#revisions').data('revisions', result.revisions).before('<div class="fn-clear"><div class="pagination">' +
                         '<a href="javascript:void(0)">&lt;</a><span class="current">' +
                         (result.revisions.length - 1) + '~' + result.revisions.length + '/' +
@@ -1148,17 +1154,24 @@ var Article = {
                     if (result.revisions.length <= 2) {
                         $('#revision a').first().hide();
                     }
+
+                    var mergeValue = result.revisions[result.revisions.length - 1].revisionData.articleTitle +
+                            '\n\n' + result.revisions[result.revisions.length - 1].revisionData.articleContent,
+                        mergeOrigLeft = result.revisions[result.revisions.length - 2].revisionData.articleTitle +
+                            '\n\n' + result.revisions[result.revisions.length - 2].revisionData.articleContent;
+                    if (type === 'comment') {
+                        mergeValue = result.revisions[result.revisions.length - 1].revisionData.commentContent;
+                        mergeOrigLeft = result.revisions[result.revisions.length - 2].revisionData.commentContent
+                    }
                     Article.mergeEditor = CodeMirror.MergeView(document.getElementById('revisions'), {
-                        value: result.revisions[result.revisions.length - 1].revisionData.articleTitle +
-                        '\n\n' + result.revisions[result.revisions.length - 1].revisionData.articleContent,
-                        origLeft: result.revisions[result.revisions.length - 2].revisionData.articleTitle +
-                        '\n\n' + result.revisions[result.revisions.length - 2].revisionData.articleContent,
+                        value: mergeValue,
+                        origLeft: mergeOrigLeft,
                         revertButtons: false,
                         mode: "text/html",
                         collapseIdentical: true,
                         lineWrapping: true
                     });
-                    Article._revisionsControls();
+                    Article._revisionsControls(type);
                     return false;
                 }
 
@@ -1171,7 +1184,7 @@ var Article = {
      * 上一版本，下一版本对比
      * @returns {undefined}
      */
-    _revisionsControls: function () {
+    _revisionsControls: function (type) {
         var revisions = $('#revisions').data('revisions');
         $('#revision a').first().click(function () {
             var prevVersion = parseInt($('#revision .current').text().split('~')[0]);
@@ -1187,10 +1200,17 @@ var Article = {
             $('#revision a').last().show();
 
             $('#revision .current').html((prevVersion - 1) + '~' + prevVersion + '/' + revisions.length);
-            Article.mergeEditor.edit.setValue(revisions[prevVersion - 1].revisionData.articleTitle + '\n\n' +
-                revisions[prevVersion - 1].revisionData.articleContent);
-            Article.mergeEditor.leftOriginal().setValue(revisions[prevVersion - 2].revisionData.articleTitle + '\n\n' +
-                revisions[prevVersion - 2].revisionData.articleContent);
+
+            var mergeValue = revisions[prevVersion - 1].revisionData.articleTitle + '\n\n' +
+                    revisions[prevVersion - 1].revisionData.articleContent,
+                mergeOrigLeft = revisions[prevVersion - 2].revisionData.articleTitle + '\n\n' +
+                    revisions[prevVersion - 2].revisionData.articleContent;
+            if (type === 'comment') {
+                mergeValue = revisions[prevVersion - 1].revisionData.commentContent;
+                mergeOrigLeft = revisions[prevVersion - 2].revisionData.commentContent;
+            }
+            Article.mergeEditor.edit.setValue(mergeValue);
+            Article.mergeEditor.leftOriginal().setValue(mergeOrigLeft);
         });
 
         $('#revision a').last().click(function () {
@@ -1205,10 +1225,17 @@ var Article = {
             }
             $('#revision a').first().show();
             $('#revision .current').html((prevVersion + 1) + '~' + (prevVersion + 2) + '/' + revisions.length);
-            Article.mergeEditor.edit.setValue(revisions[prevVersion + 1].revisionData.articleTitle + '\n\n' +
-                revisions[prevVersion + 1].revisionData.articleContent);
-            Article.mergeEditor.leftOriginal().setValue(revisions[prevVersion].revisionData.articleTitle + '\n\n' +
-                revisions[prevVersion].revisionData.articleContent);
+
+            var mergeValue = revisions[prevVersion + 1].revisionData.articleTitle + '\n\n' +
+                    revisions[prevVersion + 1].revisionData.articleContent,
+                mergeOrigLeft = revisions[prevVersion].revisionData.articleTitle + '\n\n' +
+                    revisions[prevVersion].revisionData.articleContent;
+            if (type === 'comment') {
+                mergeValue = revisions[prevVersion + 1].revisionData.commentContent;
+                mergeOrigLeft = revisions[prevVersion].revisionData.commentContent;
+            }
+            Article.mergeEditor.edit.setValue(mergeValue);
+            Article.mergeEditor.leftOriginal().setValue(mergeOrigLeft);
         });
     },
     /**

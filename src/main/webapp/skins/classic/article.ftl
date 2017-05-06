@@ -337,8 +337,7 @@
                     <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
                           class="tooltipped tooltipped-w"><span class="icon-unordered-list ft-red"></span></span>
                 </#if>
-
-                <#if permissions["commonViewArticleHistory"].permissionGrant && article.articleRevisionCount &gt; 0>
+                <#if permissions["commonViewArticleHistory"].permissionGrant && article.articleRevisionCount &gt; 1>
                     <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
                           class="tooltipped tooltipped-w"><span class="icon-history"></span></span>
                 </#if>
