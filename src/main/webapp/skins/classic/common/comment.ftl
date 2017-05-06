@@ -27,12 +27,12 @@
                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade hover-show fn-hidden" data-ua="${comment.commentUA}"></span></#if>
                 </span>
                 <span class="fn-right">
-                        <span onclick="Article.revision('${comment.oId}', 'comment')" aria-label="${historyLabel}"
-                              class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden
-                              <#if comment.commentRevisionCount &lt; 2>fn-none</#if>">
-                            <span class="icon-history"></span></span> &nbsp;
+                    <span onclick="Article.revision('${comment.oId}', 'comment')" aria-label="${historyLabel}"
+                          class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden
+                          <#if comment.commentRevisionCount &lt; 2>fn-none</#if>">
+                        <span class="icon-history"></span></span> &nbsp;
 
-                    <#if isLoggedIn && comment.commentAuthorName == currentUser.userName>
+                    <#if isLoggedIn && comment.commentAuthorName == currentUser.userName && permissions["commonUpdateComment"].permissionGrant>
                         <span class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden" onclick="Comment.edit('${comment.oId}')"
                            aria-label="${editLabel}"><span class="icon-edit"></span></span> &nbsp;
                     </#if>
