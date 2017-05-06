@@ -596,6 +596,12 @@ public class CommentQueryService {
             organizeComments(avatarViewMode, ret);
 
             for (final JSONObject comment : ret) {
+                final String commentId = comment.optString(Keys.OBJECT_ID);
+
+                // Fill revision count
+                comment.put(Comment.COMMENT_REVISION_COUNT,
+                        revisionQueryService.count(commentId, Revision.DATA_TYPE_C_COMMENT));
+                
                 final String originalCmtId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
                 if (StringUtils.isBlank(originalCmtId)) {
                     continue;
@@ -608,12 +614,6 @@ public class CommentQueryService {
                 organizeComment(avatarViewMode, originalCmt);
                 comment.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
                         originalCmt.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
-
-                final String commentId = comment.optString(Keys.OBJECT_ID);
-
-                // Fill revision count
-                comment.put(Comment.COMMENT_REVISION_COUNT,
-                        revisionQueryService.count(commentId, Revision.DATA_TYPE_C_COMMENT));
             }
 
             return ret;
