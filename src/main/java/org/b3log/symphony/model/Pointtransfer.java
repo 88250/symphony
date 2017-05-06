@@ -24,7 +24,7 @@ import org.b3log.symphony.util.Symphonys;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.22.1.1, Mar 27, 2017
+ * @version 1.23.2.1, May 6, 2017
  * @since 1.3.0
  */
 public final class Pointtransfer {
@@ -124,7 +124,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Add Comment.
      */
-    public static final int TRANSFER_SUM_C_ADD_COMMENT = Symphonys.getInt("porintAddComment");
+    public static final int TRANSFER_SUM_C_ADD_COMMENT = Symphonys.getInt("pointAddComment");
 
     /**
      * Transfer sum - Add Self Article Comment.
@@ -350,6 +350,11 @@ public final class Pointtransfer {
      * Transfer sum - Activity - Start Gobang.
      */
     public static final int TRANSFER_SUM_C_ACTIVITY_GOBANG_START = Symphonys.getInt("pointActivityGobang");
+
+    /**
+     * Transfer sum - Update Comment.
+     */
+    public static final int TRANSFER_SUM_C_UPDATE_COMMENT = Symphonys.getInt("pointUpdateComment");
 
     /**
      * Private constructor.

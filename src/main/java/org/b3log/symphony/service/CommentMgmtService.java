@@ -308,7 +308,7 @@ public class CommentMgmtService {
 
         final String commenterName = commenter.optString(User.USER_NAME);
 
-        JSONObject article = null;
+        JSONObject article;
         try {
             // check if admin allow to add comment
             final JSONObject option = optionRepository.get(Option.ID_C_MISC_ALLOW_ADD_COMMENT);

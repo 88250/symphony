@@ -292,7 +292,7 @@ public class ArticleMgmtService {
 
             String audioURL = "";
             if (StringUtils.length(contentToTTS) < 96 || Runes.getChinesePercent(contentToTTS) < 40) {
-                LOGGER.debug("Content is too short to TTS [contentToTTS=" + contentToTTS + "]");
+                LOGGER.trace("Content is too short to TTS [contentToTTS=" + contentToTTS + "]");
             } else {
                 audioURL = audioMgmtService.tts(contentToTTS, Article.ARTICLE, articleId, userId);
             }
