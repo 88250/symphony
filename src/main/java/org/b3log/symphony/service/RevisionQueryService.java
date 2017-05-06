@@ -138,7 +138,7 @@ public class RevisionQueryService {
     public int count(final String dataId, final int dataType) {
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, dataId),
-                new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_ARTICLE)
+                new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, dataType)
         ));
 
         try {
