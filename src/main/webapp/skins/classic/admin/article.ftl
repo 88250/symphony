@@ -178,7 +178,7 @@
             <h2 class="ft-red">${removeDataLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="${servePath}/admin/remove-article" method="POST" onsubmit="return window.confirm('Sure?')">
+            <form action="${servePath}/admin/remove-article" method="POST" onsubmit="return window.confirm('${confirmRemoveLabel}')">
                 <label for="articleId">Id</label>
                 <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly="readonly"/>
 

@@ -94,7 +94,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.27.44, May 6, 2017
+ * @version 1.26.27.45, May 8, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -228,7 +228,7 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{id}/remove", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
     public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                               final String id) throws Exception {
@@ -266,7 +266,6 @@ public class ArticleProcessor {
             context.renderMsg(msg);
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
         }
-
     }
 
     /**

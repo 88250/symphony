@@ -47,7 +47,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.11.20, May 6, 2017
+ * @version 2.13.11.20, May 8, 2017
  * @since 0.2.0
  */
 @Service
@@ -149,38 +149,60 @@ public class CommentMgmtService {
     private LivenessMgmtService livenessMgmtService;
 
     /**
-     * Removes a comment specified with the given comment id.
+     * Removes a comment specified with the given comemnt id. A comemnt is removable if:
+     * <ul>
+     * <li>No replies</li>
+     * <li>No ups, downs</li>
+     * <li>No thanks</li>
+     * </ul>
+     * Sees https://github.com/b3log/symphony/issues/451 for more details.
+     *
+     * @param commentId the given commentId id
+     * @throws ServiceException service exception
+     */
+    public void removeComment(final String commentId) throws ServiceException {
+        JSONObject comment = null;
+
+        try {
+            comment = commentRepository.get(commentId);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets a comment [id=" + commentId + "] failed", e);
+        }
+
+        if (null == comment) {
+            return;
+        }
+
+        final int replyCnt = comment.optInt(Comment.COMMENT_REPLY_CNT);
+        if (replyCnt > 0) {
+            throw new ServiceException(langPropsService.get("removeCommentFoundReplyLabel"));
+        }
+
+        final int ups = comment.optInt(Comment.COMMENT_GOOD_CNT);
+        final int downs = comment.optInt(Comment.COMMENT_BAD_CNT);
+        if (ups > 0 || downs > 0) {
+            throw new ServiceException("removeCommentFoundWatchEtcLabel");
+        }
+
+        final int thankCnt = (int) rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT);
+        if (thankCnt > 0) {
+            throw new ServiceException("removeCommentFoundThankLabel");
+        }
+
+        // Perform removal
+        removeCommentByAdmin(commentId);
+    }
+
+    /**
+     * Removes a comment specified with the given comment id. Calls this method will remove all existed data related
+     * with the specified comment forcibly.
      *
      * @param commentId the given comment id
      */
     @Transactional
-    public void removeComment(final String commentId) {
+    public void removeCommentByAdmin(final String commentId) {
         try {
-            final JSONObject comment = commentRepository.get(commentId);
-            if (null == comment) {
-                return;
-            }
-
-            final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
-            final JSONObject article = articleRepository.get(articleId);
-            article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) - 1);
-            // Just clear latest time and commenter name, do not get the real latest comment to update
-            article.put(Article.ARTICLE_LATEST_CMT_TIME, 0);
-            article.put(Article.ARTICLE_LATEST_CMTER_NAME, "");
-            articleRepository.update(articleId, article);
-
-            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
-            final JSONObject commenter = userRepository.get(commentAuthorId);
-            commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) - 1);
-            userRepository.update(commentAuthorId, commenter);
-
-            commentRepository.remove(comment.optString(Keys.OBJECT_ID));
-
-            final JSONObject commentCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
-            commentCntOption.put(Option.OPTION_VALUE, commentCntOption.optInt(Option.OPTION_VALUE) - 1);
-            optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, commentCntOption);
-
-            notificationRepository.removeByDataId(commentId);
+            commentRepository.removeComment(commentId);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes a comment error [id=" + commentId + "]", e);
         }
