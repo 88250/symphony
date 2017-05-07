@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.repository;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.repository.*;
@@ -120,6 +121,16 @@ public class CommentRepository extends AbstractRepository {
         final JSONObject commentCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
         commentCntOption.put(Option.OPTION_VALUE, commentCntOption.optInt(Option.OPTION_VALUE) - 1);
         optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, commentCntOption);
+
+        final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+        if (StringUtils.isNotBlank(originalCommentId)) {
+            final JSONObject originalComment = get(originalCommentId);
+            if (null != originalComment) {
+                originalComment.put(Comment.COMMENT_REPLY_CNT, originalComment.optInt(Comment.COMMENT_REPLY_CNT) - 1);
+
+                update(originalCommentId, originalComment);
+            }
+        }
 
         notificationRepository.removeByDataId(commentId);
     }
