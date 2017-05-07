@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.32.29.57, May 5, 2017
+ * @version 2.32.29.58, May 7, 2017
  */
 
 @import "variables";
@@ -175,7 +175,7 @@
     top: -50px;
 
     svg {
-      color: #333;
+      color: $black-text;
       vertical-align: baseline;
     }
 
@@ -196,13 +196,13 @@
       text-decoration: none;
 
       &.ft-red {
-        color: $red;
+        color: $theme-accent;
       }
     }
 
     .user-nav > span:hover,
     .user-nav > a:hover {
-      color: #333;
+      color: $black-text;
     }
 
   }
@@ -215,7 +215,7 @@
     right: 0;
     height: 100%;
     border-radius: 0;
-    background-color: $light-blue;
+    background-color: $blue-lighter;
 
     .module-panel {
       overflow: auto;
@@ -312,7 +312,7 @@
     }
 
     .wrapper {
-      background-color: $light-blue;
+      background-color: $blue-lighter;
       bottom: 0;
       z-index: 121;
       position: absolute;
@@ -370,7 +370,7 @@
     top: -8px;
     left: 0;
     cursor: pointer;
-    color: $red;
+    color: $theme-accent;
     margin-left: -10px;
   }
 }
@@ -388,14 +388,14 @@ label.cmt-anonymous {
 
 .action-btns > span:hover,
 .action-btns > a:hover {
-  color: #333;
+  color: $black-text;
 }
 
 .action-btns > span.ft-red,
 .action-btns > a.ft-red,
 .action-btns > span.ft-red:hover,
 .action-btns > a.ft-red:hover {
-  color: $red;
+  color: $theme-accent;
 }
 
 .action-btns > span.icon-reply-btn {
@@ -404,7 +404,7 @@ label.cmt-anonymous {
 }
 
 .action-btns > span.icon-reply-btn:hover {
-  color: #333;
+  color: $black-text;
 }
 
 .comments {
@@ -614,7 +614,7 @@ label.cmt-anonymous {
 .heat {
   position: absolute;
   height: 5px;
-  background-color: $red;
+  background-color: $theme-accent;
   z-index: 1;
   bottom: -3px;
   right: 0;
@@ -624,7 +624,7 @@ label.cmt-anonymous {
 .point-remove {
   position: absolute;
   height: 5px;
-  background-color: $red;
+  background-color: $theme-accent;
   z-index: 1;
   bottom: -3px;
   right: 0px;
@@ -699,7 +699,7 @@ label.cmt-anonymous {
 }
 
 .article-level4 {
-  color: $red;
+  color: $theme-accent;
 }
 
 /* end article list */
@@ -710,7 +710,7 @@ label.cmt-anonymous {
 
   .intro {
     padding: 100px 50px;
-    background-color: $light-blue;
+    background-color: $blue-lighter;
     width: 40%;
     color: #666;
   }
@@ -837,7 +837,7 @@ label.cmt-anonymous {
   }
 
   .md {
-    background-color: $light-blue;
+    background-color: $blue-lighter;
 
     pre {
       white-space: pre-wrap;
@@ -1055,14 +1055,14 @@ code .dec {
   }
 
   .index-tabs > span a {
-    color: #333;
+    color: $black-text;
     text-decoration: none;
     display: block;
   }
 
   .index-tabs > span.current,
   .index-tabs > span.current:hover {
-    color: #333;
+    color: $black-text;
   }
 
   .index-tabs > span.tags {
@@ -1075,7 +1075,7 @@ code .dec {
   }
 
   .index-tabs > span.perfect {
-    border-bottom-color: $red;
+    border-bottom-color: $theme-accent;
     flex: 2;
   }
 
@@ -1116,7 +1116,7 @@ code .dec {
   }
 
   .index-tabs > span.perfect:before {
-    background-color: $red;
+    background-color: $theme-accent;
   }
 
   .index-tabs > span.check:before {
@@ -1144,7 +1144,7 @@ code .dec {
   }
 
   .perfect-panel {
-    background-color: $light-blue;
+    background-color: $blue-lighter;
 
     .avatar-small {
       position: absolute;
@@ -1187,7 +1187,7 @@ code .dec {
 
     .preview:hover {
       background-color: rgba(0, 0, 0, .02);
-      color: #333;
+      color: $black-text;
     }
 
     .preview img {
@@ -1246,7 +1246,7 @@ code .dec {
     }
 
     .metro-border div {
-      background-color: $red;
+      background-color: $theme-accent;
     }
 
     .metro-border div.purple {
