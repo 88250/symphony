@@ -30,6 +30,27 @@
 var Comment = {
     editor: undefined,
     /**
+     * 删除评论
+     * @param {integer} id 评论 id
+     */
+    remove: function (id) {
+        if (!confirm(Label.confirmRemoveLabel)) {
+            return false;
+        }
+        $.ajax({
+            url: Label.servePath + '/comment/' + id + '/remove',
+            type: "POST",
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc === 0) {
+                    $('#' + id).remove();
+                } else {
+                    alert(result.msg);
+                }
+            }
+        });
+    },
+    /**
      * 切换评论排序模式
      * @param {integer} mode 排序模式：0 传统模式，正序；1 实时模式，倒序
      * @returns {undefined}
@@ -607,7 +628,7 @@ var Comment = {
         // 回复展现需要每次都异步获取。回复的回帖只需加载一次，后期不再加载
         if ('comment-get-comment' === className) {
             if ($commentReplies.find('li').length !== 0) {
-                $commentReplies.toggle();
+                $commentReplies.html('');
                 return false;
             }
         } else {
@@ -649,6 +670,11 @@ var Comment = {
                 if (!(comments instanceof Array)) {
                     comments = [comments];
                 }
+
+                if (comments.length === 0) {
+                    template = '<li class="ft-red">' + Label.removedLabel + "</li>";
+                }
+
                 for (var i = 0; i < comments.length; i++) {
                     var data = comments[i];
 

@@ -455,6 +455,8 @@
             Label.csrfToken = "${csrfToken}";
             Label.upLabel = "${upLabel}";
             Label.downLabel = "${downLabel}";
+            Label.confirmRemoveLabel = "${confirmRemoveLabel}";
+            Label.removedLabel = "${removedLabel}";
             Label.uploadLabel = "${uploadLabel}";
             Label.userCommentViewMode = ${userCommentViewMode};
             Label.stickConfirmLabel = "${stickConfirmLabel}";

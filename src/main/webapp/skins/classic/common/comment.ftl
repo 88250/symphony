@@ -27,13 +27,17 @@
                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade hover-show fn-hidden" data-ua="${comment.commentUA}"></span></#if>
                 </span>
                 <span class="fn-right">
+                    <#if comment.commentAuthorName == currentUser.userName && permissions["commonRemoveComment"].permissionGrant>
+                        <span onclick="Comment.remove('${comment.oId}')" aria-label="${removeCommentLabel}"
+                              class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden">
+                        <span class="icon-remove ft-red"></span></span> &nbsp;
+                    </#if>
                     <#if permissions["commonViewCommentHistory"].permissionGrant>
                         <span onclick="Article.revision('${comment.oId}', 'comment')" aria-label="${historyLabel}"
                               class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden
                           <#if comment.commentRevisionCount &lt; 2>fn-none</#if>">
                         <span class="icon-history"></span></span> &nbsp;
                     </#if>
-
                     <#if isLoggedIn && comment.commentAuthorName == currentUser.userName && permissions["commonUpdateComment"].permissionGrant>
                         <span class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden" onclick="Comment.edit('${comment.oId}')"
                            aria-label="${editLabel}"><span class="icon-edit"></span></span> &nbsp;
