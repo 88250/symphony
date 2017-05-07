@@ -34,7 +34,7 @@
             <h2 class="ft-red">${removeDataLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <form action="${servePath}/admin/remove-reserved-word" method="POST" onsubmit="return window.confirm('Sure?')">
+            <form action="${servePath}/admin/remove-reserved-word" method="POST" onsubmit="return window.confirm('${confirmRemoveLabel}')">
                 <label for="id">Id</label>
                 <input type="text" id="id" name="id" value="${word.oId}" readonly="readonly"/>
 
