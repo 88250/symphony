@@ -1069,7 +1069,7 @@ var Article = {
             var currentScrollTop = $(window).scrollTop();
 
             // share
-            if (currentScrollTop > $('.article-title').offset().top &&
+            if (currentScrollTop > -1 &&
                 currentScrollTop < $('.article .article-body').outerHeight() - 48) {
                 $('.share').show();
             } else {
