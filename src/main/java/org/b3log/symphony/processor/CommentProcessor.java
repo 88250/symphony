@@ -66,6 +66,7 @@ import java.util.Set;
  * <li>Thanks a comment (/comment/thank), POST</li>
  * <li>Gets a comment's replies (/comment/replies), GET </li>
  * <li>Gets a comment's revisions (/commment/{id}/revisions), GET</li>
+ * <li>Removes a comment (/comment/{id}/remove), POST</li>
  * </ul>
  * </p>
  * <p>
@@ -74,7 +75,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.13, May 6, 2017
+ * @version 1.7.1.13, May 8, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -144,6 +145,55 @@ public class CommentProcessor {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
+    /**
+     * Removes a comment.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/comment/{id}/remove", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
+    @After(adviceClass = {StopwatchEndAdvice.class})
+    public void removeComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                              final String id) throws Exception {
+        if (StringUtils.isBlank(id)) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
+        final JSONObject comment = commentQueryService.getComment(id);
+        if (null == comment) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
+        final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+        if (!authorId.equals(currentUserId)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        context.renderJSON();
+        try {
+            commentMgmtService.removeComment(id);
+
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Comment.COMMENT_T_ID, id);
+        } catch (final ServiceException e) {
+            final String msg = e.getMessage();
+
+            context.renderMsg(msg);
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+        }
+    }
 
     /**
      * Gets a comment's revisions.
