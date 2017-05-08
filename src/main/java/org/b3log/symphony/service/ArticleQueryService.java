@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.30.56, May 6, 2017
+ * @version 2.27.30.57, May 8, 2017
  * @since 0.2.0
  */
 @Service
@@ -1134,10 +1134,11 @@ public class ArticleQueryService {
             return null;
         }
 
-        return getPreviewContent(article, request);
-    }
+        final int articleType = article.optInt(Article.ARTICLE_TYPE);
+        if (Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
+            return null;
+        }
 
-    private String getPreviewContent(final JSONObject article, final HttpServletRequest request) throws ServiceException {
         Stopwatchs.start("Get preview content");
 
         try {
@@ -1155,7 +1156,7 @@ public class ArticleQueryService {
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
             final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
             final String authorName = author.optString(User.USER_NAME);
-            if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType
                     && !authorName.equals(currentUserName)) {
                 boolean invited = false;
                 for (final String userName : userNames) {
@@ -2143,6 +2144,11 @@ public class ArticleQueryService {
      * @return the first image URL, returns {@code ""} if not found
      */
     private String getArticleThumbnail(final JSONObject article) {
+        final int articleType = article.optInt(Article.ARTICLE_TYPE);
+        if (Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
+            return "";
+        }
+
         final String content = article.optString(Article.ARTICLE_CONTENT);
         final String html = Markdowns.toHTML(content);
         String ret = StringUtils.substringBetween(html, "<img src=\"", "\"");

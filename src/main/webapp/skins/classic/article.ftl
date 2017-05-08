@@ -466,35 +466,38 @@
                 </div>
             </div>
         </#if>
+
+        <#if discussionViewable>
         <span class="tooltipped tooltipped-w radio-btn" onclick="Comment._toggleReply()"
               data-hasPermission="${permissions['commonAddComment'].permissionGrant?c}"
               aria-label="${cmtLabel}"><span class="icon-reply"></span></span>
+        </#if>
 
+        <#if isLoggedIn && discussionViewable && article.articleCommentable>
         <div class="editor-panel">
             <div class="editor-bg"></div>
             <div class="wrapper">
-                <#if isLoggedIn && discussionViewable && article.articleCommentable>
-                    <div class="form fn-clear comment-wrap">
-                        <div class="fn-flex">
-                            <div id="replyUseName" class="fn-flex-1 fn-ellipsis"></div>
-                            <span class="tooltipped tooltipped-w fn-pointer editor-hide" onclick="Comment._toggleReply()" aria-label="${hideLabel}"> <span class="icon-chevron-down"></span></span>
-                        </div>
-                        <div class="article-comment-content">
-                            <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
-                            <div class="fn-clear comment-submit">
-                                <div class="tip fn-left" id="addCommentTip"></div>
-                                <div class="fn-right">
-                                    <#if permissions["commonAddCommentAnonymous"].permissionGrant>
-                                        <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                                    </#if>
-                                    <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
-                                </div>
+                <div class="form fn-clear comment-wrap">
+                    <div class="fn-flex">
+                        <div id="replyUseName" class="fn-flex-1 fn-ellipsis"></div>
+                        <span class="tooltipped tooltipped-w fn-pointer editor-hide" onclick="Comment._toggleReply()" aria-label="${hideLabel}"> <span class="icon-chevron-down"></span></span>
+                    </div>
+                    <div class="article-comment-content">
+                        <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
+                        <div class="fn-clear comment-submit">
+                            <div class="tip fn-left" id="addCommentTip"></div>
+                            <div class="fn-right">
+                                <#if permissions["commonAddCommentAnonymous"].permissionGrant>
+                                    <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                                </#if>
+                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
                             </div>
                         </div>
                     </div>
-                </#if>
+                </div>
             </div>
         </div>
+        </#if>
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
@@ -509,6 +512,7 @@
             Label.recordDeniedLabel = "${recordDeniedLabel}";
             Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
             Label.csrfToken = "${csrfToken}";
+            Label.notAllowCmtLabel = "${notAllowCmtLabel}";
             Label.upLabel = "${upLabel}";
             Label.downLabel = "${downLabel}";
             Label.confirmRemoveLabel = "${confirmRemoveLabel}";
