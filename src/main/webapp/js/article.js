@@ -147,6 +147,10 @@ var Comment = {
             Util.needLogin();
             return false;
         }
+        if ($('#commentContent').length === 0) {
+            alert(Label.notAllowCmtLabel);
+            return false;
+        }
         if ($(this).data('hasPermission') === 'false') {
             Article.permissionTip(Label.noPermissionLabel)
             return false;
@@ -353,7 +357,7 @@ var Comment = {
             NProgress.done();
         });
 
-        if (!Label.isLoggedIn) {
+        if (!Label.isLoggedIn || !document.getElementById('commentContent')) {
             return false;
         }
 
