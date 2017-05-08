@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.14.31, May 4, 2017
+ * @version 2.11.14.32, May 7, 2017
  */
 
 @import "variables";
@@ -61,7 +61,7 @@
         right: 0px;
         top: 0px;
         border-width: 10px 10px 10px 10px;
-        border-color: $red $red transparent transparent;
+        border-color: $theme-accent $theme-accent transparent transparent;
     }
 
     a.current::before {
@@ -71,7 +71,7 @@
         left: 0;
         width: 2px;
         content: "";
-        background-color: $red;
+        background-color: $theme-accent;
     }
 }
 
@@ -104,7 +104,7 @@
 
     .online,
     .offline {
-        background-color: $red;
+        background-color: $theme-accent;
         color: #fff;
         font-size: 12px;
         line-height: 20px;
@@ -227,7 +227,7 @@
             margin-bottom: 0;
             width: auto;
             right: 10px;
-            background-color: $light-blue;
+            background-color: $blue-lighter;
     }
 
     #articleContent {
@@ -282,7 +282,7 @@
     }
 
     .tags-input span.tag.haved {
-        color: #333;
+        color: $black-text;
         background-color: #ccc;
         transition: background 0.5s ease-in,color 0.3s ease-out;
     }
@@ -356,7 +356,7 @@
 }
 
 .tabs a.selected {
-    border-color: $red;
+    border-color: $theme-accent;
     color: #212121;
 }
 
@@ -468,7 +468,7 @@
 }
 
 .points .name a:hover {
-    color: #333;
+    color: $black-text;
 }
 
 .points .type {
@@ -480,7 +480,7 @@
     text-align: center;
     width: 35px;
     padding: 0 10px;
-    color: $red;
+    color: $theme-accent;
     font-weight: 700;
 }
 

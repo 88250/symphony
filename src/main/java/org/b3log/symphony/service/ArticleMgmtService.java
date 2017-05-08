@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.17.34.42, May 2, 2017
+ * @version 2.17.34.43, May 8, 2017
  * @since 0.2.0
  */
 @Service
@@ -292,7 +292,7 @@ public class ArticleMgmtService {
 
             String audioURL = "";
             if (StringUtils.length(contentToTTS) < 96 || Runes.getChinesePercent(contentToTTS) < 40) {
-                LOGGER.debug("Content is too short to TTS [contentToTTS=" + contentToTTS + "]");
+                LOGGER.trace("Content is too short to TTS [contentToTTS=" + contentToTTS + "]");
             } else {
                 audioURL = audioMgmtService.tts(contentToTTS, Article.ARTICLE, articleId, userId);
             }
@@ -324,9 +324,6 @@ public class ArticleMgmtService {
     /**
      * Removes an article specified with the given article id. Calls this method will remove all existed data related
      * with the specified article forcibly.
-     * <p>
-     * <b>Note</b>: This method just for admin console.
-     * </p>
      *
      * @param articleId the given article id
      */
@@ -338,6 +335,17 @@ public class ArticleMgmtService {
                 return;
             }
 
+            Query query = new Query().setFilter(new PropertyFilter(
+                    Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).setPageCount(1);
+            final JSONArray comments = commentRepository.get(query).optJSONArray(Keys.RESULTS);
+            final int commentCnt = comments.length();
+            for (int i = 0; i < commentCnt; i++) {
+                final JSONObject comment = comments.optJSONObject(i);
+                final String commentId = comment.optString(Keys.OBJECT_ID);
+
+                commentRepository.removeComment(commentId);
+            }
+
             final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userRepository.get(authorId);
             author.put(UserExt.USER_ARTICLE_COUNT, author.optInt(UserExt.USER_ARTICLE_COUNT) - 1);
@@ -347,8 +355,7 @@ public class ArticleMgmtService {
             final String cityStatId = city + "-ArticleCount";
             final JSONObject cityArticleCntOption = optionRepository.get(cityStatId);
             if (null != cityArticleCntOption) {
-                cityArticleCntOption.put(Option.OPTION_VALUE,
-                        cityArticleCntOption.optInt(Option.OPTION_VALUE) - 1);
+                cityArticleCntOption.put(Option.OPTION_VALUE, cityArticleCntOption.optInt(Option.OPTION_VALUE) - 1);
                 optionRepository.update(cityStatId, cityArticleCntOption);
             }
 
@@ -357,6 +364,17 @@ public class ArticleMgmtService {
             optionRepository.update(Option.ID_C_STATISTIC_ARTICLE_COUNT, articleCntOption);
 
             articleRepository.remove(articleId);
+
+            // Remove article revisions
+            query = new Query().setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, articleId),
+                    new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_ARTICLE)
+            ));
+            final JSONArray articleRevisions = revisionRepository.get(query).optJSONArray(Keys.RESULTS);
+            for (int i = 0; i < articleRevisions.length(); i++) {
+                final JSONObject articleRevision = articleRevisions.optJSONObject(i);
+                revisionRepository.remove(articleRevision.optString(Keys.OBJECT_ID));
+            }
 
             final List<JSONObject> tagArticleRels = tagArticleRepository.getByArticleId(articleId);
             for (final JSONObject tagArticleRel : tagArticleRels) {
@@ -372,49 +390,6 @@ public class ArticleMgmtService {
 
             tagArticleRepository.removeByArticleId(articleId);
             notificationRepository.removeByDataId(articleId);
-
-            Query query = new Query().setFilter(new PropertyFilter(
-                    Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).setPageCount(1);
-            final JSONArray comments = commentRepository.get(query).optJSONArray(Keys.RESULTS);
-            final int commentCnt = comments.length();
-            for (int i = 0; i < commentCnt; i++) {
-                final JSONObject comment = comments.optJSONObject(i);
-                final String commentId = comment.optString(Keys.OBJECT_ID);
-
-                final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
-                final JSONObject commenter = userRepository.get(commentAuthorId);
-                commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) - 1);
-                userRepository.update(commentAuthorId, commenter);
-                commentRepository.remove(commentId);
-                notificationRepository.removeByDataId(commentId);
-
-                // Remove comment revisions
-                query = new Query().setFilter(CompositeFilterOperator.and(
-                        new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, commentId),
-                        new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_COMMENT)
-                ));
-                final JSONArray commentRevisions = revisionRepository.get(query).optJSONArray(Keys.RESULTS);
-                for (int j = 0; j < commentRevisions.length(); j++) {
-                    final JSONObject articleRevision = commentRevisions.optJSONObject(j);
-                    revisionRepository.remove(articleRevision.optString(Keys.OBJECT_ID));
-                }
-            }
-
-            final JSONObject commentCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
-            commentCntOption.put(Option.OPTION_VALUE, commentCntOption.optInt(Option.OPTION_VALUE) - commentCnt);
-            optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, commentCntOption);
-
-            // Remove article revisions
-            query = new Query().setFilter(CompositeFilterOperator.and(
-                    new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, articleId),
-                    new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_ARTICLE)
-            ));
-            final JSONArray articleRevisions = revisionRepository.get(query).optJSONArray(Keys.RESULTS);
-            for (int i = 0; i < articleRevisions.length(); i++) {
-                final JSONObject articleRevision = articleRevisions.optJSONObject(i);
-                revisionRepository.remove(articleRevision.optString(Keys.OBJECT_ID));
-            }
-
 
             if (Symphonys.getBoolean("algolia.enabled")) {
                 searchMgmtService.removeAlgoliaDocument(article);
@@ -717,9 +692,11 @@ public class ArticleMgmtService {
                 // Revision
                 final JSONObject revision = new JSONObject();
                 revision.put(Revision.REVISION_AUTHOR_ID, authorId);
+
                 final JSONObject revisionData = new JSONObject();
                 revisionData.put(Article.ARTICLE_TITLE, articleTitle);
                 revisionData.put(Article.ARTICLE_CONTENT, articleContent);
+
                 revision.put(Revision.REVISION_DATA, revisionData.toString());
                 revision.put(Revision.REVISION_DATA_ID, articleId);
                 revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_ARTICLE);
@@ -930,9 +907,11 @@ public class ArticleMgmtService {
                 // Revision
                 final JSONObject revision = new JSONObject();
                 revision.put(Revision.REVISION_AUTHOR_ID, authorId);
+
                 final JSONObject revisionData = new JSONObject();
                 revisionData.put(Article.ARTICLE_TITLE, articleTitle);
                 revisionData.put(Article.ARTICLE_CONTENT, articleContent);
+
                 revision.put(Revision.REVISION_DATA, revisionData.toString());
                 revision.put(Revision.REVISION_DATA_ID, articleId);
                 revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_ARTICLE);

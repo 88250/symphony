@@ -55,7 +55,7 @@ import java.util.Set;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.9.23, Apr 27, 2017
+ * @version 1.7.10.23, May 6, 2017
  * @since 0.2.0
  */
 @Named
@@ -327,8 +327,10 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 }
 
                 final int sum = count * Pointtransfer.TRANSFER_SUM_C_AT_PARTICIPANTS;
-                pointtransferMgmtService.transfer(commenterId, Pointtransfer.ID_C_SYS,
-                        Pointtransfer.TRANSFER_TYPE_C_AT_PARTICIPANTS, sum, commentId, System.currentTimeMillis());
+                if (sum > 0) {
+                    pointtransferMgmtService.transfer(commenterId, Pointtransfer.ID_C_SYS,
+                            Pointtransfer.TRANSFER_TYPE_C_AT_PARTICIPANTS, sum, commentId, System.currentTimeMillis());
+                }
 
                 return;
             }

@@ -19,7 +19,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.0.1, Apr 25, 2017
+ * @version 0.2.0.1, May 7, 2017
  * @since 2.1.0
  */
 
@@ -30,6 +30,27 @@
 var Comment = {
     editor: undefined,
     /**
+     * 删除评论
+     * @param {integer} id 评论 id
+     */
+    remove: function (id) {
+        if (!confirm(Label.confirmRemoveLabel)) {
+            return false;
+        }
+        $.ajax({
+            url: Label.servePath + '/comment/' + id + '/remove',
+            type: "POST",
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc === 0) {
+                    $('#' + id).remove();
+                } else {
+                    alert(result.msg);
+                }
+            }
+        });
+    },
+    /**
      * 切换评论排序模式
      * @param {integer} mode 排序模式：0 传统模式，正序；1 实时模式，倒序
      * @returns {undefined}
@@ -38,6 +59,29 @@ var Comment = {
         mode = 0 === mode ? 1 : 0;
 
         window.location.href = window.location.pathname + "?m=" + mode;
+    },
+    /**
+     * 编辑评论
+     * @param {string} id 评论 id
+     */
+    edit: function (id) {
+        Comment._toggleReply();
+        $('.anonymous-check').hide();
+        $.ajax({
+            url: Label.servePath + '/comment/' + id + '/content',
+            type: "GET",
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc === 0) {
+                    // doc.lineCount
+                    Comment.editor.setValue(result.commentContent);
+                }
+            }
+        });
+
+        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'#' +
+            id + '\'))" class="ft-a-title"><span class="icon-edit"></span> ' +
+            Label.commonUpdateCommentPermissionLabel + '</a>').data('commentId', id);
     },
     /**
      * 背景渐变
@@ -115,6 +159,8 @@ var Comment = {
             });
             return false;
         }
+
+        $('.anonymous-check').show();
 
         $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
         $('#replyUseName').html('<a href="javascript:void(0)" onclick="Util.goTop();Comment._bgFade($(\'.article-module\'))" class="ft-a-title"><span class="icon-reply-to"></span>'
@@ -355,8 +401,6 @@ var Comment = {
                     {name: 'image', html: '<div class="tooltipped tooltipped-n" aria-label="' + Label.uploadFileLabel + '" ><form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form></div>'},
                     {name: 'unordered-list'},
                     {name: 'ordered-list'},
-                    {name: 'view'},
-                    {name: 'fullscreen'},
                     {name: 'question', action: 'https://hacpai.com/guide/markdown'}
                 ],
                 extraKeys: {
@@ -584,7 +628,7 @@ var Comment = {
         // 回复展现需要每次都异步获取。回复的回帖只需加载一次，后期不再加载
         if ('comment-get-comment' === className) {
             if ($commentReplies.find('li').length !== 0) {
-                $commentReplies.toggle();
+                $commentReplies.html('');
                 return false;
             }
         } else {
@@ -626,6 +670,11 @@ var Comment = {
                 if (!(comments instanceof Array)) {
                     comments = [comments];
                 }
+
+                if (comments.length === 0) {
+                    template = '<li class="ft-red">' + Label.removedLabel + "</li>";
+                }
+
                 for (var i = 0; i < comments.length; i++) {
                     var data = comments[i];
 
@@ -711,9 +760,17 @@ var Comment = {
             requestJSONObject.commentOriginalCommentId = $('#replyUseName').data('commentOriginalCommentId');
         }
 
+        var url = Label.servePath + "/comment",
+            type = 'POST',
+            commentId = $('#replyUseName').data('commentId');
+        if (commentId) {
+            url = Label.servePath + "/comment/" + commentId;
+            type = 'PUT';
+        }
+
         $.ajax({
-            url: Label.servePath + "/comment",
-            type: "POST",
+            url: url,
+            type: type,
             headers: {"csrfToken": csrfToken},
             cache: false,
             data: JSON.stringify(requestJSONObject),
@@ -725,6 +782,11 @@ var Comment = {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");
 
                 if (0 === result.sc) {
+                    // edit cmt
+                    if (commentId) {
+                        $('#' + commentId + ' > .fn-flex > .fn-flex-1 > .content-reset').html(result.commentContent);
+                    }
+
                     // reset comment editor
                     Comment.editor.setValue('');
                     $('.editor-preview').html('');

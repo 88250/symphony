@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.35.23.62, May 2, 2017
+ * @version 2.35.23.64, May 7, 2017
  */
 @import "variables";
 @import "icon";
@@ -30,14 +30,14 @@ html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   height: 100%;
-  background-color: #3b3e43;
+  background-color: $theme-primary;
 }
 
 body {
   margin: 0;
   font-family: $font-family-base;
   font-size: 14px;
-  color: #333;
+  color: $black-text;
   background-color: #fff;
 }
 
@@ -469,14 +469,14 @@ blockquote {
     font-size: 85%;
     background-color: rgba(252, 41, 41, 0.12);
     border-radius: 3px;
-    color: $red;
+    color: $theme-accent;
     font-family: $font-family-code;
   }
 
   pre > code {
     padding: 0.5em;
     border-radius: 0;
-    color: #333;
+    color: $black-text;
     background-color: rgba(0, 0, 0, 0.04);
     background-image: url(../images/code-bg.png);
     background-size: 20px 20px;
@@ -585,7 +585,7 @@ blockquote {
 }
 
 .ft-red {
-  color: $red;
+  color: $theme-accent;
 }
 
 .ft-blue {
@@ -602,7 +602,7 @@ blockquote {
 }
 
 .ft-a-title:hover {
-  color: #333;
+  color: $black-text;
 }
 
 .ft-center {
@@ -658,7 +658,7 @@ blockquote {
 }
 
 .timeline a:hover {
-  color: #333;
+  color: $black-text;
 }
 
 .tag {
@@ -842,7 +842,7 @@ blockquote {
 button,
 .btn {
   cursor: pointer;
-  color: #333;
+  color: $black-text;
   border-radius: 3px;
   padding: 6px 12px;
   background-color: rgba(0,0,0,.02);
@@ -887,20 +887,20 @@ button.green:active {
 
 button.red,
 .btn.red {
-  color: $red;
+  color: $theme-accent;
 }
 
 button.red:hover,
 .btn.red:hover,
 .btn.red-hover {
   color: #FFF;
-  background-color: $red;
+  background-color: $theme-accent;
   border-color: #c0372a;
 }
 
 button.red:active,
 .btn.red:active {
-  background-color: $red;
+  background-color: $theme-accent;
   border-color: #c9320c;
   color: #FFF;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) inset;
@@ -930,7 +930,7 @@ button.mid,
 /* start icon */
 a[class^="icon-"],
 a[class*=" icon-"] {
-  color: #333;
+  color: $black-text;
 }
 
 a[class^="icon-"]:hover,
@@ -949,7 +949,7 @@ a[class*=" icon-"]:hover {
 }
 
 .radio-btn {
-  background-color: $blue;
+  background-color: $theme-accent;
   border-radius: 28px;
   bottom: 20px;
   color: #fff;
@@ -1004,7 +1004,7 @@ a[class*=" icon-"]:hover {
 
 /* start tip */
 .tip.error {
-  color: $red;
+  color: $theme-accent;
   background-color: #ffdce0;
   border: 1px solid rgba(27, 31, 35, 0.15);
   border-radius: 2px;
@@ -1235,7 +1235,7 @@ a[class*=" icon-"]:hover {
 
 .pagination span.current,
 .tabs-sub a.current {
-  background-color: #3b3e43;
+  background-color: $theme-primary;
   color: #f0f0f0;
 }
 
@@ -1311,7 +1311,7 @@ a[class*=" icon-"]:hover {
 }
 
 .dialog-header-bg .icon-close:hover {
-  color: #333;
+  color: $black-text;
 }
 
 .dialog-main {
@@ -1368,7 +1368,7 @@ a[class*=" icon-"]:hover {
 .nav {
   height: 48px;
   width: 100%;
-  background-color: $blue;
+  background-color: $theme-primary;
   z-index: 83;
   position: relative;
   box-sizing: border-box;
@@ -1418,7 +1418,7 @@ a[class*=" icon-"]:hover {
   }
 
   a.current {
-    border-bottom: 2px solid $red;
+    border-bottom: 2px solid $theme-accent;
     padding-bottom: 3px;
   }
 
@@ -1478,14 +1478,14 @@ a[class*=" icon-"]:hover {
   }
 
   .user-nav .msg {
-    background-color: $red;
+    background-color: $theme-accent;
     color: #FFFFFF;
   }
 
   .user-nav a.current.no-msg,
   .user-nav a.current.msg {
     animation: none;
-    background-color: $red;
+    background-color: $theme-accent;
     border-bottom: 0;
   }
 
@@ -1554,7 +1554,7 @@ a[class*=" icon-"]:hover {
   padding: 10px 0;
   position: relative;
   z-index: 40;
-  background-color: #3b3e43;
+  background-color: $theme-primary;
 
   a {
     color: #afb1b3;
@@ -1616,7 +1616,7 @@ a[class*=" icon-"]:hover {
   position: relative;
 
   h2 > a {
-    color: #333;
+    color: $black-text;
   }
 
   h2 > a:hover {
@@ -1722,6 +1722,7 @@ ul.CodeMirror-hints {
   width: 100%;
   word-wrap: break-word;
   box-sizing: border-box;
+  min-width: 1px;
 }
 
 .module-header {
@@ -1797,7 +1798,7 @@ ul.CodeMirror-hints {
 }
 
 .module-panel.ad .header {
-  color: #333;
+  color: $black-text;
 }
 
 .module-panel.ad img {
@@ -1857,7 +1858,7 @@ ul.CodeMirror-hints {
   border-bottom-style: dotted;
   border-radius: 3px 3px 0 0;
   z-index: 2;
-  color: #333;
+  color: $black-text;
   box-shadow: 0px 1px 1px rgba(0,0,0,0.2);
 }
 
@@ -1937,7 +1938,7 @@ ul.CodeMirror-hints {
   }
 
   .status .fn-pointer:hover span {
-    color: #333;
+    color: $black-text;
   }
 
   .module-panel {
@@ -1947,7 +1948,7 @@ ul.CodeMirror-hints {
   .activity-board {
     position: absolute;
     height: 2px;
-    background-color: $red;
+    background-color: $theme-accent;
     top: -1px;
   }
 
@@ -2065,7 +2066,7 @@ ul.CodeMirror-hints {
 
   .aa-dropdown-menu .aa-suggestion em {
     font-weight: bold;
-    color: $red;
+    color: $theme-accent;
     font-style: normal;
   }
 

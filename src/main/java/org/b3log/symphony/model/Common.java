@@ -21,10 +21,15 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.60.1.12, Apr 26, 2017
+ * @version 1.61.1.12, May 6, 2017
  * @since 0.2.0
  */
 public final class Common {
+
+    /**
+     * Key of User-Agent.
+     */
+    public static final String USER_AGENT = "User-Agent";
 
     /**
      * Key of add article domains.

@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.10, Mar 17, 2017
+ * @version 1.11.0.10, May 6, 2017
  * @since 0.2.0
  */
 public final class Comment {
@@ -117,6 +117,11 @@ public final class Comment {
     public static final String COMMENT_AUDIO_URL = "commentAudioURL";
 
     //// Transient ////
+    /**
+     * Key of comment revision count.
+     */
+    public static final String COMMENT_REVISION_COUNT = "commentRevisionCount";
+
     /**
      * Key of comment vote.
      */

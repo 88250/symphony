@@ -15,8 +15,8 @@
         </#if>
         <div class="fn-flex-1">
             <div class="comment-get-comment list"></div>
-            <div class="fn-clear comment-info ft-smaller">
-                <span class="fn-left">
+            <div class="fn-clear comment-info">
+                <span class="fn-left ft-smaller">
                     <#if !comment.fromClient>
                     <#if comment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${comment.commentAuthorName}</span><#if comment.commentAnonymous == 0></a></#if>
                     <#else><span class="ft-gray">${comment.commentAuthorName}</span>
@@ -27,15 +27,30 @@
                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade hover-show fn-hidden" data-ua="${comment.commentUA}"></span></#if>
                 </span>
                 <span class="fn-right">
-                    <#if comment.commentOriginalCommentId != ''>
-                    <span class="fn-pointer ft-fade tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
-                          onclick="Comment.showReply('${comment.commentOriginalCommentId}', this, 'comment-get-comment')"><span class="icon-reply-to"></span>
-                        <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
-                    </span>
+                    <#if comment.commentAuthorName == currentUser.userName && permissions["commonRemoveComment"].permissionGrant>
+                        <span onclick="Comment.remove('${comment.oId}')" aria-label="${removeCommentLabel}"
+                              class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden">
+                        <span class="icon-remove ft-red"></span></span>&nbsp;
+                    </#if>
+                    <#if permissions["commonViewCommentHistory"].permissionGrant>
+                        <span onclick="Article.revision('${comment.oId}', 'comment')" aria-label="${historyLabel}"
+                              class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden
+                          <#if comment.commentRevisionCount &lt; 2>fn-none</#if>">
+                        <span class="icon-history"></span></span> &nbsp;
+                    </#if>
+                    <#if isLoggedIn && comment.commentAuthorName == currentUser.userName && permissions["commonUpdateComment"].permissionGrant>
+                        <span class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden" onclick="Comment.edit('${comment.oId}')"
+                           aria-label="${editLabel}"><span class="icon-edit"></span></span> &nbsp;
                     </#if>
                     <#if permissions["commentUpdateCommentBasic"].permissionGrant>
                     <a class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}"
-                       aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                       aria-label="${adminLabel}"><span class="icon-setting"></span></a> &nbsp;
+                    </#if>
+                    <#if comment.commentOriginalCommentId != ''>
+                        <span class="fn-pointer ft-a-title tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
+                              onclick="Comment.showReply('${comment.commentOriginalCommentId}', this, 'comment-get-comment')"><span class="icon-reply-to"></span>
+                        <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
+                    </span>
                     </#if>
                 </span>
             </div>
@@ -60,14 +75,14 @@
                     <span class="tooltipped tooltipped-n<#if isLoggedIn && 0 == comment.commentVote> ft-red</#if>"
                           aria-label="${upLabel}"
                     <#if permissions["commonGoodComment"].permissionGrant>
-                        onclick="Article.voteUp('${comment.oId}', 'comment', this)"
+                          onclick="Article.voteUp('${comment.oId}', 'comment', this)"
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
                     </#if>><span class="icon-thumbs-up"></span> ${comment.commentGoodCnt}</span> &nbsp;
                     <span class="tooltipped tooltipped-n<#if isLoggedIn && 1 == comment.commentVote> ft-red</#if>"
                           aria-label="${downLabel}"
                     <#if permissions["commonBadComment"].permissionGrant>
-                        onclick="Article.voteDown('${comment.oId}', 'comment', this)"
+                          onclick="Article.voteDown('${comment.oId}', 'comment', this)"
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
                     </#if>><span class="icon-thumbs-down"></span> ${comment.commentBadCnt}</span> &nbsp;

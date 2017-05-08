@@ -63,7 +63,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.18.9.32, Mar 26, 2017
+ * @version 3.19.9.32, May 6, 2017
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -122,6 +122,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         final CommentNotifier commentNotifier = beanManager.getReference(CommentNotifier.class);
         eventManager.registerListener(commentNotifier);
+
+        final CommentUpdateNotifier commentUpdateNotifier = beanManager.getReference(CommentUpdateNotifier.class);
+        eventManager.registerListener(commentUpdateNotifier);
 
         final ArticleSearchAdder articleSearchAdder = beanManager.getReference(ArticleSearchAdder.class);
         eventManager.registerListener(articleSearchAdder);
@@ -194,7 +197,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         httpServletRequest.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
 
-        final String userAgentStr = httpServletRequest.getHeader("User-Agent");
+        final String userAgentStr = httpServletRequest.getHeader(Common.USER_AGENT);
 
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
         BrowserType browserType = userAgent.getBrowser().getBrowserType();
@@ -220,7 +223,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         }
 
         if (BrowserType.ROBOT == browserType) {
-            LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
+            LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]",
+                    httpServletRequest.getHeader(Common.USER_AGENT));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
 
             return;
@@ -239,8 +243,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         // Gets the session of this request
         final HttpSession session = httpServletRequest.getSession();
         LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
-                new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
-                        session.isNew()});
+                new Object[]{session.getId(), httpServletRequest.getRemoteAddr(),
+                        httpServletRequest.getHeader(Common.USER_AGENT), session.isNew()});
 
         resolveSkinDir(httpServletRequest);
     }

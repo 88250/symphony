@@ -62,6 +62,12 @@ public class CommentQueryService {
     private static final Logger LOGGER = Logger.getLogger(CommentQueryService.class);
 
     /**
+     * Revision query service.
+     */
+    @Inject
+    private RevisionQueryService revisionQueryService;
+
+    /**
      * Comment repository.
      */
     @Inject
@@ -590,13 +596,19 @@ public class CommentQueryService {
             organizeComments(avatarViewMode, ret);
 
             for (final JSONObject comment : ret) {
+                final String commentId = comment.optString(Keys.OBJECT_ID);
+
+                // Fill revision count
+                comment.put(Comment.COMMENT_REVISION_COUNT,
+                        revisionQueryService.count(commentId, Revision.DATA_TYPE_C_COMMENT));
+
                 final String originalCmtId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
                 if (StringUtils.isBlank(originalCmtId)) {
                     continue;
                 }
 
-                comment.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, getCommentPage(articleId, originalCmtId,
-                        sortMode, pageSize));
+                comment.put(Pagination.PAGINATION_CURRENT_PAGE_NUM,
+                        getCommentPage(articleId, originalCmtId, sortMode, pageSize));
 
                 final JSONObject originalCmt = commentRepository.get(originalCmtId);
                 organizeComment(avatarViewMode, originalCmt);

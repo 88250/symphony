@@ -17,24 +17,61 @@
  */
 package org.b3log.symphony.repository;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.cache.CommentCache;
-import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Comment repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 1, 2016
+ * @version 1.1.0.0, May 8, 2017
  * @since 0.2.0
  */
 @Repository
 public class CommentRepository extends AbstractRepository {
+
+    /**
+     * Comment cache.
+     */
+    @Inject
+    private CommentCache commentCache;
+
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
+
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
+
+    /**
+     * Revision repository.
+     */
+    @Inject
+    private RevisionRepository revisionRepository;
+
+    /**
+     * Option repository.
+     */
+    @Inject
+    private OptionRepository optionRepository;
+
+    /**
+     * Notification repository.
+     */
+    @Inject
+    private NotificationRepository notificationRepository;
 
     /**
      * Public constructor.
@@ -44,10 +81,59 @@ public class CommentRepository extends AbstractRepository {
     }
 
     /**
-     * Comment cache.
+     * Removes a comment specified with the given comment id. Calls this method will remove all existed data related
+     * with the specified comment forcibly.
+     *
+     * @param commentId the given comment id
+     * @throws RepositoryException repository exception
      */
-    @Inject
-    private CommentCache commentCache;
+    public void removeComment(final String commentId) throws RepositoryException {
+        final JSONObject comment = get(commentId);
+        if (null == comment) {
+            return;
+        }
+
+        final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+        final JSONObject article = articleRepository.get(articleId);
+        article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) - 1);
+        // Just clear latest time and commenter name, do not get the real latest comment to update
+        article.put(Article.ARTICLE_LATEST_CMT_TIME, 0);
+        article.put(Article.ARTICLE_LATEST_CMTER_NAME, "");
+        articleRepository.update(articleId, article);
+
+        final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+        final JSONObject commenter = userRepository.get(commentAuthorId);
+        commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) - 1);
+        userRepository.update(commentAuthorId, commenter);
+
+        remove(comment.optString(Keys.OBJECT_ID));
+
+        final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, commentId),
+                new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_COMMENT)
+        ));
+        final JSONArray commentRevisions = revisionRepository.get(query).optJSONArray(Keys.RESULTS);
+        for (int j = 0; j < commentRevisions.length(); j++) {
+            final JSONObject articleRevision = commentRevisions.optJSONObject(j);
+            revisionRepository.remove(articleRevision.optString(Keys.OBJECT_ID));
+        }
+
+        final JSONObject commentCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
+        commentCntOption.put(Option.OPTION_VALUE, commentCntOption.optInt(Option.OPTION_VALUE) - 1);
+        optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, commentCntOption);
+
+        final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+        if (StringUtils.isNotBlank(originalCommentId)) {
+            final JSONObject originalComment = get(originalCommentId);
+            if (null != originalComment) {
+                originalComment.put(Comment.COMMENT_REPLY_CNT, originalComment.optInt(Comment.COMMENT_REPLY_CNT) - 1);
+
+                update(originalCommentId, originalComment);
+            }
+        }
+
+        notificationRepository.removeByDataId(commentId);
+    }
 
     @Override
     public void remove(final String id) throws RepositoryException {

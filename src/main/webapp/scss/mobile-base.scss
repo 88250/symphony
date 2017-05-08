@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.14.26, Apr 26, 2017
+ * @version 1.7.14.27, May 7, 2017
  */
 
 @import "variables";
@@ -37,7 +37,7 @@ body {
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     font-size: 14px;
     background-color: #F7F7F7;
-    color: #333;
+    color: $black-text;
 }
 
 ::-moz-selection {
@@ -359,14 +359,14 @@ blockquote {
         font-size: 85%;
         background-color: rgba(252, 41, 41, 0.12);
         border-radius: 3px;
-        color: $red;
+        color: $theme-accent;
         font-family: $font-family-code;
     }
 
     pre > code {
         padding: 0.5em;
         border-radius: 0;
-        color: #333;
+        color: $black-text;
         background-color: rgba(0,0,0,0.04);
         background-image: url(../images/code-bg.png);
         background-size: 20px 20px;
@@ -473,7 +473,7 @@ a[class^="icon-"].ft-fade:hover {
 }
 
 .ft-red {
-    color: $red;
+    color: $theme-accent;
 }
 
 .ft-blue {
@@ -530,14 +530,14 @@ a[class^="icon-"].ft-fade:hover {
 
 .tag:hover {
     text-decoration: none;
-    color: #333;
+    color: $black-text;
     background-color: #ccc;
 }
 /* start button */
 button,
 .btn {
     cursor: pointer;
-    color: #333;
+    color: $black-text;
     border-radius: 3px;
     padding: 6px 12px;
     background-color: rgba(0,0,0,.02);
@@ -583,20 +583,20 @@ button.green:active {
 
 button.red,
 .btn.red {
-    color: $red;
+    color: $theme-accent;
 }
 
 button.red:hover,
 .btn.red:hover,
 .btn.red-hover {
     color: #FFF;
-    background-color: $red;
+    background-color: $theme-accent;
     border-color: #c0372a;
 }
 
 button.red:active,
 .btn.red:active {
-    background-color: $red;
+    background-color: $theme-accent;
     border-color: #c9320c;
     color: #FFF;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) inset;
@@ -617,7 +617,7 @@ button.small,
 /* start icon */
 a[class^="icon-"], 
 a[class*=" icon-"] {
-    color: #333;
+    color: $black-text;
 }
 
 a[class^="icon-"]:hover, 
@@ -661,7 +661,7 @@ a[class*=" icon-"]:hover {
 
 /* start tip */
 .tip.error {
-    color: $red;
+    color: $theme-accent;
     background-color: #fcdede;
     border: 1px solid #d2b2b2;
 }
@@ -791,7 +791,7 @@ a[class*=" icon-"]:hover {
 }
 
 .form label.ft-red {
-    color: $red;
+    color: $theme-accent;
 }
 
 .form label > a {
@@ -916,7 +916,7 @@ a[class*=" icon-"]:hover {
 }
 
 .dialog-header-bg .icon-close:hover {
-    color: #333;
+    color: $black-text;
 }
 
 .dialog-main {
@@ -1062,14 +1062,14 @@ a[class*=" icon-"]:hover {
     -o-animation:spaceboots 1s infinite;
     -ms-animation:spaceboots 1s infinite;
     animation:spaceboots 1s infinite;
-    background-color: $red;
+    background-color: $theme-accent;
     color: #FFFFFF;
 }
 
 .nav .user-nav a.selected.no-msg,
 .nav .user-nav a.selected.msg {
     animation: none;
-    background-color: $red;
+    background-color: $theme-accent;
     border-bottom: 0;
 }
 
@@ -1109,7 +1109,7 @@ a[class*=" icon-"]:hover {
 
 /* start footer */
 .footer {
-    color: #333;
+    color: $black-text;
     border-top: 1px solid #E0E0E0;
     box-shadow: 0 1px 1px white inset;
     padding: 10px 0;
@@ -1129,7 +1129,7 @@ a[class*=" icon-"]:hover {
 }
 
 .list h2 > a:hover {
-    color: #333;
+    color: $black-text;
 }
 
 .list > ul {
@@ -1361,7 +1361,7 @@ ul.CodeMirror-hints {
 }
 
 .person-info .status .fn-pointer:hover span {
-    color: #333;
+    color: $black-text;
 }
 
 .person-info .module-panel {
@@ -1439,7 +1439,7 @@ ul.CodeMirror-hints {
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
     font-weight: bold;
-    color: $red;
+    color: $theme-accent;
     font-style: normal;
 }
 
@@ -1519,7 +1519,7 @@ ul.CodeMirror-hints {
 }
 
 .module-panel.ad .header {
-    color: #333;
+    color: $black-text;
 }
 
 .module-panel.ad img {
@@ -1572,7 +1572,7 @@ h1.article-title > a {
 }
 
 h1.article-title > a:hover {
-    color: #333;
+    color: $black-text;
 }
 
 #thoughtProgress {
@@ -1593,7 +1593,7 @@ h1.article-title > a:hover {
     top: -8px;
     left: 0;
     cursor: pointer;
-    color: $red;
+    color: $theme-accent;
 }
 
 .comment-submit {
@@ -1621,7 +1621,7 @@ label.cmt-anonymous {
 
 .comments > div.comments-header a {
     text-decoration: none;
-    color: #333;
+    color: $black-text;
 }
 
 .comments > div.comments-header .icon-sortasc,
@@ -1749,7 +1749,7 @@ label.cmt-anonymous {
 }
 
 .share {
-    margin-top: 10px;
+    margin: 10px 0;
     position: relative;
 }
 
@@ -1865,7 +1865,7 @@ label.cmt-anonymous {
 
 /* start domains */
 .domains {
-    border-bottom: 2px solid $red;
+    border-bottom: 2px solid $theme-accent;
 }
 
 .domains svg {
@@ -1984,7 +1984,7 @@ label.cmt-anonymous {
 .heat {
     position: absolute;
     height: 5px;
-    background-color: $red;
+    background-color: $theme-accent;
     z-index: 1;
     bottom: -3px;
     right: 0;
@@ -1994,7 +1994,7 @@ label.cmt-anonymous {
 .point-remove {
     position: absolute;
     height: 5px;
-    background-color: $red;
+    background-color: $theme-accent;
     z-index: 1;
     bottom: -3px;
     right: 0px;
@@ -2065,7 +2065,7 @@ label.cmt-anonymous {
     color: #ff6633;
 }
 .article-level4 {
-    color: $red;
+    color: $theme-accent;
 }
 /* end article list */
 /* start guide */
@@ -2115,7 +2115,7 @@ label.cmt-anonymous {
     }
 
     .md {
-        background-color: $light-blue;
+        background-color: $blue-lighter;
 
         pre {
             white-space: pre-wrap;
@@ -2130,7 +2130,7 @@ label.cmt-anonymous {
 
     .intro {
         padding: 30px;
-        background-color: $light-blue;
+        background-color: $blue-lighter;
         color: #666;
     }
 
@@ -2449,7 +2449,7 @@ code .dec { color: initial; } /* decimal - blue */
 
     .online,
     .offline {
-        background-color: $red;
+        background-color: $theme-accent;
         color: #fff;
         font-size: 12px;
         line-height: 20px;
@@ -2581,7 +2581,7 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .post .tags-input span.tag.haved {
-    color: #333;
+    color: $black-text;
     background-color: #ccc;
     transition: background 0.5s ease-in,color 0.3s ease-out;
 }
@@ -2834,10 +2834,6 @@ code .dec { color: initial; } /* decimal - blue */
 }
 /* end 403 */
 /* start editor */
-.editor-toolbar a.icon-fullscreen {
-    display: none;
-}
-
 .module.editor-toolbar-emoji {
     position: absolute;
     bottom: 14px;

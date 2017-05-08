@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.36.54.34, May 4, 2017
+ * @version 1.38.54.34, May 7, 2017
  */
 
 /**
@@ -29,6 +29,27 @@
  */
 var Comment = {
     editor: undefined,
+    /**
+     * 删除评论
+     * @param {integer} id 评论 id
+     */
+    remove: function (id) {
+        if (!confirm(Label.confirmRemoveLabel)) {
+            return false;
+        }
+        $.ajax({
+            url: Label.servePath + '/comment/' + id + '/remove',
+            type: "POST",
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc === 0) {
+                    $('#' + id).remove();
+                } else {
+                    alert(result.msg);
+                }
+            }
+        });
+    },
     /**
      * 切换评论排序模式
      * @param {integer} mode 排序模式：0 传统模式，正序；1 实时模式，倒序
@@ -67,6 +88,29 @@ var Comment = {
         setTimeout(function () {
             $obj.removeAttr('style');
         }, 3100);
+    },
+    /**
+     * 编辑评论
+     * @param {string} id 评论 id
+     */
+    edit: function (id) {
+        Comment._toggleReply();
+        $('.cmt-anonymous').hide();
+        $.ajax({
+            url: Label.servePath + '/comment/' + id + '/content',
+            type: "GET",
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc === 0) {
+                    // doc.lineCount
+                    Comment.editor.setValue(result.commentContent);
+                }
+            }
+        });
+
+        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'#' +
+            id + '\'))" class="ft-a-title"><span class="icon-edit"></span> ' +
+            Label.commonUpdateCommentPermissionLabel + '</a>').data('commentId', id);
     },
     /**
      * 跳转到指定的评论处
@@ -116,8 +160,10 @@ var Comment = {
             return false;
         }
 
+        $('.cmt-anonymous').show();
+
         $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
-        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Util.goTop();Comment._bgFade($(\'.article-module\'))" class="ft-a-title"><span class="icon-reply-to"></span>'
+        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'.article-content\'))" class="ft-a-title"><span class="icon-reply-to"></span>'
             + $('.article-title').text() + '</a>').removeData();
 
         // 如果 hide 初始化， focus 无效
@@ -130,21 +176,6 @@ var Comment = {
         $('.editor-panel .wrapper').slideDown(function () {
             Comment.editor.focus();
             cb ? cb() : '';
-        });
-    },
-    /**
-     * 评论面板事件绑定
-     * @returns {undefined}
-     */
-    _initEditorPanel: function () {
-        // 回复按钮设置
-        $('#replyBtn').click(function () {
-            Comment._toggleReply();
-        });
-
-        // 评论框控制
-        $('.editor-panel .editor-hide').click(function () {
-            $('#replyBtn').click();
         });
     },
     /**
@@ -173,7 +204,7 @@ var Comment = {
         }).bind('keydown', 'r', function assets(event) {
             if (!Util.prevKey) {
                 // r 回复帖子
-                $('#replyBtn').click();
+                Comment._toggleReply();
             } else if (Util.prevKey === 'v') {
                 // v r 打赏帖子
                 $('#articleRewardContent .icon-points').parent().click();
@@ -255,7 +286,7 @@ var Comment = {
             }
             return false;
         }).bind('keyup', 'l', function assets() {
-            // v h 查看帖子历史
+            // v l 查看帖子历史
             if (Util.prevKey === 'v') {
                 $('.article-header .icon-history').parent().click();
             }
@@ -304,11 +335,10 @@ var Comment = {
         }
 
         this._setCmtVia();
-        this._initEditorPanel();
         this._initHotKey();
 
         $.pjax({
-            selector: '.pagination a',
+            selector: '#comments .pagination a',
             container: '#comments',
             show: '',
             cache: false,
@@ -401,9 +431,10 @@ var Comment = {
 
             var cursor = cm.getCursor();
             var token = cm.getTokenAt(cursor);
+
             if (token.string.indexOf('@') === 0) {
                 cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
-                return CodeMirror.Pass;
+                return;
             }
 
             if ($('.editor-preview-active').length === 0) {
@@ -568,10 +599,9 @@ var Comment = {
     showReply: function (id, it, className) {
         var $commentReplies = $(it).closest('li').find('.' + className);
 
-        // 回复展现需要每次都异步获取。回复的回帖只需加载一次，后期不再加载
         if ('comment-get-comment' === className) {
             if ($commentReplies.find('li').length !== 0) {
-                $commentReplies.toggle();
+                $commentReplies.html('');
                 return false;
             }
         } else {
@@ -613,6 +643,11 @@ var Comment = {
                 if (!(comments instanceof Array)) {
                     comments = [comments];
                 }
+
+                if (comments.length === 0) {
+                    template = '<li class="ft-red">' + Label.removedLabel + "</li>";
+                }
+
                 for (var i = 0; i < comments.length; i++) {
                     var data = comments[i];
 
@@ -698,9 +733,17 @@ var Comment = {
             requestJSONObject.commentOriginalCommentId = $('#replyUseName').data('commentOriginalCommentId');
         }
 
+        var url = Label.servePath + "/comment",
+            type = 'POST',
+            commentId = $('#replyUseName').data('commentId');
+        if (commentId) {
+            url = Label.servePath + "/comment/" + commentId;
+            type = 'PUT';
+        }
+
         $.ajax({
-            url: Label.servePath + "/comment",
-            type: "POST",
+            url: url,
+            type: type,
             headers: {"csrfToken": csrfToken},
             cache: false,
             data: JSON.stringify(requestJSONObject),
@@ -712,6 +755,12 @@ var Comment = {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");
 
                 if (0 === result.sc) {
+                    // edit cmt
+                    if (commentId) {
+                        $('#' + commentId + ' > .fn-flex > .fn-flex-1 > .content-reset').html(result.commentContent);
+                        $('#' + commentId + ' .icon-history').parent().show();
+                    }
+
                     // reset comment editor
                     Comment.editor.setValue('');
                     $('.editor-preview').html('');
@@ -1020,14 +1069,15 @@ var Article = {
             var currentScrollTop = $(window).scrollTop();
 
             // share
-            if (currentScrollTop > 20 && currentScrollTop < $('.article .main').offset().top - 48) {
+            if (currentScrollTop > -1 &&
+                currentScrollTop < $('.article .article-body').outerHeight() - 48) {
                 $('.share').show();
             } else {
                 $('.share').hide();
             }
 
             if (currentScrollTop < $('.article-title').offset().top) {
-                $('.article-header').css('top', '-48px');
+                $('.article-header').css('top', '-50px');
                 $('.nav').show();
             } else {
                 $('.article-header').css('top', '0');
@@ -1094,19 +1144,21 @@ var Article = {
     },
     /**
      * 历史版本对比
+     * @param {string} id 文章/评论 id
+     * @param {string} type 类型[comment, article]
      * @returns {undefined}
      */
-    revision: function (articleId) {
+    revision: function (id, type) {
         if (!Label.isLoggedIn) {
             Util.needLogin();
             return false;
         }
-        if ($('.CodeMirror-merge').length > 0) {
-            $('#revision').dialog('open');
-            return false;
+        if (!type) {
+            type = 'article';
         }
+
         $.ajax({
-            url: Label.servePath + '/article/' + articleId + '/revisions',
+            url: Label.servePath + '/' + type + '/' + id + '/revisions',
             cache: false,
             success: function (result, textStatus) {
                 if (result.sc) {
@@ -1116,6 +1168,9 @@ var Article = {
                         return false;
                     }
 
+                    // clear data
+                    $('#revisions').html('').prev().remove();
+
                     $('#revisions').data('revisions', result.revisions).before('<div class="fn-clear"><div class="pagination">' +
                         '<a href="javascript:void(0)">&lt;</a><span class="current">' +
                         (result.revisions.length - 1) + '~' + result.revisions.length + '/' +
@@ -1124,17 +1179,24 @@ var Article = {
                     if (result.revisions.length <= 2) {
                         $('#revision a').first().hide();
                     }
+
+                    var mergeValue = result.revisions[result.revisions.length - 1].revisionData.articleTitle +
+                            '\n\n' + result.revisions[result.revisions.length - 1].revisionData.articleContent,
+                        mergeOrigLeft = result.revisions[result.revisions.length - 2].revisionData.articleTitle +
+                            '\n\n' + result.revisions[result.revisions.length - 2].revisionData.articleContent;
+                    if (type === 'comment') {
+                        mergeValue = result.revisions[result.revisions.length - 1].revisionData.commentContent;
+                        mergeOrigLeft = result.revisions[result.revisions.length - 2].revisionData.commentContent
+                    }
                     Article.mergeEditor = CodeMirror.MergeView(document.getElementById('revisions'), {
-                        value: result.revisions[result.revisions.length - 1].revisionData.articleTitle +
-                        '\n\n' + result.revisions[result.revisions.length - 1].revisionData.articleContent,
-                        origLeft: result.revisions[result.revisions.length - 2].revisionData.articleTitle +
-                        '\n\n' + result.revisions[result.revisions.length - 2].revisionData.articleContent,
+                        value: mergeValue,
+                        origLeft: mergeOrigLeft,
                         revertButtons: false,
                         mode: "text/html",
                         collapseIdentical: true,
                         lineWrapping: true
                     });
-                    Article._revisionsControls();
+                    Article._revisionsControls(type);
                     return false;
                 }
 
@@ -1147,7 +1209,7 @@ var Article = {
      * 上一版本，下一版本对比
      * @returns {undefined}
      */
-    _revisionsControls: function () {
+    _revisionsControls: function (type) {
         var revisions = $('#revisions').data('revisions');
         $('#revision a').first().click(function () {
             var prevVersion = parseInt($('#revision .current').text().split('~')[0]);
@@ -1163,10 +1225,17 @@ var Article = {
             $('#revision a').last().show();
 
             $('#revision .current').html((prevVersion - 1) + '~' + prevVersion + '/' + revisions.length);
-            Article.mergeEditor.edit.setValue(revisions[prevVersion - 1].revisionData.articleTitle + '\n\n' +
-                revisions[prevVersion - 1].revisionData.articleContent);
-            Article.mergeEditor.leftOriginal().setValue(revisions[prevVersion - 2].revisionData.articleTitle + '\n\n' +
-                revisions[prevVersion - 2].revisionData.articleContent);
+
+            var mergeValue = revisions[prevVersion - 1].revisionData.articleTitle + '\n\n' +
+                    revisions[prevVersion - 1].revisionData.articleContent,
+                mergeOrigLeft = revisions[prevVersion - 2].revisionData.articleTitle + '\n\n' +
+                    revisions[prevVersion - 2].revisionData.articleContent;
+            if (type === 'comment') {
+                mergeValue = revisions[prevVersion - 1].revisionData.commentContent;
+                mergeOrigLeft = revisions[prevVersion - 2].revisionData.commentContent;
+            }
+            Article.mergeEditor.edit.setValue(mergeValue);
+            Article.mergeEditor.leftOriginal().setValue(mergeOrigLeft);
         });
 
         $('#revision a').last().click(function () {
@@ -1181,10 +1250,17 @@ var Article = {
             }
             $('#revision a').first().show();
             $('#revision .current').html((prevVersion + 1) + '~' + (prevVersion + 2) + '/' + revisions.length);
-            Article.mergeEditor.edit.setValue(revisions[prevVersion + 1].revisionData.articleTitle + '\n\n' +
-                revisions[prevVersion + 1].revisionData.articleContent);
-            Article.mergeEditor.leftOriginal().setValue(revisions[prevVersion].revisionData.articleTitle + '\n\n' +
-                revisions[prevVersion].revisionData.articleContent);
+
+            var mergeValue = revisions[prevVersion + 1].revisionData.articleTitle + '\n\n' +
+                    revisions[prevVersion + 1].revisionData.articleContent,
+                mergeOrigLeft = revisions[prevVersion].revisionData.articleTitle + '\n\n' +
+                    revisions[prevVersion].revisionData.articleContent;
+            if (type === 'comment') {
+                mergeValue = revisions[prevVersion + 1].revisionData.commentContent;
+                mergeOrigLeft = revisions[prevVersion].revisionData.commentContent;
+            }
+            Article.mergeEditor.edit.setValue(mergeValue);
+            Article.mergeEditor.leftOriginal().setValue(mergeOrigLeft);
         });
     },
     /**
@@ -1192,7 +1268,7 @@ var Article = {
      */
     share: function () {
         var shareL = parseInt($('.article-footer').css('margin-left')) / 2 - 15;
-        $('.share').css('left', (shareL < 20 ? 20 : shareL) + 'px').show();
+        $('.share').css('left', (shareL < 20 ? 20 : shareL) + 'px');
 
         var shareURL = $('#qrCode').data('shareurl');
         $('#qrCode').qrcode({

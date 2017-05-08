@@ -19,16 +19,16 @@
  * Icon style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.2.0.0, Apr 26, 2017
+ * @version 0.3.0.0, Mar 7, 2017
  */
 
 @font-face {
     font-family: 'icomoon';
-    src:  url('fonts/icomoon.eot?qdpawn');
-    src:  url('fonts/icomoon.eot?qdpawn#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?qdpawn') format('truetype'),
-    url('fonts/icomoon.woff?qdpawn') format('woff'),
-    url('fonts/icomoon.svg?qdpawn#icomoon') format('svg');
+    src:  url('fonts/icomoon.eot?hd1xtl');
+    src:  url('fonts/icomoon.eot?hd1xtl#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?hd1xtl') format('truetype'),
+    url('fonts/icomoon.woff?hd1xtl') format('woff'),
+    url('fonts/icomoon.svg?hd1xtl#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -48,6 +48,33 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-remove:before {
+    content: "\e911";
+}
+.icon-close:before {
+    content: "\e909";
+}
+.icon-pin:before {
+    content: "\e90e";
+}
+.icon-upload:before {
+    content: "\f0ee";
+}
+.icon-time:before {
+    content: "\e906";
+}
+.icon-sortasc:before {
+    content: "\e905";
+}
+.icon-locked:before {
+    content: "\e61e";
+}
+.icon-emoji:before {
+    content: "\e902";
+}
+.icon-view:before {
+    content: "\e901";
+}
 .icon-qq:before {
     content: "\e90f";
 }
@@ -228,28 +255,3 @@
 .icon-compass:before {
     content: "\e61c";
 }
-.icon-pin:before {
-    content: "\e90e";
-}
-.icon-upload:before {
-    content: "\f0ee";
-}
-.icon-time:before {
-    content: "\e906";
-}
-.icon-sortasc:before {
-    content: "\e905";
-}
-.icon-locked:before {
-    content: "\e61e";
-}
-.icon-emoji:before {
-    content: "\e902";
-}
-.icon-view:before {
-    content: "\e901";
-}
-.icon-close:before {
-    content: "\e909";
-}
-

@@ -41,7 +41,7 @@ public class RewardQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(RewardQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RewardQueryService.class);
 
     /**
      * Reward repository.

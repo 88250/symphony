@@ -43,7 +43,7 @@ import java.util.List;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.2.1, Feb 14, 2017
+ * @version 1.21.2.1, May 6, 2017
  * @since 1.3.0
  */
 @Service
@@ -99,8 +99,8 @@ public class PointtransferQueryService {
     /**
      * Gets the latest pointtransfers with the specified user id, type and fetch size.
      *
-     * @param userId the specified user id
-     * @param type the specified type
+     * @param userId    the specified user id
+     * @param type      the specified type
      * @param fetchSize the specified fetch size
      * @return pointtransfers, returns an empty list if not found
      */
@@ -133,7 +133,7 @@ public class PointtransferQueryService {
      * Gets the top balance users with the specified fetch size.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param fetchSize the specified fetch size
+     * @param fetchSize      the specified fetch size
      * @return users, returns an empty list if not found
      */
     public List<JSONObject> getTopBalanceUsers(final int avatarViewMode, final int fetchSize) {
@@ -141,8 +141,8 @@ public class PointtransferQueryService {
 
         final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
                 .setPageSize(fetchSize).
-                setFilter(new PropertyFilter(UserExt.USER_JOIN_POINT_RANK,
-                        FilterOperator.EQUAL, UserExt.USER_JOIN_POINT_RANK_C_JOIN));
+                        setFilter(new PropertyFilter(UserExt.USER_JOIN_POINT_RANK,
+                                FilterOperator.EQUAL, UserExt.USER_JOIN_POINT_RANK_C_JOIN));
 
         final int moneyUnit = Symphonys.getInt("pointExchangeUnit");
         try {
@@ -173,7 +173,7 @@ public class PointtransferQueryService {
      * Gets the top consumption users with the specified fetch size.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param fetchSize the specified fetch size
+     * @param fetchSize      the specified fetch size
      * @return users, returns an empty list if not found
      */
     public List<JSONObject> getTopConsumptionUsers(final int avatarViewMode, final int fetchSize) {
@@ -181,8 +181,8 @@ public class PointtransferQueryService {
 
         final Query query = new Query().addSort(UserExt.USER_USED_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
                 .setPageSize(fetchSize).
-                setFilter(new PropertyFilter(UserExt.USER_JOIN_USED_POINT_RANK,
-                        FilterOperator.EQUAL, UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN));
+                        setFilter(new PropertyFilter(UserExt.USER_JOIN_USED_POINT_RANK,
+                                FilterOperator.EQUAL, UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN));
 
         final int moneyUnit = Symphonys.getInt("pointExchangeUnit");
         try {
@@ -212,9 +212,9 @@ public class PointtransferQueryService {
     /**
      * Gets the user points with the specified user id, page number and page size.
      *
-     * @param userId the specified user id
+     * @param userId         the specified user id
      * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
+     * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
@@ -223,7 +223,6 @@ public class PointtransferQueryService {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getUserPoints(final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
@@ -329,6 +328,24 @@ public class PointtransferQueryService {
 
                             desTemplate = desTemplate.replace("{user}", commenterLink);
                         }
+
+                        break;
+                    case Pointtransfer.TRANSFER_TYPE_C_UPDATE_COMMENT:
+                        final JSONObject comment32 = commentRepository.get(dataId);
+
+                        if (null == comment32) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
+                        final String articleId32 = comment32.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                        final JSONObject commentArticle32 = articleRepository.get(articleId32);
+
+                        final String commentArticleLink32 = "<a href=\""
+                                + commentArticle32.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + commentArticle32.optString(Article.ARTICLE_TITLE) + "</a>";
+                        desTemplate = desTemplate.replace("{article}", commentArticleLink32);
 
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD:

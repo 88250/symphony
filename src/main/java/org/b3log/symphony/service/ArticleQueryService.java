@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.30.55, May 4, 2017
+ * @version 2.27.30.56, May 6, 2017
  * @since 0.2.0
  */
 @Service
@@ -67,76 +67,85 @@ public class ArticleQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleQueryService.class);
+
     /**
      * Count to fetch article tags for relevant articles.
      */
     private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
+
     /**
      * Article repository.
      */
     @Inject
     private ArticleRepository articleRepository;
+
     /**
      * Comment repository.
      */
     @Inject
     private CommentRepository commentRepository;
+
     /**
      * Tag-Article repository.
      */
     @Inject
     private TagArticleRepository tagArticleRepository;
+
     /**
      * Tag repository.
      */
     @Inject
     private TagRepository tagRepository;
+
     /**
      * User repository.
      */
     @Inject
     private UserRepository userRepository;
+
     /**
      * Domain tag repository.
      */
     @Inject
     private DomainTagRepository domainTagRepository;
-    /**
-     * Revision repository.
-     */
-    @Inject
-    private RevisionRepository revisionRepository;
+
     /**
      * Comment query service.
      */
     @Inject
     private CommentQueryService commentQueryService;
+
     /**
      * User query service.
      */
     @Inject
     private UserQueryService userQueryService;
+
     /**
      * Avatar query service.
      */
     @Inject
     private AvatarQueryService avatarQueryService;
+
     /**
      * Short link query service.
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
     /**
      * Follow query service.
      */
     @Inject
     private FollowQueryService followQueryService;
+
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
+
     /**
      * Article cache.
      */
@@ -1112,45 +1121,6 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets article revisions.
-     *
-     * @param articleId the specified article id
-     * @return article revisions, returns an empty list if not found
-     */
-    public List<JSONObject> getArticleRevisions(final String articleId) {
-        final Query query = new Query().setFilter(CompositeFilterOperator.and(
-                new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, articleId),
-                new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_ARTICLE)
-        )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
-
-        try {
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(revisionRepository.get(query).optJSONArray(Keys.RESULTS));
-            for (final JSONObject rev : ret) {
-                final JSONObject data = new JSONObject(rev.optString(Revision.REVISION_DATA));
-                String articleTitle = data.optString(Article.ARTICLE_TITLE);
-                articleTitle = articleTitle.replace("<", "&lt;").replace(">", "&gt;");
-                articleTitle = Markdowns.clean(articleTitle, "");
-                data.put(Article.ARTICLE_TITLE, articleTitle);
-
-                String articleContent = data.optString(Article.ARTICLE_CONTENT);
-                // articleContent = Markdowns.toHTML(articleContent); https://hacpai.com/article/1490233597586
-                articleContent = articleContent.replace("\n", "_esc_br_");
-                articleContent = Markdowns.clean(articleContent, "");
-                articleContent = articleContent.replace("_esc_br_", "\n");
-                data.put(Article.ARTICLE_CONTENT, articleContent);
-
-                rev.put(Revision.REVISION_DATA, data);
-            }
-
-            return ret;
-        } catch (final RepositoryException | JSONException e) {
-            LOGGER.log(Level.ERROR, "Get article revisions failed", e);
-
-            return Collections.emptyList();
-        }
-    }
-
-    /**
      * Gets preview content of the article specified with the given article id.
      *
      * @param articleId the given article id
@@ -2064,6 +2034,7 @@ public class ArticleQueryService {
      * <li>extracts the first image URL</li>
      * <li>image processing if using Qiniu</li>
      * </ul>
+     * </p>
      *
      * @param avatarViewMode the specified avatar view mode
      * @param article        the specified article

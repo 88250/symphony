@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.32.28.56, May 4, 2017
+ * @version 2.32.29.58, May 7, 2017
  */
 
 @import "variables";
@@ -68,8 +68,6 @@
   .main .wrapper {
     display: block;
     max-width: 768px;
-    transition: margin 1s cubic-bezier(0, 0, .2, 1);
-    margin-right: 200px;
   }
 
   .main {
@@ -87,8 +85,7 @@
 
     .article-actions {
       line-height: 60px;
-      font-size: 18px;
-      margin-left: 15px;
+      font-size: 13px;
     }
   }
 
@@ -163,7 +160,6 @@
   }
 
   .article-header {
-    box-shadow: 0 0 0;
     height: 48px;
     width: 100%;
     position: fixed;
@@ -175,10 +171,10 @@
     box-sizing: border-box;
     box-shadow: $shadow-tip;
     font-size: 16px;
-    top: -48px;
+    top: -50px;
 
     svg {
-      color: #333;
+      color: $black-text;
       vertical-align: baseline;
     }
 
@@ -199,13 +195,13 @@
       text-decoration: none;
 
       &.ft-red {
-        color: $red;
+        color: $theme-accent;
       }
     }
 
     .user-nav > span:hover,
     .user-nav > a:hover {
-      color: #333;
+      color: $black-text;
     }
 
   }
@@ -218,7 +214,7 @@
     right: 0;
     height: 100%;
     border-radius: 0;
-    background-color: $light-blue;
+    background-color: $blue-lighter;
 
     .module-panel {
       overflow: auto;
@@ -293,13 +289,9 @@
   }
 
   #revision .pagination {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     float: right;
-
-    span.current {
-      border-radius: 3px;
-      line-height: 30px;
-    }
+    border-top: 0;
   }
 
   .editor-panel {
@@ -308,6 +300,7 @@
     z-index: 120;
     height: 100%;
     box-sizing: border-box;
+    bottom: -200%;
 
     .editor-bg {
       background-color: rgba(0, 0, 0, 0.5);
@@ -318,7 +311,7 @@
     }
 
     .wrapper {
-      background-color: $light-blue;
+      background-color: $blue-lighter;
       bottom: 0;
       z-index: 121;
       position: absolute;
@@ -376,7 +369,7 @@
     top: -8px;
     left: 0;
     cursor: pointer;
-    color: $red;
+    color: $theme-accent;
     margin-left: -10px;
   }
 }
@@ -394,14 +387,14 @@ label.cmt-anonymous {
 
 .action-btns > span:hover,
 .action-btns > a:hover {
-  color: #333;
+  color: $black-text;
 }
 
 .action-btns > span.ft-red,
 .action-btns > a.ft-red,
 .action-btns > span.ft-red:hover,
 .action-btns > a.ft-red:hover {
-  color: $red;
+  color: $theme-accent;
 }
 
 .action-btns > span.icon-reply-btn {
@@ -410,7 +403,7 @@ label.cmt-anonymous {
 }
 
 .action-btns > span.icon-reply-btn:hover {
-  color: #333;
+  color: $black-text;
 }
 
 .comments {
@@ -460,6 +453,10 @@ label.cmt-anonymous {
 
   .comment > p > img:last-child {
     margin-bottom: 10px;
+  }
+
+  .comment-info .avatar-small {
+    vertical-align: bottom;
   }
 
   .comment-info .icon-heart {
@@ -616,7 +613,7 @@ label.cmt-anonymous {
 .heat {
   position: absolute;
   height: 5px;
-  background-color: $red;
+  background-color: $theme-accent;
   z-index: 1;
   bottom: -3px;
   right: 0;
@@ -626,7 +623,7 @@ label.cmt-anonymous {
 .point-remove {
   position: absolute;
   height: 5px;
-  background-color: $red;
+  background-color: $theme-accent;
   z-index: 1;
   bottom: -3px;
   right: 0px;
@@ -701,7 +698,7 @@ label.cmt-anonymous {
 }
 
 .article-level4 {
-  color: $red;
+  color: $theme-accent;
 }
 
 /* end article list */
@@ -712,7 +709,7 @@ label.cmt-anonymous {
 
   .intro {
     padding: 100px 50px;
-    background-color: $light-blue;
+    background-color: $blue-lighter;
     width: 40%;
     color: #666;
   }
@@ -839,7 +836,7 @@ label.cmt-anonymous {
   }
 
   .md {
-    background-color: $light-blue;
+    background-color: $blue-lighter;
 
     pre {
       white-space: pre-wrap;
@@ -1057,14 +1054,14 @@ code .dec {
   }
 
   .index-tabs > span a {
-    color: #333;
+    color: $black-text;
     text-decoration: none;
     display: block;
   }
 
   .index-tabs > span.current,
   .index-tabs > span.current:hover {
-    color: #333;
+    color: $black-text;
   }
 
   .index-tabs > span.tags {
@@ -1077,7 +1074,7 @@ code .dec {
   }
 
   .index-tabs > span.perfect {
-    border-bottom-color: $red;
+    border-bottom-color: $theme-accent;
     flex: 2;
   }
 
@@ -1118,7 +1115,7 @@ code .dec {
   }
 
   .index-tabs > span.perfect:before {
-    background-color: $red;
+    background-color: $theme-accent;
   }
 
   .index-tabs > span.check:before {
@@ -1146,7 +1143,7 @@ code .dec {
   }
 
   .perfect-panel {
-    background-color: $light-blue;
+    background-color: $blue-lighter;
 
     .avatar-small {
       position: absolute;
@@ -1189,7 +1186,7 @@ code .dec {
 
     .preview:hover {
       background-color: rgba(0, 0, 0, .02);
-      color: #333;
+      color: $black-text;
     }
 
     .preview img {
@@ -1248,7 +1245,7 @@ code .dec {
     }
 
     .metro-border div {
-      background-color: $red;
+      background-color: $theme-accent;
     }
 
     .metro-border div.purple {

@@ -85,6 +85,62 @@
                     </div>
 
                     <div class="article-actions action-btns">
+                        <#if "" != article.articleToC>
+                            <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
+                                  class="tooltipped tooltipped-n"><span class="icon-unordered-list ft-red"></span></span> &nbsp;
+                        </#if>
+
+                        <#if permissions["commonViewArticleHistory"].permissionGrant && article.articleRevisionCount &gt; 1>
+                            <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
+                                  class="tooltipped tooltipped-n"><span class="icon-history"></span></span> &nbsp;
+                        </#if>
+
+                        <span class="tooltipped tooltipped-n<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>" aria-label="${upLabel}"
+                        <#if permissions["commonGoodArticle"].permissionGrant>
+                              onclick="Article.voteUp('${article.oId}', 'article', this)"
+                        <#else>
+                              onclick="Article.permissionTip(Label.noPermissionLabel)"
+                        </#if>><span class="icon-thumbs-up"></span> ${article.articleGoodCnt}</span> &nbsp;
+
+                        <span  class="tooltipped tooltipped-n<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>" aria-label="${downLabel}"
+                        <#if permissions["commonBadArticle"].permissionGrant>
+                               onclick="Article.voteDown('${article.oId}', 'article', this)"
+                        <#else>
+                               onclick="Article.permissionTip(Label.noPermissionLabel)"
+                        </#if>><span class="icon-thumbs-down"></span> ${article.articleBadCnt}</span> &nbsp;
+
+                        <#if isLoggedIn && isFollowing>
+                            <span class="tooltipped tooltipped-n ft-red" aria-label="${uncollectLabel}"
+                                <#if permissions["commonFollowArticle"].permissionGrant>
+                                  onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
+                                <#else>
+                                  onclick="Article.permissionTip(Label.noPermissionLabel)"
+                                </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                        <#else>
+                            <span class="tooltipped tooltipped-n" aria-label="${collectLabel}"
+                                <#if permissions["commonFollowArticle"].permissionGrant>
+                                  onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
+                                <#else>
+                                  onclick="Article.permissionTip(Label.noPermissionLabel)"
+                                </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                        </#if> &nbsp;
+
+                        <#if isLoggedIn && isWatching>
+                            <span class="tooltipped tooltipped-n ft-red" aria-label="${unfollowLabel}"
+                                <#if permissions["commonWatchArticle"].permissionGrant>
+                                  onclick="Util.unfollow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
+                                <#else>
+                                  onclick="Article.permissionTip(Label.noPermissionLabel)"
+                                </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
+                        <#else>
+                            <span class="tooltipped tooltipped-n" aria-label="${followLabel}"
+                                <#if permissions["commonWatchArticle"].permissionGrant>
+                                  onclick="Util.follow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
+                                <#else>
+                                  onclick="Article.permissionTip(Label.noPermissionLabel)"
+                                </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
+                        </#if> &nbsp;
+
                         <#if article.isMyArticle && permissions["commonStickArticle"].permissionGrant>
                             <a class="tooltipped tooltipped-n" aria-label="${stickLabel}"
                                href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a> &nbsp;
@@ -227,10 +283,6 @@
                     <@pagination url="${servePath}${article.articlePermalink}" query="m=${userCommentViewMode}#comments" pjaxTitle="${article.articleTitle} - ${symphonyLabel}" />
                 </div>
                 <#if pjax><!---- pjax {#comments} end ----></#if>
-                <div id="heatBar" class="tooltipped tooltipped-s" aria-label="${postActivityLabel}">
-                    <i class="heat" style="width:${article.articleHeat*3}px"></i>
-                </div>
-                <div id="revision"><div id="revisions"></div></div>
             </div>
         </div>
         <div class="wrapper article-footer">
@@ -252,7 +304,7 @@
                                           style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"
                                     ></span>
                                     <#if "someone" != relevantArticle.articleAuthorName></a></#if>
-                                    <a rel="nofollow" class="title" href="${servePath}${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
+                                    <a rel="nofollow" class="title fn-ellipsis" href="${servePath}${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                 </li>
                             </#list>
                         </ul>
@@ -278,7 +330,7 @@
                                           aria-label="${randomArticle.articleAuthorName}"
                                           style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
-                                    <a class="title" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
+                                    <a class="title fn-ellipsis" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                                 </li>
                             </#list>
                         </ul>
@@ -300,6 +352,11 @@
                 </div>
             </#if>
         </div>
+
+        <div id="heatBar" class="tooltipped tooltipped-s" aria-label="${postActivityLabel}">
+            <i class="heat" style="width:${article.articleHeat*3}px"></i>
+        </div>
+        <div id="revision"><div id="revisions"></div></div>
         <#include "footer.ftl">
         <div class="share fn-none">
             <span id="thankArticle" aria-label="${thankLabel}"
@@ -336,8 +393,7 @@
                     <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
                           class="tooltipped tooltipped-w"><span class="icon-unordered-list ft-red"></span></span>
                 </#if>
-
-                <#if permissions["commonViewArticleHistory"].permissionGrant>
+                <#if permissions["commonViewArticleHistory"].permissionGrant && article.articleRevisionCount &gt; 1>
                     <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
                           class="tooltipped tooltipped-w"><span class="icon-history"></span></span>
                 </#if>
@@ -410,7 +466,7 @@
                 </div>
             </div>
         </#if>
-        <span class="tooltipped tooltipped-w radio-btn" id="replyBtn"
+        <span class="tooltipped tooltipped-w radio-btn" onclick="Comment._toggleReply()"
               data-hasPermission="${permissions['commonAddComment'].permissionGrant?c}"
               aria-label="${cmtLabel}"><span class="icon-reply"></span></span>
 
@@ -421,7 +477,7 @@
                     <div class="form fn-clear comment-wrap">
                         <div class="fn-flex">
                             <div id="replyUseName" class="fn-flex-1 fn-ellipsis"></div>
-                            <span class="tooltipped tooltipped-w fn-pointer editor-hide" aria-label="${hideLabel}"> <span class="icon-chevron-down"></span></span>
+                            <span class="tooltipped tooltipped-w fn-pointer editor-hide" onclick="Comment._toggleReply()" aria-label="${hideLabel}"> <span class="icon-chevron-down"></span></span>
                         </div>
                         <div class="article-comment-content">
                             <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
@@ -455,6 +511,8 @@
             Label.csrfToken = "${csrfToken}";
             Label.upLabel = "${upLabel}";
             Label.downLabel = "${downLabel}";
+            Label.confirmRemoveLabel = "${confirmRemoveLabel}";
+            Label.removedLabel = "${removedLabel}";
             Label.uploadLabel = "${uploadLabel}";
             Label.userCommentViewMode = ${userCommentViewMode};
             Label.stickConfirmLabel = "${stickConfirmLabel}";
@@ -484,6 +542,7 @@
             Label.helpLabel = '${helpLabel}';
             Label.fullscreenLabel = '${fullscreenLabel}';
             Label.uploadFileLabel = '${uploadFileLabel}';
+            Label.commonUpdateCommentPermissionLabel = '${commonUpdateCommentPermissionLabel}';
             Label.insertEmojiLabel = '${insertEmojiLabel}';
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
             Label.qiniuDomain = '${qiniuDomain}';

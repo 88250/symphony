@@ -19,7 +19,7 @@
  * variables.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.5.0.2, Mar 2, 2017
+ * @version 1.5.0.2, Mar 7, 2017
  */
 
 /**
@@ -42,11 +42,16 @@ dialog 200~209
 // Table of Contents
 // Colors
 $blue: #4285f4 !default;
-$light-blue: #f1f7fe !default;
+$blue-light: #dbedff !default;
+$blue-lighter: #f1f7fe !default;
 $red: #d23f31 !default;
-$fade: #ccc !default;
-$gray: #999 !default;
+$red-light: #ffdce0 !default;
 $green: #569e3d !default;
+$fade: rgba(0, 0, 0, .38)!default;
+$gray: rgba(0, 0, 0, .54) !default;
+$black: #3b3e43 !default;
+$black-text: rgba(0, 0, 0, .87) !default;
+$black-light: #616161 !default;
 
 // Fonts
 $font-family-base: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif !default;
@@ -54,3 +59,12 @@ $font-family-code: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monosp
 
 // shadow
 $shadow-tip: 0 1px 2px rgba(0,0,0,.2) !default;
+
+// theme
+$theme-primary: $black;
+$theme-accent: $red;
+$theme-secondary: $black-light;
+$theme-info: $blue-lighter;
+$theme-warning: undefined;
+$theme-error: $red-light;
+$theme-success: $blue-light;

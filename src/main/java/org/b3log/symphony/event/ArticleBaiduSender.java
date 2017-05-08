@@ -31,6 +31,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.*;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -74,7 +75,7 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
                 final HTTPRequest request = new HTTPRequest();
                 request.setURL(new URL("http://data.zz.baidu.com/urls?site=" + Latkes.getServerHost() + "&token=" + TOKEN));
                 request.setRequestMethod(HTTPRequestMethod.POST);
-                request.addHeader(new HTTPHeader("User-Agent", "curl/7.12.1"));
+                request.addHeader(new HTTPHeader(Common.USER_AGENT, "curl/7.12.1"));
                 request.addHeader(new HTTPHeader("Host", "data.zz.baidu.com"));
                 request.addHeader(new HTTPHeader("Content-Type", "text/plain"));
                 request.addHeader(new HTTPHeader("Connection", "close"));

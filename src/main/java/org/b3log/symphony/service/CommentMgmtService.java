@@ -47,7 +47,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.10.20, Mar 19, 2017
+ * @version 2.13.11.20, May 8, 2017
  * @since 0.2.0
  */
 @Service
@@ -56,7 +56,13 @@ public class CommentMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentMgmtService.class);
+
+    /**
+     * Revision repository.
+     */
+    @Inject
+    private RevisionRepository revisionRepository;
 
     /**
      * Comment repository.
@@ -143,38 +149,60 @@ public class CommentMgmtService {
     private LivenessMgmtService livenessMgmtService;
 
     /**
-     * Removes a comment specified with the given comment id.
+     * Removes a comment specified with the given comemnt id. A comemnt is removable if:
+     * <ul>
+     * <li>No replies</li>
+     * <li>No ups, downs</li>
+     * <li>No thanks</li>
+     * </ul>
+     * Sees https://github.com/b3log/symphony/issues/451 for more details.
+     *
+     * @param commentId the given commentId id
+     * @throws ServiceException service exception
+     */
+    public void removeComment(final String commentId) throws ServiceException {
+        JSONObject comment = null;
+
+        try {
+            comment = commentRepository.get(commentId);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets a comment [id=" + commentId + "] failed", e);
+        }
+
+        if (null == comment) {
+            return;
+        }
+
+        final int replyCnt = comment.optInt(Comment.COMMENT_REPLY_CNT);
+        if (replyCnt > 0) {
+            throw new ServiceException(langPropsService.get("removeCommentFoundReplyLabel"));
+        }
+
+        final int ups = comment.optInt(Comment.COMMENT_GOOD_CNT);
+        final int downs = comment.optInt(Comment.COMMENT_BAD_CNT);
+        if (ups > 0 || downs > 0) {
+            throw new ServiceException("removeCommentFoundWatchEtcLabel");
+        }
+
+        final int thankCnt = (int) rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT);
+        if (thankCnt > 0) {
+            throw new ServiceException("removeCommentFoundThankLabel");
+        }
+
+        // Perform removal
+        removeCommentByAdmin(commentId);
+    }
+
+    /**
+     * Removes a comment specified with the given comment id. Calls this method will remove all existed data related
+     * with the specified comment forcibly.
      *
      * @param commentId the given comment id
      */
     @Transactional
-    public void removeComment(final String commentId) {
+    public void removeCommentByAdmin(final String commentId) {
         try {
-            final JSONObject comment = commentRepository.get(commentId);
-            if (null == comment) {
-                return;
-            }
-
-            final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
-            final JSONObject article = articleRepository.get(articleId);
-            article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) - 1);
-            // Just clear latest time and commenter name, do not get the real latest comment to update
-            article.put(Article.ARTICLE_LATEST_CMT_TIME, 0);
-            article.put(Article.ARTICLE_LATEST_CMTER_NAME, "");
-            articleRepository.update(articleId, article);
-
-            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
-            final JSONObject commenter = userRepository.get(commentAuthorId);
-            commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) - 1);
-            userRepository.update(commentAuthorId, commenter);
-
-            commentRepository.remove(comment.optString(Keys.OBJECT_ID));
-
-            final JSONObject commentCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
-            commentCntOption.put(Option.OPTION_VALUE, commentCntOption.optInt(Option.OPTION_VALUE) - 1);
-            optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, commentCntOption);
-
-            notificationRepository.removeByDataId(commentId);
+            commentRepository.removeComment(commentId);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes a comment error [id=" + commentId + "]", e);
         }
@@ -184,7 +212,7 @@ public class CommentMgmtService {
      * A user specified by the given sender id thanks the author of a comment specified by the given comment id.
      *
      * @param commentId the given comment id
-     * @param senderId the given sender id
+     * @param senderId  the given sender id
      * @throws ServiceException service exception
      */
     public void thankComment(final String commentId, final String senderId) throws ServiceException {
@@ -264,24 +292,21 @@ public class CommentMgmtService {
     /**
      * Adds a comment with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "commentContent": "",
-     *     "commentAuthorId": "",
-     *     "commentOnArticleId": "",
-     *     "commentOriginalCommentId": "", // optional
-     *     "clientCommentId": "" // optional,
-     *     "commentAuthorName": "" // If from client
-     *     "commenter": {
-     *         // User model
-     *     },
-     *     "commentIP": "", // optional, default to ""
-     *     "commentUA": "", // optional, default to ""
-     *     "commentAnonymous": int, // optional, default to 0 (public)
-     *     "userCommentViewMode": int
-     * }
-     * </pre>, see {@link Comment} for more details
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "commentContent": "",
+     *                          "commentAuthorId": "",
+     *                          "commentOnArticleId": "",
+     *                          "commentOriginalCommentId": "", // optional
+     *                          "clientCommentId": "" // optional,
+     *                          "commentAuthorName": "" // If from client
+     *                          "commenter": {
+     *                          // User model
+     *                          },
+     *                          "commentIP": "", // optional, default to ""
+     *                          "commentUA": "", // optional, default to ""
+     *                          "commentAnonymous": int, // optional, default to 0 (public)
+     *                          "userCommentViewMode": int
+     *                          , see {@link Comment} for more details
      * @return generated comment id
      * @throws ServiceException service exception
      */
@@ -305,7 +330,7 @@ public class CommentMgmtService {
 
         final String commenterName = commenter.optString(User.USER_NAME);
 
-        JSONObject article = null;
+        JSONObject article;
         try {
             // check if admin allow to add comment
             final JSONObject option = optionRepository.get(Option.ID_C_MISC_ALLOW_ADD_COMMENT);
@@ -385,7 +410,8 @@ public class CommentMgmtService {
             }
 
             content = Emotions.toAliases(content);
-            // content = StringUtils.trim(content) + " "; https://github.com/b3log/symphony/issues/389
+            content = content.replaceAll("\\s+$", ""); // https://github.com/b3log/symphony/issues/389
+            content += " "; // in case of tailing @user
             content = content.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             content = content.replace(langPropsService.get("uploadingLabel", Locale.US), "");
 
@@ -444,6 +470,19 @@ public class CommentMgmtService {
                 tagArticleRepository.update(tagArticleRel.optString(Keys.OBJECT_ID), tagArticleRel);
             }
 
+            // Revision
+            final JSONObject revision = new JSONObject();
+            revision.put(Revision.REVISION_AUTHOR_ID, comment.optString(Comment.COMMENT_AUTHOR_ID));
+
+            final JSONObject revisionData = new JSONObject();
+            revisionData.put(Comment.COMMENT_CONTENT, content);
+
+            revision.put(Revision.REVISION_DATA, revisionData.toString());
+            revision.put(Revision.REVISION_DATA_ID, commentId);
+            revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_COMMENT);
+
+            revisionRepository.add(revision);
+
             transaction.commit();
 
             if (!fromClient && Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous
@@ -492,23 +531,72 @@ public class CommentMgmtService {
      * Updates the specified comment by the given comment id.
      *
      * @param commentId the given comment id
-     * @param comment the specified comment
+     * @param comment   the specified comment
      * @throws ServiceException service exception
      */
     public void updateComment(final String commentId, final JSONObject comment) throws ServiceException {
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
+            final JSONObject oldComment = commentRepository.get(commentId);
+            final String oldContent = oldComment.optString(Comment.COMMENT_CONTENT);
+
             String content = comment.optString(Comment.COMMENT_CONTENT);
             content = Emotions.toAliases(content);
-            content = StringUtils.trim(content) + " ";
+            content = content.replaceAll("\\s+$", ""); // https://github.com/b3log/symphony/issues/389
+            content += " "; // in case of tailing @user
             content = content.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             content = content.replace(langPropsService.get("uploadingLabel", Locale.US), "");
             comment.put(Comment.COMMENT_CONTENT, content);
 
             commentRepository.update(commentId, comment);
 
+            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+            if (!oldContent.equals(content)) {
+                // Revision
+                final JSONObject revision = new JSONObject();
+                revision.put(Revision.REVISION_AUTHOR_ID, commentAuthorId);
+
+                final JSONObject revisionData = new JSONObject();
+                revisionData.put(Comment.COMMENT_CONTENT, content);
+
+                revision.put(Revision.REVISION_DATA, revisionData.toString());
+                revision.put(Revision.REVISION_DATA_ID, commentId);
+                revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_COMMENT);
+
+                revisionRepository.add(revision);
+            }
+
             transaction.commit();
+
+            final JSONObject article = articleRepository.get(comment.optString(Comment.COMMENT_ON_ARTICLE_ID));
+            final int articleAnonymous = article.optInt(Article.ARTICLE_ANONYMOUS);
+            final int commentAnonymous = comment.optInt(Comment.COMMENT_ANONYMOUS);
+
+            if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous
+                    && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
+                // Point
+                final long now = System.currentTimeMillis();
+                final long createTime = comment.optLong(Keys.OBJECT_ID);
+                if (now - createTime > 1000 * 60 * 5) {
+                    pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
+                            Pointtransfer.TRANSFER_TYPE_C_UPDATE_COMMENT,
+                            Pointtransfer.TRANSFER_SUM_C_UPDATE_COMMENT, commentId, now);
+                }
+            }
+
+            final boolean fromClient = comment.has(Comment.COMMENT_CLIENT_COMMENT_ID);
+
+            // Event
+            final JSONObject eventData = new JSONObject();
+            eventData.put(Common.FROM_CLIENT, fromClient);
+            eventData.put(Article.ARTICLE, article);
+            eventData.put(Comment.COMMENT, comment);
+            try {
+                eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_COMMENT, eventData));
+            } catch (final EventException e) {
+                LOGGER.log(Level.ERROR, e.getMessage(), e);
+            }
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();

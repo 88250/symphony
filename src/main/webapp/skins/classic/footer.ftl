@@ -20,8 +20,7 @@
                 <a href="${servePath}/forge/link">${forgeLabel}</a>
                 <a href="${servePath}/statistic">${dataStatLabel}</a>
 
-                <div class="fn-right">
-                    <span class="ft-gray">&COPY; ${year}</span>
+                <div class="fn-right">&COPY; ${year}
                     <a rel="copyright" href="https://hacpai.com" target="_blank">hacpai.com</a>
                     ${visionLabel}</div>
             </div>

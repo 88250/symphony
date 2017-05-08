@@ -81,7 +81,7 @@ import java.util.List;
  * <li>Rewards an article (/article/reward), POST</li>
  * <li>Gets an article preview content (/article/{articleId}/preview), GET</li>
  * <li>Sticks an article (/article/stick), POST</li>
- * <li>Gets article revisions (/article/{articleId}/revisions), GET</li>
+ * <li>Gets an article's revisions (/article/{id}/revisions), GET</li>
  * <li>Gets article image (/article/{articleId}/image), GET</li>
  * <li>Checks article title (/article/check-title), POST</li>
  * <li>Removes an article (/article/{id}/remove), POST</li>
@@ -94,7 +94,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.27.43, Apr 26, 2017
+ * @version 1.26.27.45, May 8, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -104,6 +104,12 @@ public class ArticleProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class);
+
+    /**
+     * Revision query service.
+     */
+    @Inject
+    private RevisionQueryService revisionQueryService;
 
     /**
      * Short link query service.
@@ -222,7 +228,7 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{id}/remove", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
     public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                               final String id) throws Exception {
@@ -260,7 +266,6 @@ public class ArticleProcessor {
             context.renderMsg(msg);
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
         }
-
     }
 
     /**
@@ -417,20 +422,16 @@ public class ArticleProcessor {
     }
 
     /**
-     * Gets article revisions.
+     * Gets an article's revisions.
      *
-     * @param context   the specified context
-     * @param request   the specified request
-     * @param response  the specified response
-     * @param articleId the specified article id
-     * @throws Exception exception
+     * @param context the specified context
+     * @param id      the specified article id
      */
-    @RequestProcessing(value = "/article/{articleId}/revisions", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/article/{id}/revisions", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void getArticleRevisions(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                    final String articleId) throws Exception {
-        final List<JSONObject> revisions = articleQueryService.getArticleRevisions(articleId);
+    public void getArticleRevisions(final HTTPRequestContext context, final String id) {
+        final List<JSONObject> revisions = revisionQueryService.getArticleRevisions(id);
         final JSONObject ret = new JSONObject();
         ret.put(Keys.STATUS_CODE, true);
         ret.put(Revision.REVISIONS, (Object) revisions);
@@ -694,18 +695,17 @@ public class ArticleProcessor {
         if (!article.has(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK)) { // TODO: for legacy data
             article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, "");
         }
+        article.put(Article.ARTICLE_REVISION_COUNT, revisionQueryService.count(articleId, Revision.DATA_TYPE_C_ARTICLE));
 
         articleQueryService.processArticleContent(article, request);
 
         String cmtViewModeStr = request.getParameter("m");
-
         JSONObject currentUser;
         String currentUserId = null;
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
             currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             currentUserId = currentUser.optString(Keys.OBJECT_ID);
-
             article.put(Common.IS_MY_ARTICLE, currentUserId.equals(article.optString(Article.ARTICLE_AUTHOR_ID)));
 
             final boolean isFollowing = followQueryService.isFollowing(currentUserId, articleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
@@ -720,8 +720,7 @@ public class ArticleProcessor {
             if (currentUserId.equals(author.optString(Keys.OBJECT_ID))) {
                 article.put(Common.REWARDED, true);
             } else {
-                article.put(Common.REWARDED,
-                        rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_ARTICLE));
+                article.put(Common.REWARDED, rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_ARTICLE));
             }
 
             if (Strings.isEmptyOrNull(cmtViewModeStr) || !Strings.isNumeric(cmtViewModeStr)) {
@@ -731,8 +730,7 @@ public class ArticleProcessor {
             cmtViewModeStr = "0";
         }
 
-        int cmtViewMode = Integer.valueOf(cmtViewModeStr);
-
+        final int cmtViewMode = Integer.valueOf(cmtViewModeStr);
         dataModel.put(UserExt.USER_COMMENT_VIEW_MODE, cmtViewMode);
 
         if (!(Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
@@ -841,8 +839,8 @@ public class ArticleProcessor {
         }
 
         // Load comments
-        final List<JSONObject> articleComments = commentQueryService.getArticleComments(
-                avatarViewMode, articleId, pageNum, pageSize, cmtViewMode);
+        final List<JSONObject> articleComments =
+                commentQueryService.getArticleComments(avatarViewMode, articleId, pageNum, pageSize, cmtViewMode);
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
         // Fill comment thank
@@ -940,7 +938,7 @@ public class ArticleProcessor {
         final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
         final String ip = Requests.getRemoteAddr(request);
-        final String ua = request.getHeader("User-Agent");
+        final String ua = request.getHeader(Common.USER_AGENT);
         final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
         final int articleAnonymous = isAnonymous
                 ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;
@@ -1131,7 +1129,7 @@ public class ArticleProcessor {
         final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
         final String ip = Requests.getRemoteAddr(request);
-        final String ua = request.getHeader("User-Agent");
+        final String ua = request.getHeader(Common.USER_AGENT);
 
         final JSONObject article = new JSONObject();
         article.put(Keys.OBJECT_ID, id);
