@@ -191,6 +191,22 @@ public final class Markdowns {
             }
         }
 
+        final Elements objs = doc.getElementsByTag("object");
+        for (final Element obj : objs) {
+            final String data = StringUtils.trim(obj.attr("data"));
+            if (StringUtils.startsWithIgnoreCase(data, "data:")
+                    || StringUtils.startsWithIgnoreCase(data, "javascript")) {
+                obj.remove();
+
+                continue;
+            }
+
+            final String type = StringUtils.trim(obj.attr("type"));
+            if (StringUtils.containsIgnoreCase(type, "script")) {
+                obj.remove();
+            }
+        }
+
         final Elements as = doc.getElementsByTag("a");
         for (final Element a : as) {
             a.attr("rel", "nofollow");
