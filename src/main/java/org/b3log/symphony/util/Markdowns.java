@@ -63,7 +63,8 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.16.21, May 10, 2017
+ * @author <a href="http://vanessa.b3log.org">Vanessa</a>
+ * @version 1.10.17.21, May 11, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -185,15 +186,16 @@ public final class Markdowns {
 
         final Elements iframes = doc.getElementsByTag("iframe");
         for (final Element iframe : iframes) {
-            final String src = StringUtils.trim(iframe.attr("src"));
-            if (StringUtils.startsWithIgnoreCase(src, "javascript")) {
+            final String src = StringUtils.deleteWhitespace(iframe.attr("src"));
+            if (StringUtils.startsWithIgnoreCase(src, "javascript")
+                    || StringUtils.startsWithIgnoreCase(src, "data:")) {
                 iframe.remove();
             }
         }
 
         final Elements objs = doc.getElementsByTag("object");
         for (final Element obj : objs) {
-            final String data = StringUtils.trim(obj.attr("data"));
+            final String data = StringUtils.deleteWhitespace(obj.attr("data"));
             if (StringUtils.startsWithIgnoreCase(data, "data:")
                     || StringUtils.startsWithIgnoreCase(data, "javascript")) {
                 obj.remove();
@@ -201,9 +203,20 @@ public final class Markdowns {
                 continue;
             }
 
-            final String type = StringUtils.trim(obj.attr("type"));
+            final String type = StringUtils.deleteWhitespace(obj.attr("type"));
             if (StringUtils.containsIgnoreCase(type, "script")) {
                 obj.remove();
+            }
+        }
+
+        final Elements embeds = doc.getElementsByTag("embed");
+        for (final Element embed : embeds) {
+            final String data = StringUtils.deleteWhitespace(embed.attr("src"));
+            if (StringUtils.startsWithIgnoreCase(data, "data:")
+                    || StringUtils.startsWithIgnoreCase(data, "javascript")) {
+                embed.remove();
+
+                continue;
             }
         }
 
