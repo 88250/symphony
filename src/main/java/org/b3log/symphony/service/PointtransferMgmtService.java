@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Pointtransfer management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.3, Aug 9, 2016
+ * @version 1.2.1.4, May 8, 2017
  * @since 1.3.0
  */
 @Service
@@ -45,7 +45,7 @@ public class PointtransferMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PointtransferMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PointtransferMgmtService.class);
 
     /**
      * Pointtransfer repository.
@@ -63,15 +63,15 @@ public class PointtransferMgmtService {
      * Transfers point from the specified from id to the specified to id with type, sum, data id and time.
      *
      * @param fromId the specified from id, may be system "sys"
-     * @param toId the specified to id, may be system "sys"
-     * @param type the specified type
-     * @param sum the specified sum
+     * @param toId   the specified to id, may be system "sys"
+     * @param type   the specified type
+     * @param sum    the specified sum
      * @param dataId the specified data id
-     * @param time the specified time
+     * @param time   the specified time
      * @return transfer record id, returns {@code null} if transfer failed
      */
     public synchronized String transfer(final String fromId, final String toId, final int type, final int sum,
-            final String dataId, final long time) {
+                                        final String dataId, final long time) {
         if (StringUtils.equals(fromId, toId)) { // for example the commenter is the article author
             return null;
         }
@@ -81,9 +81,9 @@ public class PointtransferMgmtService {
             int fromBalance = 0;
             if (!Pointtransfer.ID_C_SYS.equals(fromId)) {
                 final JSONObject fromUser = userRepository.get(fromId);
-                if (UserExt.USER_STATUS_C_VALID != fromUser.optInt(UserExt.USER_STATUS)) {
-                    throw new Exception("Invalid from user [id=" + fromId + "]");
-                }
+//                if (UserExt.USER_STATUS_C_VALID != fromUser.optInt(UserExt.USER_STATUS)) {
+//                    throw new Exception("Invalid from user [id=" + fromId + "]");
+//                }
 
                 fromBalance = fromUser.optInt(UserExt.USER_POINT) - sum;
                 if (fromBalance < 0) {
@@ -98,9 +98,9 @@ public class PointtransferMgmtService {
             int toBalance = 0;
             if (!Pointtransfer.ID_C_SYS.equals(toId)) {
                 final JSONObject toUser = userRepository.get(toId);
-                if (UserExt.USER_STATUS_C_VALID != toUser.optInt(UserExt.USER_STATUS)) {
-                    throw new Exception("Invalid to user [id=" + toId + "]");
-                }
+//                if (UserExt.USER_STATUS_C_VALID != toUser.optInt(UserExt.USER_STATUS)) {
+//                    throw new Exception("Invalid to user [id=" + toId + "]");
+//                }
 
                 toBalance = toUser.optInt(UserExt.USER_POINT) + sum;
                 toUser.put(UserExt.USER_POINT, toBalance);
@@ -138,18 +138,14 @@ public class PointtransferMgmtService {
     /**
      * Adds a pointtransfer with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "fromId"; "",
-     *     "toId": "",
-     *     "sum": int,
-     *     "blance": int,
-     *     "time": long,
-     *     "type": int,
-     *     "dataId": ""
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "fromId"; "",
+     *                          "toId": "",
+     *                          "sum": int,
+     *                          "blance": int,
+     *                          "time": long,
+     *                          "type": int,
+     *                          "dataId": ""
      * @throws ServiceException service exception
      */
     @Transactional

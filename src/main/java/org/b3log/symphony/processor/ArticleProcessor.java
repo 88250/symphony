@@ -94,7 +94,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.27.45, May 8, 2017
+ * @version 1.26.28.45, May 9, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1016,9 +1016,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
-        final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
+        final JSONObject article = articleQueryService.getArticle(articleId);
         if (null == article) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 

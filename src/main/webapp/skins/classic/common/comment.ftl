@@ -27,7 +27,7 @@
                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade hover-show fn-hidden" data-ua="${comment.commentUA}"></span></#if>
                 </span>
                 <span class="fn-right">
-                    <#if comment.commentAuthorName == currentUser.userName && permissions["commonRemoveComment"].permissionGrant>
+                    <#if isLoggedIn && comment.commentAuthorName == currentUser.userName && permissions["commonRemoveComment"].permissionGrant>
                         <span onclick="Comment.remove('${comment.oId}')" aria-label="${removeCommentLabel}"
                               class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden">
                         <span class="icon-remove ft-red"></span></span>&nbsp;
