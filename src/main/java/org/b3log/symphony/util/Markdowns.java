@@ -63,7 +63,7 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.10.15.21, May 2, 2017
+ * @version 1.10.16.21, May 10, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -181,6 +181,14 @@ public final class Markdowns {
         final Elements ps = doc.getElementsByTag("p");
         for (final Element p : ps) {
             p.removeAttr("style");
+        }
+
+        final Elements iframes = doc.getElementsByTag("iframe");
+        for (final Element iframe : iframes) {
+            final String src = StringUtils.trim(iframe.attr("src"));
+            if (StringUtils.startsWithIgnoreCase(src, "javascript")) {
+                iframe.remove();
+            }
         }
 
         final Elements as = doc.getElementsByTag("a");
@@ -309,8 +317,7 @@ public final class Markdowns {
 
             doc.outputSettings().prettyPrint(false);
 
-            String ret = doc.html();
-            ret = StringUtils.substringBetween(ret, "body>", "</body>");
+            String ret = doc.select("body").html();
             ret = StringUtils.trim(ret);
 
             // cache it
