@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.42.32.46, May 5, 2017
+ * @version 1.42.33.46, May 11, 2017
  */
 
 /**
@@ -462,6 +462,9 @@ var Util = {
             }
         }
         text = codes.join('```');
+
+        // 图片经过 toMarkdown 还没有过滤的话，需要把图片的 <> 进行转义
+        text = text.replace(/<img/ig, '&lt;img');
 
         // ascii 160 替换为 30
         text = $('<div>' + text + '</div>').text().replace(/\n{2,}/g, '\n\n').replace(/ /g, ' ');
