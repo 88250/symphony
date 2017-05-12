@@ -24,6 +24,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Revision;
@@ -39,7 +40,7 @@ import java.util.List;
  * Revision query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, May 6, 2017
+ * @version 1.0.0.1, May 12, 2017
  * @since 2.1.0
  */
 @Service
@@ -141,12 +142,15 @@ public class RevisionQueryService {
                 new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, dataType)
         ));
 
+        Stopwatchs.start("Revision count");
         try {
             return (int) revisionRepository.count(query);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Counts revisions failed", e);
 
             return 0;
+        } finally {
+            Stopwatchs.end();
         }
     }
 }
