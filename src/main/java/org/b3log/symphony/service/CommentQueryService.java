@@ -50,7 +50,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.9.26, Apr 23, 2017
+ * @version 2.11.9.27, May 12, 2017
  * @since 0.2.0
  */
 @Service
@@ -139,6 +139,7 @@ public class CommentQueryService {
                 break;
         }
 
+        Stopwatchs.start("Get comment page");
         try {
             final long num = commentRepository.count(numQuery);
             return (int) ((num / pageSize) + 1);
@@ -146,6 +147,8 @@ public class CommentQueryService {
             LOGGER.log(Level.ERROR, "Gets comment page failed", e);
 
             return 1;
+        } finally {
+            Stopwatchs.end();
         }
     }
 
@@ -590,30 +593,43 @@ public class CommentQueryService {
         }
 
         try {
-            final JSONObject result = commentRepository.get(query);
+            Stopwatchs.start("Query comments");
+            JSONObject result;
+            try {
+                result = commentRepository.get(query);
+            } finally {
+                Stopwatchs.end();
+            }
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             organizeComments(avatarViewMode, ret);
 
-            for (final JSONObject comment : ret) {
-                final String commentId = comment.optString(Keys.OBJECT_ID);
+            Stopwatchs.start("Revision, paging, original");
+            try {
+                for (final JSONObject comment : ret) {
+                    final String commentId = comment.optString(Keys.OBJECT_ID);
 
-                // Fill revision count
-                comment.put(Comment.COMMENT_REVISION_COUNT,
-                        revisionQueryService.count(commentId, Revision.DATA_TYPE_C_COMMENT));
+                    // Fill revision count
+                    comment.put(Comment.COMMENT_REVISION_COUNT,
+                            revisionQueryService.count(commentId, Revision.DATA_TYPE_C_COMMENT));
 
-                final String originalCmtId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
-                if (StringUtils.isBlank(originalCmtId)) {
-                    continue;
+                    final String originalCmtId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+                    if (StringUtils.isBlank(originalCmtId)) {
+                        continue;
+                    }
+
+                    // Fill page number
+                    comment.put(Pagination.PAGINATION_CURRENT_PAGE_NUM,
+                            getCommentPage(articleId, originalCmtId, sortMode, pageSize));
+
+                    // Fill original comment
+                    final JSONObject originalCmt = commentRepository.get(originalCmtId);
+                    organizeComment(avatarViewMode, originalCmt);
+                    comment.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
+                            originalCmt.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                 }
-
-                comment.put(Pagination.PAGINATION_CURRENT_PAGE_NUM,
-                        getCommentPage(articleId, originalCmtId, sortMode, pageSize));
-
-                final JSONObject originalCmt = commentRepository.get(originalCmtId);
-                organizeComment(avatarViewMode, originalCmt);
-                comment.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
-                        originalCmt.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+            } finally {
+                Stopwatchs.end();
             }
 
             return ret;
@@ -652,6 +668,7 @@ public class CommentQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
+
     public JSONObject getComments(final int avatarViewMode,
                                   final JSONObject requestJSONObject, final Map<String, Class<?>> commentFields) throws ServiceException {
         final JSONObject ret = new JSONObject();
@@ -731,8 +748,14 @@ public class CommentQueryService {
      * @throws RepositoryException repository exception
      */
     private void organizeComments(final int avatarViewMode, final List<JSONObject> comments) throws RepositoryException {
-        for (final JSONObject comment : comments) {
-            organizeComment(avatarViewMode, comment);
+        Stopwatchs.start("Organizes comments");
+
+        try {
+            for (final JSONObject comment : comments) {
+                organizeComment(avatarViewMode, comment);
+            }
+        } finally {
+            Stopwatchs.end();
         }
     }
 
