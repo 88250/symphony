@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.27, Apr 22, 2017
+ * @version 1.12.2.28, May 13, 2017
  * @since 0.2.0
  */
 @Service
@@ -147,6 +147,13 @@ public class DataModelService {
      */
     public void fillRelevantArticles(final int avatarViewMode,
                                      final Map<String, Object> dataModel, final JSONObject article) throws Exception {
+        final int articleStatus = article.optInt(Article.ARTICLE_STATUS);
+        if (Article.ARTICLE_STATUS_C_VALID != articleStatus) {
+            dataModel.put(Common.SIDE_RELEVANT_ARTICLES, Collections.emptyList());
+
+            return;
+        }
+
         Stopwatchs.start("Fills relevant articles");
         try {
             dataModel.put(Common.SIDE_RELEVANT_ARTICLES,

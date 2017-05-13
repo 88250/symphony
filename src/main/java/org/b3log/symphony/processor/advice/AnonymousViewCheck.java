@@ -51,7 +51,7 @@ import java.util.Map;
  * Anonymous view check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.3, May 9, 2017
+ * @version 1.3.1.4, May 13, 2017
  * @since 1.6.0
  */
 @Named
@@ -186,7 +186,7 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
                         }
 
                         uris.put(requestURI);
-                        if (uris.length() > 7) {
+                        if (uris.length() > Symphonys.getInt("anonymousViewURIs")) {
                             throw new RequestProcessAdviceException(exception403);
                         }
 
