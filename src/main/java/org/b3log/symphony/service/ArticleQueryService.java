@@ -566,7 +566,6 @@ public class ArticleQueryService {
     /**
      * Gets the relevant articles of the specified article with the specified fetch size.
      * <p>
-     * <p>
      * The relevant articles exist the same tag with the specified article.
      * </p>
      *
