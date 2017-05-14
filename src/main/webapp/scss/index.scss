@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.32.30.58, May 8, 2017
+ * @version 2.32.30.59, May 15, 2017
  */
 
 @import "variables";
@@ -128,7 +128,7 @@
     left: 120px;
     width: 30px;
     font-size: 22px;
-    color: #666;
+    color: $theme-secondary;
     text-align: center;
     margin-top: -117px;
 
@@ -191,7 +191,7 @@
     .user-nav > a {
       float: left;
       padding: 5px 10px;
-      color: #666;
+      color: $theme-secondary;
       text-decoration: none;
 
       &.ft-red {
@@ -326,16 +326,13 @@
     }
 
     .editor-hide {
-      width: 20px;
-      text-align: center;
-      height: 20px;
-      color: #ccc;
-      line-height: 20px;
-      margin-bottom: 10px;
+      color: $theme-secondary;
+      margin: -3px 0 6px;
+      font-size: 22px;
     }
 
     .editor-hide:hover {
-      color: $gray;
+      color: $black-text;
     }
   }
 
@@ -381,7 +378,7 @@ label.cmt-anonymous {
 
 .action-btns > span,
 .action-btns > a {
-  color: #666;
+  color: $theme-secondary;
   text-decoration: none;
 }
 
@@ -398,7 +395,7 @@ label.cmt-anonymous {
 }
 
 .action-btns > span.icon-reply-btn {
-  color: #666;
+  color: $theme-secondary;
   font-weight: bold;
 }
 
@@ -581,7 +578,7 @@ label.cmt-anonymous {
 
   .abstract {
     margin-top: 5px;
-    color: #666;
+    color: $theme-secondary;
     display: block;
     text-decoration: none;
   }
@@ -601,7 +598,7 @@ label.cmt-anonymous {
   }
 
   .author {
-    color: #666;
+    color: $theme-secondary;
     font-weight: 600;
   }
 
@@ -711,7 +708,7 @@ label.cmt-anonymous {
     padding: 100px 50px;
     background-color: $blue-lighter;
     width: 40%;
-    color: #666;
+    color: $theme-secondary;
   }
 
   .verify-wrap {
@@ -1284,7 +1281,7 @@ code .dec {
 /* start symhub */
 .symhub {
   li a {
-    color: #666;
+    color: $theme-secondary;
     vertical-align: middle;
     font-size: 16px;
     line-height: 20px;

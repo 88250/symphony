@@ -480,18 +480,17 @@
                 <div class="form fn-clear comment-wrap">
                     <div class="fn-flex">
                         <div id="replyUseName" class="fn-flex-1 fn-ellipsis"></div>
-                        <span class="tooltipped tooltipped-w fn-pointer editor-hide" onclick="Comment._toggleReply()" aria-label="${hideLabel}"> <span class="icon-chevron-down"></span></span>
+                        <span class="tooltipped tooltipped-w fn-pointer editor-hide" onclick="Comment._toggleReply()" aria-label="${cancelLabel}"> <span class="icon-chevron-down"></span></span>
                     </div>
                     <div class="article-comment-content">
                         <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
-                        <div class="fn-clear comment-submit">
-                            <div class="tip fn-left" id="addCommentTip"></div>
-                            <div class="fn-right">
-                                <#if permissions["commonAddCommentAnonymous"].permissionGrant>
-                                    <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                                </#if>
-                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
-                            </div>
+                        <div class="comment-submit">
+                            <#if permissions["commonAddCommentAnonymous"].permissionGrant>
+                                <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                            </#if>
+                            <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button> &nbsp;
+                            <button onclick="Comment._toggleReply()">${cancelLabel}</button>
+                            <div class="tip fn-right" id="addCommentTip"></div>
                         </div>
                     </div>
                 </div>
