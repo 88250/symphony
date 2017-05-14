@@ -36,7 +36,7 @@
         padding: 10px 15px;
         text-shadow: 0 1px 0 #fff;
         border-bottom: 1px solid #eee;
-        color: #666;
+        color: $theme-secondary;
     }
 
     a:last-child {
@@ -134,7 +134,7 @@
 .user-info {
     line-height: 24px;
     font-size: 12px;
-    color: #666666;
+    color: $theme-secondary;
 }
 
 .user-intro {
@@ -464,7 +464,7 @@
 }
 
 .points .name a {
-   color: #666;
+   color: $theme-secondary;
 }
 
 .points .name a:hover {

@@ -597,7 +597,7 @@ blockquote {
 }
 
 .ft-a-title {
-  color: #666;
+  color: $theme-secondary;
   text-decoration: none;
 }
 
@@ -615,7 +615,7 @@ blockquote {
   font-size: 12px;
   font-weight: 600;
   line-height: 1;
-  color: #666;
+  color: $theme-secondary;
   background-color: #eee;
   border-radius: 20px;
   display: inline-block;
@@ -654,7 +654,7 @@ blockquote {
 
 /* start common */
 .timeline a {
-  color: #666;
+  color: $theme-secondary;
 }
 
 .timeline a:hover {
@@ -1169,7 +1169,7 @@ a[class*=" icon-"]:hover {
 }
 
 .form label {
-  color: #666;
+  color: $theme-secondary;
   font-size: 15px;
   margin: 12px 0 6px;
   float: left;
@@ -1468,7 +1468,7 @@ a[class*=" icon-"]:hover {
 
   .user-nav .no-msg,
   .user-nav .msg {
-    background-color: #666;
+    background-color: $theme-secondary;
     border-radius: 3px;
     color: #FFFFFF;
     font-size: 14px;
@@ -1532,7 +1532,7 @@ a[class*=" icon-"]:hover {
     position: relative;
     padding: 8px 10px;
     border-bottom: 1px solid #eee;
-    color: #666;
+    color: $theme-secondary;
   }
 
   .person-list a:hover {
@@ -1736,7 +1736,7 @@ ul.CodeMirror-hints {
 .module-header h2 {
   display: inline;
   font-size: 13px;
-  color: #666;
+  color: $theme-secondary;
   font-weight: normal;
 }
 
@@ -1778,7 +1778,7 @@ ul.CodeMirror-hints {
 }
 
 .module-list .title {
-  color: #666;
+  color: $theme-secondary;
   margin: 0px 0 0px 30px;
   display: block;
   line-height: 20px;
@@ -1838,7 +1838,7 @@ ul.CodeMirror-hints {
 
 .tag-desc > li > a {
   float: left;
-  color: #666;
+  color: $theme-secondary;
   padding: 2px 5px;
   border: 1px solid transparent;
   position: relative;
@@ -2041,7 +2041,7 @@ ul.CodeMirror-hints {
     margin-left: 20px;
     width: 300px;
     overflow: hidden;
-    color: #666;
+    color: $theme-secondary;
   }
 
   .aa-dataset-0 {
