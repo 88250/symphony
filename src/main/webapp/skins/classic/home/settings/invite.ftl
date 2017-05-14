@@ -7,7 +7,7 @@
             </div>
             <div class="module-panel form">
                 <input readonly="readonly" type="text" value="${serverScheme}://${serverHost}/register?r=${currentUser.userName}" onclick="this.select()"/>
-                <button class="red btn" id="shareClipboard">${copyLabel}</button>
+                <button class="btn" id="shareClipboard">${copyLabel}</button>
             </div>
         </div>
     </#if>

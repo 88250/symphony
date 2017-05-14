@@ -166,7 +166,7 @@ var Comment = {
 
         $('.cmt-anonymous').show();
 
-        $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
+        $('.footer').css('margin-bottom', $('.editor-panel > .wrapper').outerHeight() + 'px');
         $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'.article-content\'))" class="ft-a-title"><span class="icon-reply-to"></span>'
             + $('.article-title').text() + '</a>').removeData();
 

@@ -22,8 +22,8 @@
         <br>
         <div class="tip" id="profilesTip"></div>
         <br>
-        <button class="green fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
-        <button onclick="Settings.preview(this)">${previewLabel}</button>
+        <button class="fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
+        <button class="green" onclick="Settings.preview(this)">${previewLabel}</button>
     </div>
 </div>
 </@home>

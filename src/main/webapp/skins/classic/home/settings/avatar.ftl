@@ -17,11 +17,11 @@
         <br/>
         <div class="fn-clear">
             <form class="fn-right" id="avatarUpload" method="POST" enctype="multipart/form-data">
-                <label class="btn green">
+                <label class="btn">
                     ${uploadLabel}<input type="file" name="file">
                 </label>
             </form>
-            <label class="btn" onclick="Settings.preview(this)">${previewLabel}</label>
+            <label class="btn green" onclick="Settings.preview(this)">${previewLabel}</label>
         </div>
     </div>
 </div>
