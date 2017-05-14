@@ -5,7 +5,7 @@
     <div class="module-panel form fn-clear">
         ${articleLabel}${colonLabel}${currentUser.userArticleCount}&nbsp;&nbsp;&nbsp;&nbsp;
         ${cmtLabel}${colonLabel}${currentUser.userCommentCount}
-        <button class="green fn-right" onclick="Settings.exportPosts()">${exportLabel}</button>
+        <button class="red fn-right" onclick="Settings.exportPosts()">${exportLabel}</button>
     </div>
 </div>
 </@home>
