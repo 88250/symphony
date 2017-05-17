@@ -30,6 +30,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
+import org.b3log.latke.util.Callstacks;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
@@ -64,7 +65,7 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.10.17.21, May 11, 2017
+ * @version 1.10.17.22, May 17, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -362,6 +363,7 @@ public final class Markdowns {
             return future.get(MD_TIMEOUT, TimeUnit.MILLISECONDS);
         } catch (final TimeoutException e) {
             LOGGER.log(Level.ERROR, "Markdown timeout [md=" + markdownText + "]");
+            Callstacks.printCallstack(Level.ERROR, new String[]{"org.b3log"}, null);
 
             final Set<Thread> threads = Thread.getAllStackTraces().keySet();
             for (final Thread thread : threads) {
