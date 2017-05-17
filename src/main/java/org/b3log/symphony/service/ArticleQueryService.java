@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.30.58, May 13, 2017
+ * @version 2.27.31.58, May 17, 2017
  * @since 0.2.0
  */
 @Service
@@ -2182,6 +2182,11 @@ public class ArticleQueryService {
     private void qiniuImgProcessing(final JSONObject article) {
         final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
         if (!qiniuEnabled) {
+            return;
+        }
+
+        final int articleType = article.optInt(Article.ARTICLE_TYPE);
+        if (Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
             return;
         }
 

@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.6.12, May 4, 2017
+ * @version 1.15.6.13, May 17, 2017
  * @since 0.2.0
  */
 public final class Tag {
@@ -284,6 +284,7 @@ public final class Tag {
         NORMALIZE_MAPPINGS.put("golang", new HashSet<>(Arrays.asList("Go", "Go语言")));
         NORMALIZE_MAPPINGS.put("线程", new HashSet<>(Arrays.asList("多线程", "Thread")));
         NORMALIZE_MAPPINGS.put("Vue.js", new HashSet<>(Arrays.asList("Vue")));
+        NORMALIZE_MAPPINGS.put("Node.js", new HashSet<>(Arrays.asList("NodeJS")));
     }
 
     /**
