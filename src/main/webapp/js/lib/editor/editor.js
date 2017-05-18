@@ -1520,8 +1520,14 @@
             }
 
             var scrollInfo = cm.getScrollInfo();
-            preview.scrollTop = scrollInfo.top *
-                document.querySelector('.editor-preview').scrollHeight /  scrollInfo.height;
+            if ((scrollInfo.top / scrollInfo.clientHeight > 0.5)) {
+                preview.scrollTop = (scrollInfo.top + scrollInfo.clientHeight) *
+                    document.querySelector('.editor-preview').scrollHeight /  scrollInfo.height - scrollInfo.clientHeight;
+            } else {
+                preview.scrollTop = scrollInfo.top *
+                    document.querySelector('.editor-preview').scrollHeight /  scrollInfo.height;
+            }
+
         });
 
         $(window).click(function (event) {
