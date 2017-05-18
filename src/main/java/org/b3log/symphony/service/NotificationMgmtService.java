@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.1.3, Mar 12, 2017
+ * @version 1.15.2.3, May 18, 2017
  * @since 0.2.5
  */
 @Service
@@ -490,6 +490,9 @@ public class NotificationMgmtService {
 
         try {
             final JSONObject record = notificationRepository.get(id);
+            if (null == record) {
+                return;
+            }
 
             record.put(Notification.NOTIFICATION_HAS_READ, true);
 
