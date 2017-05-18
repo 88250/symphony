@@ -1019,6 +1019,14 @@ public class NotificationQueryService {
                         final String commentOrArticleId = dataId.split("-")[0];
                         final String voterId = dataId.split("-")[1];
 
+                        final JSONObject voter = userRepository.get(voterId);
+                        final String voterUserName = voter.optString(User.USER_NAME);
+                        atNotification.put(User.USER_NAME, voterUserName);
+
+                        final String thumbnailURLVote = avatarQueryService.getAvatarURLByUser(avatarViewMode, voter, "48");
+                        atNotification.put(Common.THUMBNAIL_URL, thumbnailURLVote);
+                        atNotification.put(Common.THUMBNAIL_UPDATE_TIME, voter.optLong(UserExt.USER_UPDATE_TIME));
+
                         JSONObject articleVote = null;
 
                         if (Notification.DATA_TYPE_C_COMMENT_VOTE_UP == dataType) {
@@ -1063,14 +1071,6 @@ public class NotificationQueryService {
 
                             continue;
                         }
-
-                        final JSONObject voter = userRepository.get(voterId);
-                        final String voterUserName = voter.optString(User.USER_NAME);
-                        atNotification.put(User.USER_NAME, voterUserName);
-
-                        final String thumbnailURLVote = avatarQueryService.getAvatarURLByUser(avatarViewMode, voter, "48");
-                        atNotification.put(Common.THUMBNAIL_URL, thumbnailURLVote);
-                        atNotification.put(Common.THUMBNAIL_UPDATE_TIME, voter.optLong(UserExt.USER_UPDATE_TIME));
 
                         final String userLinkVote = "<a href=\"/member/" + voterUserName + "\">" + voterUserName + "</a> ";
                         description = description.replace("{user}", userLinkVote);
