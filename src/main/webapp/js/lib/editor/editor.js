@@ -1512,6 +1512,24 @@
             this.render();
         }
 
+        // 同步预览
+        this.codemirror.on('scroll', function (cm) {
+            var preview = cm.getWrapperElement().lastChild;
+            if (preview.className.indexOf('editor-preview-active') === -1) {
+                return false;
+            }
+
+            var scrollInfo = cm.getScrollInfo();
+            if ((scrollInfo.top / scrollInfo.clientHeight > 0.5)) {
+                preview.scrollTop = (scrollInfo.top + scrollInfo.clientHeight) *
+                    document.querySelector('.editor-preview').scrollHeight /  scrollInfo.height - scrollInfo.clientHeight;
+            } else {
+                preview.scrollTop = scrollInfo.top *
+                    document.querySelector('.editor-preview').scrollHeight /  scrollInfo.height;
+            }
+
+        });
+
         $(window).click(function (event) {
             if (event.target.className === 'icon-emoji' ||
                 (event.target.children[0] && event.target.children[0].className === 'icon-emoji') ||
