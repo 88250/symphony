@@ -1512,6 +1512,18 @@
             this.render();
         }
 
+        // 同步预览
+        this.codemirror.on('scroll', function (cm) {
+            var preview = cm.getWrapperElement().lastChild;
+            if (preview.className.indexOf('editor-preview-active') === -1) {
+                return false;
+            }
+
+            var scrollInfo = cm.getScrollInfo();
+            preview.scrollTop = scrollInfo.top *
+                document.querySelector('.editor-preview').scrollHeight /  scrollInfo.height;
+        });
+
         $(window).click(function (event) {
             if (event.target.className === 'icon-emoji' ||
                 (event.target.children[0] && event.target.children[0].className === 'icon-emoji') ||
