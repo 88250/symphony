@@ -43,7 +43,8 @@ import java.util.regex.Pattern;
  * Short link query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.6.1, Jan 6, 2017
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.2.0.0, May 20, 2017
  * @since 1.3.0
  */
 @Service
@@ -168,6 +169,10 @@ public class ShortLinkQueryService {
             try {
                 while (matcher.find()) {
                     final String linkTagTitle = StringUtils.substringBetween(matcher.group(), "[", "]");
+
+                    if (StringUtils.equals(linkTagTitle, "x")) { // [x] => <input checked>
+                        continue;
+                    }
 
                     final Query query = new Query().addProjection(Tag.TAG_TITLE, String.class)
                             .addProjection(Tag.TAG_URI, String.class)
