@@ -497,9 +497,13 @@ blockquote {
     box-shadow: inset 0 -1px 0 #bbb;
   }
 
-  li > input {
-    margin-left: -1.5em;
-    vertical-align: middle;
+  li.task-item {
+    list-style: none;
+
+    & > input {
+      margin-left: -2em;
+      vertical-align: middle;
+    }
   }
 }
 

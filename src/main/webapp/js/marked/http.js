@@ -34,8 +34,10 @@ var renderer = new marked.Renderer();
 renderer.listitem = function (text, level) {
     if (text.indexOf('[ ] ') === 0 && text.replace(/\s/g, '') !== '[]') {
         text = '<input type="checkbox" disabled>' + text.replace('[ ]', '');
+        return `<li class="task-item">${text}</li>`;
     } else if (text.indexOf('[x] ') === 0 && text.replace(/\s/g, '') !== '[x]') {
         text = '<input type="checkbox" checked disabled>' + text.replace('[x]', '');
+        return `<li class="task-item">${text}</li>`;
     }
 
     return `<li>${text}</li>`;
