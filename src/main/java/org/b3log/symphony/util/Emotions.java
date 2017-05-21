@@ -27,7 +27,8 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.2.1.5, Apr 5, 2017
+ * @author <a href="http://vanessa.b3log.org">Vanessa</a>
+ * @version 1.3.0.0, May 21, 2017
  * @since 0.2.0
  */
 public final class Emotions {
@@ -994,7 +995,7 @@ public final class Emotions {
             }
 
             ret = ret.replace('[' + emotionName + ']',
-                    "<img class=\"emoji\" src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
+                    "<img class=\"emoji\" src='" + staticServePath + "/images/emotions/" + emotionName + ".png" + "' />");
         }
 
         if (!EMOJI_PATTERN.matcher(ret).find()) {
