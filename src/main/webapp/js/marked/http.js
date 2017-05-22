@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 29, 2016
+ * @version 1.1.0.0, May 20, 2017
  * @since 1.7.0
  */
 
@@ -29,9 +29,22 @@ var PORT = 8250;
 
 var http = require('http');
 var marked = require('marked');
+var renderer = new marked.Renderer();
+
+renderer.listitem = function (text, level) {
+    if (text.indexOf('[ ] ') === 0 && text.replace(/\s/g, '') !== '[]') {
+        text = '<input type="checkbox" disabled>' + text.replace('[ ]', '');
+        return `<li class="task-item">${text}</li>`;
+    } else if (text.indexOf('[x] ') === 0 && text.replace(/\s/g, '') !== '[x]') {
+        text = '<input type="checkbox" checked disabled>' + text.replace('[x]', '');
+        return `<li class="task-item">${text}</li>`;
+    }
+
+    return `<li>${text}</li>`;
+};
 
 marked.setOptions({
-    renderer: new marked.Renderer(),
+    renderer: renderer,
     gfm: true,
     tables: true,
     breaks: true,

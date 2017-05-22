@@ -239,7 +239,7 @@
                                                 <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
                                                 <span aria-label="<#if hasRewarded>${thankedLabel}<#else>${thankLabel} ${comment.rewardedCnt}</#if>"
                                                       class="tooltipped tooltipped-n rewarded-cnt <#if hasRewarded>ft-red<#else>ft-fade</#if>">
-                                                    <span class="icon-heart"></span>${comment.rewardedCnt}
+                                                    <span class="icon-heart"></span> ${comment.rewardedCnt}
                                                 </span>
                                                 </#if>
                                                 <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade" data-ua="${comment.commentUA}"></span></#if>
