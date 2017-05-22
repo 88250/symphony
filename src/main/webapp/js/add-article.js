@@ -636,6 +636,10 @@ var AddArticle = {
             }
             $('#articleTagsSelectedPanel').hide();
         }).blur(function () {
+            if ($('#articleTagsSelectedPanel').css('display') === 'block') {
+                // 鼠标点击 completed 面板时避免把输入框的值加入到 tag 中
+                return false;
+            }
             addTag($(this).val());
         });
 
