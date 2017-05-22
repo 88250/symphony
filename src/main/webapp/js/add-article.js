@@ -545,7 +545,7 @@ var AddArticle = {
                 return false;
             }
             var hasTag = false;
-            text = text.replace(/\s/g, '');
+            text = text.replace(/\s/g, '').replace(/,/g, '');
             $("#articleTags").val('');
 
             // 重复添加处理
@@ -566,7 +566,7 @@ var AddArticle = {
 
             // 长度处理
             if ($('.tags-input .tag').length >= 4) {
-                $('#articleTags').prop('disabled', true).val('').data('val', '');
+                $('#articleTags').val('').data('val', '');
                 return false;
             }
 
@@ -587,7 +587,7 @@ var AddArticle = {
             }
 
             if ($('.tags-input .tag').length >= 4) {
-                $('#articleTags').prop('disabled', true).val('').data('val', '');
+                $('#articleTags').val('').data('val', '');
             }
         };
 
@@ -614,7 +614,6 @@ var AddArticle = {
         $('.tags-input').on('click', '.tag > span.close', function () {
             $(this).parent().remove();
             $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
-            $('#articleTags').prop('disabled', false);
 
             // set tags to localStorage
             if (location.search.indexOf('?id=') === -1) {
@@ -637,7 +636,11 @@ var AddArticle = {
             }
             $('#articleTagsSelectedPanel').hide();
         }).blur(function () {
-            $(this).val('').data('val', '');
+            if ($('#articleTagsSelectedPanel').css('display') === 'block') {
+                // 鼠标点击 completed 面板时避免把输入框的值加入到 tag 中
+                return false;
+            }
+            addTag($(this).val());
         });
 
         // 关闭领域 tag 选择面板

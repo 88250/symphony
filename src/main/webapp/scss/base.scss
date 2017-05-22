@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.35.23.64, May 7, 2017
+ * @version 2.36.1.0, May 22, 2017
  */
 @import "variables";
 @import "icon";
@@ -495,6 +495,15 @@ blockquote {
     border-bottom-color: #bbb;
     border-radius: 3px;
     box-shadow: inset 0 -1px 0 #bbb;
+  }
+
+  li.task-item {
+    list-style: none;
+
+    & > input {
+      margin-left: -2em;
+      vertical-align: middle;
+    }
   }
 }
 
@@ -1253,7 +1262,7 @@ a[class*=" icon-"]:hover {
   z-index: 82;
   border-radius: 0 0 3px 3px;
   width: 50%;
-  top: 35px;
+  top: 33px;
   box-sizing: border-box;
 }
 

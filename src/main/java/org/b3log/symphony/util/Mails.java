@@ -437,7 +437,7 @@ public final class Mails {
  *
  * @author <a href="https://github.com/snowflake3721">snowflake</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Mar 29, 2017
+ * @version 1.0.2.1, May 23, 2017
  * @since 2.1.0
  */
 final class MailSender implements java.io.Serializable {
@@ -455,6 +455,7 @@ final class MailSender implements java.io.Serializable {
     private static final String mail_port = Symphonys.get("mail.local.port");
     private static final String mail_smtp_auth = Symphonys.get("mail.local.smtp.auth");
     private static final String mail_smtp_ssl = Symphonys.get("mail.local.smtp.ssl");
+    private static final String mail_smtp_starttls_enable = Symphonys.get("mail.local.smtp.starttls.enable");
     private static final String saved_path = Symphonys.get("mail.local.saved.eml.path");
     private static MailSender mailSender;
     private static Properties prop = new Properties();
@@ -465,6 +466,7 @@ final class MailSender implements java.io.Serializable {
         prop.setProperty("mail.port", mail_port);
         prop.setProperty("mail.smtp.auth", mail_smtp_auth);
         prop.setProperty("mail.smtp.ssl", mail_smtp_ssl);
+        prop.setProperty("mail.smtp.starttls.enable", mail_smtp_starttls_enable);
         prop.setProperty("mail.smtp.sender", sender);
         prop.setProperty("mail.smtp.username", username);
         prop.setProperty("mail.smtp.passsword", password);
@@ -547,7 +549,7 @@ final class MailSender implements java.io.Serializable {
         // 2、通过session得到transport对象
         Transport ts = session.getTransport();
         // 3、使用邮箱的用户名和密码连上邮件服务器，发送邮件时，发件人需要提交邮箱的用户名和密码给smtp服务器，用户名和密码都通过验证之后才能够正常发送邮件给收件人。
-        ts.connect(mail_host, username, password);
+        ts.connect(mail_host, Integer.valueOf(mail_port), username, password);
         MimeMessage message = new MimeMessage(session);
         // 4、创建邮件
         // Message message = createSimpleMail(session);

@@ -176,6 +176,7 @@ public final class Markdowns {
                         addAttributes("source", "src", "media", "type").
                         addAttributes("object", "width", "height", "data", "type").
                         addAttributes("param", "name", "value").
+                        addAttributes("input", "type", "disabled", "checked").
                         addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking"),
                 outputSettings);
         final Document doc = Jsoup.parse(tmp, baseURI, Parser.htmlParser());

@@ -37,7 +37,8 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.6.13, May 17, 2017
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.17.0.0, May 20, 2017
  * @since 0.2.0
  */
 public final class Tag {
@@ -266,7 +267,7 @@ public final class Tag {
     /**
      * Tag title pattern string.
      */
-    public static final String TAG_TITLE_PATTERN_STR = "[\\u4e00-\\u9fa5,\\w,\\s,&,\\+,\\-,\\.]+";
+    public static final String TAG_TITLE_PATTERN_STR = "[\\u4e00-\\u9fa5,\\w,&,\\+,\\-,\\.]+";
 
     /**
      * Tag title pattern.

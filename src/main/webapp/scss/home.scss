@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.14.32, May 7, 2017
+ * @version 2.11.14.33, May 22, 2017
  */
 
 @import "variables";
@@ -269,16 +269,21 @@
     }
 
     .tags-input span.tag {
-        margin: 2px 5px 0 0px;
+        margin: 0 5px 0 0px;
         padding: 0 5px;
         background: #eee;
         color: #999;
+        line-height: 22px;
     }
 
     .tags-input .tag > span.close {
         cursor: pointer;
-        margin-left: 5px;
-        color: #999;
+        padding-left: 5px;
+        color: $theme-secondary;
+
+        &:hover {
+            color: $theme-accent;
+        }
     }
 
     .tags-input span.tag.haved {
