@@ -20,8 +20,9 @@
 -->
 <!--
     Description: Static resources definition.
-    Version: 1.6.0.2, Jan 31, 2017
+    Version: 1.7.0.0, May 24, 2017
     Author: Liang Ding
+    Author: Liyuan Li
 -->
 <static-files>
     
@@ -72,6 +73,7 @@
         
     <include path="/css/fonts/*.eot" />
     <include path="/css/fonts/*.svg" />
+    <include path="/css/*.svg" />
     <include path="/css/fonts/*.ttf" />
     <include path="/css/fonts/*.woff" />
         
