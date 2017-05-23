@@ -2,7 +2,9 @@
     <div class="wrapper fn-clear">
         <div class="head-fn fn-left">
             <h1>
-                ${logoIcon}
+                <a href="${servePath}" aria-label="黑客派" class="tooltipped tooltipped-s">
+                    <svg class="svg-icon"><use xlink:href="${servePath}/css/symbol-defs.svg#logo"></use></svg>
+                </a>
             </h1>
         </div>
 
