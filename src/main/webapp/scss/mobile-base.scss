@@ -996,14 +996,13 @@ a[class*=" icon-"]:hover {
 }
 
 .nav .head-fn h1 a {
-    height: 40px;
-    width: 48px;
-    display: block;
-    background-size: cover;
-    margin-top: -9px;
 
     svg {
         color: #fff;
+        height: 38px;
+        width: 38px;
+        margin-top: -5px;
+        float: left;
     }
 }
 
