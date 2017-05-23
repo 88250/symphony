@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.36.1.0, May 22, 2017
+ * @version 2.36.1.1, May 24, 2017
  */
 @import "variables";
 @import "icon";
@@ -1391,6 +1391,9 @@ a[class*=" icon-"]:hover {
 
   h1 svg {
     color: #fff;
+    height: 48px;
+    width: 48px;
+    vertical-align: baseline;
   }
 
   .nav-tabs {
@@ -1435,10 +1438,6 @@ a[class*=" icon-"]:hover {
     margin-right: 20px;
   }
 
-  h1 a svg {
-    vertical-align: baseline;
-  }
-
   input::-webkit-input-placeholder {
     color: #ddd;
   }
@@ -1463,16 +1462,6 @@ a[class*=" icon-"]:hover {
   input.search:focus {
     background: #fff;
     color: #222;
-  }
-
-  .user-nav > a {
-    font-size: 20px;
-    float: left;
-  }
-
-  .avatar-small {
-    display: inline-block;
-    margin-top: -6px;
   }
 
   .user-nav .no-msg,

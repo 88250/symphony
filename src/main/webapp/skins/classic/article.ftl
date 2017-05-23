@@ -383,7 +383,7 @@
         </div>
         <div class="article-header">
             <h1>
-                ${logoIcon}
+                <svg class="svg-icon"><use xlink:href="${staticServePath}/css/symbol-defs.svg#logo"></use></svg>
             </h1>
             <h2 class="fn-ellipsis fn-pointer" onclick="Util.goTop()">
                 ${article.articleTitleEmojUnicode}

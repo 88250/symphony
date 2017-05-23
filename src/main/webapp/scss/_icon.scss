@@ -22,6 +22,16 @@
  * @version 0.3.0.0, Mar 7, 2017
  */
 
+
+svg.svg-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    stroke-width: 0;
+    stroke: currentColor;
+    fill: currentColor;
+}
+
 @font-face {
     font-family: 'icomoon';
     src:  url('fonts/icomoon.eot?hd1xtl');
@@ -224,9 +234,6 @@
 }
 .icon-tags:before {
     content: "\e611";
-}
-.icon-addfile:before {
-    content: "\e612";
 }
 .icon-login:before {
     content: "\e613";

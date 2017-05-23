@@ -1,6 +1,8 @@
 <div class="nav">
     <h1>
-        ${logoIcon}
+        <a href="${servePath}" aria-label="黑客派" class="tooltipped tooltipped-s">
+            <svg class="svg-icon"><use xlink:href="${staticServePath}/css/symbol-defs.svg#logo"></use></svg>
+        </a>
     </h1>
     <div class="nav-tabs">
         <#list domains as domain>
@@ -27,12 +29,12 @@
     </#if>
     <div class="user-nav">
         <#if isLoggedIn>
-            <a href="${servePath}/pre-post" class="tooltipped tooltipped-w" aria-label="${postArticleLabel}"><span class="icon-addfile"></span></a>
+            <a href="${servePath}/pre-post" class="tooltipped tooltipped-w" aria-label="${postArticleLabel}"><svg class="svg-icon"><use xlink:href="${staticServePath}/css/symbol-defs.svg#addfile"></use></svg></a>
             <#if permissions["menuAdmin"].permissionGrant>
-            <a href="${servePath}/admin" aria-label="${adminLabel}" class="tooltipped tooltipped-w"><span class="icon-userrole"></span></a>
+            <a href="${servePath}/admin" aria-label="${adminLabel}" class="tooltipped tooltipped-w"><svg class="svg-icon"><use xlink:href="${staticServePath}/css/symbol-defs.svg#userrole"></use></svg></a>
             </#if>
             <a id="aNotifications" class="tooltipped tooltipped-w <#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" aria-label="${messageLabel}">${unreadNotificationCount}</a>
-            <a href="${servePath}/activities" aria-label="${activityLabel}" class="tooltipped tooltipped-w"><span class="icon-flag"></span></a>
+            <a href="${servePath}/activities" aria-label="${activityLabel}" class="tooltipped tooltipped-w"><svg class="svg-icon"><use xlink:href="${staticServePath}/css/symbol-defs.svg#flag"></use></svg></a>
             <a href="javascript:void(0)" id="aPersonListPanel" class="tooltipped tooltipped-w" aria-label="${viewHomeAndProfileLabel}"
                data-url="${servePath}/member/${currentUser.userName}">
                 <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL20}')"></span>
