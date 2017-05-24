@@ -6,13 +6,13 @@
     <ol>
         <#list userHomeFollowingTags as followingTag>
         <li class="fn-flex">
-            <#if "" != followingTag.tagIconPath>
             <a href="${servePath}/tag/${followingTag.tagURI}">
+                <#if "" != followingTag.tagIconPath>
                 <div title="${followingTag.tagTitle}" class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
+                <#else>
+                <svg class="avatar"><use xlink:href="#tags"></use></svg>
+                </#if>
             </a>
-            <#else>
-            <a class="icon-tags fn-left" href="${servePath}/tag/${followingTag.tagURI}"></a>
-            </#if>
             <div class="fn-flex-1">
                 <h3 class="fn-inline">
                     <a href="${servePath}/tag/${followingTag.tagURI}">${followingTag.tagTitle}</a>

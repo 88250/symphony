@@ -18,15 +18,16 @@
         <li<#if !(paginationPageCount?? && paginationPageCount!=0 && paginationPageCount!=1) && followingTag_index == userHomeFollowingTags?size - 1>
              class="last"</#if>>
             <div class="fn-flex">
-                <#if "" != followingTag.tagIconPath>
                 <a href="${servePath}/tag/${followingTag.tagURI}">
+                    <#if "" != followingTag.tagIconPath>
                     <div class="avatar fn-left ft-gray tooltipped tooltipped-se"  
                          aria-label="${followingTag.tagTitle}" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
+                    <#else>
+                        <div class="tooltipped tooltipped-se fn-left ft-a-title" aria-label="${followingTag.tagTitle}">
+                            <svg class="avatar"><use xlink:href="#tags"></use></svg>
+                        </div>
+                    </#if>
                 </a>
-                <#else>
-                <a href="${servePath}/tag/${followingTag.tagURI}"
-                   class="tooltipped tooltipped-se fn-left ft-a-title" aria-label="${followingTag.tagTitle}"><div class="icon-tags"></div></a>
-                </#if>
                 <div class="fn-flex-1">
                     <h2 class="fn-inline">
                         <a href="${servePath}/tag/${followingTag.tagURI}">${followingTag.tagTitle}</a>
