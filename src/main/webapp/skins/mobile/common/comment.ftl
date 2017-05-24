@@ -30,7 +30,7 @@
                     <#if isLoggedIn && comment.commentAuthorName == currentUser.userName && permissions["commonRemoveComment"].permissionGrant>
                         <span onclick="Comment.remove('${comment.oId}')" aria-label="${removeCommentLabel}"
                               class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden">
-                        <span class="icon-remove ft-red"></span></span>&nbsp;
+                        <svg><use xlink:href="#remove ft-red"></use></svg></span>&nbsp;
                     </#if>
                     <#if permissions["commonViewCommentHistory"].permissionGrant>
                         <span onclick="Article.revision('${comment.oId}', 'comment')" aria-label="${historyLabel}"

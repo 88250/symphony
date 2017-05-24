@@ -158,10 +158,10 @@
                     <div class="share fn-right">
                         <div id="qrCode" class="fn-none"
                              data-shareurl="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"></div>
-                        <span class="icon-wechat" data-type="wechat"></span>
-                        <span class="icon-weibo" data-type="weibo"></span>
-                        <span class="icon-twitter" data-type="twitter"></span>
-                        <span class="icon-google" data-type="google"></span>
+                        <span data-type="wechat"><svg class="icon-wechat"><use xlink:href="#wechat"></use></svg></span>
+                        <span data-type="weibo"><svg class="icon-weibo"><use xlink:href="#weibo"></use></svg></span>
+                        <span data-type="twitter"><svg class="icon-twitter"><use xlink:href="#twitter"></use></svg></span>
+                        <span data-type="google"><svg class="icon-google"><use xlink:href="#google"></use></svg></span>
                     </div>
                 </div>
                 

@@ -370,20 +370,21 @@
             </#if>><span class="icon-heart"></span> <span class="ft-13">${article.thankedCnt}</span></span>
             <div id="qrCode" class="fn-none"
                  data-shareurl="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"></div>
-            <span class="tooltipped tooltipped-e" aria-label="share to wechat" data-type="wechat"><span class="icon-wechat"></span></span>
-            <span class="tooltipped tooltipped-e" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span>
-            <span class="tooltipped tooltipped-e" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span>
-            <span class="tooltipped tooltipped-e" aria-label="share to google" data-type="google"><span class="icon-google"></span></span>
+            <span class="tooltipped tooltipped-e" aria-label="share to wechat" data-type="wechat"><svg class="icon-wechat"><use xlink:href="#wechat"></use></svg></span>
+            <span class="tooltipped tooltipped-e" aria-label="share to weibo" data-type="weibo"><svg class="icon-weibo"><use xlink:href="#weibo"></use></svg></span>
+            <span class="tooltipped tooltipped-e" aria-label="share to twitter" data-type="twitter"><svg class="icon-twitter"><use xlink:href="#twitter"></use></svg></span>
+            <span class="tooltipped tooltipped-e" aria-label="share to google" data-type="google"><svg class="icon-google"><use xlink:href="#google"></use></svg></span>
             <span class="tooltipped tooltipped-e" data-type="copy"
                   aria-label="${copyLabel}"
-                  id="shareClipboard"><span
-                    class="icon-link"></span></span>
+                  id="shareClipboard"><svg class="icon-link"><use xlink:href="#link"></use></svg></span>
             <input type="text" class="article-clipboard"
                    value="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"/>
         </div>
         <div class="article-header">
-            <h1>
-                <svg class="svg-icon"><use xlink:href="#logo"></use></svg>
+            <h1 aria-label="${symphonyLabel}" class="tooltipped tooltipped-s">
+                <a href="${servePath}">
+                    <svg><use xlink:href="#logo"></use></svg>
+                </a>
             </h1>
             <h2 class="fn-ellipsis fn-pointer" onclick="Util.goTop()">
                 ${article.articleTitleEmojUnicode}

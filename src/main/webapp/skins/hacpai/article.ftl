@@ -84,7 +84,7 @@
                                 <span class="icon icon-tencent" data-type="tencent"></span>
                                 <span class="icon icon-weibo" data-type="weibo"></span>
                                 <span class="icon icon-twitter" data-type="twitter"></span>
-                                <span class="icon icon-google" data-type="google"></span>
+                                <svg class="icon icon-google" data-type="google"><use xlink:href="#google"></use></svg>
                             </div>
                         </div>
                     </div>

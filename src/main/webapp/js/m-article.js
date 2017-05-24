@@ -19,7 +19,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.2.0.1, May 7, 2017
+ * @version 0.2.0.2, May 24, 2017
  * @since 2.1.0
  */
 
@@ -1194,7 +1194,7 @@ var Article = {
 
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
                     url = encodeURIComponent(shareURL),
-                    picCSS = $(".article-info .avatar-mid").css('background-image');
+                    picCSS = $(".article-info .avatar").css('background-image');
                     pic = picCSS.substring(5, picCSS.length - 2);
 
             var urls = {};
