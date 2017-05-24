@@ -16,7 +16,7 @@
     </div>
     <h2>
         <#if 1 == article.articlePerfect>
-            <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" width="14" viewBox="3 2 11 12">${perfectIcon}</svg></span>
+            <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg><use xlink:href="#perfect"></use></svg></span>
         </#if>
         <#if 1 == article.articleType>
             <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>

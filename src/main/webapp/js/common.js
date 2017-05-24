@@ -798,7 +798,7 @@ var Util = {
                     var notiHTML = '',
                     markReadHTML = '<span onclick="Util.makeNotificationRead(\'${markReadType}\');return false;" aria-label="'
                         + Label.makeAsReadLabel + '" class="fn-right tooltipped tooltipped-nw">'
-                        + '<svg height="18" viewBox="0 0 12 16" width="12">' + Label.checkIcon + '</svg>' + '</span>';
+                        + '<svg><use xlink:href="#check"></use></svg>' + '</span>';
 
                     // 收到的回帖 unreadCommentedNotificationCnt
                     if (data.unreadCommentedNotificationCnt > 0) {

@@ -63,9 +63,10 @@
 		sameCityLabel: '${sameCityLabel}',
 		systemLabel: '${systemLabel}',
 		newFollowerLabel: '${newFollowerLabel}',
-        makeAsReadLabel: '${makeAsReadLabel}',
-        checkIcon: '${checkIcon}'<#if isLoggedIn>,
-        currentUserName: '${currentUser.userName}'</#if>
+        makeAsReadLabel: '${makeAsReadLabel}'
+        <#if isLoggedIn>,
+            currentUserName: '${currentUser.userName}'
+        </#if>
     };
 
     <#if isLoggedIn>

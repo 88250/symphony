@@ -31,16 +31,7 @@
             <div class="fn-flex-1">
                 <div class="fn-flex">
                     <h2 class="fn-flex-1">
-                        <#if 1 == comment.commentArticlePerfect>
-                        <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="20" viewBox="3 3 11 12" width="14">${perfectIcon}</svg></span>
-                        </#if>
-                        <#if 1 == comment.commentArticleType>
-                        <span class="tooltipped tooltipped-n" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
-                        <#elseif 2 == comment.commentArticleType>
-                        <span class="tooltipped tooltipped-n" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
-                        <#elseif 3 == comment.commentArticleType>
-                        <span class="tooltipped tooltipped-n" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
-                        </#if>
+                        <@icon comment.commentArticlePerfect comment.commentArticleType></@icon>
                         <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
                     </h2>
                     <span class="ft-gray">

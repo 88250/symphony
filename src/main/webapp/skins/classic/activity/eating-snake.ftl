@@ -29,7 +29,7 @@
                         </div>
                         <div class="fn-flex snak-rank">
                             <div class="module">
-                                <div class="module-header" style="background-image: url(${hotBgIcon});">${totalRankLabel}</div>
+                                <div class="module-header">${totalRankLabel}</div>
                                 <div class="module-panel">
                                     <ul class="module-list">
                                         <#list sumUsers as user>
@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                             <div class="module">
-                                <div class="module-header" style="background-image: url(${perfectBgIcon});">${eachRankLabel}</div>
+                                <div class="module-header">${eachRankLabel}</div>
                                 <div class="module-panel">
                                     <ul class="module-list">
                                         <#list maxUsers as user>

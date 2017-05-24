@@ -24,16 +24,7 @@
                 <#if "someone" != article.articleAuthorName></a></#if>
             <div class="fn-flex-1">
                 <h2>
-                    <#if 1 == article.articlePerfect>
-                    <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="20" viewBox="3 3 11 12" width="14">${perfectIcon}</svg></span>
-                    </#if>
-                    <#if 1 == article.articleType>
-                    <span class="tooltipped tooltipped-n" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
-                    <#elseif 2 == article.articleType>
-                    <span class="tooltipped tooltipped-n" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
-                    <#elseif 3 == article.articleType>
-                    <span class="tooltipped tooltipped-n" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
-                    </#if>
+                    <@icon article.articlePerfect article.articleType></@icon>
                     <a rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
                 <span class="ft-fade ft-smaller">

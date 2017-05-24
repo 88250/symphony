@@ -44,8 +44,8 @@
         sameCityLabel: '${sameCityLabel}',
         systemLabel: '${systemLabel}',
         newFollowerLabel: '${newFollowerLabel}',
-        makeAsReadLabel: '${makeAsReadLabel}',
-        checkIcon: '${checkIcon}'<#if isLoggedIn>,
+        makeAsReadLabel: '${makeAsReadLabel}'
+        <#if isLoggedIn>,
         currentUserName: '${currentUser.userName}'</#if>
     };
     Util.init(${isLoggedIn?c});

@@ -13,8 +13,10 @@
         <@subNav '' ''/>
         <div class="main">
             <div class="wrapper fn-clear">
-                <div class="item mid">
-                    <a href="${servePath}/recent" class="item-header" style="background-image: url(${hotBgIcon});">${latestLabel}</a>
+                <div class="module">
+                    <div class="module-header" style="background-color: #97cf76;">
+                        <a href="${servePath}/recent">${latestLabel}</a>
+                    </div>
                     <div class="module-panel">
                         <ul class="module-list">
                             <#list recentArticles as article>
@@ -32,8 +34,10 @@
                         </ul>
                     </div>
                 </div>
-                <div class="item">
-                    <a href="${servePath}/perfect" class="item-header" style="background-image: url(${perfectBgIcon});">${perfectLabel}</a>
+                <div class="module">
+                    <div class="module-header" style="background-color: #dfb169;">
+                        <a href="${servePath}/perfect">${perfectLabel}</a>
+                    </div>
                     <div class="module-panel">
                         <ul class="module-list">
                             <#list perfectArticles as article>
@@ -71,44 +75,56 @@
             </div>
         </div>
         </#if>
+        <div class="fn-hr10"></div>
         <div class="main">
             <div class="wrapper">
-                <div class="item">
-                    <a href="${servePath}/timeline" class="item-header" style="background-image: url(${timelineBgIcon});">${timelineLabel}</a>
+                <div class="module">
+                    <div class="module-header" style="background-color: #4e68ca">
+                        <a href="${servePath}/timeline">${timelineLabel}</a>
+                    </div>
                     <div class="module-panel">
                         <#if timelines?size <= 0>
-                        <div id="emptyTimeline">${emptyTimelineLabel}</div>
+                            <ul class="module-list">
+                                <li>
+                                ${emptyTimelineLabel}
+                                </li>
+                            </ul>
+                        <#else>
+                            <ul class="module-list">
+                                <#list timelines as article>
+                                <#if article_index < 3>
+                                <li<#if !article_has_next> class="last"</#if>>
+                                    ${article.content}
+                                    </#if>
+                                </li>
+                                </#list>
+                            </ul>
                         </#if>
+                    </div>
+                </div>
+                <#if ADLabel != ''>
+                <div class="module">
+                    <div class="module-header" style="background-color: #7ea5c8">
+                        <a href="https://hacpai.com/article/1460083956075">${sponsorLabel}</a>
+                    </div>
+                    <div class="ad module-panel fn-clear">
+                        ${ADLabel}
+                    </div>
+                </div>
+                </#if>
+                <div class="module">
+                    <div class="module-header" style="background-color: #9cd462">
+                        <a href="${servePath}/pre-post">${postArticleLabel}</a>
+                    </div>
+                    <div class="module-panel">
                         <ul class="module-list">
-                            <#list timelines as article>
-                            <#if article_index < 3>
-                            <li<#if !article_has_next> class="last"</#if>>
-                                ${article.content}
-                                </#if>
-                        </li>
-                        </#list>
-                    </ul>
+                            <li><a class="title" href="<#if useCaptchaCheckin??>${servePath}/activity/checkin<#else>${servePath}/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a></li>
+                            <li><a class="title" href="${servePath}/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a></li>
+                            <li><a class="title" href="${servePath}/activity/1A0001">${activity1A0001Label}</a></li>
+                            <li><a class="title" href="${servePath}/activity/character">${characterLabel}</a></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <#if ADLabel != ''>
-            <div class="item mid">
-                <a class="item-header" style="background-image: url(${adBgIcon})" href="https://hacpai.com/article/1460083956075">${sponsorLabel}</a>
-                <div class="ad module-panel">
-                    ${ADLabel}
-                </div>
-            </div>
-            </#if>
-            <div class="item">
-                <a class="item-header" style="background-image: url(${activityBgIcon});" href="${servePath}/pre-post">${postArticleLabel}</a>
-                <div class="module-panel">
-                    <ul class="module-list">
-                        <li><a class="title" href="<#if useCaptchaCheckin??>${servePath}/activity/checkin<#else>${servePath}/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a></li>
-                        <li><a class="title" href="${servePath}/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a></li>
-                        <li><a class="title" href="${servePath}/activity/1A0001">${activity1A0001Label}</a></li>
-                        <li><a class="title" href="${servePath}/activity/character">${characterLabel}</a></li>
-                    </ul>
-                </div>
-            </div>
         </div>
     </div>
 
