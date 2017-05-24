@@ -1453,6 +1453,8 @@ a[class*=" icon-"]:hover {
     height: 28px;
     color: #eee;
     box-sizing: border-box;
+    position: relative;
+    vertical-align: top;
   }
 
   input.search:hover {

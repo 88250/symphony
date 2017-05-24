@@ -17,6 +17,7 @@
         </div>
     </div>
 </div>
+<script src="${staticServePath}/js/symbol-defs.js?${staticResourceVersion}"></script>
 <script src="${staticServePath}/js/lib/compress/libs.min.js?${staticResourceVersion}"></script>
 <script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
