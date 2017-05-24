@@ -691,7 +691,7 @@ var Comment = {
                     template += '<a class="tooltipped tooltipped-nw ft-a-title fn-right" aria-label="' + Label.referenceLabel + '" href="javascript:Comment.goComment(\''
                         + Label.servePath + '/article/' + Label.articleOId + '?p=' + data.paginationCurrentPageNum
                         + '&m=' + Label.userCommentViewMode + '#' + data.oId
-                        + '\')"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
+                        + '\')"><svg><use xlink:href="#quote"></use></svg></a></div><div class="content-reset comment">'
                         + data.commentContent + '</div></div></div></li>';
                 }
                 $commentReplies.html('<ul>' + template + '</ul>');
@@ -1665,11 +1665,13 @@ var Article = {
                 right: '-' + $('#articleToC').outerWidth() + 'px'
             });
             $menu.removeClass('ft-red');
+            $('.article-actions  .icon-unordered-list').removeClass('ft-red');
         } else {
             $articleToc.animate({
                 right: 0
             });
             $menu.addClass('ft-red');
+            $('.article-actions  .icon-unordered-list').addClass('ft-red');
         }
     },
     /**

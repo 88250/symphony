@@ -184,7 +184,7 @@
     font-size: 16px;
     top: -50px;
 
-    svg {
+    h1 svg {
       color: $black-text;
       vertical-align: baseline;
       height: 48px;
@@ -203,18 +203,21 @@
     .user-nav > span,
     .user-nav > a {
       float: left;
-      padding: 5px 10px;
+      padding: 16px 10px;
+      line-height: 16px;
+      height: 16px;
       color: $theme-secondary;
       text-decoration: none;
-
-      &.ft-red {
-        color: $theme-accent;
-      }
     }
 
     .user-nav > span:hover,
     .user-nav > a:hover {
       color: $black-text;
+    }
+
+    .user-nav svg {
+      height:16px;
+      width: 16px;
     }
 
   }

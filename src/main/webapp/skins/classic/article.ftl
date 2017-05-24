@@ -88,7 +88,7 @@
                     <div class="article-actions action-btns">
                         <#if "" != article.articleToC>
                             <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
-                                  class="tooltipped tooltipped-n"><span class="icon-unordered-list ft-red"></span></span> &nbsp;
+                                  class="tooltipped tooltipped-n"><svg class="ft-red icon-unordered-list"><use xlink:href="#unordered-list"></use></svg></span> &nbsp;
                         </#if>
 
                         <#if permissions["commonViewArticleHistory"].permissionGrant && article.articleRevisionCount &gt; 1>
@@ -384,7 +384,7 @@
             <div class="user-nav">
                 <#if "" != article.articleToC>
                     <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
-                          class="tooltipped tooltipped-w"><span class="icon-unordered-list ft-red"></span></span>
+                          class="tooltipped tooltipped-w"><svg class="ft-red icon-unordered-list"><use xlink:href="#unordered-list"></use></svg></span>
                 </#if>
                 <#if permissions["commonViewArticleHistory"].permissionGrant && article.articleRevisionCount &gt; 1>
                     <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
@@ -491,6 +491,7 @@
         </div>
         </#if>
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/lib/editor/editor.js"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
