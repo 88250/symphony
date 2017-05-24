@@ -191,7 +191,7 @@
                                                 <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade" data-ua="${comment.commentUA}"></span></#if>
                                             </span>
                                             <a class="ft-a-title fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
-                                               href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}')"><span class="icon-down"></span></a>
+                                               href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}')"><svg><use xlink:href="#down"></use></svg></a>
                                         </div>
                                         <div class="content-reset comment">
                                             ${comment.commentContent}
