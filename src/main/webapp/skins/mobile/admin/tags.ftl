@@ -27,8 +27,7 @@
                 <div class="ft-gray fn-clear">
                     <span class="icon-view fn-right" title="${refCountLabel}">${item.tagReferenceCount}</span>
                     <span class="icon-cmts fn-right" title="${commentCountLabel}"> ${item.tagCommentCount} &nbsp;</span>
-                    <span class="icon-date" title="${createTimeLabel}"></span>
-                    ${item.tagCreateTime?string('yyyy-MM-dd HH:mm')}
+                    ${createTimeLabel} ${item.tagCreateTime?string('yyyy-MM-dd HH:mm')}
                 </div>
             </div>
         </li>

@@ -27,16 +27,12 @@
                     </#if>
                 </div>
                 <div class="fn-clear">
-                    <span class="tooltipped tooltipped-n" aria-label="${emailLabel}"><svg><use xlink:href="#email"></use></svg></span>
                     ${item.userEmail} &nbsp;
-                    <span class="tooltipped tooltipped-n" aria-label="${roleLabel}"><svg><use xlink:href="#userrole"></use></svg></span>
-                    ${item.roleName}
+                    ${roleLabel} ${item.roleName}
                     <span class="fn-right ft-gray">
-                        <svg><use xlink:href="#articles"></use></svg> ${item.userArticleCount} &nbsp;
-                        <span class="tooltipped tooltipped-n" aria-label="${commentCountLabel}"><svg><use xlink:href="#cmts"></use></svg></span>
-                        ${item.userCommentCount} &nbsp;
-                        <span class="tooltipped tooltipped-n" aria-label="${createTimeLabel}"><svg><use xlink:href="#date"></use></svg></span>
-                        ${item.userCreateTime?string('yyyy-MM-dd HH:mm')}
+                        ${articleCountLabel} ${item.userArticleCount} &nbsp;
+                        ${commentCountLabel} ${item.userCommentCount} &nbsp;
+                        ${createTimeLabel} ${item.userCreateTime?string('yyyy-MM-dd HH:mm')}
                     </span>
                 </div>
             </li>

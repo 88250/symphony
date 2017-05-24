@@ -16,7 +16,7 @@
                     <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
                         ${articleTag.tagTitle}</a>
                     </#list><br/>
-                    <span class="icon-date"></span>
+                    <svg><use xlink:href="#date"></use></svg>
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>
