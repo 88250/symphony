@@ -142,7 +142,7 @@
                 <#if 3 != article.articleType>
                 <div class="content-reset article-content">${article.articleContent}</div>
                 <#else>
-                <div id="thoughtProgress"><span class="bar"></span><span class="icon-video"></span><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
+                <div id="thoughtProgress"><span class="bar"></span><svg class="icon-video"><use xlink:href="#video"></use></svg><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
                 <div class="content-reset article-content"></div>
                 </#if>
 
