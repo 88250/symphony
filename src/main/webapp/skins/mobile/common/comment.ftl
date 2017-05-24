@@ -71,7 +71,7 @@
                             onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', ${comment.commentAnonymous}, this)"
                         <#else>
                               onclick="Article.permissionTip(Label.noPermissionLabel)"
-                        </#if>><span class="icon-heart"></span> ${comment.rewardedCnt}</span> &nbsp;
+                        </#if>><svg class="fn-text-top"><use xlink:href="#heart"></use></svg> ${comment.rewardedCnt}</span> &nbsp;
                     <span class="tooltipped tooltipped-n<#if isLoggedIn && 0 == comment.commentVote> ft-red</#if>"
                           aria-label="${upLabel}"
                     <#if permissions["commonGoodComment"].permissionGrant>

@@ -231,7 +231,7 @@
                                                 <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
                                                 <span aria-label="<#if hasRewarded>${thankedLabel}<#else>${thankLabel} ${comment.rewardedCnt}</#if>"
                                                       class="tooltipped tooltipped-n rewarded-cnt <#if hasRewarded>ft-red<#else>ft-fade</#if>">
-                                                    <span class="icon-heart"></span> ${comment.rewardedCnt}
+                                                    <svg class="fn-text-top"><use xlink:href="#heart"></use></svg> ${comment.rewardedCnt}
                                                 </span>
                                                 </#if>
                                                 <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade" data-ua="${comment.commentUA}"></span></#if>
@@ -359,7 +359,7 @@
                 </#if>
                 <#else>
                     onclick="Article.permissionTip(Label.noPermissionLabel)"
-            </#if>><span class="icon-heart"></span> <span class="ft-13">${article.thankedCnt}</span></span>
+            </#if>><svg><use xlink:href="#heart"></use></svg> <span class="ft-13">${article.thankedCnt}</span></span>
             <div id="qrCode" class="fn-none"
                  data-shareurl="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"></div>
             <span class="tooltipped tooltipped-e" aria-label="share to wechat" data-type="wechat"><svg class="icon-wechat"><use xlink:href="#wechat"></use></svg></span>

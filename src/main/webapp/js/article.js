@@ -563,7 +563,7 @@ var Comment = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeAttr('onclick');
-                    var $heart = $("<i class='icon-heart ft-red'></i>"),
+                    var $heart = $('<svg class="ft-red"><use xlink:href="#heart"></use></svg>'),
                         y = $(it).offset().top,
                         x = $(it).offset().left;
                     $heart.css({
@@ -583,7 +583,7 @@ var Comment = {
                         function () {
                             var cnt = parseInt($(it).text());
 
-                            $(it).html('<span class="icon-heart"></span> ' + (cnt + 1)).addClass('ft-red');
+                            $(it).html('<svg><use xlink:href="#heart"></use></svg> ' + (cnt + 1)).addClass('ft-red');
 
                             $heart.remove();
                         }
@@ -683,7 +683,7 @@ var Comment = {
                             + (data.rewarded ? Label.thankedLabel : Label.thankLabel + ' ' + data.rewardedCnt)
                             + '" class="tooltipped tooltipped-n '
                             + (data.rewarded ? 'ft-red' : 'ft-fade') + '">'
-                            + ' <span class="icon-heart"></span>' + data.rewardedCnt + '</span> ';
+                            + ' <svg><use xlink:href="#heart"></use></svg> ' + data.rewardedCnt + '</span> ';
                     }
 
                     template += ' ' + Util.getDeviceByUa(data.commentUA) + '</span>';
@@ -1389,10 +1389,10 @@ var Article = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     var thxCnt = parseInt($('#thankArticle').text());
-                    $("#thankArticle").removeAttr("onclick").html('<span class="icon-heart"></span><span class="ft-13">' + (thxCnt + 1) + '</span>')
+                    $("#thankArticle").removeAttr("onclick").html('<svg><use xlink:href="#heart"></use></svg><span class="ft-13">' + (thxCnt + 1) + '</span>')
                         .addClass('ft-red').removeClass('ft-blue');
 
-                    var $heart = $("<i class='icon-heart ft-red'></i>"),
+                    var $heart = $('<svg class="ft-red"><use xlink:href="#heart"></use></svg>'),
                         y = $('#thankArticle').offset().top,
                         x = $('#thankArticle').offset().left;
                     $heart.css({

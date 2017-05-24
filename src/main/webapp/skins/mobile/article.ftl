@@ -30,7 +30,7 @@
                               </#if>
                               <#else>
                                   onclick="Article.permissionTip(Label.noPermissionLabel)"
-                              </#if>><span class="icon-heart"></span> ${article.thankedCnt}</span>
+                              </#if>><svg class="fn-text-top"><use xlink:href="#heart"></use></svg> ${article.thankedCnt}</span>
                         <span class="tooltipped tooltipped-n has-cnt<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>" aria-label="${upLabel}"
                             <#if permissions["commonGoodArticle"].permissionGrant>
                                 onclick="Article.voteUp('${article.oId}', 'article', this)"
@@ -205,7 +205,7 @@
                                                     <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
                                                     <span aria-label="<#if hasRewarded>${thankedLabel}<#else>${thankLabel} ${comment.rewardedCnt}</#if>"
                                                           class="tooltipped tooltipped-n rewarded-cnt <#if hasRewarded>ft-red<#else>ft-fade</#if>">
-                                                        <span class="icon-heart"></span>${comment.rewardedCnt}
+                                                        <svg class="fn-text-top"><use xlink:href="#heart"></use></svg> ${comment.rewardedCnt}
                                                     </span>
                                                     </#if>
                                                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade" data-ua="${comment.commentUA}"></span></#if>

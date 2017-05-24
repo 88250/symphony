@@ -644,8 +644,25 @@ blockquote {
     line-height: 18px;
     font-size: 18px;
 }
-
 /* end function */
+
+/* start aplayer */
+.wrapper .aplayer {
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+    .aplayer-pic {
+        background-size: cover;
+    }
+
+    svg {
+        height: 16px;
+        width: 16px;
+        float: left;
+        margin: 0px 0 0 2px;
+    }
+}
+/* end aplayer */
 
 @font-face {
     font-family: 'icomoon';
@@ -688,20 +705,11 @@ blockquote {
 .icon-sortasc:before {
     content: "\e905";
 }
-.icon-locked:before {
-    content: "\e61e";
-}
-.icon-emoji:before {
-    content: "\e902";
-}
 .icon-view:before {
     content: "\e901";
 }
 .icon-star:before {
     content: "\f006";
-}
-.icon-heart:before {
-    content: "\f08b";
 }
 .icon-thumbs-up:before {
     content: "\f089";
@@ -733,38 +741,8 @@ blockquote {
 .icon-points:before {
     content: "\e900";
 }
-.icon-goods:before {
-    content: "\e904";
-}
-.icon-ordered-list:before {
-    content: "\e005";
-}
-.icon-image:before {
-    content: "\e007";
-}
-.icon-play:before {
-    content: "\e008";
-}
-.icon-music:before {
-    content: "\e009";
-}
 .icon-question:before {
     content: "\e00c";
-}
-.icon-info:before {
-    content: "\e00d";
-}
-.icon-undo:before {
-    content: "\e00e";
-}
-.icon-redo:before {
-    content: "\e00f";
-}
-.icon-code:before {
-    content: "\e011";
-}
-.icon-navigation:before {
-    content: "\e903";
 }
 .icon-setting:before {
     content: "\e604";
@@ -774,9 +752,6 @@ blockquote {
 }
 .icon-cmts:before {
     content: "\e60a";
-}
-.icon-go-top:before {
-    content: "\e60c";
 }
 .icon-edit:before {
     content: "\e60e";
@@ -789,15 +764,6 @@ blockquote {
 }
 .icon-login:before {
     content: "\e613";
-}
-.icon-userrole:before {
-    content: "\e615";
-}
-.icon-email:before {
-    content: "\e616";
-}
-.icon-flag:before {
-    content: "\e617";
 }
 .icon-reply-to:before {
     content: "\e620";

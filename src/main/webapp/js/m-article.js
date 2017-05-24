@@ -194,145 +194,6 @@ var Comment = {
         });
     },
     /**
-     * 初始化帖子
-     * @returns {undefined}
-     */
-    _initHotKey: function () {
-        if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
-            return false;
-        }
-
-        $(document).bind('keyup', 'x', function assets() {
-            // listen jump hotkey h
-            Util.prevKey = 'x';
-            setTimeout(function () {
-                Util.prevKey = undefined;
-            }, 1000);
-            return false;
-        }).bind('keyup', 'v', function assets() {
-            // listen jump hotkey h
-            Util.prevKey = 'v';
-            setTimeout(function () {
-                Util.prevKey = undefined;
-            }, 1000);
-            return false;
-        }).bind('keydown', 'r', function assets(event) {
-            if (!Util.prevKey) {
-                // r 回复帖子
-                $('#replyBtn').click();
-            } else if (Util.prevKey === 'v') {
-                // v r 打赏帖子
-                $('#articleRewardContent .icon-points').parent().click();
-            } else if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                // x r 回复回帖
-                $('#comments .list > ul > li.focus .icon-reply').parent().click();
-            }
-            return false;
-        }).bind('keyup', 'h', function assets() {
-            // x h 感谢选中回贴
-            if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('#comments .list > ul > li.focus .icon-heart').parent().click();
-            }
-            return false;
-        }).bind('keyup', 't', function assets() {
-            // x t 赞同选中回贴
-            if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('#comments .list > ul > li.focus .icon-thumbs-up').parent().click();
-            }
-            return false;
-        }).bind('keyup', 'd', function assets() {
-            // x d 反对选中回贴
-            if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('#comments .list > ul > li.focus .icon-thumbs-down').parent().click();
-            }
-            return false;
-        }).bind('keyup', 'c', function assets() {
-            // x c 查看选中回复的回贴
-            if ($('#comments .list > ul > li.focus .comment-info .fn-pointer.ft-fade').length === 1 && Util.prevKey === 'x') {
-                $('#comments .list > ul > li.focus .comment-info .fn-pointer.ft-fade').click();
-            }
-            return false;
-        }).bind('keyup', 'm', function assets() {
-            // x m 查看选中回贴的回复
-            if ($('#comments .list > ul > li.focus .comment-action > .ft-fade > .fn-pointer').length === 1 && Util.prevKey === 'x') {
-                $('#comments .list > ul > li.focus .comment-action > .ft-fade > .fn-pointer').click();
-            }
-            return false;
-        }).bind('keyup', 'a', function assets() {
-            // x a 管理员编辑选中的回贴
-            if (Util.prevKey === 'x' && $('#comments .list > ul > li.focus .icon-setting').parent().length === 1) {
-                window.location = $('#comments .list > ul > li.focus .icon-setting').parent().attr('href');
-            }
-            return false;
-        }).bind('keyup', 'h', function assets() {
-            // v h 感谢帖子
-            if (Util.prevKey === 'v') {
-                $('#thankArticle').click();
-            }
-            return false;
-        }).bind('keyup', 't', function assets() {
-            // v t 赞同帖子
-            if (Util.prevKey === 'v') {
-                $('.article-header .icon-thumbs-up').parent().click();
-            }
-            return false;
-        }).bind('keyup', 'd', function assets() {
-            // v d 反对帖子
-            if (Util.prevKey === 'v') {
-                $('.article-header .icon-thumbs-down').parent().click();
-            }
-            return false;
-        }).bind('keyup', 'i', function assets() {
-              // v i 关注帖子
-              if (Util.prevKey === 'v') {
-                  $('.article-header .icon-view').parent().click();
-              }
-              return false;
-        }).bind('keyup', 'c', function assets() {
-            // v c 收藏帖子
-            if (Util.prevKey === 'v') {
-                $('.article-header .icon-star').parent().click();
-            }
-            return false;
-        }).bind('keyup', 'l', function assets() {
-            // v h 查看帖子历史
-            if (Util.prevKey === 'v') {
-                $('.article-header .icon-history').parent().click();
-            }
-            return false;
-        }).bind('keyup', 'e', function assets() {
-            // v e 编辑帖子
-            if (Util.prevKey === 'v' && $('.article-actions .icon-edit').parent().length === 1) {
-                window.location = $('.article-actions .icon-edit').parent().attr('href');
-            }
-            return false;
-        }).bind('keyup', 's', function assets() {
-            // v s 置顶帖子
-            if (Util.prevKey === 'v' && $('.article-actions .icon-chevron-up').length === 1) {
-                Article.stick(Label.articleOId);
-            }
-            return false;
-        }).bind('keyup', 'a', function assets() {
-            // v a 管理员编辑帖子 
-            if (Util.prevKey === 'v' && $('.article-actions .icon-setting').parent().length === 1) {
-                window.location = $('.article-actions .icon-setting').parent().attr('href');
-            }
-            return false;
-        }).bind('keyup', 'p', function assets() {
-            // v p 跳转到上一篇帖子 prev
-            if (Util.prevKey === 'v' && $('.article-header a[rel=prev]').length === 1) {
-                window.location = $('.article-header a[rel=prev]').attr('href');
-            }
-            return false;
-        }).bind('keyup', 'n', function assets() {
-            // v n 跳转到下一篇帖子 next
-            if (Util.prevKey === 'v' && $('.article-header a[rel=next]').length === 1) {
-                window.location = $('.article-header a[rel=next]').attr('href');
-            }
-            return false;
-        });
-    },
-    /**
      * 评论初始化
      * @returns {Boolean}
      */
@@ -348,8 +209,6 @@ var Comment = {
         this._initEditorPanel();
 
         $.ua.set(navigator.userAgent);
-
-        this._initHotKey();
 
         $.pjax({
             selector: '.pagination a',
@@ -585,7 +444,7 @@ var Comment = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeAttr('onclick');
-                    var $heart = $("<i class='icon-heart ft-red'></i>"),
+                    var $heart = $('<svg class="ft-red"><use xlink:href="#heart"></use></svg>'),
                             y = $(it).offset().top,
                             x = $(it).offset().left;
                     $heart.css({
@@ -605,7 +464,7 @@ var Comment = {
                             function () {
                                 var cnt = parseInt($(it).text());
 
-                                $(it).html('<span class="icon-heart"></span> ' + (cnt + 1)).addClass('ft-red');
+                                $(it).html('<svg><use xlink:href="#heart"></use></svg> ' + (cnt + 1)).addClass('ft-red');
 
                                 $heart.remove();
                             }
@@ -706,7 +565,7 @@ var Comment = {
                                 + (data.rewarded ? Label.thankedLabel : Label.thankLabel + ' ' + data.rewardedCnt)
                                 + '" class="tooltipped tooltipped-n '
                                 + (data.rewarded ? 'ft-red' : 'ft-fade') + '">'
-                                + ' <span class="icon-heart"></span>' + data.rewardedCnt + '</span> ';
+                                + ' <svg><use xlink:href="#heart"></use></svg> ' + data.rewardedCnt + '</span> ';
                     }
 
                     template += ' ' + Util.getDeviceByUa(data.commentUA) + '</span>';
@@ -1282,10 +1141,10 @@ var Article = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     var thxCnt = parseInt($('#thankArticle').text());
-                    $("#thankArticle").removeAttr("onclick").html('<span class="icon-heart"></span> <span class="ft-13">' + (thxCnt + 1) + '</span>')
+                    $("#thankArticle").removeAttr("onclick").html('<svg><use xlink:href="#heart"></use></svg> <span class="ft-13">' + (thxCnt + 1) + '</span>')
                     .addClass('ft-red').removeClass('ft-blue');
 
-                    var $heart = $("<i class='icon-heart ft-red'></i>"),
+                    var $heart = $('<svg class="ft-red"><use xlink:href="#heart"></use></svg>'),
                             y = $('#thankArticle').offset().top,
                             x = $('#thankArticle').offset().left;
                     $heart.css({

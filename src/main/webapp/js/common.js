@@ -1536,7 +1536,7 @@ var Util = {
                 } else if (click_cnt >= 100 && click_cnt <= 105) {
                     $i = $("<b></b>").text("(ꐦ°᷄д°᷅)");
                 } else {
-                    $i = $("<i class='icon-heart'></i>");
+                    $i = $('<svg><use xlink:href="#heart"></use></svg>');
                     n = Math.round(Math.random() * 14 + 6);
                 }
                 var x = e.pageX, y = e.pageY;

@@ -142,30 +142,6 @@ a[class*=" icon-"]:hover {
   text-decoration: none;
   color: $blue;
 }
-
-.icon-go-top {
-  background-color: #E7ECEE;
-  border: 1px solid #D2D9DD;
-  border-right-width: 0;
-  border-radius: 5px 0 0 5px;
-  bottom: 68px;
-  color: #999;
-  cursor: pointer;
-  display: none;
-  line-height: 36px;
-  font-size: 20px;
-  text-align: center;
-  height: 36px;
-  position: fixed;
-  width: 36px;
-  z-index: 10;
-  right: 0;
-}
-
-.icon-go-top:hover {
-  background-color: #d8e0e3 !important;
-}
-
 /* end icon */
 
 /* start tip */
@@ -471,22 +447,6 @@ a[class*=" icon-"]:hover {
 }
 
 /* end completed */
-
-/* start aplayer */
-.wrapper .aplayer {
-  margin: 0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-
-  .aplayer-pic {
-    background-size: cover;
-  }
-
-  svg {
-    vertical-align: initial;
-  }
-}
-
-/* end aplayer */
 
 /* start framework */
 .wrapper {
@@ -1219,10 +1179,6 @@ label.cmt-anonymous {
   margin-bottom: 0;
 }
 
-.comments .comment-info .icon-heart {
-  vertical-align: text-bottom;
-}
-
 .comments.nice ul {
   margin-top: 5px;
   border: 1px solid #eee;
@@ -1688,7 +1644,7 @@ label.cmt-anonymous {
     font-size: 14px;
     line-height: 1.6;
 
-    svg {
+    & > svg {
       margin: 0 auto;
       height: 50px;
       width: 50px;
@@ -1711,11 +1667,10 @@ label.cmt-anonymous {
     .input-wrap {
       position: relative;
 
-      span {
+      svg {
         color: #999;
         position: absolute;
-        top: 16px;
-        font-size: 20px;
+        top: 19px;
         left: 10px;
       }
     }

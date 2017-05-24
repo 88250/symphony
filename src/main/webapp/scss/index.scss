@@ -472,10 +472,6 @@ label.cmt-anonymous {
     vertical-align: bottom;
   }
 
-  .comment-info .icon-heart {
-    vertical-align: text-bottom;
-  }
-
   .comment-info a:hover {
     text-decoration: none;
   }
@@ -738,7 +734,7 @@ label.cmt-anonymous {
     width: 250px;
     margin: 100px auto;
 
-    svg {
+    & > svg {
       margin: 0 auto;
       display: block;
       height: 100px;
@@ -761,11 +757,10 @@ label.cmt-anonymous {
     .input-wrap {
       position: relative;
 
-      span {
+      svg {
         color: $gray;
         position: absolute;
-        top: 16px;
-        font-size: 20px;
+        top: 19px;
         left: 10px;
       }
     }
