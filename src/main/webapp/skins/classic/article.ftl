@@ -96,52 +96,6 @@
                                   class="tooltipped tooltipped-n"><svg class="icon-history"><use xlink:href="#history"></use></svg></span> &nbsp;
                         </#if>
 
-                        <span class="tooltipped tooltipped-n<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>" aria-label="${upLabel}"
-                        <#if permissions["commonGoodArticle"].permissionGrant>
-                              onclick="Article.voteUp('${article.oId}', 'article', this)"
-                        <#else>
-                              onclick="Article.permissionTip(Label.noPermissionLabel)"
-                        </#if>><svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ${article.articleGoodCnt}</span> &nbsp;
-
-                        <span  class="tooltipped tooltipped-n<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>" aria-label="${downLabel}"
-                        <#if permissions["commonBadArticle"].permissionGrant>
-                               onclick="Article.voteDown('${article.oId}', 'article', this)"
-                        <#else>
-                               onclick="Article.permissionTip(Label.noPermissionLabel)"
-                        </#if>><span class="icon-thumbs-down"></span> ${article.articleBadCnt}</span> &nbsp;
-
-                        <#if isLoggedIn && isFollowing>
-                            <span class="tooltipped tooltipped-n ft-red" aria-label="${uncollectLabel}"
-                                <#if permissions["commonFollowArticle"].permissionGrant>
-                                  onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
-                                <#else>
-                                  onclick="Article.permissionTip(Label.noPermissionLabel)"
-                                </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
-                        <#else>
-                            <span class="tooltipped tooltipped-n" aria-label="${collectLabel}"
-                                <#if permissions["commonFollowArticle"].permissionGrant>
-                                  onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
-                                <#else>
-                                  onclick="Article.permissionTip(Label.noPermissionLabel)"
-                                </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
-                        </#if> &nbsp;
-
-                        <#if isLoggedIn && isWatching>
-                            <span class="tooltipped tooltipped-n ft-red" aria-label="${unfollowLabel}"
-                                <#if permissions["commonWatchArticle"].permissionGrant>
-                                  onclick="Util.unfollow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
-                                <#else>
-                                  onclick="Article.permissionTip(Label.noPermissionLabel)"
-                                </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
-                        <#else>
-                            <span class="tooltipped tooltipped-n" aria-label="${followLabel}"
-                                <#if permissions["commonWatchArticle"].permissionGrant>
-                                  onclick="Util.follow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
-                                <#else>
-                                  onclick="Article.permissionTip(Label.noPermissionLabel)"
-                                </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
-                        </#if> &nbsp;
-
                         <#if article.isMyArticle && permissions["commonStickArticle"].permissionGrant>
                             <a class="tooltipped tooltipped-n" aria-label="${stickLabel}"
                                href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a> &nbsp;
