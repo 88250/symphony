@@ -388,7 +388,7 @@
                 </#if>
                 <#if permissions["commonViewArticleHistory"].permissionGrant && article.articleRevisionCount &gt; 1>
                     <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
-                          class="tooltipped tooltipped-w"><span class="icon-history"></span></span>
+                          class="tooltipped tooltipped-w"><svg><use xlink:href="#history"></use></svg></span>
                 </#if>
 
                 <#if articlePrevious??>

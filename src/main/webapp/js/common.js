@@ -77,7 +77,7 @@ var Util = {
          alertBgHTML = '<div onclick="Util.closeAlert(this)" style="height: ' +  document.documentElement.scrollHeight
          + 'px;display: block;" class="dialog-background"></div>',
          alertContentHTML = '<div class="dialog-panel" id="alertDialogPanel" tabindex="0" onkeyup="Util.closeAlert()">'
-         + '<div class="fn-clear dialog-header-bg"><a href="javascript:void(0);" onclick="Util.closeAlert()" class="icon-close"></a></div>'
+         + '<div class="fn-clear dialog-header-bg"><a class="icon-close" href="javascript:void(0);" onclick="Util.closeAlert()"><svg><use xlink:href="#close"></use></svg></a></div>'
          + '<div class="dialog-main" style="text-align:center;padding: 30px 10px 40px">' + content + '</div></div>';
 
          alertHTML = alertBgHTML + alertContentHTML;

@@ -689,10 +689,6 @@ blockquote {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
-.icon-close:before {
-    content: "\e909";
-}
 .icon-pin:before {
     content: "\e90e";
 }
@@ -740,9 +736,6 @@ blockquote {
 }
 .icon-points:before {
     content: "\e900";
-}
-.icon-question:before {
-    content: "\e00c";
 }
 .icon-setting:before {
     content: "\e604";
