@@ -1,6 +1,6 @@
 <#macro home type>
 <#include "../macro-head.ftl">
-<#include "../common/home-list-title-icon.ftl">
+<#include "../common/title-icon.ftl">
 <!DOCTYPE html>
 <html>
     <head>

@@ -7,6 +7,6 @@
 <#elseif 2 == type>
     <span class="tooltipped tooltipped-e" aria-label="${cityBroadcastLabel}"><svg><use xlink:href="#feed"></use></svg></span>
 <#elseif 3 == type>
-    <span class="tooltipped tooltipped-e" aria-label="${thoughtLabel}"><svg><use xlink:href="#video"></use></svg>></span>
+    <span class="tooltipped tooltipped-e" aria-label="${thoughtLabel}"><svg><use xlink:href="#video"></use></svg></span>
 </#if>
 </#macro>

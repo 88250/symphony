@@ -95,6 +95,12 @@
     font-weight: normal;
     padding-top: 15px;
     text-align: center;
+
+    svg {
+      height: 28px;
+      width: 28px;
+      vertical-align: -4px;
+    }
   }
 
   .article-content {

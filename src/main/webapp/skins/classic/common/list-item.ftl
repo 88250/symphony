@@ -15,16 +15,7 @@
         </span>
     </div>
     <h2>
-        <#if 1 == article.articlePerfect>
-            <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg><use xlink:href="#perfect"></use></svg></span>
-        </#if>
-        <#if 1 == article.articleType>
-            <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
-            <#elseif 2 == article.articleType>
-                <span class="tooltipped tooltipped-w" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
-                <#elseif 3 == article.articleType>
-                    <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
-        </#if>
+        <@icon article.articlePerfect article.articleType></@icon>
         <a class="ft-a-title" data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
         </a>
     </h2>

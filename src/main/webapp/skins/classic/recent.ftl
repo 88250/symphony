@@ -1,6 +1,7 @@
 <#include "macro-head.ftl">
 <#include "macro-list.ftl">
 <#include "macro-pagination.ftl">
+<#include "common/title-icon.ftl">
 <!DOCTYPE html>
 <html>
     <head>
