@@ -36,7 +36,7 @@
                         <span onclick="Article.revision('${comment.oId}', 'comment')" aria-label="${historyLabel}"
                               class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden
                           <#if comment.commentRevisionCount &lt; 2>fn-none</#if>">
-                        <span class="icon-history"></span></span> &nbsp;
+                        <svg><use xlink:href="#history"></use></svg></span> &nbsp;
                     </#if>
                     <#if isLoggedIn && comment.commentAuthorName == currentUser.userName && permissions["commonUpdateComment"].permissionGrant>
                         <span class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden" onclick="Comment.edit('${comment.oId}')"

@@ -237,8 +237,8 @@ var Comment = {
             return false;
         }).bind('keyup', 'c', function assets() {
             // x c 查看选中回复的回贴
-            if ($('#comments .list > ul > li.focus .comment-info .fn-pointer.ft-fade').length === 1 && Util.prevKey === 'x') {
-                $('#comments .list > ul > li.focus .comment-info .fn-pointer.ft-fade').click();
+            if ($('#comments .list > ul > li.focus .comment-info .icon-reply-to').length === 1 && Util.prevKey === 'x') {
+                $('#comments .list > ul > li.focus .comment-info .icon-reply-to').parent().click();
             }
             return false;
         }).bind('keyup', 'm', function assets() {
@@ -683,7 +683,7 @@ var Comment = {
                             + (data.rewarded ? Label.thankedLabel : Label.thankLabel + ' ' + data.rewardedCnt)
                             + '" class="tooltipped tooltipped-n '
                             + (data.rewarded ? 'ft-red' : 'ft-fade') + '">'
-                            + ' <svg><use xlink:href="#heart"></use></svg> ' + data.rewardedCnt + '</span> ';
+                            + ' <svg class="fn-text-top"><use xlink:href="#heart"></use></svg> ' + data.rewardedCnt + '</span> ';
                     }
 
                     template += ' ' + Util.getDeviceByUa(data.commentUA) + '</span>';
@@ -929,11 +929,11 @@ var Article = {
                     downCnt = parseInt($voteDown.text());
                 if (result.sc) {
                     if (0 === result.type) { // cancel up
-                        $voteUp.html('<span class="icon-thumbs-up"></span> ' + (upCnt - 1)).removeClass('ft-red');
+                        $voteUp.html('<svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ' + (upCnt - 1)).removeClass('ft-red');
                     } else {
-                        $voteUp.html('<span class="icon-thumbs-up"></span> ' + (upCnt + 1)).addClass('ft-red');
+                        $voteUp.html('<svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ' + (upCnt + 1)).addClass('ft-red');
                         if ($voteDown.hasClass('ft-red')) {
-                            $voteDown.html('<span class="icon-thumbs-down"></span> ' + (downCnt - 1)).removeClass('ft-red');
+                            $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' + (downCnt - 1)).removeClass('ft-red');
                         }
                     }
 
@@ -978,12 +978,12 @@ var Article = {
                     downCnt = parseInt($voteDown.text());
                 if (result.sc) {
                     if (1 === result.type) { // cancel down
-                        $voteDown.html('<span class="icon-thumbs-down"></span> ' + (downCnt - 1)).removeClass('ft-red');
+                        $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' + (downCnt - 1)).removeClass('ft-red');
                     } else {
-                        $voteDown.html('<span class="icon-thumbs-down"></span> ' + (downCnt + 1)).addClass('ft-red');
+                        $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' + (downCnt + 1)).addClass('ft-red');
                         ;
                         if ($voteUp.hasClass('ft-red')) {
-                            $voteUp.html('<span class="icon-thumbs-up"></span> ' + (upCnt - 1)).removeClass('ft-red');
+                            $voteUp.html('<svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ' + (upCnt - 1)).removeClass('ft-red');
                         }
                     }
 

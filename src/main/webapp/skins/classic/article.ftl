@@ -93,7 +93,7 @@
 
                         <#if permissions["commonViewArticleHistory"].permissionGrant && article.articleRevisionCount &gt; 1>
                             <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
-                                  class="tooltipped tooltipped-n"><span class="icon-history"></span></span> &nbsp;
+                                  class="tooltipped tooltipped-n"><svg class="icon-history"><use xlink:href="#history"></use></svg></span> &nbsp;
                         </#if>
 
                         <span class="tooltipped tooltipped-n<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>" aria-label="${upLabel}"
@@ -388,7 +388,7 @@
                 </#if>
                 <#if permissions["commonViewArticleHistory"].permissionGrant && article.articleRevisionCount &gt; 1>
                     <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
-                          class="tooltipped tooltipped-w"><svg><use xlink:href="#history"></use></svg></span>
+                          class="tooltipped tooltipped-w"><svg class="icon-history"><use xlink:href="#history"></use></svg></span>
                 </#if>
 
                 <#if articlePrevious??>

@@ -475,6 +475,10 @@ label.cmt-anonymous {
   .comment-info a:hover {
     text-decoration: none;
   }
+
+  .action-btns svg {
+    vertical-align: text-top;
+  }
 }
 
 .nice .comments > ul > li:last-child {
