@@ -78,7 +78,7 @@
                           onclick="Article.voteUp('${comment.oId}', 'comment', this)"
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
-                    </#if>><span class="icon-thumbs-up"></span> ${comment.commentGoodCnt}</span> &nbsp;
+                    </#if>><svg><use xlink:href="#thumbs-up"></use></svg> ${comment.commentGoodCnt}</span> &nbsp;
                     <span class="tooltipped tooltipped-n<#if isLoggedIn && 1 == comment.commentVote> ft-red</#if>"
                           aria-label="${downLabel}"
                     <#if permissions["commonBadComment"].permissionGrant>

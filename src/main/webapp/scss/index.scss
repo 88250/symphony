@@ -419,6 +419,10 @@ label.cmt-anonymous {
   color: $black-text;
 }
 
+.action-btns svg {
+  vertical-align: text-top;
+}
+
 .comments {
   &.module {
     margin-bottom: 0;
@@ -474,10 +478,6 @@ label.cmt-anonymous {
 
   .comment-info a:hover {
     text-decoration: none;
-  }
-
-  .action-btns svg {
-    vertical-align: text-top;
   }
 }
 

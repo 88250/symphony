@@ -786,11 +786,11 @@ var Article = {
                         downCnt = parseInt($voteDown.text());
                 if (result.sc) {
                     if (0 === result.type) { // cancel up
-                        $voteUp.html('<span class="icon-thumbs-up"></span> ' + (upCnt - 1)).removeClass('ft-red');
+                        $voteUp.html('<svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ' + (upCnt - 1)).removeClass('ft-red');
                     } else {
-                        $voteUp.html('<span class="icon-thumbs-up"></span> ' + (upCnt + 1)).addClass('ft-red');
+                        $voteUp.html('<svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ' + (upCnt + 1)).addClass('ft-red');
                         if ($voteDown.hasClass('ft-red')) {
-                            $voteDown.html('<span class="icon-thumbs-down"></span> ' + (downCnt - 1)).removeClass('ft-red');
+                            $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' + (downCnt - 1)).removeClass('ft-red');
                         }
                     }
 
@@ -835,11 +835,11 @@ var Article = {
                         downCnt = parseInt($voteDown.text());
                 if (result.sc) {
                     if (1 === result.type) { // cancel down
-                        $voteDown.html('<span class="icon-thumbs-down"></span> ' + (downCnt - 1)).removeClass('ft-red');
+                        $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' + (downCnt - 1)).removeClass('ft-red');
                     } else {
-                        $voteDown.html('<span class="icon-thumbs-down"></span> ' + (downCnt + 1)).addClass('ft-red');;
+                        $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' + (downCnt + 1)).addClass('ft-red');
                         if ($voteUp.hasClass('ft-red')) {
-                            $voteUp.html('<span class="icon-thumbs-up"></span> ' + (upCnt - 1)).removeClass('ft-red');
+                            $voteUp.html('<svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ' + (upCnt - 1)).removeClass('ft-red');
                         }
                     }
 

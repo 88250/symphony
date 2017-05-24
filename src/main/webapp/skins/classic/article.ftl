@@ -101,7 +101,7 @@
                               onclick="Article.voteUp('${article.oId}', 'article', this)"
                         <#else>
                               onclick="Article.permissionTip(Label.noPermissionLabel)"
-                        </#if>><span class="icon-thumbs-up"></span> ${article.articleGoodCnt}</span> &nbsp;
+                        </#if>><svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ${article.articleGoodCnt}</span> &nbsp;
 
                         <span  class="tooltipped tooltipped-n<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>" aria-label="${downLabel}"
                         <#if permissions["commonBadArticle"].permissionGrant>
@@ -198,7 +198,7 @@
                 <#if article.articleNiceComments?size != 0>
                 <div class="module nice">
                     <div class="module-header">
-                        <span class="icon-thumbs-up ft-blue"></span>
+                        <svg class="ft-blue"><use xlink:href="#thumbs-up"></use></svg>
                         ${niceCommentsLabel}
                     </div>
                     <div class="module-panel list comments">
@@ -409,7 +409,7 @@
                     onclick="Article.voteUp('${article.oId}', 'article', this)"
                     <#else>
                         onclick="Article.permissionTip(Label.noPermissionLabel)"
-                </#if>><span class="icon-thumbs-up"></span> ${article.articleGoodCnt}</span>
+                </#if>><svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ${article.articleGoodCnt}</span>
 
                 <span  class="tooltipped tooltipped-w<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>" aria-label="${downLabel}"
                 <#if permissions["commonBadArticle"].permissionGrant>

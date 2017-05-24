@@ -981,7 +981,6 @@ var Article = {
                         $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' + (downCnt - 1)).removeClass('ft-red');
                     } else {
                         $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' + (downCnt + 1)).addClass('ft-red');
-                        ;
                         if ($voteUp.hasClass('ft-red')) {
                             $voteUp.html('<svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ' + (upCnt - 1)).removeClass('ft-red');
                         }
