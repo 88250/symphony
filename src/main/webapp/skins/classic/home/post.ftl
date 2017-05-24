@@ -100,8 +100,8 @@
                     <#assign articleType=article.articleType>
                     </#if>
                     <#if 0 == articleType>
-                    <span class="icon-article"></span> ${articleLabel}
-                    <span class="ft-gray">${addNormalArticleTipLabel}</span>
+                        <svg class="post__info"><use xlink:href="#article"></use></svg> ${articleLabel}
+                        <span class="ft-gray">${addNormalArticleTipLabel}</span>
                     <#elseif 1 == articleType>
                     <span class="icon-locked"></span> ${discussionLabel}
                     <span class="ft-gray">${addDiscussionArticleTipLabel}</span>

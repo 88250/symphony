@@ -32,7 +32,7 @@
                     <span class="tooltipped tooltipped-n" aria-label="${roleLabel}"><span class="icon-userrole"></span></span>
                     ${item.roleName}
                     <span class="fn-right ft-gray">
-                        <span class="tooltipped tooltipped-n" aria-label="${articleCountLabel}"><span class="icon-articles"></span></span>
+                        <span class="tooltipped tooltipped-n" aria-label="${articleCountLabel}"><svg><use xlink:href="#articles"></use></svg></span>
                         ${item.userArticleCount} &nbsp;
                         <span class="tooltipped tooltipped-n" aria-label="${commentCountLabel}"><span class="icon-cmts"></span></span>
                         ${item.userCommentCount} &nbsp;

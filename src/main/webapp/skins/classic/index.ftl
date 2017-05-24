@@ -16,14 +16,14 @@
                 <div class="index-main">
                     <div class="index-tabs fn-flex" id="articles">
                         <span class="current" data-index="0">
-                            <span class="icon-clock"></span> ${latestLabel}
+                            <svg><use xlink:href="#refresh"></use></svg> ${latestLabel}
                         </span>
                         <span class="tags" data-index="1">
-                            <span class="icon-tags"></span>
+                            <svg><use xlink:href="#tags"></use></svg>
                             ${followingTagsLabel}
                         </span>
                         <span class="users" data-index="2">
-                            <span class="icon-userrole"></span>
+                            <svg><use xlink:href="#userrole"></use></svg>
                             ${followingUsersLabel}
                         </span>
                     </div>

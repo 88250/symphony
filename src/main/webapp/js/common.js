@@ -1153,9 +1153,6 @@ var Util = {
             });
         };
         // search input
-        $(".nav .icon-search").click(function () {
-            $(".nav input.search").focus();
-        });
         $(".nav input.search").focus(function () {
             $(".nav .tags").css('visibility', 'hidden');
         }).blur(function () {

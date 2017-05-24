@@ -12,7 +12,7 @@
             <div class="pre-post">
                 <div>
                     <a href="${servePath}/post?type=0">
-                        <div class="icon-article"> ${articleLabel}</div>
+                        <svg><use xlink:href="#article"></use></svg> ${articleLabel}
                     </a>
                     <div class="ft-fade">${addNormalArticleTipLabel}</div>
                 </div>

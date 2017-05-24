@@ -330,16 +330,6 @@ a[class*=" icon-"]:hover {
   text-decoration: none;
   color: $blue;
 }
-
-.icon-search {
-  color: $gray;
-  left: 86px;
-  position: absolute;
-  top: 7px;
-  z-index: 2;
-  cursor: pointer;
-}
-
 .radio-btn {
   background-color: $theme-accent;
   border-radius: 28px;

@@ -1138,11 +1138,12 @@ code .dec {
     transform: scaleY(0);
   }
 
-  .index-tabs > span > span {
+  .index-tabs > span > svg {
     display: none;
+    vertical-align: text-top;
   }
 
-  .index-tabs > span.current > span {
+  .index-tabs > span.current > svg {
     display: inline-block;
   }
 

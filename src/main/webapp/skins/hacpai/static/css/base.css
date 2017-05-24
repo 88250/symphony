@@ -230,9 +230,6 @@ textarea {
 .icon-pre:before {
     content: "\e603";
 }
-.icon-search:before {
-    content: "\e600";
-}
 .icon-info:before {
     content: "\e601";
 }
@@ -367,13 +364,6 @@ textarea {
     border-width: 0;
     padding: 0 10px;
     background-color: transparent;
-}
-
-.nav .info .icon-search{
-    float: right;
-    color: #bbb;
-    font-size: 22px;
-    margin: 5px 5px 0 0;
 }
 
 .nav .info a.icon-info {

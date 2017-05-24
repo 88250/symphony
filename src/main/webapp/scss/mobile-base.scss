@@ -138,15 +138,6 @@ a[class*=" icon-"]:hover {
     color: $blue;
 }
 
-.icon-search {
-    color: #999999;
-    left: 86px;
-    position: absolute;
-    top: 7px;
-    z-index: 2;
-    cursor: pointer;
-}
-
 .icon-go-top {
     background-color: #E7ECEE;
     border: 1px solid #D2D9DD;
@@ -500,7 +491,7 @@ a[class*=" icon-"]:hover {
     width: 100%;
     padding: 5px 0;
     z-index: 99;
-    background-color: $blue;
+    background-color: $theme-primary;
 }
 
 .nav .head-fn form {
@@ -620,12 +611,15 @@ a[class*=" icon-"]:hover {
 
 /* start footer */
 .footer {
-    color: $black-text;
-    border-top: 1px solid #E0E0E0;
-    box-shadow: 0 1px 1px white inset;
+    color: #7d8186;
     padding: 10px 0;
     text-align: center;
     font-size: 12px;
+    background-color: $theme-primary;
+
+    a {
+        color: #afb1b3;
+    }
 }
 /* end footer */
 
@@ -2013,6 +2007,7 @@ code .dec { color: initial; } /* decimal - blue */
 .pre-post > div > a {
     color: #404040;
     display: block;
+    margin-bottom: 20px;
 }
 
 .pre-post a:hover {
@@ -2020,9 +2015,11 @@ code .dec { color: initial; } /* decimal - blue */
     color: $blue;
 }
 
-.pre-post a div {
-    font-size: 30px;
-    margin-bottom: 20px;
+.pre-post a svg {
+    height: 30px;
+    width: 30px;
+    vertical-align: middle;
+    margin-right: 20px;
 }
 
 .pre-post div.ft-fade {
