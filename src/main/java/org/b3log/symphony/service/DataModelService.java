@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.28, May 13, 2017
+ * @version 1.12.2.29, May 24, 2017
  * @since 0.2.0
  */
 @Service
@@ -54,16 +54,6 @@ public class DataModelService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(DataModelService.class);
-
-    /**
-     * Icon configuration.
-     */
-    private static final ResourceBundle ICON_CONF = ResourceBundle.getBundle("icon");
-
-    /**
-     * Icons.
-     */
-    private static Map<String, String> ICONS;
 
     /**
      * Language service.
@@ -288,7 +278,6 @@ public class DataModelService {
         fillPersonalNav(request, response, dataModel);
 
         fillLangs(dataModel);
-        fillIcons(dataModel);
         fillSideAd(dataModel);
         fillHeaderBanner(dataModel);
         fillSideTips(dataModel);
@@ -463,36 +452,6 @@ public class DataModelService {
         Stopwatchs.start("Fills lang");
         try {
             dataModel.putAll(langPropsService.getAll(Locales.getLocale()));
-        } finally {
-            Stopwatchs.end();
-        }
-    }
-
-    /**
-     * Fills the all icons.
-     *
-     * @param dataModel the specified data model
-     */
-    private void fillIcons(final Map<String, Object> dataModel) {
-        Stopwatchs.start("Fills icons");
-        try {
-            if (null == ICONS) {
-                ICONS = new HashMap<>();
-
-                final Enumeration<String> keys = ICON_CONF.getKeys();
-                while (keys.hasMoreElements()) {
-                    final String key = keys.nextElement();
-                    String value = ICON_CONF.getString(key);
-
-                    if ("logoIcon".equals(key)) {
-                        value = value.replace("${servePath}", Latkes.getServePath());
-                    }
-
-                    ICONS.put(key, value);
-                }
-            }
-
-            dataModel.putAll(ICONS);
         } finally {
             Stopwatchs.end();
         }
