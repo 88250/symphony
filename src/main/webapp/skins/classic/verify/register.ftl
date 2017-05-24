@@ -14,7 +14,7 @@
             <div class="wrapper verify">
                 <div class="verify-wrap">
                     <div class="form">
-                        ${logoIcon2}
+                        <svg><use xlink:href="#logo"></use></svg>
 
                         <div class="input-wrap">
                             <span class="icon-userrole"></span>

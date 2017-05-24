@@ -90,7 +90,7 @@
                 <div class="index-side">
                     <div class="index-tabs fn-flex">
                         <span class="perfect current">
-                            <svg height="16" viewBox="3 2 11 12" width="14">${perfectIcon}</svg>
+                            <svg><use xlink:href="#perfect"></use></svg>
                             ${perfectLabel}
                         </span>
                         <span class="check">

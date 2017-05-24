@@ -732,6 +732,8 @@ label.cmt-anonymous {
     svg {
       margin: 0 auto;
       display: block;
+      height: 100px;
+      width: 100px;
     }
 
     input[type="text"],
@@ -779,6 +781,11 @@ label.cmt-anonymous {
   .guide-tab,
   .step-btn {
     margin: 50px;
+  }
+
+  .guide-tab svg {
+    height: 100px;
+    width: 100px;
   }
 
   .form {
