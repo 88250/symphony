@@ -30,7 +30,7 @@
                     <#elseif type == "sysAnnounce">
                     ${systemLabel}
                     </#if>
-                    <span class="icon-chevron-down fn-right"></span>
+                    <svg class="fn-right"><use xlink:href="#chevron-down"></use></svg>
                 </div>
                 <div class="fn-hr5"></div>
                 <ul class="tab fn-clear fn-none notification-tab">

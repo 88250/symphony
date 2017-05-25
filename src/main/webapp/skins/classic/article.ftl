@@ -98,7 +98,7 @@
 
                         <#if article.isMyArticle && permissions["commonStickArticle"].permissionGrant>
                             <a class="tooltipped tooltipped-n" aria-label="${stickLabel}"
-                               href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a> &nbsp;
+                               href="javascript:Article.stick('${article.oId}')"><svg class="icon-chevron-up"><use xlink:href="#chevron-up"></use></svg></a> &nbsp;
                         </#if>
                         <#if article.isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
                             <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"
@@ -212,7 +212,7 @@
                         <span class="fn-right<#if article.articleComments?size == 0> fn-none</#if>">
                             <a class="tooltipped tooltipped-nw" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
                                aria-label="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"><span class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if>"></span></a>&nbsp;
-                            <a class="tooltipped tooltipped-nw" href="javascript:Comment._bgFade($('#bottomComment'))" aria-label="${jumpToBottomCommentLabel}"><span class="icon-chevron-down"></span></a>
+                            <a class="tooltipped tooltipped-nw" href="javascript:Comment._bgFade($('#bottomComment'))" aria-label="${jumpToBottomCommentLabel}"><svg><use xlink:href="#chevron-down"></use></svg></a>
                         </span>
                     </div>
                     <div class="list">
@@ -427,7 +427,7 @@
                 <div class="form fn-clear comment-wrap">
                     <div class="fn-flex">
                         <div id="replyUseName" class="fn-flex-1 fn-ellipsis"></div>
-                        <span class="tooltipped tooltipped-w fn-pointer editor-hide" onclick="Comment._toggleReply()" aria-label="${cancelLabel}"> <span class="icon-chevron-down"></span></span>
+                        <span class="tooltipped tooltipped-w fn-pointer editor-hide" onclick="Comment._toggleReply()" aria-label="${cancelLabel}"> <svg><use xlink:href="#chevron-down"></use></svg></span>
                     </div>
                     <div class="article-comment-content">
                         <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>

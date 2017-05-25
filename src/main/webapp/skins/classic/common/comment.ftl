@@ -61,7 +61,7 @@
                 <div class="ft-fade fn-clear">
                     <#if comment.commentReplyCnt != 0>
                         <span class="fn-pointer ft-smaller fn-left" onclick="Comment.showReply('${comment.oId}', this, 'comment-replies')">
-                            ${comment.commentReplyCnt} ${replyLabel} <span class="icon-chevron-down"></span>
+                            ${comment.commentReplyCnt} ${replyLabel} <svg class="icon-chevron-down fn-text-top"><use xlink:href="#chevron-down"></use></svg>
                         </span>
                     </#if>
                     <span class="fn-right fn-hidden hover-show action-btns">

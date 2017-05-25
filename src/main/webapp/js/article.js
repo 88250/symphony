@@ -611,7 +611,8 @@ var Comment = {
         } else {
             if ($(it).find('.icon-chevron-down').length === 0) {
                 // 收起回复
-                $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+                $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down').
+                find('use').attr('xlink:href', '#chevron-down');;
                 $commentReplies.html('');
                 return false;
             }
@@ -698,7 +699,8 @@ var Comment = {
                 Article.parseLanguage();
 
                 // 如果是回帖的回复需要处理下样式
-                $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+                $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up').
+                find('use').attr('xlink:href', '#chevron-up');
             },
             error: function (result) {
                 alert(result.statusText);
