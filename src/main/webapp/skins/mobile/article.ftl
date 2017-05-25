@@ -42,7 +42,7 @@
                                 onclick="Article.voteDown('${article.oId}', 'article', this)"
                             <#else>
                                 onclick="Article.permissionTip(Label.noPermissionLabel)"
-                            </#if>><span class="icon-thumbs-down"></span> ${article.articleBadCnt}</span>
+                            </#if>><svg><use xlink:href="#thumbs-down"></use></svg> ${article.articleBadCnt}</span>
                         <#if isLoggedIn && isFollowing>
                             <span class="tooltipped tooltipped-n has-cnt ft-red" aria-label="${uncollectLabel}"
                                 <#if permissions["commonFollowArticle"].permissionGrant>

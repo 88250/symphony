@@ -370,7 +370,7 @@
                     onclick="Article.voteDown('${article.oId}', 'article', this)"
                 <#else>
                     onclick="Article.permissionTip(Label.noPermissionLabel)"
-                </#if>><span class="icon-thumbs-down"></span> ${article.articleBadCnt}</span>
+                </#if>><svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ${article.articleBadCnt}</span>
 
                 <#if isLoggedIn && isFollowing>
                     <span class="tooltipped tooltipped-w ft-red" aria-label="${uncollectLabel}"
