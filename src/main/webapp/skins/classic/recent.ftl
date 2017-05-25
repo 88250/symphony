@@ -1,6 +1,7 @@
 <#include "macro-head.ftl">
 <#include "macro-list.ftl">
 <#include "macro-pagination.ftl">
+<#include "common/title-icon.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,7 +33,7 @@
                                 /
                                 <a pjax-title="${latestLabel} - ${symphonyLabel}"  class="<#if "/hot" == current>ft-gray</#if>" href="${servePath}/recent/hot">${hotArticlesLabel}</a>
                                 /
-                                <a pjax-title="${goodCmtsLabel} - ${symphonyLabel}"  class="<#if "/good" == current>ft-gray</#if>" href="${servePath}/recent/good"><span class="icon-thumbs-up"></span> ${goodCmtsLabel}</a>
+                                <a pjax-title="${goodCmtsLabel} - ${symphonyLabel}"  class="<#if "/good" == current>ft-gray</#if>" href="${servePath}/recent/good"><svg class="fn-text-top"><use xlink:href="#thumbs-up"></use></svg> ${goodCmtsLabel}</a>
                                 /
                                 <a pjax-title="${recentCommentLabel} - ${symphonyLabel}"  class="<#if "/reply" == current>ft-gray</#if>" href="${servePath}/recent/reply">${recentCommentLabel}</a>
                             </span>

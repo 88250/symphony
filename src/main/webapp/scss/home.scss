@@ -166,8 +166,9 @@
     color: $blue;
 }
 
-.pre-post a div {
-    font-size: 50px;
+.pre-post a svg {
+    height: 50px;
+    width: 50px;
     margin-bottom: 50px;
 }
 
@@ -193,6 +194,11 @@
 .post {
     background-color: #FFF;
     padding-top: 0;
+
+    &__info {
+        float: left;
+        margin: 2px 5px 0 0;
+    }
 
     .cm-s-default.CodeMirror {
         border: 0;
@@ -393,13 +399,6 @@
 /* start follow */
 .follow.list h2 {
     margin-bottom: 6px;
-}
-
-.follow .icon-tags {
-    font-size: 37px;
-    margin-right: 10px;
-    width: 38px;
-    line-height: 38px;
 }
 /* end follow */
 

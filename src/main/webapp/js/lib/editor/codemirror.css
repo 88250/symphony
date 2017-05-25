@@ -550,11 +550,6 @@ span.CodeMirror-selectedtext { background: none; }
     color: transparent;
     text-indent: -10px;
 }
-.editor-toolbar a.icon-fullscreen,
-.editor-toolbar a.icon-contract {
-    position: absolute;
-    right: 0;
-}
 .editor-statusbar {
     border-top: 1px solid #ece9e9;
     padding: 8px 10px;

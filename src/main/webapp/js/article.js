@@ -109,7 +109,7 @@ var Comment = {
         });
 
         $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'#' +
-            id + '\'))" class="ft-a-title"><span class="icon-edit"></span> ' +
+            id + '\'))" class="ft-a-title"><svg><use xlink:href="#edit"></use></svg> ' +
             Label.commonUpdateCommentPermissionLabel + '</a>').data('commentId', id);
     },
     /**
@@ -167,7 +167,7 @@ var Comment = {
         $('.cmt-anonymous').show();
 
         $('.footer').css('margin-bottom', $('.editor-panel > .wrapper').outerHeight() + 'px');
-        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'.article-content\'))" class="ft-a-title"><span class="icon-reply-to"></span>'
+        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'.article-content\'))" class="ft-a-title"><svg><use xlink:href="#reply-to"></use></svg>'
             + $('.article-title').text() + '</a>').removeData();
 
         // 如果 hide 初始化， focus 无效
@@ -211,7 +211,7 @@ var Comment = {
                 Comment._toggleReply();
             } else if (Util.prevKey === 'v') {
                 // v r 打赏帖子
-                $('#articleRewardContent .icon-points').parent().click();
+                $('#articleRewardContent .icon-points').click();
             } else if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
                 // x r 回复回帖
                 $('#comments .list > ul > li.focus .icon-reply').parent().click();
@@ -237,8 +237,8 @@ var Comment = {
             return false;
         }).bind('keyup', 'c', function assets() {
             // x c 查看选中回复的回贴
-            if ($('#comments .list > ul > li.focus .comment-info .fn-pointer.ft-fade').length === 1 && Util.prevKey === 'x') {
-                $('#comments .list > ul > li.focus .comment-info .fn-pointer.ft-fade').click();
+            if ($('#comments .list > ul > li.focus .comment-info .icon-reply-to').length === 1 && Util.prevKey === 'x') {
+                $('#comments .list > ul > li.focus .comment-info .icon-reply-to').parent().click();
             }
             return false;
         }).bind('keyup', 'm', function assets() {
@@ -376,7 +376,7 @@ var Comment = {
                 {name: 'link'},
                 {
                     name: 'image',
-                    html: '<div class="tooltipped tooltipped-n" aria-label="' + Label.uploadFileLabel + '" ><form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form></div>'
+                    html: '<div class="tooltipped tooltipped-n" aria-label="' + Label.uploadFileLabel + '" ><form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><svg><use xlink:href="#upload"></use></svg><input type="file"/></label></form></div>'
                 },
                 {name: 'unordered-list'},
                 {name: 'ordered-list'},
@@ -563,7 +563,7 @@ var Comment = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeAttr('onclick');
-                    var $heart = $("<i class='icon-heart ft-red'></i>"),
+                    var $heart = $('<svg class="ft-red"><use xlink:href="#heart"></use></svg>'),
                         y = $(it).offset().top,
                         x = $(it).offset().left;
                     $heart.css({
@@ -583,7 +583,7 @@ var Comment = {
                         function () {
                             var cnt = parseInt($(it).text());
 
-                            $(it).html('<span class="icon-heart"></span> ' + (cnt + 1)).addClass('ft-red');
+                            $(it).html('<svg><use xlink:href="#heart"></use></svg> ' + (cnt + 1)).addClass('ft-red');
 
                             $heart.remove();
                         }
@@ -611,7 +611,8 @@ var Comment = {
         } else {
             if ($(it).find('.icon-chevron-down').length === 0) {
                 // 收起回复
-                $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+                $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down').
+                find('use').attr('xlink:href', '#chevron-down');;
                 $commentReplies.html('');
                 return false;
             }
@@ -683,7 +684,7 @@ var Comment = {
                             + (data.rewarded ? Label.thankedLabel : Label.thankLabel + ' ' + data.rewardedCnt)
                             + '" class="tooltipped tooltipped-n '
                             + (data.rewarded ? 'ft-red' : 'ft-fade') + '">'
-                            + ' <span class="icon-heart"></span>' + data.rewardedCnt + '</span> ';
+                            + ' <svg class="fn-text-top"><use xlink:href="#heart"></use></svg> ' + data.rewardedCnt + '</span> ';
                     }
 
                     template += ' ' + Util.getDeviceByUa(data.commentUA) + '</span>';
@@ -691,14 +692,15 @@ var Comment = {
                     template += '<a class="tooltipped tooltipped-nw ft-a-title fn-right" aria-label="' + Label.referenceLabel + '" href="javascript:Comment.goComment(\''
                         + Label.servePath + '/article/' + Label.articleOId + '?p=' + data.paginationCurrentPageNum
                         + '&m=' + Label.userCommentViewMode + '#' + data.oId
-                        + '\')"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
+                        + '\')"><svg><use xlink:href="#quote"></use></svg></a></div><div class="content-reset comment">'
                         + data.commentContent + '</div></div></div></li>';
                 }
                 $commentReplies.html('<ul>' + template + '</ul>');
                 Article.parseLanguage();
 
                 // 如果是回帖的回复需要处理下样式
-                $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+                $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up').
+                find('use').attr('xlink:href', '#chevron-up');
             },
             error: function (result) {
                 alert(result.statusText);
@@ -768,7 +770,7 @@ var Comment = {
                     // reset comment editor
                     Comment.editor.setValue('');
                     $('.editor-preview').html('');
-                    if ($('.icon-view').hasClass('active')) {
+                    if ($('.icon-view').parent().hasClass('active')) {
                         $('.icon-view').click();
                     }
 
@@ -829,11 +831,11 @@ var Comment = {
             $avatar.removeClass('avatar').addClass('avatar-small');
             replyUserHTML = '<a rel="nofollow" href="#' + id
                 + '" class="ft-a-title" onclick="Comment._bgFade($(\'#' + id
-                + '\'))"><span class="icon-reply-to"></span> '
+                + '\'))"><svg><use xlink:href="#reply-to"></use></svg> '
                 + $avatar[0].outerHTML + ' ' + userName + '</a>';
         } else {
             $avatar.addClass('ft-a-title').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
-            $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<span class="icon-reply-to"></span> ');
+            $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<svg><use xlink:href="#reply-to"></use></svg> ');
             replyUserHTML = $avatar[0].outerHTML;
         }
 
@@ -929,11 +931,11 @@ var Article = {
                     downCnt = parseInt($voteDown.text());
                 if (result.sc) {
                     if (0 === result.type) { // cancel up
-                        $voteUp.html('<span class="icon-thumbs-up"></span> ' + (upCnt - 1)).removeClass('ft-red');
+                        $voteUp.html('<svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ' + (upCnt - 1)).removeClass('ft-red');
                     } else {
-                        $voteUp.html('<span class="icon-thumbs-up"></span> ' + (upCnt + 1)).addClass('ft-red');
+                        $voteUp.html('<svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ' + (upCnt + 1)).addClass('ft-red');
                         if ($voteDown.hasClass('ft-red')) {
-                            $voteDown.html('<span class="icon-thumbs-down"></span> ' + (downCnt - 1)).removeClass('ft-red');
+                            $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' + (downCnt - 1)).removeClass('ft-red');
                         }
                     }
 
@@ -978,12 +980,11 @@ var Article = {
                     downCnt = parseInt($voteDown.text());
                 if (result.sc) {
                     if (1 === result.type) { // cancel down
-                        $voteDown.html('<span class="icon-thumbs-down"></span> ' + (downCnt - 1)).removeClass('ft-red');
+                        $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' + (downCnt - 1)).removeClass('ft-red');
                     } else {
-                        $voteDown.html('<span class="icon-thumbs-down"></span> ' + (downCnt + 1)).addClass('ft-red');
-                        ;
+                        $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' + (downCnt + 1)).addClass('ft-red');
                         if ($voteUp.hasClass('ft-red')) {
-                            $voteUp.html('<span class="icon-thumbs-up"></span> ' + (upCnt - 1)).removeClass('ft-red');
+                            $voteUp.html('<svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ' + (upCnt - 1)).removeClass('ft-red');
                         }
                     }
 
@@ -1389,10 +1390,10 @@ var Article = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     var thxCnt = parseInt($('#thankArticle').text());
-                    $("#thankArticle").removeAttr("onclick").html('<span class="icon-heart"></span><span class="ft-13">' + (thxCnt + 1) + '</span>')
+                    $("#thankArticle").removeAttr("onclick").html('<svg><use xlink:href="#heart"></use></svg><span class="ft-13">' + (thxCnt + 1) + '</span>')
                         .addClass('ft-red').removeClass('ft-blue');
 
-                    var $heart = $("<i class='icon-heart ft-red'></i>"),
+                    var $heart = $('<svg class="ft-red"><use xlink:href="#heart"></use></svg>'),
                         y = $('#thankArticle').offset().top,
                         x = $('#thankArticle').offset().left;
                     $heart.css({
@@ -1665,11 +1666,13 @@ var Article = {
                 right: '-' + $('#articleToC').outerWidth() + 'px'
             });
             $menu.removeClass('ft-red');
+            $('.article-actions  .icon-unordered-list').removeClass('ft-red');
         } else {
             $articleToc.animate({
                 right: 0
             });
             $menu.addClass('ft-red');
+            $('.article-actions  .icon-unordered-list').addClass('ft-red');
         }
     },
     /**

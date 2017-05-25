@@ -43,7 +43,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.4.12, Apr 27, 2017
+ * @version 1.13.5.12, May 24, 2017
  * @since 0.2.5
  */
 @Service
@@ -702,6 +702,7 @@ public class NotificationQueryService {
                 final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, commentId);
 
                 final Query q = new Query().setPageCount(1).
+                        addProjection(Article.ARTICLE_PERFECT, Integer.class).
                         addProjection(Article.ARTICLE_TITLE, String.class).
                         addProjection(Article.ARTICLE_TYPE, Integer.class).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
@@ -795,6 +796,7 @@ public class NotificationQueryService {
                 final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, commentId);
 
                 final Query q = new Query().setPageCount(1).
+                        addProjection(Article.ARTICLE_PERFECT, Integer.class).
                         addProjection(Article.ARTICLE_TITLE, String.class).
                         addProjection(Article.ARTICLE_TYPE, Integer.class).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
@@ -918,6 +920,7 @@ public class NotificationQueryService {
                         final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, dataId);
                         if (null != comment) {
                             final Query q = new Query().setPageCount(1).
+                                    addProjection(Article.ARTICLE_PERFECT, Integer.class).
                                     addProjection(Article.ARTICLE_TITLE, String.class).
                                     addProjection(Article.ARTICLE_TYPE, Integer.class).
                                     setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
@@ -1163,6 +1166,7 @@ public class NotificationQueryService {
                 final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, commentId);
                 if (null != comment) {
                     final Query q = new Query().setPageCount(1).
+                            addProjection(Article.ARTICLE_PERFECT, Integer.class).
                             addProjection(Article.ARTICLE_TITLE, String.class).
                             addProjection(Article.ARTICLE_TYPE, Integer.class).
                             setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,

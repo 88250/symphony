@@ -23,7 +23,7 @@
                         permissions["userDeductPoint"].permissionGrant ||
                         permissions["userUpdateUserAdvanced"].permissionGrant ||
                         permissions["userUpdateUserBasic"].permissionGrant>
-                    <a class="ft-13 tooltipped tooltipped-n ft-a-title" href="${servePath}/admin/user/${user.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                    <a class="ft-13 tooltipped tooltipped-n ft-a-title" href="${servePath}/admin/user/${user.oId}" aria-label="${adminLabel}"><svg class="fn-text-top"><use xlink:href="#setting"></use></svg></a>
                 </#if>
             </div>
             

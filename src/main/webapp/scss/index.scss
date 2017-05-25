@@ -95,6 +95,12 @@
     font-weight: normal;
     padding-top: 15px;
     text-align: center;
+
+    svg {
+      height: 28px;
+      width: 28px;
+      vertical-align: -4px;
+    }
   }
 
   .article-content {
@@ -137,6 +143,11 @@
       top: -100000px;
     }
 
+    svg {
+      height: 22px;
+      width: 22px;
+    }
+
     & > span {
       display: block;
       margin-bottom: 10px;
@@ -173,7 +184,7 @@
     font-size: 16px;
     top: -50px;
 
-    svg {
+    h1 svg {
       color: $black-text;
       vertical-align: baseline;
       height: 48px;
@@ -192,18 +203,25 @@
     .user-nav > span,
     .user-nav > a {
       float: left;
-      padding: 5px 10px;
+      padding: 16px 10px;
+      line-height: 16px;
+      height: 16px;
       color: $theme-secondary;
       text-decoration: none;
-
-      &.ft-red {
-        color: $theme-accent;
-      }
     }
 
     .user-nav > span:hover,
     .user-nav > a:hover {
       color: $black-text;
+    }
+
+    .user-nav > span.ft-red {
+      color: $theme-accent;
+    }
+
+    .user-nav svg {
+      height:16px;
+      width: 16px;
     }
 
   }
@@ -405,6 +423,10 @@ label.cmt-anonymous {
   color: $black-text;
 }
 
+.action-btns svg {
+  vertical-align: text-top;
+}
+
 .comments {
   &.module {
     margin-bottom: 0;
@@ -456,10 +478,6 @@ label.cmt-anonymous {
 
   .comment-info .avatar-small {
     vertical-align: bottom;
-  }
-
-  .comment-info .icon-heart {
-    vertical-align: text-bottom;
   }
 
   .comment-info a:hover {
@@ -724,9 +742,11 @@ label.cmt-anonymous {
     width: 250px;
     margin: 100px auto;
 
-    svg {
+    & > svg {
       margin: 0 auto;
       display: block;
+      height: 100px;
+      width: 100px;
     }
 
     input[type="text"],
@@ -745,11 +765,10 @@ label.cmt-anonymous {
     .input-wrap {
       position: relative;
 
-      span {
+      svg {
         color: $gray;
         position: absolute;
-        top: 16px;
-        font-size: 20px;
+        top: 19px;
         left: 10px;
       }
     }
@@ -774,6 +793,11 @@ label.cmt-anonymous {
   .guide-tab,
   .step-btn {
     margin: 50px;
+  }
+
+  .guide-tab svg {
+    height: 100px;
+    width: 100px;
   }
 
   .form {
@@ -1133,11 +1157,12 @@ code .dec {
     transform: scaleY(0);
   }
 
-  .index-tabs > span > span {
+  .index-tabs > span > svg {
     display: none;
+    vertical-align: text-top;
   }
 
-  .index-tabs > span.current > span {
+  .index-tabs > span.current > svg {
     display: inline-block;
   }
 

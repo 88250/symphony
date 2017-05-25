@@ -1,5 +1,6 @@
 <#macro home type>
 <#include "../macro-head.ftl">
+<#include "../common/title-icon.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -85,7 +86,7 @@
                     <#elseif type == "linkForge">
                     ${linkForgeLabel}
                     </#if>
-                    <span class="icon-chevron-down fn-right"></span>
+                    <svg class="fn-right"><use xlink:href="#chevron-down"></use></svg>
                 </div>
                 <div class="fn-hr5"></div>
                 <ul class="tab fn-clear fn-none">

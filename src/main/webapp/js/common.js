@@ -77,7 +77,7 @@ var Util = {
          alertBgHTML = '<div onclick="Util.closeAlert(this)" style="height: ' +  document.documentElement.scrollHeight
          + 'px;display: block;" class="dialog-background"></div>',
          alertContentHTML = '<div class="dialog-panel" id="alertDialogPanel" tabindex="0" onkeyup="Util.closeAlert()">'
-         + '<div class="fn-clear dialog-header-bg"><a href="javascript:void(0);" onclick="Util.closeAlert()" class="icon-close"></a></div>'
+         + '<div class="fn-clear dialog-header-bg"><a class="icon-close" href="javascript:void(0);" onclick="Util.closeAlert()"><svg><use xlink:href="#close"></use></svg></a></div>'
          + '<div class="dialog-main" style="text-align:center;padding: 30px 10px 40px">' + content + '</div></div>';
 
          alertHTML = alertBgHTML + alertContentHTML;
@@ -798,7 +798,7 @@ var Util = {
                     var notiHTML = '',
                     markReadHTML = '<span onclick="Util.makeNotificationRead(\'${markReadType}\');return false;" aria-label="'
                         + Label.makeAsReadLabel + '" class="fn-right tooltipped tooltipped-nw">'
-                        + '<svg height="18" viewBox="0 0 12 16" width="12">' + Label.checkIcon + '</svg>' + '</span>';
+                        + '<svg><use xlink:href="#check"></use></svg>' + '</span>';
 
                     // 收到的回帖 unreadCommentedNotificationCnt
                     if (data.unreadCommentedNotificationCnt > 0) {
@@ -961,11 +961,11 @@ var Util = {
                     $(it).removeClass("disabled");
                     if (typeof (index) !== 'undefined') {
                         if ('article' === type || 'tag' === type) {
-                            $(it).html('<span class="icon-star"></span> ' + (index + 1)).
+                            $(it).html('<svg class="icon-star"><use xlink:href="#star"></use></svg> ' + (index + 1)).
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
                                 .attr("aria-label", Label.uncollectLabel).addClass('ft-red');
                         } else if ('article-watch' === type) {
-                            $(it).html('<span class="icon-view"></span> ' + (index + 1)).
+                            $(it).html('<svg class="icon-view"><use xlink:href="#view"></use></svg> ' + (index + 1)).
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
                                 .attr("aria-label", Label.unfollowLabel).addClass('ft-red');
                         }
@@ -1005,11 +1005,11 @@ var Util = {
                 if (result.sc) {
                     if (typeof (index) !== 'undefined') {
                         if ('article' === type || 'tag' === type) {
-                            $(it).removeClass('ft-red').html('<span class="icon-star"></span> ' + (index - 1))
+                            $(it).removeClass('ft-red').html('<svg class="icon-star"><use xlink:href="#star"></use></svg> ' + (index - 1))
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.collectLabel);
                         } else if ('article-watch' === type) {
-                            $(it).removeClass('ft-red').html('<span class="icon-view"></span> ' + (index - 1))
+                            $(it).removeClass('ft-red').html('<svg class="icon-view"><use xlink:href="#view"></use></svg> ' + (index - 1))
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.followLabel);
                         }
@@ -1153,9 +1153,6 @@ var Util = {
             });
         };
         // search input
-        $(".nav .icon-search").click(function () {
-            $(".nav input.search").focus();
-        });
         $(".nav input.search").focus(function () {
             $(".nav .tags").css('visibility', 'hidden');
         }).blur(function () {
@@ -1539,7 +1536,7 @@ var Util = {
                 } else if (click_cnt >= 100 && click_cnt <= 105) {
                     $i = $("<b></b>").text("(ꐦ°᷄д°᷅)");
                 } else {
-                    $i = $("<i class='icon-heart'></i>");
+                    $i = $('<svg><use xlink:href="#heart"></use></svg>');
                     n = Math.round(Math.random() * 14 + 6);
                 }
                 var x = e.pageX, y = e.pageY;

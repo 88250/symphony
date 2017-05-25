@@ -1,6 +1,7 @@
 <#macro notifications type>
 <#include "../../macro-head.ftl">
 <#include "../../macro-pagination.ftl">
+<#include "../../common/title-icon.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,7 +28,7 @@
                             <#if unreadNotificationCnt &gt; 0>
                             <span onclick="Settings.makeAllNotificationsRead()" 
                                   aria-label="${makeAllAsReadLabel}" class="fn-right tooltipped tooltipped-w home-side-read">
-                                <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
+                                <svg><use xlink:href="#check"></use></svg>
                             </span>
                             </#if>
                         </div>
@@ -39,7 +40,7 @@
                                     <span class="count">${unreadCommentedNotificationCnt}</span>
                                     <span onclick="Util.makeNotificationRead('commented')"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-w">
-                                        <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
+                                        <svg><use xlink:href="#check"></use></svg>
                                     </span>
                                     </#if>
                                 </a> 
@@ -49,7 +50,7 @@
                                     <span class="count">${unreadReplyNotificationCnt}</span>
                                     <span onclick="Util.makeNotificationRead('reply')"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-w">
-                                        <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
+                                        <svg><use xlink:href="#check"></use></svg>
                                     </span>
                                     </#if>
                                 </a> 
@@ -59,7 +60,7 @@
                                     <span class="count">${unreadAtNotificationCnt}</span>
                                     <span onclick="Util.makeNotificationRead('at')"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-w">
-                                        <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
+                                        <svg><use xlink:href="#check"></use></svg>
                                     </span>
                                     </#if>
                                 </a>
@@ -69,7 +70,7 @@
                                     <span class="count">${unreadFollowingNotificationCnt}</span>
                                     <span onclick="Util.makeNotificationRead('following')"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-w">
-                                        <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
+                                        <svg><use xlink:href="#check"></use></svg>
                                     </span>
                                     </#if>
                                 </a>

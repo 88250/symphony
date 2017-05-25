@@ -14,16 +14,7 @@
             <div class="fn-flex-1">
                 <div class="fn-flex">
                     <h2 class="fn-flex-1">
-                        <#if 1 == notification.articlePerfect>
-                            <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" viewBox="3 3 11 12" width="14">${perfectIcon}</svg></span>
-                        </#if>
-                        <#if 1 == notification.articleType>
-                            <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
-                            <#elseif 2 == notification.articleType>
-                                <span class="tooltipped tooltipped-w" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
-                                <#elseif 3 == notification.articleType>
-                                    <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
-                        </#if>
+                        <@icon notification.articlePerfect notification.articleType></@icon>
                         <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
                     </h2>
                     <span class="ft-gray">
@@ -37,14 +28,7 @@
             <#else>
                 <div class="fn-flex-1 has-view">
                     <h2>
-                        <#if 1 == notification.articlePerfect>
-                        <svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg>
-                        </#if>
-                        <#if notification.articleType == 1>
-                        <span class="icon-locked" title="${discussionLabel}"></span>
-                        <#elseif notification.articleType == 2>
-                        <span class="icon-feed" title="${cityBroadcastLabel}"></span>
-                        </#if>
+                        <@icon notification.articlePerfect notification.articleType></@icon>
                         <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
                     </h2>
                     <div class="ft-gray">
@@ -52,7 +36,7 @@
                         <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
                             ${articleTag.tagTitle}</a>
                         </#list> <br/>
-                        <span class="icon-date"></span>
+                        <svg><use xlink:href="#date"></use></svg>
                         ${notification.createTime?string('yyyy-MM-dd HH:mm')}
                     </div>
                 </div>

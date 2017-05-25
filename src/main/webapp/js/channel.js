@@ -88,7 +88,7 @@ var ArticleChannel = {
                     hljs.initHighlighting.called = false;
                     hljs.initHighlighting();
 
-                    // 更新回复的帖子
+                    // 更新回复的回帖
                     if (data.commentOriginalCommentId !== '') {
                         var $originalComment = $('#' + data.commentOriginalCommentId),
                                 $replyBtn = $originalComment.find('.comment-action > .ft-fade > .fn-pointer');
@@ -97,14 +97,15 @@ var ArticleChannel = {
                                     + ' ' + Label.replyLabel + ' <span class="'
                                     + $replyBtn.find('span').attr('class') + '"></span>');
 
-                            if ($replyBtn.find('span').attr('class') === "icon-chevron-up") {
-                                $replyBtn.find('span').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+                            if ($replyBtn.find('svg').attr('class') === "icon-chevron-up") {
+                                $replyBtn.find('svg').removeClass('icon-chevron-up').addClass('icon-chevron-down').
+                                find('use').attr('xlink:href', '#chevron-down');
                                 $replyBtn.click();
                             }
                         } else {
                             $originalComment.find('.comment-action > .ft-fade').prepend('<span class="fn-pointer ft-smaller fn-left" onclick="Comment.showReply(\''
                                     + data.commentOriginalCommentId + '\', this, \'comment-replies\')" style="opacity: 1;"> 1 '
-                                    + Label.replyLabel + ' <span class="icon-chevron-down"></span>');
+                                    + Label.replyLabel + ' <svg class="icon-chevron-down"><use xlink:href="#chvron-down"></use></svg>');
                         }
                     }
                     break;

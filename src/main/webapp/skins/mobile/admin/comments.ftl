@@ -13,9 +13,9 @@
                 <#else>
                 <font class="ft-red">${banLabel}</font>
                 </#if>
-                <a href="${servePath}/admin/comment/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
+                <a href="${servePath}/admin/comment/${item.oId}" class="fn-right">${editLabel}</a>
                 <div class="fn-hr5"></div>
-                <div class="icon-date ft-gray" title="${createTimeLabel}"> ${item.commentCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;</div>
+                ${createTimeLabel} ${item.commentCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;
             </div>
             <div class="fn-hr5"></div>
             <div class="content-reset">

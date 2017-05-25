@@ -12,22 +12,22 @@
             <div class="wrapper verify">
                 <div class="verify-wrap">
                     <div class="form">
-                        ${logoIcon2}
+                        <svg><use xlink:href="#logo"></use></svg>
 
                         <div class="input-wrap">
-                            <span class="icon-userrole"></span>
+                            <svg><use xlink:href="#userrole"></use></svg>
                             <input type="text" id="rpwdrUserName" value="${user.userName}" readonly="readonly" placeholder="${userNameLabel}" autocomplete="off" />
                         </div>
                         <div class="input-wrap">
-                            <span class="icon-email"></span>
+                            <svg><use xlink:href="#email"></use></svg>
                             <input type="text" id="rpwdUserEmail" value="${user.userEmail}" readonly="readonly" placeholder="${emailLabel}" autocomplete="off" />
                         </div>
                         <div class="input-wrap">
-                            <span class="icon-locked"></span>
+                            <svg><use xlink:href="#locked"></use></svg>
                             <input type="password" autofocus="autofocus" id="rpwdUserPassword" placeholder="${passwordLabel}" />
                         </div>
                          <div class="input-wrap">
-                            <span class="icon-locked"></span>
+                             <svg><use xlink:href="#locked"></use></svg>
                             <input type="password" id="rpwdConfirmPassword" placeholder="${userPasswordLabel2}" />
                         </div>
                          <div id="rpwdTip" class="tip"></div>

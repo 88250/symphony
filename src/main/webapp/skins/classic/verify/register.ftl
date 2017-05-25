@@ -14,19 +14,19 @@
             <div class="wrapper verify">
                 <div class="verify-wrap">
                     <div class="form">
-                        ${logoIcon2}
+                        <svg><use xlink:href="#logo"></use></svg>
 
                         <div class="input-wrap">
-                            <span class="icon-userrole"></span>
+                            <svg><use xlink:href="#userrole"></use></svg>
                             <input id="registerUserName" type="text" placeholder="${userNamePlaceholderLabel}" autocomplete="off" autofocus="autofocus" />
                         </div>
                         <div class="input-wrap">
-                            <span class="icon-email"></span>
+                            <svg><use xlink:href="#email"></use></svg>
                             <input id="registerUserEmail" type="text" placeholder="${emailPlaceholderLabel}" autocomplete="off" />
                         </div>
                         
                         <div class="input-wrap<#if "2" != miscAllowRegister> fn-none</#if>">
-                            <span class="icon-heart"></span>
+                            <svg><use xlink:href="#heart"></use></svg>
                             <input id="registerInviteCode" type="text" placeholder="${invitecodePlaceholderLabel}" autocomplete="off" />
                         </div>
                         

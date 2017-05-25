@@ -8,7 +8,7 @@
         <#if isLoggedIn && "" != currentUser.userCity>
         <a href="${servePath}/city/my"<#if 'city' == type> class="selected"</#if>>${currentUser.userCity}</a>
         </#if>
-        <a href="${servePath}/timeline"<#if 'timeline' == type> class="selected"</#if>>${timelineIcon}</svg> ${timelineLabel}</a>
+        <a href="${servePath}/timeline"<#if 'timeline' == type> class="selected"</#if>>${timelineLabel}</a>
     </div>
 </div>
 </#macro>

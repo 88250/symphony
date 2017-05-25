@@ -1,5 +1,6 @@
 <#macro home type>
 <#include "../macro-head.ftl">
+<#include "../common/title-icon.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -72,13 +73,13 @@
                             <nav class="home-menu">
                                 <a pjax-title="${articleLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
                                     class="current"</#if>
-                                    href="${servePath}/member/${user.userName}"><svg height="18" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
+                                    href="${servePath}/member/${user.userName}"><svg><use xlink:href="#addfile"></use></svg> ${postLabel}</a>
                                 <a pjax-title="${watchingArticlesLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "watchingArticles" || type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers"> class="current"</#if>
-                                    href="${servePath}/member/${user.userName}/watching/articles"><svg height="18" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
+                                    href="${servePath}/member/${user.userName}/watching/articles"><svg><use xlink:href="#star"></use></svg> ${followLabel}</a>
                                 <a pjax-title="${pointLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "points"> class="current"</#if> href="${servePath}/member/${user.userName}/points">
-                                    <svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
+                                    <svg><use xlink:href="#goods"></use></svg> ${pointLabel}</a>
                                 <a pjax-title="${linkForgeLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "linkForge"> class="current"</#if> href="${servePath}/member/${user.userName}/forge/link">
-                                    <svg height="18" viewBox="0 1 16 16" width="16">${baguaIcon}</svg>  ${forgeLabel}</a>
+                                    <svg><use xlink:href="#bagua"></use></svg> ${forgeLabel}</a>
                             </nav>
                         </div>
                     </div>

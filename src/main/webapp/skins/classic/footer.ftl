@@ -3,12 +3,12 @@
         <div class="slogan">
             ${indexIntroLabel} &nbsp; &nbsp;
             <a href="https://github.com/b3log/symphony" target="_blank" class="tooltipped tooltipped-n" aria-label="${siteCodeLabel}">
-                <i class="icon-github"></i></a> &nbsp;
+                <svg class="icon-github"><use xlink:href="#github"></use></svg></a> &nbsp;
             <a href="http://weibo.com/u/2778228501" target="_blank" class="tooltipped tooltipped-n" aria-label="${followWeiboLabel}">
-                <i class="icon-weibo"></i></a>   &nbsp;
+                <svg class="icon-weibo"><use xlink:href="#weibo"></use></svg></a>   &nbsp;
             <a target="_blank" class="tooltipped tooltipped-n" aria-label="${joinQQGroupLabel}"
                href="http://shang.qq.com/wpa/qunwpa?idkey=981d9282616274abb1752336e21b8036828f715a1c4d0628adcf208f2fd54f3a">
-                <i class="icon-qq"></i></a>
+                <svg class="icon-qq"><use xlink:href="#qq"></use></svg></a>
         </div>
         <div class="fn-flex-1">
             <div class="footer-nav fn-clear">
@@ -36,6 +36,7 @@
     </div>
 </div>
 
+<script src="${staticServePath}/js/symbol-defs${miniPostfix}.js?${staticResourceVersion}"></script>
 <script src="${staticServePath}/js/lib/compress/libs.min.js?${staticResourceVersion}"></script>
 <script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
@@ -62,9 +63,10 @@
 		sameCityLabel: '${sameCityLabel}',
 		systemLabel: '${systemLabel}',
 		newFollowerLabel: '${newFollowerLabel}',
-        makeAsReadLabel: '${makeAsReadLabel}',
-        checkIcon: '${checkIcon}'<#if isLoggedIn>,
-        currentUserName: '${currentUser.userName}'</#if>
+        makeAsReadLabel: '${makeAsReadLabel}'
+        <#if isLoggedIn>,
+            currentUserName: '${currentUser.userName}'
+        </#if>
     };
 
     <#if isLoggedIn>

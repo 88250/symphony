@@ -8,16 +8,7 @@
         <li>
             <div class="has-view">
                 <h2>
-                    <#if 1 == article.articlePerfect>
-                    <svg height="20" viewBox="3 4 11 12" width="14">${perfectIcon}</svg>
-                    </#if>
-                    <#if 1 == article.articleType>
-                    <span class="icon-locked" title="${discussionLabel}"></span>
-                    <#elseif 2 == article.articleType>
-                    <span class="icon-feed" title="${cityBroadcastLabel}"></span>
-                    <#elseif 3 == article.articleType>
-                    <span class="icon-video" title="${thoughtLabel}"></span>
-                    </#if>
+                    <@icon article.articlePerfect article.articleType></@icon>
                     <a rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
                 <span class="ft-gray">
@@ -25,13 +16,13 @@
                     <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
                         ${articleTag.tagTitle}</a>
                     </#list><br/>
-                    <span class="icon-date"></span>
+                    <svg><use xlink:href="#date"></use></svg>
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>
             <#if isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
             <div class="cmts">
-                <a class="icon-edit" href="${servePath}/update?id=${article.oId}" title="${editLabel}"></a>
+                <a href="${servePath}/update?id=${article.oId}">${editLabel}</a>
             </div>
             <#else>
             <#if article.articleCommentCount != 0>

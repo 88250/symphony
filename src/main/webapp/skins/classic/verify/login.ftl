@@ -14,13 +14,13 @@
             <div class="wrapper verify">
                 <div class="verify-wrap">
                     <div class="form">
-                        ${logoIcon2}
+                        <svg><use xlink:href="#logo"></use></svg>
                         <div class="input-wrap">
-                            <span class="icon-userrole"></span>
+                            <svg><use xlink:href="#userrole"></use></svg>
                             <input id="nameOrEmail" type="text" autofocus="autofocus" placeholder="${nameOrEmailLabel}" autocomplete="off" />
                         </div>
                         <div class="input-wrap">
-                            <span class="icon-locked"></span>
+                            <svg><use xlink:href="#locked"></use></svg>
                             <input type="password" id="loginPassword" placeholder="${passwordLabel}" />
                         </div>
                         <div class="fn-none input-wrap">

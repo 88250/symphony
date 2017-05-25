@@ -1,5 +1,6 @@
 <#include "macro-head.ftl">
 <#include "macro-pagination-query.ftl">
+<#include "common/title-icon.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -29,33 +30,33 @@
                               </#if>
                               <#else>
                                   onclick="Article.permissionTip(Label.noPermissionLabel)"
-                              </#if>><span class="icon-heart"></span> ${article.thankedCnt}</span>
+                              </#if>><svg class="fn-text-top"><use xlink:href="#heart"></use></svg> ${article.thankedCnt}</span>
                         <span class="tooltipped tooltipped-n has-cnt<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>" aria-label="${upLabel}"
                             <#if permissions["commonGoodArticle"].permissionGrant>
                                 onclick="Article.voteUp('${article.oId}', 'article', this)"
                             <#else>
                                 onclick="Article.permissionTip(Label.noPermissionLabel)"
-                            </#if>><span class="icon-thumbs-up"></span> ${article.articleGoodCnt}</span>
+                            </#if>><svg><use xlink:href="#thumbs-up"></use></svg> ${article.articleGoodCnt}</span>
                         <span  class="tooltipped tooltipped-n has-cnt<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>" aria-label="${downLabel}"
                             <#if permissions["commonBadArticle"].permissionGrant>
                                 onclick="Article.voteDown('${article.oId}', 'article', this)"
                             <#else>
                                 onclick="Article.permissionTip(Label.noPermissionLabel)"
-                            </#if>><span class="icon-thumbs-down"></span> ${article.articleBadCnt}</span>
+                            </#if>><svg><use xlink:href="#thumbs-down"></use></svg> ${article.articleBadCnt}</span>
                         <#if isLoggedIn && isFollowing>
                             <span class="tooltipped tooltipped-n has-cnt ft-red" aria-label="${uncollectLabel}"
                                 <#if permissions["commonFollowArticle"].permissionGrant>
                                     onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
                                 <#else>
                                     onclick="Article.permissionTip(Label.noPermissionLabel)"
-                                </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                                </#if>><svg><use xlink:href="#star"></use></svg> ${article.articleCollectCnt}</span>
                         <#else>
                             <span class="tooltipped tooltipped-n has-cnt" aria-label="${collectLabel}"
                             <#if permissions["commonFollowArticle"].permissionGrant>
                                 onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
                             <#else>
                                 onclick="Article.permissionTip(Label.noPermissionLabel)"
-                            </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                            </#if>><svg><use xlink:href="#star"></use></svg> ${article.articleCollectCnt}</span>
                         </#if>
                         <#if isLoggedIn && isWatching>
                             <span class="tooltipped tooltipped-n has-cnt ft-red" aria-label="${unfollowLabel}"
@@ -63,44 +64,34 @@
                                 onclick="Util.unfollow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
                                 <#else>
                                     onclick="Article.permissionTip(Label.noPermissionLabel)"
-                            </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
+                            </#if>><svg class="icon-view"><use xlink:href="#view"></use></svg> ${article.articleWatchCnt}</span>
                             <#else>
                                 <span class="tooltipped tooltipped-n has-cnt" aria-label="${followLabel}"
                                 <#if permissions["commonWatchArticle"].permissionGrant>
                                     onclick="Util.follow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
                                     <#else>
                                         onclick="Article.permissionTip(Label.noPermissionLabel)"
-                                </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
+                                </#if>><svg class="icon-view"><use xlink:href="#view"></use></svg> ${article.articleWatchCnt}</span>
                         </#if>
                         <#if 0 < article.articleRewardPoint>
                         <span class="tooltipped tooltipped-n has-cnt<#if article.rewarded> ft-red</#if>"
                         <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>
-                        aria-label="${rewardLabel}"><span class="icon-points"></span> ${article.rewardedCnt}</span>
+                        aria-label="${rewardLabel}"><svg class="icon-points"><use xlink:href="#points"></use></svg> ${article.rewardedCnt}</span>
                         </#if>
                         <#if article.isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
-                        <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" 
-                           class="tooltipped tooltipped-n"><span class="icon-edit"></span></a>
+                        <a href="${servePath}/update?id=${article.oId}"><svg><use xlink:href="#edit"></use></svg></a>
                         </#if>
                         <#if article.isMyArticle && permissions["commonStickArticle"].permissionGrant>
                         <a class="tooltipped tooltipped-n" aria-label="${stickLabel}" 
-                           href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a>
+                           href="javascript:Article.stick('${article.oId}')"><svg><use xlink:href="#chevron-up"></use></svg></a>
                         </#if>
                         <#if permissions["articleUpdateArticleBasic"].permissionGrant>
-                        <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                        <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><svg><use xlink:href="#setting"</svg></a>
                         </#if>
                     </span>
                 </div>
                 <h1 class="article-title" itemprop="name">
-                    <#if 1 == article.articlePerfect>
-                    <svg height="20" viewBox="3 3 11 12" width="14">${perfectIcon}</svg>
-                    </#if>
-                    <#if 1 == article.articleType>
-                    <span class="icon-locked" title="${discussionLabel}"></span>
-                    <#elseif 2 == article.articleType>
-                    <span class="icon-feed" title="${cityBroadcastLabel}"></span>
-                    <#elseif 3 == article.articleType>
-                    <span class="icon-video" title="${thoughtLabel}"></span>
-                    </#if>
+                    <@icon article.articlePerfect article.articleType></@icon>
                     <a class="ft-a-title" href="${servePath}${article.articlePermalink}" rel="bookmark">
                         ${article.articleTitleEmoj}
                     </a>
@@ -150,7 +141,7 @@
                 <#if 3 != article.articleType>
                 <div class="content-reset article-content">${article.articleContent}</div>
                 <#else>
-                <div id="thoughtProgress"><span class="bar"></span><span class="icon-video"></span><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
+                <div id="thoughtProgress"><span class="bar"></span><svg class="icon-video"><use xlink:href="#video"></use></svg><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
                 <div class="content-reset article-content"></div>
                 </#if>
 
@@ -158,10 +149,10 @@
                     <div class="share fn-right">
                         <div id="qrCode" class="fn-none"
                              data-shareurl="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"></div>
-                        <span class="icon-wechat" data-type="wechat"></span>
-                        <span class="icon-weibo" data-type="weibo"></span>
-                        <span class="icon-twitter" data-type="twitter"></span>
-                        <span class="icon-google" data-type="google"></span>
+                        <span data-type="wechat"><svg class="icon-wechat"><use xlink:href="#wechat"></use></svg></span>
+                        <span data-type="weibo"><svg class="icon-weibo"><use xlink:href="#weibo"></use></svg></span>
+                        <span data-type="twitter"><svg class="icon-twitter"><use xlink:href="#twitter"></use></svg></span>
+                        <span data-type="google"><svg class="icon-google"><use xlink:href="#google"></use></svg></span>
                     </div>
                 </div>
                 
@@ -175,12 +166,13 @@
                     ${article.articleRewardContent}
                     </#if>
                 </div>
+                <div class="fn-hr10"></div>
                 </#if>
                 
                 <#if article.articleNiceComments?size != 0>
                     <div class="module nice">
                         <div class="module-header">
-                            <span class="icon-thumbs-up ft-blue"></span>
+                            <svg class="ft-blue"><use xlink:href="#thumbs-up"></use></svg>
                             ${niceCommentsLabel}
                         </div>
                         <div class="module-panel list comments">
@@ -213,13 +205,13 @@
                                                     <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
                                                     <span aria-label="<#if hasRewarded>${thankedLabel}<#else>${thankLabel} ${comment.rewardedCnt}</#if>"
                                                           class="tooltipped tooltipped-n rewarded-cnt <#if hasRewarded>ft-red<#else>ft-fade</#if>">
-                                                        <span class="icon-heart"></span>${comment.rewardedCnt}
+                                                        <svg class="fn-text-top"><use xlink:href="#heart"></use></svg> ${comment.rewardedCnt}
                                                     </span>
                                                     </#if>
                                                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade" data-ua="${comment.commentUA}"></span></#if>
                                                 </span>
                                                 <a class="ft-a-title fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
-                                                   href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}')"><span class="icon-down"></span></a>
+                                                   href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}')"><svg><use xlink:href="#down"></use></svg></a>
                                             </div>
                                             <div class="content-reset comment">
                                                 ${comment.commentContent}
@@ -267,7 +259,7 @@
                             <span class="fn-right<#if article.articleComments?size == 0> fn-none</#if>">
                                 <a class="tooltipped tooltipped-nw" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
                                    aria-label="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"><span class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if>"></span></a>&nbsp;
-                                <a class="tooltipped tooltipped-nw" href="#bottomComment" aria-label="${jumpToBottomCommentLabel}"><span class="icon-chevron-down"></span></a>
+                                <a class="tooltipped tooltipped-nw" href="#bottomComment" aria-label="${jumpToBottomCommentLabel}"><svg><use xlink:href="#chevron-down"</svg></a>
                             </span>
                         </div>
                             <ul>

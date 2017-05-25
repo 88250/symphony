@@ -100,17 +100,17 @@
                     <#assign articleType=article.articleType>
                     </#if>
                     <#if 0 == articleType>
-                    <span class="icon-article"></span> ${articleLabel}
-                    <span class="ft-gray">${addNormalArticleTipLabel}</span>
+                        <svg class="post__info"><use xlink:href="#article"></use></svg> ${articleLabel}
+                        <span class="ft-gray">${addNormalArticleTipLabel}</span>
                     <#elseif 1 == articleType>
-                    <span class="icon-locked"></span> ${discussionLabel}
-                    <span class="ft-gray">${addDiscussionArticleTipLabel}</span>
+                        <svg class="post__info"><use xlink:href="#locked"></use></svg> ${discussionLabel}
+                        <span class="ft-gray">${addDiscussionArticleTipLabel}</span>
                     <#elseif 2 == articleType>
-                    <span class="icon-feed"></span> ${cityBroadcastLabel}
-                    <span class="ft-gray">${addCityArticleTipLabel} <i>${broadcastPoint}</i> ${pointLabel}</span>
+                        <svg class="post__info"><use xlink:href="#feed"></use></svg> ${cityBroadcastLabel}
+                        <span class="ft-gray">${addCityArticleTipLabel} <i>${broadcastPoint}</i> ${pointLabel}</span>
                     <#elseif 3 == articleType>
-                    <span class="icon-video"></span> ${thoughtLabel}
-                    <span class="ft-gray">${addThoughtArticleTipLabel}
+                        <svg class="post__info"><use xlink:href="#video"></use></svg> ${thoughtLabel}
+                        <span class="ft-gray">${addThoughtArticleTipLabel}
                         <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
                     </#if>
                     <div class="fn-right">

@@ -12,18 +12,11 @@
         <div class="fn-flex-1">
             <div>
                 <h2>
-                    <#if 1 == notification.commentArticlePerfect>
-                    <svg height="20" viewBox="3 4 11 12" width="14">${perfectIcon}</svg>
-                    </#if>
-                    <#if notification.commentArticleType == 1>
-                    <span class="icon-locked" title="${discussionLabel}"></span>
-                    <#elseif notification.commentArticleType == 2>
-                    <span class="icon-feed" title="${cityBroadcastLabel}"></span>
-                    </#if>
+                    <@icon notification.commentArticlePerfect notification.commentArticleType></@icon>
                     <a rel="bookmark" href="${notification.commentSharpURL}"> ${notification.commentArticleTitle}</a>
                 </h2>
                 <span class="ft-gray fn-sub">
-                    <span class="icon-date"></span>
+                    <svg><use xlink:href="#date"></use></svg>
                     ${notification.commentCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>

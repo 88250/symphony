@@ -17,7 +17,7 @@
                     <div class="avatar-small tooltipped tooltipped-se" aria-label="${item.userName}" 
                          style="background-image:url('${item.userAvatarURL}')"></div> &nbsp;
                     <a href="${servePath}/member/${item.userName}">${item.userName}</a>
-                    <a href="${servePath}/admin/user/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-title" aria-label="${editLabel}"><span class="icon-edit"></span></a> &nbsp;
+                    <a href="${servePath}/admin/user/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-title" aria-label="${editLabel}"><svg><use xlink:href="#edit"></use></svg></a> &nbsp;
                     <#if item.userStatus == 0>
                     <span class="ft-gray">${validLabel}</span>
                     <#elseif item.userStatus == 2>
@@ -27,17 +27,12 @@
                     </#if>
                 </div>
                 <div class="fn-clear">
-                    <span class="tooltipped tooltipped-n" aria-label="${emailLabel}"><span class="icon-email"></span></span>
                     ${item.userEmail} &nbsp;
-                    <span class="tooltipped tooltipped-n" aria-label="${roleLabel}"><span class="icon-userrole"></span></span>
-                    ${item.roleName}
+                    ${roleLabel} ${item.roleName}
                     <span class="fn-right ft-gray">
-                        <span class="tooltipped tooltipped-n" aria-label="${articleCountLabel}"><span class="icon-articles"></span></span>
-                        ${item.userArticleCount} &nbsp;
-                        <span class="tooltipped tooltipped-n" aria-label="${commentCountLabel}"><span class="icon-cmts"></span></span>
-                        ${item.userCommentCount} &nbsp;
-                        <span class="tooltipped tooltipped-n" aria-label="${createTimeLabel}"><span class="icon-date"></span></span>
-                        ${item.userCreateTime?string('yyyy-MM-dd HH:mm')}
+                        ${articleCountLabel} ${item.userArticleCount} &nbsp;
+                        ${commentCountLabel} ${item.userCommentCount} &nbsp;
+                        ${createTimeLabel} ${item.userCreateTime?string('yyyy-MM-dd HH:mm')}
                     </span>
                 </div>
             </li>

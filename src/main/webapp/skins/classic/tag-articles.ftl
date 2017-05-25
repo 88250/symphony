@@ -36,12 +36,12 @@
 
                             <span class="article-actions action-btns">
                                 <#if isLoggedIn && isFollowing>
-                                <span class="tooltipped tooltipped-n ft-red" aria-label="${unfollowLabel} ${tag.tagFollowerCount}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"></span> ${tag.tagFollowerCount}</span>
+                                <span class="tooltipped tooltipped-n ft-red" aria-label="${unfollowLabel} ${tag.tagFollowerCount}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><svg class="icon-star"><use xlink:href="#star"></use></svg> ${tag.tagFollowerCount}</span>
                                 <#else>
-                                <span class="tooltipped tooltipped-n" aria-label="${followLabel} ${tag.tagFollowerCount}" onclick="Util.follow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"></span> ${tag.tagFollowerCount}</span>
+                                <span class="tooltipped tooltipped-n" aria-label="${followLabel} ${tag.tagFollowerCount}" onclick="Util.follow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><svg class="icon-star"><use xlink:href="#star"></use></svg> ${tag.tagFollowerCount}</span>
                                 </#if>
                                 <#if permissions["tagUpdateTagBasic"].permissionGrant> &nbsp;
-                                <a class="tooltipped tooltipped-n" href="${servePath}/admin/tag/${tag.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                                <a class="tooltipped tooltipped-n" href="${servePath}/admin/tag/${tag.oId}" aria-label="${adminLabel}"><svg class="icon-setting"><use xlink:href="#setting"></use></svg></a>
                                 </#if>
                             </span>
                         </div>
@@ -80,7 +80,7 @@
                                 /
                                 <a pjax-Title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" class="<#if "/good" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/good">${goodCmtsLabel}</a>
                                 /
-                                <a pjax-Title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" class="<#if "/perfect" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/perfect"><svg height="16" viewBox="3 2 11 12" width="14">${perfectIcon}</svg> ${perfectLabel}</a>
+                                <a pjax-Title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" class="<#if "/perfect" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/perfect"><svg class="fn-text-top"><use xlink:href="#perfect"></use></svg>${perfectLabel}</a>
                                 /
                                 <a pjax-Title="${tag.tagTitle} - ${tagLabel} - ${symphonyLabel}" class="<#if "/reply" == current>ft-gray</#if>" href="${servePath}/tag/${tag.tagURI}/reply">${recentCommentLabel}</a>
                             </span>
