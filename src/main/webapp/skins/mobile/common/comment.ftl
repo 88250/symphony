@@ -48,7 +48,7 @@
                     </#if>
                     <#if comment.commentOriginalCommentId != ''>
                         <span class="fn-pointer ft-a-title tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
-                              onclick="Comment.showReply('${comment.commentOriginalCommentId}', this, 'comment-get-comment')"><span class="icon-reply-to"></span>
+                              onclick="Comment.showReply('${comment.commentOriginalCommentId}', this, 'comment-get-comment')"><svg class="icon-reply-to"><use xlink:href="#reply-to"></use></svg>
                         <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
                     </span>
                     </#if>

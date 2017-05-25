@@ -167,7 +167,7 @@ var Comment = {
         $('.cmt-anonymous').show();
 
         $('.footer').css('margin-bottom', $('.editor-panel > .wrapper').outerHeight() + 'px');
-        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'.article-content\'))" class="ft-a-title"><span class="icon-reply-to"></span>'
+        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'.article-content\'))" class="ft-a-title"><svg><use xlink:href="#reply-to"></use></svg>'
             + $('.article-title').text() + '</a>').removeData();
 
         // 如果 hide 初始化， focus 无效
@@ -829,11 +829,11 @@ var Comment = {
             $avatar.removeClass('avatar').addClass('avatar-small');
             replyUserHTML = '<a rel="nofollow" href="#' + id
                 + '" class="ft-a-title" onclick="Comment._bgFade($(\'#' + id
-                + '\'))"><span class="icon-reply-to"></span> '
+                + '\'))"><svg><use xlink:href="#reply-to"></use></svg> '
                 + $avatar[0].outerHTML + ' ' + userName + '</a>';
         } else {
             $avatar.addClass('ft-a-title').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
-            $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<span class="icon-reply-to"></span> ');
+            $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<svg><use xlink:href="#reply-to"></use></svg> ');
             replyUserHTML = $avatar[0].outerHTML;
         }
 

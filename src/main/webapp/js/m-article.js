@@ -163,7 +163,7 @@ var Comment = {
         $('.anonymous-check').show();
 
         $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
-        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Util.goTop();Comment._bgFade($(\'.article-module\'))" class="ft-a-title"><span class="icon-reply-to"></span>'
+        $('#replyUseName').html('<a href="javascript:void(0)" onclick="Util.goTop();Comment._bgFade($(\'.article-module\'))" class="ft-a-title"><svg><use xlink:href="#reply-to"></use></svg>'
             + $('.article-title').text() + '</a>').removeData();
 
         // 如果 hide 初始化， focus 无效
