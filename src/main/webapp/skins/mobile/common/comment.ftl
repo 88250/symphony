@@ -43,7 +43,7 @@
                     </#if>
                     <#if permissions["commentUpdateCommentBasic"].permissionGrant>
                     <a class="tooltipped tooltipped-n ft-a-title hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}"
-                       aria-label="${adminLabel}"><span class="icon-setting"></span></a> &nbsp;
+                       aria-label="${adminLabel}"><svg><use xlink:href="#setting"></use></svg></a> &nbsp;
                     </#if>
                     <#if comment.commentOriginalCommentId != ''>
                         <span class="fn-pointer ft-a-title tooltipped tooltipped-nw" aria-label="${goCommentLabel}"

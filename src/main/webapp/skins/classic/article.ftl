@@ -105,7 +105,7 @@
                                class="tooltipped tooltipped-n"><svg class="icon-edit"><use xlink:href="#edit"></use></svg></a> &nbsp;
                         </#if>
                         <#if permissions["articleUpdateArticleBasic"].permissionGrant>
-                            <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a> &nbsp;
+                            <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><svg class="icon-setting"><use xlink:href="#setting"></use></svg></a> &nbsp;
                         </#if>
                     </div>
                 </div>
