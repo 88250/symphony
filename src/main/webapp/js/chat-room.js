@@ -164,7 +164,7 @@ var ChatRoom = {
                     ChatRoom.editor.setValue('');
                     // reset comment editor
                     $('.editor-preview').html('');
-                    if ($('.icon-view').hasClass('active')) {
+                    if ($('.icon-view').parent().hasClass('active')) {
                         $('.icon-view').click();
                     }
 

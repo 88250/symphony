@@ -651,7 +651,7 @@ var Comment = {
                     // reset comment editor
                     Comment.editor.setValue('');
                     $('.editor-preview').html('');
-                    if ($('.icon-view').hasClass('active')) {
+                    if ($('.icon-view').parent().hasClass('active')) {
                         $('.icon-view').click();
                     }
 

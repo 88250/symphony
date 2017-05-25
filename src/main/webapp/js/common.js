@@ -961,11 +961,11 @@ var Util = {
                     $(it).removeClass("disabled");
                     if (typeof (index) !== 'undefined') {
                         if ('article' === type || 'tag' === type) {
-                            $(it).html('<span class="icon-star"></span> ' + (index + 1)).
+                            $(it).html('<svg class="icon-star"><use xlink:href="#star"></use></svg> ' + (index + 1)).
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
                                 .attr("aria-label", Label.uncollectLabel).addClass('ft-red');
                         } else if ('article-watch' === type) {
-                            $(it).html('<span class="icon-view"></span> ' + (index + 1)).
+                            $(it).html('<svg class="icon-view"><use xlink:href="#view"></use></svg> ' + (index + 1)).
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
                                 .attr("aria-label", Label.unfollowLabel).addClass('ft-red');
                         }
@@ -1005,11 +1005,11 @@ var Util = {
                 if (result.sc) {
                     if (typeof (index) !== 'undefined') {
                         if ('article' === type || 'tag' === type) {
-                            $(it).removeClass('ft-red').html('<span class="icon-star"></span> ' + (index - 1))
+                            $(it).removeClass('ft-red').html('<svg class="icon-star"><use xlink:href="#star"></use></svg> ' + (index - 1))
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.collectLabel);
                         } else if ('article-watch' === type) {
-                            $(it).removeClass('ft-red').html('<span class="icon-view"></span> ' + (index - 1))
+                            $(it).removeClass('ft-red').html('<svg class="icon-view"><use xlink:href="#view"></use></svg> ' + (index - 1))
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.followLabel);
                         }

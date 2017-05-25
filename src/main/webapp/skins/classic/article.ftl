@@ -378,14 +378,14 @@
                         onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
-                    </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                    </#if>><svg class="icon-star"><use xlink:href="#star"></use></svg> ${article.articleCollectCnt}</span>
                     <#else>
                         <span class="tooltipped tooltipped-w" aria-label="${collectLabel}"
                         <#if permissions["commonFollowArticle"].permissionGrant>
                             onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"
                             <#else>
                                 onclick="Article.permissionTip(Label.noPermissionLabel)"
-                        </#if>><span class="icon-star"></span> ${article.articleCollectCnt}</span>
+                        </#if>><svg class="icon-star"><use xlink:href="#star"></use></svg> ${article.articleCollectCnt}</span>
                 </#if>
 
                 <#if isLoggedIn && isWatching>
@@ -394,14 +394,14 @@
                         onclick="Util.unfollow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
-                    </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
+                    </#if>><svg class="icon-view"><use xlink:href="#view"></use></svg> ${article.articleWatchCnt}</span>
                     <#else>
                         <span class="tooltipped tooltipped-w" aria-label="${followLabel}"
                         <#if permissions["commonWatchArticle"].permissionGrant>
                             onclick="Util.follow(this, '${article.oId}', 'article-watch', ${article.articleWatchCnt})"
                             <#else>
                                 onclick="Article.permissionTip(Label.noPermissionLabel)"
-                        </#if>><span class="icon-view"></span> ${article.articleWatchCnt}</span>
+                        </#if>><svg class="icon-view"><use xlink:href="#view"></use></svg> ${article.articleWatchCnt}</span>
                 </#if>
             </div>
         </div>
