@@ -89,7 +89,7 @@
                     <#if isLoggedIn && comment.commentAuthorName != currentUser.userName && permissions["commonAddComment"].permissionGrant>
                         <span aria-label="${replyLabel}" class="icon-reply-btn tooltipped tooltipped-n"
                               onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')">
-                        <span class="icon-reply"></span></span>
+                        <svg class="icon-reply"><use xlink:href="#reply"></use></svg></span>
                     </#if>
                     </span>
                 </div>

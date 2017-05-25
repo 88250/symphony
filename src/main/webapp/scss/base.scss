@@ -330,6 +330,7 @@ a[class*=" icon-"]:hover {
   text-decoration: none;
   color: $blue;
 }
+
 .radio-btn {
   background-color: $theme-accent;
   border-radius: 28px;
@@ -346,6 +347,11 @@ a[class*=" icon-"]:hover {
   box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
   padding-top: 15px;
   box-sizing: border-box;
+
+  svg {
+    height: 20px;
+    width: 20px;
+  }
 }
 
 .go-top:hover,
