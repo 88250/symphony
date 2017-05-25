@@ -130,7 +130,7 @@
 
                 <#if 0 < article.articleRewardPoint>
                 <div id="articleRewardContent">
-                    <span class="<#if article.rewarded> ft-red<#else> ft-blue</#if>"
+                    <span class="icon-points <#if article.rewarded> ft-red<#else> ft-blue</#if>"
                     <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>>
                     ${article.rewardedCnt} ${rewardLabel}</span>
 

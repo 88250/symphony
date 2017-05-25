@@ -211,7 +211,7 @@ var Comment = {
                 Comment._toggleReply();
             } else if (Util.prevKey === 'v') {
                 // v r 打赏帖子
-                $('#articleRewardContent .icon-points').parent().click();
+                $('#articleRewardContent .icon-points').click();
             } else if ($('#comments .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
                 // x r 回复回帖
                 $('#comments .list > ul > li.focus .icon-reply').parent().click();

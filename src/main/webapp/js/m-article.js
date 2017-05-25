@@ -1103,7 +1103,7 @@ var Article = {
 
                         var cnt = parseInt($('.article-actions .icon-points').parent().text());
                         $('.article-actions .icon-points').parent().addClass('ft-red')
-                        .html('<span class="icon-points"></span> ' + (cnt + 1)).removeAttr('onclick');
+                        .html('<svg><use xlink:href="#points"></use></svg> ' + (cnt + 1)).removeAttr('onclick');
                         return;
                     }
 

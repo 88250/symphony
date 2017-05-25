@@ -76,7 +76,7 @@
                         <#if 0 < article.articleRewardPoint>
                         <span class="tooltipped tooltipped-n has-cnt<#if article.rewarded> ft-red</#if>"
                         <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>
-                        aria-label="${rewardLabel}"><span class="icon-points"></span> ${article.rewardedCnt}</span>
+                        aria-label="${rewardLabel}"><svg class="icon-points"><use xlink:href="#points"></use></svg> ${article.rewardedCnt}</span>
                         </#if>
                         <#if article.isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
                         <a href="${servePath}/update?id=${article.oId}"><svg><use xlink:href="#edit"></use></svg></a>
@@ -166,6 +166,7 @@
                     ${article.articleRewardContent}
                     </#if>
                 </div>
+                <div class="fn-hr10"></div>
                 </#if>
                 
                 <#if article.articleNiceComments?size != 0>
