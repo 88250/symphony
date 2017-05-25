@@ -22,7 +22,7 @@
             </div>
             <#if isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
             <div class="cmts">
-                <a class="icon-edit" href="${servePath}/update?id=${article.oId}" title="${editLabel}"></a>
+                <a href="${servePath}/update?id=${article.oId}">${editLabel}</a>
             </div>
             <#else>
             <#if article.articleCommentCount != 0>

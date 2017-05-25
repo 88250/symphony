@@ -39,7 +39,7 @@
                         ${commentCountLabel} ${item.articleCommentCount}
                         </span>
                     </div>
-                    <a href="${servePath}/admin/article/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-title" aria-label="${editLabel}"><span class="icon-edit"></span></a>
+                    <a href="${servePath}/admin/article/${item.oId}" class="fn-right ft-a-title">${editLabel}</a>
                 </div>
             </li>
             </#list>

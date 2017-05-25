@@ -102,7 +102,7 @@
                         </#if>
                         <#if article.isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
                             <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"
-                               class="tooltipped tooltipped-n"><span class="icon-edit"></span></a> &nbsp;
+                               class="tooltipped tooltipped-n"><svg class="icon-edit"><use xlink:href="#edit"></use></svg></a> &nbsp;
                         </#if>
                         <#if permissions["articleUpdateArticleBasic"].permissionGrant>
                             <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a> &nbsp;

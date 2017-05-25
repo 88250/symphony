@@ -79,15 +79,14 @@
                         aria-label="${rewardLabel}"><span class="icon-points"></span> ${article.rewardedCnt}</span>
                         </#if>
                         <#if article.isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
-                        <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" 
-                           class="tooltipped tooltipped-n"><span class="icon-edit"></span></a>
+                        <a href="${servePath}/update?id=${article.oId}"><svg><use xlink:href="#edit"></use></svg></a>
                         </#if>
                         <#if article.isMyArticle && permissions["commonStickArticle"].permissionGrant>
                         <a class="tooltipped tooltipped-n" aria-label="${stickLabel}" 
-                           href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a>
+                           href="javascript:Article.stick('${article.oId}')"><svg><use xlink:href="#chevron-up"></use></svg></a>
                         </#if>
                         <#if permissions["articleUpdateArticleBasic"].permissionGrant>
-                        <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                        <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><svg><use xlink:href="#setting"</svg></a>
                         </#if>
                     </span>
                 </div>

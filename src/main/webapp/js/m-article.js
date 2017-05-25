@@ -80,7 +80,7 @@ var Comment = {
         });
 
         $('#replyUseName').html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'#' +
-            id + '\'))" class="ft-a-title"><span class="icon-edit"></span> ' +
+            id + '\'))" class="ft-a-title"><svg><use xlink:href="#edit"></use></svg> ' +
             Label.commonUpdateCommentPermissionLabel + '</a>').data('commentId', id);
     },
     /**

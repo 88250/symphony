@@ -34,7 +34,7 @@
             </div>
             <#if isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
             <div class="cmts">
-                <a class="ft-a-title tooltipped tooltipped-w" href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"><span class="icon-edit"></span></a>
+                <a class="ft-a-title tooltipped tooltipped-w" href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"><svg><use xlink:href="#edit"></use></svg></a>
             </div>
             <#else>
             <#if article.articleCommentCount != 0>
