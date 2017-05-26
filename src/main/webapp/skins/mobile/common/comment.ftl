@@ -84,7 +84,7 @@
                           onclick="Article.voteDown('${comment.oId}', 'comment', this)"
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
-                    </#if>><svg><use xlink:href="#thumbs"></use></svg> ${comment.commentBadCnt}</span> &nbsp;
+                    </#if>><svg><use xlink:href="#thumbs-down"></use></svg> ${comment.commentBadCnt}</span> &nbsp;
                     <#if isLoggedIn && comment.commentAuthorName != currentUser.userName && permissions["commonAddComment"].permissionGrant>
                         <span aria-label="${replyLabel}" class="icon-reply-btn tooltipped tooltipped-n"
                               onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')">
