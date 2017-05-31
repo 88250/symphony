@@ -28,10 +28,20 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.1.0, Mar 19, 2017
+ * @version 1.0.1.1, Mar 31, 2017
  * @since 2.1.0
  */
 public final class MP3Players {
+
+    /**
+     * MP3 URL regex.
+     */
+    private static final String MP3_URL_REGEX = "<p>( )*<a href.*\\.mp3.*</a>( )*</p>";
+
+    /**
+     * MP3 URL regex pattern.
+     */
+    private static final Pattern PATTERN = Pattern.compile(MP3_URL_REGEX, Pattern.CASE_INSENSITIVE);
 
     /**
      * Renders the specified content with MP3 player if need.
@@ -41,13 +51,8 @@ public final class MP3Players {
      */
     public static final String render(final String content) {
         final StringBuffer contentBuilder = new StringBuffer();
-        final String MP3_URL_REGEX = "<p>( )*<a href.*\\.mp3.*</a>( )*</p>";
-        final Pattern p = Pattern.compile(MP3_URL_REGEX);
-        final Matcher m = p.matcher(content);
 
-        final String id = MD5.hash(content);
-
-        int i = 0;
+        final Matcher m = PATTERN.matcher(content);
         while (m.find()) {
             String mp3URL = m.group();
             String mp3Name = StringUtils.substringBetween(mp3URL, "\">", ".mp3</a>");
