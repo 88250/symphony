@@ -1570,6 +1570,7 @@ public class ArticleProcessor {
         markdownText = Markdowns.toHTML(markdownText);
         markdownText = Markdowns.clean(markdownText, "");
         markdownText = MP3Players.render(markdownText);
+        markdownText = VideoPlayers.render(markdownText);
 
         context.renderJSONValue("html", markdownText);
     }

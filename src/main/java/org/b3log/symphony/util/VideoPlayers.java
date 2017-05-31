@@ -18,53 +18,60 @@
 package org.b3log.symphony.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.util.MD5;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * MP3 player utilities.
+ * Video player utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.1.1, Mar 31, 2017
- * @since 2.1.0
+ * @version 1.0.0.0, Mar 31, 2017
+ * @since 2.2.0
  */
-public final class MP3Players {
+public final class VideoPlayers {
 
     /**
-     * MP3 URL regex.
+     * Video URL regix.
      */
-    private static final String MP3_URL_REGEX = "<p>( )*<a href.*\\.mp3.*</a>( )*</p>";
+    private static final String VIDEO_URL_REGEX =
+            "<p>( )*<a href.*\\.(rm|rmvb|3gp|avi|mpeg|mp4|wmv|mkv|dat|asf|flv).*</a>( )*</p>";
 
     /**
-     * MP3 URL regex pattern.
+     * Video URL regex pattern.
      */
-    private static final Pattern PATTERN = Pattern.compile(MP3_URL_REGEX, Pattern.CASE_INSENSITIVE);
+    private static final Pattern PATTERN = Pattern.compile(VIDEO_URL_REGEX, Pattern.CASE_INSENSITIVE);
+
+    private VideoPlayers() {
+    }
 
     /**
-     * Renders the specified content with MP3 player if need.
+     * Renders the specified content with video player if need.
      *
      * @param content the specified content
      * @return rendered content
      */
     public static final String render(final String content) {
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+
         final StringBuffer contentBuilder = new StringBuffer();
-
         final Matcher m = PATTERN.matcher(content);
-        while (m.find()) {
-            String mp3URL = m.group();
-            String mp3Name = StringUtils.substringBetween(mp3URL, "\">", ".mp3</a>");
-            mp3URL = StringUtils.substringBetween(mp3URL, "href=\"", "\" rel=");
 
-            m.appendReplacement(contentBuilder, "<div class=\"aplayer content-audio\" data-title=\""
-                    + mp3Name + "\" data-url=\"" + mp3URL + "\" ></div>\n");
+        while (m.find()) {
+            String videoURL = m.group();
+            String videoName = StringUtils.substringBetween(videoURL, "\">", ".");
+            videoURL = StringUtils.substringBetween(videoURL, "href=\"", "\" rel=");
+
+            m.appendReplacement(contentBuilder, "<video src=\""
+                    + videoURL + "\" controls=\"controls\">" + langPropsService.get("notSupportPlayLabel") + "</video>\n");
         }
         m.appendTail(contentBuilder);
 
         return contentBuilder.toString();
     }
-
-    private MP3Players() {}
 }
