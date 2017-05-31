@@ -845,6 +845,7 @@ public class CommentQueryService {
         commentContent = Markdowns.toHTML(commentContent);
         commentContent = Markdowns.clean(commentContent, "");
         commentContent = MP3Players.render(commentContent);
+        commentContent = VideoPlayers.render(commentContent);
 
         if (sync) {
             // "<i class='ft-small'>by 88250</i>"

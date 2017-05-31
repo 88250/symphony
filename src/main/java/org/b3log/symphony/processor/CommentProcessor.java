@@ -42,10 +42,7 @@ import org.b3log.symphony.processor.advice.validate.ClientCommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentUpdateValidation;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.util.MP3Players;
-import org.b3log.symphony.util.Markdowns;
-import org.b3log.symphony.util.StatusCodes;
+import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -312,6 +309,7 @@ public class CommentProcessor {
             commentContent = Markdowns.toHTML(commentContent);
             commentContent = Markdowns.clean(commentContent, "");
             commentContent = MP3Players.render(commentContent);
+            commentContent = VideoPlayers.render(commentContent);
 
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
             context.renderJSONValue(Comment.COMMENT_CONTENT, commentContent);
