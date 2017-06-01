@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.32.30.60, May 24, 2017
+ * @version 2.32.30.61, Jun 1, 2017
  */
 
 @import "variables";
@@ -482,6 +482,10 @@ label.cmt-anonymous {
 
   .comment-info a:hover {
     text-decoration: none;
+  }
+
+  .comment-action > .ft-fade > .fn-pointer:hover {
+    color: $gray;
   }
 }
 
