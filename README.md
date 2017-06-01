@@ -334,7 +334,7 @@ Sym's birth can not be separated from the following open source projects:
 * [UAParser.js](https://github.com/faisalman/ua-parser-js): Front end User-Agent parser
 * [Sass](http://sass-lang.com): Front end CSS preprocessor
 * [jsoup](https://github.com/jhy/jsoup): Java HTML parser
-* [pegdown](https://github.com/sirthias/pegdown): Java Markdown parser
+* [flexmark](https://github.com/vsch/flexmark-java): Java Markdown parser
 * [Apache Commons](http://commons.apache.org): Java tool library
 * [Jodd](https://github.com/oblac/jodd): Java tool library
 * [emoji-java](https://github.com/vdurmont/emoji-java): Java Emoji tool library
