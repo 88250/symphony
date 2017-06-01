@@ -65,7 +65,7 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.10.17.22, May 17, 2017
+ * @version 1.10.17.23, Jun 1, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -305,17 +305,22 @@ public final class Markdowns {
                         final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
                         final org.jsoup.nodes.Node parent = textNode.parent();
 
-                        if (parent instanceof org.jsoup.nodes.Element) {
+                        if (parent instanceof Element) {
                             final Element parentElem = (Element) parent;
 
                             if (!parentElem.tagName().equals("code")) {
                                 String text = textNode.getWholeText();
+                                boolean nextIsBr = false;
+                                final org.jsoup.nodes.Node nextSibling = textNode.nextSibling();
+                                if (nextSibling instanceof Element) {
+                                    nextIsBr = "br".equalsIgnoreCase(((Element) nextSibling).tagName());
+                                }
 
                                 if (null != userQueryService) {
                                     try {
                                         final Set<String> userNames = userQueryService.getUserNames(text);
                                         for (final String userName : userNames) {
-                                            text = text.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
+                                            text = text.replace('@' + userName + (nextIsBr ? "" : " "), "@<a href='" + Latkes.getServePath()
                                                     + "/member/" + userName + "'>" + userName + "</a> ");
                                         }
                                         text = text.replace("@participants ",
