@@ -60,7 +60,7 @@ import java.util.concurrent.*;
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  * <p>
  * Uses the <a href="https://github.com/chjj/marked">marked</a> as the processor, if not found this command, try
- * built-in <a href="https://github.com/sirthias/pegdown">pegdown</a> instead.
+ * built-in <a href="https://github.com/vsch/flexmark-java">flexmark</a> instead.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -162,11 +162,10 @@ public final class Markdowns {
             if (MARKED_AVAILABLE) {
                 LOGGER.log(Level.INFO, "[marked] is available, uses it for markdown processing");
             } else {
-                LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing");
+                LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [flexmark] for markdown processing");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [pegdown] for markdown processing: "
-                    + e.getMessage());
+            LOGGER.log(Level.INFO, "[marked] is not available caused by [" + e.getMessage() + "], uses built-in [flexmark] for markdown processing");
         }
     }
 
