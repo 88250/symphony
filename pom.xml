@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.15.6.57, May 18, 2017
+    Version: 2.16.6.57, Jun 1, 2017
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -28,7 +28,7 @@
         <slf4j.version>1.7.7</slf4j.version>
         <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
         <jsoup.version>1.10.2</jsoup.version>
-        <pegdown.version>1.6.0</pegdown.version>
+        <flexmark.version>0.19.5</flexmark.version>
         <qiniu.version>7.0.4.1</qiniu.version>
         <jodd.version>3.6.6</jodd.version>
         <emoji-java.version>3.2.0</emoji-java.version>
@@ -178,9 +178,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.pegdown</groupId>
-            <artifactId>pegdown</artifactId>
-            <version>${pegdown.version}</version>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>${flexmark.version}</version>
         </dependency>
 
         <dependency>
