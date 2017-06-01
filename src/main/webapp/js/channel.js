@@ -21,7 +21,7 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.13.16.19, May 4, 2017
+ * @version 1.13.17.19, Jun 1, 2017
  */
 
 /**
@@ -105,7 +105,7 @@ var ArticleChannel = {
                         } else {
                             $originalComment.find('.comment-action > .ft-fade').prepend('<span class="fn-pointer ft-smaller fn-left" onclick="Comment.showReply(\''
                                     + data.commentOriginalCommentId + '\', this, \'comment-replies\')" style="opacity: 1;"> 1 '
-                                    + Label.replyLabel + ' <svg class="icon-chevron-down"><use xlink:href="#chvron-down"></use></svg>');
+                                    + Label.replyLabel + ' <svg class="icon-chevron-down"><use xlink:href="#chevron-down"></use></svg>');
                         }
                     }
                     break;
