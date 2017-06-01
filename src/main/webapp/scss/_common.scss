@@ -19,7 +19,7 @@
  * Common style for mobile and web.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.0.0, Mar 24, 2017
+ * @version 1.3.0.1, Jun 1, 2017
  */
 
 /* start reset */
@@ -498,7 +498,7 @@ blockquote {
         box-shadow: inset 0 -1px 0 #bbb;
     }
 
-    li.task-item {
+    li.task-list-item {
         list-style: none;
 
         & > input {
