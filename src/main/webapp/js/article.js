@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.38.54.34, May 7, 2017
+ * @version 1.38.56.34, Jun 6, 2017
  */
 
 /**
@@ -714,8 +714,9 @@ var Comment = {
      * @description 添加评论
      * @param {String} id 文章 id
      * @param {String} csrfToken CSRF 令牌
+     * @param {BOM} it targetElement
      */
-    add: function (id, csrfToken) {
+    add: function (id, csrfToken, it) {
         if (!Validate.goValidate({
                 target: $("#addCommentTip"),
                 data: [{
@@ -754,11 +755,11 @@ var Comment = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             beforeSend: function () {
-                $(".form button.red").attr("disabled", "disabled").css("opacity", "0.3");
+                $(it).attr("disabled", "disabled").css("opacity", "0.3");
                 Comment.editor.setOption("readOnly", "nocursor");
             },
             success: function (result, textStatus) {
-                $(".form button.red").removeAttr("disabled").css("opacity", "1");
+                $(it).removeAttr("disabled").css("opacity", "1");
 
                 if (0 === result.sc) {
                     // edit cmt
@@ -804,7 +805,7 @@ var Comment = {
                 $("#addCommentTip").addClass("error").html('<ul><li>' + result.statusText + '</li></ul>');
             },
             complete: function () {
-                $(".form button.red").removeAttr("disabled").css("opacity", "1");
+                $(it).removeAttr("disabled").css("opacity", "1");
                 Comment.editor.setOption("readOnly", false);
             }
         });
