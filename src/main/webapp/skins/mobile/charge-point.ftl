@@ -10,7 +10,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content content-reset">
-                    <h2><span class="ft-blue">♦</span> ${chargePointLabel}</h2>
+                    <h2><span class="ft-red">♦</span> ${chargePointLabel}</h2>
                     ${chargePointContentLabel} 
                 </div>
                 <div class="fn-hr10"></div>

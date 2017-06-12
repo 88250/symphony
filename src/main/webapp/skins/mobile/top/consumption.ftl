@@ -1,6 +1,6 @@
 <#include "macro-top.ftl">
 <@top "consumption">
-<h2 class="ranking-title"><span class="ft-green">♥</span> ${consumptionRankLabel}</h2>
+<h2 class="ranking-title"><span class="ft-red">♥</span> ${consumptionRankLabel}</h2>
 <div class="list top">
     <ul>
         <#list topConsumptionUsers as user>

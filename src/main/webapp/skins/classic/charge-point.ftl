@@ -13,7 +13,7 @@
             <div class="wrapper">
                 <div class="content">
                     <div class="module">
-                        <h2 class="sub-head"><span class="ft-blue">♦</span> ${chargePointLabel}</h2>
+                        <h2 class="sub-head"><span class="ft-red">♦</span> ${chargePointLabel}</h2>
                         <div class="content-reset fn-content">
                             ${chargePointContentLabel}
                         </div>
