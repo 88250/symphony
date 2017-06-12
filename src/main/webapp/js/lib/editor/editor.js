@@ -1326,12 +1326,14 @@
             preview.className = 'editor-preview content-reset';
             wrapper.appendChild(preview);
         }
+
         if (/editor-preview-active/.test(preview.className)) {
             preview.className = preview.className.replace(
                     /\s*editor-preview-active\s*/g, ''
                     );
             toolbar.className = toolbar.className.replace(/\s*active\s*/g, '');
             cm.display.scroller.style.width = '100%';
+            cm.refresh();
             return false;
         } else {
             /* When the preview button is clicked for the first time,
@@ -1344,6 +1346,7 @@
             toolbar.className += ' active';
 
             cm.display.scroller.style.width = '50%';
+            cm.refresh();
         }
         var text = cm.getValue();
 

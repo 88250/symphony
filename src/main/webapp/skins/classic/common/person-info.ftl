@@ -30,8 +30,8 @@
         </ul>
 
         <div class="fn-clear">
-            <span class="ft-red">♠</span> <a href="${servePath}/top/balance">${wealthRankLabel}</a>
-            <span class="ft-green">♥</span> <a href="${servePath}/top/consumption">${consumptionRankLabel}</a>
+            <span>♠</span> <a href="${servePath}/top/balance">${wealthRankLabel}</a>
+            <span class="ft-red">♥</span> <a href="${servePath}/top/consumption">${consumptionRankLabel}</a>
 
             <div class="fn-right">
                 <#if !isDailyCheckin>

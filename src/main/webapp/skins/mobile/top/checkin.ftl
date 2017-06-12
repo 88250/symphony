@@ -1,6 +1,6 @@
 <#include "macro-top.ftl">
 <@top "checkin">
-<h2 class="ranking-title"><span class="ft-gray">♣</span> ${checkinTopLabel}</h2>
+<h2 class="ranking-title"><span>♣</span> ${checkinTopLabel}</h2>
 <div class="list top">
     <ul>
         <#list topCheckinUsers as user>

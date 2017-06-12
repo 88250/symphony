@@ -1,7 +1,7 @@
 <#include "macro-top.ftl">
 <@top "balance">
 <h2 class="sub-head">
-    <span class="ft-red">♠</span> ${wealthRankLabel}
+    <span>♠</span> ${wealthRankLabel}
 </h2>
 <div class="list">
     <ul>
