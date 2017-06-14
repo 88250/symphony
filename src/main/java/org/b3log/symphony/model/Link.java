@@ -27,7 +27,7 @@ import java.util.Set;
  * This class defines all link model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.2, Jun 6, 2017
+ * @version 1.2.0.3, Jun 14, 2017
  * @since 1.6.0
  */
 public final class Link {
@@ -137,7 +137,8 @@ public final class Link {
             "ubuntu", "atom-china", "frontenddev", "beyoung", "pythoner", "digitser", "liaoxuefeng", "htmleaf",
             "2cto", "androidchina", "jq22", "webhek", "css88", "itcast", "swiftv", "imooc", "bootcss", "runoob",
             "pythondoc", "justjavac", "android-studio", "jquery", "android-doc", "jui", "gzit", "simpleframework",
-            "newbiefly", "jeasyui", "ruanman", "apkbus", "nowamagic"));
+            "newbiefly", "jeasyui", "ruanman", "apkbus", "nowamagic", "ikanman", "damoluomu", "sufeinet",
+            "cnq", "layui", "8btc"));
 
     /**
      * Private constructor.
