@@ -138,7 +138,7 @@ public final class Link {
             "2cto", "androidchina", "jq22", "webhek", "css88", "itcast", "swiftv", "imooc", "bootcss", "runoob",
             "pythondoc", "justjavac", "android-studio", "jquery", "android-doc", "jui", "gzit", "simpleframework",
             "newbiefly", "jeasyui", "ruanman", "apkbus", "nowamagic", "ikanman", "damoluomu", "sufeinet",
-            "cnq", "layui", "8btc", "2345"));
+            "cnq", "layui", "8btc", "2345", "it-home", "ithome", "21cn", "linuxprobe"));
 
     /**
      * Private constructor.
