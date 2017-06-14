@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "4.37.8.22, Mar 19, 2017",
+    "version": "4.37.8.23, Jun 14, 2017",
     "authors": [
         "Liang Ding",
         "Zephyr",
@@ -243,6 +243,14 @@
                 {
                     "name": "linkScore",
                     "type": "double"
+                },
+                {
+                    "name": "linkPingCnt",
+                    "type": "int"
+                },
+                {
+                    "name": "linkPingErrCnt",
+                    "type": "int"
                 }
             ]
         },
