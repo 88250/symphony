@@ -45,13 +45,11 @@ import org.jsoup.nodes.Document;
 
 import java.util.List;
 
-;
-
 /**
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.6, Apr 19, 2017
+ * @version 1.1.1.7, Jun 14, 2017
  * @since 1.6.0
  */
 @Service
@@ -60,7 +58,7 @@ public class LinkForgeMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LinkForgeMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LinkForgeMgmtService.class);
 
     /**
      * Link repository.
@@ -139,8 +137,10 @@ public class LinkForgeMgmtService {
                     link.put(Link.LINK_SUBMIT_CNT, 0);
                     link.put(Link.LINK_TITLE, lnk.optString(Link.LINK_TITLE));
                     link.put(Link.LINK_TYPE, Link.LINK_TYPE_C_FORGE);
+                    link.put(Link.LINK_PING_CNT, 0);
+                    link.put(Link.LINK_PING_ERR_CNT, 0);
 
-                    LOGGER.info(link.optString(Link.LINK_ADDR) + "____" + link.optString(Link.LINK_TITLE));
+                    LOGGER.info(link.optString(Link.LINK_ADDR) + "__" + link.optString(Link.LINK_TITLE));
                     linkRepository.add(link);
 
                     final JSONObject linkCntOption = optionRepository.get(Option.ID_C_STATISTIC_LINK_COUNT);

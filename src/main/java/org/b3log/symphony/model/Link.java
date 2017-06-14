@@ -27,7 +27,7 @@ import java.util.Set;
  * This class defines all link model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.3, Jun 14, 2017
+ * @version 1.3.0.3, Jun 14, 2017
  * @since 1.6.0
  */
 public final class Link {
@@ -86,6 +86,16 @@ public final class Link {
      * Key of link score.
      */
     public static final String LINK_SCORE = "linkScore";
+
+    /**
+     * Key of link ping count.
+     */
+    public static final String LINK_PING_CNT = "linkPingCnt";
+
+    /**
+     * Key of link ping error count.
+     */
+    public static final String LINK_PING_ERR_CNT = "linkPingErrCnt";
 
     //// Transient ////
     /**
