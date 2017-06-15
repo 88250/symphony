@@ -18,6 +18,8 @@
 package org.b3log.symphony.processor;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -41,6 +43,7 @@ import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.LinkForgeMgmtService;
 import org.b3log.symphony.service.LinkForgeQueryService;
 import org.b3log.symphony.service.OptionQueryService;
+import org.b3log.symphony.util.Networks;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -62,7 +65,7 @@ import java.util.concurrent.Executors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.0.7, Dec 25, 2016
+ * @version 1.1.0.8, Jun 15, 2017
  * @since 1.6.0
  */
 @RequestProcessor
@@ -179,6 +182,13 @@ public class LinkForgeProcessor {
         final String key = Symphonys.get("keyOfSymphony");
         if (!key.equals(request.getParameter("key"))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        if (Latkes.getServePath().contains("localhost") || Networks.isIPv4(Latkes.getServerHost())
+                || RuntimeMode.DEVELOPMENT == Latkes.getRuntimeMode()) {
+            response.sendError(HttpServletResponse.SC_OK);
 
             return;
         }
