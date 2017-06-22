@@ -24,6 +24,7 @@ import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.service.ShortLinkQueryService;
+import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.17.0.0, May 20, 2017
+ * @version 1.17.0.1, Jun 22, 2017
  * @since 0.2.0
  */
 public final class Tag {
@@ -508,6 +509,7 @@ public final class Tag {
             final ShortLinkQueryService shortLinkQueryService = beanManager.getReference(ShortLinkQueryService.class);
 
             description = shortLinkQueryService.linkTag(description);
+            description = Emotions.convert(description);
             description = Markdowns.toHTML(description);
 
             tag.put(Tag.TAG_DESCRIPTION, description);
