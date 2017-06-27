@@ -48,7 +48,7 @@
 * the ability to aggregate independent bloggers, to build and share quality resources
 * and `100%` open source
 
-Welcome to Sym official community - [HacPai](https://hacpai.com) for more details.
+Welcome to Sym official community - [HacPai](https://hacpai.com/register?r=88250) for more details.
 
 ### Motivation
 

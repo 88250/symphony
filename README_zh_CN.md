@@ -43,7 +43,7 @@
 * 集成了聚合独立博客的能力，共建共享优质资源
 * 并且 `100%` 开源
 
-欢迎到 [Sym 官方讨论区](https://hacpai.com)了解更多。另外，如果你需要搭建一个企业内网论坛，请使用 [SymX](https://github.com/FangStarNet/symphonyx)。
+欢迎到 [Sym 官方讨论区](https://hacpai.com/register?r=88250)了解更多。
 
 ### 动机
 
@@ -80,7 +80,7 @@ Sym 的诞生是有如下几点原因：
 
 ## 功能特性
 
-具体功能点细节可浏览 [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)，下面列出了 Sym 的主要特性，说明 **现代化** 的由来。
+具体功能点细节可浏览 [**Sym 功能点脑图**](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)，下面列出了 Sym 的主要特性，说明 **现代化** 的由来。
 
 ### 好用的编辑器
 
