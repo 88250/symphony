@@ -63,20 +63,19 @@ Sym 的诞生是有如下几点原因：
 
 ### 案例
 
-个人维护：
+社区版：
 
-* [黑客派](https://hacpai.com)
 * [宽客网](http://www.cnq.net)
 * [贵州IT](http://www.gzit.info)
 * [超级产品经理](https://imspm.com)
-* [Titandb 学习主站](https://titandb.cn)
+* [蚂蚁程序猿](http://bbs.itmayiedu.com)
+* [漠游网](https://damoluomu.com)
 * [呆萌狮 - Demo's](http://www.daimengshi.com)
 
-公司维护：
+商业版：
 
+* [黑客派](https://hacpai.com)
 * [四方环视](http://bbs.ivrpano.com)
-
-如果你也搭建好了，欢迎通过 Pull Request 将你的站点加到这个列表中 :-p
 
 ## 功能特性
 
@@ -243,7 +242,7 @@ Sym 提供了 [API](https://hacpai.com/article/1457158841475) 进行帖子、回
 Sym 有两个版本：
 
 * 社区版：使用 GPL 开源，如果你选择使用社区版，则必须完全遵守 GPL 的相关条款
-* 商业版：闭源，报价 ¥20000，请联系 QQ 845765 或者 DL88250@gmail.com 进行细节咨询
+* 商业版：闭源，报价 ¥20000，请联系 QQ 845765 或者微信号 DL88250 进行细节咨询
 
 商业版相比社区版具有如下优势：
 
@@ -257,7 +256,7 @@ Sym 有两个版本：
   * 细节体验优化
 * 官方技术支持
 
-**企业网站、经营性网站、以营利为目的或实现盈利的网站请购买商业版**
+**企业网站、经营性网站、以营利为目的或实现盈利的网站请购买商业版！**
 
 ## 贡献
 
