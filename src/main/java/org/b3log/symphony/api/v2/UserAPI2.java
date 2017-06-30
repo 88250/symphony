@@ -60,7 +60,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Mar 8, 2016
+ * @version 1.2.0.1, Jun 30, 2017
  * @since 2.1.0
  */
 @RequestProcessor
@@ -136,17 +136,26 @@ public class UserAPI2 {
                 return;
             }
 
-            final String followerId = user.optString(Keys.OBJECT_ID);
+            final String followingId = user.optString(Keys.OBJECT_ID);
             final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
             final JSONObject followersResult = followQueryService.getFollowerUsers(avatarViewMode,
-                    followerId, page, V2s.PAGE_SIZE);
+                    followingId, page, V2s.PAGE_SIZE);
             final List<JSONObject> followers = (List<JSONObject>) followersResult.opt(Keys.RESULTS);
             V2s.cleanUsers(followers);
 
-            ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
             data = new JSONObject();
             data.put(User.USERS, followers);
+
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            if (null != currentUser) {
+                final String followerId = currentUser.optString(Keys.OBJECT_ID);
+
+                final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
+                data.put(Common.IS_FOLLOWING, isFollowing);
+            }
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
 
             final int followerUserCnt = followersResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
             final int pageCount = (int) Math.ceil((double) followerUserCnt / (double) V2s.PAGE_SIZE);
