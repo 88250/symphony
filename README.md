@@ -68,17 +68,18 @@ Sym was born with the following reasons:
 
 ### Usecases
 
-Personal maintenance:
+Community edition:
 
-* [黑客派](https://hacpai.com)
 * [宽客网](http://www.cnq.net)
 * [贵州IT](http://www.gzit.info)
 * [超级产品经理](https://imspm.com)
-* [Titandb 学习主站](https://titandb.cn)
+* [蚂蚁程序猿](http://bbs.itmayiedu.com)
+* [漠游网](https://damoluomu.com)
 * [呆萌狮 - Demo's](http://www.daimengshi.com)
 
-Company maintenance:
+Commercial edition:
 
+* [黑客派](https://hacpai.com)
 * [四方环视](http://bbs.ivrpano.com)
 
 If you build it, you are welcome to add your site to this list by Pull Request :-p

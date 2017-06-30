@@ -63,20 +63,19 @@ Sym 的诞生是有如下几点原因：
 
 ### 案例
 
-个人维护：
+社区版：
 
-* [黑客派](https://hacpai.com)
 * [宽客网](http://www.cnq.net)
 * [贵州IT](http://www.gzit.info)
 * [超级产品经理](https://imspm.com)
-* [Titandb 学习主站](https://titandb.cn)
+* [蚂蚁程序猿](http://bbs.itmayiedu.com)
+* [漠游网](https://damoluomu.com)
 * [呆萌狮 - Demo's](http://www.daimengshi.com)
 
-公司维护：
+商业版：
 
+* [黑客派](https://hacpai.com)
 * [四方环视](http://bbs.ivrpano.com)
-
-如果你也搭建好了，欢迎通过 Pull Request 将你的站点加到这个列表中 :-p
 
 ## 功能特性
 
