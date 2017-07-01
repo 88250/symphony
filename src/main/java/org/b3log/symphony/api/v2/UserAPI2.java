@@ -60,7 +60,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Mar 8, 2016
+ * @version 1.2.0.1, Jun 30, 2017
  * @since 2.1.0
  */
 @RequestProcessor
@@ -136,11 +136,11 @@ public class UserAPI2 {
                 return;
             }
 
-            final String followerId = user.optString(Keys.OBJECT_ID);
+            final String followingId = user.optString(Keys.OBJECT_ID);
             final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
             final JSONObject followersResult = followQueryService.getFollowerUsers(avatarViewMode,
-                    followerId, page, V2s.PAGE_SIZE);
+                    followingId, page, V2s.PAGE_SIZE);
             final List<JSONObject> followers = (List<JSONObject>) followersResult.opt(Keys.RESULTS);
             V2s.cleanUsers(followers);
 
@@ -155,8 +155,15 @@ public class UserAPI2 {
             final List<Integer> pageNums = Paginator.paginate(page, V2s.PAGE_SIZE, pageCount, V2s.WINDOW_SIZE);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
             data.put(Pagination.PAGINATION, pagination);
+
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            if (null != currentUser) {
+                final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
+
+                final boolean isFollowing = followQueryService.isFollowing(currentUserId, followingId, Follow.FOLLOWING_TYPE_C_USER);
+                data.put(Common.IS_FOLLOWING, isFollowing);
+            }
 
             ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
@@ -374,8 +381,15 @@ public class UserAPI2 {
             final List<Integer> pageNums = Paginator.paginate(page, V2s.PAGE_SIZE, pageCount, V2s.WINDOW_SIZE);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
             data.put(Pagination.PAGINATION, pagination);
+
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            if (null != currentUser) {
+                final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
+
+                final boolean isFollowing = followQueryService.isFollowing(currentUserId, followerId, Follow.FOLLOWING_TYPE_C_USER);
+                data.put(Common.IS_FOLLOWING, isFollowing);
+            }
 
             ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
