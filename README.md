@@ -328,7 +328,6 @@ Sym's birth can not be separated from the following open source projects:
 * [ECharts](https://github.com/ecomfe/echarts): Front end interactive chart library
 * [MathJax](https://github.com/mathjax/MathJax): Front end Math rendering library
 * [SoundRecorder](https://github.com/rderveloy/JavaScript-Sound-Recorder): Front end HTML sound recorder
-* [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard): Front end clipboard
 * [JavaScript MD5](http://pajhome.org.uk/crypt/md5/index.html): Front endJavaScript MD5
 * [ReconnectingWebSocket](https://github.com/joewalnes/reconnecting-websocket): Front end WebSocket reconnecting
 * [to-markdown](https://github.com/domchristie/to-markdown): Front end HTML to Markdown
