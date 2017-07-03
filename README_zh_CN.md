@@ -304,6 +304,7 @@ Sym 的诞生离不开以下开源项目：
 * [Sass](http://sass-lang.com)：前端 CSS 处理工具
 * [jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器
 * [flexmark](https://github.com/vsch/flexmark-java)：Java Markdown 处理库
+* [marked](https://github.com/chjj/marked)：NodeJS Markdown 处理库
 * [Apache Commons](http://commons.apache.org)：Java 工具库集
 * [Jodd](https://github.com/oblac/jodd)：Java 工具库集
 * [emoji-java](https://github.com/vdurmont/emoji-java)：Java Emoji 处理库
