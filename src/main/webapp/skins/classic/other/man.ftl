@@ -18,7 +18,7 @@
                                 href="https://github.com/tldr-pages/tldr" target="_blank">tldr</a></i>
                         <br><br>
                         <div class="form">
-                            <input id="manCmd" type="text" autofocus placeholder="man">
+                            <input id="manCmd" type="text" autofocus placeholder="${mans[0].manCmd}">
                         </div>
                         <div id="manHTML" class="content-reset">
                             ${mans[0].manHTML}
