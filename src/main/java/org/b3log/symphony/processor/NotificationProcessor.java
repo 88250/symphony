@@ -55,18 +55,20 @@ import java.util.*;
  * Notification processor.
  * <p>
  * <ul>
- * <li>Displays comments of my articles (/notifications/commented), GET</li>
- * <li>Displays replies of my comments (/notifications/reply), GET</li>
- * <li>Displays at me (/notifications/at), GET</li>
- * <li>Displays following user's articles (/notifications/following-user),
- * GET</li>
+ * <li>Shows [commented] notifications (/notifications/commented), GET</li>
+ * <li>Shows [reply] notifications (/notifications/reply), GET</li>
+ * <li>Shows [at] notifications (/notifications/at), GET</li>
+ * <li>Shows [following] notifications (/notifications/following), GET</li>
+ * <li>Shows [point] notifications (/notifications/point), GET </li>
+ * <li>Shows [broadcast] notifications (/notifications/broadcast), GET</li>
  * <li>Makes article/comment read (/notification/read), GET</li>
+ * <li>Shows [sysAnnounce] notifications (/notifications/sys-announce), GET</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Lo</a>
- * @version 1.10.1.9, Mar 12, 2017
+ * @version 1.10.1.10, Jul 3, 2017
  * @since 0.2.5
  */
 @RequestProcessor
