@@ -5,6 +5,7 @@ commons*: APL
 druid: APL
 emoji-java: MIT
 flexmark*: BSD
+marked: MIT
 freemarker: APL
 gson: APL
 javassist: APL
@@ -42,5 +43,3 @@ md5: BSD
 reconnecting-websocket: MIT
 to-markdown: MIT
 ua-parser: MIT
-
-
