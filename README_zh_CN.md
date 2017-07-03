@@ -297,7 +297,6 @@ Sym 的诞生离不开以下开源项目：
 * [ECharts](https://github.com/ecomfe/echarts)：前端 JavaScript 交互式图表库
 * [MathJax](https://github.com/mathjax/MathJax)：前端数学公式渲染引擎
 * [SoundRecorder](https://github.com/rderveloy/JavaScript-Sound-Recorder)：前端 HTML5 录音库
-* [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard)：前端剪贴板支持
 * [JavaScript MD5](http://pajhome.org.uk/crypt/md5/index.html)：前端 JavaScript MD5 库
 * [ReconnectingWebSocket](https://github.com/joewalnes/reconnecting-websocket)：前端 WebSocket 重连库
 * [to-markdown](https://github.com/domchristie/to-markdown)：前端 HTML 转换 Markdown
@@ -305,6 +304,7 @@ Sym 的诞生离不开以下开源项目：
 * [Sass](http://sass-lang.com)：前端 CSS 处理工具
 * [jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器
 * [flexmark](https://github.com/vsch/flexmark-java)：Java Markdown 处理库
+* [marked](https://github.com/chjj/marked)：NodeJS Markdown 处理库
 * [Apache Commons](http://commons.apache.org)：Java 工具库集
 * [Jodd](https://github.com/oblac/jodd)：Java 工具库集
 * [emoji-java](https://github.com/vdurmont/emoji-java)：Java Emoji 处理库

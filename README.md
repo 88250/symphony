@@ -328,7 +328,6 @@ Sym's birth can not be separated from the following open source projects:
 * [ECharts](https://github.com/ecomfe/echarts): Front end interactive chart library
 * [MathJax](https://github.com/mathjax/MathJax): Front end Math rendering library
 * [SoundRecorder](https://github.com/rderveloy/JavaScript-Sound-Recorder): Front end HTML sound recorder
-* [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard): Front end clipboard
 * [JavaScript MD5](http://pajhome.org.uk/crypt/md5/index.html): Front endJavaScript MD5
 * [ReconnectingWebSocket](https://github.com/joewalnes/reconnecting-websocket): Front end WebSocket reconnecting
 * [to-markdown](https://github.com/domchristie/to-markdown): Front end HTML to Markdown
@@ -336,6 +335,7 @@ Sym's birth can not be separated from the following open source projects:
 * [Sass](http://sass-lang.com): Front end CSS preprocessor
 * [jsoup](https://github.com/jhy/jsoup): Java HTML parser
 * [flexmark](https://github.com/vsch/flexmark-java): Java Markdown parser
+* [marked](https://github.com/chjj/marked): NodeJS Markdown parser
 * [Apache Commons](http://commons.apache.org): Java tool library
 * [Jodd](https://github.com/oblac/jodd): Java tool library
 * [emoji-java](https://github.com/vdurmont/emoji-java): Java Emoji tool library
@@ -353,4 +353,3 @@ Sym's birth can not be separated from the following open source projects:
 <br><br>
 <img src="https://cloud.githubusercontent.com/assets/873584/19897809/84c4ed56-a094-11e6-8498-43e9337c475f.png">
 </p>
-
