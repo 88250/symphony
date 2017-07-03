@@ -60,7 +60,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Jun 30, 2017
+ * @version 1.2.0.2, Jul 3, 2017
  * @since 2.1.0
  */
 @RequestProcessor
@@ -70,26 +70,31 @@ public class UserAPI2 {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserAPI2.class);
+
     /**
      * User query service.
      */
     @Inject
     private UserQueryService userQueryService;
+
     /**
      * Avatar query service.
      */
     @Inject
     private AvatarQueryService avatarQueryService;
+
     /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
     /**
      * Comment query service.
      */
     @Inject
     private CommentQueryService commentQueryService;
+
     /**
      * Follow query service.
      */
@@ -163,6 +168,12 @@ public class UserAPI2 {
 
                 final boolean isFollowing = followQueryService.isFollowing(currentUserId, followingId, Follow.FOLLOWING_TYPE_C_USER);
                 data.put(Common.IS_FOLLOWING, isFollowing);
+
+                for (final JSONObject followerUser : followers) {
+                    final String homeUserFollowerUserId = followerUser.optString(Keys.OBJECT_ID);
+
+                    followerUser.put(Common.IS_FOLLOWING, followQueryService.isFollowing(currentUserId, homeUserFollowerUserId, Follow.FOLLOWING_TYPE_C_USER));
+                }
             }
 
             ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
@@ -389,6 +400,12 @@ public class UserAPI2 {
 
                 final boolean isFollowing = followQueryService.isFollowing(currentUserId, followerId, Follow.FOLLOWING_TYPE_C_USER);
                 data.put(Common.IS_FOLLOWING, isFollowing);
+
+                for (final JSONObject followingUser : users) {
+                    final String homeUserFollowingUserId = followingUser.optString(Keys.OBJECT_ID);
+
+                    followingUser.put(Common.IS_FOLLOWING, followQueryService.isFollowing(currentUserId, homeUserFollowingUserId, Follow.FOLLOWING_TYPE_C_USER));
+                }
             }
 
             ret.put(Keys.STATUS_CODE, StatusCodes.SUCC);
