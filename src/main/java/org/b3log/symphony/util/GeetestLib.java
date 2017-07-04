@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * <a href="https://github.com/GeeTeam/gt-java-sdk>Geetest Java SDK</a>.
+ * <a href="https://github.com/GeeTeam/gt-java-sdk">Geetest Java SDK</a>.
  * 
  * @author unascribed
  * @since 1.4.0
