@@ -35,7 +35,6 @@ import org.b3log.latke.util.*;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.event.*;
-import org.b3log.symphony.event.solo.CommentSender;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
@@ -100,8 +99,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         // Register event listeners
         final EventManager eventManager = beanManager.getReference(EventManager.class);
-        
-        eventManager.registerListener(new CommentSender()); // Not a bean
 
         final ArticleAddNotifier articleAddNotifier = beanManager.getReference(ArticleAddNotifier.class);
         eventManager.registerListener(articleAddNotifier);
