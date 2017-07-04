@@ -161,7 +161,7 @@ In addition, users can also complete export data, including posts and replies.
 
 ![6](https://cloud.githubusercontent.com/assets/873584/19893290/afca2270-a083-11e6-9755-9a779c6d91b9.png)
 
-Post can be updated, but each update will produce a history of editing, visitors can see and compare the changes in its content. There is no support for subsequent replies update, will join, please look forward to.
+Post/reply can be updated, but each update will produce a history of editing, visitors can see and compare the changes in its content.
 
 Posts and replies can be used to publish anonymous identity, you know.
 
