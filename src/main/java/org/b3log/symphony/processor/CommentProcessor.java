@@ -38,7 +38,6 @@ import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.advice.validate.ClientCommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentUpdateValidation;
 import org.b3log.symphony.service.*;
@@ -59,7 +58,6 @@ import java.util.Set;
  * <li>Adds a comment (/comment) <em>locally</em>, POST</li>
  * <li>Updates a comment (/comment/{id}) <em>locally</em>, PUT</li>
  * <li>Gets a comment's content (/comment/{id}/content), GET</li>
- * <li>Adds a comment (/solo/comment) <em>remotely</em>, POST</li>
  * <li>Thanks a comment (/comment/thank), POST</li>
  * <li>Gets a comment's replies (/comment/replies), GET </li>
  * <li>Gets a comment's revisions (/commment/{id}/revisions), GET</li>
@@ -72,7 +70,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.13, May 8, 2017
+ * @version 1.7.1.14, Jul 4, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -534,98 +532,5 @@ public class CommentProcessor {
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
-    }
-
-    /**
-     * Adds a comment remotely.
-     * <p>
-     * The request json object (a comment):
-     * <pre>
-     * {
-     *     "comment": {
-     *         "commentId": "", // client comment id
-     *         "articleId": "",
-     *         "commentContent": "",
-     *         "commentAuthorName": "", // optional, 'default commenter'
-     *         "commentAuthorEmail": "" // optional, 'default commenter'
-     *     },
-     *     "clientName": "",
-     *     "clientVersion": "",
-     *     "clientHost": "",
-     *     "clientRuntimeEnv": "" // LOCAL
-     *     "clientAdminEmail": "",
-     *     "userB3Key": ""
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/solo/comment", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = ClientCommentAddValidation.class)
-    public void addCommentFromSolo(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        LOGGER.log(Level.DEBUG, "Adds a comment from solo");
-
-        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
-        final JSONObject originalCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
-        final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
-        final String ip = Requests.getRemoteAddr(request);
-        final String ua = request.getHeader(Common.USER_AGENT);
-
-        final JSONObject defaultCommenter = userQueryService.getDefaultCommenter();
-        final JSONObject comment = new JSONObject();
-        comment.put(Comment.COMMENT_AUTHOR_ID, defaultCommenter.optString(Keys.OBJECT_ID));
-        comment.put(Comment.COMMENT_CLIENT_COMMENT_ID, originalCmt.optString(Comment.COMMENT_T_ID));
-        comment.put(Comment.COMMENT_CONTENT, originalCmt.optString(Comment.COMMENT_CONTENT));
-        comment.put(Comment.COMMENT_ON_ARTICLE_ID, article.optString(Keys.OBJECT_ID));
-        comment.put(Comment.COMMENT_T_COMMENTER, defaultCommenter);
-        comment.put(Comment.COMMENT_IP, "");
-        if (StringUtils.isNotBlank(ip)) {
-            comment.put(Comment.COMMENT_IP, ip);
-        }
-        comment.put(Comment.COMMENT_UA, "");
-        if (StringUtils.isNotBlank(ua)) {
-            comment.put(Comment.COMMENT_UA, ua);
-        }
-
-        comment.put(Comment.COMMENT_T_AUTHOR_NAME, originalCmt.optString(Comment.COMMENT_T_AUTHOR_NAME));
-
-        commentMgmtService.addComment(comment);
-
-        // Updates client record
-        final String clientAdminEmail = requestJSONObject.optString(Client.CLIENT_ADMIN_EMAIL);
-        final String clientName = requestJSONObject.optString(Client.CLIENT_NAME);
-        final String clientVersion = requestJSONObject.optString(Client.CLIENT_VERSION);
-        final String clientHost = requestJSONObject.optString(Client.CLIENT_HOST);
-        final String clientRuntimeEnv = requestJSONObject.optString(Client.CLIENT_RUNTIME_ENV);
-
-        JSONObject client = clientQueryService.getClientByAdminEmail(clientAdminEmail);
-        if (null == client) {
-            client = new JSONObject();
-            client.put(Client.CLIENT_ADMIN_EMAIL, clientAdminEmail);
-            client.put(Client.CLIENT_HOST, clientHost);
-            client.put(Client.CLIENT_NAME, clientName);
-            client.put(Client.CLIENT_RUNTIME_ENV, clientRuntimeEnv);
-            client.put(Client.CLIENT_VERSION, clientVersion);
-            client.put(Client.CLIENT_LATEST_ADD_COMMENT_TIME, System.currentTimeMillis());
-            client.put(Client.CLIENT_LATEST_ADD_ARTICLE_TIME, 0L);
-
-            clientMgmtService.addClient(client);
-        } else {
-            client.put(Client.CLIENT_ADMIN_EMAIL, clientAdminEmail);
-            client.put(Client.CLIENT_HOST, clientHost);
-            client.put(Client.CLIENT_NAME, clientName);
-            client.put(Client.CLIENT_RUNTIME_ENV, clientRuntimeEnv);
-            client.put(Client.CLIENT_VERSION, clientVersion);
-            client.put(Client.CLIENT_LATEST_ADD_COMMENT_TIME, System.currentTimeMillis());
-
-            clientMgmtService.updateClient(client);
-        }
-
-        LOGGER.log(Level.DEBUG, "Added a comment from solo");
     }
 }
