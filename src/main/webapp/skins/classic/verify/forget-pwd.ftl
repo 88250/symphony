@@ -25,8 +25,8 @@
                             <input type="text" id="fpwdSecurityCode" class="captcha-input" placeholder="${captchaLabel}" />
                         </div>
                         <div id="fpwdTip" class="tip"></div>
-                        <button onclick="Verify.forgetPwd()">${forgetPwdLabel}</button>
-                        <button class="green" onclick="Util.goLogin()">${loginLabel}</button>
+                        <button class="green" onclick="Verify.forgetPwd()">${forgetPwdLabel}</button>
+                        <button onclick="Util.goLogin()">${loginLabel}</button>
                     </div>
                 </div>
                 <div class="intro content-reset">

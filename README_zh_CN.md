@@ -43,7 +43,7 @@
 * 集成了聚合独立博客的能力，共建共享优质资源
 * 并且 `100%` 开源
 
-欢迎到 [Sym 官方讨论区](https://hacpai.com)了解更多。另外，如果你需要搭建一个企业内网论坛，请使用 [SymX](https://github.com/FangStarNet/symphonyx)。
+欢迎到 [Sym 官方讨论区](https://hacpai.com/register?r=88250)了解更多。
 
 ### 动机
 
@@ -63,24 +63,23 @@ Sym 的诞生是有如下几点原因：
 
 ### 案例
 
-个人维护：
+社区版：
 
-* [黑客派](https://hacpai.com)
 * [宽客网](http://www.cnq.net)
 * [贵州IT](http://www.gzit.info)
 * [超级产品经理](https://imspm.com)
-* [Titandb 学习主站](https://titandb.cn)
+* [蚂蚁程序猿](http://bbs.itmayiedu.com)
+* [漠游网](https://damoluomu.com)
 * [呆萌狮 - Demo's](http://www.daimengshi.com)
 
-公司维护：
+商业版：
 
+* [黑客派](https://hacpai.com)
 * [四方环视](http://bbs.ivrpano.com)
-
-如果你也搭建好了，欢迎通过 Pull Request 将你的站点加到这个列表中 :-p
 
 ## 功能特性
 
-具体功能点细节可浏览 [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)，下面列出了 Sym 的主要特性，说明 **现代化** 的由来。
+具体功能点细节可浏览 [**Sym 功能点脑图**](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)，下面列出了 Sym 的主要特性，说明 **现代化** 的由来。
 
 ### 好用的编辑器
 
@@ -155,9 +154,9 @@ Sym 的诞生是有如下几点原因：
 
 ![6](https://cloud.githubusercontent.com/assets/873584/19893290/afca2270-a083-11e6-9755-9a779c6d91b9.png)
 
-发帖者可以进行该帖更新，但是每次更新都会产生编辑历史，浏览者可以看到并对比其内容变更。目前还不支持回帖更新，后续会加入，敬请期待。
+发帖/回帖者可以进行帖子/回帖更新，但是每次更新都会产生编辑历史，浏览者可以看到并对比其内容变更。
 
-帖子和回帖都可以使用匿名身份进行发布，你懂的。
+另外，帖子和回帖都可以使用匿名身份进行发布，你懂的。
 
 ### 对搜索引擎友好
 
@@ -243,16 +242,21 @@ Sym 提供了 [API](https://hacpai.com/article/1457158841475) 进行帖子、回
 Sym 有两个版本：
 
 * 社区版：使用 GPL 开源，如果你选择使用社区版，则必须完全遵守 GPL 的相关条款
-* 商业版：闭源，报价 ¥20000，请联系 QQ845765 或者 DL88250@gmail.com 进行细节咨询
+* 商业版：闭源，报价 ¥20000，请联系 QQ 845765 或者微信号 DL88250 进行细节咨询
 
 商业版相比社区版具有如下优势：
 
 * 更好的安全性
   * 内置 CC 攻击过滤系统 
+  * 更完备的 XSS、CSRF 防御
 * 更好的性能
   * 数据内存缓存，数据预热系统
   * 数据库索引优化脚本
+* 更好的用户体验
+  * 细节体验优化
 * 官方技术支持
+
+**企业网站、经营性网站、以营利为目的或实现盈利的网站请购买商业版！**
 
 ## 贡献
 
@@ -293,7 +297,6 @@ Sym 的诞生离不开以下开源项目：
 * [ECharts](https://github.com/ecomfe/echarts)：前端 JavaScript 交互式图表库
 * [MathJax](https://github.com/mathjax/MathJax)：前端数学公式渲染引擎
 * [SoundRecorder](https://github.com/rderveloy/JavaScript-Sound-Recorder)：前端 HTML5 录音库
-* [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard)：前端剪贴板支持
 * [JavaScript MD5](http://pajhome.org.uk/crypt/md5/index.html)：前端 JavaScript MD5 库
 * [ReconnectingWebSocket](https://github.com/joewalnes/reconnecting-websocket)：前端 WebSocket 重连库
 * [to-markdown](https://github.com/domchristie/to-markdown)：前端 HTML 转换 Markdown
@@ -301,6 +304,7 @@ Sym 的诞生离不开以下开源项目：
 * [Sass](http://sass-lang.com)：前端 CSS 处理工具
 * [jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器
 * [flexmark](https://github.com/vsch/flexmark-java)：Java Markdown 处理库
+* [marked](https://github.com/chjj/marked)：NodeJS Markdown 处理库
 * [Apache Commons](http://commons.apache.org)：Java 工具库集
 * [Jodd](https://github.com/oblac/jodd)：Java 工具库集
 * [emoji-java](https://github.com/vdurmont/emoji-java)：Java Emoji 处理库

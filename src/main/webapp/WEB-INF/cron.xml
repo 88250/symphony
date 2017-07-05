@@ -100,7 +100,7 @@
     <cron>
         <url>/cron/forge/link/purge?key=dev_key</url>
         <description>Purges link forge</description>
-        <schedule>every 48 hours</schedule>
+        <schedule>every 7 hours</schedule>
     </cron>
 
 </cronentries>

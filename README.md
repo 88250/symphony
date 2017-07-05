@@ -48,7 +48,7 @@
 * the ability to aggregate independent bloggers, to build and share quality resources
 * and `100%` open source
 
-Welcome to Sym official community - [HacPai](https://hacpai.com) for more details.
+Welcome to Sym official community - [HacPai](https://hacpai.com/register?r=88250) for more details.
 
 ### Motivation
 
@@ -68,17 +68,18 @@ Sym was born with the following reasons:
 
 ### Usecases
 
-Personal maintenance:
+Community edition:
 
-* [黑客派](https://hacpai.com)
 * [宽客网](http://www.cnq.net)
 * [贵州IT](http://www.gzit.info)
 * [超级产品经理](https://imspm.com)
-* [Titandb 学习主站](https://titandb.cn)
+* [蚂蚁程序猿](http://bbs.itmayiedu.com)
+* [漠游网](https://damoluomu.com)
 * [呆萌狮 - Demo's](http://www.daimengshi.com)
 
-Company maintenance:
+Commercial edition:
 
+* [黑客派](https://hacpai.com)
 * [四方环视](http://bbs.ivrpano.com)
 
 If you build it, you are welcome to add your site to this list by Pull Request :-p
@@ -160,7 +161,7 @@ In addition, users can also complete export data, including posts and replies.
 
 ![6](https://cloud.githubusercontent.com/assets/873584/19893290/afca2270-a083-11e6-9755-9a779c6d91b9.png)
 
-Post can be updated, but each update will produce a history of editing, visitors can see and compare the changes in its content. There is no support for subsequent replies update, will join, please look forward to.
+Post/reply can be updated, but each update will produce a history of editing, visitors can see and compare the changes in its content.
 
 Posts and replies can be used to publish anonymous identity, you know.
 
@@ -327,7 +328,6 @@ Sym's birth can not be separated from the following open source projects:
 * [ECharts](https://github.com/ecomfe/echarts): Front end interactive chart library
 * [MathJax](https://github.com/mathjax/MathJax): Front end Math rendering library
 * [SoundRecorder](https://github.com/rderveloy/JavaScript-Sound-Recorder): Front end HTML sound recorder
-* [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard): Front end clipboard
 * [JavaScript MD5](http://pajhome.org.uk/crypt/md5/index.html): Front endJavaScript MD5
 * [ReconnectingWebSocket](https://github.com/joewalnes/reconnecting-websocket): Front end WebSocket reconnecting
 * [to-markdown](https://github.com/domchristie/to-markdown): Front end HTML to Markdown
@@ -335,6 +335,7 @@ Sym's birth can not be separated from the following open source projects:
 * [Sass](http://sass-lang.com): Front end CSS preprocessor
 * [jsoup](https://github.com/jhy/jsoup): Java HTML parser
 * [flexmark](https://github.com/vsch/flexmark-java): Java Markdown parser
+* [marked](https://github.com/chjj/marked): NodeJS Markdown parser
 * [Apache Commons](http://commons.apache.org): Java tool library
 * [Jodd](https://github.com/oblac/jodd): Java tool library
 * [emoji-java](https://github.com/vdurmont/emoji-java): Java Emoji tool library
@@ -352,4 +353,3 @@ Sym's birth can not be separated from the following open source projects:
 <br><br>
 <img src="https://cloud.githubusercontent.com/assets/873584/19897809/84c4ed56-a094-11e6-8498-43e9337c475f.png">
 </p>
-

@@ -76,7 +76,6 @@ import java.util.*;
  * <li>Updates emotions (/settings/emotionList), POST</li>
  * <li>Password (/settings/password), POST</li>
  * <li>Point buy invitecode (/point/buy-invitecode), POST</li>
- * <li>SyncUser (/apis/user), POST</li>
  * <li>Lists usernames (/users/names), GET</li>
  * <li>Lists emotions (/users/emotions), GET</li>
  * <li>Exports posts(article/comment) to a file (/export/posts), POST</li>
@@ -89,7 +88,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.20.35, May 8, 2017
+ * @version 1.26.20.36, Jul 4, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1948,108 +1947,6 @@ public class UserProcessor {
             LOGGER.log(Level.ERROR, msg, e);
 
             context.renderMsg(msg);
-        }
-    }
-
-    /**
-     * Sync user. Experimental API.
-     *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/apis/user", method = HTTPRequestMethod.POST)
-    public void syncUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        context.renderJSON();
-
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-
-        final String name = requestJSONObject.optString(User.USER_NAME);
-        final String email = requestJSONObject.optString(User.USER_EMAIL);
-        final String password = requestJSONObject.optString(User.USER_PASSWORD);
-        final String clientHost = requestJSONObject.optString(Client.CLIENT_HOST);
-        final String clientB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
-        final String addArticleURL = clientHost + "/apis/symphony/article";
-        final String updateArticleURL = clientHost + "/apis/symphony/article";
-        final String addCommentURL = clientHost + "/apis/symphony/comment";
-
-        if (UserRegisterValidation.invalidUserName(name)) {
-            LOGGER.log(Level.WARN, "Sync add user[name={0}, host={1}] error, caused by the username is invalid",
-                    name, clientHost);
-
-            return;
-        }
-
-        String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
-        maybeIP = StringUtils.substringBefore(maybeIP, "/");
-
-        if (Networks.isIPv4(maybeIP)) {
-            LOGGER.log(Level.WARN, "Sync add user[name={0}, host={1}] error, caused by the client host is IPv4",
-                    name, clientHost);
-
-            return;
-        }
-
-        JSONObject user = userQueryService.getUserByEmail(email);
-        if (null == user) {
-            user = new JSONObject();
-            user.put(User.USER_NAME, name);
-            user.put(User.USER_EMAIL, email);
-            user.put(User.USER_PASSWORD, password);
-            user.put(UserExt.USER_LANGUAGE, "zh_CN");
-            user.put(UserExt.USER_B3_KEY, clientB3Key);
-            user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
-            user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
-            user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
-            user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID); // One Move
-
-            try {
-                final String id = userMgmtService.addUser(user);
-                user.put(Keys.OBJECT_ID, id);
-
-                userMgmtService.updateSyncB3(user);
-
-                LOGGER.log(Level.INFO, "Added a user[{0}] via Solo[{1}] sync", name, clientHost);
-
-                context.renderTrueResult();
-            } catch (final ServiceException e) {
-                LOGGER.log(Level.ERROR, "Sync add user[name={0}, email={1}, host={2}] error: {3}",
-                        name, email, clientHost, e.getMessage());
-            }
-
-            return;
-        }
-
-        String userKey = user.optString(UserExt.USER_B3_KEY);
-        if (StringUtils.isBlank(userKey) || (Strings.isNumeric(userKey) && userKey.length() == clientB3Key.length())) {
-            userKey = clientB3Key;
-
-            user.put(UserExt.USER_B3_KEY, userKey);
-            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
-        }
-
-        if (!userKey.equals(clientB3Key)) {
-            LOGGER.log(Level.WARN, "Sync update user[name={0}, email={1}, host={2}] B3Key dismatch [sym={3}, solo={4}]",
-                    name, email, clientHost, user.optString(UserExt.USER_B3_KEY), clientB3Key);
-
-            return;
-        }
-
-        user.put(UserExt.USER_B3_KEY, clientB3Key);
-        user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
-        user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
-        user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
-
-        try {
-            userMgmtService.updateSyncB3(user);
-
-            LOGGER.log(Level.INFO, "Updated a user[name={0}] via Solo[{1}] sync", name, clientHost);
-
-            context.renderTrueResult();
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, "Sync update user[name=" + name + ", host=" + clientHost + "] error", e);
         }
     }
 

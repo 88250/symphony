@@ -27,7 +27,7 @@ import java.util.Set;
  * This class defines all link model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.2, Jun 6, 2017
+ * @version 1.3.0.5, Jun 28, 2017
  * @since 1.6.0
  */
 public final class Link {
@@ -87,6 +87,16 @@ public final class Link {
      */
     public static final String LINK_SCORE = "linkScore";
 
+    /**
+     * Key of link ping count.
+     */
+    public static final String LINK_PING_CNT = "linkPingCnt";
+
+    /**
+     * Key of link ping error count.
+     */
+    public static final String LINK_PING_ERR_CNT = "linkPingErrCnt";
+
     //// Transient ////
     /**
      * Key of link id.
@@ -124,20 +134,7 @@ public final class Link {
      * Link blacklist.
      */
     public static final Set<String> LINK_ADDR_C_BLACKLIST = new HashSet<>(Arrays.asList(
-            "hacpai", "github", "jobbole", "csdn", "51cto", "iteye", "tianmaying", "588ku", "163", "50vip",
-            "hmlan", "oschina", "baidu", "infoq", "v2ex", "cnblogs", "blogread", "jd", "taobao", "tmall",
-            "segmentfault", "yiibai", "hao123", "bilibili", "itstu", "qq", "ituring", "zhihu", "w3cfuns",
-            "cnodejs", "jianshu", "36kr", "ifanr", "xitu", "huaban", "luosh", "itpub", "manong", "blogjava",
-            "apple", "importnew", "cocoachina", "guokr", "w3school", "focus", "ruby-china", "ibm", "656463",
-            "outofmemory", "gitbook", "maiziedu", "php100", "diycode", "psjia", "jfedu", "laravel-china",
-            "imspm", "itheima", "stuq", "kancloud", "aichengxu", "comsharp", "chinaunix", "aliyun", "coolshell",
-            "ruanyifeng", "zhufengpeixun", "ttlsa", "apeclass", "open-open", "w3cplus", "jb51", "wooyun",
-            "ctolib", "jikexueyuan", "hiapk", "jq-school", "yunweipai", "codeceo", "weibo", "sina", "html-js",
-            "shiyanlou", "studygolang", "golangtc", "gocn", "docin", "umeng", "1ke", "tencent", "shearphoto",
-            "ubuntu", "atom-china", "frontenddev", "beyoung", "pythoner", "digitser", "liaoxuefeng", "htmleaf",
-            "2cto", "androidchina", "jq22", "webhek", "css88", "itcast", "swiftv", "imooc", "bootcss", "runoob",
-            "pythondoc", "justjavac", "android-studio", "jquery", "android-doc", "jui", "gzit", "simpleframework",
-            "newbiefly", "jeasyui", "ruanman", "apkbus", "nowamagic"));
+            "hacpai"));
 
     /**
      * Private constructor.

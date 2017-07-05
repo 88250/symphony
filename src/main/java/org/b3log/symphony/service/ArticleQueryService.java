@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.32.58, May 20, 2017
+ * @version 2.27.32.59, Jun 24, 2017
  * @since 0.2.0
  */
 @Service
@@ -578,7 +578,17 @@ public class ArticleQueryService {
     public List<JSONObject> getRelevantArticles(final int avatarViewMode, final JSONObject article, final int fetchSize)
             throws ServiceException {
         final String tagsString = article.optString(Article.ARTICLE_TAGS);
-        final String[] tagTitles = tagsString.split(",");
+        String[] tagTitles = tagsString.split(",");
+        final List<String> excludedB3logTitles = new ArrayList<>();
+        for (int i = 0; i < tagTitles.length; i++) {
+            if (!"B3log".equalsIgnoreCase(tagTitles[i])) {
+                excludedB3logTitles.add(tagTitles[i]);
+            }
+        }
+        if (excludedB3logTitles.size() < 1) {
+            excludedB3logTitles.add("B3log");
+        }
+        tagTitles = excludedB3logTitles.toArray(new String[0]);
         final int tagTitlesLength = tagTitles.length;
         final int subCnt = tagTitlesLength > RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT
                 ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;

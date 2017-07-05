@@ -641,6 +641,10 @@ a[class*=" icon-"]:hover {
 /* end list */
 
 /* start article */
+#articltVia {
+  white-space: nowrap;
+}
+
 label.anonymous-check {
   margin: 2px 15px 0 0;
 }

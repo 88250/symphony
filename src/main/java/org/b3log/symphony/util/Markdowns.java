@@ -66,7 +66,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.17.23, Jun 1, 2017
+ * @version 1.11.17.24, Jul 3, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -489,7 +489,7 @@ public final class Markdowns {
      * @param markdownText the specified markdown text
      * @return HTML
      */
-    public static String getHTML(final String markdownText) {
+    private static String getHTML(final String markdownText) {
         final String hash = MD5.hash(markdownText);
 
         return (String) MD_CACHE.get(hash);

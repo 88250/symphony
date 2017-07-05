@@ -27,6 +27,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -108,7 +109,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.6.23, Apr 15, 2017
+ * @version 2.26.7.23, Jun 28, 2017
  * @since 1.1.0
  */
 @RequestProcessor
@@ -2500,12 +2501,11 @@ public class AdminProcessor {
      * Search index.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/search/index", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void searchIndex(final HTTPRequestContext context) throws Exception {
+    public void searchIndex(final HTTPRequestContext context) {
         context.renderJSON(true);
 
         if (Symphonys.getBoolean("es.enabled")) {
@@ -2516,27 +2516,35 @@ public class AdminProcessor {
             searchMgmtService.rebuildAlgoliaIndex();
         }
 
-        final JSONObject stat = optionQueryService.getStatistic();
-        final int articleCount = stat.optInt(Option.ID_C_STATISTIC_ARTICLE_COUNT);
-        final int pages = (int) Math.ceil((double) articleCount / 50.0);
+        new Thread(() -> {
+            try {
+                final JSONObject stat = optionQueryService.getStatistic();
+                final int articleCount = stat.optInt(Option.ID_C_STATISTIC_ARTICLE_COUNT);
+                final int pages = (int) Math.ceil((double) articleCount / 50.0);
 
-        for (int pageNum = 1; pageNum <= pages; pageNum++) {
-            final List<JSONObject> articles = articleQueryService.getValidArticles(pageNum, 50, Article.ARTICLE_TYPE_C_NORMAL, Article.ARTICLE_TYPE_C_CITY_BROADCAST);
+                for (int pageNum = 1; pageNum <= pages; pageNum++) {
+                    final List<JSONObject> articles = articleQueryService.getValidArticles(pageNum, 50, Article.ARTICLE_TYPE_C_NORMAL, Article.ARTICLE_TYPE_C_CITY_BROADCAST);
 
-            for (final JSONObject article : articles) {
-                if (Symphonys.getBoolean("algolia.enabled")) {
-                    searchMgmtService.updateAlgoliaDocument(article);
+                    for (final JSONObject article : articles) {
+                        if (Symphonys.getBoolean("algolia.enabled")) {
+                            searchMgmtService.updateAlgoliaDocument(article);
+                        }
+
+                        if (Symphonys.getBoolean("es.enabled")) {
+                            searchMgmtService.updateESDocument(article, Article.ARTICLE);
+                        }
+                    }
+
+                    LOGGER.info("Indexed page [" + pageNum + "]");
                 }
 
-                if (Symphonys.getBoolean("es.enabled")) {
-                    searchMgmtService.updateESDocument(article, Article.ARTICLE);
-                }
+                LOGGER.info("Index finished");
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Search index failed", e);
+            } finally {
+                JdbcRepository.dispose();
             }
-
-            LOGGER.info("Indexed page [" + pageNum + "]");
-        }
-
-        LOGGER.info("Index finished");
+        }).start();
     }
 
     /**

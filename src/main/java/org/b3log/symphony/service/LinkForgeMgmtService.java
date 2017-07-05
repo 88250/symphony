@@ -22,9 +22,11 @@ import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.urlfetch.*;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Link;
@@ -43,15 +45,17 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import javax.servlet.http.HttpServletResponse;
+import java.net.URL;
 import java.util.List;
-
-;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.6, Apr 19, 2017
+ * @version 1.1.1.7, Jun 14, 2017
  * @since 1.6.0
  */
 @Service
@@ -60,7 +64,7 @@ public class LinkForgeMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LinkForgeMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LinkForgeMgmtService.class);
 
     /**
      * Link repository.
@@ -93,6 +97,11 @@ public class LinkForgeMgmtService {
     private TagCache tagCache;
 
     /**
+     * URL fetch service.
+     */
+    private URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
+    /**
      * Forges the specified URL.
      *
      * @param url    the specified URL
@@ -107,7 +116,6 @@ public class LinkForgeMgmtService {
             doc.select("body").prepend("<a href=\"" + url + "\">" + url + "</a>"); // Add the specified URL itfself
 
             html = doc.html();
-
             baseURL = doc.baseUri();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Parses link [" + url + "] failed", e);
@@ -139,8 +147,10 @@ public class LinkForgeMgmtService {
                     link.put(Link.LINK_SUBMIT_CNT, 0);
                     link.put(Link.LINK_TITLE, lnk.optString(Link.LINK_TITLE));
                     link.put(Link.LINK_TYPE, Link.LINK_TYPE_C_FORGE);
+                    link.put(Link.LINK_PING_CNT, 0);
+                    link.put(Link.LINK_PING_ERR_CNT, 0);
 
-                    LOGGER.info(link.optString(Link.LINK_ADDR) + "____" + link.optString(Link.LINK_TITLE));
+                    LOGGER.info(link.optString(Link.LINK_ADDR) + "__" + link.optString(Link.LINK_TITLE));
                     linkRepository.add(link);
 
                     final JSONObject linkCntOption = optionRepository.get(Option.ID_C_STATISTIC_LINK_COUNT);
@@ -219,12 +229,12 @@ public class LinkForgeMgmtService {
                 int linkCnt = linkCntOption.optInt(Option.OPTION_VALUE);
 
                 int slags = 0;
-                final JSONArray links = linkRepository.get(new Query()).optJSONArray(Keys.RESULTS);
+                JSONArray links = linkRepository.get(new Query()).optJSONArray(Keys.RESULTS);
                 for (int i = 0; i < links.length(); i++) {
                     final JSONObject link = links.getJSONObject(i);
                     final String linkAddr = link.optString(Link.LINK_ADDR);
 
-                    if (!Link.inAddrBlacklist(linkAddr)) {
+                    if (!Link.inAddrBlacklist(linkAddr) && link.optInt(Link.LINK_PING_ERR_CNT) < 7) {
                         continue;
                     }
 
@@ -253,6 +263,18 @@ public class LinkForgeMgmtService {
                 transaction.commit();
 
                 LOGGER.info("Purged link forge [slags=" + slags + "]");
+
+                // Ping
+                links = linkRepository.get(new Query()).optJSONArray(Keys.RESULTS);
+                LOGGER.info("Ping links [size=" + links.length() + "]");
+                final CountDownLatch countDownLatch = new CountDownLatch(links.length());
+                for (int i = 0; i < links.length(); i++) {
+                    final JSONObject link = links.getJSONObject(i);
+                    Symphonys.EXECUTOR_SERVICE.submit(new CheckTask(link, countDownLatch));
+                }
+                countDownLatch.await(1, TimeUnit.HOURS);
+                LOGGER.info("Pinged links [size=" + links.length()
+                        + ", countDownLatch=" + countDownLatch.getCount() + "]");
             } catch (final Exception e) {
                 if (null != transaction) {
                     transaction.rollback();
@@ -263,5 +285,83 @@ public class LinkForgeMgmtService {
                 JdbcRepository.dispose();
             }
         }).start();
+    }
+
+    /**
+     * Link accessibility check task.
+     *
+     * @author <a href="http://88250.b3log.org">Liang Ding</a>
+     * @version 1.0.0.0, Jun 14, 2017
+     * @since 2.2.0
+     */
+    private class CheckTask implements Runnable {
+
+        /**
+         * Link to check.
+         */
+        private final JSONObject link;
+
+        /**
+         * Count down latch.
+         */
+        private final CountDownLatch countDownLatch;
+
+        /**
+         * Constructs a check task with the specified link.
+         *
+         * @param link           the specified link
+         * @param countDownLatch the specified count down latch
+         */
+        public CheckTask(final JSONObject link, final CountDownLatch countDownLatch) {
+            this.link = link;
+            this.countDownLatch = countDownLatch;
+        }
+
+        @Override
+        public void run() {
+            final String linkAddr = link.optString(Link.LINK_ADDR);
+
+            LOGGER.debug("Checks link [url=" + linkAddr + "] accessibility");
+            final long start = System.currentTimeMillis();
+            int responseCode = 0;
+            try {
+                final HTTPRequest request = new HTTPRequest();
+                request.addHeader(new HTTPHeader("User-Agent", Symphonys.USER_AGENT_BOT));
+                request.setURL(new URL(linkAddr));
+                request.setConnectTimeout(1000);
+                request.setReadTimeout(1000 * 5);
+
+                final HTTPResponse response = urlFetchService.fetch(request);
+                responseCode = response.getResponseCode();
+
+                LOGGER.log(Level.DEBUG, "Accesses link [url=" + linkAddr + "] response [code={0}]", responseCode);
+            } catch (final Exception e) {
+                LOGGER.warn("Link [url=" + linkAddr + "] accessibility check failed [msg=" + e.getMessage() + "]");
+            } finally {
+                countDownLatch.countDown();
+
+                final long elapsed = System.currentTimeMillis() - start;
+                LOGGER.log(Level.DEBUG, "Accesses link [url=" + linkAddr + "] response [code=" + responseCode + "], "
+                        + "elapsed [" + elapsed + ']');
+
+                link.put(Link.LINK_PING_CNT, link.optInt(Link.LINK_PING_CNT) + 1);
+                if (HttpServletResponse.SC_OK != responseCode) {
+                    link.put(Link.LINK_PING_ERR_CNT, link.optInt(Link.LINK_PING_ERR_CNT) + 1);
+                }
+
+                final Transaction transaction = linkRepository.beginTransaction();
+                try {
+                    linkRepository.update(link.optString(Keys.OBJECT_ID), link);
+
+                    transaction.commit();
+                } catch (final RepositoryException e) {
+                    if (null != transaction && transaction.isActive()) {
+                        transaction.rollback();
+                    }
+
+                    LOGGER.log(Level.ERROR, "Updates link failed", e);
+                }
+            }
+        }
     }
 }

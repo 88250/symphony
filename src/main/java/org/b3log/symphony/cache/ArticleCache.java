@@ -67,7 +67,7 @@ public class ArticleCache {
     /**
      * Puts an article abstract by the specified article id and article abstract.
      *
-     * @param articleId the specified article id
+     * @param articleId       the specified article id
      * @param articleAbstract the specified article abstract
      */
     public void putArticleAbstract(final String articleId, final String articleAbstract) {

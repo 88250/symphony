@@ -33,8 +33,6 @@ import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.thread.ThreadService;
-import org.b3log.latke.thread.ThreadServiceFactory;
 import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.*;
@@ -57,7 +55,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.17.34.43, May 8, 2017
+ * @version 2.17.35.43, Jun 14, 2017
  * @since 0.2.0
  */
 @Service
@@ -286,8 +284,7 @@ public class ArticleMgmtService {
         previewContent = StringUtils.substring(previewContent, 0, 512);
         final String contentToTTS = previewContent;
 
-        final ThreadService threadService = ThreadServiceFactory.getThreadService();
-        threadService.submit(() -> {
+        new Thread(() -> {
             final Transaction transaction = articleRepository.beginTransaction();
 
             String audioURL = "";
@@ -318,7 +315,7 @@ public class ArticleMgmtService {
             }
 
             JdbcRepository.dispose();
-        }, 1000 * 30);
+        }).start();
     }
 
     /**

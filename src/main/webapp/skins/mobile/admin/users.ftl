@@ -14,7 +14,7 @@
             <#list users as item>
             <li>
                 <div class="fn-clear">
-                    <div class="avatar-small tooltipped tooltipped-se" aria-label="${item.userName}" 
+                    <div class="avatar-small tooltipped tooltipped-se" aria-label="${item.userName}"
                          style="background-image:url('${item.userAvatarURL}')"></div> &nbsp;
                     <a href="${servePath}/member/${item.userName}">${item.userName}</a>
                     <a href="${servePath}/admin/user/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-title" aria-label="${editLabel}"><svg><use xlink:href="#edit"></use></svg></a> &nbsp;
@@ -27,12 +27,11 @@
                     </#if>
                 </div>
                 <div class="fn-clear">
-                    ${item.userEmail} &nbsp;
-                    ${roleLabel} ${item.roleName}
+                    ${item.userEmail} ${item.roleName}
                     <span class="fn-right ft-gray">
                         ${articleCountLabel} ${item.userArticleCount} &nbsp;
                         ${commentCountLabel} ${item.userCommentCount} &nbsp;
-                        ${createTimeLabel} ${item.userCreateTime?string('yyyy-MM-dd HH:mm')}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ${item.userCreateTime?string('yyyy-MM-dd HH:mm')}
                     </span>
                 </div>
             </li>
