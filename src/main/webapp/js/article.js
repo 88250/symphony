@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.38.56.34, Jun 6, 2017
+ * @version 1.38.57.0, Jul 5, 2017
  */
 
 /**
@@ -1467,7 +1467,7 @@ var Article = {
             if (srcLinesContent === "") {
                 // remove
                 var removeLines = [];
-                for (var n = from[1], m = 0; n <= to[1]; n++, m++) {
+                for (var n = from[1], m = 0; n <= to[1], n < articleLinesList.length; n++, m++) {
                     if (from[1] === to[1]) {
                         articleLinesList[n] = articleLinesList[n].substring(0, from[0]) +
                             articleLinesList[n].substr(to[0]);
