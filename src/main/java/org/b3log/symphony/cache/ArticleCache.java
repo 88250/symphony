@@ -78,7 +78,7 @@ public class ArticleCache {
      */
     public void putArticleAbstract(final String articleId, final String articleAbstract) {
         final JSONObject value = new JSONObject();
-        value.put(Common.DATA, value);
+        value.put(Common.DATA, articleAbstract);
         ARTICLE_ABSTRACT_CACHE.put(articleId, value);
     }
 
