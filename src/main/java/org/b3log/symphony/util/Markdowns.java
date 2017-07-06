@@ -38,7 +38,9 @@ import org.b3log.latke.util.Callstacks;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.service.UserQueryService;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -66,7 +68,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.17.24, Jul 3, 2017
+ * @version 1.11.17.25, Jul 6, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -492,7 +494,12 @@ public final class Markdowns {
     private static String getHTML(final String markdownText) {
         final String hash = MD5.hash(markdownText);
 
-        return (String) MD_CACHE.get(hash);
+        final JSONObject value = MD_CACHE.get(hash);
+        if (null == value) {
+            return null;
+        }
+
+        return value.optString(Common.DATA);
     }
 
     /**
@@ -504,6 +511,8 @@ public final class Markdowns {
     private static void putHTML(final String markdownText, final String html) {
         final String hash = MD5.hash(markdownText);
 
-        MD_CACHE.put(hash, html);
+        final JSONObject value = new JSONObject();
+        value.put(Common.DATA, html);
+        MD_CACHE.put(hash, value);
     }
 }

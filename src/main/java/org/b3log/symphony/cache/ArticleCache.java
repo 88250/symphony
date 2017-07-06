@@ -23,6 +23,7 @@ import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -31,7 +32,7 @@ import org.json.JSONObject;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.2, Nov 10, 2016
+ * @version 1.1.1.3, Jul 6, 2017
  * @since 1.4.0
  */
 @Named
@@ -61,7 +62,12 @@ public class ArticleCache {
      * @return article abstract, return {@code null} if not found
      */
     public String getArticleAbstract(final String articleId) {
-        return (String) ARTICLE_ABSTRACT_CACHE.get(articleId);
+        final JSONObject value = ARTICLE_ABSTRACT_CACHE.get(articleId);
+        if (null == value) {
+            return null;
+        }
+
+        return value.optString(Common.DATA);
     }
 
     /**
@@ -71,7 +77,9 @@ public class ArticleCache {
      * @param articleAbstract the specified article abstract
      */
     public void putArticleAbstract(final String articleId, final String articleAbstract) {
-        ARTICLE_ABSTRACT_CACHE.put(articleId, articleAbstract);
+        final JSONObject value = new JSONObject();
+        value.put(Common.DATA, value);
+        ARTICLE_ABSTRACT_CACHE.put(articleId, value);
     }
 
     /**
