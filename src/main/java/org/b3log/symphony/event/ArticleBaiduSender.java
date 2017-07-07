@@ -20,7 +20,6 @@ package org.b3log.symphony.event;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -51,7 +50,7 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleBaiduSender.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleBaiduSender.class);
 
     /**
      * Baidu data token.
@@ -99,7 +98,7 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
         LOGGER.log(Level.TRACE, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, ArticleBaiduSender.class.getName()});
 
-        if (RuntimeMode.PRODUCTION != Latkes.getRuntimeMode() || StringUtils.isBlank(TOKEN)) {
+        if (Latkes.RuntimeMode.PRODUCTION != Latkes.getRuntimeMode() || StringUtils.isBlank(TOKEN)) {
             return;
         }
 

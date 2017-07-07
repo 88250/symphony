@@ -20,7 +20,6 @@ package org.b3log.symphony.util;
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
@@ -265,7 +264,7 @@ public final class Symphonys {
      * @return {@code true} if it runs on development environment, {@code false} otherwise
      */
     public static boolean runsOnDevEnv() {
-        return RuntimeMode.DEVELOPMENT == Latkes.getRuntimeMode();
+        return Latkes.RuntimeMode.DEVELOPMENT == Latkes.getRuntimeMode();
     }
 
     /**
