@@ -52,7 +52,7 @@ import java.util.concurrent.Executors;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.8, May 4, 2017
+ * @version 1.7.1.9, Jul 8, 2017
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -206,7 +206,7 @@ public final class Symphonys {
                     JdbcRepository.dispose();
                 }
             }
-        }, 1000 * 60 * 60 * 2, 1000 * 60 * 60 * 2);
+        }, 1000 * 60 * 60 * 2, 1000 * 60 * 60 * 12);
     }
 
     /**
