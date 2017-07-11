@@ -56,11 +56,9 @@ import java.util.Map;
 
 /**
  * City processor.
- * <p>
  * <ul>
  * <li>Shows city articles (/city/{city}), GET</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>

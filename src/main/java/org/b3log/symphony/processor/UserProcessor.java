@@ -54,8 +54,6 @@ import java.util.*;
 
 /**
  * User processor.
- * <p>
- * For user
  * <ul>
  * <li>User articles (/member/{userName}), GET</li>
  * <li>User comments (/member/{userName}/comments), GET</li>
@@ -83,7 +81,6 @@ import java.util.*;
  * <li>Shows link forge (/member/{userName}/forge/link), GET</li>
  * <li>i18n (/settings/i18n), POST</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>

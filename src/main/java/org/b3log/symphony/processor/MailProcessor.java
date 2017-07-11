@@ -46,7 +46,7 @@ public class MailProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(MailProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MailProcessor.class);
 
     /**
      * Mail management service.
@@ -57,9 +57,9 @@ public class MailProcessor {
     /**
      * Sends weekly newsletter..
      *
-     * @param request the specified HTTP servlet request
+     * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @param context the specified HTTP request context
+     * @param context  the specified HTTP request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/cron/mail/weekly", method = HTTPRequestMethod.GET)

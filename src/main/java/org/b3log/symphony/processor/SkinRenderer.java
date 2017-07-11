@@ -51,7 +51,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SkinRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SkinRenderer.class);
 
     /**
      * HTTP servlet request.

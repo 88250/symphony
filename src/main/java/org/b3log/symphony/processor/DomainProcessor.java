@@ -46,12 +46,10 @@ import java.util.Map;
 
 /**
  * Domain processor.
- * <p>
  * <ul>
  * <li>Shows domains (/domains), GET</li>
  * <li>Shows domain article (/{domainURI}), GET</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.0.8, Dec 24, 2016

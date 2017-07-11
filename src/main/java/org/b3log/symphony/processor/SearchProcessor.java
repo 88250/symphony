@@ -54,11 +54,9 @@ import java.util.Map;
 
 /**
  * Search processor.
- * <p>
  * <ul>
  * <li>Searches keyword (/search), GET</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.2.4, Mar 29, 2017
@@ -70,7 +68,7 @@ public class SearchProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SearchProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SearchProcessor.class);
 
     /**
      * Search query service.

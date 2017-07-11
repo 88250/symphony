@@ -42,11 +42,9 @@ import java.util.Map;
 
 /**
  * Timeline processor.
- * <p>
  * <ul>
  * <li>Shows timeline (/timeline), GET</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.0.9, Dec 24, 2016
@@ -58,7 +56,7 @@ public class TimelineProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TimelineProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TimelineProcessor.class);
 
     /**
      * Data model service.

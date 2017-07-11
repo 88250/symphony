@@ -67,7 +67,6 @@ import java.util.List;
 
 /**
  * Article processor.
- * <p>
  * <ul>
  * <li>Shows an article (/article/{articleId}), GET</li>
  * <li>Shows article pre adding form page (/pre-post), GET</li>
@@ -84,7 +83,6 @@ import java.util.List;
  * <li>Checks article title (/article/check-title), POST</li>
  * <li>Removes an article (/article/{id}/remove), POST</li>
  * </ul>
- * </p>
  * <p>
  * The '<em>locally</em>' means user post an article on Symphony directly rather than receiving an article from
  * externally (for example Rhythm).

@@ -50,13 +50,11 @@ import java.util.Map;
 
 /**
  * Tag processor.
- * <p>
  * <ul>
  * <li>Shows tags wall (/tags), GET</li>
  * <li>Shows tag articles (/tag/{tagTitle}), GET</li>
  * <li>Query tags (/tags/query), GET</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>

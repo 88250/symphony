@@ -53,7 +53,6 @@ import java.util.Set;
 
 /**
  * Comment processor.
- * <p>
  * <ul>
  * <li>Adds a comment (/comment) <em>locally</em>, POST</li>
  * <li>Updates a comment (/comment/{id}) <em>locally</em>, PUT</li>
@@ -63,7 +62,6 @@ import java.util.Set;
  * <li>Gets a comment's revisions (/commment/{id}/revisions), GET</li>
  * <li>Removes a comment (/comment/{id}/remove), POST</li>
  * </ul>
- * </p>
  * <p>
  * The '<em>locally</em>' means user post a comment on Symphony directly rather than receiving a comment from externally
  * (for example Solo).

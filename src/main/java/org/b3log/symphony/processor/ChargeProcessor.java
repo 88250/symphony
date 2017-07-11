@@ -39,7 +39,6 @@ import java.util.Map;
 
 /**
  * Charge processor.
- *
  * <ul>
  * <li>Shows point charge (/charge/point), GET</li>
  * </ul>
@@ -54,7 +53,7 @@ public class ChargeProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ChargeProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ChargeProcessor.class);
 
     /**
      * Data model service.
@@ -65,8 +64,8 @@ public class ChargeProcessor {
     /**
      * Shows charge point.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */

@@ -61,7 +61,6 @@ import java.util.*;
 
 /**
  * Admin processor.
- * <p>
  * <ul>
  * <li>Shows admin index (/admin/index), GET</li>
  * <li>Shows users (/admin/users), GET</li>
@@ -104,7 +103,6 @@ import java.util.*;
  * <li>Shows ad (/admin/ad), GET</li>
  * <li>Updates ad (/admin/ad), POST</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho

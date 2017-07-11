@@ -55,7 +55,7 @@ public class ErrorProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ErrorProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ErrorProcessor.class);
 
     /**
      * Language service.
@@ -78,9 +78,9 @@ public class ErrorProcessor {
     /**
      * Handles the error.
      *
-     * @param context the specified context
-     * @param request the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
+     * @param context    the specified context
+     * @param request    the specified HTTP servlet request
+     * @param response   the specified HTTP servlet response
      * @param statusCode the specified status code
      * @throws Exception exception
      */
@@ -88,7 +88,7 @@ public class ErrorProcessor {
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void handleErrorPage(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response, final String statusCode) throws Exception {
+                                final HttpServletResponse response, final String statusCode) throws Exception {
         if (StringUtils.equals("GET", request.getMethod())) {
             final String requestURI = request.getRequestURI();
             final String templateName = statusCode + ".ftl";

@@ -44,7 +44,7 @@ public class SitemapProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SitemapProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SitemapProcessor.class);
 
     /**
      * Sitemap query service.

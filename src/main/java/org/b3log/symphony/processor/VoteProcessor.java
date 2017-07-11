@@ -41,14 +41,12 @@ import java.util.Set;
 
 /**
  * Vote processor.
- * <p>
  * <ul>
  * <li>Votes up an article (/vote/up/article), POST</li>
  * <li>Votes down an article (/vote/down/article), POST</li>
  * <li>Votes up a comment (/vote/up/comment), POST</li>
  * <li>Votes down a comment (/vote/down/comment), POST</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.3.0.3, Mar 30, 2017
@@ -61,35 +59,42 @@ public class VoteProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(VoteProcessor.class);
+
     /**
      * Holds votes.
      */
     private static final Set<String> VOTES = new HashSet<>();
+
     /**
      * Vote management service.
      */
     @Inject
     private VoteMgmtService voteMgmtService;
+
     /**
      * Vote query service.
      */
     @Inject
     private VoteQueryService voteQueryService;
+
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
+
     /**
      * Comment query service.
      */
     @Inject
     private CommentQueryService commentQueryService;
+
     /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
     /**
      * Notification management service.
      */

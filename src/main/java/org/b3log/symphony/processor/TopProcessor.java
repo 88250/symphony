@@ -44,7 +44,6 @@ import java.util.Map;
 
 /**
  * Top ranking list processor.
- * <p>
  * <ul>
  * <li>Top balance (/top/balance), GET</li>
  * <li>Top consumption (/top/consumption), GET</li>

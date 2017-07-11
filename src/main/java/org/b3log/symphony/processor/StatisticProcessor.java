@@ -48,7 +48,6 @@ import java.util.Map;
 
 /**
  * Data statistic processor.
- *
  * <ul>
  * <li>Shows data statistic (/statistic), GET</li>
  * </ul>
@@ -60,36 +59,6 @@ import java.util.Map;
  */
 @RequestProcessor
 public class StatisticProcessor {
-
-    /**
-     * User query service.
-     */
-    @Inject
-    private UserQueryService userQueryService;
-
-    /**
-     * Article query service.
-     */
-    @Inject
-    private ArticleQueryService articleQueryService;
-
-    /**
-     * Comment query service.
-     */
-    @Inject
-    private CommentQueryService commentQueryService;
-
-    /**
-     * Option query service.
-     */
-    @Inject
-    private OptionQueryService optionQueryService;
-
-    /**
-     * Data model service.
-     */
-    @Inject
-    private DataModelService dataModelService;
 
     /**
      * Month days.
@@ -132,11 +101,41 @@ public class StatisticProcessor {
     private final List<Integer> historyCommentCnts = new ArrayList<>();
 
     /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
+    /**
+     * Article query service.
+     */
+    @Inject
+    private ArticleQueryService articleQueryService;
+
+    /**
+     * Comment query service.
+     */
+    @Inject
+    private CommentQueryService commentQueryService;
+
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
+
+    /**
+     * Data model service.
+     */
+    @Inject
+    private DataModelService dataModelService;
+
+    /**
      * Loads statistic data.
      *
-     * @param request the specified HTTP servlet request
+     * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @param context the specified HTTP request context
+     * @param context  the specified HTTP request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/cron/stat", method = HTTPRequestMethod.GET)
@@ -200,8 +199,8 @@ public class StatisticProcessor {
     /**
      * Shows data statistic.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -209,7 +208,7 @@ public class StatisticProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showStatistic(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                              final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("statistic.ftl");

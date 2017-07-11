@@ -57,13 +57,11 @@ import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
 
 /**
  * Chat room processor.
- * <p>
  * <ul>
  * <li>Shows char room (/cr, /chat-room, /community), GET</li>
  * <li>Sends chat message (/chat-room/send), POST</li>
  * <li>Receives <a href="https://github.com/b3log/xiaov">XiaoV</a> message (/community/push), POST</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.3.5.11, Apr 27, 2017

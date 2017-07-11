@@ -44,7 +44,6 @@ import java.util.Set;
 
 /**
  * Follow processor.
- * <p>
  * <ul>
  * <li>Follows a user (/follow/user), POST</li>
  * <li>Unfollows a user (/follow/user), DELETE</li>
@@ -55,7 +54,6 @@ import java.util.Set;
  * <li>Watches an article (/follow/article-watch), POST</li>
  * <li>Unwatches an article (/follow/article-watch), DELETE</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.3.0.4, Mar 7, 2017
@@ -67,7 +65,7 @@ public class FollowProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FollowProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FollowProcessor.class);
     /**
      * Holds follows.
      */

@@ -53,7 +53,6 @@ import java.util.*;
 
 /**
  * Notification processor.
- * <p>
  * <ul>
  * <li>Shows [commented] notifications (/notifications/commented), GET</li>
  * <li>Shows [reply] notifications (/notifications/reply), GET</li>
@@ -61,14 +60,16 @@ import java.util.*;
  * <li>Shows [following] notifications (/notifications/following), GET</li>
  * <li>Shows [point] notifications (/notifications/point), GET </li>
  * <li>Shows [broadcast] notifications (/notifications/broadcast), GET</li>
- * <li>Makes article/comment read (/notification/read), GET</li>
  * <li>Shows [sysAnnounce] notifications (/notifications/sys-announce), GET</li>
+ * <li>Makes article/comment read (/notification/read), GET</li>
+ * <li>Gets unread count of notifications (/notification/unread/count), GET</li>
+ * <li>Makes all notifications as read (/notification/all-read), GET</li>
+ * <li>Makes the specified type notifications as read (/notification/read/{type}), GET</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="http://vanessa.b3log.org">Liyuan Lo</a>
- * @version 1.10.1.10, Jul 3, 2017
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.10.1.11, Jul 11, 2017
  * @since 0.2.5
  */
 @RequestProcessor

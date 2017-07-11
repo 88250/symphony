@@ -55,12 +55,10 @@ import java.util.concurrent.Executors;
 
 /**
  * Link forge processor.
- * <p>
  * <ul>
  * <li>Shows link forge (/link-forge), GET</li>
  * <li>Submits a link into forge (/forge/link), POST</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
@@ -123,12 +121,7 @@ public class LinkForgeProcessor {
 
         final String url = requestJSONObject.optString(Common.URL);
 
-        FORGE_EXECUTOR_SERVICE.submit(new Runnable() {
-            @Override
-            public void run() {
-                linkForgeMgmtService.forge(url, userId);
-            }
-        });
+        FORGE_EXECUTOR_SERVICE.submit(() -> linkForgeMgmtService.forge(url, userId));
     }
 
     /**

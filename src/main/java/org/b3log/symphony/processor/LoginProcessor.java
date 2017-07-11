@@ -62,15 +62,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Login/Register processor.
- * <p>
- * For user
  * <ul>
  * <li>Registration (/register), GET/POST</li>
  * <li>Login (/login), GET/POST</li>
  * <li>Logout (/logout), GET</li>
  * <li>Reset password (/reset-pwd), GET/POST</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>

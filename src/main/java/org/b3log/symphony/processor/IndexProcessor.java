@@ -56,7 +56,6 @@ import java.util.*;
 
 /**
  * Index processor.
- * <p>
  * <ul>
  * <li>Shows index (/), GET</li>
  * <li>Shows recent articles (/recent), GET</li>
@@ -67,7 +66,6 @@ import java.util.*;
  * <li>Shows SymHub (/symhub), GET</li>
  * <li>Shows kill browser (/kill-browser), GET</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
@@ -80,7 +78,7 @@ public class IndexProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(IndexProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IndexProcessor.class);
 
     /**
      * Article query service.
