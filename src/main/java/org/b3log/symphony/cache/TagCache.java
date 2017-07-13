@@ -51,7 +51,7 @@ public class TagCache {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagCache.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagCache.class);
 
     /**
      * Icon tags.

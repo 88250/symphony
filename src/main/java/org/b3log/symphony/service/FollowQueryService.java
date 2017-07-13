@@ -51,7 +51,7 @@ public class FollowQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FollowQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FollowQueryService.class);
 
     /**
      * Follow repository.
@@ -132,8 +132,7 @@ public class FollowQueryService {
 
         try {
             final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_USER, currentPageNum, pageSize);
-            @SuppressWarnings("unchecked")
-            final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
+            @SuppressWarnings("unchecked") final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
 
             for (final JSONObject follow : followings) {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
@@ -183,8 +182,7 @@ public class FollowQueryService {
 
         try {
             final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_TAG, currentPageNum, pageSize);
-            @SuppressWarnings("unchecked")
-            final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
+            @SuppressWarnings("unchecked") final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
 
             for (final JSONObject follow : followings) {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
@@ -234,8 +232,7 @@ public class FollowQueryService {
 
         try {
             final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_ARTICLE, currentPageNum, pageSize);
-            @SuppressWarnings("unchecked")
-            final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
+            @SuppressWarnings("unchecked") final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
 
             final ArticleQueryService articleQueryService
                     = Lifecycle.getBeanManager().getReference(ArticleQueryService.class);
@@ -290,8 +287,7 @@ public class FollowQueryService {
 
         try {
             final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH, currentPageNum, pageSize);
-            @SuppressWarnings("unchecked")
-            final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
+            @SuppressWarnings("unchecked") final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
 
             final ArticleQueryService articleQueryService
                     = Lifecycle.getBeanManager().getReference(ArticleQueryService.class);
@@ -348,8 +344,7 @@ public class FollowQueryService {
         try {
             final JSONObject result = getFollowers(watchingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH, currentPageNum, pageSize);
 
-            @SuppressWarnings("unchecked")
-            final List<JSONObject> followers = (List<JSONObject>) result.opt(Keys.RESULTS);
+            @SuppressWarnings("unchecked") final List<JSONObject> followers = (List<JSONObject>) result.opt(Keys.RESULTS);
 
             for (final JSONObject follow : followers) {
                 final String followerId = follow.optString(Follow.FOLLOWER_ID);
@@ -403,8 +398,7 @@ public class FollowQueryService {
         try {
             final JSONObject result = getFollowers(followingUserId, Follow.FOLLOWING_TYPE_C_USER, currentPageNum, pageSize);
 
-            @SuppressWarnings("unchecked")
-            final List<JSONObject> followers = (List<JSONObject>) result.opt(Keys.RESULTS);
+            @SuppressWarnings("unchecked") final List<JSONObject> followers = (List<JSONObject>) result.opt(Keys.RESULTS);
 
             for (final JSONObject follow : followers) {
                 final String followerId = follow.optString(Follow.FOLLOWER_ID);

@@ -43,7 +43,7 @@ public class VerifycodeQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(VerifycodeQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(VerifycodeQueryService.class);
 
     /**
      * Verifycode repository.

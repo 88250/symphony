@@ -52,7 +52,7 @@ public class PointtransferQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PointtransferQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PointtransferQueryService.class);
 
     /**
      * Pointtransfer repository.

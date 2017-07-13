@@ -43,7 +43,7 @@ public final class Sessions {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Sessions.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Sessions.class);
 
     /**
      * Cookie expiry: one year.

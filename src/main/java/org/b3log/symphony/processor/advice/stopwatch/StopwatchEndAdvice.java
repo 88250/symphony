@@ -42,7 +42,7 @@ public class StopwatchEndAdvice extends AfterRequestProcessAdvice {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StopwatchEndAdvice.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StopwatchEndAdvice.class);
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Object ret) {

@@ -38,18 +38,17 @@ import java.util.TimeZone;
 public final class Skins {
 
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(Skins.class.getName());
-
-    /**
      * FreeMarker template configurations holder.
-     *
      * <p>
      * &lt;skinDirName, Configuration&gt;
      * </p>
      */
     public static final Map<String, Configuration> TEMPLATE_HOLDER = new HashMap<>();
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Skins.class);
 
     static {
         final ServletContext servletContext = AbstractServletListener.getServletContext();

@@ -52,7 +52,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleQQSender.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleQQSender.class);
 
     /**
      * URL fetch service.
