@@ -42,7 +42,7 @@ public class LinkRepository extends AbstractRepository {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LinkRepository.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LinkRepository.class);
 
     /**
      * Gets a link with the specified address.

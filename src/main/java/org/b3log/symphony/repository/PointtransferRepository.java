@@ -40,7 +40,7 @@ public class PointtransferRepository extends AbstractRepository {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PointtransferRepository.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PointtransferRepository.class);
 
     /**
      * Gets average point of activity eating snake of a user specified by the given user id.

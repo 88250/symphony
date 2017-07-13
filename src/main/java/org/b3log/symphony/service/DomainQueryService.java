@@ -56,7 +56,7 @@ public class DomainQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(DomainQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DomainQueryService.class);
 
     /**
      * Domain repository.
@@ -239,16 +239,14 @@ public class DomainQueryService {
      * Gets domains by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "domainTitle": "", // optional
-     *     "paginationCurrentPageNum": 1,
-     *     "paginationPageSize": 20,
-     *     "paginationWindowSize": 10
-     * }, see {@link Pagination} for more details
-     * </pre>
-     *
-     * @param domainFields the specified domain fields to return
-     *
+     *                          {
+     *                              "domainTitle": "", // optional
+     *                              "paginationCurrentPageNum": 1,
+     *                              "paginationPageSize": 20,
+     *                              "paginationWindowSize": 10
+     *                          }, see {@link Pagination} for more details
+     *                          </pre>
+     * @param domainFields      the specified domain fields to return
      * @return for example,      <pre>
      * {
      *     "pagination": {
@@ -263,7 +261,6 @@ public class DomainQueryService {
      *      }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      * @see Pagination
      */

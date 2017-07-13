@@ -45,7 +45,7 @@ public class TimelineMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TimelineMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TimelineMgmtService.class);
 
     /**
      * Timelines.
@@ -62,12 +62,12 @@ public class TimelineMgmtService {
      * Adds the specified timeline.
      *
      * @param timeline the specified timeline, for example,      <pre>
-     * {
-     *     "userId": "",
-     *     "type": "article",
-     *     "content": timelineArticleAddLabel
-     * }
-     * </pre>
+     *                 {
+     *                     "userId": "",
+     *                     "type": "article",
+     *                     "content": timelineArticleAddLabel
+     *                 }
+     *                 </pre>
      */
     public void addTimeline(final JSONObject timeline) {
         String userId = timeline.optString(Common.USER_ID);

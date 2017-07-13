@@ -51,7 +51,7 @@ public class UserChannel {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UserChannel.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserChannel.class);
 
     /**
      * Session set.

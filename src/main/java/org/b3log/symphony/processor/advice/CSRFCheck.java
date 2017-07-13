@@ -49,7 +49,7 @@ public class CSRFCheck extends BeforeRequestProcessAdvice {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CSRFCheck.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CSRFCheck.class);
     
     /**
      * Language service.

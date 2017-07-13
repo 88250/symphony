@@ -39,7 +39,7 @@ public final class Channels {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Channels.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Channels.class);
 
     /**
      * WebSocket configurator.

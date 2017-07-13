@@ -41,7 +41,7 @@ public final class Geos {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Geos.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Geos.class);
 
     /**
      * Gets country, province and city of the specified IP.

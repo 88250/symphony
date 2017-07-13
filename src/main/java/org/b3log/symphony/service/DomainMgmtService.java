@@ -48,7 +48,7 @@ public class DomainMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(DomainMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DomainMgmtService.class);
 
     /**
      * Domain repository.

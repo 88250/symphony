@@ -41,7 +41,7 @@ public class ChatRoomChannel {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ChatRoomChannel.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ChatRoomChannel.class);
 
     /**
      * Session set.
