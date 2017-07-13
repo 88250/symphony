@@ -42,18 +42,18 @@ public class DomainCache {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(DomainCache.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DomainCache.class);
+
+    /**
+     * Domains.
+     */
+    private static final List<JSONObject> DOMAINS = new ArrayList<>();
 
     /**
      * Domain query service.
      */
     @Inject
     private DomainQueryService domainQueryService;
-
-    /**
-     * Domains.
-     */
-    private static final List<JSONObject> DOMAINS = new ArrayList<JSONObject>();
 
     /**
      * Gets domains with the specified fetch size.

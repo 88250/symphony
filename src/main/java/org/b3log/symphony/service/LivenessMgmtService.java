@@ -43,7 +43,7 @@ public class LivenessMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LivenessMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LivenessMgmtService.class);
 
     /**
      * Liveness repository.
@@ -55,7 +55,7 @@ public class LivenessMgmtService {
      * Increments a field of the specified liveness.
      *
      * @param userId the specified user id
-     * @param field the specified field
+     * @param field  the specified field
      */
     @Transactional
     public void incLiveness(final String userId, final String field) {

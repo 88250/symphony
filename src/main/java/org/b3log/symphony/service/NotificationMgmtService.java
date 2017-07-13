@@ -51,7 +51,7 @@ public class NotificationMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(NotificationMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NotificationMgmtService.class);
 
     /**
      * Notification repository.

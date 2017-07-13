@@ -44,7 +44,7 @@ public class LivenessQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LivenessQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LivenessQueryService.class);
 
     /**
      * Liveness repository.

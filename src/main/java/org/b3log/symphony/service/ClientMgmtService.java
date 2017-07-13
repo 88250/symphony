@@ -42,7 +42,7 @@ public class ClientMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ClientMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ClientMgmtService.class);
 
     /**
      * Client repository.
@@ -59,17 +59,15 @@ public class ClientMgmtService {
     /**
      * Adds a client by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object (client), for example,      <pre>
-     * {
-     *     "oId": "",
-     *     "clientName": "",
-     *     "clientVersion": "",
-     *     "clientHost": "",
-     *     "clientAdminEmail": "",
-     *     ....
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object (client), for example,
+     *                          {
+     *                          "oId": "",
+     *                          "clientName": "",
+     *                          "clientVersion": "",
+     *                          "clientHost": "",
+     *                          "clientAdminEmail": "",
+     *                          ....
+     *                          }
      * @throws ServiceException service exception
      */
     public void addClient(final JSONObject requestJSONObject) throws ServiceException {
@@ -99,17 +97,15 @@ public class ClientMgmtService {
     /**
      * Updates a client by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object (client), for example,      <pre>
-     * {
-     *     "oId": "",
-     *     "clientName": "",
-     *     "clientVersion": "",
-     *     "clientHost": "",
-     *     "clientAdminEmail": "",
-     *     ....
-     * }
-     * </pre>
-     *
+     * @param requestJSONObject the specified request json object (client), for example,
+     *                          {
+     *                          "oId": "",
+     *                          "clientName": "",
+     *                          "clientVersion": "",
+     *                          "clientHost": "",
+     *                          "clientAdminEmail": "",
+     *                          ....
+     *                          }
      * @throws ServiceException service exception
      */
     public void updateClient(final JSONObject requestJSONObject) throws ServiceException {

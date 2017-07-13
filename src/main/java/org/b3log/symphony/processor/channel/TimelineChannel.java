@@ -38,14 +38,36 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TimelineChannel {
 
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(TimelineChannel.class.getName());
-
-    /**
      * Session set.
      */
     public static final Set<Session> SESSIONS = Collections.newSetFromMap(new ConcurrentHashMap());
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(TimelineChannel.class);
+
+    /**
+     * Notifies the specified timeline message to browsers.
+     *
+     * @param message the specified message, for example
+     *                {
+     *                "type": "article",
+     *                "content": ""
+     *                }
+     */
+    public static void notifyTimeline(final JSONObject message) {
+        final String msgStr = message.toString();
+
+        final Iterator<Session> i = SESSIONS.iterator();
+        while (i.hasNext()) {
+            final Session session = i.next();
+
+            if (session.isOpen()) {
+                session.getAsyncRemote().sendText(msgStr);
+            }
+        }
+    }
 
     /**
      * Called when the socket connection with the browser is established.
@@ -60,7 +82,7 @@ public class TimelineChannel {
     /**
      * Called when the connection closed.
      *
-     * @param session session
+     * @param session     session
      * @param closeReason close reason
      */
     @OnClose
@@ -81,34 +103,11 @@ public class TimelineChannel {
      * Called in case of an error.
      *
      * @param session session
-     * @param error error
+     * @param error   error
      */
     @OnError
     public void onError(final Session session, final Throwable error) {
         removeSession(session);
-    }
-
-    /**
-     * Notifies the specified timeline message to browsers.
-     *
-     * @param message the specified message, for example      <pre>
-     * {
-     *     "type": "article",
-     *     "content": ""
-     * }
-     * </pre>
-     */
-    public static void notifyTimeline(final JSONObject message) {
-        final String msgStr = message.toString();
-
-        final Iterator<Session> i = SESSIONS.iterator();
-        while (i.hasNext()) {
-            final Session session = i.next();
-
-            if (session.isOpen()) {
-                session.getAsyncRemote().sendText(msgStr);
-            }
-        }
     }
 
     /**

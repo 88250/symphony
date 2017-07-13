@@ -54,7 +54,7 @@ public class OptionQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(OptionQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OptionQueryService.class);
 
     /**
      * Option repository.

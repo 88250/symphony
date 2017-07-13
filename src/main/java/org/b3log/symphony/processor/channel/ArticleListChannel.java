@@ -38,14 +38,41 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ArticleListChannel {
 
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ArticleListChannel.class.getName());
-
-    /**
      * Session articles &lt;session, "articleId1,articleId2"&gt;.
      */
-    public static final Map<Session, String> SESSIONS = new ConcurrentHashMap<Session, String>();
+    public static final Map<Session, String> SESSIONS = new ConcurrentHashMap<>();
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ArticleListChannel.class);
+
+    /**
+     * Notifies the specified article heat message to browsers.
+     *
+     * @param message the specified message, for example
+     *                {
+     *                "articleId": "",
+     *                "operation": "" // "+"/"-"
+     *                }
+     */
+    public static void notifyHeat(final JSONObject message) {
+        final String articleId = message.optString(Article.ARTICLE_T_ID);
+        final String msgStr = message.toString();
+
+        for (final Map.Entry<Session, String> entry : SESSIONS.entrySet()) {
+            final Session session = entry.getKey();
+            final String articleIds = entry.getValue();
+
+            if (!StringUtils.contains(articleIds, articleId)) {
+                continue;
+            }
+
+            if (session.isOpen()) {
+                session.getAsyncRemote().sendText(msgStr);
+            }
+        }
+    }
 
     /**
      * Called when the socket connection with the browser is established.
@@ -65,7 +92,7 @@ public class ArticleListChannel {
     /**
      * Called when the connection closed.
      *
-     * @param session session
+     * @param session     session
      * @param closeReason close reason
      */
     @OnClose
@@ -86,38 +113,10 @@ public class ArticleListChannel {
      * Called in case of an error.
      *
      * @param session session
-     * @param error error
+     * @param error   error
      */
     @OnError
     public void onError(final Session session, final Throwable error) {
         SESSIONS.remove(session);
-    }
-
-    /**
-     * Notifies the specified article heat message to browsers.
-     *
-     * @param message the specified message, for example      <pre>
-     * {
-     *     "articleId": "",
-     *     "operation": "" // "+"/"-"
-     * }
-     * </pre>
-     */
-    public static void notifyHeat(final JSONObject message) {
-        final String articleId = message.optString(Article.ARTICLE_T_ID);
-        final String msgStr = message.toString();
-
-        for (final Map.Entry<Session, String> entry : SESSIONS.entrySet()) {
-            final Session session = entry.getKey();
-            final String articleIds = entry.getValue();
-
-            if (!StringUtils.contains(articleIds, articleId)) {
-                continue;
-            }
-
-            if (session.isOpen()) {
-                session.getAsyncRemote().sendText(msgStr);
-            }
-        }
     }
 }

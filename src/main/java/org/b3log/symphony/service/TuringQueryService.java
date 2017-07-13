@@ -48,7 +48,7 @@ public class TuringQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TuringQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TuringQueryService.class);
 
     /**
      * Enabled Turing Robot or not.

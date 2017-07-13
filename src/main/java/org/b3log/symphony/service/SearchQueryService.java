@@ -47,7 +47,7 @@ public class SearchQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SearchQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SearchQueryService.class);
 
     /**
      * URL fetch service.

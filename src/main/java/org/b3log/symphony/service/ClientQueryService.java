@@ -45,7 +45,7 @@ public class ClientQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ClientQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ClientQueryService.class);
 
     /**
      * Client repository.
@@ -57,7 +57,7 @@ public class ClientQueryService {
      * Adds a client by the specified administrator email.
      *
      * @param adminEmail the specified administrator email
-     * @return client,returns {@code null} if not found
+     * @return client, returns {@code null} if not found
      * @throws ServiceException service exception
      */
     public JSONObject getClientByAdminEmail(final String adminEmail) throws ServiceException {
