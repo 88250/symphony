@@ -52,7 +52,7 @@ public class SitemapQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SitemapQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SitemapQueryService.class);
 
     /**
      * Article repository.

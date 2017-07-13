@@ -51,7 +51,7 @@ public class LoginCheck extends BeforeRequestProcessAdvice {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LoginCheck.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LoginCheck.class);
 
     /**
      * User query service.

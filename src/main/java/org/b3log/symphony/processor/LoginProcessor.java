@@ -84,75 +84,90 @@ public class LoginProcessor {
      * </p>
      */
     public static final Map<String, JSONObject> WRONG_PWD_TRIES = new ConcurrentHashMap<>();
+
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class);
+
     /**
      * User management service.
      */
     @Inject
     private UserMgmtService userMgmtService;
+
     /**
      * User query service.
      */
     @Inject
     private UserQueryService userQueryService;
+
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
+
     /**
      * Pointtransfer management service.
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
+
     /**
      * Data model service.
      */
     @Inject
     private DataModelService dataModelService;
+
     /**
      * Verifycode management service.
      */
     @Inject
     private VerifycodeMgmtService verifycodeMgmtService;
+
     /**
      * Verifycode query service.
      */
     @Inject
     private VerifycodeQueryService verifycodeQueryService;
+
     /**
      * Timeline management service.
      */
     @Inject
     private TimelineMgmtService timelineMgmtService;
+
     /**
      * Option query service.
      */
     @Inject
     private OptionQueryService optionQueryService;
+
     /**
      * Invitecode query service.
      */
     @Inject
     private InvitecodeQueryService invitecodeQueryService;
+
     /**
      * Invitecode management service.
      */
     @Inject
     private InvitecodeMgmtService invitecodeMgmtService;
+
     /**
      * Invitecode management service.
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
+
     /**
      * Role query service.
      */
     @Inject
     private RoleQueryService roleQueryService;
+
     /**
      * Tag query service.
      */

@@ -46,7 +46,7 @@ public class LinkForgeQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LinkForgeQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LinkForgeQueryService.class);
 
     /**
      * Max tag count.

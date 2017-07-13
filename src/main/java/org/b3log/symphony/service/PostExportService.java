@@ -62,7 +62,7 @@ public class PostExportService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PostExportService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PostExportService.class);
 
     /**
      * User repository.

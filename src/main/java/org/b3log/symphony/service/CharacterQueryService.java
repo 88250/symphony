@@ -47,7 +47,7 @@ public class CharacterQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CharacterQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CharacterQueryService.class);
 
     /**
      * Character repository.

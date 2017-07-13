@@ -42,7 +42,7 @@ public class CSRFToken extends AfterRequestProcessAdvice {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CSRFToken.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CSRFToken.class);
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Object ret) {

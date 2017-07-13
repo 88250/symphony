@@ -65,15 +65,17 @@ public class ArticleChannel {
      * Session set.
      */
     public static final Set<Session> SESSIONS = Collections.newSetFromMap(new ConcurrentHashMap());
+
     /**
      * Article viewing map &lt;articleId, count&gt;.
      */
     public static final Map<String, Integer> ARTICLE_VIEWS
             = Collections.synchronizedMap(new HashMap<String, Integer>());
+
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleChannel.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleChannel.class);
 
     /**
      * Notifies the specified article heat message to browsers.

@@ -48,7 +48,7 @@ public class VoteQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(VoteQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(VoteQueryService.class);
 
     /**
      * Vote repository.

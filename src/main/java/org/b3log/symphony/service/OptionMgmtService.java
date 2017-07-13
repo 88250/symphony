@@ -40,7 +40,7 @@ public class OptionMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(OptionMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OptionMgmtService.class);
 
     /**
      * Option repository.

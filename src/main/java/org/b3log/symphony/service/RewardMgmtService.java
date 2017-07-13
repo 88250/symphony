@@ -40,7 +40,7 @@ public class RewardMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(RewardMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RewardMgmtService.class);
 
     /**
      * Reward repository.

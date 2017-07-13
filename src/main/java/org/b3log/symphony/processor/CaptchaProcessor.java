@@ -57,7 +57,7 @@ public class CaptchaProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CaptchaProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CaptchaProcessor.class);
 
     /**
      * Key of captcha.
