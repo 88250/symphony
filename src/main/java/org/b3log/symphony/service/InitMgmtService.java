@@ -224,8 +224,8 @@ public class InitMgmtService {
 
             final List<JdbcRepositories.CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
             for (final JdbcRepositories.CreateTableResult createTableResult : createTableResults) {
-                LOGGER.log(Level.INFO, "Creates table result[tableName={0}, isSuccess={1}]",
-                        new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
+                LOGGER.log(Level.INFO, "Creates table result [tableName={0}, isSuccess={1}]",
+                        createTableResult.getName(), createTableResult.isSuccess());
             }
 
             final Transaction transaction = optionRepository.beginTransaction();

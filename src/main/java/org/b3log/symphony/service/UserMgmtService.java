@@ -837,7 +837,7 @@ public class UserMgmtService {
 
             if (null == tag) {
                 LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in user [name={1}]",
-                        new Object[]{tagTitle, user.optString(User.USER_NAME)});
+                        tagTitle, user.optString(User.USER_NAME));
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 String tagURI = tagTitle;

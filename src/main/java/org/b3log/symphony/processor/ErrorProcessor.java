@@ -92,8 +92,7 @@ public class ErrorProcessor {
         if (StringUtils.equals("GET", request.getMethod())) {
             final String requestURI = request.getRequestURI();
             final String templateName = statusCode + ".ftl";
-            LOGGER.log(Level.TRACE, "Shows error page[requestURI={0}, templateName={1}]",
-                    new Object[]{requestURI, templateName});
+            LOGGER.log(Level.TRACE, "Shows error page[requestURI={0}, templateName={1}]", requestURI, templateName);
 
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
             renderer.setTemplateName("error/" + templateName);

@@ -1542,8 +1542,8 @@ public class ArticleMgmtService {
             int userTagType;
             final int articleCmtCnt = article.optInt(Article.ARTICLE_COMMENT_CNT);
             if (null == tag) {
-                LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
-                        new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
+                LOGGER.log(Level.TRACE, "Found a new tag [title={0}] in article [title={1}]",
+                        tagTitle, article.optString(Article.ARTICLE_TITLE));
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 String tagURI = tagTitle;

@@ -95,8 +95,7 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
-        LOGGER.log(Level.TRACE, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, ArticleBaiduSender.class.getName()});
+        LOGGER.log(Level.TRACE, "Processing an event [type={0}, data={1}]", event.getType(), data);
 
         if (Latkes.RuntimeMode.PRODUCTION != Latkes.getRuntimeMode() || StringUtils.isBlank(TOKEN)) {
             return;

@@ -235,8 +235,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         // Gets the session of this request
         final HttpSession session = httpServletRequest.getSession();
         LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
-                new Object[]{session.getId(), httpServletRequest.getRemoteAddr(),
-                        httpServletRequest.getHeader(Common.USER_AGENT), session.isNew()});
+                session.getId(), httpServletRequest.getRemoteAddr(),
+                httpServletRequest.getHeader(Common.USER_AGENT), session.isNew());
 
         resolveSkinDir(httpServletRequest);
     }
@@ -255,7 +255,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
                 final long elapsed = Stopwatchs.getElapsed("Request initialized [" + request.getRequestURI() + "]");
                 if (elapsed > Symphonys.getInt("perfromance.threshold")) {
-                    LOGGER.log(Level.INFO, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+                    LOGGER.log(Level.INFO, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
                 }
             }
         } finally {

@@ -57,6 +57,6 @@ public class StopwatchEndAdvice extends AfterRequestProcessAdvice {
             dataModel.put(Common.ELAPSED, elapsed);
         }
 
-        LOGGER.log(Level.TRACE, "Stopwatch: {0}    {1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+        LOGGER.log(Level.TRACE, "Stopwatch: {0}    {1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
     }
 }
