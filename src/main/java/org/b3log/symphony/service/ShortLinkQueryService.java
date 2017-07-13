@@ -53,7 +53,7 @@ public class ShortLinkQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ShortLinkQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ShortLinkQueryService.class);
 
     /**
      * Article pattern - simple.

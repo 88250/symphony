@@ -51,7 +51,7 @@ public class VerifycodeMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(VerifycodeMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(VerifycodeMgmtService.class);
 
     /**
      * Verifycode repository.
@@ -75,17 +75,16 @@ public class VerifycodeMgmtService {
      * Adds a verifycode with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "userId"; "",
-     *     "type": int,
-     *     "bizType": int,
-     *     "receiver": "",
-     *     "code": "",
-     *     "status": int,
-     *     "expired": long
-     * }
-     * </pre>
-     *
+     *                                                   {
+     *                                                       "userId"; "",
+     *                                                       "type": int,
+     *                                                       "bizType": int,
+     *                                                       "receiver": "",
+     *                                                       "code": "",
+     *                                                       "status": int,
+     *                                                       "expired": long
+     *                                                   }
+     *                                                   </pre>
      * @return verifycode id
      * @throws ServiceException service exception
      */

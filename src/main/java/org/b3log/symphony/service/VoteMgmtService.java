@@ -50,7 +50,7 @@ public class VoteMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(VoteMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(VoteMgmtService.class);
 
     /**
      * Vote repository.
@@ -83,10 +83,43 @@ public class VoteMgmtService {
     private LivenessMgmtService livenessMgmtService;
 
     /**
+     * Gets Reddit article score.
+     *
+     * @param ups   the specified vote up count
+     * @param downs the specified vote down count
+     * @param t     time (epoch seconds)
+     * @return reddit score
+     */
+    private static double redditArticleScore(final int ups, final int downs, final long t) {
+        final int x = ups - downs;
+        final double z = Math.max(Math.abs(x), 1);
+        int y = 0;
+        if (x > 0) {
+            y = 1;
+        } else if (x < 0) {
+            y = -1;
+        }
+
+        return Math.log10(z) + y * (t - 1353745196) / 45000;
+    }
+
+    private static double redditCommentScore(final int ups, final int downs) {
+        final int n = ups + downs;
+        if (0 == n) {
+            return 0;
+        }
+
+        final double z = 1.281551565545; // 1.0: 85%, 1.6: 95%, 1.281551565545: 80%
+        final double p = (double) ups / n;
+
+        return (p + z * z / (2 * n) - z * Math.sqrt((p * (1 - p) + z * z / (4 * n)) / n)) / (1 + z * z / n);
+    }
+
+    /**
      * Cancels the vote.
      *
-     * @param userId the specified user id
-     * @param dataId the specified data id
+     * @param userId   the specified user id
+     * @param dataId   the specified data id
      * @param dataType the specified data type
      */
     @Transactional
@@ -150,8 +183,8 @@ public class VoteMgmtService {
     /**
      * The specified user vote up the specified article/comment.
      *
-     * @param userId the specified user id
-     * @param dataId the specified article/comment id
+     * @param userId   the specified user id
+     * @param dataId   the specified article/comment id
      * @param dataType the specified data type
      * @throws ServiceException service exception
      */
@@ -193,8 +226,8 @@ public class VoteMgmtService {
     /**
      * The specified user vote up the specified data entity with the specified data type.
      *
-     * @param userId the specified user id
-     * @param dataId the specified data entity id
+     * @param userId   the specified user id
+     * @param dataId   the specified data entity id
      * @param dataType the specified data type
      * @throws RepositoryException repository exception
      */
@@ -264,8 +297,8 @@ public class VoteMgmtService {
     /**
      * The specified user vote down the specified data entity with the specified data type.
      *
-     * @param userId the specified user id
-     * @param dataId the specified data entity id
+     * @param userId   the specified user id
+     * @param dataId   the specified data entity id
      * @param dataType the specified data type
      * @throws RepositoryException repository exception
      */
@@ -330,39 +363,6 @@ public class VoteMgmtService {
         vote.put(Vote.DATA_TYPE, dataType);
 
         voteRepository.add(vote);
-    }
-
-    /**
-     * Gets Reddit article score.
-     *
-     * @param ups the specified vote up count
-     * @param downs the specified vote down count
-     * @param t time (epoch seconds)
-     * @return reddit score
-     */
-    private static double redditArticleScore(final int ups, final int downs, final long t) {
-        final int x = ups - downs;
-        final double z = Math.max(Math.abs(x), 1);
-        int y = 0;
-        if (x > 0) {
-            y = 1;
-        } else if (x < 0) {
-            y = -1;
-        }
-
-        return Math.log10(z) + y * (t - 1353745196) / 45000;
-    }
-
-    private static double redditCommentScore(final int ups, final int downs) {
-        final int n = ups + downs;
-        if (0 == n) {
-            return 0;
-        }
-
-        final double z = 1.281551565545; // 1.0: 85%, 1.6: 95%, 1.281551565545: 80%
-        final double p = (double) ups / n;
-
-        return (p + z * z / (2 * n) - z * Math.sqrt((p * (1 - p) + z * z / (4 * n)) / n)) / (1 + z * z / n);
     }
 
     private void updateTagArticleScore(final JSONObject article) throws RepositoryException {

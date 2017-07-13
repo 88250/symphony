@@ -48,7 +48,7 @@ public class InvitecodeQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(InvitecodeQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(InvitecodeQueryService.class);
 
     /**
      * Invitecode repository.
@@ -113,13 +113,12 @@ public class InvitecodeQueryService {
      * Gets invitecodes by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "paginationCurrentPageNum": 1,
-     *     "paginationPageSize": 20,
-     *     "paginationWindowSize": 10
-     * }, see {@link Pagination} for more details
-     * </pre>
-     *
+     *                          {
+     *                              "paginationCurrentPageNum": 1,
+     *                              "paginationPageSize": 20,
+     *                              "paginationWindowSize": 10
+     *                          }, see {@link Pagination} for more details
+     *                          </pre>
      * @return for example,      <pre>
      * {
      *     "pagination": {
@@ -134,7 +133,6 @@ public class InvitecodeQueryService {
      *      }, ....]
      * }
      * </pre>
-     *
      * @throws ServiceException service exception
      * @see Pagination
      */
@@ -186,7 +184,6 @@ public class InvitecodeQueryService {
      *     ....
      * }
      * </pre>, returns {@code null} if not found
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getInvitecodeById(final String invitecodeId) throws ServiceException {
@@ -211,7 +208,6 @@ public class InvitecodeQueryService {
      *     ....
      * }
      * </pre>, returns {@code null} if not found
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getInvitecodeByUserId(final String userId) throws ServiceException {

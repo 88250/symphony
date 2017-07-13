@@ -41,7 +41,7 @@ public class ReferralMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ReferralMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReferralMgmtService.class);
 
     /**
      * Referral repository.

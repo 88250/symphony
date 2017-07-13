@@ -67,7 +67,7 @@ public class ActivityMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ActivityMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ActivityMgmtService.class);
 
     /**
      * Character repository.
