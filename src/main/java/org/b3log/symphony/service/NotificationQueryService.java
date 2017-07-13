@@ -52,7 +52,7 @@ public class NotificationQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(NotificationQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NotificationQueryService.class);
 
     /**
      * Notification repository.

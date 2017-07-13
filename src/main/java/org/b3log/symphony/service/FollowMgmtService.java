@@ -45,7 +45,7 @@ public class FollowMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FollowMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FollowMgmtService.class);
 
     /**
      * Follow repository.
@@ -68,7 +68,7 @@ public class FollowMgmtService {
     /**
      * The specified follower follows the specified following tag.
      *
-     * @param followerId the specified follower id
+     * @param followerId     the specified follower id
      * @param followingTagId the specified following tag id
      * @throws ServiceException service exception
      */
@@ -87,7 +87,7 @@ public class FollowMgmtService {
     /**
      * The specified follower follows the specified following user.
      *
-     * @param followerId the specified follower id
+     * @param followerId      the specified follower id
      * @param followingUserId the specified following user id
      * @throws ServiceException service exception
      */
@@ -106,7 +106,7 @@ public class FollowMgmtService {
     /**
      * The specified follower follows the specified following article.
      *
-     * @param followerId the specified follower id
+     * @param followerId         the specified follower id
      * @param followingArticleId the specified following article id
      * @throws ServiceException service exception
      */
@@ -125,7 +125,7 @@ public class FollowMgmtService {
     /**
      * The specified follower watches the specified following article.
      *
-     * @param followerId the specified follower id
+     * @param followerId         the specified follower id
      * @param followingArticleId the specified following article id
      * @throws ServiceException service exception
      */
@@ -144,7 +144,7 @@ public class FollowMgmtService {
     /**
      * The specified follower unfollows the specified following tag.
      *
-     * @param followerId the specified follower id
+     * @param followerId     the specified follower id
      * @param followingTagId the specified following tag id
      * @throws ServiceException service exception
      */
@@ -163,7 +163,7 @@ public class FollowMgmtService {
     /**
      * The specified follower unfollows the specified following user.
      *
-     * @param followerId the specified follower id
+     * @param followerId      the specified follower id
      * @param followingUserId the specified following user id
      * @throws ServiceException service exception
      */
@@ -182,7 +182,7 @@ public class FollowMgmtService {
     /**
      * The specified follower unfollows the specified following article.
      *
-     * @param followerId the specified follower id
+     * @param followerId         the specified follower id
      * @param followingArticleId the specified following article id
      * @throws ServiceException service exception
      */
@@ -202,7 +202,7 @@ public class FollowMgmtService {
     /**
      * The specified follower unwatches the specified following article.
      *
-     * @param followerId the specified follower id
+     * @param followerId         the specified follower id
      * @param followingArticleId the specified following article id
      * @throws ServiceException service exception
      */
@@ -221,8 +221,8 @@ public class FollowMgmtService {
     /**
      * The specified follower follows the specified following entity with the specified following type.
      *
-     * @param followerId the specified follower id
-     * @param followingId the specified following entity id
+     * @param followerId    the specified follower id
+     * @param followingId   the specified following entity id
      * @param followingType the specified following type
      * @throws RepositoryException repository exception
      */
@@ -278,8 +278,8 @@ public class FollowMgmtService {
     /**
      * Removes a follow relationship.
      *
-     * @param followerId the specified follower id
-     * @param followingId the specified following entity id
+     * @param followerId    the specified follower id
+     * @param followingId   the specified following entity id
      * @param followingType the specified following type
      * @throws RepositoryException repository exception
      */
@@ -298,7 +298,7 @@ public class FollowMgmtService {
             if (tag.optInt(Tag.TAG_FOLLOWER_CNT) < 0) {
                 tag.put(Tag.TAG_FOLLOWER_CNT, 0);
             }
-            
+
             tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
 
             tagRepository.update(followingId, tag);

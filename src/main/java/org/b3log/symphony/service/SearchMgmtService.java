@@ -34,7 +34,7 @@ import java.net.UnknownHostException;
 
 /**
  * Search management service.
- *
+ * <p>
  * Uses <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> or
  * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
  *
@@ -46,11 +46,6 @@ import java.net.UnknownHostException;
 public class SearchMgmtService {
 
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(SearchMgmtService.class.getName());
-
-    /**
      * Elasticsearch index name.
      */
     public static final String ES_INDEX_NAME = "symphony";
@@ -59,6 +54,11 @@ public class SearchMgmtService {
      * Elasticsearch serve address.
      */
     public static final String ES_SERVER = Symphonys.get("es.server");
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(SearchMgmtService.class);
 
     /**
      * URL fetch service.
@@ -155,7 +155,7 @@ public class SearchMgmtService {
     /**
      * Updates/Adds indexing the specified document in ES.
      *
-     * @param doc the specified document
+     * @param doc  the specified document
      * @param type the specified document type
      */
     public void updateESDocument(final JSONObject doc, final String type) {
@@ -180,7 +180,7 @@ public class SearchMgmtService {
     /**
      * Removes the specified document in ES.
      *
-     * @param doc the specified document
+     * @param doc  the specified document
      * @param type the specified document type
      */
     public void removeESDocument(final JSONObject doc, final String type) {

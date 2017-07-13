@@ -46,7 +46,7 @@ public class InvitecodeMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(InvitecodeMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(InvitecodeMgmtService.class);
 
     /**
      * Invitecode repository.
@@ -95,7 +95,7 @@ public class InvitecodeMgmtService {
     /**
      * User generates an invitecode.
      *
-     * @param userId the specified user id
+     * @param userId   the specified user id
      * @param userName the specified user name
      * @return invitecode
      */
@@ -132,7 +132,7 @@ public class InvitecodeMgmtService {
      * Admin generates invitecodes with the specified quantity and memo.
      *
      * @param quantity the specified quantity
-     * @param memo the specified memo
+     * @param memo     the specified memo
      * @throws ServiceException service exception
      */
     public void adminGenInvitecodes(final int quantity, final String memo) throws ServiceException {
@@ -166,7 +166,7 @@ public class InvitecodeMgmtService {
      * Updates the specified invitecode by the given invitecode id.
      *
      * @param invitecodeId the given invitecode id
-     * @param invitecode the specified invitecode
+     * @param invitecode   the specified invitecode
      * @throws ServiceException service exception
      */
     public void updateInvitecode(final String invitecodeId, final JSONObject invitecode) throws ServiceException {

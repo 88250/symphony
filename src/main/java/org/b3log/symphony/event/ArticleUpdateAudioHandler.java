@@ -64,8 +64,7 @@ public class ArticleUpdateAudioHandler extends AbstractEventListener<JSONObject>
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
-        LOGGER.log(Level.TRACE, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                event.getType(), data, ArticleAddNotifier.class.getName());
+        LOGGER.log(Level.TRACE, "Processing an event [type={0}, data={1}]", event.getType(), data);
 
         final JSONObject originalArticle = data.optJSONObject(Article.ARTICLE);
         final String authorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);

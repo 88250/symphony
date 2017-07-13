@@ -62,51 +62,61 @@ public class TagQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagQueryService.class);
+
     /**
      * URL fetch service.
      */
     private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
     /**
      * Tag repository.
      */
     @Inject
     private TagRepository tagRepository;
+
     /**
      * User-Tag repository.
      */
     @Inject
     private UserTagRepository userTagRepository;
+
     /**
      * Tag-Tag repository.
      */
     @Inject
     private TagTagRepository tagTagRepository;
+
     /**
      * User repository.
      */
     @Inject
     private UserRepository userRepository;
+
     /**
      * Domain repository.
      */
     @Inject
     private DomainRepository domainRepository;
+
     /**
      * Domain tag repository.
      */
     @Inject
     private DomainTagRepository domainTagRepository;
+
     /**
      * Avatar query service.
      */
     @Inject
     private AvatarQueryService avatarQueryService;
+
     /**
      * Short link query service.
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
     /**
      * Tag cache.
      */

@@ -70,7 +70,7 @@ public class UserMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UserMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserMgmtService.class);
 
     /**
      * User repository.
