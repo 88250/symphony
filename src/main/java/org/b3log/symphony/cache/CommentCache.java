@@ -54,7 +54,7 @@ public class CommentCache {
      * @return comment, returns {@code null} if not found
      */
     public JSONObject getComment(final String id) {
-        final JSONObject comment = (JSONObject) cache.get(id);
+        final JSONObject comment = cache.get(id);
         if (null == comment) {
             return null;
         }
