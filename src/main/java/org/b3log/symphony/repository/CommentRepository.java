@@ -150,7 +150,6 @@ public class CommentRepository extends AbstractRepository {
         }
 
         ret = super.get(id);
-
         if (null == ret) {
             return null;
         }
