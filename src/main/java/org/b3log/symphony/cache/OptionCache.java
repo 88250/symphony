@@ -53,7 +53,7 @@ public class OptionCache {
      * @return option, returns {@code null} if not found
      */
     public JSONObject getOption(final String id) {
-        final JSONObject option = (JSONObject) CACHE.get(id);
+        final JSONObject option = CACHE.get(id);
         if (null == option) {
             return null;
         }
