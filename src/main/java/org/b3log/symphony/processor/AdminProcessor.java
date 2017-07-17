@@ -62,7 +62,7 @@ import java.util.*;
 /**
  * Admin processor.
  * <ul>
- * <li>Shows admin index (/admin/index), GET</li>
+ * <li>Shows admin index (/admin), GET</li>
  * <li>Shows users (/admin/users), GET</li>
  * <li>Shows a user (/admin/user/{userId}), GET</li>
  * <li>Shows add user (/admin/add-user), GET</li>
@@ -102,12 +102,14 @@ import java.util.*;
  * <li>Search index one article (/admin/search-index-article), POST</li>
  * <li>Shows ad (/admin/ad), GET</li>
  * <li>Updates ad (/admin/ad), POST</li>
+ * <li>Shows role permissions (/admin/role/{roleId}/permissions), GET</li>
+ * <li>Updates role permissions (/admin/role/{roleId}/permissions), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.7.23, Jun 28, 2017
+ * @version 2.26.7.24, Jul 17, 2017
  * @since 1.1.0
  */
 @RequestProcessor

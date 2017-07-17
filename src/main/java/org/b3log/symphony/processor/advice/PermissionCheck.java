@@ -57,6 +57,7 @@ public class PermissionCheck extends BeforeRequestProcessAdvice {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PermissionCheck.class);
+
     /**
      * URL permission rules.
      * <p>
