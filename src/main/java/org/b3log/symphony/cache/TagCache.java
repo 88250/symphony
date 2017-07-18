@@ -114,7 +114,7 @@ public class TagCache {
      * @param id the specified tag id
      */
     public void removeTag(final String id) {
-        final JSONObject tag = (JSONObject) CACHE.get(id);
+        final JSONObject tag = CACHE.get(id);
         if (null == tag) {
             return;
         }
