@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.60, Jul 8, 2017
+    Version: 2.16.6.61, Jul 20, 2017
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -28,7 +28,7 @@
         <slf4j.version>1.7.7</slf4j.version>
         <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
         <jsoup.version>1.10.2</jsoup.version>
-        <flexmark.version>0.19.5</flexmark.version>
+        <flexmark.version>0.22.8</flexmark.version>
         <qiniu.version>7.0.4.1</qiniu.version>
         <jodd.version>3.6.6</jodd.version>
         <emoji-java.version>3.2.0</emoji-java.version>
