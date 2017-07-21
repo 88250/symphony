@@ -85,7 +85,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.20.36, Jul 4, 2017
+ * @version 1.26.21.36, Jul 21, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1428,6 +1428,10 @@ public class UserProcessor {
                 final String homeUserFollowerUserId = followerUser.optString(Keys.OBJECT_ID);
 
                 followerUser.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowerUserId, Follow.FOLLOWING_TYPE_C_USER));
+            }
+
+            if (followerId.equals(followingId)) {
+                notificationMgmtService.makeRead(followingId, Notification.DATA_TYPE_C_NEW_FOLLOWER);
             }
         }
 
