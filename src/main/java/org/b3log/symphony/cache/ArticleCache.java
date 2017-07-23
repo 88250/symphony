@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.3, Jul 6, 2017
+ * @version 1.1.1.4, Jul 23, 2017
  * @since 1.4.0
  */
 @Named
@@ -89,7 +89,7 @@ public class ArticleCache {
      * @return article, returns {@code null} if not found
      */
     public JSONObject getArticle(final String id) {
-        final JSONObject article = (JSONObject) ARTICLE_CACHE.get(id);
+        final JSONObject article = ARTICLE_CACHE.get(id);
         if (null == article) {
             return null;
         }

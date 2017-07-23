@@ -29,7 +29,6 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.TagRepository;
-import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -41,7 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.2, May 4, 2017
+ * @version 1.5.6.3, Jul 23, 2017
  * @since 1.4.0
  */
 @Named
@@ -85,7 +84,7 @@ public class TagCache {
      * @return tag, returns {@code null} if not found
      */
     public JSONObject getTag(final String id) {
-        final JSONObject tag = (JSONObject) CACHE.get(id);
+        final JSONObject tag = CACHE.get(id);
         if (null == tag) {
             return null;
         }
@@ -160,7 +159,7 @@ public class TagCache {
 
         final int end = fetchSize >= ICON_TAGS.size() ? ICON_TAGS.size() : fetchSize;
 
-        return new ArrayList<>(ICON_TAGS.subList(0, end));
+        return new ArrayList(ICON_TAGS.subList(0, end));
     }
 
     /**
@@ -212,7 +211,6 @@ public class TagCache {
     public void loadIconTags() {
         final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
         final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
-        final ShortLinkQueryService shortLinkQueryService = beanManager.getReference(ShortLinkQueryService.class);
 
         final Query query = new Query().setFilter(
                 CompositeFilterOperator.and(
@@ -222,7 +220,7 @@ public class TagCache {
                 .addSort(Tag.TAG_RANDOM_DOUBLE, SortDirection.ASCENDING);
         try {
             final JSONObject result = tagRepository.get(query);
-            final List<JSONObject> tags = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> tags = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             final List<JSONObject> toUpdateTags = new ArrayList();
             for (final JSONObject tag : tags) {
                 toUpdateTags.add(JSONs.clone(tag));
@@ -261,7 +259,7 @@ public class TagCache {
                 .setCurrentPageNum(1).setPageSize(Integer.MAX_VALUE).setPageCount(1);
         try {
             final JSONObject result = tagRepository.get(query);
-            final List<JSONObject> tags = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> tags = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             // for legacy data migration
 //            final Transaction transaction = tagRepository.beginTransaction();
