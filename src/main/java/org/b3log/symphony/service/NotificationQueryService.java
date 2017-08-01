@@ -43,7 +43,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.5.12, May 24, 2017
+ * @version 1.13.5.13, Aug 1, 2017
  * @since 0.2.5
  */
 @Service
@@ -200,7 +200,7 @@ public class NotificationQueryService {
      *     "paginationRecordCount": int,
      *     "rslts": java.util.List[{
      *         "oId": "", // notification record id
-     *         "description": int,
+     *         "description": "",
      *         "hasRead": boolean
      *     }, ....]
      * }
@@ -241,7 +241,6 @@ public class NotificationQueryService {
 
             for (int i = 0; i < results.length(); i++) {
                 final JSONObject notification = results.optJSONObject(i);
-                final String notificationUserId = notification.optString(Notification.NOTIFICATION_USER_ID);
                 final String dataId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
                 String desTemplate = "";
@@ -410,7 +409,7 @@ public class NotificationQueryService {
      *     "paginationRecordCount": int,
      *     "rslts": java.util.List[{
      *         "oId": "", // notification record id
-     *         "description": int,
+     *         "description": "",
      *         "hasRead": boolean
      *     }, ....]
      * }
