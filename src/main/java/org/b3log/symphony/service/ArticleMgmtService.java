@@ -37,10 +37,7 @@ import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
-import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.util.Pangu;
-import org.b3log.symphony.util.Runes;
-import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,7 +52,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.17.35.43, Jun 14, 2017
+ * @version 2.17.35.44, Aug 4, 2017
  * @since 0.2.0
  */
 @Service
@@ -287,6 +284,7 @@ public class ArticleMgmtService {
 
         final String articleId = article.optString(Keys.OBJECT_ID);
         String previewContent = article.optString(Article.ARTICLE_CONTENT);
+        previewContent = Markdowns.toHTML(previewContent);
         previewContent = Emotions.clear(Jsoup.parse(previewContent).text());
         previewContent = StringUtils.substring(previewContent, 0, 512);
         final String contentToTTS = previewContent;
