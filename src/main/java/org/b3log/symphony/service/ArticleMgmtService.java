@@ -274,7 +274,14 @@ public class ArticleMgmtService {
      * @param userId  the specified user id
      */
     public void genArticleAudio(final JSONObject article, final String userId) {
-        if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
+        if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)
+                || Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+                || Article.ARTICLE_TYPE_C_BOOK == article.optInt(Article.ARTICLE_TYPE)) {
+            return;
+        }
+
+        final String tags = article.optString(Article.ARTICLE_TAGS);
+        if (StringUtils.containsIgnoreCase(tags, Tag.TAG_TITLE_C_SANDBOX)) {
             return;
         }
 
