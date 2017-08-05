@@ -97,12 +97,13 @@
                                                                             <tbody><tr style="border-collapse:collapse">
                                                                                     <td style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;padding:0 0 15px">
                                                                                         我们正在构建一个活跃的小众社区。大家在这里相互 信任 ，以 平等 • 自由 • 奔放 的价值观进行分享交流。
-                                                                                        <ul> 
-                                                                                            <li>分享自己见解的同时请对他人保持友善</li> 
-                                                                                            <li>禁止分享、讨论任何涉及版权盗用相关的内容</li> 
-                                                                                            <li>禁止未经原作者授权的内容转载</li> 
-                                                                                            <li>回帖不能修改，发布后不要后悔</li> 
-                                                                                            <li>帖子可以修改，并且任何人都可以查看修改历史</li> 
+                                                                                        <ul>
+                                                                                            <li>分享自己见解的同时请对他人保持友善</li>
+                                                                                            <li>帖子和回帖都可以修改，每次修改都会留下版本记录</li>
+                                                                                            <li>禁止分享、讨论任何涉及版权盗用相关的内容</li>
+                                                                                            <li>禁止未经原作者授权的内容转载</li>
+                                                                                            <li>禁止讨论其他社区（比如使用方式、氛围等）</li>
+                                                                                            <li>禁止讨论违反中国法律的事情</li>
                                                                                         </ul>
                                                                                         希望大家能够找找到与自己志同道合的伙伴，共同成长。
                                                                                     </td>
