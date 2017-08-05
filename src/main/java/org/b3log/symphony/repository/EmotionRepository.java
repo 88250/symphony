@@ -45,7 +45,6 @@ public class EmotionRepository extends AbstractRepository {
     /**
      * Gets a user's emotion (emoji with type=0).
      *
-     *
      * @param userId the specified user id
      * @return emoji string join with {@code ","}, returns {@code null} if not found
      * @throws RepositoryException repository exception
