@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.32.59, Jun 24, 2017
+ * @version 2.27.32.60, Aug 7, 2017
  * @since 0.2.0
  */
 @Service
@@ -2027,7 +2027,6 @@ public class ArticleQueryService {
 
     /**
      * Organizes the specified article.
-     * <p>
      * <ul>
      * <li>converts create/update/latest comment time (long) to date type</li>
      * <li>generates author thumbnail URL</li>
@@ -2044,7 +2043,6 @@ public class ArticleQueryService {
      * <li>extracts the first image URL</li>
      * <li>image processing if using Qiniu</li>
      * </ul>
-     * </p>
      *
      * @param avatarViewMode the specified avatar view mode
      * @param article        the specified article
@@ -2377,7 +2375,6 @@ public class ArticleQueryService {
 
     /**
      * Processes the specified article content.
-     * <p>
      * <ul>
      * <li>Generates &#64;username home URL</li>
      * <li>Markdowns</li>
@@ -2568,7 +2565,6 @@ public class ArticleQueryService {
 
     /**
      * Markdowns the specified article content.
-     * <p>
      * <ul>
      * <li>Markdowns article content/reward content</li>
      * <li>Generates secured article content/reward content</li>
