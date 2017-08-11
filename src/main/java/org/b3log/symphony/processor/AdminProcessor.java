@@ -109,7 +109,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.7.24, Jul 17, 2017
+ * @version 2.26.7.25, Aug 11, 2017
  * @since 1.1.0
  */
 @RequestProcessor
@@ -639,7 +639,7 @@ public class AdminProcessor {
 
         String memo = request.getParameter("memo");
         if (StringUtils.isBlank(memo)) {
-            memo = "";
+            memo = "注册帖";
         }
 
         invitecodeMgmtService.adminGenInvitecodes(quantity, memo);
