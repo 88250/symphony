@@ -36,9 +36,14 @@ import javax.servlet.http.HttpSession;
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.2.4, Apr 4, 2017
+ * @version 2.0.2.5, Apr 12, 2017
  */
 public final class Sessions {
+
+    /**
+     * Cookie name.
+     */
+    public static final String COOKIE_NAME = "b3log-latke";
 
     /**
      * Logger.
@@ -114,7 +119,7 @@ public final class Sessions {
             cookieJSONObject.put(Common.REMEMBER_LOGIN, rememberLogin);
 
             final String ret = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.get("cookie.secret"));
-            final Cookie cookie = new Cookie("b3log-latke", ret);
+            final Cookie cookie = new Cookie(COOKIE_NAME, ret);
 
             cookie.setPath("/");
             cookie.setMaxAge(rememberLogin ? COOKIE_EXPIRY : -1);
@@ -143,7 +148,7 @@ public final class Sessions {
         final HttpSession session = request.getSession(false);
 
         if (null != session) {
-            final Cookie cookie = new Cookie("b3log-latke", null);
+            final Cookie cookie = new Cookie(COOKIE_NAME, null);
 
             cookie.setMaxAge(0);
             cookie.setPath("/");

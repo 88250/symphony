@@ -60,7 +60,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.9.34, Jul 4, 2017
+ * @version 3.19.9.35, Aug 12, 2017
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -297,7 +297,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
                 try {
                     for (final Cookie cookie : cookies) {
-                        if (!"b3log-latke".equals(cookie.getName())) {
+                        if (!Sessions.COOKIE_NAME.equals(cookie.getName())) {
                             continue;
                         }
 

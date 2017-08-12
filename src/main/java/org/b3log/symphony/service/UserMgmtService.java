@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.20.24, Apr 21, 2017
+ * @version 1.15.20.25, Aug 12, 2017
  * @since 0.2.0
  */
 @Service
@@ -147,7 +147,7 @@ public class UserMgmtService {
 
         try {
             for (final Cookie cookie : cookies) {
-                if (!"b3log-latke".equals(cookie.getName())) {
+                if (!Sessions.COOKIE_NAME.equals(cookie.getName())) {
                     continue;
                 }
 
@@ -190,9 +190,9 @@ public class UserMgmtService {
                 }
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=b3log-latke]");
+            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie [name=" + Sessions.COOKIE_NAME + "]");
 
-            final Cookie cookie = new Cookie("b3log-latke", null);
+            final Cookie cookie = new Cookie(Sessions.COOKIE_NAME, null);
             cookie.setMaxAge(0);
             cookie.setPath("/");
 
