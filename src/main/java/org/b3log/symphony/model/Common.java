@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.62.1.12, Jul 3, 2017
+ * @version 1.62.1.13, Aug 15, 2017
  * @since 0.2.0
  */
 public final class Common {
@@ -265,11 +265,6 @@ public final class Common {
      * Key of CSRF token.
      */
     public static final String CSRF_TOKEN = "csrfToken";
-
-    /**
-     * Key of token.
-     */
-    public static final String TOKEN = "token";
 
     /**
      * Key of city.

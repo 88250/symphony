@@ -176,7 +176,7 @@ public class UserMgmtService {
                 }
 
                 final String userPassword = user.optString(User.USER_PASSWORD);
-                final String token = cookieJSONObject.optString(Common.TOKEN);
+                final String token = cookieJSONObject.optString(Keys.TOKEN);
                 final String password = StringUtils.substringBeforeLast(token, ":");
 
                 if (userPassword.equals(password)) {

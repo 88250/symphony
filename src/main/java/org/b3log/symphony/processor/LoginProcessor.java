@@ -790,7 +790,7 @@ public class LoginProcessor {
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
 
                 context.renderMsg("").renderTrueResult();
-                context.renderJSONValue(Common.TOKEN, token);
+                context.renderJSONValue(Keys.TOKEN, token);
 
                 WRONG_PWD_TRIES.remove(userId);
 

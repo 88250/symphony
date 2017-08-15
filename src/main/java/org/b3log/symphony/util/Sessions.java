@@ -115,7 +115,7 @@ public final class Sessions {
             cookieJSONObject.put(Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
 
             final String random = RandomStringUtils.random(16);
-            cookieJSONObject.put(Common.TOKEN, user.optString(User.USER_PASSWORD) + ":" + random);
+            cookieJSONObject.put(Keys.TOKEN, user.optString(User.USER_PASSWORD) + ":" + random);
             cookieJSONObject.put(Common.REMEMBER_LOGIN, rememberLogin);
 
             final String ret = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.get("cookie.secret"));
