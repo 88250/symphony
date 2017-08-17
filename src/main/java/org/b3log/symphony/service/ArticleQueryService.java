@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.32.60, Aug 7, 2017
+ * @version 2.27.32.61, Aug 17, 2017
  * @since 0.2.0
  */
 @Service
@@ -633,40 +633,6 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets relevant articles failed", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * Gets broadcasts (articles permalink equals to "aBroadcast").
-     *
-     * @param currentPageNum the specified page number
-     * @param pageSize       the specified page size
-     * @return articles, return an empty list if not found
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getBroadcasts(final int currentPageNum, final int pageSize) throws ServiceException {
-        try {
-            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).setFilter(
-                    new PropertyFilter(Article.ARTICLE_CLIENT_ARTICLE_ID, FilterOperator.EQUAL, "aBroadcast")).
-                    addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING);
-
-            final JSONObject result = articleRepository.get(query);
-            final JSONArray articles = result.optJSONArray(Keys.RESULTS);
-
-            if (0 == articles.length()) {
-                return Collections.emptyList();
-            }
-
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(articles);
-            for (final JSONObject article : ret) {
-                article.put(Article.ARTICLE_PERMALINK, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
-                article.remove(Article.ARTICLE_CONTENT);
-            }
-
-            return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets broadcasts [currentPageNum=" + currentPageNum + ", pageSize=" + pageSize + "] failed", e);
             throw new ServiceException(e);
         }
     }
