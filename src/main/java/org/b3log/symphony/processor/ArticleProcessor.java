@@ -90,7 +90,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.28.46, Jul 4, 2017
+ * @version 1.26.28.47, Aug 18, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -688,9 +688,6 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_T_AUTHOR, author);
         article.put(Common.REWARDED, false);
         article.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_ARTICLE));
-        if (!article.has(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK)) { // TODO: for legacy data
-            article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, "");
-        }
         article.put(Article.ARTICLE_REVISION_COUNT, revisionQueryService.count(articleId, Revision.DATA_TYPE_C_ARTICLE));
 
         articleQueryService.processArticleContent(article, request);
