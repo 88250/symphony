@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * Video player utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 31, 2017
+ * @version 1.0.0.1, Aug 21, 2017
  * @since 2.2.0
  */
 public final class VideoPlayers {
@@ -64,7 +64,6 @@ public final class VideoPlayers {
 
         while (m.find()) {
             String videoURL = m.group();
-            String videoName = StringUtils.substringBetween(videoURL, "\">", ".");
             videoURL = StringUtils.substringBetween(videoURL, "href=\"", "\" rel=");
 
             m.appendReplacement(contentBuilder, "<video src=\""
