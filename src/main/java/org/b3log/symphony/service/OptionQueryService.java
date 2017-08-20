@@ -40,12 +40,8 @@ import java.util.Set;
 /**
  * Option query service.
  *
- * <p>
- * <b>Note</b>: The {@link #onlineVisitorCount online visitor counting} is NOT cluster-safe.
- * </p>
- *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.10, Oct 24, 2016
+ * @version 1.4.0.11, Aug 21, 2017
  * @since 0.2.0
  */
 @Service
