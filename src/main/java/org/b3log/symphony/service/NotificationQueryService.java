@@ -43,7 +43,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.5.13, Aug 1, 2017
+ * @version 1.13.5.14, Aug 21, 2017
  * @since 0.2.5
  */
 @Service
@@ -283,6 +283,7 @@ public class NotificationQueryService {
                 }
 
                 notification.put(Common.DESCRIPTION, desTemplate);
+                notification.put(Common.CREATE_TIME, new Date(notification.optLong(Keys.OBJECT_ID)));
 
                 rslts.add(notification);
             }
@@ -631,6 +632,7 @@ public class NotificationQueryService {
                 }
 
                 notification.put(Common.DESCRIPTION, desTemplate);
+                notification.put(Common.CREATE_TIME, new Date(notification.optLong(Keys.OBJECT_ID)));
 
                 rslts.add(notification);
             }
