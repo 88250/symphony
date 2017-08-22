@@ -44,6 +44,8 @@
         <testng.version>6.1.1</testng.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <es.version>2.3.1</es.version>
     </properties>
 
     <organization>
@@ -89,6 +91,19 @@
         <developer>
             <id>wmainlove@gmail.com</id>
             <name>Liceng Yao</name>
+            <email>wmainlove@gmail.com</email>
+            <url>http://love.b3log.org</url>
+            <roles>
+                <role>Committer</role>
+            </roles>
+            <organization>B3log</organization>
+            <organizationUrl>http://b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+
+        <developer>
+            <id>O2895205695@gmail.com</id>
+            <name>Zephyr Cheung</name>
             <email>wmainlove@gmail.com</email>
             <url>http://love.b3log.org</url>
             <roles>
@@ -241,6 +256,12 @@
             <systemPath>${project.basedir}/src/main/resources/lib/net/pusuo/patchca-0.5.0.jar</systemPath>
         </dependency>
 
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${es.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

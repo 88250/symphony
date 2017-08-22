@@ -33,7 +33,7 @@ import java.net.UnknownHostException;
 
 /**
  * Search query service.
- *
+ * <p>
  * Uses <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> as the underlying engine. Uses
  * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
  *
@@ -57,46 +57,33 @@ public class SearchQueryService {
     /**
      * Searches by Elasticsearch.
      *
-     * @param type the specified document type
-     * @param keyword the specified keyword
+     * @param type        the specified document type
+     * @param keyword     the specified keyword
      * @param currentPage the specified current page number
-     * @param pageSize the specified page size
+     * @param pageSize    the specified page size
      * @return search result, returns {@code null} if not found
      */
     public JSONObject searchElasticsearch(final String type, final String keyword, final int currentPage, final int pageSize) {
         final HTTPRequest request = new HTTPRequest();
         request.setRequestMethod(HTTPRequestMethod.POST);
-
         try {
             request.setURL(new URL(SearchMgmtService.ES_SERVER + "/" + SearchMgmtService.ES_INDEX_NAME + "/" + type
                     + "/_search"));
 
             final JSONObject reqData = new JSONObject();
-            final JSONObject q = new JSONObject();
-            final JSONObject and = new JSONObject();
-            q.put("and", and);
-            final JSONArray query = new JSONArray();
-            and.put("query", query);
-            final JSONObject or = new JSONObject();
-            query.put(or);
-            final JSONArray orClause = new JSONArray();
-            or.put("or", orClause);
-
-            final JSONObject content = new JSONObject();
-            content.put(Article.ARTICLE_CONTENT, keyword);
-            final JSONObject matchContent = new JSONObject();
-            matchContent.put("match", content);
-            orClause.put(matchContent);
-
-            final JSONObject title = new JSONObject();
-            title.put(Article.ARTICLE_TITLE, keyword);
-            final JSONObject matchTitle = new JSONObject();
-            matchTitle.put("match", title);
-            orClause.put(matchTitle);
-
-            reqData.put("query", q);
-            reqData.put("from", currentPage);
-            reqData.put("size", pageSize);
+            final JSONObject query = new JSONObject();
+            final JSONObject bool = new JSONObject();
+            query.put("bool", bool);
+            final JSONObject must = new JSONObject();
+            bool.put("must", must);
+            final JSONObject queryString = new JSONObject();
+            must.put("query_string", queryString);
+            queryString.put("query", "*" + keyword + "*");
+            queryString.put("fields", new String[]{Article.ARTICLE_TITLE, Article.ARTICLE_CONTENT});
+            queryString.put("default_operator", "and");
+            reqData.put("query", query);
+            reqData.put("from", 0);
+            reqData.put("size", 20);
             final JSONArray sort = new JSONArray();
             final JSONObject sortField = new JSONObject();
             sort.put(sortField);
@@ -112,25 +99,13 @@ public class SearchQueryService {
             highlight.put("fields", fields);
             final JSONObject contentField = new JSONObject();
             fields.put(Article.ARTICLE_CONTENT, contentField);
-
-            final JSONArray filter = new JSONArray();
-            and.put("filter", filter);
-            final JSONObject term = new JSONObject();
-            filter.put(term);
-            final JSONObject field = new JSONObject();
-            term.put("term", field);
-            field.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
-
             LOGGER.debug(reqData.toString(4));
-
             request.setPayload(reqData.toString().getBytes("UTF-8"));
-
             final HTTPResponse response = URL_FETCH_SVC.fetch(request);
 
             return new JSONObject(new String(response.getContent(), "UTF-8"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Queries failed", e);
-
             return null;
         }
     }
@@ -138,9 +113,9 @@ public class SearchQueryService {
     /**
      * Searches by Algolia.
      *
-     * @param keyword the specified keyword
+     * @param keyword     the specified keyword
      * @param currentPage the specified current page number
-     * @param pageSize the specified page size
+     * @param pageSize    the specified page size
      * @return search result, returns {@code null} if not found
      */
     public JSONObject searchAlgolia(final String keyword, final int currentPage, final int pageSize) {
