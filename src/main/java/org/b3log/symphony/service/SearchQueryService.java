@@ -82,8 +82,8 @@ public class SearchQueryService {
             queryString.put("fields", new String[]{Article.ARTICLE_TITLE, Article.ARTICLE_CONTENT});
             queryString.put("default_operator", "and");
             reqData.put("query", query);
-            reqData.put("from", 0);
-            reqData.put("size", 20);
+            reqData.put("from", currentPage);
+            reqData.put("size", pageSize);
             final JSONArray sort = new JSONArray();
             final JSONObject sortField = new JSONObject();
             sort.put(sortField);
