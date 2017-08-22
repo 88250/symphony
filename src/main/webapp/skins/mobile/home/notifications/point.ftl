@@ -4,7 +4,7 @@
 <ul class="notification">
     <#list pointNotifications as notification>
     <li class="<#if notification.hasRead>read</#if>">
-        ${notification.description}
+        ${notification.description} <span class="ft-gray ft-nowrap"> • ${notification.createTime?string('yyyy-MM-dd HH:mm')}</span>
     </li>
     </#list>
 </ul>

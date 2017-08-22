@@ -4,7 +4,7 @@
 <ul class="notification">
     <#list sysAnnounceNotifications as notification>
     <li class="fn-flex<#if notification.hasRead> read</#if>">
-        ${notification.description}
+        ${notification.description} <span class="ft-gray ft-nowrap">&nbsp; • ${notification.createTime?string('yyyy-MM-dd HH:mm')}</span>
     </li>
     </#list>
 </ul>
