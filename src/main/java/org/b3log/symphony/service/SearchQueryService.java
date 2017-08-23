@@ -34,11 +34,13 @@ import java.net.UnknownHostException;
 /**
  * Search query service.
  * <p>
- * Uses <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> as the underlying engine. Uses
- * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
+ * Uses <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> or <a href="https://www.algolia.com">Algolia</a> as the
+ * underlying engine.
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.1, Apr 1, 2016
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.2.1.2, Aug 23, 2016
  * @since 1.4.0
  */
 @Service
@@ -82,7 +84,7 @@ public class SearchQueryService {
             queryString.put("fields", new String[]{Article.ARTICLE_TITLE, Article.ARTICLE_CONTENT});
             queryString.put("default_operator", "and");
             reqData.put("query", query);
-            reqData.put("from", (currentPage-1) * pageSize);
+            reqData.put("from", (currentPage - 1) * pageSize);
             reqData.put("size", pageSize);
             final JSONArray sort = new JSONArray();
             final JSONObject sortField = new JSONObject();
@@ -106,6 +108,7 @@ public class SearchQueryService {
             return new JSONObject(new String(response.getContent(), "UTF-8"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Queries failed", e);
+
             return null;
         }
     }

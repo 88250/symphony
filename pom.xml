@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.64, Aug 14, 2017
+    Version: 2.16.6.65, Aug 23, 2017
     Author: Liang Ding
+    Author: Zephyr
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -34,6 +35,7 @@
         <emoji-java.version>3.2.0</emoji-java.version>
         <user-agent-utils.version>1.20</user-agent-utils.version>
         <commons-codec.version>1.10</commons-codec.version>
+        <es.version>2.3.1</es.version>
 
         <!-- maven plugin -->
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
@@ -44,8 +46,6 @@
         <testng.version>6.1.1</testng.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <es.version>2.3.1</es.version>
     </properties>
 
     <organization>
