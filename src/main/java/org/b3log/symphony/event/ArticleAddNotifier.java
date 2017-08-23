@@ -33,10 +33,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.service.FollowQueryService;
-import org.b3log.symphony.service.NotificationMgmtService;
-import org.b3log.symphony.service.TimelineMgmtService;
-import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
@@ -52,7 +49,7 @@ import java.util.Set;
  * Sends article add related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.12, Jan 19, 2017
+ * @version 1.3.4.12, Aug 23, 2017
  * @since 0.2.0
  */
 @Named
@@ -94,6 +91,12 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
     @Inject
     private TimelineMgmtService timelineMgmtService;
 
+    /**
+     * Role query service.
+     */
+    @Inject
+    private RoleQueryService roleQueryService;
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
@@ -107,30 +110,36 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
             final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
             final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
 
-            final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
-            final Set<String> atUserNames = userQueryService.getUserNames(articleContent);
-            atUserNames.remove(articleAuthorName); // Do not notify the author itself
+            final Set<String> requisiteAtUserPermissions = new HashSet<>();
+            requisiteAtUserPermissions.add(Permission.PERMISSION_ID_C_COMMON_AT_USER);
+            final boolean hasAtUserPerm = roleQueryService.userHasPermissions(articleAuthorId, requisiteAtUserPermissions);
 
             final Set<String> atedUserIds = new HashSet<>();
 
-            // 'At' Notification
-            for (final String userName : atUserNames) {
-                final JSONObject user = userQueryService.getUserByName(userName);
+            if (hasAtUserPerm) {
+                // 'At' Notification
+                final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
+                final Set<String> atUserNames = userQueryService.getUserNames(articleContent);
+                atUserNames.remove(articleAuthorName); // Do not notify the author itself
 
-                if (null == user) {
-                    LOGGER.log(Level.WARN, "Not found user by name [{0}]", userName);
+                for (final String userName : atUserNames) {
+                    final JSONObject user = userQueryService.getUserByName(userName);
 
-                    continue;
+                    if (null == user) {
+                        LOGGER.log(Level.WARN, "Not found user by name [{0}]", userName);
+
+                        continue;
+                    }
+
+                    final JSONObject requestJSONObject = new JSONObject();
+                    final String atedUserId = user.optString(Keys.OBJECT_ID);
+                    requestJSONObject.put(Notification.NOTIFICATION_USER_ID, atedUserId);
+                    requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
+
+                    notificationMgmtService.addAtNotification(requestJSONObject);
+
+                    atedUserIds.add(atedUserId);
                 }
-
-                final JSONObject requestJSONObject = new JSONObject();
-                final String atedUserId = user.optString(Keys.OBJECT_ID);
-                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, atedUserId);
-                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
-
-                notificationMgmtService.addAtNotification(requestJSONObject);
-
-                atedUserIds.add(atedUserId);
             }
 
             final String tags = originalArticle.optString(Article.ARTICLE_TAGS);
