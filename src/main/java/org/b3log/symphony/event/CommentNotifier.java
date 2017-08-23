@@ -55,7 +55,7 @@ import java.util.Set;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.10.23, May 6, 2017
+ * @version 1.7.11.23, Aug 23, 2017
  * @since 0.2.0
  */
 @Named
@@ -138,6 +138,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
      */
     @Inject
     private FollowQueryService followQueryService;
+
+    /**
+     * Role query service.
+     */
+    @Inject
+    private RoleQueryService roleQueryService;
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
@@ -300,38 +306,44 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final boolean commenterIsArticleAuthor = articleAuthorId.equals(commenterId);
 
-            // 1. '@participants' Notification
-            if (commentContent.contains("@participants ")) {
-                final List<JSONObject> participants = articleQueryService.getArticleLatestParticipants(
-                        UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleId, Integer.MAX_VALUE);
-                int count = participants.size();
-                if (count < 1) {
-                    return;
-                }
+            final Set<String> requisiteAtParticipantsPermissions = new HashSet<>();
+            requisiteAtParticipantsPermissions.add(Permission.PERMISSION_ID_C_COMMON_AT_PARTICIPANTS);
+            final boolean hasAtParticipantPerm = roleQueryService.userHasPermissions(commenterId, requisiteAtParticipantsPermissions);
 
-                count = 0;
-                for (final JSONObject participant : participants) {
-                    final String participantId = participant.optString(Keys.OBJECT_ID);
-                    if (participantId.equals(commenterId)) {
-                        continue;
+            if (hasAtParticipantPerm) {
+                // 1. '@participants' Notification
+                if (commentContent.contains("@participants ")) {
+                    final List<JSONObject> participants = articleQueryService.getArticleLatestParticipants(
+                            UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleId, Integer.MAX_VALUE);
+                    int count = participants.size();
+                    if (count < 1) {
+                        return;
                     }
 
-                    count++;
+                    count = 0;
+                    for (final JSONObject participant : participants) {
+                        final String participantId = participant.optString(Keys.OBJECT_ID);
+                        if (participantId.equals(commenterId)) {
+                            continue;
+                        }
 
-                    final JSONObject requestJSONObject = new JSONObject();
-                    requestJSONObject.put(Notification.NOTIFICATION_USER_ID, participantId);
-                    requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
+                        count++;
 
-                    notificationMgmtService.addAtNotification(requestJSONObject);
+                        final JSONObject requestJSONObject = new JSONObject();
+                        requestJSONObject.put(Notification.NOTIFICATION_USER_ID, participantId);
+                        requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
+
+                        notificationMgmtService.addAtNotification(requestJSONObject);
+                    }
+
+                    final int sum = count * Pointtransfer.TRANSFER_SUM_C_AT_PARTICIPANTS;
+                    if (sum > 0) {
+                        pointtransferMgmtService.transfer(commenterId, Pointtransfer.ID_C_SYS,
+                                Pointtransfer.TRANSFER_TYPE_C_AT_PARTICIPANTS, sum, commentId, System.currentTimeMillis());
+                    }
+
+                    return;
                 }
-
-                final int sum = count * Pointtransfer.TRANSFER_SUM_C_AT_PARTICIPANTS;
-                if (sum > 0) {
-                    pointtransferMgmtService.transfer(commenterId, Pointtransfer.ID_C_SYS,
-                            Pointtransfer.TRANSFER_TYPE_C_AT_PARTICIPANTS, sum, commentId, System.currentTimeMillis());
-                }
-
-                return;
             }
 
             final Set<String> atUserNames = userQueryService.getUserNames(commentContent);
@@ -380,37 +392,43 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
             final Set<String> articleContentAtUserNames = userQueryService.getUserNames(articleContent);
 
-            // 4. 'At' Notification
+            final Set<String> requisiteAtUserPermissions = new HashSet<>();
+            requisiteAtUserPermissions.add(Permission.PERMISSION_ID_C_COMMON_AT_USER);
+            final boolean hasAtUserPerm = roleQueryService.userHasPermissions(commenterId, requisiteAtUserPermissions);
+
             final Set<String> atIds = new HashSet<>();
-            for (final String userName : atUserNames) {
-                if (isDiscussion && !articleContentAtUserNames.contains(userName)) {
-                    continue;
+            if (hasAtUserPerm) {
+                // 4. 'At' Notification
+                for (final String userName : atUserNames) {
+                    if (isDiscussion && !articleContentAtUserNames.contains(userName)) {
+                        continue;
+                    }
+
+                    final JSONObject user = userQueryService.getUserByName(userName);
+
+                    if (null == user) {
+                        LOGGER.log(Level.WARN, "Not found user by name [{0}]", userName);
+
+                        continue;
+                    }
+
+                    if (user.optString(Keys.OBJECT_ID).equals(articleAuthorId)) {
+                        continue; // Has notified in step 2
+                    }
+
+                    final String userId = user.optString(Keys.OBJECT_ID);
+                    if (repliedIds.contains(userId)) {
+                        continue;
+                    }
+
+                    final JSONObject requestJSONObject = new JSONObject();
+                    requestJSONObject.put(Notification.NOTIFICATION_USER_ID, userId);
+                    requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
+
+                    notificationMgmtService.addAtNotification(requestJSONObject);
+
+                    atIds.add(userId);
                 }
-
-                final JSONObject user = userQueryService.getUserByName(userName);
-
-                if (null == user) {
-                    LOGGER.log(Level.WARN, "Not found user by name [{0}]", userName);
-
-                    continue;
-                }
-
-                if (user.optString(Keys.OBJECT_ID).equals(articleAuthorId)) {
-                    continue; // Has notified in step 2
-                }
-
-                final String userId = user.optString(Keys.OBJECT_ID);
-                if (repliedIds.contains(userId)) {
-                    continue;
-                }
-
-                final JSONObject requestJSONObject = new JSONObject();
-                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, userId);
-                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
-
-                notificationMgmtService.addAtNotification(requestJSONObject);
-
-                atIds.add(userId);
             }
 
             // 5. 'following - article comment' Notification
