@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.17.35.44, Aug 4, 2017
+ * @version 2.17.36.44, Aug 23, 2017
  * @since 0.2.0
  */
 @Service
@@ -709,7 +709,7 @@ public class ArticleMgmtService {
             transaction.commit();
 
             try {
-                Thread.sleep(50); // wait for db write to avoid artitle duplication
+                Thread.sleep(50); // wait for db write to avoid article duplication
             } catch (final Exception e) {
             }
 
