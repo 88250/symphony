@@ -46,7 +46,7 @@ import java.util.*;
  * Role query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.2, Apr 21, 2017
+ * @version 1.5.0.2, Apr 23, 2017
  * @since 1.8.0
  */
 @Service
@@ -88,6 +88,40 @@ public class RoleQueryService {
     private LangPropsService langPropsService;
 
     /**
+     * Checks whether the specified user has the specified requisite permissions.
+     *
+     * @param userId               the specified user id
+     * @param requisitePermissions the specified requisite permissions
+     * @return @code true} if the role has the specified requisite permissions, returns @code false} otherwise
+     */
+    public boolean userHasPermissions(final String userId, final Set<String> requisitePermissions) {
+        try {
+            final JSONObject user = userRepository.get(userId);
+            final String roleId = user.optString(User.USER_ROLE);
+            final Set<String> permissions = getPermissions(roleId);
+
+            return Permission.hasPermission(requisitePermissions, permissions);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Checks user [" + userId + "] has permission failed", e);
+
+            return false;
+        }
+    }
+
+    /**
+     * Checks whether the specified role has the specified requisite permissions.
+     *
+     * @param roleId               the specified role id
+     * @param requisitePermissions the specified requisite permissions
+     * @return @code true} if the role has the specified requisite permissions, returns @code false} otherwise
+     */
+    public boolean hasPermissions(final String roleId, final Set<String> requisitePermissions) {
+        final Set<String> permissions = getPermissions(roleId);
+
+        return Permission.hasPermission(requisitePermissions, permissions);
+    }
+
+    /**
      * Gets an role specified by the given role id.
      *
      * @param roleId the given role id
@@ -97,7 +131,7 @@ public class RoleQueryService {
         if (UserExt.DEFAULT_CMTER_ROLE.equals(roleId)) { // virtual role
             final JSONObject ret = new JSONObject();
 
-            ret.put(Role.ROLE_NAME, langPropsService.get(UserExt.DEFAULT_CMTER_ROLE+ "NameLabel"));
+            ret.put(Role.ROLE_NAME, langPropsService.get(UserExt.DEFAULT_CMTER_ROLE + "NameLabel"));
             ret.put(Role.ROLE_DESCRIPTION, langPropsService.get(UserExt.DEFAULT_CMTER_ROLE + "DescLabel"));
 
             return ret;
