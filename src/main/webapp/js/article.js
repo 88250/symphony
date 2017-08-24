@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.38.57.0, Jul 5, 2017
+ * @version 1.38.56.0, Aug 24, 2017
  */
 
 /**
@@ -1714,7 +1714,7 @@ $(document).ready(function () {
     // Init [Article] channel
     ArticleChannel.init(Label.articleChannel);
 
-    // make nogification read
+    // make notification read
     if (Label.isLoggedIn) {
         Article.makeNotificationRead(Label.articleOId, Label.notificationCmtIds);
 
