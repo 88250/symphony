@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.2.3, May 18, 2017
+ * @version 1.15.2.4, Aug 24, 2017
  * @since 0.2.5
  */
 @Service
@@ -441,7 +441,7 @@ public class NotificationMgmtService {
      * @param commentIds the specified comment ids
      */
     public void makeRead(final String userId, final String articleId, final List<String> commentIds) {
-        final Set<String> dataIds = new HashSet<String>(commentIds);
+        final Set<String> dataIds = new HashSet<>(commentIds);
         dataIds.add(articleId);
 
         final Query query = new Query().setFilter(
@@ -834,15 +834,12 @@ public class NotificationMgmtService {
 
         notificationRepository.add(notification);
 
-        Symphonys.EXECUTOR_SERVICE.submit(new Runnable() {
-            @Override
-            public void run() {
-                final JSONObject cmd = new JSONObject();
-                cmd.put(Common.USER_ID, requestJSONObject.optString(Notification.NOTIFICATION_USER_ID));
-                cmd.put(Common.COMMAND, "refreshNotification");
+        Symphonys.EXECUTOR_SERVICE.submit(() -> {
+            final JSONObject cmd = new JSONObject();
+            cmd.put(Common.USER_ID, requestJSONObject.optString(Notification.NOTIFICATION_USER_ID));
+            cmd.put(Common.COMMAND, "refreshNotification");
 
-                UserChannel.sendCmd(cmd);
-            }
+            UserChannel.sendCmd(cmd);
         });
     }
 }
