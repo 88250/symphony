@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.38.56.0, Aug 24, 2017
+ * @version 1.39.0.0, Aug 24, 2017
  */
 
 /**
@@ -766,6 +766,10 @@ var Comment = {
                     if (commentId) {
                         $('#' + commentId + ' > .fn-flex > .fn-flex-1 > .content-reset').html(result.commentContent);
                         $('#' + commentId + ' .icon-history').parent().show();
+                    }
+
+                    if (requestJSONObject.commentOriginalCommentId) {
+                        Util.setUnreadNotificationCount();
                     }
 
                     // reset comment editor

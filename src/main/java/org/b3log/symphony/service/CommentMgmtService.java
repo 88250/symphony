@@ -40,6 +40,7 @@ import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -407,6 +408,8 @@ public class CommentMgmtService {
                 final int originalCmtReplyCnt = originalCmt.optInt(Comment.COMMENT_REPLY_CNT);
                 originalCmt.put(Comment.COMMENT_REPLY_CNT, originalCmtReplyCnt + 1);
                 commentRepository.update(originalCmtId, originalCmt);
+
+                notificationMgmtService.makeRead(commentAuthorId, Arrays.asList(originalCmtId));
             }
 
             content = Emotions.toAliases(content);

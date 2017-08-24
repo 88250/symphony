@@ -33,8 +33,8 @@ import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.2.4, Aug 24, 2017
+ * @version 1.16.0.0, Aug 24, 2017
  * @since 0.2.5
  */
 @Service
@@ -441,14 +441,24 @@ public class NotificationMgmtService {
      * @param commentIds the specified comment ids
      */
     public void makeRead(final String userId, final String articleId, final List<String> commentIds) {
-        final Set<String> dataIds = new HashSet<>(commentIds);
+        final List<String> dataIds = new ArrayList<>(commentIds);
         dataIds.add(articleId);
 
+        makeRead(userId, dataIds);
+    }
+
+    /**
+     * Makes the specified user to comments notifications as read.
+     *
+     * @param userId     the specified user id
+     * @param commentIds the specified comment ids
+     */
+    public void makeRead(final String userId, final List<String> commentIds) {
         final Query query = new Query().setFilter(
                 CompositeFilterOperator.and(
                         new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId),
                         new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false),
-                        new PropertyFilter(Notification.NOTIFICATION_DATA_ID, FilterOperator.IN, dataIds)));
+                        new PropertyFilter(Notification.NOTIFICATION_DATA_ID, FilterOperator.IN, commentIds)));
 
         try {
             final Set<JSONObject> notifications = CollectionUtils.jsonArrayToSet(notificationRepository.get(query).
