@@ -68,7 +68,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.17.25, Jul 6, 2017
+ * @version 1.11.18.25, Aug 24, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -366,6 +366,7 @@ public final class Markdowns {
 
             toRemove.forEach(node -> node.remove());
 
+            doc.select("pre>code").addClass("hljs");
             doc.outputSettings().prettyPrint(false);
 
             String ret = doc.select("body").html();
