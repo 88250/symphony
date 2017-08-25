@@ -17,9 +17,9 @@
                     <div class="module">
                         <div class="module-header fn-clear">
                             <span class="fn-right ft-fade">
-                                <a class="<#if "" == current>ft-gray</#if>" href="${servePath}/city/my">${cityArticleLabel}</a>
+                                <a class="<#if "" == current>ft-gray</#if>" href="${servePath}/city/${city}">${cityArticleLabel}</a>
                                 /
-                                <a class="<#if "/users" == current>ft-gray</#if>" href="${servePath}/city/my/users">${cityUserLabel}</a>
+                                <a class="<#if "/users" == current>ft-gray</#if>" href="${servePath}/city/${city}/users">${cityUserLabel}</a>
                             </span>
                         </div>
                         <#if "" == current && articles?size gt 0>
