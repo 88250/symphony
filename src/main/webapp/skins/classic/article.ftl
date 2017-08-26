@@ -81,7 +81,10 @@
                                 ${article.timeAgo}
                                 <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
                                 &nbsp;•&nbsp; <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
-                            </#if>
+                                </#if>
+                                <#if "" != article.articleCity>
+                                &nbsp;•&nbsp; <a href="${servePath}/city/${article.articleCity}" target="_blank" rel="nofollow"><span class="ft-green">${article.articleCity}</span></a>
+                                </#if>
                             </span>
                     </div>
 
