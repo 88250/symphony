@@ -44,8 +44,9 @@ import java.util.List;
  * Generates tag-tag relations.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jul 7, 2017
+ * @version 1.0.0.2, Aug 28, 2017
  * @since 1.3.0
+ * @deprecated This class will be removed in v2.3.0
  */
 @RequestProcessor
 public class RelatedTagsProcessor {

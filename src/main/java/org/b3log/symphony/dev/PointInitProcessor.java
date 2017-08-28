@@ -42,8 +42,9 @@ import java.util.List;
  * Generates init pointtransfer record for existing users.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Mar 8, 2016
+ * @version 1.0.0.2, Aug 28, 2017
  * @since 1.3.0
+ * @deprecated This class will be removed in v2.3.0
  */
 @RequestProcessor
 public class PointInitProcessor {
@@ -63,14 +64,14 @@ public class PointInitProcessor {
     /**
      * Generates init pointtransfer record for existing users.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/dev/pointtransfer/gen", method = HTTPRequestMethod.GET)
     public void genInitPointtransferRecords(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response)
+                                            final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final String key = request.getParameter("key");
         if (!Symphonys.get("keyOfSymphony").equals(key)) {
@@ -85,7 +86,7 @@ public class PointInitProcessor {
             for (final JSONObject user : users) {
                 final String userId = user.optString(Keys.OBJECT_ID);
 
-                final List<Filter> filters = new ArrayList<Filter>();
+                final List<Filter> filters = new ArrayList<>();
                 filters.add(new PropertyFilter(Pointtransfer.FROM_ID, FilterOperator.EQUAL, userId));
                 filters.add(new PropertyFilter(Pointtransfer.FROM_ID, FilterOperator.EQUAL, userId));
 
