@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.17.36.44, Aug 23, 2017
+ * @version 2.17.36.45, Aug 30, 2017
  * @since 0.2.0
  */
 @Service
@@ -497,9 +497,12 @@ public class ArticleMgmtService {
 
             author = userRepository.get(authorId);
 
+            if (currentTimeMillis - author.optLong(Keys.OBJECT_ID) < Symphonys.getLong("newbieFirstArticle")) {
+                throw new ServiceException(langPropsService.get("newbieFirstArticleLabel"));
+            }
+
             if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.getLong("minStepArticleTime")
                     && !Role.ROLE_ID_C_ADMIN.equals(author.optString(User.USER_ROLE))) {
-
                 LOGGER.log(Level.WARN, "Adds article too frequent [userName={0}]", author.optString(User.USER_NAME));
                 throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
             }
