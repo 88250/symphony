@@ -81,6 +81,7 @@ Commercial edition:
 
 * [黑客派](https://hacpai.com)
 * [四方环视](http://bbs.ivrpano.com)
+* [汇桔网](https://bbs.wtoip.com)
 
 If you build it, you are welcome to add your site to this list by Pull Request :-p
 
