@@ -883,7 +883,7 @@ var Util = {
                 if ($.ua.device.type && $.ua.device.type === 'mobile') {
                     if (0 < count) {
                         $("#aNotifications").removeClass("no-msg").addClass("msg").text(count).attr('href', 'javascript:void(0)');
-                        if (0 === result.userNotifyStatus && window.localStorage.hadNotificate !== count.toString()) {
+                        if (0 === result.userNotifyStatus && window.localStorage.hadNotificate !== count.toString() && isSendMsg) {
                             Util.notifyMsg(count);
                             window.localStorage.hadNotificate = count;
                         }
