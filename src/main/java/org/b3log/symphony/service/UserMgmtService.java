@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.21.0, Sep 4, 2017
+ * @version 1.15.21.1, Sep 4, 2017
  * @since 0.2.0
  */
 @Service
