@@ -409,7 +409,7 @@ public class UserMgmtService {
             final String userEmail = requestJSONObject.optString(User.USER_EMAIL).trim().toLowerCase();
             final String userName = requestJSONObject.optString(User.USER_NAME);
             JSONObject user = userRepository.getByName(userName);
-            if (null != user || UserExt.NULL_USER_NAME.equals(userName))){
+            if (null != user || UserExt.NULL_USER_NAME.equals(userName)) {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
