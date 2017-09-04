@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.42.33.46, May 11, 2017
+ * @version 1.42.33.47, Sep 4, 2017
  */
 
 /**
@@ -93,18 +93,30 @@ var Util = {
     /**
      * @description 标记指定类型的消息通知为已读状态.
      * @param {String} type 指定类型："commented"/"at"/"following"/"reply"
+     * @param {Bom} it
      */
-    makeNotificationRead: function (type) {
+    makeNotificationRead: function (type, it) {
         $.ajax({
             url: Label.servePath + "/notification/read/" + type,
             type: "GET",
             cache: false,
             success: function (result, textStatus) {
                 if (result.sc) {
-                    window.location.reload();
+                    Util.setUnreadNotificationCount(false);
+                    $('.notification li').addClass('read');
+                    if (it) {
+                        $(it).prev().remove();
+                        $(it).remove();
+
+                        if ($('.home-menu .count').length === 0) {
+                            $('.module-header:last > span').remove();
+                        }
+                    }
                 }
             }
         });
+
+        return false;
     },
     /**
      * 初始化全局快捷键
@@ -786,8 +798,9 @@ var Util = {
     },
     /**
      * @description 设置当前登录用户的未读提醒计数.
+     * @param {Boolean} isSendMsg 是否发送消息
      */
-    setUnreadNotificationCount: function () {
+    setUnreadNotificationCount: function (isSendMsg) {
         $.ajax({
             url: Label.servePath + "/notification/unread/count",
             type: "GET",
@@ -870,7 +883,7 @@ var Util = {
                 if ($.ua.device.type && $.ua.device.type === 'mobile') {
                     if (0 < count) {
                         $("#aNotifications").removeClass("no-msg").addClass("msg").text(count).attr('href', 'javascript:void(0)');
-                        if (0 === result.userNotifyStatus && window.localStorage.hadNotificate !== count.toString()) {
+                        if (0 === result.userNotifyStatus && window.localStorage.hadNotificate !== count.toString() && isSendMsg) {
                             Util.notifyMsg(count);
                             window.localStorage.hadNotificate = count;
                         }
@@ -897,7 +910,7 @@ var Util = {
                 // browser
                 if (0 < count) {
                     $("#aNotifications").removeClass("no-msg tooltipped tooltipped-w").addClass("msg").text(count).attr('href', 'javascript:void(0)');
-                    if (0 === result.userNotifyStatus && window.localStorage.hadNotificate !== count.toString()) {
+                    if (0 === result.userNotifyStatus && window.localStorage.hadNotificate !== count.toString() && isSendMsg) {
                         Util.notifyMsg(count);
                         window.localStorage.hadNotificate = count;
                     }
@@ -1173,7 +1186,7 @@ var Util = {
                 window.localStorage.hadNotificate = 'false';
             }
 
-            Util.setUnreadNotificationCount();
+            Util.setUnreadNotificationCount(true);
         }
 
         this._initCommonHotKey();
@@ -1213,7 +1226,7 @@ var Util = {
 
             switch (data.command) {
                 case "refreshNotification":
-                    Util.setUnreadNotificationCount();
+                    Util.setUnreadNotificationCount(true);
                     break;
             }
         };
