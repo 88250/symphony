@@ -38,7 +38,7 @@
                                    <span>${notificationCommentedLabel}</span>
                                     <#if unreadCommentedNotificationCnt &gt; 0>
                                     <span class="count">${unreadCommentedNotificationCnt}</span>
-                                    <span onclick="Util.makeNotificationRead('commented')"
+                                    <span onclick="Util.makeNotificationRead('commented', this);return false"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-w">
                                         <svg><use xlink:href="#check"></use></svg>
                                     </span>
@@ -48,7 +48,7 @@
                                    <span>${notificationReplyLabel}</span>
                                     <#if unreadReplyNotificationCnt &gt; 0>
                                     <span class="count">${unreadReplyNotificationCnt}</span>
-                                    <span onclick="Util.makeNotificationRead('reply')"
+                                    <span onclick="Util.makeNotificationRead('reply', this);return false"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-w">
                                         <svg><use xlink:href="#check"></use></svg>
                                     </span>
@@ -58,7 +58,7 @@
                                    <span>${notificationAtLabel}</span>
                                     <#if unreadAtNotificationCnt &gt; 0>
                                     <span class="count">${unreadAtNotificationCnt}</span>
-                                    <span onclick="Util.makeNotificationRead('at')"
+                                    <span onclick="Util.makeNotificationRead('at', this);return false"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-w">
                                         <svg><use xlink:href="#check"></use></svg>
                                     </span>
@@ -68,7 +68,7 @@
                                    <span>${notificationFollowingLabel}</span>
                                     <#if unreadFollowingNotificationCnt &gt; 0>
                                     <span class="count">${unreadFollowingNotificationCnt}</span>
-                                    <span onclick="Util.makeNotificationRead('following')"
+                                    <span onclick="Util.makeNotificationRead('following', this);return false"
                                           aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-w">
                                         <svg><use xlink:href="#check"></use></svg>
                                     </span>
