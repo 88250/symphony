@@ -31,6 +31,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.*;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -105,6 +106,11 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
             final JSONObject article = data.getJSONObject(Article.ARTICLE);
             final int articleType = article.optInt(Article.ARTICLE_TYPE);
             if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType || Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
+                return;
+            }
+
+            final String tags = article.optString(Article.ARTICLE_TAGS);
+            if (StringUtils.containsIgnoreCase(tags, Tag.TAG_TITLE_C_SANDBOX)) {
                 return;
             }
 

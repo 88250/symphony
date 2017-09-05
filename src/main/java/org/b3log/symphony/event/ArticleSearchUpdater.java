@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.event;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -26,6 +27,7 @@ import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.service.SearchMgmtService;
 import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Symphonys;
@@ -35,7 +37,7 @@ import org.json.JSONObject;
  * Sends an article to local search engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.0, Jan 19, 2017
+ * @version 1.1.3.1, Sep 5, 2017
  * @since 1.4.0
  */
 @Named
@@ -61,6 +63,11 @@ public class ArticleSearchUpdater extends AbstractEventListener<JSONObject> {
         final JSONObject article = data.optJSONObject(Article.ARTICLE);
         if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
                 || Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
+            return;
+        }
+
+        final String tags = article.optString(Article.ARTICLE_TAGS);
+        if (StringUtils.containsIgnoreCase(tags, Tag.TAG_TITLE_C_SANDBOX)) {
             return;
         }
 
