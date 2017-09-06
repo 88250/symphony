@@ -46,7 +46,7 @@ import java.util.Map;
  * Validates for user profiles update.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.2.4, Jul 27, 2016
+ * @version 2.2.2.5, Sep 6, 2016
  * @since 0.2.0
  */
 @Named
@@ -159,7 +159,7 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                     throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
                             langPropsService.get("selfTagLabel") + langPropsService.get("colonLabel")
-                            + langPropsService.get("articleTagReservedLabel") + " [" + tagTitle + "]"));
+                                    + langPropsService.get("articleTagReservedLabel") + " [" + tagTitle + "]"));
                 }
 
                 tagBuilder.append(tagTitle).append(",");
@@ -179,9 +179,7 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
      * @return {@code true} if it is invalid, returns {@code false} otherwise
      */
     private boolean invalidUserURL(final String userURL) {
-        try {
-            new URL(userURL);
-        } catch (final MalformedURLException e) {
+        if (!Strings.isURL(userURL)) {
             return true;
         }
 
