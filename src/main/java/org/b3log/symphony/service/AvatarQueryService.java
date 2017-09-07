@@ -128,7 +128,6 @@ public class AvatarQueryService {
     /**
      * Creates a avatar image with the specified hash string and size.
      * <p>
-     * <p>
      * Refers to: https://github.com/superhj1987/awesome-identicon
      * </p>
      *
