@@ -22,7 +22,7 @@
 
     <!-- Properties -->
     <properties>
-        <latke.version>2.3.16</latke.version>
+        <latke.version>2.3.17</latke.version>
 
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.2.7.v20150116</jetty.version>
