@@ -45,6 +45,8 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,7 +61,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.4, Mar 29, 2017
+ * @version 1.1.3.0, Sep 11, 2017
  * @since 1.4.0
  */
 @RequestProcessor
@@ -115,7 +117,6 @@ public class SearchProcessor {
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-
         renderer.setTemplateName("search-articles.ftl");
 
         if (!Symphonys.getBoolean("es.enabled") && !Symphonys.getBoolean("algolia.enabled")) {
@@ -130,6 +131,7 @@ public class SearchProcessor {
         if (StringUtils.isBlank(keyword)) {
             keyword = "";
         }
+        keyword = Jsoup.clean(keyword, Whitelist.none());
 
         dataModel.put(Common.KEY, keyword);
 
