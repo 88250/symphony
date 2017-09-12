@@ -51,6 +51,8 @@ import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -90,7 +92,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.28.47, Aug 18, 2017
+ * @version 1.26.29.0, Sep 12, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -931,7 +933,7 @@ public class ArticleProcessor {
         final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
         final String ip = Requests.getRemoteAddr(request);
-        final String ua = request.getHeader(Common.USER_AGENT);
+        String ua = request.getHeader(Common.USER_AGENT);
         final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
         final int articleAnonymous = isAnonymous
                 ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;
@@ -951,6 +953,7 @@ public class ArticleProcessor {
         }
         article.put(Article.ARTICLE_UA, "");
         if (StringUtils.isNotBlank(ua)) {
+            ua = Jsoup.clean(ua, Whitelist.none());
             article.put(Article.ARTICLE_UA, ua);
         }
         article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
@@ -1120,7 +1123,7 @@ public class ArticleProcessor {
         final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
         final String ip = Requests.getRemoteAddr(request);
-        final String ua = request.getHeader(Common.USER_AGENT);
+        String ua = request.getHeader(Common.USER_AGENT);
 
         final JSONObject article = new JSONObject();
         article.put(Keys.OBJECT_ID, id);
@@ -1137,6 +1140,7 @@ public class ArticleProcessor {
         }
         article.put(Article.ARTICLE_UA, "");
         if (StringUtils.isNotBlank(ua)) {
+            ua = Jsoup.clean(ua, Whitelist.none());
             article.put(Article.ARTICLE_UA, ua);
         }
 
