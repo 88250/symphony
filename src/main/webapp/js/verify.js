@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.3.11, May 11, 2017
+ * @version 2.7.3.11, Sep 13, 2017
  */
 
 /**
@@ -350,7 +350,7 @@ var Verify = {
                     break;
                 case 6:
                     // finished
-                    window.location.href = '/';
+                    window.location.href = Label.servePath;
                     break;
                 default:
                     break;
