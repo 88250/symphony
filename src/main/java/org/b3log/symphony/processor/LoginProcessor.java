@@ -71,7 +71,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.9.20, Jan 12, 2017
+ * @version 1.13.10.0, Sep 14, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -302,7 +302,7 @@ public class LoginProcessor {
         context.setRenderer(renderer);
 
         String referer = request.getParameter(Common.GOTO);
-        if (StringUtils.isBlank(referer)) {
+        if (!StringUtils.startsWith(referer, Latkes.getServePath())) {
             referer = request.getHeader("referer");
         }
 
@@ -823,7 +823,7 @@ public class LoginProcessor {
         Sessions.logout(httpServletRequest, context.getResponse());
 
         String destinationURL = httpServletRequest.getParameter(Common.GOTO);
-        if (Strings.isEmptyOrNull(destinationURL)) {
+        if (!StringUtils.startsWith(destinationURL, Latkes.getServePath())) {
             destinationURL = "/";
         }
 
