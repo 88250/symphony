@@ -61,7 +61,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.0, Sep 11, 2017
+ * @version 1.1.4.0, Sep 14, 2017
  * @since 1.4.0
  */
 @RequestProcessor
@@ -131,6 +131,8 @@ public class SearchProcessor {
         if (StringUtils.isBlank(keyword)) {
             keyword = "";
         }
+        keyword = keyword.replace("\"", "").replace("'", "");
+        keyword = StringUtils.deleteWhitespace(keyword);
         keyword = Jsoup.clean(keyword, Whitelist.none());
 
         dataModel.put(Common.KEY, keyword);

@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  * XSS test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, May 14, 2015
+ * @version 1.0.0.1, Sep 14, 2017
  * @since 0.3.0
  */
 public class XSSTestCase {
@@ -39,5 +39,12 @@ public class XSSTestCase {
 
         src = "http://7u2fje.com1.z0.glb.clouddn.com/girl.jpg";
         assertTrue(Jsoup.isValid("<img src=\"" + src + "\"/>", Whitelist.basicWithImages()));
+
+        src = "1\" onmouseover=alert(111);\"&p=10";
+        assertTrue(Jsoup.isValid(src, Whitelist.none()));
+
+        src = src.replace("\"", "");
+        src = "<div onmouseover=alert(111);></div>";
+        assertFalse(Jsoup.isValid(src, Whitelist.none()));
     }
 }
