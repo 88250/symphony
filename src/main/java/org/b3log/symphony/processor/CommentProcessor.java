@@ -50,6 +50,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -70,7 +71,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.2.0, Sep 12, 2017
+ * @version 1.7.3.0, Sep 14, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -371,6 +372,12 @@ public class CommentProcessor {
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         if (null != currentUser) {
             avatarViewMode = currentUser.optInt(UserExt.USER_AVATAR_VIEW_MODE);
+        }
+
+        if (StringUtils.isBlank(commentId)) {
+            context.renderJSON(true).renderJSONValue(Comment.COMMENT_T_REPLIES, (Object) Collections.emptyList());
+
+            return;
         }
 
         final List<JSONObject> replies = commentQueryService.getReplies(avatarViewMode, commentViewMode, commentId);
