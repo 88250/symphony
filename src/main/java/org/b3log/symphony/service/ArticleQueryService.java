@@ -1033,7 +1033,6 @@ public class ArticleQueryService {
         try {
             final JSONObject result = articleRepository.get(query);
             final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
             if (0 == array.length()) {
                 return null;
             }
@@ -1057,7 +1056,6 @@ public class ArticleQueryService {
         Stopwatchs.start("Get article by id");
         try {
             final JSONObject ret = articleRepository.get(articleId);
-
             if (null == ret) {
                 return null;
             }
@@ -1083,7 +1081,6 @@ public class ArticleQueryService {
     public JSONObject getArticle(final String articleId) throws ServiceException {
         try {
             final JSONObject ret = articleRepository.get(articleId);
-
             if (null == ret) {
                 return null;
             }
@@ -1131,8 +1128,7 @@ public class ArticleQueryService {
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
             final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
             final String authorName = author.optString(User.USER_NAME);
-            if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType
-                    && !authorName.equals(currentUserName)) {
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType && !authorName.equals(currentUserName)) {
                 boolean invited = false;
                 for (final String userName : userNames) {
                     if (userName.equals(currentUserName)) {
@@ -1156,8 +1152,7 @@ public class ArticleQueryService {
 
             ret = Jsoup.clean(ret, Whitelist.none());
             if (ret.length() >= length) {
-                ret = StringUtils.substring(ret, 0, length)
-                        + " ....";
+                ret = StringUtils.substring(ret, 0, length) + " ....";
             }
 
             return ret;
