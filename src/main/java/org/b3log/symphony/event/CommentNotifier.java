@@ -39,10 +39,7 @@ import org.b3log.symphony.processor.channel.ArticleListChannel;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.util.JSONs;
-import org.b3log.symphony.util.Markdowns;
-import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -55,7 +52,7 @@ import java.util.Set;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.11.23, Aug 23, 2017
+ * @version 1.7.12.0, Sep 25, 2017
  * @since 0.2.0
  */
 @Named
@@ -230,9 +227,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             chData.put(Comment.COMMENT_T_THANK_LABEL, thankTemplate);
             String cc = shortLinkQueryService.linkArticle(commentContent);
             cc = shortLinkQueryService.linkTag(cc);
+            cc = Emotions.toAliases(cc);
             cc = Emotions.convert(cc);
             cc = Markdowns.toHTML(cc);
             cc = Markdowns.clean(cc, "");
+            cc = MP3Players.render(cc);
+            cc = VideoPlayers.render(cc);
 
             if (fromClient) {
                 // "<i class='ft-small'>by 88250</i>"
