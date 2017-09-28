@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.32.61, Aug 17, 2017
+ * @version 2.27.32.62, Sep 28, 2017
  * @since 0.2.0
  */
 @Service
@@ -218,7 +218,7 @@ public class ArticleQueryService {
         }
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(data);
+        final List<JSONObject> ret = CollectionUtils.jsonArrayToList(data);
 
         try {
             organizeArticles(avatarViewMode, ret);
@@ -470,7 +470,7 @@ public class ArticleQueryService {
 
             final JSONObject result = articleRepository.get(query);
 
-            return CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles failed", e);
 
@@ -540,7 +540,7 @@ public class ArticleQueryService {
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
             final List<JSONObject> articles
-                    = CollectionUtils.<JSONObject>jsonArrayToList(articleRepository.get(query).optJSONArray(Keys.RESULTS));
+                    = CollectionUtils.jsonArrayToList(articleRepository.get(query).optJSONArray(Keys.RESULTS));
 
             try {
                 organizeArticles(avatarViewMode, articles);
@@ -625,7 +625,7 @@ public class ArticleQueryService {
                 final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
                 result = articleRepository.get(query);
 
-                ret.addAll(CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS)));
+                ret.addAll(CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS)));
             }
 
             organizeArticles(avatarViewMode, ret);
@@ -689,7 +689,7 @@ public class ArticleQueryService {
 
                 final JSONObject result = articleRepository.get(query);
 
-                final List<JSONObject> recentArticles = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+                final List<JSONObject> recentArticles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
                 ret.addAll(recentArticles);
             }
 
@@ -760,7 +760,7 @@ public class ArticleQueryService {
                     addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING);
             final JSONObject result = articleRepository.get(query);
 
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             for (final JSONObject article : ret) {
                 article.put(Article.ARTICLE_PERMALINK, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
             }
@@ -818,7 +818,7 @@ public class ArticleQueryService {
 
             result = articleRepository.get(query);
 
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(avatarViewMode, ret);
 
             return ret;
@@ -847,7 +847,7 @@ public class ArticleQueryService {
 
             final JSONObject result = articleRepository.get(query);
 
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(avatarViewMode, ret);
 
             final Integer participantsCnt = Symphonys.getInt("cityArticleParticipantsCnt");
@@ -948,7 +948,7 @@ public class ArticleQueryService {
 
             result = articleRepository.get(query);
 
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             switch (sortMode) {
                 default:
@@ -1182,7 +1182,7 @@ public class ArticleQueryService {
                                 new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID)));
         try {
             final JSONObject result = articleRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             if (ret.isEmpty()) {
                 return ret;
             }
@@ -1227,7 +1227,7 @@ public class ArticleQueryService {
             query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
 
             final JSONObject result = articleRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(avatarViewMode, ret);
 
             return ret;
@@ -1549,7 +1549,7 @@ public class ArticleQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> articles = CollectionUtils.<JSONObject>jsonArrayToList(data);
+        final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
 
         try {
             organizeArticles(avatarViewMode, articles);
@@ -1639,7 +1639,7 @@ public class ArticleQueryService {
             Stopwatchs.start("Query hot articles");
             try {
                 final JSONObject result = articleRepository.get(query);
-                ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+                ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             } finally {
                 Stopwatchs.end();
             }
@@ -1729,7 +1729,7 @@ public class ArticleQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> articles = CollectionUtils.<JSONObject>jsonArrayToList(data);
+        final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
 
         try {
             organizeArticles(avatarViewMode, articles);
@@ -1782,7 +1782,7 @@ public class ArticleQueryService {
             Stopwatchs.start("Query index hot articles");
             try {
                 final JSONObject result = articleRepository.get(query);
-                ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+                ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             } finally {
                 Stopwatchs.end();
             }
@@ -1831,7 +1831,7 @@ public class ArticleQueryService {
             Stopwatchs.start("Query index perfect articles");
             try {
                 final JSONObject result = articleRepository.get(query);
-                ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+                ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             } finally {
                 Stopwatchs.end();
             }
@@ -1884,7 +1884,7 @@ public class ArticleQueryService {
     private List<JSONObject> getArticles(final int avatarViewMode, final Query query) throws ServiceException {
         try {
             final JSONObject result = articleRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(avatarViewMode, ret);
             final List<JSONObject> stories = new ArrayList<>();
 
@@ -2509,7 +2509,7 @@ public class ArticleQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> articles = CollectionUtils.<JSONObject>jsonArrayToList(data);
+        final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
 
         try {
             organizeArticles(avatarViewMode, articles);
