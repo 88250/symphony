@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.32.62, Sep 28, 2017
+ * @version 2.27.32.63, Oct 2, 2017
  * @since 0.2.0
  */
 @Service
@@ -2730,7 +2730,7 @@ public class ArticleQueryService {
                 final String tagName = element.tagName().toLowerCase();
                 final String text = element.text();
                 final String id = "toc_" + tagName + "_" + i;
-
+                element.attr("id", id);
                 element.before("<span id='" + id + "'></span>");
                 listBuilder.append("<li class='toc-").append(tagName).append("'><a data-id=\"").append(id).append("\" href=\"javascript:Comment._bgFade($('#").append(id).append("'))\">").append(text).append(
                         "</a></li>");
