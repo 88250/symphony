@@ -2731,7 +2731,6 @@ public class ArticleQueryService {
                 final String text = element.text();
                 final String id = "toc_" + tagName + "_" + i;
                 element.attr("id", id);
-                element.before("<span id='" + id + "'></span>");
                 listBuilder.append("<li class='toc-").append(tagName).append("'><a data-id=\"").append(id).append("\" href=\"javascript:Comment._bgFade($('#").append(id).append("'))\">").append(text).append(
                         "</a></li>");
             }
