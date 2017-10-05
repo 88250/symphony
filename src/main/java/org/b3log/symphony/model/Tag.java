@@ -319,12 +319,10 @@ public final class Tag {
 
     /**
      * Formats the specified tags.
-     * <p>
      * <ul>
      * <li>Trims every tag</li>
      * <li>Deduplication</li>
      * </ul>
-     * </p>
      *
      * @param tagStr the specified tags
      * @return formatted tags string
