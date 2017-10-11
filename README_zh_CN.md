@@ -77,6 +77,7 @@ Sym 的诞生是有如下几点原因：
 * [黑客派](https://hacpai.com)
 * [四方环视](http://bbs.ivrpano.com)
 * [汇桔网](https://bbs.wtoip.com)
+* [TapDealing](http://www.tapdealing.com)
 
 ## 功能特性
 
