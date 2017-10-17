@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.66, Sep 8, 2017
+    Version: 2.16.6.67, Oct 17, 2017
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -276,6 +276,7 @@
                 <directory>src/main/resources</directory>
                 <excludes>
                     <exclude>etc/</exclude>
+                    <exclude>lib/</exclude>
                 </excludes>
             </resource>
         </resources>
