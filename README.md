@@ -309,7 +309,7 @@ We are very much looking forward to your joining in this project, whether it is 
 
 In the implementation of [B3log idea](https://hacpai.com/b3log) of these years:
 
-* we have witnessed the rise and fall of xAE (GAE/BAE/SAE/etc). In 2009 GAE was selected as a server, and began to implement [Latke](https://github.com/b3log/latke) framework to solve the cross platform cloud, until [GAE] (https://hacpai.com/article/1443685401909), bid farewell to sigh technical change quickly
+* we have witnessed the rise and fall of xAE (GAE/BAE/SAE/etc). In 2009 GAE was selected as a server, and began to implement [Latke](https://github.com/b3log/latke) framework to solve the cross platform cloud, until [GAE](https://hacpai.com/article/1443685401909), bid farewell to sigh technical change quickly
 * feel the advantages and disadvantages of self-made wheels, and certainly a bit: for a long to product, technology advantages far outweigh the disadvantages of self-made frame
 * a playful product or the details of the characteristics of the egg, it needs to be done is a product / feature that can continue to provide user value.
 * although until the current B3log product users are not many, but we have a preliminary proof: Java used to achieve the blog, forum, there is nothing bad
