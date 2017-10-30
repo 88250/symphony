@@ -18,6 +18,7 @@
 package org.b3log.symphony.service;
 
 import com.qiniu.common.QiniuException;
+import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
@@ -163,10 +164,15 @@ public class AudioMgmtService {
             if (Symphonys.getBoolean("qiniu.enabled")) {
                 final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
                 final UploadManager uploadManager = new UploadManager(new Configuration());
-
+                final BucketManager bucketManager = new BucketManager(auth, new Configuration());
                 final int seq = RandomUtils.nextInt(10);
-                uploadManager.put(bytes, "audio/" + type + "/" + textId + seq + ".mp3", auth.uploadToken(Symphonys.get("qiniu.bucket")),
-                        null, "audio/mp3", false);
+                final String fileKey = "audio/" + type + "/" + textId + seq + ".mp3";
+                try {
+                    bucketManager.delete(Symphonys.get("qiniu.bucket"), fileKey);
+                } catch (final Exception e) {
+                    // ignore
+                }
+                uploadManager.put(bytes, fileKey, auth.uploadToken(Symphonys.get("qiniu.bucket")), null, "audio/mp3", false);
                 ret = Symphonys.get("qiniu.domain") + "/audio/" + type + "/" + textId + seq + ".mp3";
             } else {
                 final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".mp3";
