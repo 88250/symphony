@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.processor;
 
+import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import jodd.http.HttpRequest;
@@ -143,7 +144,7 @@ public class FetchUploadProcessor {
 
         if (Symphonys.getBoolean("qiniu.enabled")) {
             final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-            final UploadManager uploadManager = new UploadManager();
+            final UploadManager uploadManager = new UploadManager(new Configuration());
 
             uploadManager.put(data, "e/" + fileName, auth.uploadToken(Symphonys.get("qiniu.bucket")),
                     null, contentType, false);

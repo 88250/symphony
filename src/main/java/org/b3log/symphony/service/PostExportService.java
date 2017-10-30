@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.service;
 
+import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import jodd.io.ZipUtil;
@@ -208,7 +209,7 @@ public class PostExportService {
 
             if (Symphonys.getBoolean("qiniu.enabled")) {
                 final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-                final UploadManager uploadManager = new UploadManager();
+                final UploadManager uploadManager = new UploadManager(new Configuration());
 
                 uploadManager.put(zipData, fileKey, auth.uploadToken(Symphonys.get("qiniu.bucket")),
                         null, "application/zip", false);
