@@ -11,8 +11,7 @@
         <meta name="robots" content="NOINDEX,NOFOLLOW" />
         </#if>
         </@head>
-        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
-        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/compress/article.min.css?${staticResourceVersion}">
     </head>
     <body itemscope itemtype="http://schema.org/Product">
         <img itemprop="image" class="fn-none"  src="${staticServePath}/images/faviconH.png" />
@@ -22,6 +21,10 @@
             <div class="wrapper">
                 <div class="article-actions fn-clear">
                     <span class="fn-right">
+                        <#if permissions["commonViewArticleHistory"].permissionGrant && article.articleRevisionCount &gt; 1>
+                            <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
+                                  class="tooltipped tooltipped-w"><svg class="icon-history"><use xlink:href="#history"></use></svg></span>
+                        </#if>
                         <span id="thankArticle" aria-label="${thankLabel}"
                               class="tooltipped tooltipped-n has-cnt<#if article.thanked> ft-red</#if>"
                               <#if permissions["commonThankArticle"].permissionGrant>
@@ -368,6 +371,7 @@
         <div id="heatBar">
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
+        <div id="revision"><div id="revisions"></div></div>
         <#include "footer.ftl">
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/m-article${miniPostfix}.js?${staticResourceVersion}"></script>

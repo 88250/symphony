@@ -927,48 +927,57 @@ var Article = {
     },
     /**
      * 历史版本对比
+     * @param {string} id 文章/评论 id
+     * @param {string} type 类型[comment, article]
      * @returns {undefined}
      */
-    revision: function (articleId) {
+    revision: function (id, type) {
         if (!Label.isLoggedIn) {
             Util.needLogin();
             return false;
         }
-        if ($('.CodeMirror-merge').length > 0) {
-            $('#revision').dialog('open');
-            return false;
+        if (!type) {
+            type = 'article';
         }
+
         $.ajax({
-            url: Label.servePath + '/article/' + articleId + '/revisions',
+            url: Label.servePath + '/' + type + '/' + id + '/revisions',
             cache: false,
             success: function (result, textStatus) {
                 if (result.sc) {
                     if (0 === result.revisions.length // for legacy data
-                            || 1 === result.revisions.length) {
+                        || 1 === result.revisions.length) {
+                        $('#revision > .revisions').remove();
                         $('#revisions').html('<b>' + Label.noRevisionLabel + '</b>');
                         return false;
                     }
 
-                    $('#revisions').data('revisions', result.revisions).
-                            before('<div class="fn-clear"><div class="pagination">' +
-                                    '<a href="javascript:void(0)">&lt;</a><span class="current">' +
-                                    (result.revisions.length - 1) + '~' + result.revisions.length + '/' +
-                                    result.revisions.length + '</span><a href="javascript:void(0)" class="fn-none">&gt;</a>' +
-                                    '</div></div>');
+                    // clear data
+                    $('#revisions').html('').prev().remove();
+
+                    $('#revisions').data('revisions', result.revisions).before('<div class="revisions">' +
+                        '<a href="javascript:void(0)" class="first"><svg><use xlink:href="#chevron-left"</svg></a><span>' +
+                        (result.revisions.length - 1) + '~' + result.revisions.length + '/' +
+                        result.revisions.length +
+                        '</span><a href="javascript:void(0)" class="disabled last"><svg><use xlink:href="#chevron-right"</svg></a>' +
+                        '</div>');
                     if (result.revisions.length <= 2) {
-                        $('#revision a').first().hide();
+                        $('#revision a').first().addClass('disabled');
                     }
-                    Article.mergeEditor = CodeMirror.MergeView(document.getElementById('revisions'), {
-                        value: result.revisions[result.revisions.length - 1].revisionData.articleTitle +
-                                '\n\n' + result.revisions[result.revisions.length - 1].revisionData.articleContent,
-                        origLeft: result.revisions[result.revisions.length - 2].revisionData.articleTitle +
-                                '\n\n' + result.revisions[result.revisions.length - 2].revisionData.articleContent,
-                        revertButtons: false,
-                        mode: "text/html",
-                        collapseIdentical: true,
-                        lineWrapping: true
+
+                    var diff = JsDiff.createPatch('',
+                        result.revisions[result.revisions.length - 2].revisionData.articleContent || result.revisions[result.revisions.length - 2].revisionData.commentContent,
+                        result.revisions[result.revisions.length - 1].revisionData.articleContent || result.revisions[result.revisions.length - 1].revisionData.commentContent,
+                        result.revisions[result.revisions.length - 2].revisionData.articleTitle || '',
+                        result.revisions[result.revisions.length - 1].revisionData.articleTitle || '');
+
+                    var diff2htmlUi = new Diff2HtmlUI({diff: diff})
+                    diff2htmlUi.draw('#revisions', {
+                        matching: 'lines',
+                        outputFormat: 'side-by-side',
+                        synchronisedScroll: true
                     });
-                    Article._revisionsControls();
+                    Article._revisionsControls(type);
                     return false;
                 }
 
@@ -981,44 +990,70 @@ var Article = {
      * 上一版本，下一版本对比
      * @returns {undefined}
      */
-    _revisionsControls: function () {
+    _revisionsControls: function (type) {
         var revisions = $('#revisions').data('revisions');
-        $('#revision a').first().click(function () {
-            var prevVersion = parseInt($('#revision .current').text().split('~')[0]);
+        $('#revision a.first').click(function () {
+            if ($(this).hasClass('disabled')) {
+                return
+            }
+
+            var prevVersion = parseInt($('#revision .revisions').text().split('~')[0]);
             if (prevVersion <= 2) {
-                $(this).hide();
+                $(this).addClass('disabled');
             } else {
-                $(this).show();
-            }
-            if (prevVersion < 2) {
-                return false;
+                $(this).removeClass('disabled');
             }
 
-            $('#revision a').last().show();
+            if (revisions.length > 2) {
+                $('#revision a.last').removeClass('disabled');
+            }
 
-            $('#revision .current').html((prevVersion - 1) + '~' + prevVersion + '/' + revisions.length);
-            Article.mergeEditor.edit.setValue(revisions[prevVersion - 1].revisionData.articleTitle + '\n\n' +
-                    revisions[prevVersion - 1].revisionData.articleContent);
-            Article.mergeEditor.leftOriginal().setValue(revisions[prevVersion - 2].revisionData.articleTitle + '\n\n' +
-                    revisions[prevVersion - 2].revisionData.articleContent);
+            $('#revision .revisions > span').html((prevVersion - 1) + '~' + prevVersion + '/' + revisions.length);
+
+            var diff = JsDiff.createPatch('',
+                revisions[prevVersion - 2].revisionData.articleContent || revisions[prevVersion - 2].revisionData.commentContent,
+                revisions[prevVersion - 1].revisionData.articleContent || revisions[prevVersion - 1].revisionData.commentContent,
+                revisions[prevVersion - 2].revisionData.articleTitle || '',
+                revisions[prevVersion - 1].revisionData.articleTitle || '');
+
+            var diff2htmlUi = new Diff2HtmlUI({diff: diff})
+            diff2htmlUi.draw('#revisions', {
+                matching: 'lines',
+                outputFormat: 'side-by-side',
+                synchronisedScroll: true
+            });
         });
 
-        $('#revision a').last().click(function () {
-            var prevVersion = parseInt($('#revision .current').text().split('~')[0]);
+        $('#revision a.last').click(function () {
+            if ($(this).hasClass('disabled')) {
+                return
+            }
+
+            var prevVersion = parseInt($('#revision .revisions span').text().split('~')[0]);
             if (prevVersion > revisions.length - 3) {
-                $(this).hide();
+                $(this).addClass('disabled');
             } else {
-                $(this).show();
+                $(this).removeClass('disabled');
             }
-            if (prevVersion > revisions.length - 2) {
-                return false;
+
+            if (revisions.length > 2) {
+                $('#revision a.first').removeClass('disabled');
             }
-            $('#revision a').first().show();
-            $('#revision .current').html((prevVersion + 1) + '~' + (prevVersion + 2) + '/' + revisions.length);
-            Article.mergeEditor.edit.setValue(revisions[prevVersion + 1].revisionData.articleTitle + '\n\n' +
-                    revisions[prevVersion + 1].revisionData.articleContent);
-            Article.mergeEditor.leftOriginal().setValue(revisions[prevVersion].revisionData.articleTitle + '\n\n' +
-                    revisions[prevVersion].revisionData.articleContent);
+
+            $('#revision .revisions > span').html((prevVersion + 1) + '~' + (prevVersion + 2) + '/' + revisions.length);
+
+            var diff = JsDiff.createPatch('',
+                revisions[prevVersion].revisionData.articleContent || revisions[prevVersion].revisionData.commentContent,
+                revisions[prevVersion + 1].revisionData.articleContent || revisions[prevVersion + 1].revisionData.commentContent,
+                revisions[prevVersion ].revisionData.articleTitle || '',
+                revisions[prevVersion + 1].revisionData.articleTitle || '');
+
+            var diff2htmlUi = new Diff2HtmlUI({diff: diff})
+            diff2htmlUi.draw('#revisions', {
+                matching: 'lines',
+                outputFormat: 'side-by-side',
+                synchronisedScroll: true
+            });
         });
     },
     /**

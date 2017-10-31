@@ -17,10 +17,10 @@
  */
 /**
  * @file frontend tool.
- * 
+ *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.3.2, Mar 5, 2017
+ * @version 1.7.3.2, Oct 31, 2017
  */
 
 'use strict';
@@ -56,7 +56,15 @@ gulp.task('build', ['sass', 'clean'], function () {
             .pipe(cleanCSS())
             .pipe(concat('codemirror.min.css'))
             .pipe(gulp.dest('./src/main/webapp/js/lib/editor/'));
-    
+
+    // min article css
+    gulp.src(['./src/main/webapp/js/lib/editor/codemirror.min.css',
+            './src/main/webapp/js/lib/highlight.js-9.6.0/styles/github.css',
+            './src/main/webapp/js/lib/diff2html/diff2html.min.css'])
+            .pipe(cleanCSS())
+            .pipe(concat('article.min.css'))
+            .pipe(gulp.dest('./src/main/webapp/js/lib/compress/'));
+
      // min js
     gulp.src('./src/main/webapp/js/*.js')
             .pipe(uglify())
@@ -74,11 +82,8 @@ gulp.task('build', ['sass', 'clean'], function () {
             .pipe(concat('jquery.fileupload.min.js'))
             .pipe(gulp.dest('./src/main/webapp/js/lib/jquery/file-upload-9.10.1/'));
 
-    var jsCodemirror = ['./src/main/webapp/js/lib/editor/diff_match_patch.js',
-        './src/main/webapp/js/lib/editor/codemirror.js',
+    var jsCodemirror = ['./src/main/webapp/js/lib/editor/codemirror.js',
         './src/main/webapp/js/lib/editor/placeholder.js',
-        './src/main/webapp/js/lib/editor/merge.js',
-        './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',
         './src/main/webapp/js/lib/editor/editor.js',
         './src/main/webapp/js/lib/to-markdown.js'];
     gulp.src(jsCodemirror)
@@ -101,11 +106,8 @@ gulp.task('build', ['sass', 'clean'], function () {
 
     var jsArticleLib = [
         // start codemirror.min.js
-        './src/main/webapp/js/lib/editor/diff_match_patch.js',
         './src/main/webapp/js/lib/editor/codemirror.js',
         './src/main/webapp/js/lib/editor/placeholder.js',
-        './src/main/webapp/js/lib/editor/merge.js',
-        './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',
         './src/main/webapp/js/lib/editor/editor.js',
         './src/main/webapp/js/lib/to-markdown.js',
         // end codemirror.min.js
@@ -119,7 +121,10 @@ gulp.task('build', ['sass', 'clean'], function () {
         // end jquery.fileupload.min.js
         './src/main/webapp/js/lib/sound-recorder/SoundRecorder.js',
         './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js',
-        './src/main/webapp/js/lib/aplayer/APlayer.min.js'];
+        './src/main/webapp/js/lib/aplayer/APlayer.min.js',
+        './src/main/webapp/js/lib/diff2html/diff2html.min.js',
+        './src/main/webapp/js/lib/diff2html/diff2html-ui.min.js',
+        './src/main/webapp/js/lib/diff2html/diff.min.js'];
     gulp.src(jsArticleLib)
             .pipe(uglify())
             .pipe(concat('article-libs.min.js'))

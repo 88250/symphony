@@ -717,6 +717,24 @@ ul.CodeMirror-hints {
 .CodeMirror pre.CodeMirror-placeholder {
   color: #999;
 }
+#revision .revisions {
+  margin: 5px 0 15px;
+  text-align: center;
+  a {
+    color: $black-light;
+    vertical-align: middle;
+    &:hover {
+      color: $black-text;
+    }
+    &.disabled {
+      color: $fade;
+      cursor: default;
+    }
+  }
+  span {
+    margin: 0 10px 0 10px;
+  }
+}
 
 /* end article */
 

@@ -349,7 +349,7 @@ var Comment = {
             storage: true,
             titleSuffix: ''
         });
-        NProgress.configure({showSpinner: false});
+        NProgress.configure({ showSpinner: false });
         $('#comments').bind('pjax.start', function () {
             NProgress.start();
         });
@@ -369,20 +369,20 @@ var Comment = {
             lineWrapping: true,
             htmlURL: Label.servePath + "/markdown",
             toolbar: [
-                {name: 'emoji'},
-                {name: 'bold'},
-                {name: 'italic'},
-                {name: 'quote'},
-                {name: 'link'},
+                { name: 'emoji' },
+                { name: 'bold' },
+                { name: 'italic' },
+                { name: 'quote' },
+                { name: 'link' },
                 {
                     name: 'image',
                     html: '<div class="tooltipped tooltipped-n" aria-label="' + Label.uploadFileLabel + '" ><form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><svg><use xlink:href="#upload"></use></svg><input type="file"/></label></form></div>'
                 },
-                {name: 'unordered-list'},
-                {name: 'ordered-list'},
-                {name: 'view'},
-                {name: 'fullscreen'},
-                {name: 'question', action: 'https://hacpai.com/guide/markdown'}
+                { name: 'unordered-list' },
+                { name: 'ordered-list' },
+                { name: 'view' },
+                { name: 'fullscreen' },
+                { name: 'question', action: 'https://hacpai.com/guide/markdown' }
             ],
             extraKeys: {
                 "Alt-/": "autocompleteUserName",
@@ -437,7 +437,7 @@ var Comment = {
             var token = cm.getTokenAt(cursor);
 
             if (token.string.indexOf('@') === 0) {
-                cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
+                cm.showHint({ hint: CodeMirror.hint.userName, completeSingle: false });
                 return;
             }
 
@@ -554,7 +554,7 @@ var Comment = {
         $.ajax({
             url: Label.servePath + "/comment/thank",
             type: "POST",
-            headers: {"csrfToken": csrfToken},
+            headers: { "csrfToken": csrfToken },
             cache: false,
             data: JSON.stringify(requestJSONObject),
             error: function (jqXHR, textStatus, errorThrown) {
@@ -578,7 +578,7 @@ var Comment = {
                     });
                     $("body").append($heart);
 
-                    $heart.animate({"left": x - 150, "top": y - 60, "opacity": 0},
+                    $heart.animate({ "left": x - 150, "top": y - 60, "opacity": 0 },
                         1000,
                         function () {
                             var cnt = parseInt($(it).text());
@@ -611,8 +611,8 @@ var Comment = {
         } else {
             if ($(it).find('.icon-chevron-down').length === 0) {
                 // 收起回复
-                $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down').
-                find('use').attr('xlink:href', '#chevron-down');;
+                $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down').find('use').attr('xlink:href', '#chevron-down');
+                ;
                 $commentReplies.html('');
                 return false;
             }
@@ -699,8 +699,7 @@ var Comment = {
                 Article.parseLanguage();
 
                 // 如果是回帖的回复需要处理下样式
-                $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up').
-                find('use').attr('xlink:href', '#chevron-up');
+                $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up').find('use').attr('xlink:href', '#chevron-up');
             },
             error: function (result) {
                 alert(result.statusText);
@@ -751,7 +750,7 @@ var Comment = {
         $.ajax({
             url: url,
             type: type,
-            headers: {"csrfToken": csrfToken},
+            headers: { "csrfToken": csrfToken },
             cache: false,
             data: JSON.stringify(requestJSONObject),
             beforeSend: function () {
@@ -1174,6 +1173,7 @@ var Article = {
                 if (result.sc) {
                     if (0 === result.revisions.length // for legacy data
                         || 1 === result.revisions.length) {
+                        $('#revision > .revisions').remove();
                         $('#revisions').html('<b>' + Label.noRevisionLabel + '</b>');
                         return false;
                     }
@@ -1181,30 +1181,27 @@ var Article = {
                     // clear data
                     $('#revisions').html('').prev().remove();
 
-                    $('#revisions').data('revisions', result.revisions).before('<div class="fn-clear"><div class="pagination">' +
-                        '<a href="javascript:void(0)">&lt;</a><span class="current">' +
+                    $('#revisions').data('revisions', result.revisions).before('<div class="revisions">' +
+                        '<a href="javascript:void(0)" class="first"><svg><use xlink:href="#chevron-left"</svg></a><span>' +
                         (result.revisions.length - 1) + '~' + result.revisions.length + '/' +
-                        result.revisions.length + '</span><a href="javascript:void(0)" class="fn-none">&gt;</a>' +
-                        '</div></div>');
+                        result.revisions.length +
+                        '</span><a href="javascript:void(0)" class="disabled last"><svg><use xlink:href="#chevron-right"</svg></a>' +
+                        '</div>');
                     if (result.revisions.length <= 2) {
-                        $('#revision a').first().hide();
+                        $('#revision a').first().addClass('disabled');
                     }
 
-                    var mergeValue = result.revisions[result.revisions.length - 1].revisionData.articleTitle +
-                            '\n\n' + result.revisions[result.revisions.length - 1].revisionData.articleContent,
-                        mergeOrigLeft = result.revisions[result.revisions.length - 2].revisionData.articleTitle +
-                            '\n\n' + result.revisions[result.revisions.length - 2].revisionData.articleContent;
-                    if (type === 'comment') {
-                        mergeValue = result.revisions[result.revisions.length - 1].revisionData.commentContent;
-                        mergeOrigLeft = result.revisions[result.revisions.length - 2].revisionData.commentContent
-                    }
-                    Article.mergeEditor = CodeMirror.MergeView(document.getElementById('revisions'), {
-                        value: mergeValue,
-                        origLeft: mergeOrigLeft,
-                        revertButtons: false,
-                        mode: "text/html",
-                        collapseIdentical: true,
-                        lineWrapping: true
+                    var diff = JsDiff.createPatch('',
+                        result.revisions[result.revisions.length - 2].revisionData.articleContent || result.revisions[result.revisions.length - 2].revisionData.commentContent,
+                        result.revisions[result.revisions.length - 1].revisionData.articleContent || result.revisions[result.revisions.length - 1].revisionData.commentContent,
+                        result.revisions[result.revisions.length - 2].revisionData.articleTitle || '',
+                        result.revisions[result.revisions.length - 1].revisionData.articleTitle || '');
+
+                    var diff2htmlUi = new Diff2HtmlUI({ diff: diff })
+                    diff2htmlUi.draw('#revisions', {
+                        matching: 'lines',
+                        outputFormat: 'side-by-side',
+                        synchronisedScroll: true
                     });
                     Article._revisionsControls(type);
                     return false;
@@ -1221,56 +1218,68 @@ var Article = {
      */
     _revisionsControls: function (type) {
         var revisions = $('#revisions').data('revisions');
-        $('#revision a').first().click(function () {
-            var prevVersion = parseInt($('#revision .current').text().split('~')[0]);
+        $('#revision a.first').click(function () {
+            if ($(this).hasClass('disabled')) {
+                return
+            }
+
+            var prevVersion = parseInt($('#revision .revisions').text().split('~')[0]);
             if (prevVersion <= 2) {
-                $(this).hide();
+                $(this).addClass('disabled');
             } else {
-                $(this).show();
-            }
-            if (prevVersion < 2) {
-                return false;
+                $(this).removeClass('disabled');
             }
 
-            $('#revision a').last().show();
-
-            $('#revision .current').html((prevVersion - 1) + '~' + prevVersion + '/' + revisions.length);
-
-            var mergeValue = revisions[prevVersion - 1].revisionData.articleTitle + '\n\n' +
-                    revisions[prevVersion - 1].revisionData.articleContent,
-                mergeOrigLeft = revisions[prevVersion - 2].revisionData.articleTitle + '\n\n' +
-                    revisions[prevVersion - 2].revisionData.articleContent;
-            if (type === 'comment') {
-                mergeValue = revisions[prevVersion - 1].revisionData.commentContent;
-                mergeOrigLeft = revisions[prevVersion - 2].revisionData.commentContent;
+            if (revisions.length > 2) {
+                $('#revision a.last').removeClass('disabled');
             }
-            Article.mergeEditor.edit.setValue(mergeValue);
-            Article.mergeEditor.leftOriginal().setValue(mergeOrigLeft);
+
+            $('#revision .revisions > span').html((prevVersion - 1) + '~' + prevVersion + '/' + revisions.length);
+
+            var diff = JsDiff.createPatch('',
+                revisions[prevVersion - 2].revisionData.articleContent || revisions[prevVersion - 2].revisionData.commentContent,
+                revisions[prevVersion - 1].revisionData.articleContent || revisions[prevVersion - 1].revisionData.commentContent,
+                revisions[prevVersion - 2].revisionData.articleTitle || '',
+                revisions[prevVersion - 1].revisionData.articleTitle || '');
+
+            var diff2htmlUi = new Diff2HtmlUI({ diff: diff })
+            diff2htmlUi.draw('#revisions', {
+                matching: 'lines',
+                outputFormat: 'side-by-side',
+                synchronisedScroll: true
+            });
         });
 
-        $('#revision a').last().click(function () {
-            var prevVersion = parseInt($('#revision .current').text().split('~')[0]);
-            if (prevVersion > revisions.length - 3) {
-                $(this).hide();
-            } else {
-                $(this).show();
+        $('#revision a.last').click(function () {
+            if ($(this).hasClass('disabled')) {
+                return
             }
-            if (prevVersion > revisions.length - 2) {
-                return false;
-            }
-            $('#revision a').first().show();
-            $('#revision .current').html((prevVersion + 1) + '~' + (prevVersion + 2) + '/' + revisions.length);
 
-            var mergeValue = revisions[prevVersion + 1].revisionData.articleTitle + '\n\n' +
-                    revisions[prevVersion + 1].revisionData.articleContent,
-                mergeOrigLeft = revisions[prevVersion].revisionData.articleTitle + '\n\n' +
-                    revisions[prevVersion].revisionData.articleContent;
-            if (type === 'comment') {
-                mergeValue = revisions[prevVersion + 1].revisionData.commentContent;
-                mergeOrigLeft = revisions[prevVersion].revisionData.commentContent;
+            var prevVersion = parseInt($('#revision .revisions span').text().split('~')[0]);
+            if (prevVersion > revisions.length - 3) {
+                $(this).addClass('disabled');
+            } else {
+                $(this).removeClass('disabled');
             }
-            Article.mergeEditor.edit.setValue(mergeValue);
-            Article.mergeEditor.leftOriginal().setValue(mergeOrigLeft);
+
+            if (revisions.length > 2) {
+                $('#revision a.first').removeClass('disabled');
+            }
+
+            $('#revision .revisions > span').html((prevVersion + 1) + '~' + (prevVersion + 2) + '/' + revisions.length);
+
+            var diff = JsDiff.createPatch('',
+                revisions[prevVersion].revisionData.articleContent || revisions[prevVersion].revisionData.commentContent,
+                revisions[prevVersion + 1].revisionData.articleContent || revisions[prevVersion + 1].revisionData.commentContent,
+                revisions[prevVersion].revisionData.articleTitle || '',
+                revisions[prevVersion + 1].revisionData.articleTitle || '');
+
+            var diff2htmlUi = new Diff2HtmlUI({ diff: diff })
+            diff2htmlUi.draw('#revisions', {
+                matching: 'lines',
+                outputFormat: 'side-by-side',
+                synchronisedScroll: true
+            });
         });
     },
     /**
@@ -1413,7 +1422,7 @@ var Article = {
                     });
                     $("body").append($heart);
 
-                    $heart.animate({"top": y - 180, "opacity": 0},
+                    $heart.animate({ "top": y - 180, "opacity": 0 },
                         1500,
                         function () {
                             $heart.remove();
