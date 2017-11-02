@@ -92,7 +92,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.29.0, Sep 12, 2017
+ * @version 1.26.29.1, Nov 2, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -977,7 +977,6 @@ public class ArticleProcessor {
             }
 
             article.put(Article.ARTICLE_TAGS, articleTags);
-            article.put(Article.ARTICLE_T_IS_BROADCAST, false);
 
             final String articleId = articleMgmtService.addArticle(article);
 

@@ -55,7 +55,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.17.36.46, Oct 30, 2017
+ * @version 2.17.36.47, Nov 2, 2017
  * @since 0.2.0
  */
 @Service
@@ -574,7 +574,6 @@ public class ArticleMgmtService {
 
             final String clientArticleId = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_ID, ret);
             final String clientArticlePermalink = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK);
-            final boolean isBroadcast = requestJSONObject.optBoolean(Article.ARTICLE_T_IS_BROADCAST);
 
             article.put(Article.ARTICLE_TITLE, articleTitle);
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
@@ -603,11 +602,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_LATEST_CMT_TIME, 0);
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, "");
             article.put(Article.ARTICLE_PERMALINK, "/article/" + ret);
-            if (isBroadcast) {
-                article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, "aBroadcast");
-            } else {
-                article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
-            }
+            article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
             article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, clientArticlePermalink);
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.REDDIT_SCORE, 0);
