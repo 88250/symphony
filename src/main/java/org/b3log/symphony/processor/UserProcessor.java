@@ -85,7 +85,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.21.36, Jul 21, 2017
+ * @version 1.26.21.37, Nov 6, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -383,6 +383,9 @@ public class UserProcessor {
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
         final String userName = currentUser.optString(User.USER_NAME);
 
+        // 故意先生成后返回校验，所以即使积分不够也是可以兑换成功的
+        // 这是为了让积分不够的用户可以通过这个后门兑换、分发邀请码以实现积分“自充”
+        // 后期可能会关掉这个【特性】
         final String invitecode = invitecodeMgmtService.userGenInvitecode(fromId, userName);
 
         final String transferId = pointtransferMgmtService.transfer(fromId, Pointtransfer.ID_C_SYS,
