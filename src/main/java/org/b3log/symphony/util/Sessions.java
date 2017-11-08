@@ -36,7 +36,7 @@ import javax.servlet.http.HttpSession;
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.2.5, Apr 12, 2017
+ * @version 2.0.3.0, Nov 8, 2017
  */
 public final class Sessions {
 
@@ -51,7 +51,7 @@ public final class Sessions {
     private static final Logger LOGGER = Logger.getLogger(Sessions.class);
 
     /**
-     * Cookie expiry: one year.
+     * Cookie expiry: 30 days.
      */
     private static final int COOKIE_EXPIRY = 60 * 60 * 24 * 30;
 
