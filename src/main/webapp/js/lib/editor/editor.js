@@ -1158,6 +1158,7 @@
                     $(editor.element.parentElement).find('.editor-preview').html(result.html);
                     hljs.initHighlighting.called = false;
                     hljs.initHighlighting();
+                    Util.parseMarkdown();
                 }
             });
 
@@ -1361,6 +1362,7 @@
                 preview.innerHTML = result.html;
                 hljs.initHighlighting.called = false;
                 hljs.initHighlighting();
+                Util.parseMarkdown();
             }
         });
     }

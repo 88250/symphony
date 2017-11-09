@@ -138,7 +138,9 @@
                 filter: function(href){
                     return 0 > href.indexOf('${servePath}/tag');
                 },
-                callback: function(){}
+                callback: function () {
+                    Util.parseMarkdown();
+                }
             });
             NProgress.configure({ showSpinner: false });
             $('#tag-pjax-container').bind('pjax.start', function(){

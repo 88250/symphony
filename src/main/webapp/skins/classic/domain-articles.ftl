@@ -69,6 +69,7 @@
                                     $(this).addClass('current');
                                 }
                             });
+                            Util.parseMarkdown();
                         case 'error':
                             break;
                         case 'hash':
