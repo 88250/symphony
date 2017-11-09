@@ -457,7 +457,7 @@ var Comment = {
         success: function (result, textStatus) {
           $('.article-comment-content .editor-preview-active').html(result.html);
           hljs.initHighlighting.called = false;
-          hljs.initHighlighting();
+          hljs.initHighlighting();Util.parseMarkdown();
         }
       });
     });
@@ -1134,6 +1134,7 @@ var Article = {
         if (result.sc) {
           if (0 === result.revisions.length // for legacy data
             || 1 === result.revisions.length) {
+            $('#revision > .revisions').remove();
             $('#revisions').html('<b>' + Label.noRevisionLabel + '</b>');
             return false;
           }
@@ -1141,30 +1142,27 @@ var Article = {
           // clear data
           $('#revisions').html('').prev().remove();
 
-          $('#revisions').data('revisions', result.revisions).before('<div class="fn-clear"><div class="pagination">' +
-            '<a href="javascript:void(0)">&lt;</a><span class="current">' +
+          $('#revisions').data('revisions', result.revisions).before('<div class="revisions">' +
+            '<a href="javascript:void(0)" class="first"><svg><use xlink:href="#chevron-left"</svg></a><span>' +
             (result.revisions.length - 1) + '~' + result.revisions.length + '/' +
-            result.revisions.length + '</span><a href="javascript:void(0)" class="fn-none">&gt;</a>' +
-            '</div></div>');
+            result.revisions.length +
+            '</span><a href="javascript:void(0)" class="disabled last"><svg><use xlink:href="#chevron-right"</svg></a>' +
+            '</div>');
           if (result.revisions.length <= 2) {
-            $('#revision a').first().hide();
+            $('#revision a').first().addClass('disabled');
           }
 
-          var mergeValue = result.revisions[result.revisions.length - 1].revisionData.articleTitle +
-            '\n\n' + result.revisions[result.revisions.length - 1].revisionData.articleContent,
-            mergeOrigLeft = result.revisions[result.revisions.length - 2].revisionData.articleTitle +
-              '\n\n' + result.revisions[result.revisions.length - 2].revisionData.articleContent;
-          if (type === 'comment') {
-            mergeValue = result.revisions[result.revisions.length - 1].revisionData.commentContent;
-            mergeOrigLeft = result.revisions[result.revisions.length - 2].revisionData.commentContent
-          }
-          Article.mergeEditor = CodeMirror.MergeView(document.getElementById('revisions'), {
-            value: mergeValue,
-            origLeft: mergeOrigLeft,
-            revertButtons: false,
-            mode: "text/html",
-            collapseIdentical: true,
-            lineWrapping: true
+          var diff = JsDiff.createPatch('',
+            result.revisions[result.revisions.length - 2].revisionData.articleContent || result.revisions[result.revisions.length - 2].revisionData.commentContent,
+            result.revisions[result.revisions.length - 1].revisionData.articleContent || result.revisions[result.revisions.length - 1].revisionData.commentContent,
+            result.revisions[result.revisions.length - 2].revisionData.articleTitle || '',
+            result.revisions[result.revisions.length - 1].revisionData.articleTitle || '');
+
+          var diff2htmlUi = new Diff2HtmlUI({ diff: diff })
+          diff2htmlUi.draw('#revisions', {
+            matching: 'lines',
+            outputFormat: 'side-by-side',
+            synchronisedScroll: true
           });
           Article._revisionsControls(type);
           return false;
@@ -1181,56 +1179,68 @@ var Article = {
    */
   _revisionsControls: function (type) {
     var revisions = $('#revisions').data('revisions');
-    $('#revision a').first().click(function () {
-      var prevVersion = parseInt($('#revision .current').text().split('~')[0]);
+    $('#revision a.first').click(function () {
+      if ($(this).hasClass('disabled')) {
+        return
+      }
+
+      var prevVersion = parseInt($('#revision .revisions').text().split('~')[0]);
       if (prevVersion <= 2) {
-        $(this).hide();
+        $(this).addClass('disabled');
       } else {
-        $(this).show();
-      }
-      if (prevVersion < 2) {
-        return false;
+        $(this).removeClass('disabled');
       }
 
-      $('#revision a').last().show();
-
-      $('#revision .current').html((prevVersion - 1) + '~' + prevVersion + '/' + revisions.length);
-
-      var mergeValue = revisions[prevVersion - 1].revisionData.articleTitle + '\n\n' +
-        revisions[prevVersion - 1].revisionData.articleContent,
-        mergeOrigLeft = revisions[prevVersion - 2].revisionData.articleTitle + '\n\n' +
-          revisions[prevVersion - 2].revisionData.articleContent;
-      if (type === 'comment') {
-        mergeValue = revisions[prevVersion - 1].revisionData.commentContent;
-        mergeOrigLeft = revisions[prevVersion - 2].revisionData.commentContent;
+      if (revisions.length > 2) {
+        $('#revision a.last').removeClass('disabled');
       }
-      Article.mergeEditor.edit.setValue(mergeValue);
-      Article.mergeEditor.leftOriginal().setValue(mergeOrigLeft);
+
+      $('#revision .revisions > span').html((prevVersion - 1) + '~' + prevVersion + '/' + revisions.length);
+
+      var diff = JsDiff.createPatch('',
+        revisions[prevVersion - 2].revisionData.articleContent || revisions[prevVersion - 2].revisionData.commentContent,
+        revisions[prevVersion - 1].revisionData.articleContent || revisions[prevVersion - 1].revisionData.commentContent,
+        revisions[prevVersion - 2].revisionData.articleTitle || '',
+        revisions[prevVersion - 1].revisionData.articleTitle || '');
+
+      var diff2htmlUi = new Diff2HtmlUI({ diff: diff })
+      diff2htmlUi.draw('#revisions', {
+        matching: 'lines',
+        outputFormat: 'side-by-side',
+        synchronisedScroll: true
+      });
     });
 
-    $('#revision a').last().click(function () {
-      var prevVersion = parseInt($('#revision .current').text().split('~')[0]);
-      if (prevVersion > revisions.length - 3) {
-        $(this).hide();
-      } else {
-        $(this).show();
+    $('#revision a.last').click(function () {
+      if ($(this).hasClass('disabled')) {
+        return
       }
-      if (prevVersion > revisions.length - 2) {
-        return false;
-      }
-      $('#revision a').first().show();
-      $('#revision .current').html((prevVersion + 1) + '~' + (prevVersion + 2) + '/' + revisions.length);
 
-      var mergeValue = revisions[prevVersion + 1].revisionData.articleTitle + '\n\n' +
-        revisions[prevVersion + 1].revisionData.articleContent,
-        mergeOrigLeft = revisions[prevVersion].revisionData.articleTitle + '\n\n' +
-          revisions[prevVersion].revisionData.articleContent;
-      if (type === 'comment') {
-        mergeValue = revisions[prevVersion + 1].revisionData.commentContent;
-        mergeOrigLeft = revisions[prevVersion].revisionData.commentContent;
+      var prevVersion = parseInt($('#revision .revisions span').text().split('~')[0]);
+      if (prevVersion > revisions.length - 3) {
+        $(this).addClass('disabled');
+      } else {
+        $(this).removeClass('disabled');
       }
-      Article.mergeEditor.edit.setValue(mergeValue);
-      Article.mergeEditor.leftOriginal().setValue(mergeOrigLeft);
+
+      if (revisions.length > 2) {
+        $('#revision a.first').removeClass('disabled');
+      }
+
+      $('#revision .revisions > span').html((prevVersion + 1) + '~' + (prevVersion + 2) + '/' + revisions.length);
+
+      var diff = JsDiff.createPatch('',
+        revisions[prevVersion].revisionData.articleContent || revisions[prevVersion].revisionData.commentContent,
+        revisions[prevVersion + 1].revisionData.articleContent || revisions[prevVersion + 1].revisionData.commentContent,
+        revisions[prevVersion].revisionData.articleTitle || '',
+        revisions[prevVersion + 1].revisionData.articleTitle || '');
+
+      var diff2htmlUi = new Diff2HtmlUI({ diff: diff })
+      diff2htmlUi.draw('#revisions', {
+        matching: 'lines',
+        outputFormat: 'side-by-side',
+        synchronisedScroll: true
+      });
     });
   },
   /**

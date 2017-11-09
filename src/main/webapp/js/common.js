@@ -38,9 +38,8 @@ var Util = {
     var hasFlow = false;
     $('.content-reset').each(function () {
       $(this).find('p').each(function () {
-        if ($(this).text().indexOf('$/') > -1 || $(this).text().indexOf('$$') > -1) {
+        if ($(this).text().indexOf('$\\') > -1 || $(this).text().indexOf('$$') > -1) {
           hasMathJax = true;
-          return false;
         }
       });
       if ($(this).find('code.lang-flow, code.language-flow').length > 0) {
@@ -56,31 +55,23 @@ var Util = {
             displayMath: [['$$', '$$']],
             processEscapes: true,
             processEnvironments: true,
-            skipTags: ['pre', 'code']
+            skipTags: ['pre', 'code', 'script']
           }
         });
-        MathJax.Hub.Queue(function () {
-          var all = MathJax.Hub.getAllJax(), i;
-          for (i = 0; i < all.length; i += 1) {
-            if ($(all[i].SourceElement().parentNode).closest('.content-reset') === 1) {
-              all[i].SourceElement().parentNode.className += 'has-jax';
-            }
-          }
-        });
+        MathJax.Hub.Typeset();
       };
 
       if (typeof MathJax !== 'undefined') {
         initMathJax();
-        return;
+      } else {
+        $.ajax({
+          method: "GET",
+          url: "https://cdn.staticfile.org/MathJax/MathJax-2.6-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&_=1473258780393",
+          dataType: "script"
+        }).done(function () {
+          initMathJax();
+        });
       }
-
-      $.ajax({
-        method: "GET",
-        url: "https://cdn.staticfile.org/MathJax/MathJax-2.6-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&_=1473258780393",
-        dataType: "script"
-      }).done(function () {
-        initMathJax();
-      });
     }
 
     if (hasFlow) {
@@ -99,15 +90,15 @@ var Util = {
 
       if (typeof (flowchart) !== 'undefined') {
         initFlow();
-        return;
+      } else {
+        $.ajax({
+          method: "GET",
+          url: Label.staticServePath + '/js/lib/flowchart/flowchart.min.js',
+          dataType: "script"
+        }).done(function () {
+          initFlow()
+        });
       }
-      $.ajax({
-        method: "GET",
-        url: Label.staticServePath + '/js/lib/flowchart/flowchart.min.js',
-        dataType: "script"
-      }).done(function () {
-        initFlow()
-      });
     }
   },
   /**
