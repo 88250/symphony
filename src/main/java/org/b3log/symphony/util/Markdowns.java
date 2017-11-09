@@ -112,10 +112,7 @@ public final class Markdowns {
     /**
      * Built-in MD engine options.
      */
-
-    private static final DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(
-            Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS
-    );
+    private static final DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(Extensions.ALL_WITH_OPTIONALS);
 
     /**
      * Built-in MD engine parser.
