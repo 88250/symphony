@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.processor;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -1732,6 +1733,10 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject article = articleQueryService.getArticle(articleId);
+
+        String title = StringEscapeUtils.escapeHtml(article.optString(Article.ARTICLE_TITLE));
+        article.put(Article.ARTICLE_TITLE, title);
+
         dataModel.put(Article.ARTICLE, article);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
