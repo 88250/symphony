@@ -1166,6 +1166,19 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject user = userQueryService.getUser(userId);
+
+        user.put(UserExt.USER_LATEST_LOGIN_IP, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_LATEST_LOGIN_IP)));
+        user.put(UserExt.USER_NICKNAME, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_NICKNAME)));
+        user.put(UserExt.USER_TAGS, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_TAGS)));
+        user.put(User.USER_URL, StringEscapeUtils.escapeHtml(user.optString(User.USER_URL)));
+        user.put(UserExt.USER_INTRO, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_INTRO)));
+        user.put(UserExt.USER_LATEST_LOGIN_IP, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_LATEST_LOGIN_IP)));
+        user.put(User.USER_PASSWORD, StringEscapeUtils.escapeHtml(user.optString(User.USER_PASSWORD)));
+        user.put(UserExt.USER_B3_KEY, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_B3_KEY)));
+        user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL)));
+        user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL)));
+        user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL)));
+
         dataModel.put(User.USER, user);
 
         final JSONObject result = roleQueryService.getRoles(1, Integer.MAX_VALUE, 10);
