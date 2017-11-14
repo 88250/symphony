@@ -110,7 +110,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.7.25, Aug 11, 2017
+ * @version 2.26.8.0, Nov 15, 2017
  * @since 1.1.0
  */
 @RequestProcessor
@@ -262,6 +262,16 @@ public class AdminProcessor {
      */
     @Inject
     private DataModelService dataModelService;
+
+    private static void escapeHTML(final JSONObject jsonObject) {
+        final Iterator<String> keys = jsonObject.keys();
+        while (keys.hasNext()) {
+            final String key = keys.next();
+            if (jsonObject.opt(key) instanceof String) {
+                jsonObject.put(key, StringEscapeUtils.escapeHtml(jsonObject.optString(key)));
+            }
+        }
+    }
 
     /**
      * Removes unused tags.
@@ -1166,19 +1176,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject user = userQueryService.getUser(userId);
-
-        user.put(UserExt.USER_LATEST_LOGIN_IP, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_LATEST_LOGIN_IP)));
-        user.put(UserExt.USER_NICKNAME, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_NICKNAME)));
-        user.put(UserExt.USER_TAGS, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_TAGS)));
-        user.put(User.USER_URL, StringEscapeUtils.escapeHtml(user.optString(User.USER_URL)));
-        user.put(UserExt.USER_INTRO, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_INTRO)));
-        user.put(UserExt.USER_LATEST_LOGIN_IP, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_LATEST_LOGIN_IP)));
-        user.put(User.USER_PASSWORD, StringEscapeUtils.escapeHtml(user.optString(User.USER_PASSWORD)));
-        user.put(UserExt.USER_B3_KEY, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_B3_KEY)));
-        user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL)));
-        user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL)));
-        user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, StringEscapeUtils.escapeHtml(user.optString(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL)));
-
+        escapeHTML(user);
         dataModel.put(User.USER, user);
 
         final JSONObject result = roleQueryService.getRoles(1, Integer.MAX_VALUE, 10);
@@ -1746,10 +1744,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject article = articleQueryService.getArticle(articleId);
-
-        String title = StringEscapeUtils.escapeHtml(article.optString(Article.ARTICLE_TITLE));
-        article.put(Article.ARTICLE_TITLE, title);
-
+        escapeHTML(article);
         dataModel.put(Article.ARTICLE, article);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -1883,6 +1878,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject comment = commentQueryService.getComment(commentId);
+        escapeHTML(comment);
         dataModel.put(Comment.COMMENT, comment);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
