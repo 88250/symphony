@@ -18,7 +18,6 @@
 package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -48,6 +47,7 @@ import org.b3log.symphony.processor.advice.validate.*;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
+import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -1746,8 +1746,8 @@ public class UserProcessor {
         user.put(UserExt.USER_TAGS, userTags);
         user.put(User.USER_URL, userURL);
         user.put(UserExt.USER_QQ, userQQ);
-        user.put(UserExt.USER_INTRO, StringEscapeUtils.escapeHtml(userIntro));
-        user.put(UserExt.USER_NICKNAME, StringEscapeUtils.escapeHtml(userNickname));
+        user.put(UserExt.USER_INTRO, Encode.forHtml(userIntro));
+        user.put(UserExt.USER_NICKNAME, Encode.forHtml(userNickname));
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
 
         try {

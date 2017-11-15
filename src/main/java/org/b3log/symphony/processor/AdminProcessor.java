@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -53,6 +52,7 @@ import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -268,7 +268,7 @@ public class AdminProcessor {
         while (keys.hasNext()) {
             final String key = keys.next();
             if (jsonObject.opt(key) instanceof String) {
-                jsonObject.put(key, StringEscapeUtils.escapeHtml(jsonObject.optString(key)));
+                jsonObject.put(key, Encode.forHtml(jsonObject.optString(key)));
             }
         }
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.70, Nov 9, 2017
+    Version: 2.16.6.71, Nov 15, 2017
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -36,6 +36,7 @@
         <user-agent-utils.version>1.20</user-agent-utils.version>
         <commons-codec.version>1.10</commons-codec.version>
         <es.version>2.3.1</es.version>
+        <owasp.version>1.2.1</owasp.version>
 
         <!-- maven plugin -->
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
@@ -267,6 +268,12 @@
             <artifactId>elasticsearch</artifactId>
             <version>${es.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.owasp.encoder</groupId>
+            <artifactId>encoder</artifactId>
+            <version>${owasp.version}</version>
         </dependency>
     </dependencies>
 

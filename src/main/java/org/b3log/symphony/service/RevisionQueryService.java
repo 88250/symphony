@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.service;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
@@ -33,6 +32,7 @@ import org.b3log.symphony.repository.RevisionRepository;
 import org.b3log.symphony.util.Markdowns;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.owasp.encoder.Encode;
 
 import java.util.Collections;
 import java.util.List;
@@ -107,7 +107,7 @@ public class RevisionQueryService {
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(revisionRepository.get(query).optJSONArray(Keys.RESULTS));
             for (final JSONObject rev : ret) {
                 final JSONObject data = new JSONObject(rev.optString(Revision.REVISION_DATA));
-                final String articleTitle = StringEscapeUtils.escapeHtml(data.optString(Article.ARTICLE_TITLE));
+                final String articleTitle = Encode.forHtml(data.optString(Article.ARTICLE_TITLE));
                 data.put(Article.ARTICLE_TITLE, articleTitle);
 
                 String articleContent = data.optString(Article.ARTICLE_CONTENT);
