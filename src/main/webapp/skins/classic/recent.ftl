@@ -62,6 +62,9 @@
                 titleSuffix: '',
                 filter: function(href){
                     return 0 > href.indexOf('${servePath}/recent');
+                },
+                callback: function () {
+                    Util.parseMarkdown();
                 }
             });
             NProgress.configure({ showSpinner: false });

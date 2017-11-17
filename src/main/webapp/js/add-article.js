@@ -365,7 +365,7 @@ var AddArticle = {
                     success: function (result, textStatus) {
                         $('.post-article-content .editor-preview-active').html(result.html);
                         hljs.initHighlighting.called = false;
-                        hljs.initHighlighting();
+                        hljs.initHighlighting();Util.parseMarkdown();
                     }
                 });
             });
@@ -508,7 +508,7 @@ var AddArticle = {
                     success: function (result, textStatus) {
                         $('.article-reward-content .editor-preview-active').html(result.html);
                         hljs.initHighlighting.called = false;
-                        hljs.initHighlighting();
+                        hljs.initHighlighting();Util.parseMarkdown();
                     }
                 });
             });

@@ -71,7 +71,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.3.0, Sep 14, 2017
+ * @version 1.7.3.1, Nov 11, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -141,6 +141,12 @@ public class CommentProcessor {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
+    /**
+     * Follow management service.
+     */
+    @Inject
+    private FollowMgmtService followMgmtService;
 
     /**
      * Removes a comment.
@@ -485,12 +491,17 @@ public class CommentProcessor {
                 }
             }
 
-            comment.put(Comment.COMMENT_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
+            final String commentAuthorId = currentUser.optString(Keys.OBJECT_ID);
+            comment.put(Comment.COMMENT_AUTHOR_ID, commentAuthorId);
             comment.put(Comment.COMMENT_T_COMMENTER, currentUser);
             comment.put(Comment.COMMENT_ANONYMOUS, isAnonymous
                     ? Comment.COMMENT_ANONYMOUS_C_ANONYMOUS : Comment.COMMENT_ANONYMOUS_C_PUBLIC);
 
             commentMgmtService.addComment(comment);
+
+            if (!commentAuthorId.equals(articleAuthorId)) {
+                followMgmtService.watchArticle(commentAuthorId, articleId);
+            }
 
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
         } catch (final ServiceException e) {

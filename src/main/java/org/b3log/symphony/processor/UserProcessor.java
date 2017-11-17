@@ -47,6 +47,7 @@ import org.b3log.symphony.processor.advice.validate.*;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
+import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -85,7 +86,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.21.37, Nov 6, 2017
+ * @version 1.26.22.0, Nov 14, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1745,8 +1746,8 @@ public class UserProcessor {
         user.put(UserExt.USER_TAGS, userTags);
         user.put(User.USER_URL, userURL);
         user.put(UserExt.USER_QQ, userQQ);
-        user.put(UserExt.USER_INTRO, userIntro.replace("<", "&lt;").replace(">", "&gt"));
-        user.put(UserExt.USER_NICKNAME, userNickname.replace("<", "&lt;").replace(">", "&gt"));
+        user.put(UserExt.USER_INTRO, Encode.forHtml(userIntro));
+        user.put(UserExt.USER_NICKNAME, Encode.forHtml(userNickname));
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
 
         try {

@@ -52,6 +52,7 @@ import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -109,7 +110,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.7.25, Aug 11, 2017
+ * @version 2.26.8.0, Nov 15, 2017
  * @since 1.1.0
  */
 @RequestProcessor
@@ -261,6 +262,16 @@ public class AdminProcessor {
      */
     @Inject
     private DataModelService dataModelService;
+
+    private static void escapeHTML(final JSONObject jsonObject) {
+        final Iterator<String> keys = jsonObject.keys();
+        while (keys.hasNext()) {
+            final String key = keys.next();
+            if (jsonObject.opt(key) instanceof String) {
+                jsonObject.put(key, Encode.forHtml(jsonObject.optString(key)));
+            }
+        }
+    }
 
     /**
      * Removes unused tags.
@@ -1165,6 +1176,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject user = userQueryService.getUser(userId);
+        escapeHTML(user);
         dataModel.put(User.USER, user);
 
         final JSONObject result = roleQueryService.getRoles(1, Integer.MAX_VALUE, 10);
@@ -1732,6 +1744,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject article = articleQueryService.getArticle(articleId);
+        escapeHTML(article);
         dataModel.put(Article.ARTICLE, article);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -1865,6 +1878,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject comment = commentQueryService.getComment(commentId);
+        escapeHTML(comment);
         dataModel.put(Comment.COMMENT, comment);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);

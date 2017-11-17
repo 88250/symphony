@@ -48,6 +48,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
+import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
@@ -58,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.32.63, Oct 2, 2017
+ * @version 2.27.33.0, Oct 14, 2017
  * @since 0.2.0
  */
 @Service
@@ -2024,8 +2025,7 @@ public class ArticleQueryService {
 
         qiniuImgProcessing(article);
 
-        String title = article.optString(Article.ARTICLE_TITLE).replace("<", "&lt;").replace(">", "&gt;");
-        title = Markdowns.clean(title, "");
+        final String title = Encode.forHtml(article.optString(Article.ARTICLE_TITLE));
         article.put(Article.ARTICLE_TITLE, title);
 
         article.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));

@@ -32,6 +32,7 @@ import org.b3log.symphony.repository.RevisionRepository;
 import org.b3log.symphony.util.Markdowns;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.owasp.encoder.Encode;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +41,7 @@ import java.util.List;
  * Revision query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, May 12, 2017
+ * @version 1.0.1.0, Nov 14, 2017
  * @since 2.1.0
  */
 @Service
@@ -106,9 +107,7 @@ public class RevisionQueryService {
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(revisionRepository.get(query).optJSONArray(Keys.RESULTS));
             for (final JSONObject rev : ret) {
                 final JSONObject data = new JSONObject(rev.optString(Revision.REVISION_DATA));
-                String articleTitle = data.optString(Article.ARTICLE_TITLE);
-                articleTitle = articleTitle.replace("<", "&lt;").replace(">", "&gt;");
-                articleTitle = Markdowns.clean(articleTitle, "");
+                final String articleTitle = Encode.forHtml(data.optString(Article.ARTICLE_TITLE));
                 data.put(Article.ARTICLE_TITLE, articleTitle);
 
                 String articleContent = data.optString(Article.ARTICLE_CONTENT);
