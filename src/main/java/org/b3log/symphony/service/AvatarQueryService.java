@@ -20,6 +20,7 @@ package org.b3log.symphony.service;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -31,7 +32,7 @@ import java.awt.image.BufferedImage;
  * User avatar query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.3, Aug 14, 2016
+ * @version 1.5.2.0, Nov 18, 2017
  * @since 0.3.0
  */
 @Service
@@ -89,17 +90,17 @@ public class AvatarQueryService {
             return DEFAULT_AVATAR_URL;
         }
 
-        final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
-
         String originalURL = user.optString(UserExt.USER_AVATAR_URL);
         if (StringUtils.isBlank(originalURL)) {
             originalURL = DEFAULT_AVATAR_URL;
         }
+        if (StringUtils.isBlank(originalURL) || Strings.contains(originalURL, new String[]{"<", ">", "\"", "'"})) {
+            originalURL = DEFAULT_AVATAR_URL;
+        }
 
         final String finerSize = String.valueOf(Integer.valueOf(size) + 32);
-
         String avatarURL = StringUtils.substringBeforeLast(originalURL, "?");
-
+        final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
         if (UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL == viewMode) {
             if (qiniuEnabled) {
                 final String qiniuDomain = Symphonys.get("qiniu.domain");
