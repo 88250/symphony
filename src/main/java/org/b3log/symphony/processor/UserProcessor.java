@@ -86,7 +86,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.22.0, Nov 14, 2017
+ * @version 1.26.23.0, Nov 18, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1776,23 +1776,25 @@ public class UserProcessor {
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
 
-        final long now = System.currentTimeMillis();
-
         final JSONObject user = userQueryService.getCurrentUser(request);
 
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
         user.put(UserExt.USER_UPDATE_TIME, System.currentTimeMillis());
 
-        if (Symphonys.getBoolean("qiniu.enabled")) {
-            final String qiniuDomain = Symphonys.get("qiniu.domain");
+        if (Strings.contains(userAvatarURL, new String[]{"<", ">", "\"", "'"})) {
+            user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+        } else {
+            if (Symphonys.getBoolean("qiniu.enabled")) {
+                final String qiniuDomain = Symphonys.get("qiniu.domain");
 
-            if (!StringUtils.startsWith(userAvatarURL, qiniuDomain)) {
-                user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+                if (!StringUtils.startsWith(userAvatarURL, qiniuDomain)) {
+                    user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+                } else {
+                    user.put(UserExt.USER_AVATAR_URL, userAvatarURL);
+                }
             } else {
                 user.put(UserExt.USER_AVATAR_URL, userAvatarURL);
             }
-        } else {
-            user.put(UserExt.USER_AVATAR_URL, userAvatarURL);
         }
 
         try {
