@@ -803,7 +803,6 @@ public class CommentQueryService {
             }
 
             processCommentContent(comment);
-            Escapes.escapeHTML(comment);
         } finally {
             Stopwatchs.end();
         }

@@ -2103,7 +2103,6 @@ public class ArticleQueryService {
             tags.add(tag);
         }
         article.put(Article.ARTICLE_T_TAG_OBJS, (Object) tags);
-        Escapes.escapeHTML(article);
     }
 
     /**
