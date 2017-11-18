@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.33.0, Oct 14, 2017
+ * @version 2.27.34.0, Nov 18, 2017
  * @since 0.2.0
  */
 @Service
@@ -2103,6 +2103,7 @@ public class ArticleQueryService {
             tags.add(tag);
         }
         article.put(Article.ARTICLE_T_TAG_OBJS, (Object) tags);
+        Escapes.escapeHTML(article);
     }
 
     /**

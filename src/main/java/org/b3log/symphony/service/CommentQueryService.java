@@ -50,7 +50,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.9.27, May 12, 2017
+ * @version 2.11.10.0, Nov 18, 2017
  * @since 0.2.0
  */
 @Service
@@ -803,6 +803,7 @@ public class CommentQueryService {
             }
 
             processCommentContent(comment);
+            Escapes.escapeHTML(comment);
         } finally {
             Stopwatchs.end();
         }
