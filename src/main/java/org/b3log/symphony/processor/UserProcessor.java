@@ -86,7 +86,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.23.0, Nov 18, 2017
+ * @version 1.26.23.1, Nov 18, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -2081,6 +2081,7 @@ public class UserProcessor {
      * @param user      the specified user
      */
     private void fillHomeUser(final Map<String, Object> dataModel, final JSONObject user) {
+        Escapes.escapeHTML(user);
         dataModel.put(User.USER, user);
 
         final String roleId = user.optString(User.USER_ROLE);

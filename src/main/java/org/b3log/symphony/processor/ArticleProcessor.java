@@ -92,7 +92,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.29.1, Nov 2, 2017
+ * @version 1.26.29.2, Nov 18, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -674,6 +674,7 @@ public class ArticleProcessor {
 
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
         final JSONObject author = userQueryService.getUser(authorId);
+        Escapes.escapeHTML(author);
 
         if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
             article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
