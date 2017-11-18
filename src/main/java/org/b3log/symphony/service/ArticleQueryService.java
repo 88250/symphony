@@ -18,7 +18,6 @@
 package org.b3log.symphony.service;
 
 import com.vdurmont.emoji.EmojiParser;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -49,6 +48,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
+import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
@@ -2025,7 +2025,7 @@ public class ArticleQueryService {
 
         qiniuImgProcessing(article);
 
-        final String title = StringEscapeUtils.escapeHtml(article.optString(Article.ARTICLE_TITLE));
+        final String title = Encode.forHtml(article.optString(Article.ARTICLE_TITLE));
         article.put(Article.ARTICLE_TITLE, title);
 
         article.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
