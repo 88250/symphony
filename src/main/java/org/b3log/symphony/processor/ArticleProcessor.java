@@ -92,7 +92,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.29.2, Nov 18, 2017
+ * @version 1.27.0.0, Nov 19, 2017
  * @since 0.2.0
  */
 @RequestProcessor
@@ -888,6 +888,10 @@ public class ArticleProcessor {
             final String uid = StringUtils.isBlank(currentUserId) ? "visitor" : currentUserId;
 
             articleMgmtService.genArticleAudio(article, uid);
+        }
+
+        if (StringUtils.isNotBlank(Symphonys.get("ipfs.dir"))) {
+            articleMgmtService.saveMarkdown(article);
         }
     }
 

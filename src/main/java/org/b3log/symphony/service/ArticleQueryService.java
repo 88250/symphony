@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.34.0, Nov 18, 2017
+ * @version 2.27.34.1, Nov 19, 2017
  * @since 0.2.0
  */
 @Service
@@ -2011,6 +2011,7 @@ public class ArticleQueryService {
      * @throws RepositoryException repository exception
      */
     public void organizeArticle(final int avatarViewMode, final JSONObject article) throws RepositoryException {
+        article.put(Article.ARTICLE_T_ORIGINAL_CONTENT, article.optString(Article.ARTICLE_CONTENT));
         toArticleDate(article);
         genArticleAuthor(avatarViewMode, article);
 

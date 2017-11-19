@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.26.0.15, Nov 2, 2017
+ * @version 1.27.0.0, Nov 19, 2017
  * @since 0.2.0
  */
 public final class Article {
@@ -351,6 +351,11 @@ public final class Article {
      * Key of article ToC.
      */
     public static final String ARTICLE_T_TOC = "articleToC";
+
+    /**
+     * Key of article original content.
+     */
+    public static final String ARTICLE_T_ORIGINAL_CONTENT = "articleOriginalContent";
 
     // Anonymous constants
     /**

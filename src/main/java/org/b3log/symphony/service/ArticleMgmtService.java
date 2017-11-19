@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -46,8 +47,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
 import java.util.*;
 
 /**
@@ -55,7 +61,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.17.36.47, Nov 2, 2017
+ * @version 2.18.0.0, Nov 19, 2017
  * @since 0.2.0
  */
 @Service
@@ -1842,6 +1848,51 @@ public class ArticleMgmtService {
 
             LOGGER.log(Level.ERROR, "Admin adds an article failed", e);
             throw new ServiceException(e.getMessage());
+        }
+    }
+
+    /**
+     * Savaes markdown file for the specified article.
+     *
+     * @param article the specified article
+     */
+    public void saveMarkdown(final JSONObject article) {
+        final String dir = Symphonys.get("ipfs.dir");
+        final String localeDir = Symphonys.get("ipfs.localdir");
+        if (StringUtils.isBlank(dir) || StringUtils.isBlank(localeDir)) {
+            return;
+        }
+
+        final Path dirPath = Paths.get(localeDir, dir);
+        try {
+            FileUtils.forceMkdir(dirPath.toFile());
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Creates dir [" + dirPath.toString() + "] for save markdown files failed", e);
+
+            return;
+        }
+
+        final String id = article.optString(Keys.OBJECT_ID);
+        final String authorName = article.optJSONObject(Article.ARTICLE_T_AUTHOR).optString(User.USER_NAME);
+        final Path mdPath = Paths.get(localeDir, dir, authorName, id + ".md");
+        try {
+            if (mdPath.toFile().exists()) {
+                final FileTime lastModifiedTime = Files.getLastModifiedTime(mdPath);
+                if (lastModifiedTime.toMillis() + 1000 * 60 * 60 >= System.currentTimeMillis()) {
+                    return;
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets last modified time of file [" + mdPath.toString() + "] failed", e);
+
+            return;
+        }
+
+        final File file = mdPath.toFile();
+        try {
+            FileUtils.writeStringToFile(file, article.optString(Article.ARTICLE_T_ORIGINAL_CONTENT), "UTF-8");
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Writes article to markdown file [" + mdPath.toString() + "] failed", e);
         }
     }
 }
