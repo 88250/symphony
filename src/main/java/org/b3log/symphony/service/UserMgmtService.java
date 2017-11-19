@@ -796,7 +796,7 @@ public class UserMgmtService {
 
                 userRepository.update(id, user);
 
-                LOGGER.log(Level.INFO, "Reset unverified user [email=" + user.optString(User.USER_EMAIL));
+                LOGGER.log(Level.INFO, "Reset unverified user [email=" + user.optString(User.USER_EMAIL) + "]");
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Reset unverified users failed", e);
