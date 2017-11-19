@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.71, Nov 15, 2017
+    Version: 2.16.6.72, Nov 19, 2017
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -261,6 +261,14 @@
             <version>0.5.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/lib/net/pusuo/patchca-0.5.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.ipfs</groupId>
+            <artifactId>ipfs</artifactId>
+            <version>1.2.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/com/github/ipfs/ipfs-1.2.0.jar</systemPath>
         </dependency>
 
         <dependency>
