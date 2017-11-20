@@ -80,6 +80,7 @@ Community edition:
 Commercial edition:
 
 * [黑客派](https://hacpai.com)
+* [爱就来](https://ajlai.com)
 * [四方环视](http://bbs.ivrpano.com)
 * [汇桔网](https://bbs.wtoip.com)
 * [TapDealing](http://www.tapdealing.com)
