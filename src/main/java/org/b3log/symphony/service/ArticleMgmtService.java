@@ -65,7 +65,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.0.0, Nov 19, 2017
+ * @version 2.18.0.1, Nov 20, 2017
  * @since 0.2.0
  */
 @Service
@@ -1862,12 +1862,11 @@ public class ArticleMgmtService {
      */
     public void saveMarkdown(final JSONObject article) {
         final String dir = Symphonys.get("ipfs.dir");
-        final String localeDir = Symphonys.get("ipfs.localdir");
-        if (StringUtils.isBlank(dir) || StringUtils.isBlank(localeDir)) {
+        if (StringUtils.isBlank(dir)) {
             return;
         }
 
-        final Path dirPath = Paths.get(localeDir, dir);
+        final Path dirPath = Paths.get(dir);
         try {
             FileUtils.forceMkdir(dirPath.toFile());
         } catch (final Exception e) {
@@ -1878,7 +1877,7 @@ public class ArticleMgmtService {
 
         final String id = article.optString(Keys.OBJECT_ID);
         final String authorName = article.optJSONObject(Article.ARTICLE_T_AUTHOR).optString(User.USER_NAME);
-        final Path mdPath = Paths.get(localeDir, dir, authorName, id + ".md");
+        final Path mdPath = Paths.get(dir, "hacpai", authorName, id + ".md");
         try {
             if (mdPath.toFile().exists()) {
                 final FileTime lastModifiedTime = Files.getLastModifiedTime(mdPath);

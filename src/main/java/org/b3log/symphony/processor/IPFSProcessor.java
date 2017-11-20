@@ -18,6 +18,7 @@
 package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -25,6 +26,7 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.util.Execs;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.util.Symphonys;
@@ -70,11 +72,25 @@ public class IPFSProcessor {
         context.renderJSON().renderTrueResult();
 
         final String dir = Symphonys.get("ipfs.dir");
-        final String localeDir = Symphonys.get("ipfs.localdir");
-        if (StringUtils.isBlank(dir) || StringUtils.isBlank(localeDir)) {
+        final String bin = Symphonys.get("ipfs.bin");
+        if (StringUtils.isBlank(dir) || StringUtils.isBlank(bin)) {
             return;
         }
 
-        LOGGER.info("published article markdown files to IPFS");
+        String output = Execs.exec(bin + " add -r " + dir);
+        if (StringUtils.isBlank(output) || !StringUtils.containsIgnoreCase(output, "added")) {
+            LOGGER.log(Level.ERROR, "Executes [ipfs add] failed: " + output);
+
+            return;
+        }
+        final String[] lines = output.split("\n");
+        final String lastLine = lines[lines.length - 1];
+        final String hash = lastLine.split(" ")[1];
+        output = Execs.exec(bin + " name publish " + hash);
+        if (StringUtils.isBlank(output) || !StringUtils.containsIgnoreCase(output, "published")) {
+            LOGGER.log(Level.ERROR, "Executes [ipfs name publish] failed: " + output);
+
+            return;
+        }
     }
 }
