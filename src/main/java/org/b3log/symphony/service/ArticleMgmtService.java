@@ -1861,6 +1861,12 @@ public class ArticleMgmtService {
      * @param article the specified article
      */
     public void saveMarkdown(final JSONObject article) {
+        if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)
+                || Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+                || Article.ARTICLE_TYPE_C_BOOK == article.optInt(Article.ARTICLE_TYPE)) {
+            return;
+        }
+
         final String dir = Symphonys.get("ipfs.dir");
         if (StringUtils.isBlank(dir)) {
             return;
