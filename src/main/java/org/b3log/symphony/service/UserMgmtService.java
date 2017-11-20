@@ -623,13 +623,9 @@ public class UserMgmtService {
                 final JSONObject u = new JSONObject();
                 u.put(User.USER_NAME, user.optString(User.USER_NAME));
                 u.put(UserExt.USER_T_NAME_LOWER_CASE, user.optString(User.USER_NAME).toLowerCase());
-
-                final String avatar = avatarQueryService.getAvatarURLByUser(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC,
-                        user, "20");
+                final String avatar = avatarQueryService.getAvatarURLByUser(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, user, "20");
                 u.put(UserExt.USER_AVATAR_URL, avatar);
-
                 UserQueryService.USER_NAMES.add(u);
-
                 Collections.sort(UserQueryService.USER_NAMES, (u1, u2) -> {
                     final String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
                     final String u2Name = u2.optString(UserExt.USER_T_NAME_LOWER_CASE);
