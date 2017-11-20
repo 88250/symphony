@@ -1852,7 +1852,7 @@ public class ArticleMgmtService {
     }
 
     /**
-     * Savaes markdown file for the specified article.
+     * Saves markdown file for the specified article.
      *
      * @param article the specified article
      */
