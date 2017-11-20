@@ -1899,11 +1899,9 @@ public class ArticleMgmtService {
 
         try {
             final Map<String, Object> hexoFront = new LinkedHashMap<>();
-            final String title = article.optString(Article.ARTICLE_TITLE);
-            hexoFront.put("title", title);
-            final String date = DateFormatUtils.format(article.optLong(Article.ARTICLE_CREATE_TIME), "yyyy-MM-dd HH:mm:ss");
-            hexoFront.put("date", date);
-            hexoFront.put("updated", DateFormatUtils.format(article.optLong(Article.ARTICLE_UPDATE_TIME), "yyyy-MM-dd HH:mm:ss"));
+            hexoFront.put("title", article.optString(Article.ARTICLE_TITLE));
+            hexoFront.put("date", DateFormatUtils.format((Date) article.opt(Article.ARTICLE_CREATE_TIME), "yyyy-MM-dd HH:mm:ss"));
+            hexoFront.put("updated", DateFormatUtils.format((Date) article.opt(Article.ARTICLE_UPDATE_TIME), "yyyy-MM-dd HH:mm:ss"));
             final List<String> tags = Arrays.stream(article.optString(Article.ARTICLE_TAGS).split(",")).
                     filter(StringUtils::isNotBlank).map(String::trim).collect(Collectors.toList());
             if (tags.isEmpty()) {
