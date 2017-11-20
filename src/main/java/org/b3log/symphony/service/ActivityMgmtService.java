@@ -58,7 +58,7 @@ import java.util.Random;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.6.9.7, Apr 5, 2017
+ * @version 1.6.10.0, Nov 20, 2017
  * @since 1.3.0
  */
 @Service
@@ -369,6 +369,8 @@ public class ActivityMgmtService {
                 user.put(UserExt.USER_CURRENT_CHECKIN_STREAK_END, todayInt);
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_START, todayInt);
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_END, todayInt);
+                user.put(UserExt.USER_CURRENT_CHECKIN_STREAK, 1);
+                user.put(UserExt.USER_LONGEST_CHECKIN_STREAK, 1);
 
                 userMgmtService.updateUser(userId, user);
 
