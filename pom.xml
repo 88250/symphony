@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.72, Nov 19, 2017
+    Version: 2.16.6.73, Nov 20, 2017
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -37,6 +37,7 @@
         <commons-codec.version>1.10</commons-codec.version>
         <es.version>2.3.1</es.version>
         <owasp.version>1.2.1</owasp.version>
+        <snakeyaml.version>1.18</snakeyaml.version>
 
         <!-- maven plugin -->
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
@@ -282,6 +283,12 @@
             <groupId>org.owasp.encoder</groupId>
             <artifactId>encoder</artifactId>
             <version>${owasp.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
         </dependency>
     </dependencies>
 

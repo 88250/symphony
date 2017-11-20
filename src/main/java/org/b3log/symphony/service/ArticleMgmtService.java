@@ -20,6 +20,7 @@ package org.b3log.symphony.service;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -35,6 +36,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
@@ -46,6 +48,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -55,6 +58,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Article management service.
@@ -1888,9 +1892,22 @@ public class ArticleMgmtService {
             return;
         }
 
-        final File file = mdPath.toFile();
         try {
-            FileUtils.writeStringToFile(file, article.optString(Article.ARTICLE_T_ORIGINAL_CONTENT), "UTF-8");
+            final Map<String, Object> hexoFront = new LinkedHashMap<>();
+            final String title = article.optString(Article.ARTICLE_TITLE);
+            hexoFront.put("title", title);
+            final String date = DateFormatUtils.format(article.optLong(Article.ARTICLE_CREATE_TIME), "yyyy-MM-dd HH:mm:ss");
+            hexoFront.put("date", date);
+            hexoFront.put("updated", DateFormatUtils.format(article.optLong(Article.ARTICLE_UPDATE_TIME), "yyyy-MM-dd HH:mm:ss"));
+            final List<String> tags = Arrays.stream(article.optString(Article.ARTICLE_TAGS).split(",")).
+                    filter(StringUtils::isNotBlank).map(String::trim).collect(Collectors.toList());
+            if (tags.isEmpty()) {
+                tags.add("Sym");
+            }
+            hexoFront.put("tags", tags);
+
+            final String text = new Yaml().dump(hexoFront).replaceAll("\n", Strings.LINE_SEPARATOR) + "---" + Strings.LINE_SEPARATOR + article.optString(Article.ARTICLE_T_ORIGINAL_CONTENT);
+            FileUtils.writeStringToFile(new File(mdPath.toString()), text, "UTF-8");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Writes article to markdown file [" + mdPath.toString() + "] failed", e);
         }
