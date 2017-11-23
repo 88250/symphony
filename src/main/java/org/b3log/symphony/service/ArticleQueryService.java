@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.34.1, Nov 19, 2017
+ * @version 2.27.35.0, Nov 23, 2017
  * @since 0.2.0
  */
 @Service
@@ -307,7 +307,7 @@ public class ArticleQueryService {
                 return null;
             }
 
-            String title = ret.optString(Article.ARTICLE_TITLE);
+            final String title = Encode.forHtml(ret.optString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
             ret.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, EmojiParser.parseToUnicode(title));
 
@@ -355,7 +355,7 @@ public class ArticleQueryService {
                 return null;
             }
 
-            String title = ret.optString(Article.ARTICLE_TITLE);
+            final String title = Encode.forHtml(ret.optString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
             ret.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, EmojiParser.parseToUnicode(title));
 
