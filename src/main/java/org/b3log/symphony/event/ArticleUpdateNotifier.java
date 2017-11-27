@@ -38,8 +38,8 @@ import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Escapes;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
 
 import java.util.List;
 import java.util.Set;
@@ -48,7 +48,7 @@ import java.util.Set;
  * Sends article update related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 20, 2017
+ * @version 1.0.0.2, Nov 27, 2017
  * @since 2.0.0
  */
 @Named
@@ -132,7 +132,7 @@ public class ArticleUpdateNotifier extends AbstractEventListener<JSONObject> {
             }
 
             // Timeline
-            final String articleTitle = Jsoup.parse(originalArticle.optString(Article.ARTICLE_TITLE)).text();
+            final String articleTitle = Escapes.escapeHTML(originalArticle.optString(Article.ARTICLE_TITLE));
             final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
 
             final JSONObject timeline = new JSONObject();

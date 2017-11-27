@@ -35,6 +35,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,7 +50,7 @@ import java.util.Set;
  * Sends article add related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.12, Aug 23, 2017
+ * @version 1.3.4.13, Nov 27, 2017
  * @since 0.2.0
  */
 @Named
@@ -169,7 +170,7 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
             }
 
             // Timeline
-            final String articleTitle = Jsoup.parse(originalArticle.optString(Article.ARTICLE_TITLE)).text();
+            final String articleTitle = Escapes.escapeHTML(originalArticle.optString(Article.ARTICLE_TITLE));
             final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
 
             final JSONObject timeline = new JSONObject();
