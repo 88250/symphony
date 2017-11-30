@@ -19,6 +19,7 @@ package org.b3log.symphony.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -56,7 +57,7 @@ import java.util.concurrent.TimeUnit;
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.7, Jun 14, 2017
+ * @version 1.1.2.0, Nov 30, 2017
  * @since 1.6.0
  */
 @Service
@@ -112,7 +113,16 @@ public class LinkForgeMgmtService {
         if (!StringUtils.startsWithIgnoreCase(url, "http://") && !StringUtils.startsWithIgnoreCase(url, "https://")) {
             return;
         }
-        
+
+        try {
+            final URL u = new URL(url);
+            if (StringUtils.containsIgnoreCase(Latkes.getServePath(), u.getHost())) {
+                return;
+            }
+        } catch (final Exception e) {
+            return;
+        }
+
         String html;
         String baseURL;
         try {
