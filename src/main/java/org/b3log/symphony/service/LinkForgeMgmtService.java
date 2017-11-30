@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
@@ -108,6 +109,10 @@ public class LinkForgeMgmtService {
      * @param userId the specified user id
      */
     public void forge(final String url, final String userId) {
+        if (!StringUtils.startsWithIgnoreCase(url, "http://") && !StringUtils.startsWithIgnoreCase(url, "https://")) {
+            return;
+        }
+        
         String html;
         String baseURL;
         try {
