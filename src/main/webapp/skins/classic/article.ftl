@@ -33,7 +33,7 @@
         <meta name="twitter:description" content="${article.articlePreviewContent}" />
         <meta name="twitter:title" content="${article.articleTitle} - ${symphonyLabel}" />
         <meta name="twitter:image" content="${article.articleAuthorThumbnailURL210}" />
-        <meta name="twitter:url" content="${servePath}${article.articlePermalink}">
+        <meta name="twitter:url" content="${servePath}${article.articlePermalink}" />
         <meta name="twitter:site" content="@DL88250" />
         <meta name="twitter:creator" content="@DL88250" />
     </head>
