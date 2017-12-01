@@ -44,7 +44,7 @@ import java.util.UUID;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.4.4, May 4, 2017
+ * @version 1.1.5.0, Dec 1, 2017
  * @since 1.4.0
  */
 @WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
@@ -88,8 +88,7 @@ public class FileUploadServlet extends HttpServlet {
     }
 
     @Override
-    public void doGet(final HttpServletRequest req, final HttpServletResponse resp)
-            throws ServletException, IOException {
+    public void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
         if (QN_ENABLED) {
             return;
         }
@@ -158,12 +157,7 @@ public class FileUploadServlet extends HttpServlet {
         final String name = StringUtils.substringBeforeLast(fileName, ".");
         final String processName = name.replaceAll("\\W", "");
         final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-
-        if (StringUtils.isBlank(processName)) {
-            fileName = uuid + "." + suffix;
-        } else {
-            fileName = uuid + '_' + processName + "." + suffix;
-        }
+        fileName = uuid + '_' + processName + "." + suffix;
 
         final OutputStream output = new FileOutputStream(UPLOAD_DIR + fileName);
         IOUtils.copy(multipartRequestInputStream, output);
