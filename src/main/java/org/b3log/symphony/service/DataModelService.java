@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.29, May 24, 2017
+ * @version 1.12.2.30, Dec 5, 2017
  * @since 0.2.0
  */
 @Service
@@ -311,6 +311,10 @@ public class DataModelService {
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         dataModel.put(Common.SITE_VISIT_STAT_CODE, Symphonys.get("siteVisitStatCode"));
         dataModel.put(Common.MOUSE_EFFECTS, RandomUtils.nextDouble() > 0.95);
+        dataModel.put(Common.MACRO_HEAD_PC_CODE, Symphonys.get(Common.MACRO_HEAD_PC_CODE));
+        dataModel.put(Common.MACRO_HEAD_MOBILE_CODE, Symphonys.get(Common.MACRO_HEAD_MOBILE_CODE));
+        dataModel.put(Common.FOOTER_PC_CODE, Symphonys.get(Common.FOOTER_PC_CODE));
+        dataModel.put(Common.FOOTER_MOBILE_CODE, Symphonys.get(Common.FOOTER_MOBILE_CODE));
     }
 
     /**

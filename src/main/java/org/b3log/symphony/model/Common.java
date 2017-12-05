@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.62.1.13, Aug 15, 2017
+ * @version 1.63.0.0, Dec 5, 2017
  * @since 0.2.0
  */
 public final class Common {
@@ -760,6 +760,26 @@ public final class Common {
      * Key of site visit statistic code.
      */
     public static final String SITE_VISIT_STAT_CODE = "siteVisitStatCode";
+
+    /**
+     * Key of macro head PC.
+     */
+    public static final String MACRO_HEAD_PC_CODE = "macroHeadPCCode";
+
+    /**
+     * Key of macro head mobile code.
+     */
+    public static final String MACRO_HEAD_MOBILE_CODE = "macroHeadMobileCode";
+
+    /**
+     * Key of footer PC code.
+     */
+    public static final String FOOTER_PC_CODE = "footerPCCode";
+
+    /**
+     * Key of footer mobile code.
+     */
+    public static final String FOOTER_MOBILE_CODE = "footerMobileCode";
 
     /**
      * Key of online visitor count.
