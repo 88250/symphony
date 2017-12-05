@@ -34,7 +34,7 @@
 * [Contribution](#contribution)
   * [Authors](#authors)
   * [Discussion area](#discussion-area)
-  * [Count the power](#Count-the-power)
+  * [Count the power](#count-the-power)
 * [Feeling](#feeling)
 * [Credits](#credits)
 
