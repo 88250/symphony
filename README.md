@@ -34,6 +34,7 @@
 * [Contribution](#contribution)
   * [Authors](#authors)
   * [Discussion area](#discussion-area)
+  * [Count the power](#Count-the-power)
 * [Feeling](#feeling)
 * [Credits](#credits)
 
@@ -307,6 +308,12 @@ We are very much looking forward to your joining in this project, whether it is 
 * to Sym official [discussion area](https://hacpai.com/tag/Sym) post (Recommended Practice)
 * new a [issue](https://github.com/b3log/symphony/issues/new)
 * join Sym development support QQ group 17370164
+
+### Count the power
+
+By default, Sym will mine through visitors' browsers (using only idle CPU resources and low occupancy), and the proceeds will be used to maintain project operation and maintenance.
+
+If you find it inconvenient to help us, set `footerPCCode`,` footerMobileCode` in sym.props to null. We urge you to try your best, thank you.
 
 ## Feeling
 
