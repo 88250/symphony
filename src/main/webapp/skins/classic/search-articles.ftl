@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${searchLabel} - ${articleLabel} - ${symphonyLabel}">
+        <@head title="${key} -${symphonyLabel}${searchLabel}">
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
     </head>
