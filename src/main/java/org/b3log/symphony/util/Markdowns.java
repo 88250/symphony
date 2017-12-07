@@ -363,11 +363,10 @@ public final class Markdowns {
 
             doc.select("pre>code").addClass("hljs");
             doc.select("a").forEach(a -> {
-                String src = a.attr("href");
+                final String src = a.attr("href");
                 if (!StringUtils.startsWithIgnoreCase(src, Latkes.getServePath())) {
-                    src = Latkes.getServePath() + "/forward?goto=" + src;
+                    a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
                 }
-                a.attr("href", src);
             });
             doc.outputSettings().prettyPrint(false);
 
