@@ -81,13 +81,13 @@
     });
     setTimeout(function () {
         window.location.href = '${forwardURL}'
-    }, 4000)
+    }, 5000)
 
     var S = {
         init: function () {
             S.Drawing.init('.canvas');
             document.body.classList.add('body--ready');
-            var text = '#countdown 3';
+            var text = '#countdown 5';
             S.UI.simulate(text);
             S.Drawing.loop(function () {
                 S.Shape.render();
