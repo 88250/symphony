@@ -366,6 +366,7 @@ public final class Markdowns {
                 final String src = a.attr("href");
                 if (!StringUtils.startsWithIgnoreCase(src, Latkes.getServePath())) {
                     a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
+                    a.attr("target", "_blank");
                 }
             });
             doc.outputSettings().prettyPrint(false);
