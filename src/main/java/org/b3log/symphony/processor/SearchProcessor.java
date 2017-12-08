@@ -42,6 +42,7 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.SearchQueryService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -61,7 +62,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.4.0, Sep 14, 2017
+ * @version 1.1.4.1, Dec 8, 2017
  * @since 1.4.0
  */
 @RequestProcessor
@@ -126,16 +127,11 @@ public class SearchProcessor {
         }
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         String keyword = request.getParameter("key");
         if (StringUtils.isBlank(keyword)) {
             keyword = "";
         }
-        keyword = keyword.replace("\"", "").replace("'", "");
-        keyword = StringUtils.deleteWhitespace(keyword);
-        keyword = Jsoup.clean(keyword, Whitelist.none());
-
-        dataModel.put(Common.KEY, keyword);
+        dataModel.put(Common.KEY, Escapes.escapeHTML(keyword));
 
         final String p = request.getParameter("p");
         int pageNum = 1;
