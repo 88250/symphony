@@ -1233,6 +1233,8 @@ code .dec {
     .preview img {
       transition: all 0.2s ease-out 0s;
       margin-top: -48px;
+      height: 60px;
+      width: 60px;
     }
 
     .preview:hover > img {
