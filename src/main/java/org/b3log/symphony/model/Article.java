@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.27.0.0, Nov 19, 2017
+ * @version 1.28.0.0, Dec 8, 2017
  * @since 0.2.0
  */
 public final class Article {
@@ -87,14 +87,29 @@ public final class Article {
     public static final String ARTICLE_CREATE_TIME = "articleCreateTime";
 
     /**
+     * Key of article create time str.
+     */
+    public static final String ARTICLE_CREATE_TIME_STR = "articleCreateTimeStr";
+
+    /**
      * Key of article update time.
      */
     public static final String ARTICLE_UPDATE_TIME = "articleUpdateTime";
 
     /**
+     * Key of article update time str.
+     */
+    public static final String ARTICLE_UPDATE_TIME_STR = "articleUpdateTimeStr";
+
+    /**
      * Key of article latest comment time.
      */
     public static final String ARTICLE_LATEST_CMT_TIME = "articleLatestCmtTime";
+
+    /**
+     * Key of article latest comment time str.
+     */
+    public static final String ARTICLE_LATEST_CMT_TIME_STR = "articleLatestCmtTimeStr";
 
     /**
      * Key of article latest commenter name.

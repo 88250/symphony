@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.35.0, Nov 23, 2017
+ * @version 2.27.35.1, Dec 8, 2017
  * @since 0.2.0
  */
 @Service
@@ -1990,7 +1990,7 @@ public class ArticleQueryService {
     /**
      * Organizes the specified article.
      * <ul>
-     * <li>converts create/update/latest comment time (long) to date type</li>
+     * <li>converts create/update/latest comment time (long) to date type and format string</li>
      * <li>generates author thumbnail URL</li>
      * <li>generates author name</li>
      * <li>escapes article title &lt; and &gt;</li>
@@ -2181,19 +2181,22 @@ public class ArticleQueryService {
     }
 
     /**
-     * Converts the specified article create/update/latest comment time (long) to date type.
+     * Converts the specified article create/update/latest comment time (long) to date type and format str.
      *
      * @param article the specified article
      */
     private void toArticleDate(final JSONObject article) {
-        article.put(Common.TIME_AGO,
-                Times.getTimeAgo(article.optLong(Article.ARTICLE_CREATE_TIME), Locales.getLocale()));
-        article.put(Common.CMT_TIME_AGO,
-                Times.getTimeAgo(article.optLong(Article.ARTICLE_LATEST_CMT_TIME), Locales.getLocale()));
-
-        article.put(Article.ARTICLE_CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
-        article.put(Article.ARTICLE_UPDATE_TIME, new Date(article.optLong(Article.ARTICLE_UPDATE_TIME)));
-        article.put(Article.ARTICLE_LATEST_CMT_TIME, new Date(article.optLong(Article.ARTICLE_LATEST_CMT_TIME)));
+        article.put(Common.TIME_AGO, Times.getTimeAgo(article.optLong(Article.ARTICLE_CREATE_TIME), Locales.getLocale()));
+        article.put(Common.CMT_TIME_AGO, Times.getTimeAgo(article.optLong(Article.ARTICLE_LATEST_CMT_TIME), Locales.getLocale()));
+        final Date createDate = new Date(article.optLong(Article.ARTICLE_CREATE_TIME));
+        article.put(Article.ARTICLE_CREATE_TIME, createDate);
+        article.put(Article.ARTICLE_CREATE_TIME_STR, DateFormatUtils.format(createDate, "yyyy-MM-dd HH:mm:ss"));
+        final Date updateDate = new Date(article.optLong(Article.ARTICLE_UPDATE_TIME));
+        article.put(Article.ARTICLE_UPDATE_TIME, updateDate);
+        article.put(Article.ARTICLE_UPDATE_TIME_STR, DateFormatUtils.format(updateDate, "yyyy-MM-dd HH:mm:ss"));
+        final Date latestCmtDate = new Date(article.optLong(Article.ARTICLE_LATEST_CMT_TIME));
+        article.put(Article.ARTICLE_LATEST_CMT_TIME, latestCmtDate);
+        article.put(Article.ARTICLE_LATEST_CMT_TIME_STR, DateFormatUtils.format(latestCmtDate, "yyyy-MM-dd HH:mm:ss"));
     }
 
     /**

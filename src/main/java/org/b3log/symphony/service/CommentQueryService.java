@@ -18,6 +18,7 @@
 package org.b3log.symphony.service;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -50,7 +51,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.10.0, Nov 18, 2017
+ * @version 2.11.10.1, Dec 8, 2017
  * @since 0.2.0
  */
 @Service
@@ -729,23 +730,11 @@ public class CommentQueryService {
 
     /**
      * Organizes the specified comments.
-     * <p>
-     * <ul>
-     * <li>converts comment create time (long) to date type</li>
-     * <li>generates comment author thumbnail URL</li>
-     * <li>generates comment author URL</li>
-     * <li>generates comment author name</li>
-     * <li>generates &#64;username home URL</li>
-     * <li>markdowns comment content</li>
-     * <li>block comment if need</li>
-     * <li>generates emotion images</li>
-     * <li>generates time ago text</li>
-     * <li>anonymous process</li>
-     * </ul>
      *
      * @param avatarViewMode the specified avatar view mode
      * @param comments       the specified comments
      * @throws RepositoryException repository exception
+     * @see #organizeComment(int, JSONObject)
      */
     private void organizeComments(final int avatarViewMode, final List<JSONObject> comments) throws RepositoryException {
         Stopwatchs.start("Organizes comments");
@@ -761,7 +750,6 @@ public class CommentQueryService {
 
     /**
      * Organizes the specified comment.
-     * <p>
      * <ul>
      * <li>converts comment create time (long) to date type</li>
      * <li>generates comment author thumbnail URL</li>
@@ -783,9 +771,10 @@ public class CommentQueryService {
         Stopwatchs.start("Organize comment");
 
         try {
-            comment.put(Common.TIME_AGO,
-                    Times.getTimeAgo(comment.optLong(Comment.COMMENT_CREATE_TIME), Locales.getLocale()));
-            comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
+            comment.put(Common.TIME_AGO, Times.getTimeAgo(comment.optLong(Comment.COMMENT_CREATE_TIME), Locales.getLocale()));
+            final Date createDate = new Date(comment.optLong(Comment.COMMENT_CREATE_TIME));
+            comment.put(Comment.COMMENT_CREATE_TIME, createDate);
+            comment.put(Comment.COMMENT_CREATE_TIME_STR, DateFormatUtils.format(createDate, "yyyy-MM-dd HH:mm:ss"));
 
             final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
             final JSONObject author = userRepository.get(authorId);
