@@ -62,7 +62,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.21.1, Sep 4, 2017
+ * @version 1.15.21.2, Dec 8, 2017
  * @since 0.2.0
  */
 @Service
@@ -526,6 +526,13 @@ public class UserMgmtService {
                                 + new Date().getTime());
                     } else {
                         user.put(UserExt.USER_AVATAR_URL, avatarURL + "?" + new Date().getTime());
+                    }
+
+                    avatarURL = user.optString(UserExt.USER_AVATAR_URL);
+                    if (255 < StringUtils.length(avatarURL)) {
+                        LOGGER.warn("Length of user [" + userName + "]'s avatar URL [" + avatarURL + "] larger then 255");
+                        avatarURL = Symphonys.get("defaultThumbnailURL");
+                        user.put(UserExt.USER_AVATAR_URL, avatarURL);
                     }
 
                     userRepository.update(ret, user);
