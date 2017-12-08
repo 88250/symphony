@@ -179,6 +179,7 @@ public class CommentQueryService {
             ret.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
             ret.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
             ret.put(Common.TIME_AGO, comment.optString(Common.TIME_AGO));
+            ret.put(Comment.COMMENT_CREATE_TIME_STR, comment.optString(Comment.COMMENT_CREATE_TIME_STR));
             ret.put(Common.REWARED_COUNT, comment.optString(Common.REWARED_COUNT));
             ret.put(Common.REWARDED, comment.optBoolean(Common.REWARDED));
             ret.put(Keys.OBJECT_ID, commentId);
@@ -231,6 +232,7 @@ public class CommentQueryService {
                 reply.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
                 reply.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                 reply.put(Common.TIME_AGO, comment.optString(Common.TIME_AGO));
+                reply.put(Comment.COMMENT_CREATE_TIME_STR, comment.optString(Comment.COMMENT_CREATE_TIME_STR));
                 reply.put(Common.REWARED_COUNT, comment.optString(Common.REWARED_COUNT));
                 reply.put(Common.REWARDED, comment.optBoolean(Common.REWARDED));
                 reply.put(Keys.OBJECT_ID, comment.optString(Keys.OBJECT_ID));
