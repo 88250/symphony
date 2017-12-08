@@ -21,6 +21,7 @@ import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.profiles.pegdown.Extensions;
 import com.vladsch.flexmark.profiles.pegdown.PegdownOptionsAdapter;
 import com.vladsch.flexmark.util.options.DataHolder;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
@@ -35,7 +36,6 @@ import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Callstacks;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
@@ -68,7 +68,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.18.27, Dec 7, 2017
+ * @version 1.11.19.0, Dec 8, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -432,8 +432,7 @@ public final class Markdowns {
      * @return HTML
      */
     private static String getHTML(final String markdownText) {
-        final String hash = MD5.hash(markdownText);
-
+        final String hash = DigestUtils.md5Hex(markdownText);
         final JSONObject value = MD_CACHE.get(hash);
         if (null == value) {
             return null;
@@ -449,8 +448,7 @@ public final class Markdowns {
      * @param html         the specified HTML
      */
     private static void putHTML(final String markdownText, final String html) {
-        final String hash = MD5.hash(markdownText);
-
+        final String hash = DigestUtils.md5Hex(markdownText);
         final JSONObject value = new JSONObject();
         value.put(Common.DATA, html);
         MD_CACHE.put(hash, value);
