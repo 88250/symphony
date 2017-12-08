@@ -90,9 +90,11 @@
                 </div>
                 <div class="index-side">
                     <div class="index-tabs fn-flex">
-                        <span class="perfect current">
-                            <svg><use xlink:href="#perfect"></use></svg>
+                        <span class="perfect">
+                            <a href="${servePath}/perfect">
+                                <svg><use xlink:href="#perfect"></use></svg>
                             ${perfectLabel}
+                            </a>
                         </span>
                         <span class="check">
                             <#if isLoggedIn && !isDailyCheckin>

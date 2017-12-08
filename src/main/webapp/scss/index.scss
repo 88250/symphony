@@ -1097,6 +1097,9 @@ code .dec {
     color: $black-text;
     text-decoration: none;
     display: block;
+    svg  {
+      vertical-align: text-bottom;
+    }
   }
 
   .index-tabs > span.current,
