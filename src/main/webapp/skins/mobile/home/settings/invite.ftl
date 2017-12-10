@@ -7,7 +7,7 @@
             </div>
             <div class="module-panel form">
                 <br/>
-                <input type="text" readonly="" value="${serverScheme}://${serverHost}/register?r=${currentUser.userName}" onclick="this.select()"/>
+                <input type="text" readonly="" value="${serverScheme}://${serverHost}${contextPath}/register?r=${currentUser.userName}" onclick="this.select()"/>
             </div>
         </div>
     </#if>
