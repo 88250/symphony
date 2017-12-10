@@ -48,7 +48,7 @@ import java.util.Set;
  * Captcha processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.7, Jan 10, 2017
+ * @version 2.2.0.8, Dec 10, 2017
  * @since 0.2.2
  */
 @RequestProcessor
@@ -80,13 +80,13 @@ public class CaptchaProcessor {
         context.setRenderer(renderer);
 
         try {
-            final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
 
             final ConfigurableCaptchaService cs = new ConfigurableCaptchaService();
             cs.setColorFactory(new SingleColorFactory(new Color(25, 60, 170)));
             cs.setFilterFactory(new CurvesRippleFilterFactory(cs.getColorFactory()));
             final RandomWordFactory randomWordFactory = new RandomWordFactory();
+            randomWordFactory.setCharacters("abcdefghijklmnprstuvwxy23456789");
             randomWordFactory.setMinLength(4);
             randomWordFactory.setMaxLength(4);
             cs.setWordFactory(randomWordFactory);
@@ -150,6 +150,7 @@ public class CaptchaProcessor {
             cs.setColorFactory(new SingleColorFactory(new Color(26, 52, 96)));
             cs.setFilterFactory(new CurvesRippleFilterFactory(cs.getColorFactory()));
             final RandomWordFactory randomWordFactory = new RandomWordFactory();
+            randomWordFactory.setCharacters("abcdefghijklmnprstuvwxy23456789");
             randomWordFactory.setMinLength(4);
             randomWordFactory.setMaxLength(4);
             cs.setWordFactory(randomWordFactory);
