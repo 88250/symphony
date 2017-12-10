@@ -110,7 +110,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.8.1, Nov 18, 2017
+ * @version 2.26.9.0, Dec 10, 2017
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1287,6 +1287,7 @@ public class AdminProcessor {
 
         final JSONObject user = userQueryService.getUser(userId);
         dataModel.put(User.USER, user);
+        final String oldRole = user.optString(User.USER_ROLE);
 
         final JSONObject result = roleQueryService.getRoles(1, Integer.MAX_VALUE, 10);
         final List<JSONObject> roles = (List<JSONObject>) result.opt(Role.ROLES);
@@ -1341,6 +1342,11 @@ public class AdminProcessor {
 
                     break;
             }
+        }
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
+            user.put(User.USER_ROLE, oldRole);
         }
 
         userMgmtService.updateUser(userId, user);
