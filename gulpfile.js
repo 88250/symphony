@@ -83,6 +83,7 @@ gulp.task('build', ['sass', 'clean'], function () {
             .pipe(gulp.dest('./src/main/webapp/js/lib/jquery/file-upload-9.10.1/'));
 
     var jsCodemirror = ['./src/main/webapp/js/lib/editor/codemirror.js',
+        './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',
         './src/main/webapp/js/lib/editor/placeholder.js',
         './src/main/webapp/js/lib/editor/editor.js',
         './src/main/webapp/js/lib/to-markdown.js'];
@@ -107,6 +108,7 @@ gulp.task('build', ['sass', 'clean'], function () {
     var jsArticleLib = [
         // start codemirror.min.js
         './src/main/webapp/js/lib/editor/codemirror.js',
+        './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',
         './src/main/webapp/js/lib/editor/placeholder.js',
         './src/main/webapp/js/lib/editor/editor.js',
         './src/main/webapp/js/lib/to-markdown.js',
