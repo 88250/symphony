@@ -338,14 +338,13 @@ a[class*=" icon-"]:hover {
   color: #fff;
   cursor: pointer;
   height: 56px;
-  font-size: 20px;
+  line-height: 56px;
   text-align: center;
   position: fixed;
   width: 56px;
   z-index: 110;
   right: 20px;
   box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
-  padding-top: 15px;
   box-sizing: border-box;
 
   svg {
