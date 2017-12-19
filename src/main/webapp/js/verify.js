@@ -323,6 +323,9 @@ var Verify = {
                     $('.tag-desc').on( 'arrangeComplete', function () {
                         $('.step-btn .green, .step-btn .red').prop('disabled', false);
                     });
+                    if ($('.tag-desc li').length < 2) {
+                        $('.step-btn .green, .step-btn .red').prop('disabled', false);
+                    }
                     break;
                 case 3:
                     $('.guide-tab > div:eq(2)').show();
