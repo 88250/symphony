@@ -53,6 +53,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -68,7 +69,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.19.0, Dec 8, 2017
+ * @version 1.11.20.0, Dec 21, 2017
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -363,8 +364,12 @@ public final class Markdowns {
 
             doc.select("pre>code").addClass("hljs");
             doc.select("a").forEach(a -> {
-                final String src = a.attr("href");
+                String src = a.attr("href");
                 if (!StringUtils.startsWithIgnoreCase(src, Latkes.getServePath())) {
+                    try {
+                        src = URLEncoder.encode(src, "UTF-8");
+                    } catch (final Exception e) {
+                    }
                     a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
                     a.attr("target", "_blank");
                 }
