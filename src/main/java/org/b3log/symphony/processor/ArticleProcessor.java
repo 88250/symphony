@@ -92,7 +92,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.0.0, Nov 19, 2017
+ * @version 1.27.0.1, Dec 18, 2017
  * @since 0.2.0
  */
 @RequestProcessor
