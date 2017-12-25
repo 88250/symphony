@@ -264,7 +264,7 @@ Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://
 
 * 到 Sym 官方[讨论区](https://hacpai.com/tag/Sym)发帖（推荐做法）
 * 来一发 [issue](https://github.com/b3log/symphony/issues/new)
-* 加入 Sym 开发支持 Q 群 17370164
+* 加入 Sym 开发支持 [Q 群 17370164](https://shang.qq.com/wpa/qunwpa?idkey=0bb80e452d38d5113c7bb2534cefc8155589d0bdce81c7d2e6d91930bcb6e2d7)
 
 ### 算力
 
