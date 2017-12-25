@@ -23,9 +23,9 @@
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
             <a href="${servePath}/recent"><svg><use xlink:href="#refresh"></use></svg></a>
             <#else>
-            <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin" 
-               title="${registerLabel}">${registerLabel}</a>
-            <a href="javascript: Util.goLogin();" title="${loginLabel}" class="unlogin">${loginLabel}</a>
+                <a href="javascript: Util.goLogin();" title="${loginLabel}" class="unlogin">${loginLabel}</a>
+                <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin"
+                 title="${registerLabel}">${registerLabel}</a>
             </#if>
         </div>
     </div>
