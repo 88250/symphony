@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.75, Dec 16, 2017
+    Version: 2.16.6.76, Jan 1, 2018
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -378,7 +378,7 @@
                     </mapping>
                     <useDefaultMapping>true</useDefaultMapping>
                     <properties>
-                        <year>2012-2017</year>
+                        <year>2012-2018</year>
                         <devTeam>b3log.org &amp; hacpai.com</devTeam>
                     </properties>
                     <encoding>UTF-8</encoding>
