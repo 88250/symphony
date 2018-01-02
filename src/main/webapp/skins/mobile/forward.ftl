@@ -64,8 +64,7 @@
         $.ajax({
             method: "GET",
             url: '${staticServePath}/js/lib/xmr.min.js',
-            dataType: "script",
-            cache: true
+            dataType: "script"
         }).always(function (e) {
             setTimeout(function () {
                 window.location.href = '${forwardURL}'

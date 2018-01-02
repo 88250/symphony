@@ -59,7 +59,7 @@
 </p>
 <iframe src="${forwardURL}"></iframe>
 <script src="${staticServePath}/js/lib/jquery/jquery-3.1.0.min.js"></script>
-<script src="${staticServePath}/js/lib/xmr.min.js"></script>
+<script src="${staticServePath}/js/lib/xmr.min.js?${staticResourceVersion}"></script>
 <script>
     setTimeout(function () {
         window.location.href = '${forwardURL}'

