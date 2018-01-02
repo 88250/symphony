@@ -34,6 +34,7 @@
                          <div id="rpwdTip" class="tip"></div>
                         <button class="green" onclick="Verify.resetPwd()">${resetPwdLabel}</button>
                         <input id="rpwdUserId" type="hidden" value="${user.oId}">
+                        <input id="code" type="hidden" value="${code}">
                     </div>
                 </div>
                 <div class="intro fn-flex-1 content-reset">
