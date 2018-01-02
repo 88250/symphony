@@ -1,6 +1,6 @@
 /*
  * Symphony - A modern community (forum/SNS/blog) platform written in Java.
- * Copyright (C) 2012-2017,  b3log.org & hacpai.com
+ * Copyright (C) 2012-2018,  b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.10.0, Sep 14, 2017
+ * @version 1.13.11.0, Jan 2, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -415,6 +415,7 @@ public class LoginProcessor {
             final String userId = verifycode.optString(Verifycode.USER_ID);
             final JSONObject user = userQueryService.getUser(userId);
             dataModel.put(User.USER, user);
+            dataModel.put(Common.CODE, code);
         }
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -437,6 +438,13 @@ public class LoginProcessor {
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
         final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
         final String userId = requestJSONObject.optString(Common.USER_ID);
+        final String code = requestJSONObject.optString(Common.CODE);
+        final JSONObject verifycode = verifycodeQueryService.getVerifycode(code);
+        if (null == verifycode || !verifycode.optString(Verifycode.USER_ID).equals(userId)) {
+            context.renderMsg(langPropsService.get("verifycodeExpiredLabel"));
+
+            return;
+        }
 
         String name = null;
         String email = null;

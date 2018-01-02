@@ -1,6 +1,6 @@
 /*
  * Symphony - A modern community (forum/SNS/blog) platform written in Java.
- * Copyright (C) 2012-2017,  b3log.org & hacpai.com
+ * Copyright (C) 2012-2018,  b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 /**
  * @fileoverview add-article.
  *

@@ -1,6 +1,6 @@
 /*
  * Symphony - A modern community (forum/SNS/blog) platform written in Java.
- * Copyright (C) 2012-2017,  b3log.org & hacpai.com
+ * Copyright (C) 2012-2018,  b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.35.1, Dec 8, 2017
+ * @version 2.27.36.0, Dec 27, 2017
  * @since 0.2.0
  */
 @Service
@@ -2126,6 +2126,7 @@ public class ArticleQueryService {
         if (qiniuEnabled) {
             final String qiniuDomain = Symphonys.get("qiniu.domain");
             if (StringUtils.startsWith(ret, qiniuDomain)) {
+                ret = StringUtils.substringBefore(ret, "?");
                 ret += "?imageView2/1/w/" + 180 + "/h/" + 135 + "/format/jpg/interlace/1/q";
             } else {
                 ret = "";
