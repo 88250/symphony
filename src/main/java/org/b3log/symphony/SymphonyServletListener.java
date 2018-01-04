@@ -60,7 +60,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.9.37, Dec 13, 2017
+ * @version 3.19.10.0, Jan 4, 2018
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -249,8 +249,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
             super.requestDestroyed(servletRequestEvent);
 
             final HttpServletRequest request = (HttpServletRequest) servletRequestEvent.getServletRequest();
-            final boolean isStatic = (Boolean) request.getAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE);
-            if (!isStatic) {
+            final Object isStaticObj = request.getAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE);
+            if (null != isStaticObj && !(Boolean) isStaticObj) {
                 Stopwatchs.end();
 
                 final long elapsed = Stopwatchs.getElapsed("Request initialized [" + request.getRequestURI() + "]");
