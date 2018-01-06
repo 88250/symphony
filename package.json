@@ -1,7 +1,7 @@
 {
   "name": "Symphony",
-  "version": "1.7.0",
-  "description": "A modern community (forum/SNS/blog) platform written in Java. 一个用 Java 实现的现代化社区（论坛/社交网络/博客）平台。 https://hacpai.com",
+  "version": "2.3.0",
+  "description": "A modern community (forum/SNS/blog) platform written in Java. 一个用 Java 实现的现代化社区（论坛/社交网络/博客）平台。 http://sym.b3log.org",
   "homepage": "https://github.com/b3log/symphony",
   "repository": {
     "type": "git",
@@ -31,6 +31,6 @@
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",
     "gulp-uglify": "^2.0.0",
-    "marked": "^0.3.6"
+    "marked": "^0.3.9"
   }
 }
