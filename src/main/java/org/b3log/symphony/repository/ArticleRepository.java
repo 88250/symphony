@@ -34,7 +34,7 @@ import java.util.List;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.2, Jan 6, 2018
+ * @version 1.1.1.3, Jan 9, 2018
  * @since 0.2.0
  */
 @Repository
@@ -99,7 +99,6 @@ public class ArticleRepository extends AbstractRepository {
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
                 addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
                 setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
-
         final JSONObject result1 = get(query);
         final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
 
@@ -108,18 +107,16 @@ public class ArticleRepository extends AbstractRepository {
 
         final int reminingSize = fetchSize - array1.length();
         if (0 != reminingSize) { // Query for remains
-            query = new Query();
-            query.setFilter(
+            query = new Query().setFilter(
                     CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
                             new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
-                            new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID)));
-            query.setCurrentPageNum(1);
-            query.setPageSize(reminingSize);
-            query.setPageCount(1);
-
+                            new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID))).
+                    addProjection(Article.ARTICLE_TITLE, String.class).
+                    addProjection(Article.ARTICLE_PERMALINK, String.class).
+                    addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                    setCurrentPageNum(1).setPageSize(reminingSize).setPageCount(1);
             final JSONObject result2 = get(query);
             final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
-
             final List<JSONObject> list2 = CollectionUtils.jsonArrayToList(array2);
 
             ret.addAll(list2);
