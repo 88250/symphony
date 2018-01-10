@@ -80,7 +80,7 @@ import java.util.*;
  * <li>Exports posts(article/comment) to a file (/export/posts), POST</li>
  * <li>Queries invitecode state (/invitecode/state), GET</li>
  * <li>Shows link forge (/member/{userName}/forge/link), GET</li>
- * <li>i18n (/settings/i18n), POST</li>
+ * <li>Updates i18n (/settings/i18n), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
