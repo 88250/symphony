@@ -125,6 +125,9 @@
                                     <a href="https://hacpai.com/guide/markdown">Markdown ${tutorialLabel}</a>
                                     <span class="ft-gray">${markdownTutorialTipLabel}</span>
                                 </li>
+                                <li>
+                                ${pipeIntroLabel}
+                                </li>
                             </ul>
                             <br/>
                         </div>
