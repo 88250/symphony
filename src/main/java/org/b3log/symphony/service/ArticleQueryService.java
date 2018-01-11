@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.36.0, Dec 27, 2017
+ * @version 2.27.36.1, Jan 6, 2018
  * @since 0.2.0
  */
 @Service
@@ -623,7 +623,10 @@ public class ArticleQueryService {
 
                 articleIds.remove(article.optString(Keys.OBJECT_ID));
 
-                final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
+                final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
+                        addProjection(Article.ARTICLE_TITLE, String.class).
+                        addProjection(Article.ARTICLE_PERMALINK, String.class).
+                        addProjection(Article.ARTICLE_AUTHOR_ID, String.class);
                 result = articleRepository.get(query);
 
                 ret.addAll(CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS)));
@@ -1225,7 +1228,10 @@ public class ArticleQueryService {
             filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
             filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
 
-            query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+            query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                    addProjection(Article.ARTICLE_TITLE, String.class).
+                    addProjection(Article.ARTICLE_PERMALINK, String.class).
+                    addProjection(Article.ARTICLE_AUTHOR_ID, String.class);
 
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));

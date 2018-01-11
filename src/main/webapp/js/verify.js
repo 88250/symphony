@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.3.11, Sep 13, 2017
+ * @version 2.7.4.0, Jan 2, 2018
  */
 
 /**
@@ -213,7 +213,8 @@ var Verify = {
                 }]})) {
             var requestJSONObject = {
                 userPassword: calcMD5($("#rpwdUserPassword").val()),
-                userId: $("#rpwdUserId").val()
+                userId: $("#rpwdUserId").val(),
+                code: $("#code").val()
             };
 
             $.ajax({

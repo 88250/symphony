@@ -7,7 +7,7 @@
 
             <div>
                 <#if isLoggedIn && (currentUser.userName != user.userName)>
-                    <button class="green small" onclick="location.href = '${servePath}/post?type=1&at=${user.userName}'">
+                    <button class="green small" onclick="location.href = '${servePath}/post?type=1&at=${user.userName}&tags=${discussionLabel}'">
                         ${privateMessageLabel}
                     </button>
                 </#if>

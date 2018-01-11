@@ -39,7 +39,7 @@ import java.net.UnknownHostException;
  * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.4, Aug 26, 2016
+ * @version 1.3.2.5, Jan 9, 2018
  * @since 1.4.0
  */
 @Service
@@ -228,13 +228,13 @@ public class SearchMgmtService {
                 final byte[] data = doc.toString().getBytes("UTF-8");
 
                 if (content.length() < 32) {
-                    LOGGER.log(Level.WARN, "This article is too small [length=" + data.length + "], so skip it [title="
+                    LOGGER.log(Level.DEBUG, "This article is too small [length=" + data.length + "], so skip it [title="
                             + doc.optString(Article.ARTICLE_TITLE) + ", id=" + id + "]");
                     return;
                 }
 
                 if (data.length > 102400) {
-                    LOGGER.log(Level.WARN, "This article is too big [length=" + data.length + "], so skip it [title="
+                    LOGGER.log(Level.DEBUG, "This article is too big [length=" + data.length + "], so skip it [title="
                             + doc.optString(Article.ARTICLE_TITLE) + ", id=" + id + "]");
                     return;
                 }
