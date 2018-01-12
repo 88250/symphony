@@ -44,7 +44,7 @@ import java.util.UUID;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.5.0, Dec 1, 2017
+ * @version 1.1.6.0, Jan 12, 2018
  * @since 1.4.0
  */
 @WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
@@ -115,6 +115,9 @@ public class FileUploadServlet extends HttpServlet {
         resp.addHeader("Cache-Control", "public, max-age=31536000");
         resp.addHeader("ETag", etag);
         resp.setHeader("Server", "Latke Static Server (v" + SymphonyServletListener.VERSION + ")");
+        final String ext = StringUtils.substringAfterLast(path, ".");
+        final String mimeType = MimeTypes.getMimeType(ext);
+        resp.addHeader("Content-Type", mimeType);
 
         if (etag.equals(ifNoneMatch)) {
             resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
