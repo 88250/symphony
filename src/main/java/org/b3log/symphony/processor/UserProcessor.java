@@ -65,30 +65,19 @@ import java.util.Map;
  * <li>User following articles (/member/{userName}/following/articles), GET</li>
  * <li>User followers (/member/{userName}/followers), GET</li>
  * <li>User points (/member/{userName}/points), GET</li>
- * <li>Shows settings (/settings), GET</li>
- * <li>Shows settings pages (/settings/*), GET</li>
- * <li>Updates profiles (/settings/profiles), POST</li>
- * <li>Updates user avatar (/settings/avatar), POST</li>
- * <li>Geo status (/settings/geo/status), POST</li>
  * <li>Transfer point (/point/transfer), POST</li>
- * <li>Sync (/settings/sync/b3), POST</li>
- * <li>Privacy (/settings/privacy), POST</li>
- * <li>Function (/settings/function), POST</li>
- * <li>Updates emotions (/settings/emotionList), POST</li>
- * <li>Password (/settings/password), POST</li>
  * <li>Point buy invitecode (/point/buy-invitecode), POST</li>
  * <li>Lists usernames (/users/names), GET</li>
  * <li>Lists emotions (/users/emotions), GET</li>
  * <li>Exports posts(article/comment) to a file (/export/posts), POST</li>
  * <li>Queries invitecode state (/invitecode/state), GET</li>
  * <li>Shows link forge (/member/{userName}/forge/link), GET</li>
- * <li>Updates i18n (/settings/i18n), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.26.23.1, Nov 18, 2017
+ * @version 1.26.23.2, Jan 14, 2018
  * @since 0.2.0
  */
 @RequestProcessor
