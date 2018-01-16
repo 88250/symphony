@@ -65,7 +65,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.0.1, Nov 20, 2017
+ * @version 2.18.0.2, Jan 16, 2018
  * @since 0.2.0
  */
 @Service
@@ -427,33 +427,29 @@ public class ArticleMgmtService {
      * Increments the view count of the specified article by the given article id.
      *
      * @param articleId the given article id
-     * @throws ServiceException service exception
      */
-    public void incArticleViewCount(final String articleId) throws ServiceException {
-        Symphonys.EXECUTOR_SERVICE.submit(new Runnable() {
-            @Override
-            public void run() {
-                final Transaction transaction = articleRepository.beginTransaction();
-                try {
-                    final JSONObject article = articleRepository.get(articleId);
-                    if (null == article) {
-                        return;
-                    }
-
-                    final int viewCnt = article.optInt(Article.ARTICLE_VIEW_CNT);
-                    article.put(Article.ARTICLE_VIEW_CNT, viewCnt + 1);
-                    article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-
-                    articleRepository.update(articleId, article);
-
-                    transaction.commit();
-                } catch (final RepositoryException e) {
-                    if (transaction.isActive()) {
-                        transaction.rollback();
-                    }
-
-                    LOGGER.log(Level.ERROR, "Incs an article view count failed", e);
+    public void incArticleViewCount(final String articleId) {
+        Symphonys.EXECUTOR_SERVICE.submit(() -> {
+            final Transaction transaction = articleRepository.beginTransaction();
+            try {
+                final JSONObject article = articleRepository.get(articleId);
+                if (null == article) {
+                    return;
                 }
+
+                final int viewCnt = article.optInt(Article.ARTICLE_VIEW_CNT);
+                article.put(Article.ARTICLE_VIEW_CNT, viewCnt + 1);
+                article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+
+                articleRepository.update(articleId, article);
+
+                transaction.commit();
+            } catch (final RepositoryException e) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+
+                LOGGER.log(Level.ERROR, "Incs an article view count failed", e);
             }
         });
     }
