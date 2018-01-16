@@ -437,7 +437,7 @@ public class ArticleMgmtService {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
-                    
+
                     return;
                 }
 
