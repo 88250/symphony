@@ -24,7 +24,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.*;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Stopwatchs;
@@ -42,7 +41,7 @@ import java.util.List;
  * Follow query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.4, Jan 19, 2017
+ * @version 1.4.0.5, Jan 16, 2018
  * @since 0.2.5
  */
 @Service
@@ -120,24 +119,19 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getFollowingUsers(final int avatarViewMode,
-                                        final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getFollowingUsers(final int avatarViewMode, final String followerId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
-
         ret.put(Keys.RESULTS, (Object) records);
         ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
 
         try {
             final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_USER, currentPageNum, pageSize);
-            @SuppressWarnings("unchecked") final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
-
+            final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
             for (final JSONObject follow : followings) {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
                 final JSONObject user = userRepository.get(followingId);
-
                 if (null == user) {
                     LOGGER.log(Level.WARN, "Not found user[id=" + followingId + ']');
 
@@ -171,23 +165,19 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getFollowingTags(final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getFollowingTags(final String followerId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
-
         ret.put(Keys.RESULTS, (Object) records);
         ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
 
         try {
             final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_TAG, currentPageNum, pageSize);
-            @SuppressWarnings("unchecked") final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
-
+            final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
             for (final JSONObject follow : followings) {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
                 final JSONObject tag = tagRepository.get(followingId);
-
                 if (null == tag) {
                     LOGGER.log(Level.WARN, "Not found tag[id=" + followingId + ']');
 
@@ -220,27 +210,20 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getFollowingArticles(final int avatarViewMode,
-                                           final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getFollowingArticles(final int avatarViewMode, final String followerId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
-
         ret.put(Keys.RESULTS, (Object) records);
         ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
 
         try {
             final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_ARTICLE, currentPageNum, pageSize);
-            @SuppressWarnings("unchecked") final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
-
-            final ArticleQueryService articleQueryService
-                    = Lifecycle.getBeanManager().getReference(ArticleQueryService.class);
-
+            final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
+            final ArticleQueryService articleQueryService = Lifecycle.getBeanManager().getReference(ArticleQueryService.class);
             for (final JSONObject follow : followings) {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
                 final JSONObject article = articleRepository.get(followingId);
-
                 if (null == article) {
                     LOGGER.log(Level.WARN, "Not found article [id=" + followingId + ']');
 
@@ -275,27 +258,20 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getWatchingArticles(final int avatarViewMode,
-                                          final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getWatchingArticles(final int avatarViewMode, final String followerId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
-
         ret.put(Keys.RESULTS, (Object) records);
         ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
 
         try {
             final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH, currentPageNum, pageSize);
-            @SuppressWarnings("unchecked") final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
-
-            final ArticleQueryService articleQueryService
-                    = Lifecycle.getBeanManager().getReference(ArticleQueryService.class);
-
+            final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
+            final ArticleQueryService articleQueryService = Lifecycle.getBeanManager().getReference(ArticleQueryService.class);
             for (final JSONObject follow : followings) {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
                 final JSONObject article = articleRepository.get(followingId);
-
                 if (null == article) {
                     LOGGER.log(Level.WARN, "Not found article [id=" + followingId + ']');
 
@@ -330,26 +306,19 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getArticleWatchers(final int avatarViewMode,
-                                         final String watchingArticleId, final int currentPageNum, final int pageSize)
-            throws ServiceException {
+    public JSONObject getArticleWatchers(final int avatarViewMode, final String watchingArticleId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
-
         ret.put(Keys.RESULTS, (Object) records);
         ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
 
         try {
             final JSONObject result = getFollowers(watchingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH, currentPageNum, pageSize);
-
-            @SuppressWarnings("unchecked") final List<JSONObject> followers = (List<JSONObject>) result.opt(Keys.RESULTS);
-
+            final List<JSONObject> followers = (List<JSONObject>) result.opt(Keys.RESULTS);
             for (final JSONObject follow : followers) {
                 final String followerId = follow.optString(Follow.FOLLOWER_ID);
                 final JSONObject user = userRepository.get(followerId);
-
                 if (null == user) {
                     LOGGER.log(Level.WARN, "Not found user[id=" + followerId + ']');
 
@@ -384,26 +353,19 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getFollowerUsers(final int avatarViewMode,
-                                       final String followingUserId, final int currentPageNum, final int pageSize)
-            throws ServiceException {
+    public JSONObject getFollowerUsers(final int avatarViewMode, final String followingUserId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
-
         ret.put(Keys.RESULTS, (Object) records);
         ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
 
         try {
             final JSONObject result = getFollowers(followingUserId, Follow.FOLLOWING_TYPE_C_USER, currentPageNum, pageSize);
-
-            @SuppressWarnings("unchecked") final List<JSONObject> followers = (List<JSONObject>) result.opt(Keys.RESULTS);
-
+            final List<JSONObject> followers = (List<JSONObject>) result.opt(Keys.RESULTS);
             for (final JSONObject follow : followers) {
                 final String followerId = follow.optString(Follow.FOLLOWER_ID);
                 final JSONObject user = userRepository.get(followerId);
-
                 if (null == user) {
                     LOGGER.log(Level.WARN, "Not found user[id=" + followerId + ']');
 
@@ -505,7 +467,7 @@ public class FollowQueryService {
                 .setPageSize(pageSize).setCurrentPageNum(currentPageNum);
 
         final JSONObject result = followRepository.get(query);
-        final List<JSONObject> records = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        final List<JSONObject> records = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
         final int recordCnt = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
 
         final JSONObject ret = new JSONObject();
@@ -547,7 +509,7 @@ public class FollowQueryService {
 
         final JSONObject result = followRepository.get(query);
 
-        final List<JSONObject> records = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        final List<JSONObject> records = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
         final int recordCnt = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
 
         final JSONObject ret = new JSONObject();
