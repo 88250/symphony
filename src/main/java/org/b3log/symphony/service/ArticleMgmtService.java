@@ -434,6 +434,10 @@ public class ArticleMgmtService {
             try {
                 final JSONObject article = articleRepository.get(articleId);
                 if (null == article) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+                    
                     return;
                 }
 
