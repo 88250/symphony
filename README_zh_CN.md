@@ -73,6 +73,7 @@ Sym 的诞生是有如下几点原因：
 * [北纬极客](https://begeek.bwae.org)
 * [胖虎社区](http://www.pwnhoo.com)
 * [呆萌狮 - Demo's](http://www.daimengshi.com)
+* [架构师的小秘圈](http://www.3xmq.com/)
 
 商业版：
 
