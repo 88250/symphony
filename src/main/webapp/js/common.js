@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.44.0.1, Dec 23, 2017
+ * @version 1.44.1.0, Jan 23, 2018
  */
 
 /**
@@ -530,7 +530,7 @@ var Util = {
     if (clipboardData.getData("text/html") === '' && clipboardData.items.length === 2) {
       return '';
     }
-
+    var hasCode = false;
     var text = toMarkdown(clipboardData.getData("text/html"), {
       converters: [
         {
@@ -560,27 +560,27 @@ var Util = {
 
             return "![](" + node.src + ")";
           }
+        },
+        {
+          filter: ['pre', 'code'],
+          replacement: function (content) {
+            if (content.split('\n').length > 1) {
+              hasCode = true
+            }
+            return '`' + content + '`'
+          }
         }
       ], gfm: true
     });
 
-    // code 中 <, > 进行转义
-    var codes = text.split('```');
-    if (codes.length > 1) {
-      for (var i = 0, iMax = codes.length; i < iMax; i++) {
-        if (i % 2 === 1) {
-          codes[i] = codes[i].replace(/<\/span><span style="color:#\w{6};">/g, '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
-      }
+    if (hasCode) {
+      return event.originalEvent.clipboardData.getData('text/plain');
+    } else {
+      const div = document.createElement('div');
+      div.innerHTML = text;
+      text = div.innerText.replace(/\n{2,}/g, '\n\n').replace(/(^\s*)|(\s*)$/g, '');
+      return text;
     }
-    text = codes.join('```');
-
-    // 图片经过 toMarkdown 还没有过滤的话，需要把图片的 <> 进行转义
-    text = text.replace(/<img/ig, '&lt;img');
-
-    // ascii 160 替换为 30
-    text = $('<div>' + text + '</div>').text().replace(/\n{2,}/g, '\n\n').replace(/ /g, ' ');
-    return $.trim(text);
   },
   /**
    * @description 根据 url search 获取值
