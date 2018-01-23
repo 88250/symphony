@@ -69,7 +69,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.20.0, Dec 21, 2017
+ * @version 1.11.20.1, Jan 23, 2018
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -295,9 +295,19 @@ public final class Markdowns {
             String html = LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
 
             if (MARKED_AVAILABLE) {
-                html = toHtmlByMarked(markdownText);
-                if (!StringUtils.startsWith(html, "<p>")) {
-                    html = "<p>" + html + "</p>";
+                try {
+                    html = toHtmlByMarked(markdownText);
+                    if (!StringUtils.startsWith(html, "<p>")) {
+                        html = "<p>" + html + "</p>";
+                    }
+                } catch (final Exception e) {
+                    LOGGER.log(Level.WARN, "Failed to use [marked] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
+
+                    com.vladsch.flexmark.ast.Node document = PARSER.parse(markdownText);
+                    html = RENDERER.render(document);
+                    if (!StringUtils.startsWith(html, "<p>")) {
+                        html = "<p>" + html + "</p>";
+                    }
                 }
             } else {
                 com.vladsch.flexmark.ast.Node document = PARSER.parse(markdownText);
@@ -391,7 +401,7 @@ public final class Markdowns {
 
             return future.get(MD_TIMEOUT, TimeUnit.MILLISECONDS);
         } catch (final TimeoutException e) {
-            LOGGER.log(Level.ERROR, "Markdown timeout [md=" + markdownText + "]");
+            LOGGER.log(Level.ERROR, "Markdown timeout [md=" + StringUtils.substring(markdownText, 0, 256) + "]");
             Callstacks.printCallstack(Level.ERROR, new String[]{"org.b3log"}, null);
 
             final Set<Thread> threads = Thread.getAllStackTraces().keySet();
@@ -403,7 +413,7 @@ public final class Markdowns {
                 }
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Markdown failed [md=" + markdownText + "]", e);
+            LOGGER.log(Level.ERROR, "Markdown failed [md=" + StringUtils.substring(markdownText, 0, 256) + "]", e);
         } finally {
             pool.shutdownNow();
 
@@ -416,6 +426,8 @@ public final class Markdowns {
     private static String toHtmlByMarked(final String markdownText) throws Exception {
         final URL url = new URL(MARKED_ENGINE_URL);
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setConnectTimeout(100);
+        conn.setReadTimeout(1000);
         conn.setDoOutput(true);
 
         final OutputStream outputStream = conn.getOutputStream();
