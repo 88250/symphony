@@ -65,7 +65,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.0.2, Jan 16, 2018
+ * @version 2.18.1.0, Jan 23, 2018
  * @since 0.2.0
  */
 @Service
@@ -595,7 +595,9 @@ public class ArticleMgmtService {
             articleContent = StringUtils.replace(articleContent, langPropsService.get("uploadingLabel", Locale.US), "");
             article.put(Article.ARTICLE_CONTENT, articleContent);
 
-            article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
+            String rewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
+            rewardContent = Emotions.toAliases(rewardContent);
+            article.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
 
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
             article.put(Article.ARTICLE_SYNC_TO_CLIENT, fromClient ? true : author.optBoolean(UserExt.SYNC_TO_CLIENT));
@@ -902,7 +904,9 @@ public class ArticleMgmtService {
                     enableReward = true;
                 }
 
-                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
+                String rewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
+                rewardContent = Emotions.toAliases(rewardContent);
+                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
                 oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
             }
 
