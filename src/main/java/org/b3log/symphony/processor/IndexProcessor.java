@@ -69,7 +69,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.12.3.24, Dec 26, 2016
+ * @version 1.12.3.25, Jan 23, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -169,17 +169,14 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
         final List<JSONObject> recentArticles = articleQueryService.getIndexRecentArticles(avatarViewMode);
         dataModel.put(Common.RECENT_ARTICLES, recentArticles);
-
         JSONObject currentUser = userQueryService.getCurrentUser(request);
         if (null == currentUser) {
             userMgmtService.tryLogInWithCookie(request, context.getResponse());
         }
 
         currentUser = userQueryService.getCurrentUser(request);
-
         if (null != currentUser) {
             if (!UserExt.finshedGuide(currentUser)) {
                 response.sendRedirect(Latkes.getServePath() + "/guide");
@@ -188,13 +185,10 @@ public class IndexProcessor {
             }
 
             final String userId = currentUser.optString(Keys.OBJECT_ID);
-
             final int pageSize = Symphonys.getInt("indexArticlesCnt");
-
             final List<JSONObject> followingTagArticles = articleQueryService.getFollowingTagArticles(
                     avatarViewMode, userId, 1, pageSize);
             dataModel.put(Common.FOLLOWING_TAG_ARTICLES, followingTagArticles);
-
             final List<JSONObject> followingUserArticles = articleQueryService.getFollowingUserArticles(
                     avatarViewMode, userId, 1, pageSize);
             dataModel.put(Common.FOLLOWING_USER_ARTICLES, followingUserArticles);
@@ -205,12 +199,9 @@ public class IndexProcessor {
 
         final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles(avatarViewMode);
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
-
         final List<JSONObject> timelines = timelineMgmtService.getTimelines();
         dataModel.put(Common.TIMELINES, timelines);
-
         dataModel.put(Common.SELECTED, Common.INDEX);
-
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         dataModelService.fillIndexTags(dataModel);
     }
@@ -276,20 +267,15 @@ public class IndexProcessor {
                 sortMode = 0;
         }
 
+        dataModel.put(Common.SELECTED, Common.RECENT);
         final JSONObject result = articleQueryService.getRecentArticles(avatarViewMode, sortMode, pageNum, pageSize);
         final List<JSONObject> allArticles = (List<JSONObject>) result.get(Article.ARTICLES);
-
-        dataModel.put(Common.SELECTED, Common.RECENT);
-
         final List<JSONObject> stickArticles = new ArrayList<>();
-
         final Iterator<JSONObject> iterator = allArticles.iterator();
         while (iterator.hasNext()) {
             final JSONObject article = iterator.next();
-
             final boolean stick = article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0;
             article.put(Article.ARTICLE_T_IS_STICK, stick);
-
             if (stick) {
                 stickArticles.add(article);
                 iterator.remove();
@@ -301,7 +287,6 @@ public class IndexProcessor {
 
         final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final List<Integer> pageNums = (List<Integer>) pagination.get(Pagination.PAGINATION_PAGE_NUMS);
         if (!pageNums.isEmpty()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
@@ -313,7 +298,6 @@ public class IndexProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
         dataModelService.fillRandomArticles(avatarViewMode, dataModel);
         dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -341,17 +325,14 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         int pageSize = Symphonys.getInt("indexArticlesCnt");
-
         final JSONObject user = userQueryService.getCurrentUser(request);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
         }
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
         final List<JSONObject> indexArticles = articleQueryService.getHotArticles(avatarViewMode, pageSize);
         dataModel.put(Common.INDEX_ARTICLES, indexArticles);
-
         dataModel.put(Common.SELECTED, Common.HOT);
 
         Stopwatchs.start("Fills");
@@ -392,7 +373,6 @@ public class IndexProcessor {
         Stopwatchs.start("Fills");
         try {
             final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
             dataModelService.fillHeaderAndFooter(request, response, dataModel);
             if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
                 dataModelService.fillRandomArticles(avatarViewMode, dataModel);
@@ -433,7 +413,6 @@ public class IndexProcessor {
         final JSONObject user = userQueryService.getCurrentUser(request);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
-
             if (!UserExt.finshedGuide(user)) {
                 response.sendRedirect(Latkes.getServePath() + "/guide");
 
@@ -442,16 +421,12 @@ public class IndexProcessor {
         }
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
         final JSONObject result = articleQueryService.getPerfectArticles(avatarViewMode, pageNum, pageSize);
         final List<JSONObject> perfectArticles = (List<JSONObject>) result.get(Article.ARTICLES);
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
-
         dataModel.put(Common.SELECTED, Common.PERFECT);
-
         final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final List<Integer> pageNums = (List<Integer>) pagination.get(Pagination.PAGINATION_PAGE_NUMS);
         if (!pageNums.isEmpty()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
@@ -503,9 +478,7 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
         dataModelService.fillRandomArticles(avatarViewMode, dataModel);
         dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -528,7 +501,6 @@ public class IndexProcessor {
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         final Map<String, String> langs = langPropsService.getAll(Locales.getLocale());
 
         dataModel.putAll(langs);
