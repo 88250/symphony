@@ -69,7 +69,7 @@
         </div>
         <div class="module-panel form fn-clear">
             <form action="${servePath}/admin/user/${user.oId}" method="POST">
-                <label for="userPassword">${userPasswordLabel}</label>
+                <label for="userPassword">${passwordLabel}</label>
                 <input type="text" id="userPassword" name="userPassword" value="${user.userPassword}" />
 
                 <label for="userNickname">${nicknameLabel}</label>

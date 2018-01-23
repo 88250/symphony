@@ -50,7 +50,7 @@
         <script src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Verify.init();
-            Label.userNameErrorLabel = "${userNameErrorLabel}";
+            Label.invalidUserNameLabel = "${invalidUserNameLabel}";
             Label.invalidEmailLabel = "${invalidEmailLabel}";
             Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
             Label.captchaErrorLabel = "${captchaErrorLabel}";

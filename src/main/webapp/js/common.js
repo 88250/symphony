@@ -1733,7 +1733,7 @@ var Validate = {
         }
         break;
       case "password":
-        if (data.target.val().length === 0 || data.target.val().length > 16) {
+        if (data.target.val().length < 6 || data.target.val().length > 16 || !/\d/.test(data.target.val()) || !/[A-Za-z]/.test(data.target.val())) {
           isValidate = false;
         }
         break;

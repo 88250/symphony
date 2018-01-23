@@ -38,10 +38,6 @@ var Verify = {
                     "type": "string",
                     "max": 256,
                     "msg": Label.loginNameErrorLabel
-                }, {
-                    "target": $("#loginPassword"),
-                    "type": "password",
-                    "msg": Label.invalidPasswordLabel
                 }]})) {
             var requestJSONObject = {
                 nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
@@ -82,7 +78,7 @@ var Verify = {
         if (Validate.goValidate({target: $("#registerTip"),
             data: [{
                     "target": $("#registerUserName"),
-                    "msg": Label.userNameErrorLabel,
+                    "msg": Label.invalidUserNameLabel,
                     "type": 'string',
                     'max': 20
                 }, {
