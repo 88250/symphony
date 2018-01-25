@@ -21,10 +21,15 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.64.0.0, Jan 2, 2018
+ * @version 1.65.0.0, Jan 25, 2018
  * @since 0.2.0
  */
 public final class Common {
+
+    /**
+     * Key of query.
+     */
+    public static final String QUERY = "query";
 
     /**
      * Key of code.
@@ -840,11 +845,6 @@ public final class Common {
      * Key of usernames.
      */
     public static final String USER_NAMES = "userNames";
-
-    /**
-     * Key of username or email.
-     */
-    public static final String USER_NAME_OR_EMAIL = "userNameOrEmail";
 
     /**
      * Key of operation.

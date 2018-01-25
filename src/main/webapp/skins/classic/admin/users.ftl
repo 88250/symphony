@@ -4,7 +4,7 @@
 <div class="content admin">
     <div class="module list">
         <form method="GET" action="${servePath}/admin/users" class="form">
-            <input name="userNameOrEmail" type="text" placeholder="${userNameLabel}/${userEmailLabel}"/>
+            <input name="query" type="text" placeholder="${userNameLabel}/${userEmailLabel}/Id"/>
             <button type="submit" class="green">${searchLabel}</button> &nbsp;
             <#if permissions["userAddUser"].permissionGrant>
             <button type="button" class="btn red" onclick="window.location = '${servePath}/admin/add-user'">${addUserLabel}</button>

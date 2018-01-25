@@ -50,7 +50,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.8.6.13, Apr 23, 2017
+ * @version 1.8.6.14, Jan 25, 2018
  * @since 0.2.0
  */
 @Service
@@ -578,17 +578,16 @@ public class UserQueryService {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setCurrentPageNum(currentPageNum).setPageSize(pageSize);
 
-        if (requestJSONObject.has(Common.USER_NAME_OR_EMAIL)) {
-            final String nameOrEmail = requestJSONObject.optString(Common.USER_NAME_OR_EMAIL);
-
+        if (requestJSONObject.has(Common.QUERY)) {
+            final String q = requestJSONObject.optString(Common.QUERY);
             final List<Filter> filters = new ArrayList<>();
-            filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, nameOrEmail));
-            filters.add(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, nameOrEmail));
+            filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, q));
+            filters.add(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, q));
+            filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, q));
             query.setFilter(new CompositeFilter(CompositeFilterOperator.OR, filters));
         }
 
-        JSONObject result = null;
-
+        JSONObject result;
         try {
             result = userRepository.get(query);
         } catch (final RepositoryException e) {
@@ -598,7 +597,6 @@ public class UserQueryService {
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);

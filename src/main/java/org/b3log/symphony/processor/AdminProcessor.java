@@ -1124,14 +1124,12 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
-
-        final String nameOrEmail = request.getParameter(Common.USER_NAME_OR_EMAIL);
-        if (!Strings.isEmptyOrNull(nameOrEmail)) {
-            requestJSONObject.put(Common.USER_NAME_OR_EMAIL, nameOrEmail);
+        final String query = request.getParameter(Common.QUERY);
+        if (!Strings.isEmptyOrNull(query)) {
+            requestJSONObject.put(Common.QUERY, query);
         }
 
         final JSONObject result = userQueryService.getUsers(requestJSONObject);
-
         dataModel.put(User.USERS, CollectionUtils.jsonArrayToList(result.optJSONArray(User.USERS)));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
