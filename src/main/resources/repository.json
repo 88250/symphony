@@ -1,1607 +1,1607 @@
 {
-    "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "4.37.8.23, Jun 14, 2017",
-    "authors": [
-        "Liang Ding",
-        "Zephyr",
-        "Bill Ho"
-    ],
-    "since": "0.2.0",
-    "repositories": [
+  "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
+  "version": "4.37.8.24, Jan 26, 2018",
+  "authors": [
+    "Liang Ding",
+    "Zephyr",
+    "Bill Ho"
+  ],
+  "since": "0.2.0",
+  "repositories": [
+    {
+      "name": "user_book_article",
+      "keys": [
         {
-            "name": "user_book_article",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "userId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "bookId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "articleId",
-                    "type": "String",
-                    "length": 19
-                }
-            ]
+          "name": "oId",
+          "type": "String",
+          "length": 19
         },
         {
-            "name": "book",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "bookTitle",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "bookSubTitle",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "bookOriginalTitle",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "bookAltTitle",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "bookDoubanURL",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "bookAuthor",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "bookAuthorIntro",
-                    "type": "String",
-                    "length": 1024
-                },
-                {
-                    "name": "bookBinding",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "bookCatalog",
-                    "type": "String",
-                    "length": 2048
-                },
-                {
-                    "name": "bookImgURL",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "bookISBN10",
-                    "type": "String",
-                    "length": 10
-                },
-                {
-                    "name": "bookISBN13",
-                    "type": "String",
-                    "length": 13
-                },
-                {
-                    "name": "bookPages",
-                    "type": "String",
-                    "length": 4
-                },
-                {
-                    "name": "bookPrice",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "bookPublishDate",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "bookPublisher",
-                    "type": "String",
-                    "length": 64
-                },
-                {
-                    "name": "bookSeries",
-                    "type": "String",
-                    "length": 64
-                },
-                {
-                    "name": "bookSummary",
-                    "type": "String",
-                    "length": 2048
-                },
-                {
-                    "name": "bookTags",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "bookTranslator",
-                    "type": "String",
-                    "length": 128
-                }
-            ]
+          "name": "userId",
+          "type": "String",
+          "length": 19
         },
         {
-            "name": "permission",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "permissionCategory",
-                    "type": "int"
-                }
-            ]
+          "name": "bookId",
+          "type": "String",
+          "length": 19
         },
         {
-            "name": "role",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "roleName",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "roleDescription",
-                    "type": "String",
-                    "length": 2048
-                }
-            ]
-        },
-        {
-            "name": "role_permission",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "roleId",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "permissionId",
-                    "type": "String",
-                    "length": 32
-                }
-            ]
-        },
-        {
-            "name": "link",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "linkAddr",
-                    "type": "String",
-                    "length": 512
-                },
-                {
-                    "name": "linkTitle",
-                    "type": "String",
-                    "length": 512
-                },
-                {
-                    "name": "linkType",
-                    "type": "int",
-                    "description": "0: forge"
-                },
-                {
-                    "name": "linkSubmitCnt",
-                    "type": "int"
-                },
-                {
-                    "name": "linkClickCnt",
-                    "type": "int"
-                },
-                {
-                    "name": "linkGoodCnt",
-                    "type": "int"
-                },
-                {
-                    "name": "linkBadCnt",
-                    "type": "int"
-                },
-                {
-                    "name": "linkBaiduRefCnt",
-                    "type": "int"
-                },
-                {
-                    "name": "linkScore",
-                    "type": "double"
-                },
-                {
-                    "name": "linkPingCnt",
-                    "type": "int"
-                },
-                {
-                    "name": "linkPingErrCnt",
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "name": "tag_user_link",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "linkId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "tagId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "userId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "linkScore",
-                    "type": "double"
-                }
-            ]
-        },
-        {
-            "name": "invitecode",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "code",
-                    "type": "String",
-                    "length": 16
-                },
-                {
-                    "name": "generatorId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "userId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "useTime",
-                    "type": "long"
-                },
-                {
-                    "name": "status",
-                    "type": "int"
-                },
-                {
-                    "name": "memo",
-                    "type": "String",
-                    "length": 512
-                }
-            ]
-        },
-        {
-            "name": "character",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "characterUserId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "characterImg",
-                    "type": "String",
-                    "length": 1048576
-                },
-                {
-                    "name": "characterContent",
-                    "type": "String",
-                    "length": 16
-                }
-            ]
-        },
-        {
-            "name": "referral",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "referralUser",
-                    "type": "String",
-                    "length": 19,
-                    "description": "referral user name"
-                },
-                {
-                    "name": "referralDataId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "referralType",
-                    "type": "int"
-                },
-                {
-                    "name": "referralIP",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "referralClick",
-                    "type": "int"
-                },
-                {
-                    "name": "referralUserHasPoint",
-                    "type": "boolean"
-                },
-                {
-                    "name": "referralAuthorHasPoint",
-                    "type": "boolean"
-                }
-            ]
-        },
-        {
-            "name": "revision",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "revisionDataType",
-                    "type": "int",
-                    "description": "0: article"
-                },
-                {
-                    "name": "revisionDataId",
-                    "type": "String",
-                    "length": 19,
-                    "description": "article id"
-                },
-                {
-                    "name": "revisionData",
-                    "type": "String",
-                    "length": 1048576
-                },
-                {
-                    "name": "revisionAuthorId",
-                    "type": "String",
-                    "length": 19
-                }
-            ]
-        },
-        {
-            "name": "liveness",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "livenessUserId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "livenessDate",
-                    "type": "String",
-                    "length": 8
-                },
-                {
-                    "name": "livenessPoint",
-                    "type": "int"
-                },
-                {
-                    "name": "livenessArticle",
-                    "type": "int"
-                },
-                {
-                    "name": "livenessComment",
-                    "type": "int"
-                },
-                {
-                    "name": "livenessActivity",
-                    "type": "int"
-                },
-                {
-                    "name": "livenessThank",
-                    "type": "int"
-                },
-                {
-                    "name": "livenessVote",
-                    "type": "int"
-                },
-                {
-                    "name": "livenessReward",
-                    "type": "int"
-                },
-                {
-                    "name": "livenessPV",
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "name": "domain",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "domainTitle",
-                    "type": "String",
-                    "length": 50
-                },
-                {
-                    "name": "domainURI",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "domainDescription",
-                    "type": "String",
-                    "length": 512
-                },
-                {
-                    "name": "domainType",
-                    "type": "String",
-                    "length": 16
-                },
-                {
-                    "name": "domainSort",
-                    "type": "int"
-                },
-                {
-                    "name": "domainTagCnt",
-                    "type": "int"
-                },
-                {
-                    "name": "domainIconPath",
-                    "type": "String",
-                    "length": 1024
-                },
-                {
-                    "name": "domainCSS",
-                    "type": "String",
-                    "length": 1048576
-                },
-                {
-                    "name": "domainStatus",
-                    "type": "int",
-                    "description": "0: valid, 1: invalid"
-                },
-                {
-                    "name": "domainSeoTitle",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "domainSeoKeywords",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "domainSeoDesc",
-                    "type": "String",
-                    "length": 512
-                }
-            ]
-        },
-        {
-            "name": "domain_tag",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "domain_oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "tag_oId",
-                    "type": "String",
-                    "length": 19
-                }
-            ]
-        },
-        {
-            "name": "vote",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "userId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "type",
-                    "type": "int",
-                    "description": "0: up, 1: down"
-                },
-                {
-                    "name": "dataType",
-                    "type": "int",
-                    "description": "0: article, 1: comment, 2: user, 3: tag"
-                },
-                {
-                    "name": "dataId",
-                    "type": "String",
-                    "length": 19
-                }
-            ]
-        },
-        {
-            "name": "verifycode",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "userId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "type",
-                    "type": "int"
-                },
-                {
-                    "name": "bizType",
-                    "type": "int"
-                },
-                {
-                    "name": "receiver",
-                    "type": "String",
-                    "length": 64
-                },
-                {
-                    "name": "code",
-                    "type": "String",
-                    "length": 64
-                },
-                {
-                    "name": "status",
-                    "type": "int"
-                },
-                {
-                    "name": "expired",
-                    "type": "long"
-                }
-            ]
-        },
-        {
-            "name": "reward",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "senderId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "dataId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "type",
-                    "type": "int",
-                    "description": "0: article, 1: comment, 2: user"
-                }
-            ]
-        },
-        {
-            "name": "pointtransfer",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "fromId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "toId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "sum",
-                    "type": "int"
-                },
-                {
-                    "name": "fromBalance",
-                    "type": "int"
-                },
-                {
-                    "name": "toBalance",
-                    "type": "int"
-                },
-                {
-                    "name": "time",
-                    "type": "long"
-                },
-                {
-                    "name": "type",
-                    "type": "int"
-                },
-                {
-                    "name": "dataId",
-                    "type": "String",
-                    "length": 19
-                }
-            ]
-        },
-        {
-            "name": "notification",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "userId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "dataId",
-                    "type": "String",
-                    "length": 64
-                },
-                {
-                    "name": "dataType",
-                    "type": "int"
-                },
-                {
-                    "name": "hasRead",
-                    "type": "boolean",
-                    "desription": "has read or not"
-                }
-            ]
-        },
-        {
-            "name": "follow",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "followerId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "followingId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "followingType",
-                    "type": "int",
-                    "description": "0: user, 1: tag, 2: article collect, 3: article watch"
-                }
-            ]
-        },
-        {
-            "name": "comment",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "clientCommentId",
-                    "type": "String",
-                    "length": 32,
-                    "nullable": true
-                },
-                {
-                    "name": "commentContent",
-                    "type": "String",
-                    "length": 2000
-                },
-                {
-                    "name": "commentCreateTime",
-                    "type": "long"
-                },
-                {
-                    "name": "commentAuthorId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "commentOnArticleId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "commentSharpURL",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "commentOriginalCommentId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "commentStatus",
-                    "type": "int",
-                    "description": "0: valid, 1: invalid"
-                },
-                {
-                    "name": "commentIP",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "commentUA",
-                    "type": "String",
-                    "length": 255,
-                    "description": "User-Agent"
-                },
-                {
-                    "name": "commentAnonymous",
-                    "type": "int",
-                    "description": "0: public, 1: anonymous"
-                },
-                {
-                    "name": "commentGoodCnt",
-                    "description": "Favour count",
-                    "type": "int"
-                },
-                {
-                    "name": "commentBadCnt",
-                    "description": "Oppose count",
-                    "type": "int"
-                },
-                {
-                    "name": "commentScore",
-                    "type": "double"
-                },
-                {
-                    "name": "commentReplyCnt",
-                    "type": "int"
-                },
-                {
-                    "name": "commentAudioURL",
-                    "type": "String",
-                    "length": 256
-                }
-            ]
-        },
-        {
-            "name": "tag",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "tagReferenceCount",
-                    "type": "int"
-                },
-                {
-                    "name": "tagCommentCount",
-                    "type": "int"
-                },
-                {
-                    "name": "tagFollowerCount",
-                    "type": "int"
-                },
-                {
-                    "name": "tagLinkCount",
-                    "type": "int"
-                },
-                {
-                    "name": "tagTitle",
-                    "type": "String",
-                    "length": 50
-                },
-                {
-                    "name": "tagURI",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "tagDescription",
-                    "type": "String",
-                    "length": 512
-                },
-                {
-                    "name": "tagIconPath",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "tagCSS",
-                    "type": "String",
-                    "length": 1048576
-                },
-                {
-                    "name": "tagStatus",
-                    "type": "int",
-                    "description": "0: valid, 1: invalid"
-                },
-                {
-                    "name": "tagGoodCnt",
-                    "description": "Favour count",
-                    "type": "int"
-                },
-                {
-                    "name": "tagBadCnt",
-                    "description": "Oppose count",
-                    "type": "int"
-                },
-                {
-                    "name": "tagSeoTitle",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "tagSeoKeywords",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "tagSeoDesc",
-                    "type": "String",
-                    "length": 512
-                },
-                {
-                    "name": "tagRandomDouble",
-                    "type": "double"
-                }
-            ]
-        },
-        {
-            "name": "tag_tag",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "tag1_oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "tag2_oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "weight",
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "name": "option",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 64
-                },
-                {
-                    "name": "optionValue",
-                    "type": "String",
-                    "length": 512
-                },
-                {
-                    "name": "optionCategory",
-                    "type": "String",
-                    "legnth": 20
-                }
-            ]
-        },
-        {
-            "name": "tag_article",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "article_oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "tag_oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "articleCommentCount",
-                    "type": "int"
-                },
-                {
-                    "name": "articleLatestCmtTime",
-                    "type": "long"
-                },
-                {
-                    "name": "redditScore",
-                    "type": "double"
-                },
-                {
-                    "name": "articlePerfect",
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "name": "user_tag",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "user_oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "tag_oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "type",
-                    "type": "int",
-                    "description": "0: creator, 1: article, 2: user self"
-                }
-            ]
-        },
-        {
-            "name": "user",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "userNo",
-                    "type": "int"
-                },
-                {
-                    "name": "userEmail",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "userName",
-                    "description": "Belongs to User Profiles",
-                    "type": "String",
-                    "length": 20
-                },
-                {
-                    "name": "userPassword",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "userNickname",
-                    "type": "String",
-                    "length": 20
-                },
-                {
-                    "name": "userTags",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "userURL",
-                    "description": "Belongs to User Profiles",
-                    "type": "String",
-                    "length": 100
-                },
-                {
-                    "name": "userQQ",
-                    "description": "Belongs to User Profiles",
-                    "type": "String",
-                    "length": 12
-                },
-                {
-                    "name": "userIntro",
-                    "description": "Belongs to User Profiles",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "userAvatarType",
-                    "description": "0: Gravatar, 1: External Link",
-                    "type": "int"
-                },
-                {
-                    "name": "userAvatarURL",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "userOnlineFlag",
-                    "type": "boolean"
-                },
-                {
-                    "name": "userB3Key",
-                    "type": "String",
-                    "length": 20
-                },
-                {
-                    "name": "userB3ClientAddArticleURL",
-                    "type": "String",
-                    "length": 150
-                },
-                {
-                    "name": "userB3ClientUpdateArticleURL",
-                    "type": "String",
-                    "length": 150
-                },
-                {
-                    "name": "userB3ClientAddCommentURL",
-                    "type": "String",
-                    "length": 150
-                },
-                {
-                    "name": "userRole",
-                    "type": "String",
-                    "length": 20
-                },
-                {
-                    "name": "userArticleCount",
-                    "type": "int"
-                },
-                {
-                    "name": "userCommentCount",
-                    "type": "int"
-                },
-                {
-                    "name": "userTagCount",
-                    "type": "int"
-                },
-                {
-                    "name": "userStatus",
-                    "type": "int",
-                    "description": "0: valid, 1: invalid"
-                },
-                {
-                    "name": "userPoint",
-                    "type": "int"
-                },
-                {
-                    "name": "userUsedPoint",
-                    "type": "int"
-                },
-                {
-                    "name": "userJoinPointRank",
-                    "type": "int",
-                    "description": "0: join, 1: not join"
-                },
-                {
-                    "name": "userJoinUsedPointRank",
-                    "type": "int",
-                    "description": "0: join, 1: not join"
-                },
-                {
-                    "name": "userLatestArticleTime",
-                    "type": "long"
-                },
-                {
-                    "name": "userLatestCmtTime",
-                    "type": "long"
-                },
-                {
-                    "name": "userLatestLoginTime",
-                    "type": "long"
-                },
-                {
-                    "name": "userLatestLoginIP",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "userAppRole",
-                    "type": "int",
-                    "description": "0: hacker, 1: painter"
-                },
-                {
-                    "name": "userCheckinTime",
-                    "type": "long"
-                },
-                {
-                    "name": "userLongestCheckinStreakStart",
-                    "type": "int"
-                },
-                {
-                    "name": "userLongestCheckinStreakEnd",
-                    "type": "int"
-                },
-                {
-                    "name": "userCurrentCheckinStreakStart",
-                    "type": "int"
-                },
-                {
-                    "name": "userCurrentCheckinStreakEnd",
-                    "type": "int"
-                },
-                {
-                    "name": "userLongestCheckinStreak",
-                    "type": "int"
-                },
-                {
-                    "name": "userCurrentCheckinStreak",
-                    "type": "int"
-                },
-                {
-                    "name": "userSkin",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "userMobileSkin",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "userCountry",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "userProvince",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "userCity",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "userUpdateTime",
-                    "type": "long"
-                },
-                {
-                    "name": "userGeoStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "syncWithSymphonyClient",
-                    "type": "boolean"
-                },
-                {
-                    "name": "userCommentViewMode",
-                    "type": "int",
-                    "description": "0: traditional, 1: real time"
-                },
-                {
-                    "name": "userUAStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "userNotifyStatus",
-                    "type": "int",
-                    "description": "0: enabled, 1: disabled"
-                },
-                {
-                    "name": "userPointStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "userFollowerStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "userFollowingArticleStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "userWatchingArticleStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "userFollowingTagStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "userFollowingUserStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "userCommentStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "userArticleStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "userOnlineStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "userTimelineStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "userForgeLinkStatus",
-                    "type": "int",
-                    "description": "0: public, 1: private"
-                },
-                {
-                    "name": "userListPageSize",
-                    "type": "int"
-                },
-                {
-                    "name": "userAvatarViewMode",
-                    "type": "int",
-                    "description": "0: original, 1: static"
-                },
-                {
-                    "name": "userSubMailStatus",
-                    "type": "int",
-                    "description": "0: enabled subscription, 1: disabled subscription"
-                },
-                {
-                    "name": "userSubMailSendTime",
-                    "type": "long"
-                },
-                {
-                    "name": "userKeyboardShortcutsStatus",
-                    "type": "int",
-                    "description": "0: enabled keyboard shortcuts, 1: disabled keyboard shortcuts"
-                },
-                {
-                    "name": "userLanguage",
-                    "type": "String",
-                    "length": 64
-                },
-                {
-                    "name": "userTimezone",
-                    "type": "String",
-                    "length": 64
-                },
-                {
-                    "name": "userGuideStep",
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "name": "article",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "articleTitle",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "articleTags",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "articleAuthorId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "articleCommentCount",
-                    "type": "int"
-                },
-                {
-                    "name": "articleViewCount",
-                    "type": "int"
-                },
-                {
-                    "name": "articleContent",
-                    "type": "String",
-                    "length": 102400
-                },
-                {
-                    "name": "articleRewardContent",
-                    "type": "String",
-                    "length": 102400
-                },
-                {
-                    "name": "articleRewardPoint",
-                    "type": "int"
-                },
-                {
-                    "name": "articlePermalink",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "articleCreateTime",
-                    "type": "long"
-                },
-                {
-                    "name": "articleUpdateTime",
-                    "type": "long"
-                },
-                {
-                    "name": "articleLatestCmtTime",
-                    "type": "long"
-                },
-                {
-                    "name": "articleLatestCmterName",
-                    "type": "String",
-                    "length": 20
-                },
-                {
-                    "name": "articleRandomDouble",
-                    "type": "double"
-                },
-                {
-                    "name": "articleCommentable",
-                    "type": "boolean"
-                },
-                {
-                    "name": "syncWithSymphonyClient",
-                    "type": "boolean"
-                },
-                {
-                    "name": "clientArticleId",
-                    "type": "String",
-                    "length": 32,
-                    "nullable": true
-                },
-                {
-                    "name": "clientArticlePermalink",
-                    "type": "String",
-                    "length": 255,
-                    "nullable": true
-                },
-                {
-                    "name": "articleEditorType",
-                    "type": "int",
-                    "description": "0: CodeMirror-Markdown"
-                },
-                {
-                    "name": "articleStatus",
-                    "type": "int",
-                    "description": "0: valid, 1: invalid, 2: city broadcast, 3: thought"
-                },
-                {
-                    "name": "articleType",
-                    "type": "int",
-                    "description": "0: normal article, 1: discussion"
-                },
-                {
-                    "name": "articleGoodCnt",
-                    "description": "Favour count",
-                    "type": "int"
-                },
-                {
-                    "name": "articleBadCnt",
-                    "description": "Oppose count",
-                    "type": "int"
-                },
-                {
-                    "name": "articleCollectCnt",
-                    "type": "int"
-                },
-                {
-                    "name": "articleWatchCnt",
-                    "type": "int"
-                },
-                {
-                    "name": "redditScore",
-                    "type": "double"
-                },
-                {
-                    "name": "articleCity",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "articleIP",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "articleUA",
-                    "type": "String",
-                    "length": 255,
-                    "description": "User-Agent"
-                },
-                {
-                    "name": "articleStick",
-                    "type": "long"
-                },
-                {
-                    "name": "articleAnonymous",
-                    "type": "int",
-                    "description": "0: public, 1: anonymous"
-                },
-                {
-                    "name": "articlePerfect",
-                    "type": "int",
-                    "description": "0: not perfect, 1: perfect"
-                },
-                {
-                    "name": "articleAnonymousView",
-                    "type": "int",
-                    "description": "0: allow anonymous view, 1: not allow"
-                },
-                {
-                    "name": "articleAudioURL",
-                    "type": "String",
-                    "length": 256
-                }
-            ]
-        },
-        {
-            "name": "client",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "clientName",
-                    "type": "String",
-                    "length": 10
-                },
-                {
-                    "name": "clientVersion",
-                    "type": "String",
-                    "length": 10
-                },
-                {
-                    "name": "clientHost",
-                    "type": "String",
-                    "length": 50
-                },
-                {
-                    "name": "clientRuntimeEnv",
-                    "type": "String",
-                    "length": 10
-                },
-                {
-                    "name": "clientLatestAddArticleTime",
-                    "type": "long"
-                },
-                {
-                    "name": "clientLatestAddCommentTime",
-                    "type": "long"
-                },
-                {
-                    "name": "clientAdminEmail",
-                    "type": "String",
-                    "length": 255,
-                    "nullable": true
-                }
-            ]
-        },
-        {
-            "name": "emotion",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "emotionUserId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "emotionContent",
-                    "type": "String",
-                    "length": 64
-                },
-                {
-                    "name": "emotionSort",
-                    "type": "int"
-                },
-                {
-                    "name": "emotionType",
-                    "type": "int",
-                    "description": "0: emoji"
-                }
-            ]
+          "name": "articleId",
+          "type": "String",
+          "length": 19
         }
-    ]
+      ]
+    },
+    {
+      "name": "book",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "bookTitle",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "bookSubTitle",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "bookOriginalTitle",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "bookAltTitle",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "bookDoubanURL",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "bookAuthor",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "bookAuthorIntro",
+          "type": "String",
+          "length": 1024
+        },
+        {
+          "name": "bookBinding",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "bookCatalog",
+          "type": "String",
+          "length": 2048
+        },
+        {
+          "name": "bookImgURL",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "bookISBN10",
+          "type": "String",
+          "length": 10
+        },
+        {
+          "name": "bookISBN13",
+          "type": "String",
+          "length": 13
+        },
+        {
+          "name": "bookPages",
+          "type": "String",
+          "length": 4
+        },
+        {
+          "name": "bookPrice",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "bookPublishDate",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "bookPublisher",
+          "type": "String",
+          "length": 64
+        },
+        {
+          "name": "bookSeries",
+          "type": "String",
+          "length": 64
+        },
+        {
+          "name": "bookSummary",
+          "type": "String",
+          "length": 2048
+        },
+        {
+          "name": "bookTags",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "bookTranslator",
+          "type": "String",
+          "length": 128
+        }
+      ]
+    },
+    {
+      "name": "permission",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "permissionCategory",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "name": "role",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "roleName",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "roleDescription",
+          "type": "String",
+          "length": 2048
+        }
+      ]
+    },
+    {
+      "name": "role_permission",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "roleId",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "permissionId",
+          "type": "String",
+          "length": 32
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "linkAddr",
+          "type": "String",
+          "length": 512
+        },
+        {
+          "name": "linkTitle",
+          "type": "String",
+          "length": 512
+        },
+        {
+          "name": "linkType",
+          "type": "int",
+          "description": "0: forge"
+        },
+        {
+          "name": "linkSubmitCnt",
+          "type": "int"
+        },
+        {
+          "name": "linkClickCnt",
+          "type": "int"
+        },
+        {
+          "name": "linkGoodCnt",
+          "type": "int"
+        },
+        {
+          "name": "linkBadCnt",
+          "type": "int"
+        },
+        {
+          "name": "linkBaiduRefCnt",
+          "type": "int"
+        },
+        {
+          "name": "linkScore",
+          "type": "double"
+        },
+        {
+          "name": "linkPingCnt",
+          "type": "int"
+        },
+        {
+          "name": "linkPingErrCnt",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "name": "tag_user_link",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "linkId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "tagId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "linkScore",
+          "type": "double"
+        }
+      ]
+    },
+    {
+      "name": "invitecode",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "length": 16
+        },
+        {
+          "name": "generatorId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "useTime",
+          "type": "long"
+        },
+        {
+          "name": "status",
+          "type": "int"
+        },
+        {
+          "name": "memo",
+          "type": "String",
+          "length": 512
+        }
+      ]
+    },
+    {
+      "name": "character",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "characterUserId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "characterImg",
+          "type": "String",
+          "length": 1048576
+        },
+        {
+          "name": "characterContent",
+          "type": "String",
+          "length": 16
+        }
+      ]
+    },
+    {
+      "name": "referral",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "referralUser",
+          "type": "String",
+          "length": 19,
+          "description": "referral user name"
+        },
+        {
+          "name": "referralDataId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "referralType",
+          "type": "int"
+        },
+        {
+          "name": "referralIP",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "referralClick",
+          "type": "int"
+        },
+        {
+          "name": "referralUserHasPoint",
+          "type": "boolean"
+        },
+        {
+          "name": "referralAuthorHasPoint",
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "name": "revision",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "revisionDataType",
+          "type": "int",
+          "description": "0: article"
+        },
+        {
+          "name": "revisionDataId",
+          "type": "String",
+          "length": 19,
+          "description": "article id"
+        },
+        {
+          "name": "revisionData",
+          "type": "String",
+          "length": 1048576
+        },
+        {
+          "name": "revisionAuthorId",
+          "type": "String",
+          "length": 19
+        }
+      ]
+    },
+    {
+      "name": "liveness",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "livenessUserId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "livenessDate",
+          "type": "String",
+          "length": 8
+        },
+        {
+          "name": "livenessPoint",
+          "type": "int"
+        },
+        {
+          "name": "livenessArticle",
+          "type": "int"
+        },
+        {
+          "name": "livenessComment",
+          "type": "int"
+        },
+        {
+          "name": "livenessActivity",
+          "type": "int"
+        },
+        {
+          "name": "livenessThank",
+          "type": "int"
+        },
+        {
+          "name": "livenessVote",
+          "type": "int"
+        },
+        {
+          "name": "livenessReward",
+          "type": "int"
+        },
+        {
+          "name": "livenessPV",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "name": "domain",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "domainTitle",
+          "type": "String",
+          "length": 50
+        },
+        {
+          "name": "domainURI",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "domainDescription",
+          "type": "String",
+          "length": 512
+        },
+        {
+          "name": "domainType",
+          "type": "String",
+          "length": 16
+        },
+        {
+          "name": "domainSort",
+          "type": "int"
+        },
+        {
+          "name": "domainTagCnt",
+          "type": "int"
+        },
+        {
+          "name": "domainIconPath",
+          "type": "String",
+          "length": 1024
+        },
+        {
+          "name": "domainCSS",
+          "type": "String",
+          "length": 1048576
+        },
+        {
+          "name": "domainStatus",
+          "type": "int",
+          "description": "0: valid, 1: invalid"
+        },
+        {
+          "name": "domainSeoTitle",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "domainSeoKeywords",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "domainSeoDesc",
+          "type": "String",
+          "length": 512
+        }
+      ]
+    },
+    {
+      "name": "domain_tag",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "domain_oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "tag_oId",
+          "type": "String",
+          "length": 19
+        }
+      ]
+    },
+    {
+      "name": "vote",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "type",
+          "type": "int",
+          "description": "0: up, 1: down"
+        },
+        {
+          "name": "dataType",
+          "type": "int",
+          "description": "0: article, 1: comment, 2: user, 3: tag"
+        },
+        {
+          "name": "dataId",
+          "type": "String",
+          "length": 19
+        }
+      ]
+    },
+    {
+      "name": "verifycode",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "type",
+          "type": "int"
+        },
+        {
+          "name": "bizType",
+          "type": "int"
+        },
+        {
+          "name": "receiver",
+          "type": "String",
+          "length": 64
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "length": 64
+        },
+        {
+          "name": "status",
+          "type": "int"
+        },
+        {
+          "name": "expired",
+          "type": "long"
+        }
+      ]
+    },
+    {
+      "name": "reward",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "senderId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "dataId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "type",
+          "type": "int",
+          "description": "0: article, 1: comment, 2: user"
+        }
+      ]
+    },
+    {
+      "name": "pointtransfer",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "fromId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "toId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "sum",
+          "type": "int"
+        },
+        {
+          "name": "fromBalance",
+          "type": "int"
+        },
+        {
+          "name": "toBalance",
+          "type": "int"
+        },
+        {
+          "name": "time",
+          "type": "long"
+        },
+        {
+          "name": "type",
+          "type": "int"
+        },
+        {
+          "name": "dataId",
+          "type": "String",
+          "length": 19
+        }
+      ]
+    },
+    {
+      "name": "notification",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "dataId",
+          "type": "String",
+          "length": 64
+        },
+        {
+          "name": "dataType",
+          "type": "int"
+        },
+        {
+          "name": "hasRead",
+          "type": "boolean",
+          "desription": "has read or not"
+        }
+      ]
+    },
+    {
+      "name": "follow",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "followerId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "followingId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "followingType",
+          "type": "int",
+          "description": "0: user, 1: tag, 2: article collect, 3: article watch"
+        }
+      ]
+    },
+    {
+      "name": "comment",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "clientCommentId",
+          "type": "String",
+          "length": 32,
+          "nullable": true
+        },
+        {
+          "name": "commentContent",
+          "type": "String",
+          "length": 2000
+        },
+        {
+          "name": "commentCreateTime",
+          "type": "long"
+        },
+        {
+          "name": "commentAuthorId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "commentOnArticleId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "commentSharpURL",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "commentOriginalCommentId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "commentStatus",
+          "type": "int",
+          "description": "0: valid, 1: invalid"
+        },
+        {
+          "name": "commentIP",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "commentUA",
+          "type": "String",
+          "length": 255,
+          "description": "User-Agent"
+        },
+        {
+          "name": "commentAnonymous",
+          "type": "int",
+          "description": "0: public, 1: anonymous"
+        },
+        {
+          "name": "commentGoodCnt",
+          "description": "Favour count",
+          "type": "int"
+        },
+        {
+          "name": "commentBadCnt",
+          "description": "Oppose count",
+          "type": "int"
+        },
+        {
+          "name": "commentScore",
+          "type": "double"
+        },
+        {
+          "name": "commentReplyCnt",
+          "type": "int"
+        },
+        {
+          "name": "commentAudioURL",
+          "type": "String",
+          "length": 256
+        }
+      ]
+    },
+    {
+      "name": "tag",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "tagReferenceCount",
+          "type": "int"
+        },
+        {
+          "name": "tagCommentCount",
+          "type": "int"
+        },
+        {
+          "name": "tagFollowerCount",
+          "type": "int"
+        },
+        {
+          "name": "tagLinkCount",
+          "type": "int"
+        },
+        {
+          "name": "tagTitle",
+          "type": "String",
+          "length": 50
+        },
+        {
+          "name": "tagURI",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "tagDescription",
+          "type": "String",
+          "length": 512
+        },
+        {
+          "name": "tagIconPath",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "tagCSS",
+          "type": "String",
+          "length": 1048576
+        },
+        {
+          "name": "tagStatus",
+          "type": "int",
+          "description": "0: valid, 1: invalid"
+        },
+        {
+          "name": "tagGoodCnt",
+          "description": "Favour count",
+          "type": "int"
+        },
+        {
+          "name": "tagBadCnt",
+          "description": "Oppose count",
+          "type": "int"
+        },
+        {
+          "name": "tagSeoTitle",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "tagSeoKeywords",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "tagSeoDesc",
+          "type": "String",
+          "length": 512
+        },
+        {
+          "name": "tagRandomDouble",
+          "type": "double"
+        }
+      ]
+    },
+    {
+      "name": "tag_tag",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "tag1_oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "tag2_oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "weight",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "name": "option",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 64
+        },
+        {
+          "name": "optionValue",
+          "type": "String",
+          "length": 512
+        },
+        {
+          "name": "optionCategory",
+          "type": "String",
+          "legnth": 20
+        }
+      ]
+    },
+    {
+      "name": "tag_article",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "article_oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "tag_oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "articleCommentCount",
+          "type": "int"
+        },
+        {
+          "name": "articleLatestCmtTime",
+          "type": "long"
+        },
+        {
+          "name": "redditScore",
+          "type": "double"
+        },
+        {
+          "name": "articlePerfect",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "name": "user_tag",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "user_oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "tag_oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "type",
+          "type": "int",
+          "description": "0: creator, 1: article, 2: user self"
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "userNo",
+          "type": "int"
+        },
+        {
+          "name": "userEmail",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "userName",
+          "description": "Belongs to User Profiles",
+          "type": "String",
+          "length": 20
+        },
+        {
+          "name": "userPassword",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "userNickname",
+          "type": "String",
+          "length": 20
+        },
+        {
+          "name": "userTags",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "userURL",
+          "description": "Belongs to User Profiles",
+          "type": "String",
+          "length": 100
+        },
+        {
+          "name": "userQQ",
+          "description": "Belongs to User Profiles",
+          "type": "String",
+          "length": 12
+        },
+        {
+          "name": "userIntro",
+          "description": "Belongs to User Profiles",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "userAvatarType",
+          "description": "0: Gravatar, 1: External Link",
+          "type": "int"
+        },
+        {
+          "name": "userAvatarURL",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "userOnlineFlag",
+          "type": "boolean"
+        },
+        {
+          "name": "userB3Key",
+          "type": "String",
+          "length": 20
+        },
+        {
+          "name": "userB3ClientAddArticleURL",
+          "type": "String",
+          "length": 150
+        },
+        {
+          "name": "userB3ClientUpdateArticleURL",
+          "type": "String",
+          "length": 150
+        },
+        {
+          "name": "userB3ClientAddCommentURL",
+          "type": "String",
+          "length": 150
+        },
+        {
+          "name": "userRole",
+          "type": "String",
+          "length": 20
+        },
+        {
+          "name": "userArticleCount",
+          "type": "int"
+        },
+        {
+          "name": "userCommentCount",
+          "type": "int"
+        },
+        {
+          "name": "userTagCount",
+          "type": "int"
+        },
+        {
+          "name": "userStatus",
+          "type": "int",
+          "description": "0: valid, 1: invalid"
+        },
+        {
+          "name": "userPoint",
+          "type": "int"
+        },
+        {
+          "name": "userUsedPoint",
+          "type": "int"
+        },
+        {
+          "name": "userJoinPointRank",
+          "type": "int",
+          "description": "0: join, 1: not join"
+        },
+        {
+          "name": "userJoinUsedPointRank",
+          "type": "int",
+          "description": "0: join, 1: not join"
+        },
+        {
+          "name": "userLatestArticleTime",
+          "type": "long"
+        },
+        {
+          "name": "userLatestCmtTime",
+          "type": "long"
+        },
+        {
+          "name": "userLatestLoginTime",
+          "type": "long"
+        },
+        {
+          "name": "userLatestLoginIP",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "userAppRole",
+          "type": "int",
+          "description": "0: hacker, 1: painter"
+        },
+        {
+          "name": "userCheckinTime",
+          "type": "long"
+        },
+        {
+          "name": "userLongestCheckinStreakStart",
+          "type": "int"
+        },
+        {
+          "name": "userLongestCheckinStreakEnd",
+          "type": "int"
+        },
+        {
+          "name": "userCurrentCheckinStreakStart",
+          "type": "int"
+        },
+        {
+          "name": "userCurrentCheckinStreakEnd",
+          "type": "int"
+        },
+        {
+          "name": "userLongestCheckinStreak",
+          "type": "int"
+        },
+        {
+          "name": "userCurrentCheckinStreak",
+          "type": "int"
+        },
+        {
+          "name": "userSkin",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "userMobileSkin",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "userCountry",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "userProvince",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "userCity",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "userUpdateTime",
+          "type": "long"
+        },
+        {
+          "name": "userGeoStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "syncWithSymphonyClient",
+          "type": "boolean"
+        },
+        {
+          "name": "userCommentViewMode",
+          "type": "int",
+          "description": "0: traditional, 1: real time"
+        },
+        {
+          "name": "userUAStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "userNotifyStatus",
+          "type": "int",
+          "description": "0: enabled, 1: disabled"
+        },
+        {
+          "name": "userPointStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "userFollowerStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "userFollowingArticleStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "userWatchingArticleStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "userFollowingTagStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "userFollowingUserStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "userCommentStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "userArticleStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "userOnlineStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "userTimelineStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "userForgeLinkStatus",
+          "type": "int",
+          "description": "0: public, 1: private"
+        },
+        {
+          "name": "userListPageSize",
+          "type": "int"
+        },
+        {
+          "name": "userAvatarViewMode",
+          "type": "int",
+          "description": "0: original, 1: static"
+        },
+        {
+          "name": "userSubMailStatus",
+          "type": "int",
+          "description": "0: enabled subscription, 1: disabled subscription"
+        },
+        {
+          "name": "userSubMailSendTime",
+          "type": "long"
+        },
+        {
+          "name": "userKeyboardShortcutsStatus",
+          "type": "int",
+          "description": "0: enabled keyboard shortcuts, 1: disabled keyboard shortcuts"
+        },
+        {
+          "name": "userLanguage",
+          "type": "String",
+          "length": 64
+        },
+        {
+          "name": "userTimezone",
+          "type": "String",
+          "length": 64
+        },
+        {
+          "name": "userGuideStep",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "name": "article",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "articleTitle",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "articleTags",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "articleAuthorId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "articleCommentCount",
+          "type": "int"
+        },
+        {
+          "name": "articleViewCount",
+          "type": "int"
+        },
+        {
+          "name": "articleContent",
+          "type": "String",
+          "length": 102400
+        },
+        {
+          "name": "articleRewardContent",
+          "type": "String",
+          "length": 102400
+        },
+        {
+          "name": "articleRewardPoint",
+          "type": "int"
+        },
+        {
+          "name": "articlePermalink",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "articleCreateTime",
+          "type": "long"
+        },
+        {
+          "name": "articleUpdateTime",
+          "type": "long"
+        },
+        {
+          "name": "articleLatestCmtTime",
+          "type": "long"
+        },
+        {
+          "name": "articleLatestCmterName",
+          "type": "String",
+          "length": 20
+        },
+        {
+          "name": "articleRandomDouble",
+          "type": "double"
+        },
+        {
+          "name": "articleCommentable",
+          "type": "boolean"
+        },
+        {
+          "name": "syncWithSymphonyClient",
+          "type": "boolean"
+        },
+        {
+          "name": "clientArticleId",
+          "type": "String",
+          "length": 32,
+          "nullable": true
+        },
+        {
+          "name": "clientArticlePermalink",
+          "type": "String",
+          "length": 255,
+          "nullable": true
+        },
+        {
+          "name": "articleEditorType",
+          "type": "int",
+          "description": "0: CodeMirror-Markdown"
+        },
+        {
+          "name": "articleStatus",
+          "type": "int",
+          "description": "0: valid, 1: invalid, 2: city broadcast, 3: thought"
+        },
+        {
+          "name": "articleType",
+          "type": "int",
+          "description": "0: normal article, 1: discussion"
+        },
+        {
+          "name": "articleGoodCnt",
+          "description": "Favour count",
+          "type": "int"
+        },
+        {
+          "name": "articleBadCnt",
+          "description": "Oppose count",
+          "type": "int"
+        },
+        {
+          "name": "articleCollectCnt",
+          "type": "int"
+        },
+        {
+          "name": "articleWatchCnt",
+          "type": "int"
+        },
+        {
+          "name": "redditScore",
+          "type": "double"
+        },
+        {
+          "name": "articleCity",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "articleIP",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "articleUA",
+          "type": "String",
+          "length": 255,
+          "description": "User-Agent"
+        },
+        {
+          "name": "articleStick",
+          "type": "long"
+        },
+        {
+          "name": "articleAnonymous",
+          "type": "int",
+          "description": "0: public, 1: anonymous"
+        },
+        {
+          "name": "articlePerfect",
+          "type": "int",
+          "description": "0: not perfect, 1: perfect"
+        },
+        {
+          "name": "articleAnonymousView",
+          "type": "int",
+          "description": "0: allow anonymous view, 1: not allow"
+        },
+        {
+          "name": "articleAudioURL",
+          "type": "String",
+          "length": 256
+        }
+      ]
+    },
+    {
+      "name": "client",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "clientName",
+          "type": "String",
+          "length": 10
+        },
+        {
+          "name": "clientVersion",
+          "type": "String",
+          "length": 10
+        },
+        {
+          "name": "clientHost",
+          "type": "String",
+          "length": 50
+        },
+        {
+          "name": "clientRuntimeEnv",
+          "type": "String",
+          "length": 10
+        },
+        {
+          "name": "clientLatestAddArticleTime",
+          "type": "long"
+        },
+        {
+          "name": "clientLatestAddCommentTime",
+          "type": "long"
+        },
+        {
+          "name": "clientAdminEmail",
+          "type": "String",
+          "length": 255,
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "emotion",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "emotionUserId",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "emotionContent",
+          "type": "String",
+          "length": 64
+        },
+        {
+          "name": "emotionSort",
+          "type": "int"
+        },
+        {
+          "name": "emotionType",
+          "type": "int",
+          "description": "0: emoji"
+        }
+      ]
+    }
+  ]
 }
