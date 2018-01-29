@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.30, Dec 5, 2017
+ * @version 1.12.2.31, Jan 29, 2018
  * @since 0.2.0
  */
 @Service
@@ -485,15 +485,20 @@ public class DataModelService {
             return;
         }
 
-        final Map<String, String> labels = langPropsService.getAll(Locales.getLocale());
         final List<String> tipsLabels = new ArrayList<>();
-
+        final Map<String, String> labels = langPropsService.getAll(Locales.getLocale());
         for (final Map.Entry<String, String> entry : labels.entrySet()) {
             final String key = entry.getKey();
             if (key.startsWith("tips")) {
                 tipsLabels.add(entry.getValue());
             }
         }
+
+        // Builtin for Sym promotion
+        tipsLabels.add("<img align=\"absmiddle\" alt=\"tada\" class=\"emoji\" src=\"" + Latkes.getStaticServePath() +
+                "/emoji/graphics/tada.png\" title=\"tada\"> 本站使用开源系统 <a href=\"https://github.com/b3log/symphony\">Sym</a> 搭建，请为它点赞！");
+        tipsLabels.add("<img align=\"absmiddle\" alt=\"sparkles\" class=\"emoji\" src=\"" + Latkes.getStaticServePath() +
+                "/emoji/graphics/sparkles.png\" title=\"sparkles\"> 欢迎使用 <a href=\"http://sym.b3log.org\">Sym</a> 来搭建自己的社区！");
 
         dataModel.put("tipsLabel", tipsLabels.get(RandomUtils.nextInt(tipsLabels.size())));
     }
