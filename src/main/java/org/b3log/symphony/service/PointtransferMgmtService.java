@@ -21,10 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.annotation.Transactional;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
@@ -36,7 +33,7 @@ import org.json.JSONObject;
  * Pointtransfer management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.4, May 8, 2017
+ * @version 1.2.1.5, Jan 29, 2018
  * @since 1.3.0
  */
 @Service
@@ -81,10 +78,6 @@ public class PointtransferMgmtService {
             int fromBalance = 0;
             if (!Pointtransfer.ID_C_SYS.equals(fromId)) {
                 final JSONObject fromUser = userRepository.get(fromId);
-//                if (UserExt.USER_STATUS_C_VALID != fromUser.optInt(UserExt.USER_STATUS)) {
-//                    throw new Exception("Invalid from user [id=" + fromId + "]");
-//                }
-
                 fromBalance = fromUser.optInt(UserExt.USER_POINT) - sum;
                 if (fromBalance < 0) {
                     throw new Exception("Insufficient balance");
@@ -98,10 +91,6 @@ public class PointtransferMgmtService {
             int toBalance = 0;
             if (!Pointtransfer.ID_C_SYS.equals(toId)) {
                 final JSONObject toUser = userRepository.get(toId);
-//                if (UserExt.USER_STATUS_C_VALID != toUser.optInt(UserExt.USER_STATUS)) {
-//                    throw new Exception("Invalid to user [id=" + toId + "]");
-//                }
-
                 toBalance = toUser.optInt(UserExt.USER_POINT) + sum;
                 toUser.put(UserExt.USER_POINT, toBalance);
 
@@ -128,35 +117,10 @@ public class PointtransferMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.ERROR, "Transfer [fromId=" + fromId + ", toId=" + toId + ", sum=" + sum + ", type=" + type
-                    + ", dataId=" + dataId + "] error", e);
+            LOGGER.log(Level.ERROR, "Transfer [fromId=" + fromId + ", toId=" + toId + ", sum=" + sum + ", type=" +
+                    type + ", dataId=" + dataId + "] error", e);
 
             return null;
-        }
-    }
-
-    /**
-     * Adds a pointtransfer with the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "fromId"; "",
-     *                          "toId": "",
-     *                          "sum": int,
-     *                          "blance": int,
-     *                          "time": long,
-     *                          "type": int,
-     *                          "dataId": ""
-     * @throws ServiceException service exception
-     */
-    @Transactional
-    public void addPointtransfer(final JSONObject requestJSONObject) throws ServiceException {
-        try {
-            pointtransferRepository.add(requestJSONObject);
-        } catch (final RepositoryException e) {
-            final String msg = "Adds pointtransfer failed";
-            LOGGER.log(Level.ERROR, msg, e);
-
-            throw new ServiceException(msg);
         }
     }
 }
