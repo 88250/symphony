@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.31, Jan 29, 2018
+ * @version 1.12.2.32, Jan 30, 2018
  * @since 0.2.0
  */
 @Service
@@ -236,7 +236,7 @@ public class DataModelService {
     public void fillIndexTags(final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills index tags");
         try {
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 13; i++) {
                 final JSONObject tag = new JSONObject();
                 tag.put(Tag.TAG_URI, "Sym");
                 tag.put(Tag.TAG_ICON_PATH, "sym.png");
