@@ -52,9 +52,5 @@
         </div> 
         <#include '../footer.ftl'/>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script>
-            // Init [Timeline] channel
-            TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/timeline-channel", 20);
-        </script>
     </body>
 </html>

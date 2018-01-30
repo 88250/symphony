@@ -69,7 +69,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.12.3.25, Jan 23, 2018
+ * @version 1.12.3.26, Jan 30, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -109,12 +109,6 @@ public class IndexProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
-
-    /**
-     * Timeline management service.
-     */
-    @Inject
-    private TimelineMgmtService timelineMgmtService;
 
     /**
      * Shows md guide.
@@ -199,8 +193,6 @@ public class IndexProcessor {
 
         final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles(avatarViewMode);
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
-        final List<JSONObject> timelines = timelineMgmtService.getTimelines();
-        dataModel.put(Common.TIMELINES, timelines);
         dataModel.put(Common.SELECTED, Common.INDEX);
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         dataModelService.fillIndexTags(dataModel);

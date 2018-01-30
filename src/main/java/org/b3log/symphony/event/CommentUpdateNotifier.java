@@ -17,8 +17,6 @@
  */
 package org.b3log.symphony.event;
 
-import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -27,25 +25,16 @@ import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
 import org.b3log.symphony.service.ShortLinkQueryService;
-import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.util.Markdowns;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 /**
  * Sends comment update related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, May 6, 2017
+ * @version 1.0.0.1, Jan 30, 2018
  * @since 2.1.0
  */
 @Named
@@ -64,12 +53,6 @@ public class CommentUpdateNotifier extends AbstractEventListener<JSONObject> {
     private LangPropsService langPropsService;
 
     /**
-     * Timeline management service.
-     */
-    @Inject
-    private TimelineMgmtService timelineMgmtService;
-
-    /**
      * User query service.
      */
     @Inject
@@ -85,55 +68,6 @@ public class CommentUpdateNotifier extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.TRACE, "Processing an event [type={0}, data={1}]", event.getType(), data);
-
-        try {
-            final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
-            final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
-
-            final boolean isDiscussion = originalArticle.optInt(Article.ARTICLE_TYPE) == Article.ARTICLE_TYPE_C_DISCUSSION;
-            if (isDiscussion) {
-                return;
-            }
-
-            if (Comment.COMMENT_ANONYMOUS_C_PUBLIC != originalComment.optInt(Comment.COMMENT_ANONYMOUS)) {
-                return;
-            }
-
-            final String commenterId = originalComment.optString(Comment.COMMENT_AUTHOR_ID);
-            final JSONObject commenter = userQueryService.getUser(commenterId);
-            final String commenterName = commenter.optString(User.USER_NAME);
-            final String commentContent = originalComment.optString(Comment.COMMENT_CONTENT);
-
-            String cc = shortLinkQueryService.linkArticle(commentContent);
-            cc = shortLinkQueryService.linkTag(cc);
-            cc = Emotions.convert(cc);
-            cc = Markdowns.toHTML(cc);
-            cc = Markdowns.clean(cc, "");
-
-            // Timeline
-            String articleTitle = Jsoup.parse(originalArticle.optString(Article.ARTICLE_TITLE)).text();
-            articleTitle = Emotions.convert(articleTitle);
-            final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
-
-            final JSONObject timeline = new JSONObject();
-            timeline.put(Common.USER_ID, commenterId);
-            timeline.put(Common.TYPE, Comment.COMMENT);
-            String content = langPropsService.get("timelineCommentUpdateLabel");
-            content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='"
-                    + Latkes.getServePath() + "/member/" + commenterName + "'>" + commenterName + "</a>");
-            content = content.replace("{article}", "<a target='_blank' rel='nofollow' href='"
-                    + articlePermalink + "'>" + articleTitle + "</a>").
-                    replace("{comment}", cc.replaceAll("<p>", "").replaceAll("</p>", ""));
-
-            content = Jsoup.clean(content, Whitelist.none().addAttributes("a", "href", "rel", "target"));
-            timeline.put(Common.CONTENT, content);
-
-            if (StringUtils.isNotBlank(content)) {
-                timelineMgmtService.addTimeline(timeline);
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Sends the comment update notification failed", e);
-        }
     }
 
     /**

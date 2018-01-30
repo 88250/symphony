@@ -20,7 +20,6 @@ package org.b3log.symphony.processor.channel;
 import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
@@ -35,12 +34,9 @@ import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.SkinRenderer;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.service.RoleQueryService;
-import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -55,7 +51,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.9.6, Dec 17, 2016
+ * @version 2.3.9.7, Jan 30, 2018
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/article-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -243,47 +239,6 @@ public class ArticleChannel {
 
         ArticleListChannel.notifyHeat(message);
         notifyHeat(message);
-
-        final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
-        if (null == user) {
-            return;
-        }
-
-        final String userName = user.optString(User.USER_NAME);
-
-        // Timeline
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
-        final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
-        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
-        final TimelineMgmtService timelineMgmtService = beanManager.getReference(TimelineMgmtService.class);
-
-        try {
-            final JSONObject article = articleRepository.get(articleId);
-            if (null == article) {
-                return;
-            }
-
-            String articleTitle = Jsoup.parse(article.optString(Article.ARTICLE_TITLE)).text();
-            articleTitle = Emotions.convert(articleTitle);
-
-            final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
-
-            final JSONObject timeline = new JSONObject();
-            timeline.put(Common.USER_ID, user.optString(Keys.OBJECT_ID));
-            timeline.put(Common.TYPE, Article.ARTICLE);
-            String content = langPropsService.get("timelineInArticleLabel");
-            content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
-                    + "/member/" + userName + "'>" + userName + "</a>")
-                    .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
-                            + "'>" + articleTitle + "</a>");
-            timeline.put(Common.CONTENT, content);
-
-            timelineMgmtService.addTimeline(timeline);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Timeline error", e);
-        } finally {
-            JdbcRepository.dispose();
-        }
     }
 
     /**
@@ -350,45 +305,5 @@ public class ArticleChannel {
 
         ArticleListChannel.notifyHeat(message);
         notifyHeat(message);
-
-        final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
-        if (null == user) {
-            return;
-        }
-
-        final String userName = user.optString(User.USER_NAME);
-
-        // Timeline
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
-        final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
-        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
-        final TimelineMgmtService timelineMgmtService = beanManager.getReference(TimelineMgmtService.class);
-
-        try {
-            final JSONObject article = articleRepository.get(articleId);
-            if (null == article) {
-                return;
-            }
-
-            String articleTitle = Jsoup.parse(article.optString(Article.ARTICLE_TITLE)).text();
-            articleTitle = Emotions.convert(articleTitle);
-            final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
-
-            final JSONObject timeline = new JSONObject();
-            timeline.put(Common.USER_ID, user.optString(Keys.OBJECT_ID));
-            timeline.put(Common.TYPE, Article.ARTICLE);
-            String content = langPropsService.get("timelineOutArticleLabel");
-            content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
-                    + "/member/" + userName + "'>" + userName + "</a>")
-                    .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
-                            + "'>" + articleTitle + "</a>");
-            timeline.put(Common.CONTENT, content);
-
-            timelineMgmtService.addTimeline(timeline);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Timeline error", e);
-        } finally {
-            JdbcRepository.dispose();
-        }
     }
 }

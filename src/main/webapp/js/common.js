@@ -20,8 +20,8 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author Zephyr
- * @version 1.44.1.0, Jan 23, 2018
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.44.1.1, Jan 30, 2018
  */
 
 /**
@@ -303,12 +303,6 @@ var Util = {
       // g p 跳转到优选页面
       if (Util.prevKey === 'g') {
         window.location = Label.servePath + '/perfect';
-      }
-      return false;
-    }).bind('keyup', 't', function (event) {
-      // g t 跳转到此刻
-      if (Util.prevKey === 'g') {
-        window.location = Label.servePath + '/timeline';
       }
       return false;
     }).bind('keyup', 'Shift+/', function (event) {

@@ -30,13 +30,11 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
-import org.b3log.symphony.service.TimelineMgmtService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +44,7 @@ import java.util.Map;
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.8, Oct 27, 2016
+ * @version 1.2.0.9, Jan 30, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -62,12 +60,6 @@ public class ErrorProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
-
-    /**
-     * Timeline management service.
-     */
-    @Inject
-    private TimelineMgmtService timelineMgmtService;
 
     /**
      * Data model service.
@@ -102,7 +94,6 @@ public class ErrorProcessor {
             dataModel.putAll(langPropsService.getAll(Locales.getLocale()));
             dataModelService.fillHeaderAndFooter(request, response, dataModel);
             if (HttpServletResponse.SC_FORBIDDEN == Integer.valueOf(statusCode)) {
-                dataModel.put(Common.TIMELINES, timelineMgmtService.getTimelines());
                 dataModelService.fillSideHotArticles(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, dataModel);
                 dataModelService.fillRandomArticles(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, dataModel);
                 dataModelService.fillSideTags(dataModel);

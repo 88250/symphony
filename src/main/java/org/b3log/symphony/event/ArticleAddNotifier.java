@@ -20,7 +20,6 @@ package org.b3log.symphony.event;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -33,13 +32,14 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.service.FollowQueryService;
+import org.b3log.symphony.service.NotificationMgmtService;
+import org.b3log.symphony.service.RoleQueryService;
+import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -50,7 +50,7 @@ import java.util.Set;
  * Sends article add related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.13, Nov 27, 2017
+ * @version 1.3.4.14, Jan 30, 2018
  * @since 0.2.0
  */
 @Named
@@ -87,12 +87,6 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
     private LangPropsService langPropsService;
 
     /**
-     * Timeline management service.
-     */
-    @Inject
-    private TimelineMgmtService timelineMgmtService;
-
-    /**
      * Role query service.
      */
     @Inject
@@ -106,7 +100,6 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             final String articleId = originalArticle.optString(Keys.OBJECT_ID);
-
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
             final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
@@ -114,7 +107,6 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
             final Set<String> requisiteAtUserPermissions = new HashSet<>();
             requisiteAtUserPermissions.add(Permission.PERMISSION_ID_C_COMMON_AT_USER);
             final boolean hasAtUserPerm = roleQueryService.userHasPermissions(articleAuthorId, requisiteAtUserPermissions);
-
             final Set<String> atedUserIds = new HashSet<>();
 
             if (hasAtUserPerm) {
@@ -169,27 +161,7 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
                 }
             }
 
-            // Timeline
             final String articleTitle = Escapes.escapeHTML(originalArticle.optString(Article.ARTICLE_TITLE));
-            final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
-
-            final JSONObject timeline = new JSONObject();
-            timeline.put(Common.USER_ID, articleAuthorId);
-            timeline.put(Common.TYPE, Article.ARTICLE);
-            String content = langPropsService.get("timelineArticleAddLabel");
-
-            if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)) {
-                content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
-                        + "/member/" + articleAuthorName + "'>" + articleAuthorName + "</a>");
-            } else {
-                content = content.replace("{user}", UserExt.ANONYMOUS_USER_NAME);
-            }
-            content = content.replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
-                    + "'>" + articleTitle + "</a>");
-            content = Emotions.convert(content);
-            timeline.put(Common.CONTENT, content);
-
-            timelineMgmtService.addTimeline(timeline);
 
             // 'Broadcast' / 'Book' Notification
             if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == originalArticle.optInt(Article.ARTICLE_TYPE)

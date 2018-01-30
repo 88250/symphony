@@ -71,7 +71,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.11.0, Jan 2, 2018
+ * @version 1.13.11.1, Jan 30, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -131,12 +131,6 @@ public class LoginProcessor {
      */
     @Inject
     private VerifycodeQueryService verifycodeQueryService;
-
-    /**
-     * Timeline management service.
-     */
-    @Inject
-    private TimelineMgmtService timelineMgmtService;
 
     /**
      * Option query service.
@@ -704,17 +698,6 @@ public class LoginProcessor {
             context.renderTrueResult();
 
             LOGGER.log(Level.INFO, "Registered a user [name={0}, email={1}]", name, email);
-
-            // Timeline
-            final JSONObject timeline = new JSONObject();
-            timeline.put(Common.USER_ID, user.optString(Keys.OBJECT_ID));
-            timeline.put(Common.TYPE, Common.NEW_USER);
-            String content = langPropsService.get("timelineNewUserLabel");
-            content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
-                    + "/member/" + name + "'>" + name + "</a>");
-            timeline.put(Common.CONTENT, content);
-
-            timelineMgmtService.addTimeline(timeline);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);

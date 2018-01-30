@@ -276,10 +276,6 @@
         } else {
             localStorage.setItem('indexTab', 0);
         }
-        
-
-        // Init [Timeline] channel
-        TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/timeline-channel", 20);
     </script>
 </body>
 </html>
