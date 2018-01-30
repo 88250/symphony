@@ -29,7 +29,6 @@
 * [贡献](#贡献)
   * [作者](#作者)
   * [讨论区](#讨论区)
-  * [算力](#算力)
 * [感悟](#感悟)
 * [鸣谢](#鸣谢)
 
@@ -264,12 +263,6 @@ Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://
 * 到 Sym 官方[讨论区](https://hacpai.com/tag/Sym)发帖（推荐做法）
 * 来一发 [issue](https://github.com/b3log/symphony/issues/new)
 * 加入 Sym 开发支持 [Q 群 17370164](https://shang.qq.com/wpa/qunwpa?idkey=0bb80e452d38d5113c7bb2534cefc8155589d0bdce81c7d2e6d91930bcb6e2d7)
-
-### 算力
-
-Sym 默认会通过浏览者的浏览器进行挖矿，收益将用于维持项目运维，具体原理请参考[使用访问者浏览器挖矿的方法](https://hacpai.com/article/1512269880744)。
-
-你可以全局搜索 `bSiM5UP0bWeY98R39fQBb2nKiiofSxmU` 并将这个值替换为自己的以给自己带来收益；当然，如果你不想挖矿，可以将 sym.props 中的 `footerPCCode`、`footerMobileCode` 设置为空。
 
 ## 感悟
 
