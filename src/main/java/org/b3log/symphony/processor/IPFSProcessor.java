@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  * IPFS(https://ipfs.io) processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 20, 2017
+ * @version 1.0.0.1, Jan 30, 2018
  * @since 2.3.0
  */
 @RequestProcessor
@@ -71,12 +71,13 @@ public class IPFSProcessor {
 
         context.renderJSON().renderTrueResult();
 
+        LOGGER.log(Level.INFO, "Adding articles to IPFS");
         final String dir = Symphonys.get("ipfs.dir");
         final String bin = Symphonys.get("ipfs.bin");
         if (StringUtils.isBlank(dir) || StringUtils.isBlank(bin)) {
             return;
         }
-
+        LOGGER.log(Level.INFO, "Publishing articles to IPFS");
         String output = Execs.exec(bin + " add -r " + dir);
         if (StringUtils.isBlank(output) || !StringUtils.containsIgnoreCase(output, "added")) {
             LOGGER.log(Level.ERROR, "Executes [ipfs add] failed: " + output);
@@ -92,5 +93,6 @@ public class IPFSProcessor {
 
             return;
         }
+        LOGGER.log(Level.INFO, "Published articles to IPFS");
     }
 }
