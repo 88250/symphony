@@ -79,30 +79,6 @@
         <div class="fn-hr10"></div>
         <div class="main">
             <div class="wrapper">
-                <div class="module">
-                    <div class="module-header" style="background-color: #4e68ca">
-                        <a href="${servePath}/timeline">${timelineLabel}</a>
-                    </div>
-                    <div class="module-panel">
-                        <#if timelines?size <= 0>
-                            <ul class="module-list">
-                                <li>
-                                ${emptyTimelineLabel}
-                                </li>
-                            </ul>
-                        <#else>
-                            <ul class="module-list">
-                                <#list timelines as article>
-                                <#if article_index < 3>
-                                <li<#if !article_has_next> class="last"</#if>>
-                                    ${article.content}
-                                    </#if>
-                                </li>
-                                </#list>
-                            </ul>
-                        </#if>
-                    </div>
-                </div>
                 <#if ADLabel != ''>
                 <div class="module">
                     <div class="module-header" style="background-color: #7ea5c8">
