@@ -28,29 +28,7 @@
                     </div>
                 </div>
             </div>
-            <br>
-            <br>
-            <div class="wrapper">
-                <div class="content">
-                    <div class="module">
-                        <#if timelines?size <= 0>
-                        <div id="emptyTimeline" class="no-list">${emptyTimelineLabel}</div>
-                        </#if>
-                        <div class="list timeline ft-gray single-line<#if timelines?size <= 0> fn-none</#if>">
-                            <ul>
-                                <#list timelines as timeline>
-                                <li>${timeline.content}</li>
-                                </#list>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="side">
-                    <#include "../side.ftl">
-                </div>
-            </div>
-        </div> 
+        </div>
         <#include '../footer.ftl'/>
-        <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
     </body>
 </html>

@@ -1210,11 +1210,12 @@ code .dec {
 
   .metro-item {
     flex: 1;
-    margin-bottom: 2px;
     height: 200px;
     text-align: center;
     overflow: hidden;
     position: relative;
+    margin-right: 2px;
+    margin-bottom: 2px;
 
     .preview {
       height: 100%;
@@ -1252,57 +1253,38 @@ code .dec {
   }
 
   &__bottom {
-    background-color: rgba(0,0,0,.02);
+    background-color: rgba(0, 0, 0, .02);
     padding: 20px 0;
-    margin-top: 5px;
-  }
-
-  .metro-item.ad img {
-    width: 100%;
-  }
-
-  .metro-item.mid {
-    margin: 0 2px 2px;
+    margin-top: 20px;
+    margin-right: -2px;
   }
 
   .metro-border > div {
-    height: 0;
+    height: 2px;
     flex: 1;
     background-color: $blue;
+    margin-right: 2px;
     margin-top: -2px;
   }
 
   .metro-border > div.yellow {
     background-color: #f1e05a;
-    margin: -2px 2px 2px 2px;
   }
 
   .metro-border > div.green {
     background-color: $green;
   }
 
-  .index-side.down {
-    .metro-line {
-      margin-top: 2px;
+  .metro-border > div.red {
+    background-color: $red;
+  }
 
-      .last {
-        margin-left: 2px;
-      }
-    }
+  .metro-border > div.purple {
+    background-color: #563d7c;
+  }
 
-    .metro-border div {
-      background-color: $theme-accent;
-    }
-
-    .metro-border div.purple {
-      background-color: #563d7c;
-      margin-left: 2px;
-    }
-
-    .list ul {
-      overflow: hidden;
-      height: 402px;
-    }
+  .ad img {
+    width: 100%;
   }
 }
 
@@ -1349,18 +1331,3 @@ code .dec {
   padding-top: 15px;
 }
 /* end top */
-
-/* start timeline */
-.timeline.list > ul {
-  padding-top: 0;
-}
-
-/* end timeline */
-
-/* start timeline */
-#captcha .gt_holder {
-  left: 50%;
-  margin-left: -145px;
-}
-
-/* end timeline */
