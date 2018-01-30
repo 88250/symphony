@@ -3,7 +3,7 @@
 <html>
     <head>
         <@head title="${communityDynamicLabel} - ${symphonyLabel}">
-        <meta name="description" content="${timelineLabel}"/>
+        <meta name="description" content="${communityDynamicLabel}"/>
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css?${staticResourceVersion}">

@@ -20,8 +20,8 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author Zephyr
- * @version 1.22.0.0, Nov 10, 2017
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.22.0.1, Jan 30, 2018
  */
 
 /**
@@ -435,7 +435,6 @@ var Settings = {
           userJoinPointRank: $("#joinPointRank").prop("checked"),
           userJoinUsedPointRank: $("#joinUsedPointRank").prop("checked"),
           userUAStatus: $("#userUAStatus").prop("checked"),
-          userTimelineStatus: $("#userTimelineStatus").prop("checked"),
           userForgeLinkStatus: $("#userForgeLinkStatus").prop("checked")
         };
 

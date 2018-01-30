@@ -21,7 +21,7 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.14.0.0, Nov 10, 2017
+ * @version 1.14.0.1, Jan 30, 2018
  */
 
 /**
@@ -199,65 +199,6 @@ var ArticleListChannel = {
     };
 
     ArticleListChannel.ws.onerror = function (err) {
-      console.log("ERROR", err);
-    };
-  }
-};
-
-/**
- * @description Timeline channel.
- * @static
- */
-var TimelineChannel = {
-  /**
-   * WebSocket instance.
-   *
-   * @type WebSocket
-   */
-  ws: undefined,
-  /**
-   * @description Initializes message channel
-   */
-  init: function (channelServer, timelineCnt) {
-    TimelineChannel.ws = new ReconnectingWebSocket(channelServer);
-    TimelineChannel.ws.reconnectInterval = 10000;
-
-    TimelineChannel.ws.onopen = function () {
-      setInterval(function () {
-        TimelineChannel.ws.send('-hb-');
-      }, 1000 * 60 * 3);
-    };
-
-    TimelineChannel.ws.onmessage = function (evt) {
-      var data = JSON.parse(evt.data);
-
-      $('#emptyTimeline').remove();
-
-      switch (data.type) {
-        case 'newUser':
-        case 'article':
-        case 'comment':
-        case 'activity':
-          $('.timeline').show();
-          var time = new Date().getTime();
-          var template = "<li class=\"fn-none\" id=" + time + ">" + data.content + "</li>";
-          $(".timeline > ul").prepend(template);
-          $(".timeline > ul > li:first").fadeIn(2000);
-
-          var length = $(".timeline > ul > li").length;
-          if (length > timelineCnt) {
-            $(".timeline > ul  > li:last").remove();
-          }
-
-          break;
-      }
-    };
-
-    TimelineChannel.ws.onclose = function () {
-      TimelineChannel.ws.close();
-    };
-
-    TimelineChannel.ws.onerror = function (err) {
       console.log("ERROR", err);
     };
   }
