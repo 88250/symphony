@@ -48,12 +48,10 @@ import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Languages;
 import org.b3log.symphony.util.Symphonys;
 import org.b3log.symphony.util.TimeZones;
 import org.json.JSONObject;
-import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -76,7 +74,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 13, 2018
+ * @version 1.0.1.0, Jan 31, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -686,8 +684,8 @@ public class SettingsProcessor {
         user.put(UserExt.USER_TAGS, userTags);
         user.put(User.USER_URL, userURL);
         user.put(UserExt.USER_QQ, userQQ);
-        user.put(UserExt.USER_INTRO, Encode.forHtml(userIntro));
-        user.put(UserExt.USER_NICKNAME, Encode.forHtml(userNickname));
+        user.put(UserExt.USER_INTRO, userIntro);
+        user.put(UserExt.USER_NICKNAME, userNickname);
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
 
         try {
