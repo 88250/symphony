@@ -232,17 +232,12 @@ public class ChatRoomProcessor {
      * </pre>
      * </p>
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws IOException      io exception
-     * @throws ServletException servlet exception
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/chat-room/send", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {ChatMsgAddValidation.class})
-    public synchronized void addChatRoomMsg(final HTTPRequestContext context,
-                                            final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException, ServletException {
+    public synchronized void addChatRoomMsg(final HTTPRequestContext context, final HttpServletRequest request) {
         context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);

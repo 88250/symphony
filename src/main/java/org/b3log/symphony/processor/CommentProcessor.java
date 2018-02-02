@@ -327,14 +327,12 @@ public class CommentProcessor {
     /**
      * Gets a comment's original comment.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
+     * @param request the specified request
      * @throws Exception exception
      */
     @RequestProcessing(value = "/comment/original", method = HTTPRequestMethod.POST)
-    public void getOriginalComment(final HTTPRequestContext context,
-                                   final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void getOriginalComment(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);

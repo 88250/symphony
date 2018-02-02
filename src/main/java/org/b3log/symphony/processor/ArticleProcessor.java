@@ -1305,8 +1305,7 @@ public class ArticleProcessor {
         markdownText = Markdowns.toHTML(markdownText);
         markdownText = Markdowns.clean(markdownText, "");
 
-        context.renderTrueResult().
-                renderJSONValue(Article.ARTICLE_REWARD_CONTENT, markdownText);
+        context.renderTrueResult().renderJSONValue(Article.ARTICLE_REWARD_CONTENT, markdownText);
     }
 
     /**
