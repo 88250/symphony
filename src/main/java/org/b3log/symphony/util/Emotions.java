@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.3.0.0, May 21, 2017
+ * @version 1.3.0.1, Feb 2, 2018
  * @since 0.2.0
  */
 public final class Emotions {
@@ -982,10 +982,9 @@ public final class Emotions {
      * @return converted content
      */
     public static String convert(final String content) {
-        final String staticServePath = Latkes.getStaticServePath();
-
         String ret = content;
 
+        // Compatible legacy code
         String emotionName;
         for (int i = 0; i < EMOTION_CNT; i++) {
             if (i < TEN) {
@@ -995,23 +994,14 @@ public final class Emotions {
             }
 
             ret = ret.replace('[' + emotionName + ']',
-                    "<img class=\"emoji\" src='" + staticServePath + "/images/emotions/" + emotionName + ".png" + "' />");
+                    "<img class=\"emoji\" src='" + Latkes.getStaticServePath() + "/images/emotions/" + emotionName + ".png" + "' />");
         }
 
         if (!EMOJI_PATTERN.matcher(ret).find()) {
             return ret;
         }
 
-        for (final String emojiCode : EMOJIS) {
-            ret = ret.replace(":" + emojiCode + ":", "<img alt=\"" + emojiCode + "\" class=\"emoji\" src=\""
-                    + staticServePath + "/emoji/graphics/" + emojiCode
-                    + ".png\" title=\"" + emojiCode + "\" />");
-        }
-
-//        ret = ret.replaceAll("\ufe0f", "");
-//        ret = ret.replaceAll("\ufffd", "");
-//        ret = ret.replaceAll("⃣", "");
-        return ret;
+        return EmojiParser.parseToUnicode(ret);
     }
 
     public static void main(String[] args) {
