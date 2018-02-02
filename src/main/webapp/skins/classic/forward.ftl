@@ -67,7 +67,7 @@
         init: function () {
             S.Drawing.init('.canvas');
             document.body.classList.add('body--ready');
-            var text = 'Hacpai';
+            var text = 'HacPai';
             S.UI.simulate(text);
             S.Drawing.loop(function () {
                 S.Shape.render();
