@@ -60,23 +60,26 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.10.1, Jan 28, 2018
+ * @version 3.19.10.2, Feb 2, 2018
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
 
     /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(SymphonyServletListener.class);
+
+    /**
      * Symphony version.
      */
     public static final String VERSION = "2.3.0";
+
     /**
      * JSONO print indent factor.
      */
     public static final int JSON_PRINT_INDENT_FACTOR = 4;
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(SymphonyServletListener.class);
+
     /**
      * Bean manager.
      */
@@ -203,15 +206,15 @@ public final class SymphonyServletListener extends AbstractServletListener {
             browserType = BrowserType.MOBILE_BROWSER;
         } else if (StringUtils.containsIgnoreCase(userAgentStr, "Iframely")
                 || StringUtils.containsIgnoreCase(userAgentStr, "Google")
-                || StringUtils.containsIgnoreCase(userAgentStr, "B3log")) {
+                || StringUtils.containsIgnoreCase(userAgentStr, "B3log")
+                || StringUtils.containsIgnoreCase(userAgentStr, "BUbiNG")) {
             browserType = BrowserType.ROBOT;
         } else if (BrowserType.UNKNOWN == browserType) {
             if (!StringUtils.containsIgnoreCase(userAgentStr, "Java")
                     && !StringUtils.containsIgnoreCase(userAgentStr, "MetaURI")
                     && !StringUtils.containsIgnoreCase(userAgentStr, "Feed")) {
                 LOGGER.log(Level.WARN, "Unknown client [UA=" + userAgentStr + ", remoteAddr="
-                        + Requests.getRemoteAddr(httpServletRequest) + ", URI="
-                        + httpServletRequest.getRequestURI() + "]");
+                        + Requests.getRemoteAddr(httpServletRequest) + ", URI=" + httpServletRequest.getRequestURI() + "]");
             }
         }
 
