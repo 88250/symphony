@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.22.0.1, Jan 30, 2018
+ * @version 1.22.1.0, Feb 3, 2018
  */
 
 /**
@@ -629,10 +629,6 @@ var Settings = {
     if (Validate.goValidate({
         target: $('#passwordTip'),
         data: [{
-          "target": $("#pwdOld"),
-          "type": "password",
-          "msg": Label.invalidPasswordLabel
-        }, {
           "target": $("#pwdNew"),
           "type": "password",
           "msg": Label.invalidPasswordLabel
