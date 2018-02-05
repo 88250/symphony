@@ -42,7 +42,7 @@ import java.util.*;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.6, Nov 2, 2017
+ * @version 1.2.1.7, Feb 5, 2018
  * @since 1.8.0
  */
 @Service
@@ -607,6 +607,14 @@ public class InitMgmtService {
             tag.put(Tag.TAG_URI, "announcement");
             tagMgmtService.updateTag(tagId, tag);
 
+            tagTitle = "B3log";
+            tagId = tagMgmtService.addTag(adminId, tagTitle);
+            tag = tagRepository.get(tagId);
+            tag.put(Tag.TAG_URI, "B3log");
+            tag.put(Tag.TAG_ICON_PATH, "b3log.png");
+            tag.put(Tag.TAG_DESCRIPTION, "[B3log](http://b3log.org) 是一个开源组织，名字来源于“Bulletin Board Blog”缩写，目标是将独立博客与论坛结合，形成一种新的网络社区体验，详细请看 [B3log 构思](https://hacpai.com/b3log)。目前 B3log 已经开源了多款产品： [Solo] 、 [Sym] 、 [Wide] 。");
+            tagMgmtService.updateTag(tagId, tag);
+
             tagTitle = "Sym";
             tagId = tagMgmtService.addTag(adminId, tagTitle);
             tag = tagRepository.get(tagId);
@@ -615,12 +623,31 @@ public class InitMgmtService {
             tag.put(Tag.TAG_DESCRIPTION, "[Sym](https://github.com/b3log/symphony) 是一个用 [Java] 实现的现代化社区（论坛/社交网络/博客）平台，“下一代的社区系统，为未来而构建”。");
             tagMgmtService.updateTag(tagId, tag);
 
-            tagTitle = "B3log";
+            tagTitle = "Solo";
             tagId = tagMgmtService.addTag(adminId, tagTitle);
             tag = tagRepository.get(tagId);
-            tag.put(Tag.TAG_URI, "B3log");
-            tag.put(Tag.TAG_ICON_PATH, "b3log.png");
-            tag.put(Tag.TAG_DESCRIPTION, "[B3log](http://b3log.org) 是一个开源组织，名字来源于“Bulletin Board Blog”缩写，目标是将独立博客与论坛结合，形成一种新的网络社区体验，详细请看 [B3log 构思](https://hacpai.com/b3log)。目前 B3log 已经开源了多款产品： [Solo] 、 [Sym] 、 [Wide] 。");
+            tag.put(Tag.TAG_URI, "Solo");
+            tag.put(Tag.TAG_ICON_PATH, "solo.png");
+            tag.put(Tag.TAG_DESCRIPTION, "[Solo](https://github.com/b3log/solo) 是目前 GitHub 上关注度最高的 Java 开源博客系统。\n" +
+                    "\n" +
+                    "* [项目地址](https://github.com/b3log/solo)\n" +
+                    "* [用户指南](https://hacpai.com/article/1492881378588)");
+            tagMgmtService.updateTag(tagId, tag);
+
+            tagTitle = "Pipe";
+            tagId = tagMgmtService.addTag(adminId, tagTitle);
+            tag = tagRepository.get(tagId);
+            tag.put(Tag.TAG_URI, "Pipe");
+            tag.put(Tag.TAG_ICON_PATH, "pipe.png");
+            tag.put(Tag.TAG_DESCRIPTION, "[Pipe](https://github.com/b3log/pipe) 是一款小而美的开源博客平台，通过 [黑客派] 账号登录即可使用。如果你不想自己搭建，可以直接使用我们运维的 http://pipe.b3log.org");
+            tagMgmtService.updateTag(tagId, tag);
+
+            tagTitle = "Wide";
+            tagId = tagMgmtService.addTag(adminId, tagTitle);
+            tag = tagRepository.get(tagId);
+            tag.put(Tag.TAG_URI, "Wide");
+            tag.put(Tag.TAG_ICON_PATH, "wide.png");
+            tag.put(Tag.TAG_DESCRIPTION, "[Wide](https://github.com/b3log/wide) 是一个基于 [Web] 的 <a href='/tags/golang'>Go</a> 语言团队 IDE。通过浏览器就可以进行 Go 开发，并有代码自动完成、查看表达式、编译反馈、Lint、实时结果输出等功能。");
             tagMgmtService.updateTag(tagId, tag);
 
             // Hello World!
