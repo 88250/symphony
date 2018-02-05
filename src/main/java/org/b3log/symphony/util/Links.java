@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Apr 19, 2017
+ * @version 1.0.1.0, Feb 5, 2018
  * @since 1.6.0
  */
 public final class Links {
@@ -173,10 +173,10 @@ public final class Links {
 
                 String title = StringUtils.substringBetween(html, "<title>", "</title>");
                 title = StringUtils.trim(title);
-
                 if (!containsChinese(title)) {
                     return null;
                 }
+                title = Emotions.toAliases(title);
 
                 final String keywords = StringUtils.substringBetween(html, "eywords\" content=\"", "\"");
 
