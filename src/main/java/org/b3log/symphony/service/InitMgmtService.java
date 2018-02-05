@@ -652,7 +652,7 @@ public class InitMgmtService {
 
             // Hello World!
             final JSONObject article = new JSONObject();
-            article.put(Article.ARTICLE_TITLE, "Welcome to Sym community &hearts;");
+            article.put(Article.ARTICLE_TITLE, "Welcome to Sym community :gift_heart:");
             article.put(Article.ARTICLE_TAGS, "Sym,Announcement");
             article.put(Article.ARTICLE_CONTENT, "Hello, everyone!");
             article.put(Article.ARTICLE_EDITOR_TYPE, 0);
