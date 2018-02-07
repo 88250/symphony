@@ -92,7 +92,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.0.1, Dec 18, 2017
+ * @version 1.27.0.2, Feb 7, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -616,8 +616,10 @@ public class ArticleProcessor {
                 String.valueOf(ArticleAddValidation.MAX_ARTICLE_CONTENT_LENGTH));
         dataModel.put("articleContentErrorLabel", articleContentErrorLabel);
 
-        final String b3logKey = currentUser.optString(UserExt.USER_B3_KEY);
-        dataModel.put("hasB3Key", !Strings.isEmptyOrNull(b3logKey));
+        final String b3Key = currentUser.optString(UserExt.USER_B3_KEY);
+        final String b3ClientAddArticle = currentUser.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL);
+        final String b3ClientUpdateArticle = currentUser.optString(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL);
+        dataModel.put("hasB3Key", StringUtils.isNotBlank(b3Key) && StringUtils.isNotBlank(b3ClientAddArticle) && StringUtils.isNotBlank(b3ClientUpdateArticle));
 
         fillPostArticleRequisite(dataModel, currentUser);
         fillDomainsWithTags(dataModel);
