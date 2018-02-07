@@ -91,7 +91,7 @@ var Verify = {
                 userEmail: $("#registerUserEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
                 invitecode: $("#registerInviteCode").val().replace(/(^\s*)|(\s*$)/g, ""),
                 captcha: $("#registerCaptcha").val(),
-                referral: sessionStorage.r
+                referral: sessionStorage.r || ''
             };
 
             $("#registerBtn").attr('disabled', 'disabled');

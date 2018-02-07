@@ -50,7 +50,7 @@
         <#include "../footer.ftl">
         <script src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            if (sessionStorage.r === '') {
+            if ('${referral}' !== '') {
                 sessionStorage.setItem('r', '${referral}');
             }
             Verify.init();
