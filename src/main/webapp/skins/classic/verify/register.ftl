@@ -50,6 +50,9 @@
         <#include "../footer.ftl">
         <script src="${staticServePath}/js/verify${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
+            if (sessionStorage.r === '') {
+                sessionStorage.setItem('r', '${referral}');
+            }
             Verify.init();
             Label.invalidUserNameLabel = "${invalidUserNameLabel}";
             Label.invalidEmailLabel = "${invalidEmailLabel}";

@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.4.0, Jan 2, 2018
+ * @version 2.8.0.0, Jan 7, 2018
  */
 
 /**
@@ -91,7 +91,7 @@ var Verify = {
                 userEmail: $("#registerUserEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
                 invitecode: $("#registerInviteCode").val().replace(/(^\s*)|(\s*$)/g, ""),
                 captcha: $("#registerCaptcha").val(),
-                referral: $("#referral").val()
+                referral: sessionStorage.r
             };
 
             $("#registerBtn").attr('disabled', 'disabled');
