@@ -222,7 +222,7 @@ Sym 提供了 [API](https://hacpai.com/article/1457158841475) 进行帖子、回
 
 ![11](https://cloud.githubusercontent.com/assets/873584/19893293/b0014ba6-a083-11e6-9c9a-9debad14c826.png)
 
-* 通过配置即可集成 [Algolia](https://www.algolia.com/referrals/1faf0d17/join) 云搜索服务，可自定义搜索字段，并进行权重、排序调优
+* 通过配置即可集成 [Algolia](https://www.algolia.com) 云搜索服务，可自定义搜索字段，并进行权重、排序调优
 * 也可以自己搭建 Elasticsearch 并通过配置进行集成
 
 后续会对搜索功能进行加强，实现条件过滤，结果高亮等，敬请期待。

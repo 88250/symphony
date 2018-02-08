@@ -229,7 +229,7 @@ Through the configuration can be integrated [SendCloud](http://sendcloud.sohu.co
 
 ![11](https://cloud.githubusercontent.com/assets/873584/19893293/b0014ba6-a083-11e6-9c9a-9debad14c826.png)
 
-* through the configuration can be integrated [Algolia](https://www.algolia.com/referrals/1faf0d17/join) cloud search service, can customize the search field, and the weight and ranking optimization
+* through the configuration can be integrated [Algolia](https://www.algolia.com) cloud search service, can customize the search field, and the weight and ranking optimization
 * can also build their own Elasticsearch and integrated through the configuration
 
 Follow up on the search function to strengthen, to achieve the conditions for filtering, the results highlight, please look forward to.
