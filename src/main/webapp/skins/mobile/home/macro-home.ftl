@@ -114,9 +114,6 @@
                     <li<#if type == "points"> class="fn-none"</#if>>
                         <a href="${servePath}/member/${user.userName}/points">${pointLabel}</a>
                     </li>
-                    <li<#if type == "linkForge"> class="fn-none"</#if>>
-                    <a href="${servePath}/member/${user.userName}/forge/link">${linkForgeLabel}</a>
-                    </li>
                     <#if currentUser?? && currentUser.userName == user.userName>
                     <li<#if type == "articlesAnonymous"> class="current"</#if>>
                         <a href="${servePath}/member/${user.userName}/articles/anonymous">${anonymousArticleLabel}</a>

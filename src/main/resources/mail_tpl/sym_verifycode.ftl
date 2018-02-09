@@ -149,8 +149,6 @@
                                                                 <span style="color:#999">•</span>
                                                                 <a href="${servePath}/hot" style="color:#4183c4;font-weight:bold;text-decoration:none" target="_blank">热门</a> 
                                                                 <span style="color:#999">•</span>
-                                                                <a href="${servePath}/forge/link" style="color:#4183c4;font-weight:bold;text-decoration:none" target="_blank">链接熔炉</a> 
-                                                                <span style="color:#999">•</span>
                                                                 <a href="${servePath}/article/1460083956075" style="color:#4183c4;font-weight:bold;text-decoration:none" target="_blank">广告投放</a>
                                                             </span>
                                                         </p>

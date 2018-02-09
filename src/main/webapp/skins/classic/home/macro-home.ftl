@@ -78,8 +78,6 @@
                                     href="${servePath}/member/${user.userName}/watching/articles"><svg><use xlink:href="#star"></use></svg> ${followLabel}</a>
                                 <a pjax-title="${pointLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "points"> class="current"</#if> href="${servePath}/member/${user.userName}/points">
                                     <svg><use xlink:href="#goods"></use></svg> ${pointLabel}</a>
-                                <a pjax-title="${linkForgeLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "linkForge"> class="current"</#if> href="${servePath}/member/${user.userName}/forge/link">
-                                    <svg><use xlink:href="#bagua"></use></svg> ${forgeLabel}</a>
                             </nav>
                         </div>
                     </div>
