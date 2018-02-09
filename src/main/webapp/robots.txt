@@ -8,3 +8,6 @@ Disallow: /cr
 
 User-agent: BUbiNG
 Disallow: /
+
+User-agent: ltx71 - (http://ltx71.com/)
+Disallow: /
