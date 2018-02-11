@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.8.1.13, Jan 20, 2017
+ * @version 2.9.0.0, Feb 11, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -405,6 +405,12 @@ public final class UserExt {
      */
     public static final int USER_GUIDE_STEP_STAR_PROJECT = 4;
 
+    //// Email constant
+    /**
+     * Builtin email suffix.
+     */
+    public static final String USER_BUILTIN_EMAIL_SUFFIX = "@sym.b3log.org";
+
     //// Default Commenter constants
     /**
      * Default commenter name.
@@ -414,7 +420,7 @@ public final class UserExt {
     /**
      * Default commenter email.
      */
-    public static final String DEFAULT_CMTER_EMAIL = "default_commenter@b3log.org";
+    public static final String DEFAULT_CMTER_EMAIL = "default_commenter" + USER_BUILTIN_EMAIL_SUFFIX;
 
     /**
      * Default commenter role.

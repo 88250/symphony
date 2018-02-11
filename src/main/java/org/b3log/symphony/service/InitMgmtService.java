@@ -571,7 +571,7 @@ public class InitMgmtService {
 
             // Init admin
             final JSONObject admin = new JSONObject();
-            admin.put(User.USER_EMAIL, "sym@b3log.org");
+            admin.put(User.USER_EMAIL, "admin" + UserExt.USER_BUILTIN_EMAIL_SUFFIX);
             admin.put(User.USER_NAME, "admin");
             admin.put(User.USER_PASSWORD, MD5.hash("admin"));
 
