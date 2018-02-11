@@ -13,7 +13,7 @@
                    href="${servePath}/member/${article.articleAuthorName}"
                    ></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
                 <div class="fn-flex-1 has-view">
-                    <h2>
+                    <h2 class="fn-ellipsis">
                         <@icon article.articlePerfect article.articleType></@icon>
                         <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark"
                            href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
