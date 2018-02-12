@@ -62,7 +62,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.21.2, Dec 8, 2017
+ * @version 1.15.21.3, Feb 12, 2018
  * @since 0.2.0
  */
 @Service
@@ -394,7 +394,7 @@ public class UserMgmtService {
      *                          "userName": "",
      *                          "userEmail": "",
      *                          "userPassword": "", // Hashed
-     *                          "userLanguage": "",
+     *                          "userLanguage": "", // optional, default to "zh_CN"
      *                          "userAppRole": int, // optional, default to 0
      *                          "userRole": "", // optional, uses {@value Role#ROLE_ID_C_DEFAULT} instead if not specified
      *                          "userStatus": int, // optional, uses {@value UserExt#USER_STATUS_C_NOT_VERIFIED} instead if not specified
