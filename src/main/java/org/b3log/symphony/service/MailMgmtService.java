@@ -46,7 +46,7 @@ import java.util.*;
  * Mail management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Apr 24, 2017
+ * @version 1.0.0.7, Feb 12, 2018
  * @since 1.6.0
  */
 @Service
@@ -134,13 +134,11 @@ public class MailMgmtService {
             final Query toUserQuery = new Query();
             toUserQuery.setCurrentPageNum(1).setPageCount(1).setPageSize(userSize).
                     setFilter(CompositeFilterOperator.and(
-                            new PropertyFilter(UserExt.USER_SUB_MAIL_SEND_TIME, FilterOperator.LESS_THAN_OR_EQUAL,
-                                    sevenDaysAgo),
-                            new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.LESS_THAN_OR_EQUAL,
-                                    sevenDaysAgo),
-                            new PropertyFilter(UserExt.USER_SUB_MAIL_STATUS, FilterOperator.EQUAL,
-                                    UserExt.USER_SUB_MAIL_STATUS_ENABLED),
-                            new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID)
+                            new PropertyFilter(UserExt.USER_SUB_MAIL_SEND_TIME, FilterOperator.LESS_THAN_OR_EQUAL, sevenDaysAgo),
+                            new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.LESS_THAN_OR_EQUAL, sevenDaysAgo),
+                            new PropertyFilter(UserExt.USER_SUB_MAIL_STATUS, FilterOperator.EQUAL, UserExt.USER_SUB_MAIL_STATUS_ENABLED),
+                            new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID),
+                            new PropertyFilter(User.USER_EMAIL, FilterOperator.NOT_LIKE, "%" + UserExt.USER_BUILTIN_EMAIL_SUFFIX)
                     )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
             final JSONArray receivers = userRepository.get(toUserQuery).optJSONArray(Keys.RESULTS);
 
@@ -208,8 +206,7 @@ public class MailMgmtService {
 
             final String fromName = langPropsService.get("symphonyEnLabel") + " "
                     + langPropsService.get("weeklyEmailFromNameLabel", Latkes.getLocale());
-            Mails.batchSendHTML(fromName, mailSubject, new ArrayList<>(toMails),
-                    Mails.TEMPLATE_NAME_WEEKLY, dataModel);
+            Mails.batchSendHTML(fromName, mailSubject, new ArrayList<>(toMails), Mails.TEMPLATE_NAME_WEEKLY, dataModel);
 
             LOGGER.info("Sent weekly newsletter [" + toMails.size() + "]");
         } catch (final Exception e) {
