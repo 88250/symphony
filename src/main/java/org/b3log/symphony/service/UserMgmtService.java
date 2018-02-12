@@ -40,10 +40,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
-import org.b3log.symphony.util.Crypts;
-import org.b3log.symphony.util.Geos;
-import org.b3log.symphony.util.Sessions;
-import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -62,7 +59,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.21.3, Feb 12, 2018
+ * @version 1.15.21.4, Feb 12, 2018
  * @since 0.2.0
  */
 @Service
@@ -542,26 +539,30 @@ public class UserMgmtService {
                 user.put(Keys.OBJECT_ID, ret);
 
                 try {
-                    final BufferedImage img = avatarQueryService.createAvatar(MD5.hash(ret), 512);
-                    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    ImageIO.write(img, "jpg", baos);
-                    baos.flush();
-                    final byte[] bytes = baos.toByteArray();
-                    baos.close();
+                    byte[] avatarData;
+
+                    final String hash = MD5.hash(ret);
+                    avatarData = Gravatars.getRandomAvatarData(hash); // https://github.com/b3log/symphony/issues/569
+                    if (null == avatarData) {
+                        final BufferedImage img = avatarQueryService.createAvatar(hash, 512);
+                        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ImageIO.write(img, "jpg", baos);
+                        baos.flush();
+                        avatarData = baos.toByteArray();
+                        baos.close();
+                    }
 
                     if (Symphonys.getBoolean("qiniu.enabled")) {
                         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
                         final UploadManager uploadManager = new UploadManager(new Configuration());
 
-                        uploadManager.put(bytes, "avatar/" + ret, auth.uploadToken(Symphonys.get("qiniu.bucket")),
+                        uploadManager.put(avatarData, "avatar/" + ret, auth.uploadToken(Symphonys.get("qiniu.bucket")),
                                 null, "image/jpeg", false);
-                        user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
-                                + new Date().getTime());
+                        user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?" + new Date().getTime());
                     } else {
                         final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
                         final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName);
-                        IOUtils.write(bytes, output);
-
+                        IOUtils.write(avatarData, output);
                         IOUtils.closeQuietly(output);
 
                         user.put(UserExt.USER_AVATAR_URL, Latkes.getServePath() + "/upload/" + fileName);

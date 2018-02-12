@@ -25,10 +25,7 @@
                         <div class="module-panel fn-oh">
                             <nav class="home-menu">
                                 <a href="${servePath}/settings"<#if 'profile' == type> class="current"</#if>>${profilesLabel}</a>
-                                <a href="${servePath}/settings/avatar"<#if 'avatar' == type> class="current"</#if>>
-                                ${avatarLabel}
-                                <#if !currentUser.userAvatarURL?contains('_')><span class="todo tooltipped tooltipped-w" aria-label="${todoAvatarLabel}"></span></#if>
-                                </a>
+                                <a href="${servePath}/settings/avatar"<#if 'avatar' == type> class="current"</#if>>${avatarLabel}</a>
                                 <a href="${servePath}/settings/invite"<#if 'invite' == type> class="current"</#if>>
                                 ${inviteLabel}
                                 <#if invitedUserCnt < 1><span class="todo tooltipped tooltipped-w" aria-label="${todoInviteLabel}"></span></#if>

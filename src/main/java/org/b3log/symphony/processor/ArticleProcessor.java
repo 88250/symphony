@@ -92,7 +92,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.0.2, Feb 7, 2018
+ * @version 1.27.0.3, Feb 12, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -629,10 +629,10 @@ public class ArticleProcessor {
         boolean requisite = false;
         String requisiteMsg = "";
 
-        if (!UserExt.updatedAvatar(currentUser)) {
-            requisite = true;
-            requisiteMsg = langPropsService.get("uploadAvatarThenPostLabel");
-        }
+//        if (!UserExt.updatedAvatar(currentUser)) {
+//            requisite = true;
+//            requisiteMsg = langPropsService.get("uploadAvatarThenPostLabel");
+//        }
 
         dataModel.put(Common.REQUISITE, requisite);
         dataModel.put(Common.REQUISITE_MSG, requisiteMsg);
