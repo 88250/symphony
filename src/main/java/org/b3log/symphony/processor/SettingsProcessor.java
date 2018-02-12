@@ -74,7 +74,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Jan 31, 2018
+ * @version 1.0.1.1, Feb 12, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -629,8 +629,8 @@ public class SettingsProcessor {
                 userListPageSize = 10;
             }
 
-            if (userListPageSize > 30) {
-                userListPageSize = 30;
+            if (userListPageSize > 60) {
+                userListPageSize = 60;
             }
         } catch (final Exception e) {
             userListPageSize = Symphonys.getInt("indexArticlesCnt");
