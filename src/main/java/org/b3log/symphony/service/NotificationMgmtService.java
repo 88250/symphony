@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.16.0.0, Aug 24, 2017
+ * @version 1.16.0.1, Feb 19, 2017
  * @since 0.2.5
  */
 @Service
@@ -60,7 +60,7 @@ public class NotificationMgmtService {
     private NotificationRepository notificationRepository;
 
     /**
-     * Add a 'article vote down' type notification with the specified request json object.
+     * Adds a 'article vote down' type notification with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId": "",
@@ -82,7 +82,7 @@ public class NotificationMgmtService {
     }
 
     /**
-     * Add a 'article vote up' type notification with the specified request json object.
+     * Adds a 'article vote up' type notification with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId": "",
@@ -104,7 +104,7 @@ public class NotificationMgmtService {
     }
 
     /**
-     * Add a 'comment vote down' type notification with the specified request json object.
+     * Adds a 'comment vote down' type notification with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId": "",
@@ -126,7 +126,7 @@ public class NotificationMgmtService {
     }
 
     /**
-     * Add a 'comment vote up' type notification with the specified request json object.
+     * Adds a 'comment vote up' type notification with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId": "",
@@ -148,7 +148,7 @@ public class NotificationMgmtService {
     }
 
     /**
-     * Add a 'article new watcher' type notification with the specified request json object.
+     * Adds a 'article new watcher' type notification with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId": "",
@@ -170,7 +170,7 @@ public class NotificationMgmtService {
     }
 
     /**
-     * Add a 'article new follower' type notification with the specified request json object.
+     * Adds a 'article new follower' type notification with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId": "",
@@ -192,7 +192,7 @@ public class NotificationMgmtService {
     }
 
     /**
-     * Add a 'point - perfect article' type notification with the specified request json object.
+     * Adds a 'point - perfect article' type notification with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId": "",
