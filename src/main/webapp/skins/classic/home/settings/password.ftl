@@ -2,7 +2,7 @@
 <@home "password">
 <div class="module">
     <div class="module-header">
-        <h2>${invalidPasswordLabel}</h2>
+        <h2>${passwordLabel}</h2>
     </div>
     <div class="module-panel form fn-clear">
         <label>${oldPasswordLabel}</label>
