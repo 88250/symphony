@@ -4,8 +4,8 @@
     <div class="module-header">${dataExportTipLabel}</div>
     <div class="module-panel form fn-clear">
         <br>
-        ${articleLabel}${colonLabel}${currentUser.userArticleCount}&nbsp;&nbsp;&nbsp;&nbsp;
-        ${cmtLabel}${colonLabel}${currentUser.userCommentCount}
+        ${articleLabel}${colonLabel}${currentUser.userArticleCount?c}&nbsp;&nbsp;&nbsp;&nbsp;
+        ${cmtLabel}${colonLabel}${currentUser.userCommentCount?c}
         <button class="green fn-right" onclick="Settings.exportPosts()">${exportLabel}</button>
     </div>
 </div>
