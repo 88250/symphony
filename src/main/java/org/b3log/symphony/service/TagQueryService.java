@@ -47,13 +47,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-;
-
 /**
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.6.13, Apr 21, 2017
+ * @version 1.8.7.0, Feb 22, 2018
  * @since 0.2.0
  */
 @Service
@@ -477,6 +475,14 @@ public class TagQueryService {
             final JSONObject result = userTagRepository.get(query);
             final JSONArray results = result.optJSONArray(Keys.RESULTS);
             final JSONObject creatorTagRelation = results.optJSONObject(0);
+            if (null == creatorTagRelation) {
+                LOGGER.log(Level.WARN, "Can't find tag [id=" + tagId + "]'s creator, uses anonymous user instead");
+                ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, avatarQueryService.getDefaultAvatarURL("48"));
+                ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, 0L);
+                ret.put(Tag.TAG_T_CREATOR_NAME, UserExt.ANONYMOUS_USER_NAME);
+
+                return ret;
+            }
 
             final String creatorId = creatorTagRelation.optString(User.USER + '_' + Keys.OBJECT_ID);
             if (UserExt.ANONYMOUS_USER_ID.equals(creatorId)) {
