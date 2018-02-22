@@ -114,6 +114,9 @@
         <a target="_blank"
            href="http://shang.qq.com/wpa/qunwpa?idkey=981d9282616274abb1752336e21b8036828f715a1c4d0628adcf208f2fd54f3a">
             <svg><use xlink:href="#qq"></use></svg></a>
+        <a target="_blank" rel="noopener"
+           href="https://t.me/b3log">
+            <svg><use xlink:href="#icon-telegram"></use></svg></a>
     </div>
     <#include "footer.ftl">
 </body>
