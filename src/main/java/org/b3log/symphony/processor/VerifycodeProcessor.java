@@ -33,11 +33,11 @@ import javax.servlet.http.HttpServletResponse;
  * Verifycode processor.
  * <ul>
  * <li>Send email verifycode (/cron/verifycode/email), GET</li>
- * <li>Send email verifycode (/cron/verifycode/remove-expired), GET</li>
+ * <li>Remove expired verifycodes (/cron/verifycode/remove-expired), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Oct 31, 2016
+ * @version 1.0.0.4, Feb 23, 2018
  * @since 1.3.0
  */
 @RequestProcessor
