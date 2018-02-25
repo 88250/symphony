@@ -30,7 +30,6 @@ import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
-import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Role;
@@ -51,7 +50,7 @@ import java.util.Map;
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.11, Mar 9, 2017
+ * @version 1.3.4.12, Feb 24, 2018
  * @since 0.2.0
  */
 @Named
@@ -205,14 +204,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
-        }
+        final JSONObject requestJSONObject = (JSONObject) args.get("requestJSONObject");
 
         validateArticleFields(request, requestJSONObject);
     }

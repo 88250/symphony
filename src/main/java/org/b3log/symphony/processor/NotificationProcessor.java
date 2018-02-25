@@ -45,10 +45,8 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -262,24 +260,8 @@ public class NotificationProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void makeNotificationRead(final HTTPRequestContext context, final HttpServletRequest request,
                                      final HttpServletResponse response) throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
-        if (null == currentUser) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, response);
-        } catch (final IOException | ServletException e) {
-            LOGGER.error(e.getMessage());
-
-            context.renderJSON(false);
-
-            return;
-        }
-
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
         final List<String> commentIds = Arrays.asList(requestJSONObject.optString(Comment.COMMENT_T_IDS).split(","));

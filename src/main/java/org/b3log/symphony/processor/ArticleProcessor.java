@@ -55,7 +55,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import javax.imageio.ImageIO;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -63,7 +62,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -915,21 +913,15 @@ public class ArticleProcessor {
      * </pre>
      * </p>
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws IOException      io exception
-     * @throws ServletException servlet exception
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleAddValidation.class,
             PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException, ServletException {
+    public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
         context.renderJSON();
-
-        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
