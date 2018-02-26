@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.44.1.1, Jan 30, 2018
+ * @version 1.44.2.0, Feb 26, 2018
  */
 
 /**
@@ -610,7 +610,7 @@ var Util = {
       }
     }
     ]).on('autocomplete:selected', function (event, suggestion, dataset) {
-      window.open("/article/" + suggestion.oId);
+      window.open(Label.servePath + "/article/" + suggestion.oId);
     }).bind('keyup', 'esc', function () {
       $(this).blur();
     });
