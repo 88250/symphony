@@ -46,7 +46,7 @@ import java.util.*;
  * Mail management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Feb 12, 2018
+ * @version 1.0.1.0, Feb 27, 2018
  * @since 1.6.0
  */
 @Service
@@ -183,7 +183,11 @@ public class MailMgmtService {
                     addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING);
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(
                     articleRepository.get(articleQuery).optJSONArray(Keys.RESULTS));
+            if (articles.isEmpty()) {
+                LOGGER.info("No article as newsletter to send");
 
+                return;
+            }
             articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
 
             String mailSubject = "";
