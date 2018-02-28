@@ -44,7 +44,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.0.1, Dec 18, 2017
+ * @version 1.2.1.0, Feb 28, 2018
  * @since 1.3.0
  */
 @Service
@@ -64,7 +64,7 @@ public class ShortLinkQueryService {
      * Article pattern - full.
      */
     private static final Pattern ARTICLE_PATTERN_FULL
-            = Pattern.compile("(?:^|[^\"'\\](])(" + Latkes.getServePath() + "/article/\\d{13,15}(\\b|$))");
+            = Pattern.compile("(?:^|[^\"'\\](])(" + Latkes.getServePath() + "/article/\\d{13,15}[?\\w&=#%:]*(\\b|$))");
 
     /**
      * Tag title pattern.
@@ -106,7 +106,13 @@ public class ShortLinkQueryService {
                     if (StringUtils.containsIgnoreCase(codes, url)) {
                         continue;
                     }
-                    final String linkId = StringUtils.substringAfter(url, "/article/");
+                    String linkId;
+                    if (StringUtils.contains(url, "?")) {
+                        linkId = StringUtils.substringBetween(matcher.group(), "/article/", "?");
+                    } else {
+                        linkId = StringUtils.substringAfter(matcher.group(), "/article/");
+                    }
+
                     final Query query = new Query().addProjection(Article.ARTICLE_TITLE, String.class)
                             .setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, linkId));
                     final JSONArray results = articleRepository.get(query).optJSONArray(Keys.RESULTS);
