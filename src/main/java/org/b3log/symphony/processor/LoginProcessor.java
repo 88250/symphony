@@ -71,7 +71,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.11.1, Jan 30, 2018
+ * @version 1.13.11.2, Mar 2, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -452,9 +452,11 @@ public class LoginProcessor {
 
             user.put(User.USER_PASSWORD, password);
             userMgmtService.updatePassword(user);
+            verifycodeMgmtService.removeByCode(code);
             context.renderTrueResult();
-
             LOGGER.info("User [email=" + user.optString(User.USER_EMAIL) + "] reseted password");
+
+            Sessions.login(request, response, user, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("resetPwdLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);

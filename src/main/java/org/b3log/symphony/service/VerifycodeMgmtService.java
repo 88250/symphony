@@ -42,7 +42,7 @@ import java.util.*;
  * Verifycode management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Oct 28, 2016
+ * @version 1.2.0.0, Mar 2, 2018
  * @since 1.3.0
  */
 @Service
@@ -72,19 +72,38 @@ public class VerifycodeMgmtService {
     private LangPropsService langPropsService;
 
     /**
+     * Removes a verifycode with the specified code.
+     *
+     * @param code the specified code
+     */
+    @Transactional
+    public void removeByCode(final String code) {
+        final Query query = new Query().setFilter(new PropertyFilter(Verifycode.CODE, FilterOperator.EQUAL, code));
+        try {
+            final JSONArray results = verifycodeRepository.get(query).optJSONArray(Keys.RESULTS);
+            if (1 > results.length()) {
+                return;
+            }
+
+            verifycodeRepository.remove(results.optJSONObject(0).optString(Keys.OBJECT_ID));
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Removes by code [" + code + "] failed", e);
+        }
+    }
+
+    /**
      * Adds a verifycode with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     *                                                   {
-     *                                                       "userId"; "",
-     *                                                       "type": int,
-     *                                                       "bizType": int,
-     *                                                       "receiver": "",
-     *                                                       "code": "",
-     *                                                       "status": int,
-     *                                                       "expired": long
-     *                                                   }
-     *                                                   </pre>
+     * @param requestJSONObject the specified request json object, for example,
+     *                          {
+     *                          "userId"; "",
+     *                          "type": int,
+     *                          "bizType": int,
+     *                          "receiver": "",
+     *                          "code": "",
+     *                          "status": int,
+     *                          "expired": long
+     *                          }
      * @return verifycode id
      * @throws ServiceException service exception
      */
