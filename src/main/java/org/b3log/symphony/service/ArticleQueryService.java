@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.36.1, Jan 6, 2018
+ * @version 2.27.36.2, Mar 3, 2018
  * @since 0.2.0
  */
 @Service
@@ -1584,6 +1584,7 @@ public class ArticleQueryService {
         try {
             List<JSONObject> ret;
             Stopwatchs.start("Query index recent articles");
+            final long thirtyDaysAgo = DateUtils.addDays(new Date(), -30).getTime();
             try {
                 ret = articleRepository.select("SELECT\n"
                         + "	oId,\n"
@@ -1612,7 +1613,7 @@ public class ArticleQueryService {
                         + "END AS flag\n"
                         + "FROM\n"
                         + "	`" + articleRepository.getName() + "`\n"
-                        + " WHERE `articleType` != 1 AND `articleStatus` = 0 AND `articleTags` != '" + Tag.TAG_TITLE_C_SANDBOX + "'\n"
+                        + " WHERE `articleType` != 1 AND `articleStatus` = 0 AND `articleTags` != '" + Tag.TAG_TITLE_C_SANDBOX + "' AND `oId` >= '" + thirtyDaysAgo + "'\n"
                         + " ORDER BY\n"
                         + "	articleStick DESC,\n"
                         + "	flag DESC\n"
