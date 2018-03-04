@@ -20,7 +20,7 @@
 -->
 <!--
     Description: Cron job configurations. 
-    Version: 1.12.0.0, Nov 20, 2017
+    Version: 1.12.0.1, Mar 4, 2018
     Author: Liang Ding
 -->
 <cronentries>
@@ -55,11 +55,13 @@
         <schedule>every 30 minutes</schedule>
     </cron>
 
+    <!--
     <cron>
         <url>/cron/xiaov?key=dev_key</url>
         <description>XiaoV replies Stm.</description>
         <schedule>every 5 seconds</schedule>
     </cron>
+    -->
 
     <cron>
         <url>/cron/invitecode-expire?key=dev_key</url>
