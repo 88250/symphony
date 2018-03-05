@@ -65,7 +65,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.1.0, Jan 23, 2018
+ * @version 2.18.2.0, Mar 5, 2018
  * @since 0.2.0
  */
 @Service
@@ -260,17 +260,17 @@ public class ArticleMgmtService {
         final int ups = article.optInt(Article.ARTICLE_GOOD_CNT);
         final int downs = article.optInt(Article.ARTICLE_BAD_CNT);
         if (watchCnt > 0 || collectCnt > 0 || ups > 0 || downs > 0) {
-            throw new ServiceException("removeArticleFoundWatchEtcLabel");
+            throw new ServiceException(langPropsService.get("removeArticleFoundWatchEtcLabel"));
         }
 
         final int rewardCnt = (int) rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_ARTICLE);
         if (rewardCnt > 0) {
-            throw new ServiceException("removeArticleFoundRewardLabel");
+            throw new ServiceException(langPropsService.get("removeArticleFoundRewardLabel"));
         }
 
         final int thankCnt = (int) rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_THANK_ARTICLE);
         if (thankCnt > 0) {
-            throw new ServiceException("removeArticleFoundThankLabel");
+            throw new ServiceException(langPropsService.get("removeArticleFoundThankLabel"));
         }
 
         // Perform removal
