@@ -41,7 +41,7 @@ import java.util.List;
  * Follow query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.5, Jan 16, 2018
+ * @version 1.4.0.6, Mar 7, 2018
  * @since 0.2.5
  */
 @Service
@@ -179,7 +179,15 @@ public class FollowQueryService {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
                 final JSONObject tag = tagRepository.get(followingId);
                 if (null == tag) {
-                    LOGGER.log(Level.WARN, "Not found tag[id=" + followingId + ']');
+                    LOGGER.log(Level.WARN, "Not found tag [followerId=" + followerId + ", followingId=" + followingId + ']');
+                    // Fix error data caused by history bug
+                    try {
+                        final Transaction transaction = followRepository.beginTransaction();
+                        followRepository.removeByFollowerIdAndFollowingId(followerId, followingId, Follow.FOLLOWING_TYPE_C_TAG);
+                        transaction.commit();
+                    } catch (final Exception e) {
+                        LOGGER.log(Level.ERROR, "Fix history data failed", e);
+                    }
 
                     continue;
                 }
