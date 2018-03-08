@@ -29,7 +29,7 @@
                 <div class="fn-flex-1 has-view">
                     <h2>
                         <@icon notification.articlePerfect notification.articleType></@icon>
-                        <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
+                        <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a><#if 20 == notification.dataType><span class="ft-green ft-smaller">${updateArticleLabel}</span></#if>
                     </h2>
                     <div class="ft-gray">
                         <#list notification.articleTagObjs as articleTag>
