@@ -20,7 +20,6 @@
     </description>
     <inceptionYear>2012</inceptionYear>
 
-    <!-- Properties -->
     <properties>
         <latke.version>2.3.20</latke.version>
 
@@ -39,7 +38,7 @@
         <owasp.version>1.2.1</owasp.version>
         <snakeyaml.version>1.18</snakeyaml.version>
 
-        <!-- maven plugin -->
+        <!-- Maven Plugin -->
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
         <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
         <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
