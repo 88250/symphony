@@ -26,14 +26,14 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.MD5;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -44,21 +44,16 @@ import java.util.UUID;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.6.0, Jan 12, 2018
+ * @version 2.0.0.0, Mar 11, 2018
  * @since 1.4.0
  */
-@WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
-public class FileUploadServlet extends HttpServlet {
-
-    /**
-     * Serial version UID.
-     */
-    private static final long serialVersionUID = 1L;
+@RequestProcessor
+public class FileUploadProcessor {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FileUploadServlet.class);
+    private static final Logger LOGGER = Logger.getLogger(FileUploadProcessor.class);
 
     /**
      * Upload directory.
@@ -87,8 +82,15 @@ public class FileUploadServlet extends HttpServlet {
         }
     }
 
-    @Override
-    public void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+    /**
+     * Gets file by the specified URL.
+     *
+     * @param req  the specified request
+     * @param resp the specified response
+     * @throws IOException io exception
+     */
+    @RequestProcessing(value = "/upload/*", method = HTTPRequestMethod.GET)
+    public void getFile(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
         if (QN_ENABLED) {
             return;
         }
@@ -132,9 +134,15 @@ public class FileUploadServlet extends HttpServlet {
         IOUtils.closeQuietly(output);
     }
 
-    @Override
-    public void doPost(final HttpServletRequest req, final HttpServletResponse resp)
-            throws ServletException, IOException {
+    /**
+     * Uploads file.
+     *
+     * @param req  the specified reuqest
+     * @param resp the specified response
+     * @throws IOException io exception
+     */
+    @RequestProcessing(value = "/upload", method = HTTPRequestMethod.POST)
+    public void uploadFile(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
         if (QN_ENABLED) {
             return;
         }
