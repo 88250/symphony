@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.81, Mar 5, 2018
+    Version: 2.16.6.82, Mar 11, 2018
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -30,7 +30,7 @@
         <mysql-connector-java.version>5.1.42</mysql-connector-java.version>
         <jsoup.version>1.10.2</jsoup.version>
         <flexmark.version>0.28.18</flexmark.version>
-        <qiniu.version>7.2.8</qiniu.version>
+        <qiniu.version>7.2.11</qiniu.version>
         <jodd.version>3.9.1</jodd.version>
         <emoji-java.version>4.0.0</emoji-java.version>
         <user-agent-utils.version>1.20</user-agent-utils.version>
