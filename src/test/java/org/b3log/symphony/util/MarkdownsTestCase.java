@@ -202,7 +202,7 @@ public class MarkdownsTestCase {
     @Test
     public void toHTML() {
         if (Markdowns.MARKED_AVAILABLE) {
-            String md = "[b3log](http://b3log.org)";
+            String md = "[b3log](https://b3log.org)";
             String html = Markdowns.toHTML(md);
             Assert.assertTrue(html.contains("href"));
 

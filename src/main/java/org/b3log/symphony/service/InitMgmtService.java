@@ -612,7 +612,7 @@ public class InitMgmtService {
             tag = tagRepository.get(tagId);
             tag.put(Tag.TAG_URI, "B3log");
             tag.put(Tag.TAG_ICON_PATH, "b3log.png");
-            tag.put(Tag.TAG_DESCRIPTION, "[B3log](http://b3log.org) 是一个开源组织，名字来源于“Bulletin Board Blog”缩写，目标是将独立博客与论坛结合，形成一种新的网络社区体验，详细请看 [B3log 构思](https://hacpai.com/b3log)。目前 B3log 已经开源了多款产品： [Solo] 、 [Sym] 、 [Wide] 。");
+            tag.put(Tag.TAG_DESCRIPTION, "[B3log](https://b3log.org) 是一个开源组织，名字来源于“Bulletin Board Blog”缩写，目标是将独立博客与论坛结合，形成一种新的网络社区体验，详细请看 [B3log 构思](https://hacpai.com/b3log)。目前 B3log 已经开源了多款产品： [Solo] 、 [Sym] 、 [Wide] 。");
             tagMgmtService.updateTag(tagId, tag);
 
             tagTitle = "Sym";
