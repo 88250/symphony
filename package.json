@@ -1,7 +1,7 @@
 {
   "name": "Symphony",
   "version": "2.3.0",
-  "description": "A modern community (forum/SNS/blog) platform written in Java. 一个用 Java 实现的现代化社区（论坛/社交网络/博客）平台。 http://sym.b3log.org",
+  "description": "A modern community (forum/SNS/blog) platform written in Java. 一个用 Java 实现的现代化社区（论坛/社交网络/博客）平台。 https://sym.b3log.org",
   "homepage": "https://github.com/b3log/symphony",
   "repository": {
     "type": "git",
