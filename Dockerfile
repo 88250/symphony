@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-MAINTAINER Liang Ding <dl88250@gmail.com>
+MAINTAINER Liang Ding <d@b3log.org>
 
 RUN echo 'deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse' > /etc/apt/sources.list\
     && echo 'deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse' >> /etc/apt/sources.list\

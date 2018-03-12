@@ -291,7 +291,7 @@ If you need to use Sym for commercial use, including but not limited to the foll
 * company use
 * profitability
 
-**You must pay the price for $4000, please contact QQ 845765 or email (DL88250@gmail.com) for detailed consultation.**
+**You must pay the price for $4000, please contact QQ 845765 or email (d@b3log.org) for detailed consultation.**
 
 ## Contribution
 
