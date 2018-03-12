@@ -11,8 +11,8 @@
         </div>
         <div class="fn-hr5"></div>
         <div>
-            <span>Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> •
-                <a href="http://sym.b3log.org" target="_blank">Sym</a>
+            <span>Powered by <a href="https://b3log.org" target="_blank">B3log 开源</a> •
+                <a href="https://sym.b3log.org" target="_blank">Sym</a>
                 ${version} • ${elapsed?c}ms</span>
         </div>
     </div>

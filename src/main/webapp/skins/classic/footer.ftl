@@ -29,8 +29,8 @@
             <div class="fn-clear ft-smaller">
                        ${sloganLabel}
                     <div class="fn-right">
-                       Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> •
-                            <a href="http://sym.b3log.org" target="_blank">Sym</a>
+                       Powered by <a href="https://b3log.org" target="_blank">B3log 开源</a> •
+                            <a href="https://sym.b3log.org" target="_blank">Sym</a>
                             ${version} • ${elapsed?c}ms
                     </div>
                 </div>
