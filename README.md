@@ -37,8 +37,6 @@
 * [Feeling](#feeling)
 * [Credits](#credits)
 
-[![activities](https://graphs.waffle.io/b3log/symphony/throughput.svg)](https://waffle.io/b3log/symphony/metrics/throughput)
-
 ## Introduction
 
 [Symphony](https://github.com/b3log/symphony) is a modern community platform, because it:

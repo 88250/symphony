@@ -32,8 +32,6 @@
 * [感悟](#感悟)
 * [鸣谢](#鸣谢)
 
-[![activities](https://graphs.waffle.io/b3log/symphony/throughput.svg)](https://waffle.io/b3log/symphony/metrics/throughput)
-
 ## 简介
 
 [Symphony](https://github.com/b3log/symphony)（[ˈsɪmfəni]，n.交响乐）是一个现代化的社区平台，因为它：
