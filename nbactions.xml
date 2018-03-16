@@ -10,7 +10,6 @@
             <jpda.listen>maven</jpda.listen>
         </properties>
     </action>
-    
     <action>
         <actionName>CUSTOM-release</actionName>
         <displayName>release</displayName>
