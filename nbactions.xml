@@ -19,18 +19,4 @@
             <goal>install</goal>
         </goals>
     </action>
-    <action>
-        <actionName>CUSTOM-license-check</actionName>
-        <displayName>license-check</displayName>
-        <goals>
-            <goal>license:check</goal>
-        </goals>
-    </action>
-    <action>
-        <actionName>CUSTOM-license-format</actionName>
-        <displayName>license-format</displayName>
-        <goals>
-            <goal>license:format</goal>
-        </goals>
-    </action>
 </actions>
