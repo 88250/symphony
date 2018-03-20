@@ -22,7 +22,7 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
-import jodd.util.MimeTypes;
+import jodd.util.net.MimeTypes;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -53,7 +53,7 @@ import java.util.UUID;
 
 /**
  * Fetch file and upload processor.
- *
+ * <p>
  * <p>
  * <ul>
  * <li>Fetches the remote file and upload it (/fetch-upload), POST</li>
@@ -81,8 +81,8 @@ public class FetchUploadProcessor {
     /**
      * Fetches the remote file and upload it.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context  the specified context
+     * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
      */
@@ -90,7 +90,7 @@ public class FetchUploadProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
     public void fetchUpload(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         context.renderJSON();
 
         JSONObject requestJSONObject;
