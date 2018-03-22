@@ -34,14 +34,14 @@
         <div class="fn-clear settings-secret">
             <div>
                 <label>
-                    <input id="userWatchingArticleStatus" <#if 0 == currentUser.userWatchingArticleStatus> checked="checked"</#if> type="checkbox" />
-                    ${userWatchingArticleStatusLabel}
+                    <input id="userFollowingArticleStatus" <#if 0 == currentUser.userFollowingArticleStatus> checked="checked"</#if> type="checkbox" />
+                    ${userFollowingArticleStatusLabel}
                 </label>
             </div>
             <div>
                 <label>
-                    <input id="userFollowingArticleStatus" <#if 0 == currentUser.userFollowingArticleStatus> checked="checked"</#if> type="checkbox" />
-                    ${userFollowingArticleStatusLabel}
+                    <input id="userWatchingArticleStatus" <#if 0 == currentUser.userWatchingArticleStatus> checked="checked"</#if> type="checkbox" />
+                    ${userWatchingArticleStatusLabel}
                 </label>
             </div>
         </div>
@@ -54,22 +54,8 @@
             </div>
             <div>
                 <label>
-                    <input id="userForgeLinkStatus" <#if 0 == currentUser.userForgeLinkStatus> checked="checked"</#if> type="checkbox" />
-                    ${userForgeLinkStatusLabel}
-                </label>
-            </div>
-        </div>
-        <div class="fn-clear settings-secret">
-            <div>
-                <label>
                     <input id="userPointStatus" <#if 0 == currentUser.userPointStatus> checked="checked"</#if> type="checkbox" />
                     ${userPointStatusLabel}
-                </label>
-            </div>
-            <div>
-                <label>
-                    <input id="userOnlineStatus" <#if 0 == currentUser.userOnlineStatus> checked="checked"</#if> type="checkbox" />
-                    ${userOnlineStatusLabel}
                 </label>
             </div>
         </div>
@@ -78,6 +64,12 @@
                 <label>
                     <input id="userUAStatus" <#if 0 == currentUser.userUAStatus> checked="checked"</#if> type="checkbox" />
                     ${displayUALabel}
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input id="userOnlineStatus" <#if 0 == currentUser.userOnlineStatus> checked="checked"</#if> type="checkbox" />
+                    ${userOnlineStatusLabel}
                 </label>
             </div>
         </div>
