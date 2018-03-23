@@ -42,7 +42,7 @@ import java.util.*;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.7, Feb 5, 2018
+ * @version 1.2.1.8, Mar 23, 2018
  * @since 1.8.0
  */
 @Service
@@ -52,6 +52,11 @@ public class InitMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(InitMgmtService.class);
+
+    /**
+     * Default language.
+     */
+    private static final String DEFAULT_LANG = "zh_CN";
 
     private static Set<String> VISITOR_PERMISSIONS = new HashSet<>();
     private static Set<String> DEFAULT_PERMISSIONS = new HashSet<>();
@@ -300,7 +305,7 @@ public class InitMgmtService {
 
             option = new JSONObject();
             option.put(Keys.OBJECT_ID, Option.ID_C_MISC_LANGUAGE);
-            option.put(Option.OPTION_VALUE, "0"); // user browser
+            option.put(Option.OPTION_VALUE, DEFAULT_LANG);
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
             optionRepository.add(option);
 
@@ -574,15 +579,7 @@ public class InitMgmtService {
             admin.put(User.USER_EMAIL, "admin" + UserExt.USER_BUILTIN_EMAIL_SUFFIX);
             admin.put(User.USER_NAME, "admin");
             admin.put(User.USER_PASSWORD, MD5.hash("admin"));
-
-            final Locale defaultLocale = Locale.getDefault();
-            final String lang = Locales.getLanguage(defaultLocale.toString());
-            final String country = Locales.getCountry(defaultLocale.toString());
-            String language = lang + "_" + country;
-            if (!Languages.getAvailableLanguages().contains(language)) {
-                language = "en_US";
-            }
-            admin.put(UserExt.USER_LANGUAGE, language);
+            admin.put(UserExt.USER_LANGUAGE, DEFAULT_LANG);
             admin.put(User.USER_ROLE, Role.ROLE_ID_C_ADMIN);
             admin.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             admin.put(UserExt.USER_GUIDE_STEP, UserExt.USER_GUIDE_STEP_FIN);
