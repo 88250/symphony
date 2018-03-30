@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Domain management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.3.2, Jul 29, 2016
+ * @version 1.0.3.3, Mar 30, 2018
  * @since 1.4.0
  */
 @Service
@@ -159,6 +159,7 @@ public class DomainMgmtService {
             record.put(Domain.DOMAIN_TAG_COUNT, 0);
             record.put(Domain.DOMAIN_TYPE, "");
             record.put(Domain.DOMAIN_SORT, 10);
+            record.put(Domain.DOMAIN_NAV, Domain.DOMAIN_NAV_C_ENABLED);
 
             final JSONObject domainCntOption = optionRepository.get(Option.ID_C_STATISTIC_DOMAIN_COUNT);
             final int domainCnt = domainCntOption.optInt(Option.OPTION_VALUE);

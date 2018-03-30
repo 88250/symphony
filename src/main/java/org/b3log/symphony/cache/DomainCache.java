@@ -76,6 +76,6 @@ public class DomainCache {
      */
     public void loadDomains() {
         DOMAINS.clear();
-        DOMAINS.addAll(domainQueryService.getMostTagDomain(Integer.MAX_VALUE));
+        DOMAINS.addAll(domainQueryService.getMostTagNaviDomains(Integer.MAX_VALUE));
     }
 }

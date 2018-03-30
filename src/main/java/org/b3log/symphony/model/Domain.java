@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines domain model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Mar 14, 2016
+ * @version 1.1.0.0, Mar 30, 2018
  * @since 1.4.0
  */
 public final class Domain {
@@ -60,6 +60,11 @@ public final class Domain {
      * Key of domain sort.
      */
     public static final String DOMAIN_SORT = "domainSort";
+
+    /**
+     * Key of domain navigation.
+     */
+    public static final String DOMAIN_NAV = "domainNav";
 
     /**
      * Key of domain tag count.
@@ -122,6 +127,17 @@ public final class Domain {
      * Domain status - invalid.
      */
     public static final int DOMAIN_STATUS_C_INVALID = 1;
+
+    //// Navigation constants
+    /**
+     * Domain navigation - enabled.
+     */
+    public static final int DOMAIN_NAV_C_ENABLED = 0;
+
+    /**
+     * Domain navigation - disabled.
+     */
+    public static final int DOMAIN_NAV_C_DISABLED = 1;
 
     /**
      * Private constructor.

@@ -47,7 +47,7 @@ import java.util.Map;
  * Domain query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Mar 30, 2017
+ * @version 1.0.0.3, Mar 30, 2018
  * @since 1.4.0
  */
 @Service
@@ -83,13 +83,15 @@ public class DomainQueryService {
     private ShortLinkQueryService shortLinkQueryService;
 
     /**
-     * Gets most tag domain.
+     * Gets most tag navigation domains.
      *
      * @param fetchSize the specified fetch size
      * @return domains, returns an empty list if not found
      */
-    public List<JSONObject> getMostTagDomain(final int fetchSize) {
-        final Query query = new Query().addSort(Domain.DOMAIN_SORT, SortDirection.ASCENDING).
+    public List<JSONObject> getMostTagNaviDomains(final int fetchSize) {
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Domain.DOMAIN_NAV, FilterOperator.EQUAL, Domain.DOMAIN_NAV_C_ENABLED)).
+                addSort(Domain.DOMAIN_SORT, SortDirection.ASCENDING).
                 addSort(Domain.DOMAIN_TAG_COUNT, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setPageSize(fetchSize).setPageCount(1);
@@ -103,7 +105,7 @@ public class DomainQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets most tag domain error", e);
+            LOGGER.log(Level.ERROR, "Gets most tag navigation domains failed", e);
 
             return Collections.emptyList();
         }
@@ -238,14 +240,13 @@ public class DomainQueryService {
     /**
      * Gets domains by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
+     * @param requestJSONObject the specified request json object, for example,
      *                          {
-     *                              "domainTitle": "", // optional
-     *                              "paginationCurrentPageNum": 1,
-     *                              "paginationPageSize": 20,
-     *                              "paginationWindowSize": 10
+     *                          "domainTitle": "", // optional
+     *                          "paginationCurrentPageNum": 1,
+     *                          "paginationPageSize": 20,
+     *                          "paginationWindowSize": 10
      *                          }, see {@link Pagination} for more details
-     *                          </pre>
      * @param domainFields      the specified domain fields to return
      * @return for example,      <pre>
      * {

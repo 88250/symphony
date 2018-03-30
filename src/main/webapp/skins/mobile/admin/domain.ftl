@@ -64,6 +64,12 @@
                 <label for="domainSort">${sortLabel}</label>
                 <input type="text" id="domainSort" name="domainSort" value="${domain.domainSort}" />
 
+                <label>${domainNavLabel}</label>
+                <select id="domainNav" name="domainNav">
+                    <option value="0"<#if 0 == domain.domainNav> selected</#if>>${yesLabel}</option>
+                    <option value="1"<#if 1 == domain.domainNav> selected</#if>>${noLabel}</option>
+                </select>
+
                 <label for="domainType">${typeLabel}</label>
                 <input type="text" id="domainType" name="domainType" value="${domain.domainType}" />
 

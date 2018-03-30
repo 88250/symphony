@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.65.0.1, Jan 30, 2018
+ * @version 1.66.0.0, Mar 30, 2018
  * @since 0.2.0
  */
 public final class Common {
@@ -50,6 +50,11 @@ public final class Common {
      * Key of add article domains.
      */
     public static final String ADD_ARTICLE_DOMAINS = "addArticleDomains";
+
+    /**
+     * Key of admin domains.
+     */
+    public static final String ADMIN_DOMAINS = "adminDomains";
 
     /**
      * Key of data.
