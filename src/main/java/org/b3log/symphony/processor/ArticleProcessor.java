@@ -144,18 +144,6 @@ public class ArticleProcessor {
     private UserMgmtService userMgmtService;
 
     /**
-     * Client management service.
-     */
-    @Inject
-    private ClientMgmtService clientMgmtService;
-
-    /**
-     * Client query service.
-     */
-    @Inject
-    private ClientQueryService clientQueryService;
-
-    /**
      * Language service.
      */
     @Inject

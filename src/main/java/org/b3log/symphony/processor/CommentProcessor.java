@@ -107,18 +107,6 @@ public class CommentProcessor {
     private CommentQueryService commentQueryService;
 
     /**
-     * Client management service.
-     */
-    @Inject
-    private ClientMgmtService clientMgmtService;
-
-    /**
-     * Client query service.
-     */
-    @Inject
-    private ClientQueryService clientQueryService;
-
-    /**
      * Article query service.
      */
     @Inject
