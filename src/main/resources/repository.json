@@ -1366,141 +1366,166 @@
     },
     {
       "name": "article",
+      "description": "帖子表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "articleTitle",
           "type": "String",
-          "length": 255
+          "length": 255,
+          "description": "帖子标题"
         },
         {
           "name": "articleTags",
           "type": "String",
-          "length": 255
+          "length": 255,
+          "description": "帖子表情，英文状态逗号分隔"
         },
         {
           "name": "articleAuthorId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "帖子作者 id"
         },
         {
           "name": "articleCommentCount",
-          "type": "int"
+          "type": "int",
+          "description": "帖子回帖计数"
         },
         {
           "name": "articleViewCount",
-          "type": "int"
+          "type": "int",
+          "description": "帖子浏览计数"
         },
         {
           "name": "articleContent",
           "type": "String",
-          "length": 102400
+          "length": 102400,
+          "description": "帖子正文内容"
         },
         {
           "name": "articleRewardContent",
           "type": "String",
-          "length": 102400
+          "length": 102400,
+          "description": "帖子打赏区内容"
         },
         {
           "name": "articleRewardPoint",
-          "type": "int"
+          "type": "int",
+          "description": "帖子打赏积分"
         },
         {
           "name": "articlePermalink",
           "type": "String",
-          "length": 255
+          "length": 255,
+          "description": "帖子访问路径"
         },
         {
           "name": "articleCreateTime",
-          "type": "long"
+          "type": "long",
+          "description": "帖子创建时间"
         },
         {
           "name": "articleUpdateTime",
-          "type": "long"
+          "type": "long",
+          "description": "帖子更新时间"
         },
         {
           "name": "articleLatestCmtTime",
-          "type": "long"
+          "type": "long",
+          "description": "帖子最新回帖时间"
         },
         {
           "name": "articleLatestCmterName",
           "type": "String",
-          "length": 20
+          "length": 20,
+          "description": "帖子最新回帖者用户名"
         },
         {
           "name": "articleRandomDouble",
-          "type": "double"
+          "type": "double",
+          "description": "帖子随机数，用于快速选择随机帖子"
         },
         {
           "name": "articleCommentable",
-          "type": "boolean"
+          "type": "boolean",
+          "description": "帖子是否可回帖"
         },
         {
           "name": "syncWithSymphonyClient",
-          "type": "boolean"
+          "type": "boolean",
+          "description": "是否开启客户端同步，社区版不用关注该字段"
         },
         {
           "name": "clientArticleId",
           "type": "String",
           "length": 32,
-          "nullable": true
+          "nullable": true,
+          "description": "客户端文章 id，社区版不用关注该字段"
         },
         {
           "name": "clientArticlePermalink",
           "type": "String",
           "length": 255,
-          "nullable": true
+          "nullable": true,
+          "description": "客户端文章访问路径，社区版不用关注该字段"
         },
         {
           "name": "articleEditorType",
           "type": "int",
-          "description": "0: CodeMirror-Markdown"
+          "description": "0：CodeMirror-Markdown"
         },
         {
           "name": "articleStatus",
           "type": "int",
-          "description": "0: valid, 1: invalid, 2: city broadcast, 3: thought"
+          "description": "0：正常，1：封禁"
         },
         {
           "name": "articleType",
           "type": "int",
-          "description": "0: normal article, 1: discussion"
+          "description": "0：普通帖子，1：讨论组（小黑屋），2：同城广播，3：思绪"
         },
         {
           "name": "articleGoodCnt",
-          "description": "Favour count",
-          "type": "int"
+          "type": "int",
+          "description": "帖子点赞计数"
         },
         {
           "name": "articleBadCnt",
-          "description": "Oppose count",
-          "type": "int"
+          "type": "int",
+          "description": "帖子点踩计数"
         },
         {
           "name": "articleCollectCnt",
-          "type": "int"
+          "type": "int",
+          "description": "帖子收藏计数"
         },
         {
           "name": "articleWatchCnt",
-          "type": "int"
+          "type": "int",
+          "description": "帖子关注计数"
         },
         {
           "name": "redditScore",
-          "type": "double"
+          "type": "double",
+          "description": "帖子 Reddit 算法评分"
         },
         {
           "name": "articleCity",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "发帖请求 IP 所在城市"
         },
         {
           "name": "articleIP",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "发帖请求 IP"
         },
         {
           "name": "articleUA",
@@ -1510,100 +1535,63 @@
         },
         {
           "name": "articleStick",
-          "type": "long"
+          "type": "long",
+          "description": "帖子置顶时间"
         },
         {
           "name": "articleAnonymous",
           "type": "int",
-          "description": "0: public, 1: anonymous"
+          "description": "0：公开，1：匿名"
         },
         {
           "name": "articlePerfect",
           "type": "int",
-          "description": "0: not perfect, 1: perfect"
+          "description": "0：非优选，1：优选"
         },
         {
           "name": "articleAnonymousView",
           "type": "int",
-          "description": "0: allow anonymous view, 1: not allow"
+          "description": "0：允许不登录浏览， 1：登录才可浏览"
         },
         {
           "name": "articleAudioURL",
           "type": "String",
-          "length": 256
-        }
-      ]
-    },
-    {
-      "name": "client",
-      "keys": [
-        {
-          "name": "oId",
-          "type": "String",
-          "length": 19
-        },
-        {
-          "name": "clientName",
-          "type": "String",
-          "length": 10
-        },
-        {
-          "name": "clientVersion",
-          "type": "String",
-          "length": 10
-        },
-        {
-          "name": "clientHost",
-          "type": "String",
-          "length": 50
-        },
-        {
-          "name": "clientRuntimeEnv",
-          "type": "String",
-          "length": 10
-        },
-        {
-          "name": "clientLatestAddArticleTime",
-          "type": "long"
-        },
-        {
-          "name": "clientLatestAddCommentTime",
-          "type": "long"
-        },
-        {
-          "name": "clientAdminEmail",
-          "type": "String",
-          "length": 255,
-          "nullable": true
+          "length": 256,
+          "description": "帖子语音预览文件 URL"
         }
       ]
     },
     {
       "name": "emotion",
+      "description": "用户常用表情表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "emotionUserId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "用户 Id"
         },
         {
           "name": "emotionContent",
           "type": "String",
-          "length": 64
+          "length": 64,
+          "description": "表情内容，emoji 的 ASCII，比如 smile"
         },
         {
           "name": "emotionSort",
-          "type": "int"
+          "type": "int",
+          "description": "排序"
         },
         {
           "name": "emotionType",
           "type": "int",
-          "description": "0: emoji"
+          "description": "0：emoji"
         }
       ]
     }
