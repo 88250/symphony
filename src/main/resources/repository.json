@@ -323,60 +323,71 @@
     },
     {
       "name": "character",
+      "description": "字表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "characterUserId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "用户 id"
         },
         {
           "name": "characterImg",
           "type": "String",
-          "length": 1048576
+          "length": 1048576,
+          "description": "图片 BASE64 编码"
         },
         {
           "name": "characterContent",
           "type": "String",
-          "length": 16
+          "length": 16,
+          "description": "字"
         }
       ]
     },
     {
       "name": "referral",
+      "description": "推介记录表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "referralUser",
           "type": "String",
           "length": 19,
-          "description": "referral user name"
+          "description": "推介用户名"
         },
         {
           "name": "referralDataId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "数据实体 id"
         },
         {
           "name": "referralType",
-          "type": "int"
+          "type": "int",
+          "description": "0：帖子"
         },
         {
           "name": "referralIP",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "点击 IP"
         },
         {
           "name": "referralClick",
-          "type": "int"
+          "type": "int",
+          "description": "推介点击计数"
         },
         {
           "name": "referralUserHasPoint",
