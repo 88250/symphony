@@ -706,30 +706,35 @@
     },
     {
       "name": "notification",
+      "description": "通知表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "userId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "用户 id"
         },
         {
           "name": "dataId",
           "type": "String",
-          "length": 64
+          "length": 64,
+          "description": "数据实体 id"
         },
         {
           "name": "dataType",
-          "type": "int"
+          "type": "int",
+          "description": "数据类型"
         },
         {
           "name": "hasRead",
           "type": "boolean",
-          "desription": "has read or not"
+          "description": "是否已读"
         }
       ]
     },
