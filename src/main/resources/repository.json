@@ -285,39 +285,47 @@
     },
     {
       "name": "invitecode",
+      "description": "邀请码表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "code",
           "type": "String",
-          "length": 16
+          "length": 16,
+          "description": "邀请码"
         },
         {
           "name": "generatorId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "生成者 id"
         },
         {
           "name": "userId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "使用者 id"
         },
         {
           "name": "useTime",
-          "type": "long"
+          "type": "long",
+          "description": "使用时间"
         },
         {
           "name": "status",
-          "type": "int"
+          "type": "int",
+          "description": "0：已使用，1：未使用，2：停用"
         },
         {
           "name": "memo",
           "type": "String",
-          "length": 512
+          "length": 512,
+          "description": "备注"
         }
       ]
     },
