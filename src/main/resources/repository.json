@@ -661,46 +661,56 @@
     },
     {
       "name": "pointtransfer",
+      "description": "积分转账表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "fromId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "源账户 id"
         },
         {
           "name": "toId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "目标账户 id"
         },
         {
           "name": "sum",
-          "type": "int"
+          "type": "int",
+          "description": "转账金额"
         },
         {
           "name": "fromBalance",
-          "type": "int"
+          "type": "int",
+          "description": "源账户余额"
         },
         {
           "name": "toBalance",
-          "type": "int"
+          "type": "int",
+          "description": "目标账户余额"
         },
         {
           "name": "time",
-          "type": "long"
+          "type": "long",
+          "description": "转账时间"
         },
         {
           "name": "type",
-          "type": "int"
+          "type": "int",
+          "description": "转账类型"
         },
         {
           "name": "dataId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "数据实体 id"
         }
       ]
     },
