@@ -978,37 +978,45 @@
     },
     {
       "name": "tag_article",
+      "description": "标签 - 帖子关联表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "article_oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "帖子 id"
         },
         {
           "name": "tag_oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "标签 id"
         },
         {
           "name": "articleCommentCount",
-          "type": "int"
+          "type": "int",
+          "description": "帖子回帖计数"
         },
         {
           "name": "articleLatestCmtTime",
-          "type": "long"
+          "type": "long",
+          "description": "帖子最近一次回帖时间"
         },
         {
           "name": "redditScore",
-          "type": "double"
+          "type": "double",
+          "description": "帖子 Reddit 算法评分"
         },
         {
           "name": "articlePerfect",
-          "type": "int"
+          "type": "int",
+          "description": "0：帖子不是优选，1：帖子是优选"
         }
       ]
     },
