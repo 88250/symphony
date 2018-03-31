@@ -934,25 +934,30 @@
     },
     {
       "name": "tag_tag",
+      "description": "标签 - 标签关联表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "tag1_oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "标签1 id"
         },
         {
           "name": "tag2_oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "标签2 id"
         },
         {
           "name": "weight",
-          "type": "int"
+          "type": "int",
+          "description": "关联权重"
         }
       ]
     },
