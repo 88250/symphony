@@ -735,26 +735,30 @@
     },
     {
       "name": "follow",
+      "description": "关注表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "followerId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "关注者 id"
         },
         {
           "name": "followingId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "关注实体 id"
         },
         {
           "name": "followingType",
           "type": "int",
-          "description": "0: user, 1: tag, 2: article collect, 3: article watch"
+          "description": "0：用户，1：标签，2：帖子收藏，3：帖子关注"
         }
       ]
     },
