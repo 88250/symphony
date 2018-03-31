@@ -74,7 +74,7 @@ Sym 的诞生是有如下几点原因：
 商业版：
 
 * [黑客派](https://hacpai.com)
-* [爱就来](https://ajlai.com)
+* [IT遇岛](https://www.ityudao.com)
 * [四方环视](http://bbs.ivrpano.com)
 * [汇桔网](https://bbs.wtoip.com)
 * [TapDealing](http://www.tapdealing.com)
