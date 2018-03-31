@@ -545,21 +545,25 @@
     },
     {
       "name": "domain_tag",
+      "description": "领域 - 标签关联表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "domain_oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "领域 id"
         },
         {
           "name": "tag_oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "标签 id"
         }
       ]
     },
