@@ -90,7 +90,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.0.3, Feb 12, 2018
+ * @version 1.27.0.4, Mar 31, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1097,6 +1097,13 @@ public class ArticleProcessor {
         }
 
         context.renderJSON();
+
+        if (Article.ARTICLE_STATUS_C_VALID != oldArticle.optInt(Article.ARTICLE_STATUS)) {
+            context.renderMsg(langPropsService.get("articleLockedLabel"));
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+
+            return;
+        }
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 

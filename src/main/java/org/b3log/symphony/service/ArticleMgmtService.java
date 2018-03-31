@@ -65,7 +65,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.1, Mar 31, 2018
+ * @version 2.18.2.2, Mar 31, 2018
  * @since 0.2.0
  */
 @Service
@@ -231,6 +231,7 @@ public class ArticleMgmtService {
      * <li>No watches, collects, ups, downs</li>
      * <li>No rewards</li>
      * <li>No thanks</li>
+     * <li>In valid status</li>
      * </ul>
      * Sees https://github.com/b3log/symphony/issues/450 for more details.
      *
@@ -248,6 +249,10 @@ public class ArticleMgmtService {
 
         if (null == article) {
             return;
+        }
+
+        if (Article.ARTICLE_STATUS_C_VALID != article.optInt(Article.ARTICLE_STATUS)) {
+            throw new ServiceException(langPropsService.get("articleLockedLabel"));
         }
 
         final int commentCnt = article.optInt(Article.ARTICLE_COMMENT_CNT);
