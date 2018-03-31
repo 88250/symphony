@@ -199,58 +199,70 @@
     },
     {
       "name": "link",
+      "description": "链接表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "linkAddr",
           "type": "String",
-          "length": 512
+          "length": 512,
+          "description": "链接地址"
         },
         {
           "name": "linkTitle",
           "type": "String",
-          "length": 512
+          "length": 512,
+          "description": "链接标题"
         },
         {
           "name": "linkType",
           "type": "int",
-          "description": "0: forge"
+          "description": "0：熔炉"
         },
         {
           "name": "linkSubmitCnt",
-          "type": "int"
+          "type": "int",
+          "description": "提交计数"
         },
         {
           "name": "linkClickCnt",
-          "type": "int"
+          "type": "int",
+          "description": "点击计数"
         },
         {
           "name": "linkGoodCnt",
-          "type": "int"
+          "type": "int",
+          "description": "点赞计数"
         },
         {
           "name": "linkBadCnt",
-          "type": "int"
+          "type": "int",
+          "description": "点踩计数"
         },
         {
           "name": "linkBaiduRefCnt",
-          "type": "int"
+          "type": "int",
+          "description": "百度引用计数"
         },
         {
           "name": "linkScore",
-          "type": "double"
+          "type": "double",
+          "description": "评分"
         },
         {
           "name": "linkPingCnt",
-          "type": "int"
+          "type": "int",
+          "description": "Ping 计数"
         },
         {
           "name": "linkPingErrCnt",
-          "type": "int"
+          "type": "int",
+          "description": "Ping 失败计数"
         }
       ]
     },
