@@ -1719,7 +1719,7 @@
         {
           "name": "articleStatus",
           "type": "int",
-          "description": "0：正常，1：封禁"
+          "description": "0：正常，1：封禁，2：锁定"
         },
         {
           "name": "articleType",

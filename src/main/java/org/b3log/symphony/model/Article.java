@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.28.0.0, Dec 8, 2017
+ * @version 1.29.0.0, Mar 31, 2018
  * @since 0.2.0
  */
 public final class Article {
@@ -420,6 +420,11 @@ public final class Article {
      * Article status - invalid.
      */
     public static final int ARTICLE_STATUS_C_INVALID = 1;
+
+    /**
+     * Article status - locked.
+     */
+    public static final int ARTICLE_STATUS_C_LOCKED = 2;
 
     // Type constants
     /**

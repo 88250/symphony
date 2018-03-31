@@ -91,6 +91,7 @@
                 <select id="articleStatus" name="articleStatus">
                     <option value="0"<#if 0 == article.articleStatus> selected</#if>>${validLabel}</option>
                     <option value="1"<#if 1 == article.articleStatus> selected</#if>>${banLabel}</option>
+                    <option value="2"<#if 2 == article.articleStatus> selected</#if>>${lockLabel}</option>
                 </select>
 
                 <label>${articleTypeLabel}</label>
