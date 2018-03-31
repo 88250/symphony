@@ -849,86 +849,101 @@
     },
     {
       "name": "tag",
+      "description": "标签表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "tagReferenceCount",
-          "type": "int"
+          "type": "int",
+          "description": "标签引用（帖子/用户自评等）计数"
         },
         {
           "name": "tagCommentCount",
-          "type": "int"
+          "type": "int",
+          "description": "标签回帖计数"
         },
         {
           "name": "tagFollowerCount",
-          "type": "int"
+          "type": "int",
+          "description": "标签关注者计数"
         },
         {
           "name": "tagLinkCount",
-          "type": "int"
+          "type": "int",
+          "description": "标签链接引用计数"
         },
         {
           "name": "tagTitle",
           "type": "String",
-          "length": 50
+          "length": 50,
+          "description": "标签标题"
         },
         {
           "name": "tagURI",
           "type": "String",
-          "length": 255
+          "length": 255,
+          "description": "标签访问路径"
         },
         {
           "name": "tagDescription",
           "type": "String",
-          "length": 512
+          "length": 512,
+          "description": "标签描述"
         },
         {
           "name": "tagIconPath",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "标签图标路径"
         },
         {
           "name": "tagCSS",
           "type": "String",
-          "length": 1048576
+          "length": 1048576,
+          "description": "标签 CSS"
         },
         {
           "name": "tagStatus",
           "type": "int",
-          "description": "0: valid, 1: invalid"
+          "description": "0：正常，1：封禁"
         },
         {
           "name": "tagGoodCnt",
-          "description": "Favour count",
-          "type": "int"
+          "type": "int",
+          "description": "标签点赞计数"
         },
         {
           "name": "tagBadCnt",
-          "description": "Oppose count",
-          "type": "int"
+          "type": "int",
+          "description": "标签点踩计数"
         },
         {
           "name": "tagSeoTitle",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "标签 SEO 标题"
         },
         {
           "name": "tagSeoKeywords",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "标签 SEO 关键字"
         },
         {
           "name": "tagSeoDesc",
           "type": "String",
-          "length": 512
+          "length": 512,
+          "description": "标签 SEO 描述"
         },
         {
           "name": "tagRandomDouble",
-          "type": "double"
+          "type": "double",
+          "description": "标签随机数，用于快速选择随机标签"
         }
       ]
     },
