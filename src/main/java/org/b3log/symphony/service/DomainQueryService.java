@@ -47,7 +47,7 @@ import java.util.Map;
  * Domain query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Mar 30, 2018
+ * @version 1.1.0.0, Apr 1, 2018
  * @since 1.4.0
  */
 @Service
@@ -81,6 +81,33 @@ public class DomainQueryService {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
+    /**
+     * Gets all domains.
+     *
+     * @return domains, returns an empty list if not found
+     */
+    public List<JSONObject> getAllDomains() {
+        final Query query = new Query().
+                addSort(Domain.DOMAIN_SORT, SortDirection.ASCENDING).
+                addSort(Domain.DOMAIN_TAG_COUNT, SortDirection.DESCENDING).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setPageSize(Integer.MAX_VALUE).setPageCount(1);
+        try {
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(domainRepository.get(query).optJSONArray(Keys.RESULTS));
+            for (final JSONObject domain : ret) {
+                final List<JSONObject> tags = getTags(domain.optString(Keys.OBJECT_ID));
+
+                domain.put(Domain.DOMAIN_T_TAGS, (Object) tags);
+            }
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets all domains failed", e);
+
+            return Collections.emptyList();
+        }
+    }
 
     /**
      * Gets most tag navigation domains.
@@ -118,7 +145,7 @@ public class DomainQueryService {
      * @return tags, returns an empty list if not found
      */
     public List<JSONObject> getTags(final String domainId) {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> ret = new ArrayList<>();
 
         final Query query = new Query().
                 setFilter(new PropertyFilter(Domain.DOMAIN + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, domainId));
@@ -283,8 +310,7 @@ public class DomainQueryService {
             query.setFilter(new PropertyFilter(Domain.DOMAIN_TITLE, FilterOperator.EQUAL, requestJSONObject.optString(Domain.DOMAIN_TITLE)));
         }
 
-        JSONObject result = null;
-
+        JSONObject result;
         try {
             result = domainRepository.get(query);
         } catch (final RepositoryException e) {
@@ -302,7 +328,7 @@ public class DomainQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> domains = CollectionUtils.<JSONObject>jsonArrayToList(data);
+        final List<JSONObject> domains = CollectionUtils.jsonArrayToList(data);
 
         ret.put(Domain.DOMAINS, domains);
 

@@ -13,7 +13,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
-                    <#list domains as domain>
+                    <#list allDomains as domain>
                     <div class="module">
                         <div class="module-header">
                             <h2>${domain.domainTitle}</h2>

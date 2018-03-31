@@ -110,7 +110,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.9.1, Mar 30, 2018
+ * @version 2.26.9.2, Mar 31, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -2178,7 +2178,7 @@ public class AdminProcessor {
         domainFields.put(Domain.DOMAIN_URI, String.class);
 
         final JSONObject result = domainQueryService.getDomains(requestJSONObject, domainFields);
-        dataModel.put(Common.ADMIN_DOMAINS, CollectionUtils.jsonArrayToList(result.optJSONArray(Domain.DOMAINS)));
+        dataModel.put(Common.ALL_DOMAINS, CollectionUtils.jsonArrayToList(result.optJSONArray(Domain.DOMAINS)));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);

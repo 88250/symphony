@@ -52,7 +52,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.8, Dec 24, 2016
+ * @version 1.1.0.9, Mar 31, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -224,6 +224,9 @@ public class DomainProcessor {
 
         final int domainCnt = statistic.optInt(Option.ID_C_STATISTIC_DOMAIN_COUNT);
         dataModel.put(Domain.DOMAIN_T_COUNT, domainCnt);
+
+        final List<JSONObject> domains = domainQueryService.getAllDomains();
+        dataModel.put(Common.ALL_DOMAINS, domains);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }

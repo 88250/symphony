@@ -11,7 +11,7 @@
             </#if>
         </form>
         <ul>
-            <#list adminDomains as item>
+            <#list allDomains as item>
             <li>
                 <div class="fn-clear">
                     <a target="_blank" href="${servePath}/domain/${item.domainURI}">${item.domainTitle}</a> &nbsp;
