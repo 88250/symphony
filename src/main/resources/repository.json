@@ -595,67 +595,80 @@
     },
     {
       "name": "verifycode",
+      "description": "验证码表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "userId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "接收用户 id"
         },
         {
           "name": "type",
-          "type": "int"
+          "type": "int",
+          "description": "0：邮件"
         },
         {
           "name": "bizType",
-          "type": "int"
+          "type": "int",
+          "description": "0：注册，1：重置密码"
         },
         {
           "name": "receiver",
           "type": "String",
-          "length": 64
+          "length": 64,
+          "description": "接收者"
         },
         {
           "name": "code",
           "type": "String",
-          "length": 64
+          "length": 64,
+          "description": "验证码"
         },
         {
           "name": "status",
-          "type": "int"
+          "type": "int",
+          "description": "0：未发送，1：已发送"
         },
         {
           "name": "expired",
-          "type": "long"
+          "type": "long",
+          "description": "过期时间"
         }
       ]
     },
     {
       "name": "reward",
+      "description": "打赏表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "senderId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "打赏人 id"
         },
         {
           "name": "dataId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "数据实体 id"
         },
         {
           "name": "type",
           "type": "int",
-          "description": "0: article, 1: comment, 2: user"
+          "description": "0：帖子，1：回帖，2：用户"
         }
       ]
     },
