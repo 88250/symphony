@@ -421,53 +421,65 @@
     },
     {
       "name": "liveness",
+      "description": "活跃度表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "livenessUserId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "用户 id"
         },
         {
           "name": "livenessDate",
           "type": "String",
-          "length": 8
+          "length": 8,
+          "description": "活跃度记录日期"
         },
         {
           "name": "livenessPoint",
-          "type": "int"
+          "type": "int",
+          "description": "积分计数"
         },
         {
           "name": "livenessArticle",
-          "type": "int"
+          "type": "int",
+          "description": "发帖计数"
         },
         {
           "name": "livenessComment",
-          "type": "int"
+          "type": "int",
+          "description": "回帖计数"
         },
         {
           "name": "livenessActivity",
-          "type": "int"
+          "type": "int",
+          "description": "活动计数"
         },
         {
           "name": "livenessThank",
-          "type": "int"
+          "type": "int",
+          "description": "感谢计数"
         },
         {
           "name": "livenessVote",
-          "type": "int"
+          "type": "int",
+          "description": "投票计数"
         },
         {
           "name": "livenessReward",
-          "type": "int"
+          "type": "int",
+          "description": "打赏计数"
         },
         {
           "name": "livenessPV",
-          "type": "int"
+          "type": "int",
+          "description": "PV 计数"
         }
       ]
     },
