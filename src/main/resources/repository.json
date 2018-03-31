@@ -760,56 +760,66 @@
     },
     {
       "name": "comment",
+      "description": "回帖表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "clientCommentId",
           "type": "String",
           "length": 32,
-          "nullable": true
+          "nullable": true,
+          "description": "客户端评论 id"
         },
         {
           "name": "commentContent",
           "type": "String",
-          "length": 2000
+          "length": 2000,
+          "description": "回帖正文内容"
         },
         {
           "name": "commentCreateTime",
-          "type": "long"
+          "type": "long",
+          "description": "回帖创建时间"
         },
         {
           "name": "commentAuthorId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "回帖作者 id"
         },
         {
           "name": "commentOnArticleId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "回帖的帖子 id"
         },
         {
           "name": "commentSharpURL",
           "type": "String",
-          "length": 255
+          "length": 255,
+          "description": "回帖带锚点 URL"
         },
         {
           "name": "commentOriginalCommentId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "回复针对回帖 id，即 父回帖 id"
         },
         {
           "name": "commentStatus",
           "type": "int",
-          "description": "0: valid, 1: invalid"
+          "description": "0：正常，1：封禁"
         },
         {
           "name": "commentIP",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "回帖 IP"
         },
         {
           "name": "commentUA",
@@ -820,30 +830,33 @@
         {
           "name": "commentAnonymous",
           "type": "int",
-          "description": "0: public, 1: anonymous"
+          "description": "0：公开回帖，1：匿名回帖"
         },
         {
           "name": "commentGoodCnt",
-          "description": "Favour count",
-          "type": "int"
+          "type": "int",
+          "description": "回帖点赞计数"
         },
         {
           "name": "commentBadCnt",
-          "description": "Oppose count",
-          "type": "int"
+          "type": "int",
+          "description": "回帖点踩计数"
         },
         {
           "name": "commentScore",
-          "type": "double"
+          "type": "double",
+          "description": "回帖评分"
         },
         {
           "name": "commentReplyCnt",
-          "type": "int"
+          "type": "int",
+          "description": "回复计数"
         },
         {
           "name": "commentAudioURL",
           "type": "String",
-          "length": 256
+          "length": 256,
+          "description": "回帖语音文件 URL"
         }
       ]
     },
@@ -1597,13 +1610,13 @@
           "name": "articleCity",
           "type": "String",
           "length": 32,
-          "description": "发帖请求 IP 所在城市"
+          "description": "发帖 IP 所在城市"
         },
         {
           "name": "articleIP",
           "type": "String",
           "length": 128,
-          "description": "发帖请求 IP"
+          "description": "发帖 IP"
         },
         {
           "name": "articleUA",
@@ -1635,7 +1648,7 @@
           "name": "articleAudioURL",
           "type": "String",
           "length": 256,
-          "description": "帖子语音预览文件 URL"
+          "description": "帖子语音文件 URL"
         }
       ]
     },
