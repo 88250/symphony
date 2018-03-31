@@ -1014,26 +1014,30 @@
     },
     {
       "name": "user_tag",
+      "description": "用户 - 标签关联表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "user_oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "用户 id"
         },
         {
           "name": "tag_oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "标签 id"
         },
         {
           "name": "type",
           "type": "int",
-          "description": "0: creator, 1: article, 2: user self"
+          "description": "0：创建者，1：帖子使用，2：用户自评标签"
         }
       ]
     },
