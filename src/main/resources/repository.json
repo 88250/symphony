@@ -390,32 +390,36 @@
     },
     {
       "name": "revision",
+      "description": "修订变更表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "revisionDataType",
           "type": "int",
-          "description": "0: article"
+          "description": "0：帖子，1：回帖"
         },
         {
           "name": "revisionDataId",
           "type": "String",
           "length": 19,
-          "description": "article id"
+          "description": "数据实体 id"
         },
         {
           "name": "revisionData",
           "type": "String",
-          "length": 1048576
+          "length": 1048576,
+          "description": "修订数据"
         },
         {
           "name": "revisionAuthorId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "作者 id"
         }
       ]
     },
