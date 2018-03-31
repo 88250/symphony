@@ -46,7 +46,7 @@ import java.util.*;
  * Mail management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Feb 27, 2018
+ * @version 1.0.1.1, Mar 31, 2018
  * @since 1.6.0
  */
 @Service
@@ -177,7 +177,7 @@ public class MailMgmtService {
                     setFilter(CompositeFilterOperator.and(
                             new PropertyFilter(Article.ARTICLE_CREATE_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, sevenDaysAgo),
                             new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.EQUAL, Article.ARTICLE_TYPE_C_NORMAL),
-                            new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID),
+                            new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID),
                             new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, Tag.TAG_TITLE_C_SANDBOX + "%")
                     )).addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
                     addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING);

@@ -43,7 +43,7 @@ import java.util.List;
  * Sitemap query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 24, 2016
+ * @version 1.0.0.1, Mar 31, 2018
  * @since 1.6.0
  */
 @Service
@@ -109,7 +109,7 @@ public class SitemapQueryService {
         final Query query = new Query().setCurrentPageNum(1).setPageCount(Integer.MAX_VALUE).
                 addProjection(Keys.OBJECT_ID, String.class).
                 addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID)).
+                setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID)).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
         try {

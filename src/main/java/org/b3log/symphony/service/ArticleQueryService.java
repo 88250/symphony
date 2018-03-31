@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.36.2, Mar 3, 2018
+ * @version 2.27.36.3, Mar 31, 2018
  * @since 0.2.0
  */
 @Service
@@ -181,7 +181,7 @@ public class ArticleQueryService {
         }
 
         final List<Filter> filters = new ArrayList<>();
-        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
         filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
         filters.add(new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.IN, followingUserIds));
         query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
@@ -399,7 +399,7 @@ public class ArticleQueryService {
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, start),
                 new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, end),
-                new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID)
+                new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID)
         ));
 
         try {
@@ -425,7 +425,7 @@ public class ArticleQueryService {
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, start),
                 new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, end),
-                new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID)
+                new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID)
         ));
 
         try {
@@ -462,11 +462,11 @@ public class ArticleQueryService {
                 final CompositeFilter typeFilter = new CompositeFilter(CompositeFilterOperator.OR, typeFilters);
                 final List<Filter> filters = new ArrayList<>();
                 filters.add(typeFilter);
-                filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+                filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
 
                 query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
             } else {
-                query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+                query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
             }
 
             final JSONObject result = articleRepository.get(query);
@@ -537,7 +537,7 @@ public class ArticleQueryService {
 
             query = new Query().setFilter(CompositeFilterOperator.and(
                     new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds),
-                    new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID))).
+                    new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID))).
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
             final List<JSONObject> articles
@@ -681,7 +681,7 @@ public class ArticleQueryService {
 
             if (ret.size() < pageSize) {
                 final List<Filter> filters = new ArrayList<>();
-                filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+                filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
                 filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
 
                 final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
@@ -1183,7 +1183,7 @@ public class ArticleQueryService {
                         setFilter(CompositeFilterOperator.and(
                                 new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, userId),
                                 new PropertyFilter(Article.ARTICLE_ANONYMOUS, FilterOperator.EQUAL, anonymous),
-                                new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID)));
+                                new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID)));
         try {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -1271,7 +1271,7 @@ public class ArticleQueryService {
      */
     private CompositeFilter makeArticleShowingFilter() {
         final List<Filter> filters = new ArrayList<>();
-        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
         filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
         return new CompositeFilter(CompositeFilterOperator.AND, filters);
     }
@@ -1283,7 +1283,7 @@ public class ArticleQueryService {
      */
     private CompositeFilter makeRecentArticleShowingFilter() {
         final List<Filter> filters = new ArrayList<>();
-        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
         filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, "B3log%"));

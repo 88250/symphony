@@ -65,7 +65,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.0, Mar 5, 2018
+ * @version 2.18.2.1, Mar 31, 2018
  * @since 0.2.0
  */
 @Service
@@ -1053,7 +1053,7 @@ public class ArticleMgmtService {
                         articleId, System.currentTimeMillis());
             }
 
-            if (Article.ARTICLE_STATUS_C_VALID != article.optInt(Article.ARTICLE_STATUS)) {
+            if (Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
                 if (Symphonys.getBoolean("algolia.enabled")) {
                     searchMgmtService.removeAlgoliaDocument(article);
                 }
