@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-  "version": "4.37.8.25, Mar 30, 2018",
+  "version": "4.37.8.26, Mar 31, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -10,26 +10,31 @@
   "repositories": [
     {
       "name": "user_book_article",
+      "description": "用户 - 书籍 - 帖子关联表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "userId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "用户 id"
         },
         {
           "name": "bookId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "书籍 id"
         },
         {
           "name": "articleId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "帖子 id"
         }
       ]
     },
