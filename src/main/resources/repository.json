@@ -35,111 +35,133 @@
     },
     {
       "name": "book",
+      "description": "书籍表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "bookTitle",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "书名"
         },
         {
           "name": "bookSubTitle",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "子标题"
         },
         {
           "name": "bookOriginalTitle",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "原始书名"
         },
         {
           "name": "bookAltTitle",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "可选书名"
         },
         {
           "name": "bookDoubanURL",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "豆瓣链接"
         },
         {
           "name": "bookAuthor",
           "type": "String",
-          "length": 128
+          "length": 255,
+          "description": "作者"
         },
         {
           "name": "bookAuthorIntro",
           "type": "String",
-          "length": 1024
+          "length": 1024,
+          "description": "作者简介"
         },
         {
           "name": "bookBinding",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "装订"
         },
         {
           "name": "bookCatalog",
           "type": "String",
-          "length": 2048
+          "length": 2048,
+          "description": "目录"
         },
         {
           "name": "bookImgURL",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "封面图片 URL"
         },
         {
           "name": "bookISBN10",
           "type": "String",
-          "length": 10
+          "length": 10,
+          "description": "ISBN 10"
         },
         {
           "name": "bookISBN13",
           "type": "String",
-          "length": 13
+          "length": 13,
+          "description": "ISBN 13"
         },
         {
           "name": "bookPages",
           "type": "String",
-          "length": 4
+          "length": 4,
+          "description": "书籍页数"
         },
         {
           "name": "bookPrice",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "书籍价格"
         },
         {
           "name": "bookPublishDate",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "出版日期"
         },
         {
           "name": "bookPublisher",
           "type": "String",
-          "length": 64
+          "length": 64,
+          "description": "出版社"
         },
         {
           "name": "bookSeries",
           "type": "String",
-          "length": 64
+          "length": 64,
+          "description": "丛书"
         },
         {
           "name": "bookSummary",
           "type": "String",
-          "length": 2048
+          "length": 2048,
+          "description": "书籍概述"
         },
         {
           "name": "bookTags",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "书籍标签，英文状态逗号分隔"
         },
         {
           "name": "bookTranslator",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "译者"
         }
       ]
     },
