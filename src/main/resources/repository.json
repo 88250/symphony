@@ -1039,328 +1039,370 @@
     },
     {
       "name": "user",
+      "description": "用户表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "userNo",
-          "type": "int"
+          "type": "int",
+          "description": "用户编号"
         },
         {
           "name": "userEmail",
           "type": "String",
-          "length": 255
+          "length": 255,
+          "description": "用户邮箱"
         },
         {
           "name": "userName",
-          "description": "Belongs to User Profiles",
           "type": "String",
-          "length": 20
+          "length": 20,
+          "description": "用户名"
         },
         {
           "name": "userPassword",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "密码（MD5）"
         },
         {
           "name": "userNickname",
           "type": "String",
-          "length": 20
+          "length": 20,
+          "description": "昵称"
         },
         {
           "name": "userTags",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "用户自评标签"
         },
         {
           "name": "userURL",
-          "description": "Belongs to User Profiles",
           "type": "String",
-          "length": 100
+          "length": 100,
+          "description": "用户链接"
         },
         {
           "name": "userQQ",
-          "description": "Belongs to User Profiles",
           "type": "String",
-          "length": 12
+          "length": 12,
+          "description": "用户 QQ"
         },
         {
           "name": "userIntro",
-          "description": "Belongs to User Profiles",
           "type": "String",
-          "length": 255
+          "length": 255,
+          "description": "用户简介"
         },
         {
           "name": "userAvatarType",
-          "description": "0: Gravatar, 1: External Link",
-          "type": "int"
+          "type": "int",
+          "description": "0：Gravatar，1：外链"
         },
         {
           "name": "userAvatarURL",
           "type": "String",
-          "length": 255
+          "length": 255,
+          "description": "头像图片 URL"
         },
         {
           "name": "userOnlineFlag",
-          "type": "boolean"
+          "type": "boolean",
+          "description": "用户是否在线"
         },
         {
           "name": "userB3Key",
           "type": "String",
-          "length": 20
+          "length": 20,
+          "description": "B3 Key"
         },
         {
           "name": "userB3ClientAddArticleURL",
           "type": "String",
-          "length": 150
+          "length": 150,
+          "description": "客户端收文接口"
         },
         {
           "name": "userB3ClientUpdateArticleURL",
           "type": "String",
-          "length": 150
+          "length": 150,
+          "description": "客户端更新接口"
         },
         {
           "name": "userB3ClientAddCommentURL",
           "type": "String",
-          "length": 150
+          "length": 150,
+          "description": "客户端收评接口"
         },
         {
           "name": "userRole",
           "type": "String",
-          "length": 20
+          "length": 20,
+          "description": "用户角色"
         },
         {
           "name": "userArticleCount",
-          "type": "int"
+          "type": "int",
+          "description": "发帖计数"
         },
         {
           "name": "userCommentCount",
-          "type": "int"
+          "type": "int",
+          "description": "回帖计数"
         },
         {
           "name": "userTagCount",
-          "type": "int"
+          "type": "int",
+          "description": "用户标签计数"
         },
         {
           "name": "userStatus",
           "type": "int",
-          "description": "0: valid, 1: invalid"
+          "description": "0：正常，1：封禁"
         },
         {
           "name": "userPoint",
-          "type": "int"
+          "type": "int",
+          "description": "积分余额"
         },
         {
           "name": "userUsedPoint",
-          "type": "int"
+          "type": "int",
+          "description": "累计消费积分"
         },
         {
           "name": "userJoinPointRank",
           "type": "int",
-          "description": "0: join, 1: not join"
+          "description": "0：参与积分余额排行榜，1：不参与积分余额排行榜"
         },
         {
           "name": "userJoinUsedPointRank",
           "type": "int",
-          "description": "0: join, 1: not join"
+          "description": "0：参与积分消费排行榜，1：不参与积分消费排行榜"
         },
         {
           "name": "userLatestArticleTime",
-          "type": "long"
+          "type": "long",
+          "description": "最近一次发帖时间"
         },
         {
           "name": "userLatestCmtTime",
-          "type": "long"
+          "type": "long",
+          "description": "最近一次回帖时间"
         },
         {
           "name": "userLatestLoginTime",
-          "type": "long"
+          "type": "long",
+          "description": "最近一次登录时间"
         },
         {
           "name": "userLatestLoginIP",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "最近一次登录 IP"
         },
         {
           "name": "userAppRole",
           "type": "int",
-          "description": "0: hacker, 1: painter"
+          "description": "0：应用角色 - 黑客，1：应用角色 - 画家"
         },
         {
           "name": "userCheckinTime",
-          "type": "long"
+          "type": "long",
+          "description": "最近一次签到时间"
         },
         {
           "name": "userLongestCheckinStreakStart",
-          "type": "int"
+          "type": "int",
+          "description": "最长连续签到开始日期"
         },
         {
           "name": "userLongestCheckinStreakEnd",
-          "type": "int"
+          "type": "int",
+          "description": "最长连续签到结束日期"
         },
         {
           "name": "userCurrentCheckinStreakStart",
-          "type": "int"
+          "type": "int",
+          "description": "当前连续签到开始日期"
         },
         {
           "name": "userCurrentCheckinStreakEnd",
-          "type": "int"
+          "type": "int",
+          "description": "当前连续签到结束日期"
         },
         {
           "name": "userLongestCheckinStreak",
-          "type": "int"
+          "type": "int",
+          "description": "最长连续签到天数"
         },
         {
           "name": "userCurrentCheckinStreak",
-          "type": "int"
+          "type": "int",
+          "description": "当前连续签到天数"
         },
         {
           "name": "userSkin",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "用户皮肤"
         },
         {
           "name": "userMobileSkin",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "用户移动端皮肤"
         },
         {
           "name": "userCountry",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "用户所在国家"
         },
         {
           "name": "userProvince",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "用户所在省份"
         },
         {
           "name": "userCity",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "用户所在城市"
         },
         {
           "name": "userUpdateTime",
-          "type": "long"
+          "type": "long",
+          "description": "用户更新时间"
         },
         {
           "name": "userGeoStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开地理位置，1：不公开地理位置"
         },
         {
           "name": "syncWithSymphonyClient",
-          "type": "boolean"
+          "type": "boolean",
+          "description": "是否开启 B3 同步"
         },
         {
           "name": "userCommentViewMode",
           "type": "int",
-          "description": "0: traditional, 1: real time"
+          "description": "0：传统回帖浏览模式（按时间升序），1：实时回帖浏览模式（按时间降序）"
         },
         {
           "name": "userUAStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开 User-Agent，1：不公开 User-Agent"
         },
         {
           "name": "userNotifyStatus",
           "type": "int",
-          "description": "0: enabled, 1: disabled"
+          "description": "0：启用 Web 通知，1：禁用 Web 通知"
         },
         {
           "name": "userPointStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开积分列表，1：不公开积分列表"
         },
         {
           "name": "userFollowerStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开关注者列表，1：不公开关注者列表"
         },
         {
           "name": "userFollowingArticleStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开收藏帖子列表，1：不公开收藏帖子列表"
         },
         {
           "name": "userWatchingArticleStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开关注帖子列表，1：不公开关注帖子列表"
         },
         {
           "name": "userFollowingTagStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开关注标签列表，1：不公开关注标签列表"
         },
         {
           "name": "userFollowingUserStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开关注用户列表，1：不公开关注用户列表"
         },
         {
           "name": "userCommentStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开回帖列表，1：不公开回帖列表"
         },
         {
           "name": "userArticleStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开帖子列表，1：不公开帖子列表"
         },
         {
           "name": "userOnlineStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开在线状态，1：不公开在线状态"
         },
         {
           "name": "userTimelineStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开此刻，1：不公开此刻"
         },
         {
           "name": "userForgeLinkStatus",
           "type": "int",
-          "description": "0: public, 1: private"
+          "description": "0：公开链接熔炉，1：不公开链接熔炉"
         },
         {
           "name": "userListPageSize",
-          "type": "int"
+          "type": "int",
+          "description": "帖子列表每页显示条数"
         },
         {
           "name": "userAvatarViewMode",
           "type": "int",
-          "description": "0: original, 1: static"
+          "description": "0：原始头像图片，比如 gif 动图，1：静态头像图片"
         },
         {
           "name": "userSubMailStatus",
           "type": "int",
-          "description": "0: enabled subscription, 1: disabled subscription"
+          "description": "0：启用邮件订阅，1：禁用邮件订阅"
         },
         {
           "name": "userSubMailSendTime",
-          "type": "long"
+          "type": "long",
+          "description": "用户订阅邮件最近推送时间"
         },
         {
           "name": "userKeyboardShortcutsStatus",
           "type": "int",
-          "description": "0: enabled keyboard shortcuts, 1: disabled keyboard shortcuts"
+          "description": "0：启用键盘快捷键，1：禁用键盘快捷键"
         },
         {
           "name": "userLanguage",
           "type": "String",
-          "length": 64
+          "length": 64,
+          "description": "用户所选语言"
         },
         {
           "name": "userTimezone",
           "type": "String",
-          "length": 64
+          "length": 64,
+          "description": "用户所在时区"
         },
         {
           "name": "userGuideStep",
-          "type": "int"
+          "type": "int",
+          "description": "新注册后向导到达第几步"
         }
       ]
     },
