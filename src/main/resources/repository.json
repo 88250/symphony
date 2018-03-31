@@ -958,21 +958,25 @@
     },
     {
       "name": "option",
+      "description": "参数配置表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 64
+          "length": 64,
+          "description": "主键"
         },
         {
           "name": "optionValue",
           "type": "String",
-          "length": 512
+          "length": 512,
+          "description": "参数配置值"
         },
         {
           "name": "optionCategory",
           "type": "String",
-          "legnth": 20
+          "legnth": 20,
+          "description": "参数配置分类"
         }
       ]
     },
