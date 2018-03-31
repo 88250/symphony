@@ -145,55 +145,66 @@
     },
     {
       "name": "permission",
+      "description": "权限表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "主键"
         },
         {
           "name": "permissionCategory",
-          "type": "int"
+          "type": "int",
+          "description": "权限分类"
         }
       ]
     },
     {
       "name": "role",
+      "description": "角色表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "主键"
         },
         {
           "name": "roleName",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "角色名称"
         },
         {
           "name": "roleDescription",
           "type": "String",
-          "length": 2048
+          "length": 2048,
+          "description": "角色描述"
         }
       ]
     },
     {
       "name": "role_permission",
+      "description": "角色 - 权限关联表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "roleId",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "角色 id"
         },
         {
           "name": "permissionId",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "权限 id"
         }
       ]
     },
