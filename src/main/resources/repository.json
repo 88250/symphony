@@ -473,73 +473,87 @@
     },
     {
       "name": "domain",
+      "description": "领域表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "domainTitle",
           "type": "String",
-          "length": 50
+          "length": 50,
+          "description": "领域标题"
         },
         {
           "name": "domainURI",
           "type": "String",
-          "length": 32
+          "length": 32,
+          "description": "领域访问路径"
         },
         {
           "name": "domainDescription",
           "type": "String",
-          "length": 512
+          "length": 512,
+          "description": "领域描述"
         },
         {
           "name": "domainType",
           "type": "String",
-          "length": 16
+          "length": 16,
+          "description": "领域类型"
         },
         {
           "name": "domainSort",
-          "type": "int"
+          "type": "int",
+          "description": "领域排序"
         },
         {
           "name": "domainNav",
-          "type": "int"
+          "type": "int",
+          "description": "0：作为导航，1：不作为导航"
         },
         {
           "name": "domainTagCnt",
-          "type": "int"
+          "type": "int",
+          "description": "领域标签计数"
         },
         {
           "name": "domainIconPath",
           "type": "String",
-          "length": 1024
+          "length": 1024,
+          "description": "领域图片路径"
         },
         {
           "name": "domainCSS",
           "type": "String",
-          "length": 1048576
+          "length": 1048576,
+          "description": "领域 CSS"
         },
         {
           "name": "domainStatus",
           "type": "int",
-          "description": "0: valid, 1: invalid"
+          "description": "0：正常，1：封禁"
         },
         {
           "name": "domainSeoTitle",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "领域 SEO 标题"
         },
         {
           "name": "domainSeoKeywords",
           "type": "String",
-          "length": 128
+          "length": 128,
+          "description": "领域 SEO 关键字"
         },
         {
           "name": "domainSeoDesc",
           "type": "String",
-          "length": 512
+          "length": 512,
+          "description": "领域 SEO 描述"
         }
       ]
     },
