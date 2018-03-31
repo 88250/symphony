@@ -565,31 +565,35 @@
     },
     {
       "name": "vote",
+      "description": "投票表",
       "keys": [
         {
           "name": "oId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "主键"
         },
         {
           "name": "userId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "投票者 id"
         },
         {
           "name": "type",
           "type": "int",
-          "description": "0: up, 1: down"
+          "description": "0：赞成，1：反对"
         },
         {
           "name": "dataType",
           "type": "int",
-          "description": "0: article, 1: comment, 2: user, 3: tag"
+          "description": "0：帖子，1：回帖，2：用户，3：标签"
         },
         {
           "name": "dataId",
           "type": "String",
-          "length": 19
+          "length": 19,
+          "description": "数据实体 id"
         }
       ]
     },
