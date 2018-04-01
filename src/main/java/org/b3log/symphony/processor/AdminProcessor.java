@@ -110,7 +110,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.9.2, Mar 31, 2018
+ * @version 2.26.9.3, Apr 1, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1303,6 +1303,7 @@ public class AdminProcessor {
                 case UserExt.USER_COMMENT_VIEW_MODE:
                 case UserExt.USER_AVATAR_VIEW_MODE:
                 case UserExt.USER_LIST_PAGE_SIZE:
+                case UserExt.USER_LIST_VIEW_MODE:
                 case UserExt.USER_NOTIFY_STATUS:
                 case UserExt.USER_SUB_MAIL_STATUS:
                 case UserExt.USER_KEYBOARD_SHORTCUTS_STATUS:

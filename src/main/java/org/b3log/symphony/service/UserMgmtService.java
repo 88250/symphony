@@ -497,6 +497,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_NOTIFY_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
             user.put(UserExt.USER_SUB_MAIL_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
             user.put(UserExt.USER_LIST_PAGE_SIZE, Symphonys.getInt("indexArticlesCnt"));
+            user.put(UserExt.USER_LIST_VIEW_MODE, UserExt.USER_LIST_VIEW_MODE_TITLE);
             user.put(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
             user.put(UserExt.USER_SUB_MAIL_SEND_TIME, System.currentTimeMillis());
             user.put(UserExt.USER_KEYBOARD_SHORTCUTS_STATUS, UserExt.USER_XXX_STATUS_C_DISABLED);

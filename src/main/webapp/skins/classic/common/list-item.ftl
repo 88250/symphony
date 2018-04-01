@@ -56,7 +56,7 @@
             </a>
             </#if>
         </div>
-        <#if "" != article.articleThumbnailURL>
+        <#if "" != article.articleThumbnailURL && isLoggedIn && 1 == currentUser.userListViewMode>
             <a href="${servePath}${article.articlePermalink}" class="abstract-img" style="background-image:url('${article.articleThumbnailURL}')"></a>
         </#if>
     </div>
