@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.36.3, Mar 31, 2018
+ * @version 2.27.36.4, Apr 1, 2018
  * @since 0.2.0
  */
 @Service
@@ -1814,7 +1814,7 @@ public class ArticleQueryService {
     public List<JSONObject> getIndexPerfectArticles(final int avatarViewMode) throws ServiceException {
         final Query query = new Query()
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(36).setCurrentPageNum(1);
+                .setPageCount(1).setPageSize(28).setCurrentPageNum(1);
         query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
         query.addProjection(Keys.OBJECT_ID, String.class).
                 addProjection(Article.ARTICLE_STICK, Long.class).
