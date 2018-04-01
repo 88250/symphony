@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.9.0.0, Feb 11, 2018
+ * @version 2.10.0.0, Apr 1, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -71,6 +71,11 @@ public final class UserExt {
      * Key of user list page size.
      */
     public static final String USER_LIST_PAGE_SIZE = "userListPageSize";
+
+    /**
+     * Key of user list view mode.
+     */
+    public static final String USER_LIST_VIEW_MODE = "userListViewMode";
 
     /**
      * Key of forge link status.
@@ -570,6 +575,17 @@ public final class UserExt {
      * User app role - Painter.
      */
     public static final int USER_APP_ROLE_C_PAINTER = 1;
+
+    //// List view mode constants
+    /**
+     * List view mode - Only title.
+     */
+    public static final int USER_LIST_VIEW_MODE_TITLE = 0;
+
+    /**
+     * List view mode - Title & Abstract.
+     */
+    public static final int USER_LIST_VIEW_MODE_TITLE_ABSTRACT = 1;
 
     /**
      * Private constructor.

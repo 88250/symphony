@@ -74,7 +74,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Feb 13, 2018
+ * @version 1.0.1.3, Apr 1, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -447,6 +447,7 @@ public class SettingsProcessor {
         String userListPageSizeStr = requestJSONObject.optString(UserExt.USER_LIST_PAGE_SIZE);
         final int userCommentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         final int userAvatarViewMode = requestJSONObject.optInt(UserExt.USER_AVATAR_VIEW_MODE);
+        final int userListViewMode = requestJSONObject.optInt(UserExt.USER_LIST_VIEW_MODE);
         final boolean notifyStatus = requestJSONObject.optBoolean(UserExt.USER_NOTIFY_STATUS);
         final boolean subMailStatus = requestJSONObject.optBoolean(UserExt.USER_SUB_MAIL_STATUS);
         final boolean keyboardShortcutsStatus = requestJSONObject.optBoolean(UserExt.USER_KEYBOARD_SHORTCUTS_STATUS);
@@ -471,6 +472,7 @@ public class SettingsProcessor {
         user.put(UserExt.USER_LIST_PAGE_SIZE, userListPageSize);
         user.put(UserExt.USER_COMMENT_VIEW_MODE, userCommentViewMode);
         user.put(UserExt.USER_AVATAR_VIEW_MODE, userAvatarViewMode);
+        user.put(UserExt.USER_LIST_VIEW_MODE, userListViewMode);
         user.put(UserExt.USER_NOTIFY_STATUS, notifyStatus
                 ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
         user.put(UserExt.USER_SUB_MAIL_STATUS, subMailStatus

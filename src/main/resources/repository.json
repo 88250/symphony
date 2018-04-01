@@ -1,6 +1,6 @@
 {
-  "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-  "version": "4.37.8.26, Mar 31, 2018",
+  "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
+  "version": "4.37.8.27, Apr 1, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -1560,6 +1560,11 @@
           "name": "userListPageSize",
           "type": "int",
           "description": "帖子列表每页显示条数"
+        },
+        {
+          "name": "userListViewMode",
+          "type": "int",
+          "description": "0：仅标题，1：标题+摘要"
         },
         {
           "name": "userAvatarViewMode",

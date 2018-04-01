@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.22.1.0, Feb 3, 2018
+ * @version 1.22.1.1, Apr 1, 2018
  */
 
 /**
@@ -444,6 +444,7 @@ var Settings = {
           userListPageSize: $("#userListPageSize").val(),
           userCommentViewMode: $("#userCommentViewMode").val(),
           userAvatarViewMode: $("#userAvatarViewMode").val(),
+          userListViewMode: $("#userListViewMode").val(),
           userNotifyStatus: $('#userNotifyStatus').prop("checked"),
           userSubMailStatus: $('#userSubMailStatus').prop("checked"),
           userKeyboardShortcutsStatus: $('#userKeyboardShortcutsStatus').prop("checked")
