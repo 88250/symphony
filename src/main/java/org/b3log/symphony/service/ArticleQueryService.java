@@ -1814,7 +1814,7 @@ public class ArticleQueryService {
     public List<JSONObject> getIndexPerfectArticles(final int avatarViewMode) throws ServiceException {
         final Query query = new Query()
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(28).setCurrentPageNum(1);
+                .setPageCount(1).setPageSize(36).setCurrentPageNum(1);
         query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
         query.addProjection(Keys.OBJECT_ID, String.class).
                 addProjection(Article.ARTICLE_STICK, Long.class).
