@@ -30,7 +30,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
@@ -58,7 +57,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.10, Jan 18, 2017
+ * @version 1.7.0.11, Apr 3, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -93,12 +92,6 @@ public class TagProcessor {
      */
     @Inject
     private DataModelService dataModelService;
-
-    /**
-     * Tag cache.
-     */
-    @Inject
-    private TagCache tagCache;
 
     /**
      * Queries tags.
@@ -136,31 +129,6 @@ public class TagProcessor {
         }
 
         context.renderJSONValue(Tag.TAGS, ret);
-    }
-
-    /**
-     * Caches tags.
-     *
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @param context  the specified HTTP request context
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/cron/tag/cache-tags", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = StopwatchEndAdvice.class)
-    public void cacheIconTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        final String key = Symphonys.get("keyOfSymphony");
-        if (!key.equals(request.getParameter("key"))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
-        tagCache.loadTags();
-
-        context.renderJSON().renderTrueResult();
     }
 
     /**

@@ -20,7 +20,7 @@
 -->
 <!--
     Description: Cron job configurations. 
-    Version: 1.12.0.1, Mar 4, 2018
+    Version: 1.12.0.2, Apr 3, 2018
     Author: Liang Ding
 -->
 <cronentries>
@@ -33,25 +33,19 @@
 
     <cron>
         <url>/cron/article/stick-expire?key=dev_key</url>
-        <description>Expire sticked article</description>
+        <description>Expires sticked article</description>
         <schedule>every 1 minutes</schedule>
     </cron>
 
     <cron>
-        <url>/cron/tag/cache-tags?key=dev_key</url>
-        <description>Cache tags</description>
+        <url>/cron/refresh-cache?key=dev_key</url>
+        <description>Refreshes cache</description>
         <schedule>every 30 minutes</schedule>
     </cron>
 
     <cron>
-        <url>/cron/domain/cache-domains?key=dev_key</url>
-        <description>Cache domains</description>
-        <schedule>every 6 hours</schedule>
-    </cron>
-
-    <cron>
         <url>/cron/stat?key=dev_key</url>
-        <description>Load statistic data</description>
+        <description>Loads statistic data</description>
         <schedule>every 30 minutes</schedule>
     </cron>
 
@@ -65,13 +59,13 @@
 
     <cron>
         <url>/cron/invitecode-expire?key=dev_key</url>
-        <description>Expire invitecode</description>
+        <description>Expires invitecode</description>
         <schedule>every 6 minutes</schedule>
     </cron>
 
     <cron>
         <url>/cron/mail/weekly?key=dev_key</url>
-        <description>Send weekly newsletter</description>
+        <description>Sends weekly newsletter</description>
         <schedule>every 5 minutes</schedule>
     </cron>
 

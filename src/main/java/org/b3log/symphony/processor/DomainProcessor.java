@@ -29,7 +29,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
@@ -52,7 +51,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.9, Mar 31, 2018
+ * @version 1.1.0.10, Apr 3, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -87,37 +86,6 @@ public class DomainProcessor {
      */
     @Inject
     private DataModelService dataModelService;
-
-    /**
-     * Domain cache.
-     */
-    @Inject
-    private DomainCache domainCache;
-
-    /**
-     * Caches domains.
-     *
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @param context  the specified HTTP request context
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/cron/domain/cache-domains", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = StopwatchEndAdvice.class)
-    public void cacheDomains(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        final String key = Symphonys.get("keyOfSymphony");
-        if (!key.equals(request.getParameter("key"))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
-        domainCache.loadDomains();
-
-        context.renderJSON().renderTrueResult();
-    }
 
     /**
      * Shows domain articles.
