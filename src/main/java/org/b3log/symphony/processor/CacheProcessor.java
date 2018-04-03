@@ -89,9 +89,10 @@ public class CacheProcessor {
             return;
         }
 
-        tagCache.loadTags();
         domainCache.loadDomains();
         articleCache.loadSideHotArticles();
+        articleCache.loadSideRandomArticles();
+        tagCache.loadTags();
 
         context.renderJSON().renderTrueResult();
     }

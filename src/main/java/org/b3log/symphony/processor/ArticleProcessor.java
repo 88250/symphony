@@ -727,7 +727,7 @@ public class ArticleProcessor {
         }
 
         dataModelService.fillRelevantArticles(avatarViewMode, dataModel, article);
-        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
 
         // Qiniu file upload authenticate

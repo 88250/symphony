@@ -207,7 +207,7 @@ public class SearchProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);

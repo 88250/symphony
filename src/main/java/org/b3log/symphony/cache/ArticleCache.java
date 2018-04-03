@@ -76,6 +76,11 @@ public class ArticleCache {
      */
     private static final List<JSONObject> SIDE_HOT_ARTICLES = new ArrayList<>();
 
+    /**
+     * Side random articles cache.
+     */
+    private static final List<JSONObject> SIDE_RANDOM_ARTICLES = new ArrayList<>();
+
     static {
         ARTICLE_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
         ARTICLE_ABSTRACT_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
@@ -124,7 +129,39 @@ public class ArticleCache {
             SIDE_HOT_ARTICLES.clear();
             SIDE_HOT_ARTICLES.addAll(articles);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Loads hot articles failed", e);
+            LOGGER.log(Level.ERROR, "Loads side hot articles failed", e);
+        }
+    }
+
+    /**
+     * Gets side random articles.
+     *
+     * @return side random articles
+     */
+    public List<JSONObject> getSideRandomArticles() {
+        if (SIDE_RANDOM_ARTICLES.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return new ArrayList<>(SIDE_RANDOM_ARTICLES);
+    }
+
+    /**
+     * Loads side random articles.
+     */
+    public void loadSideRandomArticles() {
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
+        final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
+
+        try {
+            final List<JSONObject> articles = articleRepository.getRandomly(Symphonys.getInt("sideRandomArticlesCnt"));
+            articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
+
+            SIDE_RANDOM_ARTICLES.clear();
+            SIDE_RANDOM_ARTICLES.addAll(articles);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Loads side random articles failed", e);
         }
     }
 

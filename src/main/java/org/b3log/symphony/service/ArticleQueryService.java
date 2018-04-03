@@ -1211,10 +1211,19 @@ public class ArticleQueryService {
     /**
      * Gets side hot articles.
      *
-     * @return recent articles, returns an empty list if not found
+     * @return side hot articles, returns an empty list if not found
      */
     public List<JSONObject> getSideHotArticles() {
         return articleCache.getSideHotArticles();
+    }
+
+    /**
+     * Gets side random articles.
+     *
+     * @return recent articles, returns an empty list if not found
+     */
+    public List<JSONObject> getSideRandomArticles() {
+        return articleCache.getSideRandomArticles();
     }
 
     /**

@@ -102,7 +102,7 @@ public class TopProcessor {
         dataModel.put(Common.TOP_BALANCE_USERS, users);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
@@ -136,7 +136,7 @@ public class TopProcessor {
         dataModel.put(Common.TOP_CONSUMPTION_USERS, users);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
@@ -170,7 +170,7 @@ public class TopProcessor {
         dataModel.put(Common.TOP_CHECKIN_USERS, users);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-        dataModelService.fillRandomArticles(avatarViewMode, dataModel);
+        dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);

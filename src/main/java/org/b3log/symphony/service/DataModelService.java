@@ -173,19 +173,12 @@ public class DataModelService {
     /**
      * Fills random articles.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param dataModel      the specified data model
-     * @throws Exception exception
+     * @param dataModel the specified data model
      */
-    public void fillRandomArticles(final int avatarViewMode, final Map<String, Object> dataModel) throws Exception {
+    public void fillRandomArticles(final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills random articles");
         try {
-            final int fetchSize = Symphonys.getInt("sideRandomArticlesCnt");
-            if (fetchSize > 0) {
-                dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(avatarViewMode, fetchSize));
-            } else {
-                dataModel.put(Common.SIDE_RANDOM_ARTICLES, Collections.emptyList());
-            }
+            dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getSideRandomArticles());
         } finally {
             Stopwatchs.end();
         }
