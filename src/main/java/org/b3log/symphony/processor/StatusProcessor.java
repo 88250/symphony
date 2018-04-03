@@ -43,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Jul 19, 2016
+ * @version 1.1.0.4, Apr 3, 2018
  * @since 1.3.0
  */
 @RequestProcessor
@@ -93,7 +93,7 @@ public class StatusProcessor {
 
         final int mb = 1024 * 1024;
         final Runtime runtime = Runtime.getRuntime();
-        memory.put("totoal", runtime.totalMemory() / mb);
+        memory.put("total", runtime.totalMemory() / mb);
         memory.put("free", runtime.freeMemory() / mb);
         memory.put("used", (runtime.totalMemory() - runtime.freeMemory()) / mb);
         memory.put("max", runtime.maxMemory() / mb);
