@@ -40,7 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.3, Jul 23, 2017
+ * @version 1.5.6.4, Apr 3, 2018
  * @since 1.4.0
  */
 @Named
@@ -159,7 +159,7 @@ public class TagCache {
 
         final int end = fetchSize >= ICON_TAGS.size() ? ICON_TAGS.size() : fetchSize;
 
-        return new ArrayList(ICON_TAGS.subList(0, end));
+        return new ArrayList<>(ICON_TAGS.subList(0, end));
     }
 
     /**
@@ -187,7 +187,7 @@ public class TagCache {
     /**
      * Loads new tags.
      */
-    public void loadNewTags() {
+    private void loadNewTags() {
         final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
         final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
 
@@ -199,7 +199,7 @@ public class TagCache {
         try {
             final JSONObject result = tagRepository.get(query);
             NEW_TAGS.clear();
-            NEW_TAGS.addAll(CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS)));
+            NEW_TAGS.addAll(CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS)));
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets new tags failed", e);
         }
@@ -208,7 +208,7 @@ public class TagCache {
     /**
      * Loads icon tags.
      */
-    public void loadIconTags() {
+    private void loadIconTags() {
         final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
         final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
 
@@ -221,7 +221,7 @@ public class TagCache {
         try {
             final JSONObject result = tagRepository.get(query);
             final List<JSONObject> tags = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            final List<JSONObject> toUpdateTags = new ArrayList();
+            final List<JSONObject> toUpdateTags = new ArrayList<>();
             for (final JSONObject tag : tags) {
                 toUpdateTags.add(JSONs.clone(tag));
             }
@@ -311,7 +311,7 @@ public class TagCache {
                 tag.put(Tag.TAG_T_TITLE_LOWER_CASE, tag.optString(Tag.TAG_TITLE).toLowerCase());
             }
 
-            Collections.sort(tags, (t1, t2) -> {
+            tags.sort((t1, t2) -> {
                 final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
                 final String u2Title = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
 
