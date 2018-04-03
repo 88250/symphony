@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.36.4, Apr 1, 2018
+ * @version 2.27.36.5, Apr 3, 2018
  * @since 0.2.0
  */
 @Service
@@ -1209,39 +1209,12 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets side hot articles with the specified fetch size.
+     * Gets side hot articles.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param fetchSize      the specified fetch size
      * @return recent articles, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getSideHotArticles(final int avatarViewMode, final int fetchSize) throws ServiceException {
-        final String id = String.valueOf(DateUtils.addDays(new Date(), -7).getTime());
-
-        try {
-            final Query query = new Query().addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
-                    addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(fetchSize);
-
-            final List<Filter> filters = new ArrayList<>();
-            filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
-            filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
-            filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
-
-            query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
-                    addProjection(Article.ARTICLE_TITLE, String.class).
-                    addProjection(Article.ARTICLE_PERMALINK, String.class).
-                    addProjection(Article.ARTICLE_AUTHOR_ID, String.class);
-
-            final JSONObject result = articleRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            organizeArticles(avatarViewMode, ret);
-
-            return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets hot articles failed", e);
-            throw new ServiceException(e);
-        }
+    public List<JSONObject> getSideHotArticles() {
+        return articleCache.getSideHotArticles();
     }
 
     /**

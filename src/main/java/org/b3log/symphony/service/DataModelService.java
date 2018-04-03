@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.33, Mar 31, 2018
+ * @version 1.12.2.34, Apr 3, 2018
  * @since 0.2.0
  */
 @Service
@@ -194,15 +194,12 @@ public class DataModelService {
     /**
      * Fills side hot articles.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param dataModel      the specified data model
-     * @throws Exception exception
+     * @param dataModel the specified data model
      */
-    public void fillSideHotArticles(final int avatarViewMode, final Map<String, Object> dataModel) throws Exception {
+    public void fillSideHotArticles(final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills hot articles");
         try {
-            dataModel.put(Common.SIDE_HOT_ARTICLES,
-                    articleQueryService.getSideHotArticles(avatarViewMode, Symphonys.getInt("sideHotArticlesCnt")));
+            dataModel.put(Common.SIDE_HOT_ARTICLES, articleQueryService.getSideHotArticles());
         } finally {
             Stopwatchs.end();
         }

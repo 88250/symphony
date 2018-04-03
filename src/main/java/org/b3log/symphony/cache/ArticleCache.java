@@ -17,27 +17,48 @@
  */
 package org.b3log.symphony.cache;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.*;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.4, Jul 23, 2017
+ * @version 1.2.0.0, Apr 3, 2018
  * @since 1.4.0
  */
 @Named
 @Singleton
 public class ArticleCache {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ArticleCache.class);
 
     /**
      * Article cache.
@@ -50,9 +71,61 @@ public class ArticleCache {
     private static final Cache ARTICLE_ABSTRACT_CACHE = CacheFactory.getCache(Article.ARTICLES + "_"
             + Article.ARTICLE_T_PREVIEW_CONTENT);
 
+    /**
+     * Side hot articles cache.
+     */
+    private static final List<JSONObject> SIDE_HOT_ARTICLES = new ArrayList<>();
+
     static {
         ARTICLE_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
         ARTICLE_ABSTRACT_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
+    }
+
+    /**
+     * Gets side hot articles.
+     *
+     * @return side hot articles
+     */
+    public List<JSONObject> getSideHotArticles() {
+        if (SIDE_HOT_ARTICLES.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return new ArrayList<>(SIDE_HOT_ARTICLES);
+    }
+
+    /**
+     * Loads side hot articles.
+     */
+    public void loadSideHotArticles() {
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
+        final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
+
+        try {
+            final String id = String.valueOf(DateUtils.addDays(new Date(), -7).getTime());
+            final Query query = new Query().addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
+                    addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(Symphonys.getInt("sideHotArticlesCnt"));
+
+            final List<Filter> filters = new ArrayList<>();
+            filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
+            filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
+            filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
+
+            query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                    addProjection(Article.ARTICLE_TITLE, String.class).
+                    addProjection(Article.ARTICLE_PERMALINK, String.class).
+                    addProjection(Article.ARTICLE_AUTHOR_ID, String.class);
+
+            final JSONObject result = articleRepository.get(query);
+            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
+
+            SIDE_HOT_ARTICLES.clear();
+            SIDE_HOT_ARTICLES.addAll(articles);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Loads hot articles failed", e);
+        }
     }
 
     /**

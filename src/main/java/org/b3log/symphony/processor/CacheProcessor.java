@@ -23,6 +23,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.symphony.cache.ArticleCache;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.util.Symphonys;
@@ -61,6 +62,12 @@ public class CacheProcessor {
     private DomainCache domainCache;
 
     /**
+     * Article cache.
+     */
+    @Inject
+    private ArticleCache articleCache;
+
+    /**
      * Refreshes cache.
      * <ul>
      * <li>Tags</li>
@@ -84,6 +91,7 @@ public class CacheProcessor {
 
         tagCache.loadTags();
         domainCache.loadDomains();
+        articleCache.loadSideHotArticles();
 
         context.renderJSON().renderTrueResult();
     }

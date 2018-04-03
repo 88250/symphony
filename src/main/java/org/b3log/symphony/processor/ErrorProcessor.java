@@ -94,7 +94,7 @@ public class ErrorProcessor {
             dataModel.putAll(langPropsService.getAll(Locales.getLocale()));
             dataModelService.fillHeaderAndFooter(request, response, dataModel);
             if (HttpServletResponse.SC_FORBIDDEN == Integer.valueOf(statusCode)) {
-                dataModelService.fillSideHotArticles(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, dataModel);
+                dataModelService.fillSideHotArticles(dataModel);
                 dataModelService.fillRandomArticles(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, dataModel);
                 dataModelService.fillSideTags(dataModel);
             }

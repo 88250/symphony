@@ -291,7 +291,7 @@ public class IndexProcessor {
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         dataModelService.fillRandomArticles(avatarViewMode, dataModel);
-        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
 
@@ -333,7 +333,7 @@ public class IndexProcessor {
             if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
                 dataModelService.fillRandomArticles(avatarViewMode, dataModel);
             }
-            dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+            dataModelService.fillSideHotArticles(dataModel);
             dataModelService.fillSideTags(dataModel);
             dataModelService.fillLatestCmts(dataModel);
         } finally {
@@ -369,7 +369,7 @@ public class IndexProcessor {
             if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
                 dataModelService.fillRandomArticles(avatarViewMode, dataModel);
             }
-            dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+            dataModelService.fillSideHotArticles(dataModel);
             dataModelService.fillSideTags(dataModel);
             dataModelService.fillLatestCmts(dataModel);
         } finally {
@@ -431,7 +431,7 @@ public class IndexProcessor {
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         dataModelService.fillRandomArticles(avatarViewMode, dataModel);
-        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
     }
@@ -472,7 +472,7 @@ public class IndexProcessor {
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         dataModelService.fillRandomArticles(avatarViewMode, dataModel);
-        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
     }

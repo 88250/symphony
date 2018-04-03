@@ -728,7 +728,7 @@ public class ArticleProcessor {
 
         dataModelService.fillRelevantArticles(avatarViewMode, dataModel, article);
         dataModelService.fillRandomArticles(avatarViewMode, dataModel);
-        dataModelService.fillSideHotArticles(avatarViewMode, dataModel);
+        dataModelService.fillSideHotArticles(dataModel);
 
         // Qiniu file upload authenticate
         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
