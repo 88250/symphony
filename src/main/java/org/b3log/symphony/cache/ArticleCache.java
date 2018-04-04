@@ -29,6 +29,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
@@ -48,7 +49,7 @@ import java.util.List;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Apr 3, 2018
+ * @version 1.3.0.0, Apr 4, 2018
  * @since 1.4.0
  */
 @Named
@@ -81,6 +82,11 @@ public class ArticleCache {
      */
     private static final List<JSONObject> SIDE_RANDOM_ARTICLES = new ArrayList<>();
 
+    /**
+     * Perfect articles cache.
+     */
+    private static final List<JSONObject> PERFECT_ARTICLES = new ArrayList<>();
+
     static {
         ARTICLE_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
         ARTICLE_ABSTRACT_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
@@ -107,6 +113,7 @@ public class ArticleCache {
         final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
         final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
 
+        Stopwatchs.start("Load side hot articles");
         try {
             final String id = String.valueOf(DateUtils.addDays(new Date(), -7).getTime());
             final Query query = new Query().addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
@@ -130,6 +137,8 @@ public class ArticleCache {
             SIDE_HOT_ARTICLES.addAll(articles);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Loads side hot articles failed", e);
+        } finally {
+            Stopwatchs.end();
         }
     }
 
@@ -154,6 +163,7 @@ public class ArticleCache {
         final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
         final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
 
+        Stopwatchs.start("Load side random articles");
         try {
             final List<JSONObject> articles = articleRepository.getRandomly(Symphonys.getInt("sideRandomArticlesCnt"));
             articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
@@ -162,6 +172,8 @@ public class ArticleCache {
             SIDE_RANDOM_ARTICLES.addAll(articles);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Loads side random articles failed", e);
+        } finally {
+            Stopwatchs.end();
         }
     }
 
@@ -178,6 +190,65 @@ public class ArticleCache {
         }
 
         return value.optString(Common.DATA);
+    }
+
+    /**
+     * Gets perfect articles.
+     *
+     * @return side random articles
+     */
+    public List<JSONObject> getPerfectArticles() {
+        if (PERFECT_ARTICLES.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return new ArrayList<>(PERFECT_ARTICLES);
+    }
+
+    /**
+     * Loads perfect articles.
+     */
+    public void loadPerfectArticles() {
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
+        final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
+
+        Stopwatchs.start("Query perfect articles");
+        try {
+            final Query query = new Query()
+                    .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                    .setPageCount(1).setPageSize(36).setCurrentPageNum(1);
+            query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
+            query.addProjection(Keys.OBJECT_ID, String.class).
+                    addProjection(Article.ARTICLE_STICK, Long.class).
+                    addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                    addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
+                    addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
+                    addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                    addProjection(Article.ARTICLE_TITLE, String.class).
+                    addProjection(Article.ARTICLE_STATUS, Integer.class).
+                    addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
+                    addProjection(Article.ARTICLE_TYPE, Integer.class).
+                    addProjection(Article.ARTICLE_PERMALINK, String.class).
+                    addProjection(Article.ARTICLE_TAGS, String.class).
+                    addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
+                    addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
+                    addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
+                    addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
+                    addProjection(Article.ARTICLE_PERFECT, Integer.class);
+
+            final JSONObject result = articleRepository.get(query);
+            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
+
+            PERFECT_ARTICLES.clear();
+            PERFECT_ARTICLES.addAll(articles);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Loads perfect articles failed", e);
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**

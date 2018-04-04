@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.36.5, Apr 3, 2018
+ * @version 2.27.36.6, Apr 4, 2018
  * @since 0.2.0
  */
 @Service
@@ -1787,52 +1787,12 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets the index perfect articles with the specified fetch size.
+     * Gets the index perfect articles.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @return hot articles, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getIndexPerfectArticles(final int avatarViewMode) throws ServiceException {
-        final Query query = new Query()
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(36).setCurrentPageNum(1);
-        query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
-        query.addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Article.ARTICLE_STICK, Long.class).
-                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
-                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_STATUS, Integer.class).
-                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
-                addProjection(Article.ARTICLE_TYPE, Integer.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_TAGS, String.class).
-                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
-                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class);
-
-        try {
-            List<JSONObject> ret;
-            Stopwatchs.start("Query index perfect articles");
-            try {
-                final JSONObject result = articleRepository.get(query);
-                ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            } finally {
-                Stopwatchs.end();
-            }
-
-            organizeArticles(avatarViewMode, ret);
-
-            return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets index perfect articles failed", e);
-            throw new ServiceException(e);
-        }
+    public List<JSONObject> getIndexPerfectArticles() {
+        return articleCache.getPerfectArticles();
     }
 
     /**

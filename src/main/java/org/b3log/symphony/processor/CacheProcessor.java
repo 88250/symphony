@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 3, 2018
+ * @version 1.0.0.1, Apr 4, 2018
  * @since 2.6.0
  */
 @RequestProcessor
@@ -90,6 +90,7 @@ public class CacheProcessor {
         }
 
         domainCache.loadDomains();
+        articleCache.loadPerfectArticles();
         articleCache.loadSideHotArticles();
         articleCache.loadSideRandomArticles();
         tagCache.loadTags();

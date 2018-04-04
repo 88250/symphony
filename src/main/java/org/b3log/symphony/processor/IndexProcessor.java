@@ -69,7 +69,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.12.3.26, Jan 30, 2018
+ * @version 1.12.3.27, Apr 4, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -191,7 +191,7 @@ public class IndexProcessor {
             dataModel.put(Common.FOLLOWING_USER_ARTICLES, Collections.emptyList());
         }
 
-        final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles(avatarViewMode);
+        final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles();
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
         dataModel.put(Common.SELECTED, Common.INDEX);
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
