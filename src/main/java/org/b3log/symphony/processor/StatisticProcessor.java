@@ -36,6 +36,7 @@ import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
+import org.b3log.symphony.util.Symphonys;
 import org.b3log.symphony.util.Times;
 import org.json.JSONObject;
 
@@ -54,7 +55,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.0.5, Oct 26, 2016
+ * @version 1.2.1.0, Apr 4, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -143,6 +144,13 @@ public class StatisticProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void loadStatData(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
+        final String key = Symphonys.get("keyOfSymphony");
+        if (!key.equals(request.getParameter("key"))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
         final Date end = new Date();
         final Date dayStart = DateUtils.addDays(end, -30);
 
@@ -194,6 +202,8 @@ public class StatisticProcessor {
             final int commentCnt = commentQueryService.getCommentCntInMonth(month);
             historyCommentCnts.add(commentCnt);
         }
+
+        context.renderJSON().renderTrueResult();
     }
 
     /**
