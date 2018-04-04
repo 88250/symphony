@@ -79,9 +79,7 @@ public class StatusProcessor {
         }
 
         final JSONObject ret = new JSONObject();
-
         context.renderJSON(ret);
-
         ret.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
         ret.put(Common.ONLINE_MEMBER_CNT, optionQueryService.getOnlineMemberCount());
         ret.put(Common.ONLINE_CHAT_CNT, ChatRoomChannel.SESSIONS.size());
