@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.image.Image;
 import org.b3log.latke.logging.Level;
@@ -41,6 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,7 +48,7 @@ import java.util.Set;
  * Captcha processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.9, Feb 13, 2018
+ * @version 2.2.0.10, Apr 5, 2018
  * @since 0.2.2
  */
 @RequestProcessor
@@ -108,15 +108,7 @@ public class CaptchaProcessor {
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expires", 0);
 
-            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "png", baos);
-            final byte[] data = baos.toByteArray();
-            IOUtils.closeQuietly(baos);
-
-            final Image captchaImg = new Image();
-            captchaImg.setData(data);
-
-            renderer.setImage(captchaImg);
+            renderImg(renderer, bufferedImage);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
         }
@@ -168,17 +160,19 @@ public class CaptchaProcessor {
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expires", 0);
 
-            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "png", baos);
-            final byte[] data = baos.toByteArray();
-            IOUtils.closeQuietly(baos);
-
-            final Image captchaImg = new Image();
-            captchaImg.setData(data);
-
-            renderer.setImage(captchaImg);
+            renderImg(renderer, bufferedImage);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
+        }
+    }
+
+    private void renderImg(final PNGRenderer renderer, final BufferedImage bufferedImage) throws IOException {
+        try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            ImageIO.write(bufferedImage, "png", baos);
+            final byte[] data = baos.toByteArray();
+            final Image captchaImg = new Image();
+            captchaImg.setData(data);
+            renderer.setImage(captchaImg);
         }
     }
 }

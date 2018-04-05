@@ -69,7 +69,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.20.1, Jan 23, 2018
+ * @version 1.11.20.2, Apr 5, 2018
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -147,13 +147,14 @@ public final class Markdowns {
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
 
-            final OutputStream outputStream = conn.getOutputStream();
-            IOUtils.write("Symphony 大法好", outputStream, "UTF-8");
-            IOUtils.closeQuietly(outputStream);
+            try (final OutputStream outputStream = conn.getOutputStream()) {
+                IOUtils.write("Symphony 大法好", outputStream, "UTF-8");
+            }
 
-            final InputStream inputStream = conn.getInputStream();
-            final String html = IOUtils.toString(inputStream, "UTF-8");
-            IOUtils.closeQuietly(inputStream);
+            String html;
+            try (final InputStream inputStream = conn.getInputStream()) {
+                html = IOUtils.toString(inputStream, "UTF-8");
+            }
 
             conn.disconnect();
 
@@ -430,17 +431,17 @@ public final class Markdowns {
         conn.setReadTimeout(1000);
         conn.setDoOutput(true);
 
-        final OutputStream outputStream = conn.getOutputStream();
-        IOUtils.write(markdownText, outputStream, "UTF-8");
-        IOUtils.closeQuietly(outputStream);
+        try (final OutputStream outputStream = conn.getOutputStream()) {
+            IOUtils.write(markdownText, outputStream, "UTF-8");
+        }
 
-        final InputStream inputStream = conn.getInputStream();
-        final String html = IOUtils.toString(inputStream, "UTF-8");
-        IOUtils.closeQuietly(inputStream);
-
+        String ret;
+        try (final InputStream inputStream = conn.getInputStream()) {
+            ret = IOUtils.toString(inputStream, "UTF-8");
+        }
         //conn.disconnect();
 
-        return html;
+        return ret;
     }
 
     /**

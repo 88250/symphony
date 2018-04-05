@@ -54,7 +54,7 @@ import java.util.UUID;
  * Post (article/comment) export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jul 21, 2016
+ * @version 1.0.0.2, Apr 5, 2018
  * @since 1.4.0
  */
 @Service
@@ -198,9 +198,9 @@ public class PostExportService {
         try {
             final byte[] data = posts.toString(2).getBytes("UTF-8");
 
-            OutputStream output = new FileOutputStream(localFile);
-            IOUtils.write(data, output);
-            IOUtils.closeQuietly(output);
+            try (final OutputStream output = new FileOutputStream(localFile)) {
+                IOUtils.write(data, output);
+            }
 
             final File zipFile = ZipUtil.zip(localFile);
 

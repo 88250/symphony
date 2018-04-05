@@ -43,7 +43,10 @@ import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.service.*;
+import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.DataModelService;
+import org.b3log.symphony.service.UserMgmtService;
+import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
@@ -69,7 +72,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.12.3.27, Apr 4, 2018
+ * @version 1.12.3.28, Apr 5, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -126,9 +129,7 @@ public class IndexProcessor {
         renderer.setTemplateName("other/md-guide.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        InputStream inputStream = null;
-        try {
-            inputStream = IndexProcessor.class.getResourceAsStream("/md_guide.md");
+        try (final InputStream inputStream = IndexProcessor.class.getResourceAsStream("/md_guide.md")) {
             final String md = IOUtils.toString(inputStream, "UTF-8");
             String html = Emotions.convert(md);
             html = Markdowns.toHTML(html);
@@ -137,8 +138,6 @@ public class IndexProcessor {
             dataModel.put("html", html);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Loads markdown guide failed", e);
-        } finally {
-            IOUtils.closeQuietly(inputStream);
         }
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);

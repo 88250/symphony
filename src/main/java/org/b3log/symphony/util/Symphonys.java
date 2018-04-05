@@ -52,7 +52,7 @@ import java.util.concurrent.Executors;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.9, Jul 8, 2017
+ * @version 1.7.1.10, Apr 5, 2018
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -159,7 +159,6 @@ public final class Symphonys {
                 }
 
                 HttpURLConnection httpConn = null;
-                OutputStream outputStream = null;
                 try {
                     final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
                     final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
@@ -181,20 +180,19 @@ public final class Symphonys {
 
                     httpConn.connect();
 
-                    outputStream = httpConn.getOutputStream();
-                    final JSONObject sym = new JSONObject();
-                    sym.put("symURL", symURL);
-                    sym.put("symTitle", langPropsService.get("symphonyLabel", Latkes.getLocale()));
+                    try (final OutputStream outputStream = httpConn.getOutputStream()) {
+                        final JSONObject sym = new JSONObject();
+                        sym.put("symURL", symURL);
+                        sym.put("symTitle", langPropsService.get("symphonyLabel", Latkes.getLocale()));
 
-                    IOUtils.write(sym.toString(), outputStream, "UTF-8");
-                    outputStream.flush();
+                        IOUtils.write(sym.toString(), outputStream, "UTF-8");
+                        outputStream.flush();
+                    }
 
                     httpConn.getResponseCode();
                 } catch (final Exception e) {
                     // ignore
                 } finally {
-                    IOUtils.closeQuietly(outputStream);
-
                     if (null != httpConn) {
                         try {
                             httpConn.disconnect();
@@ -222,8 +220,6 @@ public final class Symphonys {
      */
     public static List<JSONObject> getSyms() {
         HttpURLConnection httpConn = null;
-        InputStream inputStream = null;
-
         try {
             httpConn = (HttpURLConnection) new URL("https://rhythm.b3log.org/syms").openConnection();
             httpConn.setConnectTimeout(10000);
@@ -233,21 +229,20 @@ public final class Symphonys {
 
             httpConn.connect();
 
-            inputStream = httpConn.getInputStream();
-            final String data = IOUtils.toString(inputStream, "UTF-8");
-            final JSONObject result = new JSONObject(data);
-            if (!result.optBoolean(Keys.STATUS_CODE)) {
-                return Collections.emptyList();
-            }
+            try (final InputStream inputStream = httpConn.getInputStream()) {
+                final String data = IOUtils.toString(inputStream, "UTF-8");
+                final JSONObject result = new JSONObject(data);
+                if (!result.optBoolean(Keys.STATUS_CODE)) {
+                    return Collections.emptyList();
+                }
 
-            return CollectionUtils.jsonArrayToList(result.optJSONArray("syms"));
+                return CollectionUtils.jsonArrayToList(result.optJSONArray("syms"));
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets syms from Rhythm failed", e);
 
             return Collections.emptyList();
         } finally {
-            IOUtils.closeQuietly(inputStream);
-
             if (null != httpConn) {
                 try {
                     httpConn.disconnect();

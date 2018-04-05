@@ -42,7 +42,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Apr 19, 2017
+ * @version 1.0.1.4, Apr 5, 2018
  * @since 1.8.0
  */
 @Service
@@ -83,9 +83,7 @@ public class ManQueryService {
             final String tldrPagesPath = userHome + File.separator + "tldr" + File.separator + "pages" + File.separator;
             final Collection<File> mans = FileUtils.listFiles(new File(tldrPagesPath), new String[]{"md"}, true);
             for (final File manFile : mans) {
-                InputStream is = null;
-                try {
-                    is = new FileInputStream(manFile);
+                try (final InputStream is = new FileInputStream(manFile)) {
                     final String md = IOUtils.toString(is, "UTF-8");
                     String html = Markdowns.toHTML(md);
 
@@ -98,8 +96,6 @@ public class ManQueryService {
                     CMD_MANS.add(cmdMan);
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Loads man [" + manFile.getPath() + "] failed", e);
-                } finally {
-                    IOUtils.closeQuietly(is);
                 }
             }
         } catch (final Exception e) {

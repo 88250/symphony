@@ -54,14 +54,13 @@ import java.util.UUID;
 /**
  * Fetch file and upload processor.
  * <p>
- * <p>
  * <ul>
  * <li>Fetches the remote file and upload it (/fetch-upload), POST</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 31, 2016
+ * @version 1.0.0.1, Apr 5, 2018
  * @since 1.5.0
  */
 @RequestProcessor
@@ -152,9 +151,9 @@ public class FetchUploadProcessor {
             context.renderJSONValue(Common.URL, Symphonys.get("qiniu.domain") + "/e/" + fileName);
             context.renderJSONValue("originalURL", originalURL);
         } else {
-            final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName);
-            IOUtils.write(data, output);
-            IOUtils.closeQuietly(output);
+            try (final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName)) {
+                IOUtils.write(data, output);
+            }
 
             context.renderJSONValue(Common.URL, Latkes.getServePath() + "/upload/" + fileName);
             context.renderJSONValue("originalURL", originalURL);

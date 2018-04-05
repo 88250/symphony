@@ -30,6 +30,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.URLs;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
@@ -38,14 +39,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.UUID;
 
 /**
  * Audio management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.1, May 5, 2017
+ * @version 1.0.2.2, May 5, 2018
  * @since 2.1.0
  */
 @Service
@@ -78,17 +78,15 @@ public class AudioMgmtService {
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
 
-            final InputStream inputStream = conn.getInputStream();
-            final String content = IOUtils.toString(inputStream);
-            IOUtils.closeQuietly(inputStream);
+            try (final InputStream inputStream = conn.getInputStream()) {
+                final String content = IOUtils.toString(inputStream, "UTF-8");
 
-            conn.disconnect();
+                conn.disconnect();
 
-            final JSONObject result = new JSONObject(content);
-            BAIDU_ACCESS_TOKEN = result.optString("access_token", null);
-            BAIDU_ACCESS_TOKEN_TIME = now;
-
-            return;
+                final JSONObject result = new JSONObject(content);
+                BAIDU_ACCESS_TOKEN = result.optString("access_token", null);
+                BAIDU_ACCESS_TOKEN_TIME = now;
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Requires Baidu Yuyin access token failed", e);
         }
@@ -113,27 +111,27 @@ public class AudioMgmtService {
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
 
-            final OutputStream outputStream = conn.getOutputStream();
-            IOUtils.write("tex=" + URLEncoder.encode(StringUtils.substring(text, 0, 1024), "UTF-8")
-                    + "&lan=zh&cuid=" + uid + "&spd=6&pit=6&ctp=1&tok=" + BAIDU_ACCESS_TOKEN, outputStream);
-            IOUtils.closeQuietly(outputStream);
-
-            final InputStream inputStream = conn.getInputStream();
-
-            final int responseCode = conn.getResponseCode();
-            final String contentType = conn.getContentType();
-
-            if (HttpServletResponse.SC_OK != responseCode || !"audio/mp3".equals(contentType)) {
-                final String msg = IOUtils.toString(inputStream);
-                LOGGER.warn("Baidu Yuyin TTS failed: " + msg.toString());
-                IOUtils.closeQuietly(inputStream);
-                conn.disconnect();
-
-                return null;
+            try (final OutputStream outputStream = conn.getOutputStream()) {
+                IOUtils.write("tex=" + URLs.encode(StringUtils.substring(text, 0, 1024))
+                        + "&lan=zh&cuid=" + uid + "&spd=6&pit=6&ctp=1&tok=" + BAIDU_ACCESS_TOKEN, outputStream, "UTF-8");
             }
 
-            final byte[] ret = IOUtils.toByteArray(inputStream);
-            IOUtils.closeQuietly(inputStream);
+            byte[] ret;
+            try (final InputStream inputStream = conn.getInputStream()) {
+                final int responseCode = conn.getResponseCode();
+                final String contentType = conn.getContentType();
+
+                if (HttpServletResponse.SC_OK != responseCode || !"audio/mp3".equals(contentType)) {
+                    final String msg = IOUtils.toString(inputStream, "UTF-8");
+                    LOGGER.warn("Baidu Yuyin TTS failed: " + msg.toString());
+                    conn.disconnect();
+
+                    return null;
+                }
+
+                ret = IOUtils.toByteArray(inputStream);
+            }
+
             conn.disconnect();
 
             return ret;
@@ -176,9 +174,9 @@ public class AudioMgmtService {
                 ret = Symphonys.get("qiniu.domain") + "/audio/" + type + "/" + textId + seq + ".mp3";
             } else {
                 final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".mp3";
-                final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName);
-                IOUtils.write(bytes, output);
-                IOUtils.closeQuietly(output);
+                try (final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName)) {
+                    IOUtils.write(bytes, output);
+                }
 
                 ret = Latkes.getServePath() + "/upload/" + fileName;
             }

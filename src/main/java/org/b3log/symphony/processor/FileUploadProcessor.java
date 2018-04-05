@@ -44,7 +44,7 @@ import java.util.UUID;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.0.0.0, Mar 11, 2018
+ * @version 2.0.0.1, Apr 5, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -127,11 +127,10 @@ public class FileUploadProcessor {
             return;
         }
 
-        final OutputStream output = resp.getOutputStream();
-        IOUtils.write(data, output);
-        output.flush();
-
-        IOUtils.closeQuietly(output);
+        try (final OutputStream output = resp.getOutputStream()) {
+            IOUtils.write(data, output);
+            output.flush();
+        }
     }
 
     /**
@@ -147,34 +146,33 @@ public class FileUploadProcessor {
             return;
         }
 
-        final MultipartRequestInputStream multipartRequestInputStream = new MultipartRequestInputStream(req.getInputStream());
-        multipartRequestInputStream.readBoundary();
-        multipartRequestInputStream.readDataHeader("UTF-8");
+        String fileName;
+        try (final MultipartRequestInputStream multipartRequestInputStream = new MultipartRequestInputStream(req.getInputStream())) {
+            multipartRequestInputStream.readBoundary();
+            multipartRequestInputStream.readDataHeader("UTF-8");
 
-        String fileName = multipartRequestInputStream.getLastHeader().getFileName();
+            fileName = multipartRequestInputStream.getLastHeader().getFileName();
+            String suffix = StringUtils.substringAfterLast(fileName, ".");
+            if (StringUtils.isBlank(suffix)) {
+                final String mimeType = multipartRequestInputStream.getLastHeader().getContentType();
+                String[] exts = MimeTypes.findExtensionsByMimeTypes(mimeType, false);
 
-        String suffix = StringUtils.substringAfterLast(fileName, ".");
-        if (StringUtils.isBlank(suffix)) {
-            final String mimeType = multipartRequestInputStream.getLastHeader().getContentType();
-            String[] exts = MimeTypes.findExtensionsByMimeTypes(mimeType, false);
+                if (null != exts && 0 < exts.length) {
+                    suffix = exts[0];
+                } else {
+                    suffix = StringUtils.substringAfter(mimeType, "/");
+                }
+            }
 
-            if (null != exts && 0 < exts.length) {
-                suffix = exts[0];
-            } else {
-                suffix = StringUtils.substringAfter(mimeType, "/");
+            final String name = StringUtils.substringBeforeLast(fileName, ".");
+            final String processName = name.replaceAll("\\W", "");
+            final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+            fileName = uuid + '_' + processName + "." + suffix;
+
+            try (final OutputStream output = new FileOutputStream(UPLOAD_DIR + fileName)) {
+                IOUtils.copy(multipartRequestInputStream, output);
             }
         }
-
-        final String name = StringUtils.substringBeforeLast(fileName, ".");
-        final String processName = name.replaceAll("\\W", "");
-        final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        fileName = uuid + '_' + processName + "." + suffix;
-
-        final OutputStream output = new FileOutputStream(UPLOAD_DIR + fileName);
-        IOUtils.copy(multipartRequestInputStream, output);
-
-        IOUtils.closeQuietly(multipartRequestInputStream);
-        IOUtils.closeQuietly(output);
 
         final JSONObject data = new JSONObject();
         data.put("key", Latkes.getServePath() + "/upload/" + fileName);
@@ -182,9 +180,9 @@ public class FileUploadProcessor {
 
         resp.setContentType("application/json");
 
-        final PrintWriter writer = resp.getWriter();
-        writer.append(data.toString());
-        writer.flush();
-        writer.close();
+        try (final PrintWriter writer = resp.getWriter()) {
+            writer.append(data.toString());
+            writer.flush();
+        }
     }
 }

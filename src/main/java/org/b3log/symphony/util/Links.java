@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Feb 5, 2018
+ * @version 1.0.1.1, Apr 5, 2018
  * @since 1.6.0
  */
 public final class Links {
@@ -195,9 +195,10 @@ public final class Links {
                 conn.setReadTimeout(TIMEOUT);
                 conn.addRequestProperty(Common.USER_AGENT, Symphonys.USER_AGENT_BOT);
 
-                InputStream inputStream = conn.getInputStream();
-                String baiduRes = IOUtils.toString(inputStream, "UTF-8");
-                IOUtils.closeQuietly(inputStream);
+                String baiduRes;
+                try (final InputStream inputStream = conn.getInputStream()) {
+                    baiduRes = IOUtils.toString(inputStream, "UTF-8");
+                }
                 conn.disconnect();
 
                 int baiduRefCnt = StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
@@ -213,9 +214,9 @@ public final class Links {
                     conn.setReadTimeout(TIMEOUT);
                     conn.addRequestProperty(Common.USER_AGENT, Symphonys.USER_AGENT_BOT);
 
-                    inputStream = conn.getInputStream();
-                    baiduRes = IOUtils.toString(inputStream, "UTF-8");
-                    IOUtils.closeQuietly(inputStream);
+                    try (final InputStream inputStream = conn.getInputStream()) {
+                        baiduRes = IOUtils.toString(inputStream, "UTF-8");
+                    }
                     conn.disconnect();
 
                     baiduRefCnt += StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");

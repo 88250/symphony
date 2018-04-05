@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.21.4, Feb 12, 2018
+ * @version 1.15.21.5, Apr 5, 2018
  * @since 0.2.0
  */
 @Service
@@ -562,9 +562,9 @@ public class UserMgmtService {
                         user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?" + new Date().getTime());
                     } else {
                         final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
-                        final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName);
-                        IOUtils.write(avatarData, output);
-                        IOUtils.closeQuietly(output);
+                        try (final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName)) {
+                            IOUtils.write(avatarData, output);
+                        }
 
                         user.put(UserExt.USER_AVATAR_URL, Latkes.getServePath() + "/upload/" + fileName);
                     }
