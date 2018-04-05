@@ -20,10 +20,12 @@
                     <a href="${servePath}/admin/user/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-title" aria-label="${editLabel}"><svg><use xlink:href="#edit"></use></svg></a> &nbsp;
                     <#if item.userStatus == 0>
                     <span class="ft-gray">${validLabel}</span>
+                    <#elseif item.userStatus == 1>
+                    <span class="ft-red">${banLabel}</span>
                     <#elseif item.userStatus == 2>
                     <span class="ft-red">${notVerifiedLabel}</span>
                     <#else>
-                    <font class="ft-red">${banLabel}</font>
+                    <span class="ft-red">${invalidLoginLabel}</span>
                     </#if>
                 </div>
                 <div class="fn-clear">
