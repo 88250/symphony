@@ -39,7 +39,6 @@ import javax.mail.internet.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -381,7 +380,7 @@ public final class Mails {
     }
 
     private static String percentEncode(final String value) throws UnsupportedEncodingException {
-        return value != null ? URLEncoder.encode(value, "UTF-8").replace("+", "%20")
+        return value != null ? URLs.encode(value).replace("+", "%20")
                 .replace("*", "%2A").replace("%7E", "~") : null;
     }
 
@@ -523,15 +522,15 @@ final class MailSender implements java.io.Serializable {
 
         System.out.println(CHARSET.toLowerCase());
 
-		/*
+        /*
          * MailSender mailSender = getInstance();
-		 *
-		 * String subject = "eml with Image"; String content =
-		 * "这是一封邮件正文带图片<img width=\"60px\" src=\"http://localhost:8080/images/logo-M301-161X105.png\" />的邮件"
-		 * ; String[] tos = { "bruceyang_it@163.com" };
-		 * mailSender.sendMessage(tos, subject, content, saved_path,
-		 * MailType.IMAGE);
-		 */
+         *
+         * String subject = "eml with Image"; String content =
+         * "这是一封邮件正文带图片<img width=\"60px\" src=\"http://localhost:8080/images/logo-M301-161X105.png\" />的邮件"
+         * ; String[] tos = { "bruceyang_it@163.com" };
+         * mailSender.sendMessage(tos, subject, content, saved_path,
+         * MailType.IMAGE);
+         */
 
     }
 
@@ -772,13 +771,13 @@ final class MailSender implements java.io.Serializable {
         try {
             /*
              * Keys.fillServer(dataModel); Keys.fillRuntime(dataModel);
-			 *
-			 *
-			 * final Template template = TEMPLATE_CFG.getTemplate(templateName +
-			 * ".ftl"); final StringWriter stringWriter = new StringWriter();
-			 * template.process(dataModel, stringWriter); stringWriter.close();
-			 * final String content = stringWriter.toString();
-			 */
+             *
+             *
+             * final Template template = TEMPLATE_CFG.getTemplate(templateName +
+             * ".ftl"); final StringWriter stringWriter = new StringWriter();
+             * template.process(dataModel, stringWriter); stringWriter.close();
+             * final String content = stringWriter.toString();
+             */
 
             getInstance().sendMessage(toMail, subject, html, saved_path, MailType.IMAGE);
             LOGGER.debug(html);

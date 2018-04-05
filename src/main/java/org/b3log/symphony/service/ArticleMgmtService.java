@@ -51,8 +51,6 @@ import org.jsoup.select.Elements;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -1577,11 +1575,7 @@ public class ArticleMgmtService {
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 String tagURI = tagTitle;
-                try {
-                    tagURI = URLEncoder.encode(tagTitle, "UTF-8");
-                } catch (final UnsupportedEncodingException e) {
-                    LOGGER.log(Level.ERROR, "Encode tag title [" + tagTitle + "] error", e);
-                }
+                tagURI = URLs.encode(tagTitle);
                 tag.put(Tag.TAG_URI, tagURI);
                 tag.put(Tag.TAG_CSS, "");
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);

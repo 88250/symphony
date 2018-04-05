@@ -29,11 +29,11 @@ import org.b3log.latke.urlfetch.HTTPResponse;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.URLs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
-import java.net.URLEncoder;
 
 /**
  * Turing query service.
@@ -90,7 +90,7 @@ public class TuringQueryService {
      * Chat with Turing Robot.
      *
      * @param userName the specified user name
-     * @param msg the specified message
+     * @param msg      the specified message
      * @return robot returned message, return {@code null} if not found
      */
     public String chat(final String userName, final String msg) {
@@ -104,9 +104,9 @@ public class TuringQueryService {
         try {
             request.setURL(new URL(TURING_API));
 
-            final String body = "key=" + URLEncoder.encode(TURING_KEY, "UTF-8")
-                    + "&info=" + URLEncoder.encode(msg, "UTF-8")
-                    + "&userid=" + URLEncoder.encode(userName, "UTF-8");
+            final String body = "key=" + URLs.encode(TURING_KEY)
+                    + "&info=" + URLs.encode(msg)
+                    + "&userid=" + URLs.encode(userName);
             request.setPayload(body.getBytes("UTF-8"));
 
             final HTTPResponse response = URL_FETCH_SVC.fetch(request);

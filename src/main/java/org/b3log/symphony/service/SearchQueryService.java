@@ -24,11 +24,11 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.*;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.URLs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
 
 /**
@@ -141,7 +141,7 @@ public class SearchQueryService {
                 request.setURL(new URL("https://" + host + "/1/indexes/" + index + "/query"));
 
                 final JSONObject params = new JSONObject();
-                params.put("params", "query=" + URLEncoder.encode(keyword, "UTF-8")
+                params.put("params", "query=" + URLs.encode(keyword)
                         + "&getRankingInfo=1&facets=*&attributesToRetrieve=*&highlightPreTag=%3Cem%3E"
                         + "&highlightPostTag=%3C%2Fem%3E"
                         + "&facetFilters=%5B%5D&maxValuesPerFacet=100"

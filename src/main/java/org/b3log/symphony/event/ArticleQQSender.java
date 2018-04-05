@@ -32,11 +32,11 @@ import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.URLs;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.URL;
-import java.net.URLEncoder;
 
 /**
  * Sends an article to QQ qun via <a href="https://github.com/b3log/xiaov">XiaoV</a>.
@@ -95,9 +95,9 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
         try {
             request.setURL(new URL(xiaovAPI + "/qq"));
 
-            final String body = "key=" + URLEncoder.encode(xiaovKey, "UTF-8")
-                    + "&msg=" + URLEncoder.encode(msg, "UTF-8")
-                    + "&user=" + URLEncoder.encode("sym", "UTF-8");
+            final String body = "key=" + URLs.encode(xiaovKey)
+                    + "&msg=" + URLs.encode(msg)
+                    + "&user=" + URLs.encode("sym");
             request.setPayload(body.getBytes("UTF-8"));
 
             final HTTPResponse response = URL_FETCH_SVC.fetch(request);

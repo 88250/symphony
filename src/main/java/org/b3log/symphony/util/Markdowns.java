@@ -53,7 +53,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -377,10 +376,7 @@ public final class Markdowns {
             doc.select("a").forEach(a -> {
                 String src = a.attr("href");
                 if (!StringUtils.startsWithIgnoreCase(src, Latkes.getServePath())) {
-                    try {
-                        src = URLEncoder.encode(src, "UTF-8");
-                    } catch (final Exception e) {
-                    }
+                    src = URLs.encode(src);
                     a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
                     a.attr("target", "_blank");
                 }

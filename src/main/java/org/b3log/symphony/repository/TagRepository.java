@@ -19,18 +19,16 @@ package org.b3log.symphony.repository;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.util.URLs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,14 +126,7 @@ public class TagRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public JSONObject getByURI(final String tagURI) throws RepositoryException {
-        String uri = tagURI;
-
-        try {
-            uri = URLEncoder.encode(tagURI, "UTF-8");
-        } catch (final UnsupportedEncodingException e) {
-            LOGGER.log(Level.ERROR, "Encode tag URI [" + tagURI + "] failed", e);
-        }
-
+        final String uri = URLs.encode(tagURI);
         final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG_URI, FilterOperator.EQUAL, uri))
                 .addSort(Tag.TAG_REFERENCE_CNT, SortDirection.DESCENDING)
                 .setPageCount(1);

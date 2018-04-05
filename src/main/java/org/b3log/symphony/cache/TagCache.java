@@ -261,31 +261,6 @@ public class TagCache {
             final JSONObject result = tagRepository.get(query);
             final List<JSONObject> tags = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
-            // for legacy data migration
-//            final Transaction transaction = tagRepository.beginTransaction();
-//            try {
-//                for (final JSONObject tag : tags) {
-//                    String uri = tag.optString(Tag.TAG_URI);
-//                    if (StringUtils.isBlank(uri)) {
-//                        final String tagTitle = tag.optString(Tag.TAG_TITLE);
-//                        tag.put(Tag.TAG_URI, URLEncoder.encode(tagTitle, "UTF-8"));
-//                        tag.put(Tag.TAG_CSS, "");
-//
-//                        tagRepository.update(tag.optString(Keys.OBJECT_ID), tag);
-//
-//                        LOGGER.info("Migrated tag [title=" + tagTitle + "]");
-//                    }
-//                }
-//
-//                transaction.commit();
-//            } catch (final RepositoryException | UnsupportedEncodingException e) {
-//                if (transaction.isActive()) {
-//                    transaction.rollback();
-//                }
-//
-//                LOGGER.log(Level.ERROR, "Migrates tag data failed", e);
-//            }
-
             final Iterator<JSONObject> iterator = tags.iterator();
             while (iterator.hasNext()) {
                 final JSONObject tag = iterator.next();

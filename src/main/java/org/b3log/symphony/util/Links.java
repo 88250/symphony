@@ -35,7 +35,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -189,7 +188,7 @@ public final class Links {
                 ret.put(Link.LINK_T_TEXT, doc.text());
 
                 // Evaluate the URL
-                URL baiduURL = new URL("https://www.baidu.com/s?pn=0&wd=" + URLEncoder.encode(url, "UTF-8"));
+                URL baiduURL = new URL("https://www.baidu.com/s?pn=0&wd=" + URLs.encode(url));
                 HttpURLConnection conn = (HttpURLConnection) baiduURL.openConnection();
                 conn.setConnectTimeout(TIMEOUT);
                 conn.setReadTimeout(TIMEOUT);
@@ -208,7 +207,7 @@ public final class Links {
 
                     return ret;
                 } else {
-                    baiduURL = new URL("https://www.baidu.com/s?pn=10&wd=" + URLEncoder.encode(url, "UTF-8"));
+                    baiduURL = new URL("https://www.baidu.com/s?pn=10&wd=" + URLs.encode(url));
                     conn = (HttpURLConnection) baiduURL.openConnection();
                     conn.setConnectTimeout(TIMEOUT);
                     conn.setReadTimeout(TIMEOUT);

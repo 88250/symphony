@@ -36,13 +36,12 @@ import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Times;
+import org.b3log.symphony.util.URLs;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -729,12 +728,7 @@ public class UserQueryService {
      */
     public String getLogoutURL(final String redirectURL) {
         String to = Latkes.getServePath();
-
-        try {
-            to = URLEncoder.encode(to + redirectURL, "UTF-8");
-        } catch (final UnsupportedEncodingException e) {
-            LOGGER.log(Level.ERROR, "URL encode[string={0}]", redirectURL);
-        }
+        to = URLs.encode(to + redirectURL);
 
         return Latkes.getContextPath() + "/logout?goto=" + to;
     }
@@ -747,12 +741,7 @@ public class UserQueryService {
      */
     public String getLoginURL(final String redirectURL) {
         String to = Latkes.getServePath();
-
-        try {
-            to = URLEncoder.encode(to + redirectURL, "UTF-8");
-        } catch (final UnsupportedEncodingException e) {
-            LOGGER.log(Level.ERROR, "URL encode[string={0}]", redirectURL);
-        }
+        to = URLs.encode(to + redirectURL);
 
         return Latkes.getContextPath() + "/login?goto=" + to;
     }

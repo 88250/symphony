@@ -36,11 +36,10 @@ import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.*;
+import org.b3log.symphony.util.URLs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -189,11 +188,7 @@ public class TagMgmtService {
             JSONObject tag = new JSONObject();
             tag.put(Tag.TAG_TITLE, tagTitle);
             String tagURI = tagTitle;
-            try {
-                tagURI = URLEncoder.encode(tagTitle, "UTF-8");
-            } catch (final UnsupportedEncodingException e) {
-                LOGGER.log(Level.ERROR, "Encode tag title [" + tagTitle + "] error", e);
-            }
+            tagURI = URLs.encode(tagTitle);
             tag.put(Tag.TAG_URI, tagURI);
             tag.put(Tag.TAG_CSS, "");
             tag.put(Tag.TAG_REFERENCE_CNT, 0);

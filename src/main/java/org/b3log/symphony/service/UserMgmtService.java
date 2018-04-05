@@ -49,8 +49,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.URLEncoder;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -847,11 +849,7 @@ public class UserMgmtService {
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 String tagURI = tagTitle;
-                try {
-                    tagURI = URLEncoder.encode(tagTitle, "UTF-8");
-                } catch (final UnsupportedEncodingException e) {
-                    LOGGER.log(Level.ERROR, "Encode tag title [" + tagTitle + "] error", e);
-                }
+                tagURI = URLs.encode(tagTitle);
                 tag.put(Tag.TAG_URI, tagURI);
                 tag.put(Tag.TAG_CSS, "");
                 tag.put(Tag.TAG_REFERENCE_CNT, 0);
