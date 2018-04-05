@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.21.5, Apr 5, 2018
+ * @version 1.15.22.0, Apr 5, 2018
  * @since 0.2.0
  */
 @Service
@@ -410,6 +410,7 @@ public class UserMgmtService {
             final String userName = requestJSONObject.optString(User.USER_NAME);
             JSONObject user = userRepository.getByName(userName);
             if (null != user && (UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)
+                    || UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)
                     || UserExt.NULL_USER_NAME.equals(userName))) {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -424,7 +425,8 @@ public class UserMgmtService {
             user = userRepository.getByEmail(userEmail);
             int userNo = 0;
             if (null != user) {
-                if (UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)) {
+                if (UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)
+                        || UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)) {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
