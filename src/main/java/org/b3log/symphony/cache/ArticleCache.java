@@ -49,7 +49,7 @@ import java.util.List;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Apr 4, 2018
+ * @version 1.3.0.1, Apr 6, 2018
  * @since 1.4.0
  */
 @Named
@@ -148,11 +148,11 @@ public class ArticleCache {
      * @return side random articles
      */
     public List<JSONObject> getSideRandomArticles() {
-        if (SIDE_RANDOM_ARTICLES.isEmpty()) {
-            return Collections.emptyList();
-        }
+        int size = Symphonys.getInt("sideRandomArticlesCnt");
+        size = size > SIDE_RANDOM_ARTICLES.size() ? SIDE_RANDOM_ARTICLES.size() : size;
+        Collections.shuffle(SIDE_RANDOM_ARTICLES);
 
-        return new ArrayList<>(SIDE_RANDOM_ARTICLES);
+        return new ArrayList<>(SIDE_RANDOM_ARTICLES.subList(0, size));
     }
 
     /**
@@ -165,7 +165,7 @@ public class ArticleCache {
 
         Stopwatchs.start("Load side random articles");
         try {
-            final List<JSONObject> articles = articleRepository.getRandomly(Symphonys.getInt("sideRandomArticlesCnt"));
+            final List<JSONObject> articles = articleRepository.getRandomly(Symphonys.getInt("sideRandomArticlesCnt") * 5);
             articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
 
             SIDE_RANDOM_ARTICLES.clear();
