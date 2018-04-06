@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.1, Aug 22, 2017
+ * @version 1.8.0.2, Apr 6, 2018
  */
 @import "variables";
 @import "common";
@@ -1388,13 +1388,13 @@ label.cmt-anonymous {
 .domains a {
   height: 17px;
   text-align: center;
-  padding: 10px 5px;
+  padding: 10px 2px;
   color: #999;
   text-decoration: none;
-  font-size: 12px;
   line-height: 16px;
   display: block;
   flex: 1;
+  font-size: 12px;
 }
 
 .domains a.selected {
@@ -2344,13 +2344,6 @@ code .dec {
 /* start settings */
 #avatarUpload {
   overflow: hidden;
-}
-
-.settings-secret label {
-  display: block;
-  width: 100%;
-  margin: 5px 0;
-  float: none;
 }
 
 .settings-avatar .btn {
