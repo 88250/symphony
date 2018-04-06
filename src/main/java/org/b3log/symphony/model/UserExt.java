@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.10.0.0, Apr 1, 2018
+ * @version 2.11.0.0, Apr 6, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -56,6 +56,11 @@ public final class UserExt {
      * Key of user subscription mail status.
      */
     public static final String USER_SUB_MAIL_STATUS = "userSubMailStatus";
+
+    /**
+     * Key of user auto watch article after reply status.
+     */
+    public static final String USER_REPLY_WATCH_ARTICLE_STATUS = "userReplyWatchArticleStatus";
 
     /**
      * Key of user subscription mail send time.

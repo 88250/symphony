@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.37.8.27, Apr 1, 2018",
+  "version": "4.37.8.28, Apr 6, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -1585,6 +1585,11 @@
           "name": "userKeyboardShortcutsStatus",
           "type": "int",
           "description": "0：启用键盘快捷键，1：禁用键盘快捷键"
+        },
+        {
+          "name": "userReplyWatchArticleStatus",
+          "type": "int",
+          "description": "0：回帖后自动关注帖子，1：回帖后不自动关注帖子"
         },
         {
           "name": "userLanguage",
