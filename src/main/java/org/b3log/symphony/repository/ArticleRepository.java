@@ -34,7 +34,7 @@ import java.util.List;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.4, Mar 31, 2018
+ * @version 1.1.1.5, Apr 6, 2018
  * @since 0.2.0
  */
 @Repository
@@ -94,7 +94,8 @@ public class ArticleRepository extends AbstractRepository {
         Query query = new Query().setFilter(
                 CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
                         new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
-                        new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID))).
+                        new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID),
+                        new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION))).
                 addProjection(Article.ARTICLE_TITLE, String.class).
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
                 addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
@@ -110,7 +111,8 @@ public class ArticleRepository extends AbstractRepository {
             query = new Query().setFilter(
                     CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
                             new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
-                            new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID))).
+                            new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID),
+                            new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION))).
                     addProjection(Article.ARTICLE_TITLE, String.class).
                     addProjection(Article.ARTICLE_PERMALINK, String.class).
                     addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
