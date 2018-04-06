@@ -1307,7 +1307,7 @@ public class AdminProcessor {
                 case UserExt.USER_NOTIFY_STATUS:
                 case UserExt.USER_SUB_MAIL_STATUS:
                 case UserExt.USER_KEYBOARD_SHORTCUTS_STATUS:
-                case UserExt.USER_REPLY_WATCH_ARTICLE_STATUS
+                case UserExt.USER_REPLY_WATCH_ARTICLE_STATUS:
                 case UserExt.USER_GEO_STATUS:
                 case UserExt.USER_ARTICLE_STATUS:
                 case UserExt.USER_COMMENT_STATUS:

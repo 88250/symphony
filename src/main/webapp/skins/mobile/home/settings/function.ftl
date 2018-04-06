@@ -30,10 +30,16 @@
                 <input id="userSubMailStatus" <#if 0 == currentUser.userSubMailStatus> checked="checked"</#if> type="checkbox" />
             </label>
         </div>
-        <div class="fn-clear settings-secret">
+        <div class="fn-clear">
             <label>
                 ${enableKbdLabel}
                 <input id="enableKbdLabel" <#if 0 == currentUser.userKeyboardShortcutsStatus> checked="checked"</#if> type="checkbox" />
+            </label>
+        </div>
+        <div class="fn-clear">
+            <label>
+                <input id="userReplyWatchArticleStatus" <#if 0 == currentUser.userReplyWatchArticleStatus> checked="checked"</#if> type="checkbox" />
+                ${enableReplyWatchLabel}
             </label>
         </div>
         <div class="fn-clear"></div>

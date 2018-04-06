@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.22.1.1, Apr 1, 2018
+ * @version 1.22.1.2, Apr 6, 2018
  */
 
 /**
@@ -282,19 +282,19 @@ var Settings = {
    */
   pointTransfer: function (csrfToken) {
     if (Validate.goValidate({
-        target: $('#pointTransferTip'),
-        data: [{
-          "target": $("#pointTransferUserName"),
-          "type": "string",
-          "max": 256,
-          "msg": Label.invalidUserNameLabel
-        }, {
-          "target": $("#pointTransferAmount"),
-          "type": "string",
-          'max': 50,
-          "msg": Label.amountNotEmpty
-        }]
-      })) {
+      target: $('#pointTransferTip'),
+      data: [{
+        "target": $("#pointTransferUserName"),
+        "type": "string",
+        "max": 256,
+        "msg": Label.invalidUserNameLabel
+      }, {
+        "target": $("#pointTransferAmount"),
+        "type": "string",
+        'max': 50,
+        "msg": Label.amountNotEmpty
+      }]
+    })) {
       var requestJSONObject = {
         "userName": $("#pointTransferUserName").val(),
         "amount": $("#pointTransferAmount").val()
@@ -447,7 +447,8 @@ var Settings = {
           userListViewMode: $("#userListViewMode").val(),
           userNotifyStatus: $('#userNotifyStatus').prop("checked"),
           userSubMailStatus: $('#userSubMailStatus').prop("checked"),
-          userKeyboardShortcutsStatus: $('#userKeyboardShortcutsStatus').prop("checked")
+          userKeyboardShortcutsStatus: $('#userKeyboardShortcutsStatus').prop("checked"),
+          userReplyWatchArticleStatus: $('#userReplyWatchArticleStatus').prop("checked")
         };
 
         break;
@@ -546,33 +547,33 @@ var Settings = {
    */
   _validateProfiles: function () {
     if (Validate.goValidate({
-        target: $('#profilesTip'),
-        data: [{
-          "target": $("#userNickname"),
-          "type": "string",
-          "min": 0,
-          "max": 20,
-          "msg": Label.invalidUserNicknameLabel
-        }, {
-          "target": $("#userTags"),
-          "type": "string",
-          "min": 0,
-          "max": 255,
-          "msg": Label.tagsErrorLabel
-        }, {
-          "target": $("#userURL"),
-          "type": "string",
-          "min": 0,
-          "max": 255,
-          "msg": Label.invalidUserURLLabel
-        }, {
-          "target": $("#userIntro"),
-          "type": "string",
-          "min": 0,
-          "max": 255,
-          "msg": Label.invalidUserIntroLabel
-        }]
-      })) {
+      target: $('#profilesTip'),
+      data: [{
+        "target": $("#userNickname"),
+        "type": "string",
+        "min": 0,
+        "max": 20,
+        "msg": Label.invalidUserNicknameLabel
+      }, {
+        "target": $("#userTags"),
+        "type": "string",
+        "min": 0,
+        "max": 255,
+        "msg": Label.tagsErrorLabel
+      }, {
+        "target": $("#userURL"),
+        "type": "string",
+        "min": 0,
+        "max": 255,
+        "msg": Label.invalidUserURLLabel
+      }, {
+        "target": $("#userIntro"),
+        "type": "string",
+        "min": 0,
+        "max": 255,
+        "msg": Label.invalidUserIntroLabel
+      }]
+    })) {
       return {
         userNickname: $("#userNickname").val().replace(/(^\s*)|(\s*$)/g, ""),
         userTags: $("#userTags").val().replace(/(^\s*)|(\s*$)/g, ""),
@@ -589,26 +590,26 @@ var Settings = {
    */
   _validateSyncB3: function () {
     if (Validate.goValidate({
-        target: $("#syncb3Tip"),
-        data: [{
-          "target": $("#soloKey"),
-          "type": "string",
-          'max': 20,
-          "msg": Label.invalidUserB3KeyLabel
-        }, {
-          "target": $("#soloPostURL"),
-          "type": "url",
-          "msg": Label.invalidUserB3ClientURLLabel
-        }, {
-          "target": $("#soloUpdateURL"),
-          "type": "url",
-          "msg": Label.invalidUserB3ClientURLLabel
-        }, {
-          "target": $("#soloCmtURL"),
-          "type": "url",
-          "msg": Label.invalidUserB3ClientURLLabel
-        }]
-      })) {
+      target: $("#syncb3Tip"),
+      data: [{
+        "target": $("#soloKey"),
+        "type": "string",
+        'max': 20,
+        "msg": Label.invalidUserB3KeyLabel
+      }, {
+        "target": $("#soloPostURL"),
+        "type": "url",
+        "msg": Label.invalidUserB3ClientURLLabel
+      }, {
+        "target": $("#soloUpdateURL"),
+        "type": "url",
+        "msg": Label.invalidUserB3ClientURLLabel
+      }, {
+        "target": $("#soloCmtURL"),
+        "type": "url",
+        "msg": Label.invalidUserB3ClientURLLabel
+      }]
+    })) {
       return {
         userB3Key: $("#soloKey").val().replace(/(^\s*)|(\s*$)/g, ""),
         userB3ClientAddArticleURL: $("#soloPostURL").val().replace(/(^\s*)|(\s*$)/g, ""),
@@ -628,18 +629,18 @@ var Settings = {
     var pwdVal = $("#pwdOld").val(),
       newPwdVal = $("#pwdNew").val();
     if (Validate.goValidate({
-        target: $('#passwordTip'),
-        data: [{
-          "target": $("#pwdNew"),
-          "type": "password",
-          "msg": Label.invalidPasswordLabel
-        }, {
-          "target": $("#pwdRepeat"),
-          "type": "password",
-          "oranginal": $('#pwdNew'),
-          "msg": Label.confirmPwdErrorLabel
-        }]
-      })) {
+      target: $('#passwordTip'),
+      data: [{
+        "target": $("#pwdNew"),
+        "type": "password",
+        "msg": Label.invalidPasswordLabel
+      }, {
+        "target": $("#pwdRepeat"),
+        "type": "password",
+        "oranginal": $('#pwdNew'),
+        "msg": Label.confirmPwdErrorLabel
+      }]
+    })) {
       if (newPwdVal !== $("#pwdRepeat").val()) {
         return false;
       }

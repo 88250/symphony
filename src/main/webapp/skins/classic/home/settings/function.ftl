@@ -23,22 +23,28 @@
         <div class="fn-clear settings-secret">
             <div>
                 <label>
-                    ${useNotifyLabel} 
                     <input id="userNotifyStatus" <#if 0 == currentUser.userNotifyStatus> checked="checked"</#if> type="checkbox" />
+                    ${useNotifyLabel}
                 </label>
             </div>
             <div>
                 <label>
-                    ${subMailLabel} 
                     <input id="userSubMailStatus" <#if 0 == currentUser.userSubMailStatus> checked="checked"</#if> type="checkbox" />
+                    ${subMailLabel}
                 </label>
             </div>
         </div>
         <div class="fn-clear settings-secret">
             <div>
                 <label>
-                    ${enableKbdLabel}
                     <input id="userKeyboardShortcutsStatus" <#if 0 == currentUser.userKeyboardShortcutsStatus> checked="checked"</#if> type="checkbox" />
+                    ${enableKbdLabel}
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input id="userReplyWatchArticleStatus" <#if 0 == currentUser.userReplyWatchArticleStatus> checked="checked"</#if> type="checkbox" />
+                    ${enableReplyWatchLabel}
                 </label>
             </div>
         </div>
