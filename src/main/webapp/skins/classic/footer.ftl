@@ -7,7 +7,7 @@
             <a href="http://weibo.com/u/2778228501" target="_blank" class="tooltipped tooltipped-n" aria-label="${followWeiboLabel}">
                 <svg class="icon-weibo"><use xlink:href="#weibo"></use></svg></a>   &nbsp;
             <a target="_blank" class="tooltipped tooltipped-n" aria-label="${joinQQGroupLabel}"
-               href="http://shang.qq.com/wpa/qunwpa?idkey=981d9282616274abb1752336e21b8036828f715a1c4d0628adcf208f2fd54f3a">
+               href="//jq.qq.com/?_wv=1027&k=50iQX8Z">
                 <svg class="icon-qq"><use xlink:href="#qq"></use></svg></a> &nbsp;
             <a target="_blank" rel="noopener" class="tooltipped tooltipped-n" aria-label="${joinTelegramLabel}"
                href="https://t.me/b3log">
