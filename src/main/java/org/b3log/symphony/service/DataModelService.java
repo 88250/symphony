@@ -486,7 +486,7 @@ public class DataModelService {
 
         // Builtin for Sym promotion
         tipsLabels.add("<img align=\"absmiddle\" alt=\"tada\" class=\"emoji\" src=\"" + Latkes.getStaticServePath() +
-                "/emoji/graphics/tada.png\" title=\"tada\"> 本站使用开源系统 <a href=\"https://github.com/b3log/symphony\">Sym</a> 搭建，请为它点赞！");
+                "/emoji/graphics/tada.png\" title=\"tada\"> 本站使用 <a href=\"https://sym.b3log.org\">Sym</a> 搭建，请为它点赞！");
         tipsLabels.add("<img align=\"absmiddle\" alt=\"sparkles\" class=\"emoji\" src=\"" + Latkes.getStaticServePath() +
                 "/emoji/graphics/sparkles.png\" title=\"sparkles\"> 欢迎使用 <a href=\"https://sym.b3log.org\">Sym</a> 来搭建自己的社区！");
 
