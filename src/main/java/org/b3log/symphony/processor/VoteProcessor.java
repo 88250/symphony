@@ -49,7 +49,7 @@ import java.util.Set;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, Mar 30, 2017
+ * @version 1.3.0.4, Apr 12, 2018
  * @since 1.3.0
  */
 @RequestProcessor
@@ -200,18 +200,19 @@ public class VoteProcessor {
         } else {
             voteMgmtService.voteDown(userId, dataId, Vote.DATA_TYPE_C_COMMENT);
 
-            final JSONObject comment = commentQueryService.getComment(dataId);
-            final String commenterId = comment.optString(Comment.COMMENT_AUTHOR_ID);
-
-            if (!VOTES.contains(userId + dataId) && !userId.equals(commenterId)) {
-                final JSONObject notification = new JSONObject();
-                notification.put(Notification.NOTIFICATION_USER_ID, commenterId);
-                notification.put(Notification.NOTIFICATION_DATA_ID, dataId + "-" + userId);
-
-                notificationMgmtService.addCommentVoteDownNotification(notification);
-            }
-
-            VOTES.add(userId + dataId);
+            // https://github.com/b3log/symphony/issues/611
+//            final JSONObject comment = commentQueryService.getComment(dataId);
+//            final String commenterId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+//
+//            if (!VOTES.contains(userId + dataId) && !userId.equals(commenterId)) {
+//                final JSONObject notification = new JSONObject();
+//                notification.put(Notification.NOTIFICATION_USER_ID, commenterId);
+//                notification.put(Notification.NOTIFICATION_DATA_ID, dataId + "-" + userId);
+//
+//                notificationMgmtService.addCommentVoteDownNotification(notification);
+//            }
+//
+//            VOTES.add(userId + dataId);
         }
 
         context.renderTrueResult().renderJSONValue(Vote.TYPE, vote);
@@ -316,18 +317,19 @@ public class VoteProcessor {
         } else {
             voteMgmtService.voteDown(userId, dataId, Vote.DATA_TYPE_C_ARTICLE);
 
-            final JSONObject article = articleQueryService.getArticle(dataId);
-            final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-
-            if (!VOTES.contains(userId + dataId) && !userId.equals(articleAuthorId)) {
-                final JSONObject notification = new JSONObject();
-                notification.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
-                notification.put(Notification.NOTIFICATION_DATA_ID, dataId + "-" + userId);
-
-                notificationMgmtService.addArticleVoteDownNotification(notification);
-            }
-
-            VOTES.add(userId + dataId);
+            // https://github.com/b3log/symphony/issues/611
+//            final JSONObject article = articleQueryService.getArticle(dataId);
+//            final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+//
+//            if (!VOTES.contains(userId + dataId) && !userId.equals(articleAuthorId)) {
+//                final JSONObject notification = new JSONObject();
+//                notification.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
+//                notification.put(Notification.NOTIFICATION_DATA_ID, dataId + "-" + userId);
+//
+//                notificationMgmtService.addArticleVoteDownNotification(notification);
+//            }
+//
+//            VOTES.add(userId + dataId);
         }
 
         context.renderTrueResult().renderJSONValue(Vote.TYPE, vote);
