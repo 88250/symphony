@@ -49,6 +49,7 @@ import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -62,6 +63,7 @@ import java.util.*;
  * <ul>
  * <li>Shows index (/), GET</li>
  * <li>Shows recent articles (/recent), GET</li>
+ * <li>Shows watch articles (/watch), GET</li>
  * <li>Shows hot articles (/hot), GET</li>
  * <li>Shows perfect articles (/perfect), GET</li>
  * <li>Shows about (/about), GET</li>
@@ -72,7 +74,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.12.3.28, Apr 5, 2018
+ * @version 1.13.0.0, Apr 13, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -112,6 +114,72 @@ public class IndexProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Shows watch articles.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = {"/watch", "/watch/users"}, method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showWatch(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("watch.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final JSONObject user = Sessions.currentUser(request);
+        if (null != user) {
+            pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+
+            if (!UserExt.finshedGuide(user)) {
+                response.sendRedirect(Latkes.getServePath() + "/guide");
+
+                return;
+            }
+        }
+
+        dataModel.put(Common.WATCHING_ARTICLES, Collections.emptyList());
+        String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/watch");
+        switch (sortModeStr) {
+            case "":
+                if (null != user) {
+                    final List<JSONObject> followingTagArticles = articleQueryService.getFollowingTagArticles(
+                            avatarViewMode, user.optString(Keys.OBJECT_ID), 1, pageSize);
+                    dataModel.put(Common.WATCHING_ARTICLES, followingTagArticles);
+                }
+
+                break;
+            case "/users":
+                final List<JSONObject> followingUserArticles = articleQueryService.getFollowingUserArticles(
+                        avatarViewMode, user.optString(Keys.OBJECT_ID), 1, pageSize);
+                dataModel.put(Common.FOLLOWING_USER_ARTICLES, followingUserArticles);
+
+                break;
+        }
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillRandomArticles(dataModel);
+        dataModelService.fillSideHotArticles(dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
+
+        dataModel.put(Common.SELECTED, Common.WATCH);
+        dataModel.put(Common.CURRENT, StringUtils.substringAfter(request.getRequestURI(), "/watch"));
+    }
 
     /**
      * Shows md guide.
@@ -164,37 +232,14 @@ public class IndexProcessor {
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         final List<JSONObject> recentArticles = articleQueryService.getIndexRecentArticles(avatarViewMode);
         dataModel.put(Common.RECENT_ARTICLES, recentArticles);
-        JSONObject currentUser = userQueryService.getCurrentUser(request);
-        if (null == currentUser) {
-            userMgmtService.tryLogInWithCookie(request, context.getResponse());
-        }
-
-        currentUser = userQueryService.getCurrentUser(request);
-        if (null != currentUser) {
-            if (!UserExt.finshedGuide(currentUser)) {
-                response.sendRedirect(Latkes.getServePath() + "/guide");
-
-                return;
-            }
-
-            final String userId = currentUser.optString(Keys.OBJECT_ID);
-            final int pageSize = Symphonys.getInt("indexArticlesCnt");
-            final List<JSONObject> followingTagArticles = articleQueryService.getFollowingTagArticles(
-                    avatarViewMode, userId, 1, pageSize);
-            dataModel.put(Common.FOLLOWING_TAG_ARTICLES, followingTagArticles);
-            final List<JSONObject> followingUserArticles = articleQueryService.getFollowingUserArticles(
-                    avatarViewMode, userId, 1, pageSize);
-            dataModel.put(Common.FOLLOWING_USER_ARTICLES, followingUserArticles);
-        } else {
-            dataModel.put(Common.FOLLOWING_TAG_ARTICLES, Collections.emptyList());
-            dataModel.put(Common.FOLLOWING_USER_ARTICLES, Collections.emptyList());
-        }
 
         final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles();
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
-        dataModel.put(Common.SELECTED, Common.INDEX);
+
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         dataModelService.fillIndexTags(dataModel);
+
+        dataModel.put(Common.SELECTED, Common.INDEX);
     }
 
     /**
