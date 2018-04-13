@@ -17,15 +17,10 @@
                 <div class="index-main">
                     <div class="index-tabs fn-flex" id="articles">
                         <span class="current" data-index="0">
-                            <svg><use xlink:href="#refresh"></use></svg> ${latestLabel}
                         </span>
                         <span class="tags" data-index="1">
-                            <svg><use xlink:href="#tags"></use></svg>
-                            ${followingTagsLabel}
                         </span>
                         <span class="users" data-index="2">
-                            <svg><use xlink:href="#userrole"></use></svg>
-                            ${followingUsersLabel}
                         </span>
                     </div>
                     <div class="index-tabs-panels list article-list">
@@ -35,52 +30,8 @@
                             </#list>
                             <#if recentArticles?size == 0>
                                 ${systemEmptyLabel}<br>
-                                ${systemEmptyTipLabel}<br> 
-                                <img src="${staticServePath}/images/404/5.gif"/>          
-                            </#if>
-                            <li>
-                                <a class="more" href="${servePath}/recent">${moreRecentArticleLabel}</a>
-                            </li>
-                        </ul>
-                        <ul class="fn-none">
-                            <#list followingTagArticles as article>
-                                <#include "common/list-item.ftl">
-                            </#list>
-                            <#if isLoggedIn && followingTagArticles?size == 0>
-                                <li class="ft-center">
-                                    ${noFollowingTagLabel}<br>
-                                    ${noFollowingTagTipLabel}<br> 
-                                    <img src="${staticServePath}/images/404/6.gif"/>     
-                                </li>  
-                            </#if>
-                            <#if !isLoggedIn>
-                                <li class="ft-center">
-                                    ${noLoginLabel}<br>
-                                    ${noLoginTipLabel}<br> 
-                                    <img src="${staticServePath}/images/404/6.gif"/>     
-                                </li>  
-                            </#if>
-                            <li>
-                                <a class="more" href="${servePath}/recent">${moreRecentArticleLabel}</a>
-                            </li>
-                        </ul>
-                        <ul class="fn-none">
-                            <#list followingUserArticles as article>
-                                <#include "common/list-item.ftl">
-                            </#list>
-                            <#if isLoggedIn && followingUserArticles?size == 0>
-                                <li class="ft-center">
-                                    ${noFollowingUserLabel}<br>
-                                    ${noFollowingUserTipLabel}<br> 
-                                    <img src="${staticServePath}/images/404/2.gif"/>     
-                                </li> 
-                            </#if>
-                            <#if !isLoggedIn>
-                                <li class="ft-center">
-                                    ${noLoginLabel}<br>
-                                    ${noLoginTipLabel}<br> 
-                                    <img src="${staticServePath}/images/404/2.gif"/>     
-                                </li>   
+                                ${systemEmptyTipLabel}<br>
+                                <img src="${staticServePath}/images/404/5.gif"/>
                             </#if>
                             <li>
                                 <a class="more" href="${servePath}/recent">${moreRecentArticleLabel}</a>
@@ -91,21 +42,9 @@
                 <div class="index-side">
                     <div class="index-tabs fn-flex">
                         <span class="perfect">
-                            <a href="${servePath}/perfect">
-                                <svg><use xlink:href="#perfect"></use></svg>
-                            ${perfectLabel}
-                            </a>
                         </span>
                         <span class="check">
-                            <#if isLoggedIn && !isDailyCheckin>
-                            <a href="<#if useCaptchaCheckin>${servePath}/activity/checkin<#else>${servePath}/activity/daily-checkin</#if>">${dailyCheckinLabel}</a>
-                            <#else>
-                            <a href="${servePath}/activities">
-                                ${activityLabel}
-                            </a>
-                            </#if>
                         </span>
-                        <span class="post"><a href="${servePath}/pre-post">${postArticleLabel}</a></span>
                     </div>
                     <div class="perfect-panel list">
                         <ul>
@@ -256,25 +195,6 @@
     <script type="text/javascript">
         $('.metro-item').height($('.metro-item').width());
 
-        // tab
-        $('#articles span').click(function () {
-            var $it = $(this);
-            $('#articles span').removeClass('current');
-            $it.addClass('current');
-            $it.addClass('current');
-
-            $(".index-tabs-panels.article-list ul").hide();
-            if ($it.hasClass('tags')) {
-                $(".index-tabs-panels.article-list ul:eq(1)").show();
-            } else if ($it.hasClass('users')) {
-                $(".index-tabs-panels.article-list ul:eq(2)").show();
-            } else {
-                $(".index-tabs-panels.article-list ul:eq(0)").show();
-            }
-
-            localStorage.setItem('indexTab', $it.data('index'));
-        });
-
         // tag click
         $('.preview, .index-tabs > span').click(function (event) {
             var $it = $(this),
@@ -286,13 +206,6 @@
                 $it.find('.ripple').remove();
             }, 800);
         });
-
-        // set tab
-        if (typeof(localStorage.indexTab) === 'string') {
-            $('.index-tabs:first > span:eq(' + localStorage.indexTab + ')').click();
-        } else {
-            localStorage.setItem('indexTab', 0);
-        }
     </script>
 </body>
 </html>

@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.32.30.61, Jun 1, 2017
+ * @version 2.32.30.62, Apr 13, 2018
  */
 
 @import "variables";
@@ -1053,10 +1053,6 @@ code .dec {
 
 /* start index */
 .index {
-  .main {
-    padding: 0;
-  }
-
   .index-main {
     width: 60%;
   }
@@ -1118,7 +1114,6 @@ code .dec {
 
   .index-tabs > span.perfect {
     border-bottom-color: $theme-accent;
-    flex: 2;
   }
 
   .index-tabs > span.check {
@@ -1254,7 +1249,7 @@ code .dec {
 
   &__bottom {
     background-color: rgba(0, 0, 0, .02);
-    padding: 20px 0;
+    padding-top: 20px;
     margin-top: 20px;
     margin-right: -2px;
   }
