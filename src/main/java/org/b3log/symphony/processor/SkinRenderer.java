@@ -43,7 +43,7 @@ import java.util.TimeZone;
  * Skin user-switchable FreeMarker Renderer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.2, Nov 16, 2017
+ * @version 1.3.0.3, Apr 17, 2018
  * @since 1.3.0
  */
 public final class SkinRenderer extends AbstractFreeMarkerRenderer {
@@ -70,14 +70,14 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     /**
      * Gets a templat with the specified template directory name, template name, search engine bot flag and user.
      *
-     * @param templateDirName  the specified template directory name
-     * @param templateName     the specified template name
-     * @param isSearchEnginBot the specified search engine bot flag
-     * @param user             the specified user
+     * @param templateDirName   the specified template directory name
+     * @param templateName      the specified template name
+     * @param isSearchEngineBot the specified search engine bot flag
+     * @param user              the specified user
      * @return
      */
     public static Template getTemplate(final String templateDirName, final String templateName,
-                                       final boolean isSearchEnginBot, final JSONObject user) {
+                                       final boolean isSearchEngineBot, final JSONObject user) {
         Configuration cfg = Skins.TEMPLATE_HOLDER.get(templateDirName);
 
         try {
@@ -89,7 +89,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
 
             final Template ret = cfg.getTemplate(templateName);
 
-            if (isSearchEnginBot) {
+            if (isSearchEngineBot) {
                 return ret;
             }
 
