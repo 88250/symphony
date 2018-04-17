@@ -13,21 +13,19 @@
 <#include "header.ftl">
 <div class="main">
     <div class="wrapper">
-        <div class="content fn-clear" id="recent-pjax-container">
-            <#if pjax><!---- pjax {#recent-pjax-container} start ----></#if>
+        <div class="content fn-clear" id="watch-pjax-container">
+            <#if pjax><!---- pjax {#watch-pjax-container} start ----></#if>
             <div class="module">
                 <div class="module-header fn-clear">
-                            <span class="fn-right ft-fade">
-                                <a pjax-title="${followingTagsLabel} - ${symphonyLabel}" class="<#if "" == current>ft-gray</#if>" href="${servePath}/watch">${followingTagsLabel}</a>
-                                /
-                                <a pjax-title="${followingUsersLabel} - ${symphonyLabel}"  class="<#if "/users" == current>ft-gray</#if>" href="${servePath}/watch/users">${followingUsersLabel}</a>
-                            </span>
+                    <span class="fn-right ft-fade">
+                        <a pjax-title="${followingTagsLabel} - ${symphonyLabel}" class="<#if "" == current>ft-gray</#if>" href="${servePath}/watch">${followingTagsLabel}</a>
+                        /
+                        <a pjax-title="${followingUsersLabel} - ${symphonyLabel}"  class="<#if "/users" == current>ft-gray</#if>" href="${servePath}/watch/users">${followingUsersLabel}</a>
+                    </span>
                 </div>
             <@list listData=watchingArticles/>
-            </div><#if pjax><!---- pjax {#recent-pjax-container} end ----></#if>
-
+            </div><#if pjax><!---- pjax {#watch-pjax-container} end ----></#if>
         </div>
-
         <div class="side">
         <#include "side.ftl">
         </div>
@@ -39,23 +37,23 @@
 <script>
     $.pjax({
         selector: 'a',
-        container: '#recent-pjax-container',
+        container: '#watch-pjax-container',
         show: '',
         cache: false,
         storage: true,
         titleSuffix: '',
         filter: function(href){
-            return 0 > href.indexOf('${servePath}/recent');
+            return 0 > href.indexOf('${servePath}/watch');
         },
         callback: function () {
             Util.lazyLoadCSSImage();
         }
     });
     NProgress.configure({ showSpinner: false });
-    $('#recent-pjax-container').bind('pjax.start', function(){
+    $('#watch-pjax-container').bind('pjax.start', function(){
         NProgress.start();
     });
-    $('#recent-pjax-container').bind('pjax.end', function(){
+    $('#watch-pjax-container').bind('pjax.end', function(){
         NProgress.done();
     });
 </script>

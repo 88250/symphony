@@ -11,14 +11,12 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="content fn-clear" id="recent-pjax-container">
-                <#if pjax><!---- pjax {#recent-pjax-container} start ----></#if>
+            <div class="content fn-clear">
                     <div class="domains fn-flex">
-                        <a pjax-title="${followingTagsLabel} - ${symphonyLabel}"  class="<#if "" == current>selected</#if>" href="${servePath}/watch">${followingTagsLabel}</a>
-                        <a pjax-title="${followingUsersLabel} - ${symphonyLabel}" class="<#if "/users" == current>selected</#if>" href="${servePath}/watch/users">${followingUsersLabel}</a>
+                        <a class="<#if "" == current>selected</#if>" href="${servePath}/watch">${followingTagsLabel}</a>
+                        <a class="<#if "/users" == current>selected</#if>" href="${servePath}/watch/users">${followingUsersLabel}</a>
                     </div>
                 <@list listData=watchingArticles/>
-                <#if pjax><!---- pjax {#recent-pjax-container} end ----></#if>
             </div>
             <#if domains?size != 0>
                 <div class="module">
@@ -48,28 +46,5 @@
         </div>
         <#include "footer.ftl">
         <@listScript/>
-        <script>
-            $.pjax({
-                selector: 'a',
-                container: '#recent-pjax-container',
-                show: '',
-                cache: false,
-                storage: true,
-                titleSuffix: '',
-                filter: function(href){
-                    return 0 > href.indexOf('${servePath}/recent');
-                },
-                callback: function () {
-                    Util.lazyLoadCSSImage();
-                }
-            });
-            NProgress.configure({ showSpinner: false });
-            $('#recent-pjax-container').bind('pjax.start', function(){
-                NProgress.start();
-            });
-            $('#recent-pjax-container').bind('pjax.end', function(){
-                NProgress.done();
-            });
-        </script>
     </body>
 </html>
