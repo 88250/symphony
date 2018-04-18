@@ -39,6 +39,7 @@ import org.b3log.latke.util.Callstacks;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -68,7 +69,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.20.2, Apr 5, 2018
+ * @version 1.11.20.3, Apr 18, 2018
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -341,11 +342,10 @@ public final class Markdowns {
                                     try {
                                         final Set<String> userNames = userQueryService.getUserNames(text);
                                         for (final String userName : userNames) {
-                                            text = text.replace('@' + userName + (nextIsBr ? "" : " "), "@<a href='" + Latkes.getServePath()
-                                                    + "/member/" + userName + "'>" + userName + "</a> ");
+                                            text = text.replace('@' + userName + (nextIsBr ? "" : " "), "@" + UserExt.getUserLink(userName));
                                         }
                                         text = text.replace("@participants ",
-                                                "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
+                                                "@<a href='https://hacpai.com/article/1458053458339' target='_blank' class='ft-red'>participants</a> ");
                                     } finally {
                                         JdbcRepository.dispose();
                                     }

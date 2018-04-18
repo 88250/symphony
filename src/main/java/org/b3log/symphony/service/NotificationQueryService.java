@@ -43,7 +43,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.5.15, Mar 8, 2018
+ * @version 1.13.5.16, Apr 18, 2018
  * @since 0.2.5
  */
 @Service
@@ -484,8 +484,7 @@ public class NotificationQueryService {
                             break;
                         }
 
-                        final String userLink12 = "<a href=\"/member/" + user12.optString(User.USER_NAME) + "\">"
-                                + user12.optString(User.USER_NAME) + "</a>";
+                        final String userLink12 = UserExt.getUserLink(user12);
                         desTemplate = desTemplate.replace("{user}", userLink12);
 
                         final String articleLink12 = "<a href=\""
@@ -508,8 +507,7 @@ public class NotificationQueryService {
                             break;
                         }
 
-                        final String userLink7 = "<a href=\"/member/" + user7.optString(User.USER_NAME) + "\">"
-                                + user7.optString(User.USER_NAME) + "</a>";
+                        final String userLink7 = UserExt.getUserLink(user7);
                         desTemplate = desTemplate.replace("{user}", userLink7);
 
                         final String articleLink7 = "<a href=\""
@@ -567,8 +565,7 @@ public class NotificationQueryService {
                             break;
                         }
 
-                        final String userLink8 = "<a href=\"/member/" + user8.optString(User.USER_NAME) + "\">"
-                                + user8.optString(User.USER_NAME) + "</a>";
+                        final String userLink8 = UserExt.getUserLink(user8);
                         desTemplate = desTemplate.replace("{user}", userLink8);
 
                         final String articleLink8 = "<a href=\""

@@ -18,6 +18,8 @@
 package org.b3log.symphony.model;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.model.User;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -26,7 +28,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.11.0.0, Apr 6, 2018
+ * @version 2.12.0.0, Apr 18, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -686,5 +688,25 @@ public final class UserExt {
      */
     public static boolean finshedGuide(final JSONObject user) {
         return UserExt.USER_GUIDE_STEP_FIN == user.optInt(UserExt.USER_GUIDE_STEP);
+    }
+
+    /**
+     * Gets user link with the specified user.
+     *
+     * @param user the specified user
+     * @return user link
+     */
+    public static String getUserLink(final JSONObject user) {
+        return getUserLink(user.optString(User.USER_NAME));
+    }
+
+    /**
+     * Gets user link with the specified user name.
+     *
+     * @param userName the specified user name
+     * @return user link
+     */
+    public static String getUserLink(final String userName) {
+        return "<a href=\"" + Latkes.getServePath() + "/member/" + userName + "\">" + userName + "</a> ";
     }
 }

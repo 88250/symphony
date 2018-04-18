@@ -22,7 +22,6 @@ import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -43,7 +42,7 @@ import java.util.List;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.2.1, May 6, 2017
+ * @version 1.21.2.2, Apr 18, 2017
  * @since 1.3.0
  */
 @Service
@@ -323,8 +322,7 @@ public class PointtransferQueryService {
 
                         if ("3In".equals(typeStr)) {
                             final JSONObject commenter = userRepository.get(fromId);
-                            final String commenterLink = "<a href=\"/member/" + commenter.optString(User.USER_NAME) + "\">"
-                                    + commenter.optString(User.USER_NAME) + "</a>";
+                            final String commenterLink = UserExt.getUserLink(commenter);
 
                             desTemplate = desTemplate.replace("{user}", commenterLink);
                         }
@@ -371,8 +369,7 @@ public class PointtransferQueryService {
                         final String rewardArticleId = reward.optString(Reward.DATA_ID);
 
                         final JSONObject sender = userRepository.get(senderId);
-                        final String senderLink = "<a href=\"/member/" + sender.optString(User.USER_NAME) + "\">"
-                                + sender.optString(User.USER_NAME) + "</a>";
+                        final String senderLink = UserExt.getUserLink(sender);
                         desTemplate = desTemplate.replace("{user}", senderLink);
 
                         final JSONObject articleReward = articleRepository.get(rewardArticleId);
@@ -406,8 +403,7 @@ public class PointtransferQueryService {
 
                         final String articleId14 = comment14.optString(Comment.COMMENT_ON_ARTICLE_ID);
 
-                        final String userLink14 = "<a href=\"/member/" + user14.optString(User.USER_NAME) + "\">"
-                                + user14.optString(User.USER_NAME) + "</a>";
+                        final String userLink14 = UserExt.getUserLink(user14);
                         desTemplate = desTemplate.replace("{user}", userLink14);
 
                         final JSONObject article14 = articleRepository.get(articleId14);
@@ -433,8 +429,7 @@ public class PointtransferQueryService {
                             break;
                         }
 
-                        final String userLink22 = "<a href=\"/member/" + user22.optString(User.USER_NAME) + "\">"
-                                + user22.optString(User.USER_NAME) + "</a>";
+                        final String userLink22 = UserExt.getUserLink(user22);
                         desTemplate = desTemplate.replace("{user}", userLink22);
 
                         final String articleLink22 = "<a href=\""
@@ -445,22 +440,19 @@ public class PointtransferQueryService {
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER:
                         final JSONObject newUser = userRepository.get(dataId);
-                        final String newUserLink = "<a href=\"/member/" + newUser.optString(User.USER_NAME) + "\">"
-                                + newUser.optString(User.USER_NAME) + "</a>";
+                        final String newUserLink = UserExt.getUserLink(newUser);
                         desTemplate = desTemplate.replace("{user}", newUserLink);
 
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_INVITED_REGISTER:
                         final JSONObject referralUser = userRepository.get(dataId);
-                        final String referralUserLink = "<a href=\"/member/" + referralUser.optString(User.USER_NAME) + "\">"
-                                + referralUser.optString(User.USER_NAME) + "</a>";
+                        final String referralUserLink = UserExt.getUserLink(referralUser);
                         desTemplate = desTemplate.replace("{user}", referralUserLink);
 
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_INVITECODE_USED:
                         final JSONObject newUser1 = userRepository.get(dataId);
-                        final String newUserLink1 = "<a href=\"/member/" + newUser1.optString(User.USER_NAME) + "\">"
-                                + newUser1.optString(User.USER_NAME) + "</a>";
+                        final String newUserLink1 = UserExt.getUserLink(newUser1);
                         desTemplate = desTemplate.replace("{user}", newUserLink1);
 
                         break;
@@ -519,8 +511,7 @@ public class PointtransferQueryService {
                             user9 = userRepository.get(toId);
                         }
 
-                        final String userLink = "<a href=\"/member/" + user9.optString(User.USER_NAME) + "\">"
-                                + user9.optString(User.USER_NAME) + "</a>";
+                        final String userLink = UserExt.getUserLink(user9);
                         desTemplate = desTemplate.replace("{user}", userLink);
 
                         break;
