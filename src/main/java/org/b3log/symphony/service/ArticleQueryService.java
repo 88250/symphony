@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.36.6, Apr 4, 2018
+ * @version 2.27.36.7, Apr 19, 2018
  * @since 0.2.0
  */
 @Service
@@ -1144,8 +1144,7 @@ public class ArticleQueryService {
 
                 if (!invited) {
                     String blockContent = langPropsService.get("articleDiscussionLabel");
-                    blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
-                            + "/member/" + authorName + "'>" + authorName + "</a>");
+                    blockContent = blockContent.replace("{user}", UserExt.getUserLink(authorName));
 
                     return blockContent;
                 }
@@ -2354,8 +2353,7 @@ public class ArticleQueryService {
 
                 if (!invited) {
                     String blockContent = langPropsService.get("articleDiscussionLabel");
-                    blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
-                            + "/member/" + authorName + "'>" + authorName + "</a>");
+                    blockContent = blockContent.replace("{user}", UserExt.getUserLink(authorName));
 
                     article.put(Article.ARTICLE_CONTENT, blockContent);
                     article.put(Common.DISCUSSION_VIEWABLE, false);

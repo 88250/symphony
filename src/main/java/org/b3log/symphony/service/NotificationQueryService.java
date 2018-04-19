@@ -582,8 +582,7 @@ public class NotificationQueryService {
                         final JSONObject user101 = userRepository.get(fromId101);
                         final int sum101 = transfer101.optInt(Pointtransfer.SUM);
 
-                        final String userLink101 = "<a href=\"/member/" + user101.optString(User.USER_NAME) + "\">"
-                                + user101.optString(User.USER_NAME) + "</a>";
+                        final String userLink101 = UserExt.getUserLink(user101);
                         desTemplate = desTemplate.replace("{user}", userLink101);
                         desTemplate = desTemplate.replace("{amount}", String.valueOf(sum101));
 
@@ -592,8 +591,7 @@ public class NotificationQueryService {
                         desTemplate = langPropsService.get("notificationInvitecodeUsedLabel");
 
                         final JSONObject invitedUser = userRepository.get(dataId);
-                        final String invitedUserLink = "<a href=\"/member/" + invitedUser.optString(User.USER_NAME) + "\">"
-                                + invitedUser.optString(User.USER_NAME) + "</a>";
+                        final String invitedUserLink = UserExt.getUserLink(invitedUser);
 
                         desTemplate = desTemplate.replace("{user}", invitedUserLink);
 
@@ -602,8 +600,7 @@ public class NotificationQueryService {
                         desTemplate = langPropsService.get("notificationInvitationLinkUsedLabel");
 
                         final JSONObject invitedUser18 = userRepository.get(dataId);
-                        final String invitedUserLink18 = "<a href=\"/member/" + invitedUser18.optString(User.USER_NAME) + "\">"
-                                + invitedUser18.optString(User.USER_NAME) + "</a>";
+                        final String invitedUserLink18 = UserExt.getUserLink(invitedUser18);
 
                         desTemplate = desTemplate.replace("{user}", invitedUserLink18);
 
@@ -1001,7 +998,7 @@ public class NotificationQueryService {
                         atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
                         atNotification.put(Common.THUMBNAIL_UPDATE_TIME, followerUser.optLong(UserExt.USER_UPDATE_TIME));
 
-                        final String userLink = "<a href=\"/member/" + followerUserName + "\">" + followerUserName + "</a> ";
+                        final String userLink = UserExt.getUserLink(followerUserName);
                         description = description.replace("{user}", userLink);
 
                         final String articleLink = " <a href=\"" + article.optString(Article.ARTICLE_PERMALINK) + "\">"
@@ -1073,7 +1070,7 @@ public class NotificationQueryService {
                             continue;
                         }
 
-                        final String userLinkVote = "<a href=\"/member/" + voterUserName + "\">" + voterUserName + "</a> ";
+                        final String userLinkVote = UserExt.getUserLink(voterUserName);
                         description = description.replace("{user}", userLinkVote);
 
                         final String articleLinkVote = " <a href=\"" + articleVote.optString(Article.ARTICLE_PERMALINK) + "\">"

@@ -20,7 +20,6 @@ package org.b3log.symphony.service;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -51,7 +50,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.10.1, Dec 8, 2017
+ * @version 2.11.10.2, Apr 19, 2018
  * @since 0.2.0
  */
 @Service
@@ -529,8 +528,7 @@ public class CommentQueryService {
                 if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
                         && Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
                     final String msgContent = langPropsService.get("articleDiscussionLabel").
-                            replace("{user}", "<a href='" + Latkes.getServePath()
-                                    + "/member/" + articleAuthorName + "'>" + articleAuthorName + "</a>");
+                            replace("{user}", UserExt.getUserLink(articleAuthorName));
 
                     if (null == viewer) {
                         comment.put(Comment.COMMENT_CONTENT, msgContent);
@@ -801,7 +799,7 @@ public class CommentQueryService {
 
     /**
      * Processes the specified comment content.
-     * <p>
+     *
      * <ul>
      * <li>Generates &#64;username home URL</li>
      * <li>Markdowns</li>
