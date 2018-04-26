@@ -49,7 +49,7 @@ import java.util.List;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.1, Apr 6, 2018
+ * @version 1.3.0.2, Apr 26, 2018
  * @since 1.4.0
  */
 @Named
@@ -217,7 +217,7 @@ public class ArticleCache {
         try {
             final Query query = new Query()
                     .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                    .setPageCount(1).setPageSize(36).setCurrentPageNum(1);
+                    .setPageCount(1).setPageSize(Symphonys.getInt("indexPerfectCnt")).setCurrentPageNum(1);
             query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
             query.addProjection(Keys.OBJECT_ID, String.class).
                     addProjection(Article.ARTICLE_STICK, Long.class).
