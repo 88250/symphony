@@ -62,7 +62,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.3.1.8, Dec 24, 2016
+ * @version 1.3.1.9, Apr 26, 2018
  * @since 1.3.0
  */
 @RequestProcessor
@@ -271,7 +271,7 @@ public class CityProcessor {
         }
 
         final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = Symphonys.getInt("cityUuserPageSize");
+        final int pageSize = Symphonys.getInt("cityUserPageSize");
         final int windowSize = Symphonys.getInt("cityUsersWindowSize");
 
         final JSONObject requestJSONObject = new JSONObject();
