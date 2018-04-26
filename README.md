@@ -272,7 +272,7 @@ Notice:
 * mail is sent using [SendCloud](http://sendcloud.sohu.com), you need to configure the `sendcloud.*` attribute in `symphony.properties`
 * user registration required to verify the mailbox, so you must first configure the SendCloud
 
-If you encounter problems, you can refer to this [post](https://hacpai.com/article/1468824093225).
+If you encounter problems, you can refer to this [post](https://hacpai.com/article/1486188905847).
 
 ## License
 
