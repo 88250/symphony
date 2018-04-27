@@ -310,6 +310,7 @@ Sym 的诞生离不开以下开源项目：
 * [米斯特安全团队](http://www.hi-ourlife.com)
 * [@gh0stkey](https://github.com/gh0stkey)
 * [@breezecoder](https://github.com/breezecoder)
+* [@SeagullGR](https://github.com/SeagullGR)
 
 等专业人士给予的大力帮助！
 
