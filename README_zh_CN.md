@@ -62,6 +62,7 @@ Sym 的诞生是有如下几点原因：
 ### 案例
 
 社区版：
+
 * [AIQ-机器学习](http://www.6aiq.com)
 * [宽客网](http://www.cnq.net)
 * [贵州IT](http://www.gzit.info)
