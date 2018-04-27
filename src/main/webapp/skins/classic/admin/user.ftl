@@ -191,18 +191,6 @@
                     <option value="1"<#if 1 == user.userUAStatus> selected</#if>>${privateLabel}</option>
                 </select>
 
-                <label>${userTimelineStatusLabel}</label>
-                <select id="userTimelineStatus" name="userTimelineStatus">
-                    <option value="0"<#if 0 == user.userTimelineStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userTimelineStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${userForgeLinkStatusLabel}</label>
-                <select id="userForgeLinkStatus" name="userForgeLinkStatus">
-                    <option value="0"<#if 0 == user.userForgeLinkStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userForgeLinkStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
                 <label>${joinBalanceRankLabel}</label>
                 <select id="userJoinPointRank" name="userJoinPointRank">
                     <option value="0"<#if 0 == user.userJoinPointRank> selected</#if>>${publicLabel}</option>
