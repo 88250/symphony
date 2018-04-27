@@ -67,7 +67,7 @@ Sym was born with the following reasons:
 ### Usecases
 
 Community edition:
-
+* [AIQ-机器学习](http://www.6aiq.com)
 * [宽客网](http://www.cnq.net)
 * [贵州IT](http://www.gzit.info)
 * [超级产品经理](https://imspm.com)
