@@ -1432,6 +1432,20 @@ var Util = {
           }
         },
         done: function (e, data) {
+          var filename = data.result.name;
+          if (data.result.code === 1) {
+            alert(data.result.msg)
+            if (obj.editor.replaceRange) {
+              var cursor = obj.editor.getCursor();
+              obj.editor.replaceRange('[' + filename + '](Error) \n\n',
+                CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+            } else {
+              obj.editor.$it.val(obj.editor.$it.val() + '![' + filename + '](Error) \n\n');
+              $('#' + obj.id + ' input').prop('disabled', false);
+            }
+            return
+          }
+
           var filePath = data.result.key;
           if (!filePath) {
             alert("Upload error");
@@ -1441,7 +1455,6 @@ var Util = {
 
           if (obj.editor.replaceRange) {
             var cursor = obj.editor.getCursor();
-            filename = data.result.name;
             if (isImg) {
               obj.editor.replaceRange('![' + filename + '](' + filePath + ') \n\n',
                 CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
