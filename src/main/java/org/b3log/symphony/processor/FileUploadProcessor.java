@@ -29,6 +29,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.MD5;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -44,7 +45,7 @@ import java.util.UUID;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.0.0.1, Apr 5, 2018
+ * @version 2.0.0.2, Apr 28, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -164,6 +165,22 @@ public class FileUploadProcessor {
                 }
             }
 
+            final String[] allowedSuffixArray = Symphonys.get("upload.suffix").split(",");
+            if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
+                final JSONObject data = new JSONObject();
+                data.put("code", 1);
+                data.put("msg", "Invalid suffix [" + suffix + "], please compress this file and try again");
+                data.put("key", Latkes.getServePath() + "/upload/" + fileName);
+                data.put("name", fileName);
+                resp.setContentType("application/json");
+                try (final PrintWriter writer = resp.getWriter()) {
+                    writer.append(data.toString());
+                    writer.flush();
+                }
+
+                return;
+            }
+
             final String name = StringUtils.substringBeforeLast(fileName, ".");
             final String processName = name.replaceAll("\\W", "");
             final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
@@ -175,11 +192,10 @@ public class FileUploadProcessor {
         }
 
         final JSONObject data = new JSONObject();
+        data.put("code", 0);
         data.put("key", Latkes.getServePath() + "/upload/" + fileName);
         data.put("name", fileName);
-
         resp.setContentType("application/json");
-
         try (final PrintWriter writer = resp.getWriter()) {
             writer.append(data.toString());
             writer.flush();
