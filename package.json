@@ -32,5 +32,8 @@
     "gulp-sass": "^4.0.1",
     "gulp-uglify": "^3.0.0",
     "marked": "^0.3.19"
+  },
+  "dependencies": {
+    "gulp-util": "^3.0.8"
   }
 }
