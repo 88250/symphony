@@ -29,7 +29,6 @@ import org.b3log.latke.urlfetch.HTTPResponse;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.util.Symphonys;
-import org.b3log.symphony.util.URLs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,7 +38,7 @@ import java.net.URL;
  * Turing query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Apr 27, 2016
+ * @version 1.0.0.2, May 1, 2018
  * @since 1.4.0
  */
 @Service
@@ -104,52 +103,72 @@ public class TuringQueryService {
         try {
             request.setURL(new URL(TURING_API));
 
-            final String body = "key=" + URLs.encode(TURING_KEY)
-                    + "&info=" + URLs.encode(msg)
-                    + "&userid=" + URLs.encode(userName);
-            request.setPayload(body.getBytes("UTF-8"));
+            final JSONObject reqData = new JSONObject();
+            reqData.put("reqType", 0);
+            final JSONObject perception = new JSONObject();
+            final JSONObject inputText = new JSONObject();
+            inputText.put("text", msg);
+            perception.put("inputText", inputText);
+            reqData.put("perception", perception);
+            final JSONObject userInfo = new JSONObject();
+            userInfo.put("apiKey", TURING_KEY);
+            userInfo.put("userId", userName);
+            userInfo.put("userIdName", userName);
+            reqData.put("userInfo", userInfo);
+
+            request.setPayload(reqData.toString().getBytes("UTF-8"));
 
             final HTTPResponse response = URL_FETCH_SVC.fetch(request);
             final JSONObject data = new JSONObject(new String(response.getContent(), "UTF-8"));
-            final int code = data.optInt("code");
-
+            final JSONObject intent = data.optJSONObject("intent");
+            final int code = intent.optInt("code");
+            final JSONArray results = data.optJSONArray("results");
             switch (code) {
-                case 40001:
-                case 40002:
-                case 40007:
-                    LOGGER.log(Level.ERROR, data.optString("text"));
+                case 5000:
+                case 6000:
+                case 4000:
+                case 4001:
+                case 4002:
+                case 4003:
+                case 4005:
+                case 4007:
+                case 4100:
+                case 4200:
+                case 4300:
+                case 4400:
+                case 4500:
+                case 4600:
+                case 4602:
+                case 7002:
+                case 8008:
+                    LOGGER.log(Level.ERROR, "Turing query failed with code [" + code + "]");
 
-                    return null;
-                case 40004:
                     return langPropsService.get("turingQuotaExceedLabel");
-                case 100000:
-                    return data.optString("text");
-                case 200000:
-                    return data.optString("text") + " " + data.optString("url");
-                case 302000:
-                    String ret302000 = data.optString("text") + " ";
-                    final JSONArray list302000 = data.optJSONArray("list");
-                    final StringBuilder builder302000 = new StringBuilder();
-                    for (int i = 0; i < list302000.length(); i++) {
-                        final JSONObject news = list302000.optJSONObject(i);
-                        builder302000.append(news.optString("article")).append(news.optString("detailurl"))
-                                .append("\n\n");
-                    }
+                case 10004:
+                case 10019:
+                case 10014:
+                case 10013:
+                case 10008:
+                case 10011:
+                    final StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < results.length(); i++) {
+                        final JSONObject result = results.optJSONObject(i);
+                        final String resultType = result.optString("resultType");
+                        String values = result.optJSONObject("values").optString(resultType);
+                        if (StringUtils.endsWithAny(values, new String[]{"jpg", "png", "gif"})) {
+                            values = "![](" + values + ")";
+                        }
 
-                    return ret302000 + " " + builder302000.toString();
-                case 308000:
-                    String ret308000 = data.optString("text") + " ";
-                    final JSONArray list308000 = data.optJSONArray("list");
-                    final StringBuilder builder308000 = new StringBuilder();
-                    for (int i = 0; i < list308000.length(); i++) {
-                        final JSONObject news = list308000.optJSONObject(i);
-                        builder308000.append(news.optString("name")).append(news.optString("detailurl"))
-                                .append("\n\n");
+                        builder.append(values).append("\n");
                     }
+                    String ret = builder.toString();
+                    ret = StringUtils.trim(ret);
 
-                    return ret308000 + " " + builder308000.toString();
+                    return ret;
                 default:
                     LOGGER.log(Level.WARN, "Turing Robot default return [" + data.toString(4) + "]");
+
+                    return langPropsService.get("turingQuotaExceedLabel");
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Chat with Turing Robot failed", e);
