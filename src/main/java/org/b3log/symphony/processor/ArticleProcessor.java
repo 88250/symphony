@@ -90,7 +90,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.0.4, Mar 31, 2018
+ * @version 1.27.1.0, May 1, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -453,7 +453,7 @@ public class ArticleProcessor {
      * @param dataModel the specified data model
      */
     private void fillDomainsWithTags(final Map<String, Object> dataModel) {
-        final List<JSONObject> domains = domainCache.getDomains(Integer.MAX_VALUE);
+        final List<JSONObject> domains = domainQueryService.getAllDomains();
         dataModel.put(Common.ADD_ARTICLE_DOMAINS, domains);
         for (final JSONObject domain : domains) {
             final List<JSONObject> tags = domainQueryService.getTags(domain.optString(Keys.OBJECT_ID));
