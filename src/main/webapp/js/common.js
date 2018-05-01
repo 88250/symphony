@@ -547,7 +547,7 @@ var Util = {
     if (hasCode) {
       return event.originalEvent.clipboardData.getData('text/plain');
     } else {
-      const div = document.createElement('div');
+      var div = document.createElement('div');
       div.innerHTML = text;
       text = div.innerText.replace(/\n{2,}/g, '\n\n').replace(/(^\s*)|(\s*)$/g, '');
       return text;
