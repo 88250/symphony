@@ -39,6 +39,7 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -46,7 +47,7 @@ import java.util.*;
  * Permission check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Dec 19, 2016
+ * @version 1.0.1.0, May 1, 2018
  * @since 1.8.0
  */
 @Named
@@ -101,7 +102,7 @@ public class PermissionCheck extends BeforeRequestProcessAdvice {
 
             final JSONObject exception = new JSONObject();
             exception.put(Keys.MSG, langPropsService.get("noPermissionLabel"));
-            exception.put(Keys.STATUS_CODE, false);
+            exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
 
             final String prefix = "permission.rule.url.";
             final String requestURI = request.getRequestURI();
