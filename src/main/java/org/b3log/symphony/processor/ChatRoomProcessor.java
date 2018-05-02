@@ -179,6 +179,8 @@ public class ChatRoomProcessor {
                     case Notification.DATA_TYPE_C_REPLY:
                         q = notification.optString(Comment.COMMENT_CONTENT);
                         break;
+                    default:
+                        LOGGER.warn("Unknown notificat data type [" + dataType + "] for XiaoV reply");
                 }
 
                 String xiaoVSaid;
@@ -192,6 +194,7 @@ public class ChatRoomProcessor {
                     comment.put(Comment.COMMENT_CONTENT, xiaoVSaid);
                     comment.put(Comment.COMMENT_AUTHOR_ID, xiaoVUserId);
                     comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
+                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, notification.optString(Comment.COMMENT_T_ID));
 
                     xiaoV.remove(UserExt.USER_T_POINT_CC);
                     xiaoV.remove(UserExt.USER_T_POINT_HEX);
