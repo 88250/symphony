@@ -802,22 +802,25 @@ public class NotificationQueryService {
                 final int articleType = article.optInt(Article.ARTICLE_TYPE);
                 final int articlePerfect = article.optInt(Article.ARTICLE_PERFECT);
 
-                final JSONObject commentedNotification = new JSONObject();
-                commentedNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
-                commentedNotification.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
-                commentedNotification.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
-                commentedNotification.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL,
+                final JSONObject replyNotification = new JSONObject();
+                replyNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
+                replyNotification.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
+                replyNotification.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
+                replyNotification.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL,
                         comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
-                commentedNotification.put(Common.THUMBNAIL_UPDATE_TIME, comment.optJSONObject(Comment.COMMENT_T_COMMENTER).
+                replyNotification.put(Common.THUMBNAIL_UPDATE_TIME, comment.optJSONObject(Comment.COMMENT_T_COMMENTER).
                         optLong(UserExt.USER_UPDATE_TIME));
-                commentedNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, Emotions.convert(articleTitle));
-                commentedNotification.put(Comment.COMMENT_T_ARTICLE_TYPE, articleType);
-                commentedNotification.put(Comment.COMMENT_SHARP_URL, comment.optString(Comment.COMMENT_SHARP_URL));
-                commentedNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
-                commentedNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
-                commentedNotification.put(Comment.COMMENT_T_ARTICLE_PERFECT, articlePerfect);
+                replyNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, Emotions.convert(articleTitle));
+                replyNotification.put(Comment.COMMENT_T_ARTICLE_TYPE, articleType);
+                replyNotification.put(Comment.COMMENT_SHARP_URL, comment.optString(Comment.COMMENT_SHARP_URL));
+                replyNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
+                replyNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
+                replyNotification.put(Comment.COMMENT_T_ARTICLE_PERFECT, articlePerfect);
+                replyNotification.put(Notification.NOTIFICATION_DATA_TYPE,  Notification.DATA_TYPE_C_REPLY);
+                final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                replyNotification.put(Article.ARTICLE_T_ID, articleId);
 
-                rslts.add(commentedNotification);
+                rslts.add(replyNotification);
             }
 
             return ret;
@@ -938,6 +941,7 @@ public class NotificationQueryService {
                             atNotification.put(Common.CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
                             atNotification.put(Notification.NOTIFICATION_T_AT_IN_ARTICLE, false);
                             atNotification.put(Article.ARTICLE_PERFECT, articlePerfect);
+                            atNotification.put(Article.ARTICLE_T_ID, comment.optString(Comment.COMMENT_ON_ARTICLE_ID));
 
                             rslts.add(atNotification);
                         } else { // The 'at' in article content
@@ -964,6 +968,7 @@ public class NotificationQueryService {
 
                             atNotification.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
                             atNotification.put(Article.ARTICLE_PERFECT, article.optInt(Article.ARTICLE_PERFECT));
+                            atNotification.put(Article.ARTICLE_T_ID, article.optString(Keys.OBJECT_ID));
 
                             rslts.add(atNotification);
                         }

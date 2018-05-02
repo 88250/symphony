@@ -45,10 +45,8 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +62,7 @@ import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.11, Apr 27, 2017
+ * @version 1.3.5.12, May 2, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -78,7 +76,7 @@ public class ChatRoomProcessor {
     /**
      * Chat messages.
      */
-    public static LinkedList<JSONObject> messages = new LinkedList<JSONObject>();
+    public static LinkedList<JSONObject> messages = new LinkedList<>();
 
     /**
      * Data model service.
@@ -143,15 +141,11 @@ public class ChatRoomProcessor {
     /**
      * XiaoV replies Stm.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws IOException      io exception
-     * @throws ServletException servlet exception
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/cron/xiaov", method = HTTPRequestMethod.GET)
-    public void xiaoVReply(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException, ServletException {
+    public void xiaoVReply(final HTTPRequestContext context, final HttpServletRequest request) {
         context.renderJSON();
 
         try {
@@ -161,42 +155,36 @@ public class ChatRoomProcessor {
             }
 
             final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
             final String xiaoVUserId = xiaoV.optString(Keys.OBJECT_ID);
-            final JSONObject result = notificationQueryService.getAtNotifications(
+            final JSONObject atResult = notificationQueryService.getAtNotifications(
                     avatarViewMode, xiaoVUserId, 1, 1); // Just get the latest one
-            final List<JSONObject> notifications = (List<JSONObject>) result.get(Keys.RESULTS);
-
+            final List<JSONObject> notifications = (List<JSONObject>) atResult.get(Keys.RESULTS);
+            final JSONObject replyResult = notificationQueryService.getReplyNotifications(
+                    avatarViewMode, xiaoVUserId, 1, 1); // Just get the latest one
+            notifications.addAll((List<JSONObject>) replyResult.get(Keys.RESULTS));
             for (final JSONObject notification : notifications) {
                 if (notification.optBoolean(Notification.NOTIFICATION_HAS_READ)) {
                     continue;
                 }
 
-                String xiaoVSaid = "";
-                final JSONObject comment = new JSONObject();
-                String articleId = StringUtils.substringBetween(notification.optString(Common.URL),
-                        "/article/", "#");
-                String q = "";
+                notificationMgmtService.makeRead(notification);
 
-                if (!StringUtils.isBlank(articleId)) {
-                    final String originalCmtId = StringUtils.substringAfter(notification.optString(Common.URL), "#");
-                    final JSONObject originalCmt = commentQueryService.getCommentById(avatarViewMode, originalCmtId);
-                    q = originalCmt.optString(Comment.COMMENT_CONTENT);
-                } else {
-                    articleId = StringUtils.substringAfter(notification.optString(Common.URL),
-                            "/article/");
-
-                    final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
-                    q = article.optString(Article.ARTICLE_CONTENT);
+                String articleId = notification.optString(Article.ARTICLE_T_ID);
+                String q = null;
+                final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
+                switch (dataType) {
+                    case Notification.DATA_TYPE_C_AT:
+                        q = notification.optString(Common.CONTENT);
+                        break;
+                    case Notification.DATA_TYPE_C_REPLY:
+                        q = notification.optString(Comment.COMMENT_CONTENT);
+                        break;
                 }
 
+                String xiaoVSaid;
+                final JSONObject comment = new JSONObject();
                 if (StringUtils.isNotBlank(q)) {
                     q = Jsoup.parse(q).text();
-
-                    if (!StringUtils.contains(q, "@" + TuringQueryService.ROBOT_NAME + " ")) {
-                        continue;
-                    }
-
                     q = StringUtils.replace(q, "@" + TuringQueryService.ROBOT_NAME + " ", "");
 
                     xiaoVSaid = turingQueryService.chat(articleId, q);
@@ -211,8 +199,6 @@ public class ChatRoomProcessor {
 
                     commentMgmtService.addComment(comment);
                 }
-
-                notificationMgmtService.makeRead(notification);
             }
 
             context.renderTrueResult();
