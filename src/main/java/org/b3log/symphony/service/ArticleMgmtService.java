@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.2, Mar 31, 2018
+ * @version 2.18.2.3, May 2, 2018
  * @since 0.2.0
  */
 @Service
@@ -519,7 +519,12 @@ public class ArticleMgmtService {
             author = userRepository.get(authorId);
 
             if (currentTimeMillis - author.optLong(Keys.OBJECT_ID) < Symphonys.getLong("newbieFirstArticle")) {
-                throw new ServiceException(langPropsService.get("newbieFirstArticleLabel"));
+                String tip = langPropsService.get("newbieFirstArticleLabel");
+                final long time = author.optLong(Keys.OBJECT_ID) + Symphonys.getLong("newbieFirstArticle");
+                final String timeStr = DateFormatUtils.format(time, "yyyy-MM-dd HH:mm:ss");
+                tip = tip.replace("${time}", timeStr);
+
+                throw new ServiceException(tip);
             }
 
             if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.getLong("minStepArticleTime")
