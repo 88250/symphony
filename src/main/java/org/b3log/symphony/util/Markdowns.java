@@ -69,7 +69,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.20.3, Apr 18, 2018
+ * @version 1.11.20.4, May 2, 2018
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -375,7 +375,7 @@ public final class Markdowns {
             doc.select("pre>code").addClass("hljs");
             doc.select("a").forEach(a -> {
                 String src = a.attr("href");
-                if (!StringUtils.startsWithIgnoreCase(src, Latkes.getServePath())) {
+                if (!StringUtils.startsWithAny(src, new String[]{Latkes.getServePath(), Symphonys.get("qiniu.domain")})) {
                     src = URLs.encode(src);
                     a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
                     a.attr("target", "_blank");
