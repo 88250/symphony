@@ -19,6 +19,7 @@ package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -57,7 +58,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.11, Apr 3, 2018
+ * @version 1.7.0.12, May 4, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -193,8 +194,13 @@ public class TagProcessor {
         final JSONObject user = userQueryService.getCurrentUser(request);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+
+            if (!UserExt.finshedGuide(user)) {
+                response.sendRedirect(Latkes.getServePath() + "/guide");
+
+                return;
+            }
         }
-        final int windowSize = Symphonys.getInt("tagArticlesWindowSize");
 
         final JSONObject tag = tagQueryService.getTagByURI(tagURI);
         if (null == tag) {
@@ -268,7 +274,7 @@ public class TagProcessor {
 
         final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_CNT);
         final int pageCount = (int) Math.ceil(tagRefCnt / (double) pageSize);
-
+        final int windowSize = Symphonys.getInt("tagArticlesWindowSize");
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
