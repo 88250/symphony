@@ -212,7 +212,7 @@ public class LoginProcessor {
     }
 
     /**
-     * Shows login page.
+     * Shows guide page.
      *
      * @param context  the specified context
      * @param request  the specified request
