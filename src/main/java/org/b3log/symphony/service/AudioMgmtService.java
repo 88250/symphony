@@ -62,7 +62,7 @@ public class AudioMgmtService {
     private static long BAIDU_ACCESS_TOKEN_TIME;
 
     private static void refreshBaiduAccessToken() {
-        if (null == BAIDU_API_KEY || null == BAIDU_SECRET_KEY) {
+        if (StringUtils.isBlank(BAIDU_API_KEY) || StringUtils.isBlank(BAIDU_SECRET_KEY)) {
             return;
         }
 
@@ -93,7 +93,7 @@ public class AudioMgmtService {
     }
 
     private static byte[] baiduTTS(final String text, final String uid) {
-        if (null == BAIDU_API_KEY || null == BAIDU_SECRET_KEY) {
+        if (StringUtils.isBlank(BAIDU_API_KEY) || StringUtils.isBlank(BAIDU_SECRET_KEY)) {
             return null;
         }
 
