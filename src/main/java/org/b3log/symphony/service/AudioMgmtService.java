@@ -45,7 +45,7 @@ import java.util.UUID;
  * Audio management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.2, May 5, 2018
+ * @version 1.0.2.3, May 6, 2018
  * @since 2.1.0
  */
 @Service
@@ -93,6 +93,10 @@ public class AudioMgmtService {
     }
 
     private static byte[] baiduTTS(final String text, final String uid) {
+        if (null == BAIDU_API_KEY || null == BAIDU_SECRET_KEY) {
+            return null;
+        }
+
         if (null == BAIDU_ACCESS_TOKEN) {
             refreshBaiduAccessToken();
         }
