@@ -20,6 +20,7 @@ package org.b3log.symphony.repository;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.cache.CommentCache;
@@ -31,7 +32,7 @@ import org.json.JSONObject;
  * Comment repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, May 8, 2017
+ * @version 1.1.1.0, May 7, 2018
  * @since 0.2.0
  */
 @Repository
@@ -93,20 +94,29 @@ public class CommentRepository extends AbstractRepository {
             return;
         }
 
-        final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
-        final JSONObject article = articleRepository.get(articleId);
-        article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) - 1);
-        // Just clear latest time and commenter name, do not get the real latest comment to update
-        article.put(Article.ARTICLE_LATEST_CMT_TIME, 0);
-        article.put(Article.ARTICLE_LATEST_CMTER_NAME, "");
-        articleRepository.update(articleId, article);
+        remove(comment.optString(Keys.OBJECT_ID));
 
         final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
         final JSONObject commenter = userRepository.get(commentAuthorId);
         commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) - 1);
         userRepository.update(commentAuthorId, commenter);
 
-        remove(comment.optString(Keys.OBJECT_ID));
+        final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+        final JSONObject article = articleRepository.get(articleId);
+        article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) - 1);
+        if (0 < article.optInt(Article.ARTICLE_COMMENT_CNT)) {
+            final Query latestCmtQuery = new Query().
+                    setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).
+                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(1);
+            final JSONObject latestCmt = get(latestCmtQuery).optJSONArray(Keys.RESULTS).optJSONObject(0);
+            article.put(Article.ARTICLE_LATEST_CMT_TIME, latestCmt.optLong(Keys.OBJECT_ID));
+            final JSONObject latestCmtAuthor = userRepository.get(latestCmt.optString(Comment.COMMENT_AUTHOR_ID));
+            article.put(Article.ARTICLE_LATEST_CMTER_NAME, latestCmtAuthor.optString(User.USER_NAME));
+        } else {
+            article.put(Article.ARTICLE_LATEST_CMT_TIME, 0);
+            article.put(Article.ARTICLE_LATEST_CMTER_NAME, "");
+        }
+        articleRepository.update(articleId, article);
 
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, commentId),
