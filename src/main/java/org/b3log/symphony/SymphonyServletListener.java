@@ -60,7 +60,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.10.7, May 3, 2018
+ * @version 3.19.10.8, May 13, 2018
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -197,23 +197,12 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
         BrowserType browserType = userAgent.getBrowser().getBrowserType();
 
-        if (StringUtils.containsIgnoreCase(userAgentStr, "mobile")
-                || StringUtils.containsIgnoreCase(userAgentStr, "MQQBrowser")
-                || StringUtils.containsIgnoreCase(userAgentStr, "iphone")
-                || StringUtils.containsIgnoreCase(userAgentStr, "MicroMessenger")
-                || StringUtils.containsIgnoreCase(userAgentStr, "CFNetwork")
-                || StringUtils.containsIgnoreCase(userAgentStr, "Android")) {
+        if (Strings.containsIgnoreCase(userAgentStr, new String[]{"Android", "MicroMessenger", "CFNetwork", "mobile", "MQQBrowser", "iphone"})) {
             browserType = BrowserType.MOBILE_BROWSER;
-        } else if (StringUtils.containsIgnoreCase(userAgentStr, "Iframely")
-                || StringUtils.containsIgnoreCase(userAgentStr, "Google")
-                || StringUtils.containsIgnoreCase(userAgentStr, "B3log")
-                || StringUtils.containsIgnoreCase(userAgentStr, "BUbiNG")
-                || StringUtils.containsIgnoreCase(userAgentStr, "ltx71")) {
+        } else if (Strings.containsIgnoreCase(userAgentStr, new String[]{"Iframely", "Google", "B3log", "BUbiNG", "ltx71", "BND"})) {
             browserType = BrowserType.ROBOT;
         } else if (BrowserType.UNKNOWN == browserType) {
-            if (!StringUtils.containsIgnoreCase(userAgentStr, "Java")
-                    && !StringUtils.containsIgnoreCase(userAgentStr, "MetaURI")
-                    && !StringUtils.containsIgnoreCase(userAgentStr, "Feed")) {
+            if (!Strings.containsIgnoreCase(userAgentStr, new String[]{"Java", "MetaURI", "Feed", "okhttp", ""})) {
                 LOGGER.log(Level.WARN, "Unknown client [UA=" + userAgentStr + ", remoteAddr="
                         + Requests.getRemoteAddr(httpServletRequest) + ", URI=" + httpServletRequest.getRequestURI() + "]");
             }
