@@ -751,7 +751,7 @@ public class ArticleMgmtService {
                         Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE,
                         Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition, articleId, System.currentTimeMillis());
 
-                if (rewardPoint > 0) { // Enabe reward
+                if (rewardPoint > 0) { // Enable reward
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD,
                             Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD, articleId, System.currentTimeMillis());
