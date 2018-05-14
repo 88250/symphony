@@ -564,7 +564,7 @@ final class MailSender implements java.io.Serializable {
 
         // 5、发送邮件
         ts.sendMessage(message, message.getAllRecipients());
-        LOGGER.debug(tos.toString());
+        LOGGER.debug(Arrays.toString(tos));
         LOGGER.debug(subject);
         LOGGER.debug(content);
         ts.close();
