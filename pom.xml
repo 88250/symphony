@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.87, May 3, 2018
+    Version: 2.16.6.88, May 14, 2018
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -154,7 +154,7 @@
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
-            <version>2.3.23</version>
+            <version>2.3.28</version>
         </dependency>
 
         <dependency>

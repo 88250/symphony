@@ -19,7 +19,7 @@ package org.b3log.symphony.util;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
-import org.b3log.latke.logging.Logger;
+import freemarker.template.Version;
 import org.b3log.latke.servlet.AbstractServletListener;
 
 import javax.servlet.ServletContext;
@@ -32,7 +32,7 @@ import java.util.TimeZone;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Sep 15, 2016
+ * @version 1.1.0.1, May 14, 2018
  * @since 1.3.0
  */
 public final class Skins {
@@ -46,9 +46,9 @@ public final class Skins {
     public static final Map<String, Configuration> TEMPLATE_HOLDER = new HashMap<>();
 
     /**
-     * Logger.
+     * Freemarker version.
      */
-    private static final Logger LOGGER = Logger.getLogger(Skins.class);
+    public static final Version FREEMARKER_VER = Configuration.VERSION_2_3_28;
 
     static {
         final ServletContext servletContext = AbstractServletListener.getServletContext();
@@ -57,7 +57,7 @@ public final class Skins {
         final String[] skinNames = skinsDir.list();
 
         for (final String skinName : skinNames) {
-            final Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
+            final Configuration cfg = new Configuration(FREEMARKER_VER);
             TEMPLATE_HOLDER.put(skinName, cfg);
 
             cfg.setDefaultEncoding("UTF-8");

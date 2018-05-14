@@ -114,7 +114,7 @@ public final class Mails {
     /**
      * Template configuration.
      */
-    private static final Configuration TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_23);
+    private static final Configuration TEMPLATE_CFG = new Configuration(Skins.FREEMARKER_VER);
 
     static {
         try {
