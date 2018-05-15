@@ -6,9 +6,6 @@
                 <svg class="icon-github"><use xlink:href="#github"></use></svg></a> &nbsp;
             <a href="http://weibo.com/u/2778228501" target="_blank" class="tooltipped tooltipped-n" aria-label="${followWeiboLabel}">
                 <svg class="icon-weibo"><use xlink:href="#weibo"></use></svg></a>   &nbsp;
-            <a target="_blank" class="tooltipped tooltipped-n" aria-label="${joinQQGroupLabel}"
-               href="//jq.qq.com/?_wv=1027&k=50iQX8Z">
-                <svg class="icon-qq"><use xlink:href="#qq"></use></svg></a> &nbsp;
             <a target="_blank" rel="noopener" class="tooltipped tooltipped-n" aria-label="${joinTelegramLabel}"
                href="https://t.me/b3log">
                 <svg class="icon-telegram"><use xlink:href="#icon-telegram"></use></svg></a>
