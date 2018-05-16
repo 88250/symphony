@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.87, May 3, 2018
+    Version: 2.16.6.88, May 14, 2018
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -38,6 +38,7 @@
         <es.version>2.3.1</es.version>
         <owasp.version>1.2.1</owasp.version>
         <snakeyaml.version>1.18</snakeyaml.version>
+        <freemarker.version>2.3.28</freemarker.version>
 
         <!-- Maven Plugin -->
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
@@ -154,7 +155,7 @@
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
-            <version>2.3.23</version>
+            <version>${freemarker.version}</version>
         </dependency>
 
         <dependency>

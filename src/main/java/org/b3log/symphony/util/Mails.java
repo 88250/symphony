@@ -114,7 +114,7 @@ public final class Mails {
     /**
      * Template configuration.
      */
-    private static final Configuration TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_23);
+    private static final Configuration TEMPLATE_CFG = new Configuration(Skins.FREEMARKER_VER);
 
     static {
         try {
@@ -564,7 +564,7 @@ final class MailSender implements java.io.Serializable {
 
         // 5、发送邮件
         ts.sendMessage(message, message.getAllRecipients());
-        LOGGER.debug(tos.toString());
+        LOGGER.debug(Arrays.toString(tos));
         LOGGER.debug(subject);
         LOGGER.debug(content);
         ts.close();
