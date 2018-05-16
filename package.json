@@ -26,9 +26,9 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",
-    "gulp-clean-css": "^3.9.3",
+    "gulp-clean-css": "^3.9.4",
     "gulp-concat": "^2.6.1",
-    "gulp-rename": "^1.2.2",
+    "gulp-rename": "^1.2.3",
     "gulp-sass": "^4.0.1",
     "gulp-uglify": "^3.0.0",
     "marked": "^0.3.19"
