@@ -104,9 +104,9 @@ public class FileUploadProcessor {
         String path = UPLOAD_DIR + key;
         path = URLDecoder.decode(path, "UTF-8");
 
-        if (!FileUtil.isExistingFile(new File(path))||
-            !FileUtil.isExistingFolder(new File(UPLOAD_DIR))||
-        	!new File(path).getCanonicalPath().startsWith(new File(UPLOAD_DIR).getCanonicalPath())) {
+        if (!FileUtil.isExistingFile(new File(path)) ||
+                !FileUtil.isExistingFolder(new File(UPLOAD_DIR)) ||
+                !new File(path).getCanonicalPath().startsWith(new File(UPLOAD_DIR).getCanonicalPath())) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
