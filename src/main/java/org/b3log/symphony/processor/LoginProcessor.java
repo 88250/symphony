@@ -71,7 +71,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.12.0, Apr 26, 2018
+ * @version 1.13.12.1, May 17, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -654,7 +654,7 @@ public class LoginProcessor {
             final String ip = Requests.getRemoteAddr(request);
             userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
 
-            if (!Strings.isEmptyOrNull(referral)) {
+            if (!Strings.isEmptyOrNull(referral) && !UserRegisterValidation.invalidUserName(referral)) {
                 final JSONObject referralUser = userQueryService.getUserByName(referral);
                 if (null != referralUser) {
                     final String referralId = referralUser.optString(Keys.OBJECT_ID);
