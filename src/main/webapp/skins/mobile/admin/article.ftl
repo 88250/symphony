@@ -108,7 +108,7 @@
                 <label for="articleBadCnt">${badCntLabel}</label>
                 <input type="text" id="articleBadCnt" name="articleBadCnt" value="${article.articleBadCnt}" />
                 
-                <label form="articleAnonymousView">${miscAllowAnonymousViewLabel}</label>
+                <label for="articleAnonymousView">${miscAllowAnonymousViewLabel}</label>
                 <select id="articleAnonymousView" name="articleAnonymousView">
                     <option value="0"<#if 0 == article.articleAnonymousView> selected</#if>>${useGlobalLabel}</option>
                     <option value="1"<#if 1 == article.articleAnonymousView> selected</#if>>${noLabel}</option>
