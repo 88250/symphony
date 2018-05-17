@@ -18,6 +18,7 @@
 package org.b3log.symphony.service;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -43,7 +44,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.5.16, Apr 18, 2018
+ * @version 1.13.6.0, May 17, 2018
  * @since 0.2.5
  */
 @Service
@@ -261,7 +262,7 @@ public class NotificationQueryService {
                         }
 
                         final String articleLink15 = "<a href=\""
-                                + article15.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + Latkes.getServePath() + article15.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article15.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink15);
 
@@ -488,7 +489,7 @@ public class NotificationQueryService {
                         desTemplate = desTemplate.replace("{user}", userLink12);
 
                         final String articleLink12 = "<a href=\""
-                                + article12.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + Latkes.getServePath() + article12.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article12.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink12);
 
@@ -511,7 +512,7 @@ public class NotificationQueryService {
                         desTemplate = desTemplate.replace("{user}", userLink7);
 
                         final String articleLink7 = "<a href=\""
-                                + article7.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + Latkes.getServePath() + article7.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article7.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink7);
 
@@ -569,7 +570,7 @@ public class NotificationQueryService {
                         desTemplate = desTemplate.replace("{user}", userLink8);
 
                         final String articleLink8 = "<a href=\""
-                                + article8.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + Latkes.getServePath() + article8.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article8.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink8);
 
@@ -616,7 +617,7 @@ public class NotificationQueryService {
                         }
 
                         final String articleLink22 = "<a href=\""
-                                + article22.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + Latkes.getServePath() + article22.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article22.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink22);
 
@@ -814,7 +815,7 @@ public class NotificationQueryService {
                 replyNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
                 replyNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                 replyNotification.put(Comment.COMMENT_T_ARTICLE_PERFECT, articlePerfect);
-                replyNotification.put(Notification.NOTIFICATION_DATA_TYPE,  Notification.DATA_TYPE_C_REPLY);
+                replyNotification.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_REPLY);
                 final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
                 replyNotification.put(Article.ARTICLE_T_ID, articleId);
                 replyNotification.put(Comment.COMMENT_T_ID, comment.optString(Keys.OBJECT_ID));
@@ -957,7 +958,7 @@ public class NotificationQueryService {
                             atNotification.put(Common.THUMBNAIL_UPDATE_TIME, articleAuthor.optLong(UserExt.USER_UPDATE_TIME));
                             atNotification.put(Article.ARTICLE_TITLE, Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                             atNotification.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
-                            atNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
+                            atNotification.put(Common.URL, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
                             atNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
                             atNotification.put(Notification.NOTIFICATION_T_AT_IN_ARTICLE, true);
 
@@ -1006,7 +1007,7 @@ public class NotificationQueryService {
                         final String userLink = UserExt.getUserLink(followerUserName);
                         description = description.replace("{user}", userLink);
 
-                        final String articleLink = " <a href=\"" + article.optString(Article.ARTICLE_PERMALINK) + "\">"
+                        final String articleLink = " <a href=\"" + Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Emotions.convert(article.optString(Article.ARTICLE_TITLE)) + "</a>";
                         description = description.replace("{article}", articleLink);
 
@@ -1078,7 +1079,7 @@ public class NotificationQueryService {
                         final String userLinkVote = UserExt.getUserLink(voterUserName);
                         description = description.replace("{user}", userLinkVote);
 
-                        final String articleLinkVote = " <a href=\"" + articleVote.optString(Article.ARTICLE_PERMALINK) + "\">"
+                        final String articleLinkVote = " <a href=\"" + Latkes.getServePath() + articleVote.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Emotions.convert(articleVote.optString(Article.ARTICLE_TITLE)) + "</a>";
                         description = description.replace("{article}", articleLinkVote);
 
@@ -1214,7 +1215,7 @@ public class NotificationQueryService {
                         followingNotification.put(Common.THUMBNAIL_UPDATE_TIME, articleAuthor.optLong(UserExt.USER_UPDATE_TIME));
                         followingNotification.put(Article.ARTICLE_TITLE, Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                         followingNotification.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
-                        followingNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
+                        followingNotification.put(Common.URL, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
                         followingNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
                         followingNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                         followingNotification.put(Notification.NOTIFICATION_T_IS_COMMENT, false);
@@ -1334,7 +1335,7 @@ public class NotificationQueryService {
                         avatarQueryService.getAvatarURLByUser(avatarViewMode, author, "48"));
                 broadcastNotification.put(Common.THUMBNAIL_UPDATE_TIME, author.optLong(UserExt.USER_UPDATE_TIME));
                 broadcastNotification.put(Article.ARTICLE_TITLE, Emotions.convert(articleTitle));
-                broadcastNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
+                broadcastNotification.put(Common.URL, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
                 broadcastNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
                 broadcastNotification.put(Notification.NOTIFICATION_HAS_READ,
                         notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
