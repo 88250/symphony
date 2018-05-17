@@ -13,7 +13,7 @@
         <div class="fn-flex-1 has-view">
             <h2>
                 <@icon notification.articlePerfect notification.articleType></@icon>
-                <a rel="bookmark" href="${servePath}${notification.url}"> ${notification.articleTitle}</a>
+                <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
             </h2>
             <div class="ft-fade ft-smaller">
                 <#list notification.articleTagObjs as articleTag>
@@ -25,7 +25,7 @@
         </div>
         <#if notification.articleCommentCount != 0>
         <div class="cmts tooltipped tooltipped-w" aria-label="${cmtLabel}${quantityLabel}">
-            <a class="count ft-gray" href="${servePath}${notification.url}">${notification.articleCommentCount}</a>
+            <a class="count ft-gray" href="${notification.url}">${notification.articleCommentCount}</a>
         </div>
         </#if>
     </li>
