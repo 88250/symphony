@@ -33,7 +33,7 @@ import java.net.URL;
  * Geography utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.1, Apr 11, 2016
+ * @version 1.2.2.2, May 19, 2018
  * @since 1.3.0
  */
 public final class Geos {
@@ -57,26 +57,18 @@ public final class Geos {
      */
     public static JSONObject getAddress(final String ip) {
         final String ak = Symphonys.get("baidu.lbs.ak");
-
         if (StringUtils.isBlank(ak) || !Networks.isIPv4(ip)) {
             return null;
         }
 
         HttpURLConnection conn = null;
-
         try {
-            final URL url = new URL("http://api.map.baidu.com/location/ip?ip=" + ip
-                    + "&ak=" + ak);
-
+            final URL url = new URL("http://api.map.baidu.com/location/ip?ip=" + ip + "&ak=" + ak);
             conn = (HttpURLConnection) url.openConnection();
-
             conn.setConnectTimeout(1000);
             conn.setReadTimeout(1000);
-
-            final BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            String line = null;
-
+            final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            String line;
             final StringBuilder sb = new StringBuilder();
             while (null != (line = bufferedReader.readLine())) {
                 sb.append(line);
@@ -89,7 +81,7 @@ public final class Geos {
 
             final String content = data.optString("address");
             final String country = content.split("\\|")[0];
-            if (!"CN".equals(country) && !"HK".equals(country)) {
+            if (!"CN".equals(country) && !"HK".equals(country) && !"TW".equals(country)) {
                 LOGGER.log(Level.WARN, "Found other country via Baidu [" + country + ", " + ip + "]");
 
                 return null;
@@ -97,7 +89,6 @@ public final class Geos {
 
             final String province = content.split("\\|")[1];
             String city = content.split("\\|")[2];
-
             if ("None".equals(province) || "None".equals(city)) {
                 return getAddressSina(ip); // Try it via Sina API
             }
@@ -142,19 +133,13 @@ public final class Geos {
      */
     private static JSONObject getAddressSina(final String ip) {
         HttpURLConnection conn = null;
-
         try {
             final URL url = new URL("http://int.dpool.sina.com.cn/iplookup/iplookup.php?ip=" + ip + "&format=json");
-
             conn = (HttpURLConnection) url.openConnection();
-
             conn.setConnectTimeout(1000);
             conn.setReadTimeout(1000);
-
-            final BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            String line = null;
-
+            final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            String line;
             final StringBuilder sb = new StringBuilder();
             while (null != (line = bufferedReader.readLine())) {
                 sb.append(line);
