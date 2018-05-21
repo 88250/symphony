@@ -43,8 +43,6 @@ import org.b3log.symphony.processor.advice.validate.CommentUpdateValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -280,7 +278,7 @@ public class CommentProcessor {
 
             String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
             final String ip = Requests.getRemoteAddr(request);
-            String ua = request.getHeader(Common.USER_AGENT);
+            final String ua = Headers.getHeader(request, Common.USER_AGENT);
 
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             comment.put(Comment.COMMENT_IP, "");
@@ -289,7 +287,6 @@ public class CommentProcessor {
             }
             comment.put(Comment.COMMENT_UA, "");
             if (StringUtils.isNotBlank(ua)) {
-                ua = Jsoup.clean(ua, Whitelist.none());
                 comment.put(Comment.COMMENT_UA, ua);
             }
 
@@ -424,7 +421,7 @@ public class CommentProcessor {
         final String commentOriginalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
         final int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         final String ip = Requests.getRemoteAddr(request);
-        String ua = request.getHeader(Common.USER_AGENT);
+        final String ua = Headers.getHeader(request, Common.USER_AGENT);
 
         final boolean isAnonymous = requestJSONObject.optBoolean(Comment.COMMENT_ANONYMOUS, false);
 
@@ -438,7 +435,6 @@ public class CommentProcessor {
         }
         comment.put(Comment.COMMENT_UA, "");
         if (StringUtils.isNotBlank(ua)) {
-            ua = Jsoup.clean(ua, Whitelist.none());
             comment.put(Comment.COMMENT_UA, ua);
         }
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, commentOriginalCommentId);
