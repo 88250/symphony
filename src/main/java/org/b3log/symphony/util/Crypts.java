@@ -17,12 +17,14 @@
  */
 package org.b3log.symphony.util;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
+import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
@@ -31,7 +33,7 @@ import java.security.SecureRandom;
  * Cryptology utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 17, 2016
+ * @version 1.0.0.3, May 21, 2018
  * @since 1.0.0
  */
 public final class Crypts {
@@ -42,10 +44,29 @@ public final class Crypts {
     private static final Logger LOGGER = Logger.getLogger(Crypts.class);
 
     /**
+     * Signs the specified source string using the specified secret.
+     *
+     * @param source the specified source string
+     * @param secret the specified secret
+     * @return signed string
+     */
+    public static String signHmacSHA1(final String source, final String secret) {
+        try {
+            final Mac mac = Mac.getInstance("HmacSHA1");
+            mac.init(new SecretKeySpec(secret.getBytes("UTF-8"), "HmacSHA1"));
+            final byte[] signData = mac.doFinal(source.getBytes("UTF-8"));
+
+            return new String(Base64.encodeBase64(signData), "UTF-8");
+        } catch (final Exception e) {
+            throw new RuntimeException("HMAC-SHA1 sign failed", e);
+        }
+    }
+
+    /**
      * Encrypts by AES.
      *
      * @param content the specified content to encrypt
-     * @param key the specified key
+     * @param key     the specified key
      * @return encrypted content
      * @see #decryptByAES(java.lang.String, java.lang.String)
      */
@@ -75,7 +96,7 @@ public final class Crypts {
      * Decrypts by AES.
      *
      * @param content the specified content to decrypt
-     * @param key the specified key
+     * @param key     the specified key
      * @return original content
      * @see #encryptByAES(java.lang.String, java.lang.String)
      */

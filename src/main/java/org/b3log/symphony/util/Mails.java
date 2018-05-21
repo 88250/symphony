@@ -368,7 +368,7 @@ public final class Mails {
             stringToSign.append("&");
             stringToSign.append(Mails.percentEncode(canonicalizedQueryString.toString().substring(1)));
 
-            map.put("Signature", HmacSHA1.signString(stringToSign.toString(), accessSecret + "&"));
+            map.put("Signature", Crypts.signHmacSHA1(stringToSign.toString(), accessSecret + "&"));
         } catch (UnsupportedEncodingException exp) {
             throw new RuntimeException("UTF-8 encoding is not supported.");
         }
