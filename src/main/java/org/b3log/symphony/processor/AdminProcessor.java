@@ -877,7 +877,7 @@ public class AdminProcessor {
             return;
         }
 
-        if (optionQueryService.existReservedWord(word)) {
+        if (optionQueryService.isReservedWord(word)) {
             response.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
 
             return;
