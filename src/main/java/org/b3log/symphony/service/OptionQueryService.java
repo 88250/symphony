@@ -199,7 +199,7 @@ public class OptionQueryService {
      * @param word the specified word
      * @return {@code true} if it is a reserved word, returns {@code false} otherwise
      */
-    public boolean existReservedWord(final String word) {
+    public boolean isReservedWord(final String word) {
         final Query query = new Query().
                 setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(Option.OPTION_VALUE, FilterOperator.EQUAL, word),
