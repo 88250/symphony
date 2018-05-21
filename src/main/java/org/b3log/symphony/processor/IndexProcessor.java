@@ -123,7 +123,7 @@ public class IndexProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"/watch/bm"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/watch/bm", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showWatchBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
