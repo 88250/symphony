@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.37.8.28, Apr 6, 2018",
+  "version": "4.38.0.0, May 28, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -8,6 +8,51 @@
   ],
   "since": "0.2.0",
   "repositories": [
+    {
+      "name": "breezemoon",
+      "description": "清风明月表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "breezemoonContent",
+          "type": "String",
+          "length": 102400,
+          "description": "清风明月正文"
+        },
+        {
+          "name": "breezemoonAuthorId",
+          "type": "String",
+          "length": 19,
+          "description": "作者 id"
+        },
+        {
+          "name": "breezemoonCreated",
+          "type": "long",
+          "description": "创建时间"
+        },
+        {
+          "name": "breezemoonUpdated",
+          "type": "long",
+          "description": "更新时间"
+        },
+        {
+          "name": "breezemoonUA",
+          "type": "String",
+          "length": "255",
+          "description": "User-Agent"
+        },
+        {
+          "name": "breezemoonStatus",
+          "type": "int",
+          "description": "0：正常，1：封禁"
+        }
+      ]
+    },
     {
       "name": "user_book_article",
       "description": "用户 - 书籍 - 帖子关联表",

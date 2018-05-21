@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.service;
 
+import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -79,11 +80,11 @@ public class BreezemoonMgmtService {
      */
     @Transactional
     public void addBreezemoon(final JSONObject requestJSONObject) throws ServiceException {
-        final JSONObject bm = new JSONObject();
         final String content = requestJSONObject.optString(Breezemoon.BREEZEMOON_CONTENT);
         if (optionQueryService.containReservedWord(content)) {
             throw new ServiceException(langPropsService.get("contentContainReservedWordLabel"));
         }
+        final JSONObject bm = new JSONObject();
         bm.put(Breezemoon.BREEZEMOON_CONTENT, content);
         bm.put(Breezemoon.BREEZEMOON_AUTHOR_ID, requestJSONObject.optString(Breezemoon.BREEZEMOON_AUTHOR_ID));
         bm.put(Breezemoon.BREEZEMOON_UA, requestJSONObject.optString(Breezemoon.BREEZEMOON_UA));
@@ -94,7 +95,70 @@ public class BreezemoonMgmtService {
         try {
             breezemoonRepository.add(bm);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Adds a bm failed", e);
+            LOGGER.log(Level.ERROR, "Adds a breezemoon failed", e);
+
+            throw new ServiceException(langPropsService.get("systemErrLabel"));
+        }
+    }
+
+    /**
+     * Updates a breezemoon with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "oId": "",
+     *                          "breezemoonContent": "",
+     *                          "breezemoonAuthorId": "",
+     *                          "breezemoonUA": ""
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void updateBreezemoon(final JSONObject requestJSONObject) throws ServiceException {
+        final String content = requestJSONObject.optString(Breezemoon.BREEZEMOON_CONTENT);
+        if (optionQueryService.containReservedWord(content)) {
+            throw new ServiceException(langPropsService.get("contentContainReservedWordLabel"));
+        }
+
+        final String id = requestJSONObject.optString(Keys.OBJECT_ID);
+        JSONObject old;
+        try {
+            old = breezemoonRepository.get(id);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets a breezemoon [id=" + id + "] failed", e);
+
+            throw new ServiceException(langPropsService.get("systemErrLabel"));
+        }
+
+        if (null == old) {
+            throw new ServiceException(langPropsService.get("queryFailedLabel"));
+        }
+
+        old.put(Breezemoon.BREEZEMOON_CONTENT, content);
+        old.put(Breezemoon.BREEZEMOON_AUTHOR_ID, requestJSONObject.optString(Breezemoon.BREEZEMOON_AUTHOR_ID));
+        old.put(Breezemoon.BREEZEMOON_UA, requestJSONObject.optString(Breezemoon.BREEZEMOON_UA));
+        final long now = System.currentTimeMillis();
+        old.put(Breezemoon.BREEZEMOON_UPDATED, now);
+
+        try {
+            breezemoonRepository.update(id, old);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Updates a breezemoon failed", e);
+
+            throw new ServiceException(langPropsService.get("systemErrLabel"));
+        }
+    }
+
+    /**
+     * Removes a breezemoon with the specified id.
+     *
+     * @param id the specified id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void removeBreezemoon(final String id) throws ServiceException {
+        try {
+            breezemoonRepository.remove(id);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Removes a breezemoon [id=" + id + "] failed", e);
 
             throw new ServiceException(langPropsService.get("systemErrLabel"));
         }

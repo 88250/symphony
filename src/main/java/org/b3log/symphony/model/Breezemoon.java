@@ -18,7 +18,7 @@
 package org.b3log.symphony.model;
 
 /**
- * This class defines all breeze moon model relevant keys.
+ * This class defines all breeze moon model relevant keys. https://github.com/b3log/symphony/issues/507
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, May 21, 2018
@@ -60,4 +60,21 @@ public final class Breezemoon {
      * Key of breezemoon UA.
      */
     public static final String BREEZEMOON_UA = "breezemoonUA";
+
+    /**
+     * Key of breezemoon status.
+     */
+    public static final String BREEZEMOON_STATUS = "breezemoonStatus";
+
+    // Status constants
+    /**
+     * Breezemoon status - valid.
+     */
+    public static final int BREEZEMOON_STATUS_C_VALID = 0;
+
+    /**
+     * Breezemoon status - invalid.
+     */
+    public static final int BREEZEMOON_STATUS_C_INVALID = 1;
 }
+
