@@ -7,7 +7,7 @@
 <@head title="${breezemoonLabel} - ${symphonyLabel}">
     <meta name="description" content="只与清风、明月为伴。清凉的风，明朗的月。"/>
 </@head>
-    <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
+    <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}"/>
 </head>
 <body>
 <#include "header.ftl">
@@ -18,14 +18,84 @@
             <div class="module">
                 <div class="module-header fn-clear">
                     <span class="fn-right ft-fade">
-                        <a pjax-title="${followingTagsLabel} - ${symphonyLabel}" class="<#if "" == current>ft-gray</#if>" href="${servePath}/watch">${followingTagsLabel}</a>
+                        <a pjax-title="${followingTagsLabel} - ${symphonyLabel}"
+                           class="<#if "" == current>ft-gray</#if>" href="${servePath}/watch">${followingTagsLabel}</a>
                         /
-                        <a pjax-title="${followingUsersLabel} - ${symphonyLabel}"  class="<#if "/users" == current>ft-gray</#if>" href="${servePath}/watch/users">${followingUsersLabel}</a>
+                        <a pjax-title="${followingUsersLabel} - ${symphonyLabel}"
+                           class="<#if "/users" == current>ft-gray</#if>"
+                           href="${servePath}/watch/users">${followingUsersLabel}</a>
                         /
-                        <a pjax-title="${followingUsersLabel} - ${symphonyLabel}"  class="<#if "/bm" == current>ft-gray</#if>" href="${servePath}/watch/bm">${followingUsersLabel}</a>
+                        <a pjax-title="${followingUsersLabel} - ${symphonyLabel}"
+                           class="<#if "/bm" == current>ft-gray</#if>"
+                           href="${servePath}/watch/bm">${breezemoonLabel}</a>
                     </span>
                 </div>
-            <@list listData=watchingArticles/>
+                <br>
+                <div class="form">
+                    <input id="breezemoonInput" type="text">
+                    <button onclick="Breezemoon.add()" id="breezemoonBtn" class="absolute">${breezemoonLabel}</button>
+                </div>
+                <br>
+                <div class="list">
+                    <ul id="breezemoonList">
+                        <li class="fn-flex" id="id">
+                            <a class="tooltipped tooltipped-n avatar"
+                               style="background-image:url('https://img.hacpai.com/avatar/1353745196544_1501644090048.png')"
+                               rel="nofollow" href="http://localhost:8080/member/Vanessa" aria-label="Vanessa">
+                            </a>
+                            <div class="fn-flex-1">
+                                <div class="ft-fade">
+                                    <a href="">Vanessa</a>
+                                    •
+                                    <span class="ft-smaller">
+                                        1分钟钱
+                                    </span>
+                                    <span class="ft-smaller"
+                                          data-ua="Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Mobile Safari/537.36">via Android</span>
+
+                                    <div class="fn-right">
+                                        <span class="tooltipped tooltipped-n ft-red rm" aria-label="${removeLabel}">
+                                            <svg><use xlink:href="#remove"></use></svg>
+                                        </span>
+                                        &nbsp;&nbsp;
+                                        <span class="tooltipped tooltipped-n ft-a-title edit" aria-label="${editLabel}">
+                                            <svg><use xlink:href="#edit"></use></svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="content-reset">af</div>
+                            </div>
+                        </li>
+                        <li class="fn-flex" id="id">
+                            <a class="tooltipped tooltipped-n avatar"
+                               style="background-image:url('https://img.hacpai.com/avatar/1353745196544_1501644090048.png')"
+                               rel="nofollow" href="http://localhost:8080/member/Vanessa" aria-label="Vanessa">
+                            </a>
+                            <div class="fn-flex-1">
+                                <div class="ft-fade">
+                                    <a href="">Vanessa</a>
+                                    •
+                                    <span class="ft-smaller">
+                                        1分钟钱
+                                    </span>
+                                    <span class="ft-smaller"
+                                          data-ua="Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Mobile Safari/537.36">via Android</span>
+
+                                    <div class="fn-right">
+                                        <span class="tooltipped tooltipped-n ft-red rm" aria-label="${removeLabel}">
+                                            <svg><use xlink:href="#remove"></use></svg>
+                                        </span>
+                                        &nbsp;&nbsp;
+                                        <span class="tooltipped tooltipped-n ft-a-title edit" aria-label="${editLabel}">
+                                            <svg><use xlink:href="#edit"></use></svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="content-reset">af</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div><#if pjax><!---- pjax {#watch-pjax-container} end ----></#if>
         </div>
         <div class="side">
@@ -35,6 +105,7 @@
 </div>
 <#include "common/domains.ftl">
 <#include "footer.ftl">
+<script src="${staticServePath}/js/breezemoon${miniPostfix}.js?${staticResourceVersion}"></script>
 <@listScript/>
 <script>
     $.pjax({
@@ -44,20 +115,20 @@
         cache: false,
         storage: true,
         titleSuffix: '',
-        filter: function(href){
-            return 0 > href.indexOf('${servePath}/watch');
+        filter: function (href) {
+            return 0 > href.indexOf('${servePath}/watch')
         },
         callback: function () {
-            Util.lazyLoadCSSImage();
-        }
-    });
-    NProgress.configure({ showSpinner: false });
-    $('#watch-pjax-container').bind('pjax.start', function(){
-        NProgress.start();
-    });
-    $('#watch-pjax-container').bind('pjax.end', function(){
-        NProgress.done();
-    });
+            Util.lazyLoadCSSImage()
+        },
+    })
+    NProgress.configure({showSpinner: false})
+    $('#watch-pjax-container').bind('pjax.start', function () {
+        NProgress.start()
+    })
+    $('#watch-pjax-container').bind('pjax.end', function () {
+        NProgress.done()
+    })
 </script>
 </body>
 </html>

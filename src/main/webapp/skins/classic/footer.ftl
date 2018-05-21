@@ -40,6 +40,9 @@
 <script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     var Label = {
+        breezemoonLabel: '${breezemoonLabel}',
+        confirmRemoveLabel: "${confirmRemoveLabel}",
+        reloginLabel: "${reloginLabel}",
         invalidPasswordLabel: "${invalidPasswordLabel}",
         loginNameErrorLabel: "${loginNameErrorLabel}",
         followLabel: "${followLabel}",
