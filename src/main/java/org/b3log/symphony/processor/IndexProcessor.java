@@ -63,7 +63,7 @@ import java.util.*;
  * <ul>
  * <li>Shows index (/), GET</li>
  * <li>Shows recent articles (/recent), GET</li>
- * <li>Shows watch articles (/watch), GET</li>
+ * <li>Shows watch relevant pages (/watch/*), GET</li>
  * <li>Shows hot articles (/hot), GET</li>
  * <li>Shows perfect articles (/perfect), GET</li>
  * <li>Shows about (/about), GET</li>
@@ -74,7 +74,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.13.0.0, Apr 13, 2018
+ * @version 1.14.0.0, May 21, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -116,7 +116,56 @@ public class IndexProcessor {
     private LangPropsService langPropsService;
 
     /**
-     * Shows watch articles.
+     * Shows breezemoon page.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = {"/watch/bm"}, method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showWatchBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("breezemoon.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final JSONObject user = Sessions.currentUser(request);
+        if (null != user) {
+            pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+
+            if (!UserExt.finshedGuide(user)) {
+                response.sendRedirect(Latkes.getServePath() + "/guide");
+
+                return;
+            }
+        }
+
+        dataModel.put(Common.WATCHING_BREEZEMOONS, Collections.emptyList());
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillRandomArticles(dataModel);
+        dataModelService.fillSideHotArticles(dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
+
+        dataModel.put(Common.SELECTED, Common.WATCH);
+        dataModel.put(Common.CURRENT, StringUtils.substringAfter(request.getRequestURI(), "/watch"));
+    }
+
+    /**
+     * Shows watch articles or users.
      *
      * @param context  the specified context
      * @param request  the specified request

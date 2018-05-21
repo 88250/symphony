@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.67.0.0, Apr 13, 2018
+ * @version 1.68.0.0, May 21, 2018
  * @since 0.2.0
  */
 public final class Common {
@@ -485,6 +485,11 @@ public final class Common {
      * Key of watching articles.
      */
     public static final String WATCHING_ARTICLES = "watchingArticles";
+
+    /**
+     * Key of watching breezemoons.
+     */
+    public static final String WATCHING_BREEZEMOONS = "watchingBreezemoons";
 
     /**
      * Key of hot articles.
