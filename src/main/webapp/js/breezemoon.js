@@ -64,7 +64,7 @@ var Breezemoon = {
         breezemoonContent: $('#breezemoonInput').val(),
       }),
       success: function (result) {
-        if (result.sc) {
+        if (result.sc === 0) {
           window.location.reload()
         } else {
           alert(result.msg)
