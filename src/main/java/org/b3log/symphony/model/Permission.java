@@ -26,7 +26,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.1.1, May 8, 2017
+ * @version 1.11.0.0, May 22, 2018
  * @since 1.8.0
  */
 public final class Permission {
@@ -92,6 +92,11 @@ public final class Permission {
      * Id - common - add comment.
      */
     public static final String PERMISSION_ID_C_COMMON_ADD_COMMENT = "commonAddComment";
+
+    /**
+     * Id - common - add breezemoon.
+     */
+    public static final String PERMISSION_ID_C_COMMON_ADD_BREEZEMOON = "commonAddBreezemoon";
 
     /**
      * Id - common add comment anonymous.

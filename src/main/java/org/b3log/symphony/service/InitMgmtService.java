@@ -28,15 +28,16 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
-import org.b3log.symphony.util.Languages;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Initialization management service.
@@ -75,6 +76,7 @@ public class InitMgmtService {
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_UPDATE_ARTICLE);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_REMOVE_ARTICLE);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
+        DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_ADD_BREEZEMOON);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_UPDATE_COMMENT);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_REMOVE_COMMENT);
         DEFAULT_PERMISSIONS.add(Permission.PERMISSION_ID_C_COMMON_THANK_ARTICLE);
@@ -359,6 +361,8 @@ public class InitMgmtService {
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_REMOVE_ARTICLE);
             permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_ADD_BREEZEMOON);
             permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMON_ADD_COMMENT_ANONYMOUS);
             permissionRepository.add(permission);
