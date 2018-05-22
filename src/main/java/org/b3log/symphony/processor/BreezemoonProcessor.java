@@ -54,7 +54,7 @@ import java.util.Map;
  * Breezemoon processor. https://github.com/b3log/symphony/issues/507
  *
  * <ul>
- * <li>Shows watch breezemoons (/watch/bm), GET</li>
+ * <li>Shows watch breezemoons (/watch/breezemoons), GET</li>
  * <li>Adds a breezemoon (/bm), POST</li>
  * <li>Updates a breezemoon (/bm/{id}), PUT</li>
  * <li>Removes a breezemoon (/bm/{id}), DELETE</li>
@@ -94,7 +94,7 @@ public class BreezemoonProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/watch/bm", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/watch/breezemoons", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showWatchBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -123,11 +123,11 @@ public class BreezemoonProcessor {
                 return;
             }
 
-            bms = breezemoonQueryService.getFollowingUserBreezemoons(avatarViewMode, user.optString(Keys.OBJECT_ID), pageNum);
+            bms = breezemoonQueryService.getFollowingUserBreezemoons(avatarViewMode, user.optString(Keys.OBJECT_ID), pageNum, pageSize);
         }
 
         if (null == bms || bms.isEmpty()) {
-            final JSONObject result = breezemoonQueryService.getBreezemoons(avatarViewMode, "", pageNum);
+            final JSONObject result = breezemoonQueryService.getBreezemoons(avatarViewMode, "", pageNum, pageSize);
             bms = (List<JSONObject>) result.opt(Breezemoon.BREEZEMOONS);
         }
 

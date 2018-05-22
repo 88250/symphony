@@ -72,18 +72,18 @@ public class BreezemoonQueryService {
      * @param avatarViewMode the specified avatar view mode
      * @param userId         the specified user id
      * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
      * @return following tag articles, returns an empty list if not found
      * @throws ServiceException service exception
      */
     public List<JSONObject> getFollowingUserBreezemoons(final int avatarViewMode, final String userId,
-                                                        final int currentPageNum) throws ServiceException {
+                                                        final int currentPageNum, final int pageSize) throws ServiceException {
         final List<JSONObject> users = (List<JSONObject>) followQueryService.getFollowingUsers(
                 avatarViewMode, userId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
         if (users.isEmpty()) {
             return Collections.emptyList();
         }
 
-        final int pageSize = 50;
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageSize(pageSize).setCurrentPageNum(currentPageNum);
         final List<String> followingUserIds = new ArrayList<>();
@@ -121,6 +121,7 @@ public class BreezemoonQueryService {
      * @param avatarViewMode the specified avatar view mode
      * @param authorId       the specified user id, empty "" for all users
      * @param page           the specified current page number
+     * @param pageSize the specified page size
      * @return for example,      <pre>
      * {
      *     "pagination": {
@@ -136,9 +137,8 @@ public class BreezemoonQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getBreezemoons(final int avatarViewMode, final String authorId, final int page) throws ServiceException {
+    public JSONObject getBreezemoons(final int avatarViewMode, final String authorId, final int page, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
-        final int pageSize = 50;
         final int windowSize = 10;
         CompositeFilter filter;
         final Filter statusFilter = new PropertyFilter(Breezemoon.BREEZEMOON_STATUS, FilterOperator.EQUAL, Breezemoon.BREEZEMOON_STATUS_C_VALID);
