@@ -222,12 +222,12 @@ public class UserProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeBreezemoons(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                 final String userName) throws Exception {
+                                    final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/comments.ftl");
+        renderer.setTemplateName("/home/breezemoons.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
@@ -261,17 +261,13 @@ public class UserProcessor {
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
-        final List<JSONObject> userComments = commentQueryService.getUserComments(avatarViewMode,
-                user.optString(Keys.OBJECT_ID), Comment.COMMENT_ANONYMOUS_C_PUBLIC, pageNum, pageSize, currentUser);
-        dataModel.put(Common.USER_HOME_COMMENTS, userComments);
+        final JSONObject result = breezemoonQueryService.getFollowingUserBreezemoons(avatarViewMode, followingId, pageNum, pageSize);
+        final List<JSONObject> bms = (List<JSONObject>) result.opt(Keys.RESULTS);
+        dataModel.put(Common.USER_HOME_BREEZEMOONS, bms);
 
-        int recordCount = 0;
-        int pageCount = 0;
-        if (!userComments.isEmpty()) {
-            final JSONObject first = userComments.get(0);
-            pageCount = first.optInt(Pagination.PAGINATION_PAGE_COUNT);
-            recordCount = first.optInt(Pagination.PAGINATION_RECORD_COUNT);
-        }
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
+        final int recordCount = pagination.optInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil(recordCount / (double) pageSize);
 
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {
@@ -284,7 +280,7 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Pagination.PAGINATION_RECORD_COUNT, recordCount);
 
-        dataModel.put(Common.TYPE, "comments");
+        dataModel.put(Common.TYPE, Breezemoon.BREEZEMOONS);
     }
 
     /**

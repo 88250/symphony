@@ -112,8 +112,8 @@ public class BreezemoonProcessor {
         final int pageNum = Integer.valueOf(pageNumStr);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        List<JSONObject> bms = null;
         final JSONObject user = Sessions.currentUser(request);
+        String currentUserId = null;
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 
@@ -123,14 +123,11 @@ public class BreezemoonProcessor {
                 return;
             }
 
-            bms = breezemoonQueryService.getFollowingUserBreezemoons(avatarViewMode, user.optString(Keys.OBJECT_ID), pageNum, pageSize);
+            currentUserId = user.optString(Keys.OBJECT_ID);
         }
 
-        if (null == bms || bms.isEmpty()) {
-            final JSONObject result = breezemoonQueryService.getBreezemoons(avatarViewMode, "", pageNum, pageSize);
-            bms = (List<JSONObject>) result.opt(Breezemoon.BREEZEMOONS);
-        }
-
+        final JSONObject result = breezemoonQueryService.getFollowingUserBreezemoons(avatarViewMode, currentUserId, pageNum, pageSize);
+        final List<JSONObject> bms = (List<JSONObject>) result.opt(Breezemoon.BREEZEMOONS);
         dataModel.put(Common.WATCHING_BREEZEMOONS, bms);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);

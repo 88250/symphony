@@ -36,7 +36,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -71,21 +70,34 @@ public class BreezemoonQueryService {
      *
      * @param avatarViewMode the specified avatar view mode
      * @param userId         the specified user id
-     * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
-     * @return following tag articles, returns an empty list if not found
+     * @param page           the specified page number
+     * @param pageSize       the specified page size
+     * @return for example, <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "breezemoons": [{
+     *         "id": "",
+     *         "breezemoonContent": ""
+     *      }, ....]
+     * }
+     * </pre>
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getFollowingUserBreezemoons(final int avatarViewMode, final String userId,
-                                                        final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getFollowingUserBreezemoons(final int avatarViewMode, final String userId,
+                                                  final int page, final int pageSize) throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
         final List<JSONObject> users = (List<JSONObject>) followQueryService.getFollowingUsers(
                 avatarViewMode, userId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
         if (users.isEmpty()) {
-            return Collections.emptyList();
+            return getBreezemoons(avatarViewMode, "", page, pageSize);
         }
 
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+                .setPageSize(pageSize).setCurrentPageNum(page);
         final List<String> followingUserIds = new ArrayList<>();
         for (final JSONObject user : users) {
             followingUserIds.add(user.optString(Keys.OBJECT_ID));
@@ -109,8 +121,17 @@ public class BreezemoonQueryService {
         }
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> ret = CollectionUtils.jsonArrayToList(data);
-        organizeBreezemoons(avatarViewMode, ret);
+        final List<JSONObject> bms = CollectionUtils.jsonArrayToList(data);
+        organizeBreezemoons(avatarViewMode, bms);
+        ret.put(Breezemoon.BREEZEMOONS, (Object) bms);
+
+        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+        final int windowSize = 10;
+        final List<Integer> pageNums = Paginator.paginate(page, pageSize, pageCount, windowSize);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         return ret;
     }
@@ -121,8 +142,8 @@ public class BreezemoonQueryService {
      * @param avatarViewMode the specified avatar view mode
      * @param authorId       the specified user id, empty "" for all users
      * @param page           the specified current page number
-     * @param pageSize the specified page size
-     * @return for example,      <pre>
+     * @param pageSize       the specified page size
+     * @return for example, <pre>
      * {
      *     "pagination": {
      *         "paginationPageCount": 100,
@@ -147,8 +168,7 @@ public class BreezemoonQueryService {
         } else {
             filter = CompositeFilterOperator.and(new PropertyFilter(Breezemoon.BREEZEMOON_AUTHOR_ID, FilterOperator.NOT_EQUAL, authorId), statusFilter);
         }
-        final Query query = new Query().setFilter(filter).
-                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(page).setPageSize(20);
+        final Query query = new Query().setFilter(filter).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(page).setPageSize(20);
         JSONObject result;
         try {
             result = breezemoonRepository.get(query);
