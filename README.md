@@ -31,9 +31,7 @@
 * [License](#license)
   * [Open source license](#open-source-license)
   * [Commercial license](#commercial-license)
-* [Contribution](#contribution)
-  * [Authors](#authors)
-  * [Discussion area](#discussion-area)
+* [Community](#community)
 * [Feeling](#feeling)
 * [Credits](#credits)
 
@@ -284,19 +282,15 @@ Sym is available in two versions:
 
 **For the comparison between commercial version and community version, please see [here](https://hacpai.com/article/1500543226433), for corporate websites, business websites, websites for profit or profit, please purchase the commercial version.**
 
-## Contribution
+## Community
 
-### Authors
+Everyone can discuss the project through the following ways to help the project development:
 
-The main authors of Sym are [Daniel](https://github.com/88250) and [Vanessa](https://github.com/Vanessa219), all contributors can see [here](https://github.com/b3log/symphony/graphs/contributors).
+* Sym [discussion area](https://hacpai.com/tag/Sym)
+* [Report issue](https://github.com/b3log/symphony/issues/new)
+* Join Sym development support QQ group 17370164
 
-We are very much looking forward to your joining in this project, whether it is the use of feedback or code patches, are on the Sym a full of love: heart:
-
-### Discussion area
-
-* to Sym official [discussion area](https://hacpai.com/tag/Sym) post (Recommended Practice)
-* new a [issue](https://github.com/b3log/symphony/issues/new)
-* join Sym development support QQ group 17370164
+We are very much looking forward to your joining the project. Whether it is using feedback or code patches, it is a full of love for Sym :heart:
 
 ## Feeling
 
@@ -305,7 +299,6 @@ In the implementation of [B3log idea](https://hacpai.com/b3log) of these years:
 * we have witnessed the rise and fall of xAE (GAE/BAE/SAE/etc). In 2009 GAE was selected as a server, and began to implement [Latke](https://github.com/b3log/latke) framework to solve the cross platform cloud, until [GAE](https://hacpai.com/article/1443685401909), bid farewell to sigh technical change quickly
 * feel the advantages and disadvantages of self-made wheels, and certainly a bit: for a long to product, technology advantages far outweigh the disadvantages of self-made frame
 * a playful product or the details of the characteristics of the egg, it needs to be done is a product / feature that can continue to provide user value.
-* although until the current B3log product users are not many, but we have a preliminary proof: Java used to achieve the blog, forum, there is nothing bad
 * the use of open source software, to understand the idea of open source, into the open source ecology
 * [如果你想做个程序员相关的论坛，请三思](https://hacpai.com/article/1471007706462)
 * [你怎么看待社群、社区这两个词？](https://hacpai.com/article/1465652829809)

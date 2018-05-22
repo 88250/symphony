@@ -26,9 +26,7 @@
   * [徽章系统](#徽章系统)
 * [安装与配置](#安装与配置)
 * [使用授权](#使用授权)
-* [贡献](#贡献)
-  * [作者](#作者)
-  * [讨论区](#讨论区)
+* [社区](#社区)
 * [感悟](#感悟)
 * [鸣谢](#鸣谢)
 
@@ -249,19 +247,15 @@ Sym 有两个版本：
 
 **关于商业版和社区版的对比请看[这里](https://hacpai.com/article/1500543226433)，企业网站、经营性网站、以营利为目的或实现盈利的网站请购买商业版。**
 
-## 贡献
+## 社区
 
-### 作者
+大家可以通过以下方式进行项目讨论，帮助项目发展：
 
-Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/symphony/graphs/contributors)看到。
+* Sym [讨论区](https://hacpai.com/tag/Sym)
+* [报告问题](https://github.com/b3log/symphony/issues/new)
+* Sym 开发支持 [Q 群 17370164](https://shang.qq.com/wpa/qunwpa?idkey=0bb80e452d38d5113c7bb2534cefc8155589d0bdce81c7d2e6d91930bcb6e2d7)
 
-我们非常期待你加入到这个项目中，无论是使用反馈还是代码补丁，都是对 Sym 一份满满的爱 :heart:
-
-### 讨论区
-
-* 到 Sym 官方[讨论区](https://hacpai.com/tag/Sym)发帖（推荐做法）
-* 来一发 [issue](https://github.com/b3log/symphony/issues/new)
-* 加入 Sym 开发支持 [Q 群 17370164](https://shang.qq.com/wpa/qunwpa?idkey=0bb80e452d38d5113c7bb2534cefc8155589d0bdce81c7d2e6d91930bcb6e2d7)
+我们非常期待你加入到项目中，无论是使用反馈还是代码补丁，都是对 Sym 一份满满的爱 :heart:
 
 ## 感悟
 
@@ -270,7 +264,6 @@ Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://
 * 我们见证了 xAE（GAE/BAE/SAE/etc）的兴起与没落。2009 年选择了 GAE 作为服务器，并开始实现 [Latke](https://github.com/b3log/latke) 框架来解决跨云平台，直到[告别 GAE](https://hacpai.com/article/1443685401909)，不得不感叹技术更迭之快
 * 感受到了自造轮子的优缺点，并且可以肯定一点：对于一个想要长久的产品来说，自制技术框架优势远大于劣势
 * 一个好玩的产品或说是细节特性然并卵，需要做的是一个能够持续提供用户价值的产品/特性
-* 虽然直到目前 B3log 系产品用户不多，但我们已经初步证明了：Java 用来实现博客、论坛没有什么不好的
 * 使用开源软件，了解开源思想，融入开源生态
 * [如果你想做个程序员相关的论坛，请三思](https://hacpai.com/article/1471007706462)
 * [你怎么看待社群、社区这两个词？](https://hacpai.com/article/1465652829809)
