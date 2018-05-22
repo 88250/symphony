@@ -39,64 +39,35 @@
                 <div class="list">
                     <ul id="breezemoonList">
                         <#list watchingBreezemoons as item>
-                            ${item}
+                        <li class="fn-flex" id="id">
+                            <a class="tooltipped tooltipped-n avatar"
+                               style="background-image:url('${item.breezemoonAuthorThumbnailURL48}')"
+                               rel="nofollow" href="${servePath}/member/${item.breezemoonAuthorName}" aria-label="Vanessa">
+                            </a>
+                            <div class="fn-flex-1">
+                                <div class="ft-fade">
+                                    <a href="${servePath}/member/${item.breezemoonAuthorName}">${item.breezemoonAuthorName}</a>
+                                    •
+                                    <span class="ft-smaller">
+                                        ${item.timeAgo}
+                                    </span>
+                                    <span class="ft-smaller"
+                                          data-ua="${item.breezemoonUA}">via Android</span>
+
+                                    <div class="fn-right">
+                                        <span class="tooltipped tooltipped-n ft-red rm" aria-label="${removeLabel}">
+                                            <svg><use xlink:href="#remove"></use></svg>
+                                        </span>
+                                        &nbsp;&nbsp;
+                                        <span class="tooltipped tooltipped-n ft-a-title edit" aria-label="${editLabel}">
+                                            <svg><use xlink:href="#edit"></use></svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="content-reset">${item.breezemoonContent}</div>
+                            </div>
+                        </li>
                         </#list>
-                        <li class="fn-flex" id="id">
-                            <a class="tooltipped tooltipped-n avatar"
-                               style="background-image:url('https://img.hacpai.com/avatar/1353745196544_1501644090048.png')"
-                               rel="nofollow" href="http://localhost:8080/member/Vanessa" aria-label="Vanessa">
-                            </a>
-                            <div class="fn-flex-1">
-                                <div class="ft-fade">
-                                    <a href="">Vanessa</a>
-                                    •
-                                    <span class="ft-smaller">
-                                        1分钟钱
-                                    </span>
-                                    <span class="ft-smaller"
-                                          data-ua="Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Mobile Safari/537.36">via Android</span>
-
-                                    <div class="fn-right">
-                                        <span class="tooltipped tooltipped-n ft-red rm" aria-label="${removeLabel}">
-                                            <svg><use xlink:href="#remove"></use></svg>
-                                        </span>
-                                        &nbsp;&nbsp;
-                                        <span class="tooltipped tooltipped-n ft-a-title edit" aria-label="${editLabel}">
-                                            <svg><use xlink:href="#edit"></use></svg>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="content-reset">af</div>
-                            </div>
-                        </li>
-                        <li class="fn-flex" id="id">
-                            <a class="tooltipped tooltipped-n avatar"
-                               style="background-image:url('https://img.hacpai.com/avatar/1353745196544_1501644090048.png')"
-                               rel="nofollow" href="http://localhost:8080/member/Vanessa" aria-label="Vanessa">
-                            </a>
-                            <div class="fn-flex-1">
-                                <div class="ft-fade">
-                                    <a href="">Vanessa</a>
-                                    •
-                                    <span class="ft-smaller">
-                                        1分钟钱
-                                    </span>
-                                    <span class="ft-smaller"
-                                          data-ua="Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Mobile Safari/537.36">via Android</span>
-
-                                    <div class="fn-right">
-                                        <span class="tooltipped tooltipped-n ft-red rm" aria-label="${removeLabel}">
-                                            <svg><use xlink:href="#remove"></use></svg>
-                                        </span>
-                                        &nbsp;&nbsp;
-                                        <span class="tooltipped tooltipped-n ft-a-title edit" aria-label="${editLabel}">
-                                            <svg><use xlink:href="#edit"></use></svg>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="content-reset">af</div>
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div><#if pjax><!---- pjax {#watch-pjax-container} end ----></#if>

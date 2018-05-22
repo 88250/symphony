@@ -76,5 +76,17 @@ public final class Breezemoon {
      * Breezemoon status - invalid.
      */
     public static final int BREEZEMOON_STATUS_C_INVALID = 1;
+
+    //// Transient ////
+
+    /**
+     * Key of breezemoon author name.
+     */
+    public static final String BREEZEMOON_T_AUTHOR_NAME = "breezemoonAuthorName";
+
+    /**
+     * Key of breezemoon author thumbnail URL.
+     */
+    public static final String BREEZEMOON_T_AUTHOR_THUMBNAIL_URL = "breezemoonAuthorThumbnailURL";
 }
 
