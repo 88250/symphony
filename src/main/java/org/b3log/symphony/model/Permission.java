@@ -99,6 +99,16 @@ public final class Permission {
     public static final String PERMISSION_ID_C_COMMON_ADD_BREEZEMOON = "commonAddBreezemoon";
 
     /**
+     * Id - common - update breezemoon.
+     */
+    public static final String PERMISSION_ID_C_COMMON_UPDATE_BREEZEMOON = "commonUpdateBreezemoon";
+
+    /**
+     * Id - common - remove breezemoon.
+     */
+    public static final String PERMISSION_ID_C_COMMON_REMOVE_BREEZEMOON = "commonRemoveBreezemoon";
+
+    /**
      * Id - common add comment anonymous.
      */
     public static final String PERMISSION_ID_C_COMMON_ADD_COMMENT_ANONYMOUS = "commonAddCommentAnonymous";
