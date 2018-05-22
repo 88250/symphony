@@ -374,6 +374,11 @@ public final class Permission {
     public static final String PERMISSION_ID_C_MENU_ADMIN_USERS = "menuAdminUsers";
 
     /**
+     * Id - menu - admin - breezemoons.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_BREEZEMOONS = "menuAdminBreezemoons";
+
+    /**
      * Id - menu - admin - articles.
      */
     public static final String PERMISSION_ID_C_MENU_ADMIN_ARTICLES = "menuAdminArticles";
