@@ -6,13 +6,13 @@
         </#if>
         <#list paginationPageNums as nums>
         <#if nums=paginationCurrentPageNum>
-        <span class="current">${nums}</span>
+        <span class="current">${nums?c}</span>
         <#else>
-        <a pjax-title="${pjaxTitle}" href="${url}?p=${nums}">${nums}</a>
+        <a pjax-title="${pjaxTitle}" href="${url}?p=${nums?c}">${nums?c}</a>
         </#if>
         </#list>
         <#if paginationLastPageNum!=paginationPageCount>
-        <a pjax-title="${pjaxTitle}" rel="next" href="${url}?p=${paginationPageCount}">${paginationPageCount}>></a>
+        <a pjax-title="${pjaxTitle}" rel="next" href="${url}?p=${paginationPageCount?c}">${paginationPageCount?c}>></a>
         </#if>
     </div>
 </#if>

@@ -3,17 +3,17 @@
 <div class="fn-clear">
     <div class="pagination">
         <#if paginationCurrentPageNum!=1>
-        <a rel="prev" href="${url}?p=${paginationCurrentPageNum-1}"><</a>
+        <a rel="prev" href="${url}?p=${(paginationCurrentPageNum-1)?c}"><</a>
         </#if>
 
         <select data-url="${url}">
             <#list 1..paginationLastPageNum as nums>
-            <option<#if nums == paginationCurrentPageNum> selected="selected"</#if>>${nums}</option>
+            <option<#if nums == paginationCurrentPageNum> selected="selected"</#if>>${nums?c}</option>
             </#list>
         </select>
 
         <#if paginationLastPageNum gt paginationCurrentPageNum>
-        <a rel="next" href="${url}?p=${paginationCurrentPageNum+1}">></a>
+        <a rel="next" href="${url}?p=${(paginationCurrentPageNum+1)?c}">></a>
         </#if>
     </div>
 </div>
