@@ -56,7 +56,7 @@ var Breezemoon = {
     $breezemoonBtn.css('opacity', 0.3).attr('disabled')
 
     $.ajax({
-      url: Label.servePath + '/bm',
+      url: Label.servePath + '/breezemoon',
       type: 'POST',
       cache: false,
       headers: {'csrfToken': Label.csrfToken},
@@ -79,7 +79,7 @@ var Breezemoon = {
     if (confirm(Label.confirmRemoveLabel)) {
       $it.css('opacity', 0.3).attr('disabled')
       $.ajax({
-        url: Label.servePath + '/bm/' + id,
+        url: Label.servePath + '/breezemoon/' + id,
         type: 'DELETE',
         cache: false,
         success: function (result) {
@@ -121,7 +121,7 @@ var Breezemoon = {
   update: function ($btn, id, val) {
     $btn.css('opacity', 0.3).attr('disabled')
     $.ajax({
-      url: Label.servePath + '/bm/' + id,
+      url: Label.servePath + '/breezemoon/' + id,
       type: 'PUT',
       cache: false,
       data: JSON.stringify({
