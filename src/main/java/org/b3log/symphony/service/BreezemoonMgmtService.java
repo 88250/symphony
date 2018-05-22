@@ -91,6 +91,7 @@ public class BreezemoonMgmtService {
         final long now = System.currentTimeMillis();
         bm.put(Breezemoon.BREEZEMOON_CREATED, now);
         bm.put(Breezemoon.BREEZEMOON_UPDATED, now);
+        bm.put(Breezemoon.BREEZEMOON_STATUS, Breezemoon.BREEZEMOON_STATUS_C_VALID);
 
         try {
             breezemoonRepository.add(bm);
