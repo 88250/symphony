@@ -1,6 +1,5 @@
 <#include "macro-head.ftl">
-<#include "macro-list.ftl">
-<#include "common/title-icon.ftl">
+<#include "macro-pagination.ftl">
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 <head>
@@ -30,45 +29,57 @@
                            href="${servePath}/watch/breezemoons">${breezemoonLabel}</a>
                     </span>
                 </div>
+                <#if permissions["commonAddBreezemoon"].permissionGrant>
                 <br>
                 <div class="form">
                     <input id="breezemoonInput" type="text">
                     <button onclick="Breezemoon.add()" id="breezemoonBtn" class="absolute">${breezemoonLabel}</button>
                 </div>
                 <br>
+                </#if>
                 <div class="list">
                     <ul id="breezemoonList">
                         <#list watchingBreezemoons as item>
-                        <li class="fn-flex" id="id">
-                            <a class="tooltipped tooltipped-n avatar"
-                               style="background-image:url('${item.breezemoonAuthorThumbnailURL48}')"
-                               rel="nofollow" href="${servePath}/member/${item.breezemoonAuthorName}" aria-label="Vanessa">
-                            </a>
-                            <div class="fn-flex-1">
-                                <div class="ft-fade">
-                                    <a href="${servePath}/member/${item.breezemoonAuthorName}">${item.breezemoonAuthorName}</a>
-                                    •
-                                    <span class="ft-smaller">
-                                        ${item.timeAgo}
-                                    </span>
-                                    <span class="ft-smaller"
-                                          data-ua="${item.breezemoonUA}">via Android</span>
+                            <li class="fn-flex" id="${item.oId}">
+                                <a class="tooltipped tooltipped-n avatar"
+                                   style="background-image:url('${item.breezemoonAuthorThumbnailURL48}')"
+                                   rel="nofollow" href="${servePath}/member/${item.breezemoonAuthorName}"
+                                   aria-label="Vanessa">
+                                </a>
+                                <div class="fn-flex-1">
+                                    <div class="ft-fade">
+                                        <a href="${servePath}/member/${item.breezemoonAuthorName}">${item.breezemoonAuthorName}</a>
+                                        •
+                                        <span class="ft-smaller">
+                                            ${item.timeAgo}
+                                        </span>
+                                        <span class="ft-smaller"
+                                              data-ua="${item.breezemoonUA}">via Android</span>
 
-                                    <div class="fn-right">
-                                        <span class="tooltipped tooltipped-n ft-red rm" aria-label="${removeLabel}">
-                                            <svg><use xlink:href="#remove"></use></svg>
-                                        </span>
-                                        &nbsp;&nbsp;
-                                        <span class="tooltipped tooltipped-n ft-a-title edit" aria-label="${editLabel}">
-                                            <svg><use xlink:href="#edit"></use></svg>
-                                        </span>
+                                        <div class="fn-right">
+                                             <#if permissions["commonAddBreezemoon"].permissionGrant>
+                                            <span class="tooltipped tooltipped-n ft-red rm" aria-label="${removeLabel}">
+                                                <svg><use xlink:href="#remove"></use></svg>
+                                            </span>
+                                            &nbsp;&nbsp;
+                                            <span class="tooltipped tooltipped-n ft-a-title edit"
+                                                  aria-label="${editLabel}">
+                                                <svg><use xlink:href="#edit"></use></svg>
+                                            </span>
+                                            &nbsp;&nbsp;
+                                             </#if>
+                                            <span class="tooltipped tooltipped-n ft-a-title copy"
+                                                  aria-label="${copyLabel}">
+                                                <svg><use xlink:href="#articles"></use></svg>
+                                            </span>
+                                        </div>
                                     </div>
+                                    <div class="content-reset">${item.breezemoonContent}</div>
                                 </div>
-                                <div class="content-reset">${item.breezemoonContent}</div>
-                            </div>
-                        </li>
+                            </li>
                         </#list>
                     </ul>
+                    <@pagination url="${servePath}/watch/breezemoons" pjaxTitle="${breezemoonLabel} - ${symphonyLabel}"/>
                 </div>
             </div><#if pjax><!---- pjax {#watch-pjax-container} end ----></#if>
         </div>
@@ -80,7 +91,6 @@
 <#include "common/domains.ftl">
 <#include "footer.ftl">
 <script src="${staticServePath}/js/breezemoon${miniPostfix}.js?${staticResourceVersion}"></script>
-<@listScript/>
 <script>
     $.pjax({
         selector: 'a',

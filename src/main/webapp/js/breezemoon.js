@@ -81,9 +81,10 @@ var Breezemoon = {
       $.ajax({
         url: Label.servePath + '/breezemoon/' + id,
         type: 'DELETE',
+        headers: {'csrfToken': Label.csrfToken},
         cache: false,
         success: function (result) {
-          if (result.sc) {
+          if (result.sc === 0) {
             $it.closest('li').remove()
           } else {
             alert(result.msg)
@@ -124,13 +125,14 @@ var Breezemoon = {
       url: Label.servePath + '/breezemoon/' + id,
       type: 'PUT',
       cache: false,
+      headers: {'csrfToken': Label.csrfToken},
       data: JSON.stringify({
         breezemoonContent: val,
       }),
       success: function (result) {
-        if (result.sc) {
-          $btn.closest('form').prev().text(val).show()
-          $btn.closest('form').remove()
+        if (result.sc === 0) {
+          $btn.closest('.form').prev().text(val).show()
+          $btn.closest('.form').remove()
         } else {
           alert(result.msg)
         }
