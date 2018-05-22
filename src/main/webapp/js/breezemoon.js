@@ -59,39 +59,13 @@ var Breezemoon = {
       url: Label.servePath + '/bm',
       type: 'POST',
       cache: false,
+      headers: {'csrfToken': Label.csrfToken},
       data: JSON.stringify({
         breezemoonContent: $('#breezemoonInput').val(),
       }),
       success: function (result) {
         if (result.sc) {
-          $('#breezemoonList').
-            append('<li> <a class="tooltipped tooltipped-n avatar"\n' +
-              '                               style="background-image:url(\'https://img.hacpai.com/avatar/1353745196544_1501644090048.png\')"\n' +
-              '                               rel="nofollow" href="http://localhost:8080/member/Vanessa" aria-label="Vanessa">\n' +
-              '                            </a>\n' +
-              '                            <div class="fn-flex-1">\n' +
-              '                                <div class="ft-fade">\n' +
-              '                                    <a href="">Vanessa</a>\n' +
-              '                                    •\n' +
-              '                                    <span class="ft-smaller">\n' +
-              '                                        1分钟钱\n' +
-              '                                    </span>\n' +
-              '                                    <span class="ft-smaller"\n' +
-              '                                          data-ua="Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Mobile Safari/537.36">via Android</span>\n' +
-              '                                    <div class="fn-right">\n' +
-              '                                        <span class="tooltipped tooltipped-n ft-red" aria-label="${removeLabel}">\n' +
-              '                                            <svg><use xlink:href="#remove"></use></svg>\n' +
-              '                                        </span>\n' +
-              '                                        &nbsp;&nbsp;\n' +
-              '                                        <span class="tooltipped tooltipped-n ft-a-title" aria-label="${editLabel}">\n' +
-              '                                            <svg><use xlink:href="#edit"></use></svg>\n' +
-              '                                        </span>\n' +
-              '                                    </div>\n' +
-              '                                </div>\n' +
-              '                                <div class="content-reset">\n' +
-              '                                    af\n' +
-              '                                </div>\n' +
-              '                            </div></li>')
+          window.location.reload()
         } else {
           alert(result.msg)
         }
@@ -130,7 +104,8 @@ var Breezemoon = {
       return
     }
     $content.hide()
-    $content.after('<div class="form" style="margin-top: 15px"><input type="text" value="' + $content.text() + '"><button class="absolute">' +
+    $content.after('<div class="form" style="margin-top: 15px"><input type="text" value="' +
+      $content.text() + '"><button class="absolute">' +
       Label.breezemoonLabel + '</button></div>')
     $content.next().find('input').keyup(function (event) {
       if (event.keyCode === 13) {

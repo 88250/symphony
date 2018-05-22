@@ -38,6 +38,9 @@
                 <br>
                 <div class="list">
                     <ul id="breezemoonList">
+                        <#list watchingBreezemoons as item>
+                            ${item}
+                        </#list>
                         <li class="fn-flex" id="id">
                             <a class="tooltipped tooltipped-n avatar"
                                style="background-image:url('https://img.hacpai.com/avatar/1353745196544_1501644090048.png')"
