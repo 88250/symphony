@@ -1260,12 +1260,10 @@ var Util = {
     }
 
     this._initCommonHotKey();
-    console.log("%cCopyright \xa9 2012-%s, b3log.org & hacpai.com\n\n%cHacPai%c 平等、自由、奔放\n\n%cFeel easy about trust.",
-      'font-size:12px;color:#999999;', (new Date).getFullYear(),
-      'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:64px;color:#404040;-webkit-text-fill-color:#404040;-webkit-text-stroke: 1px #777;',
-      'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:12px;color:#999999; font-style:italic;',
-      'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:12px;color:#999999;'
-    );
+    console.log(
+      '%cHacPai%c\n  平等、自由、奔放\n  Feel easy about trust.\n\n  b3log.org & hacpai.com\n  Copyright © 2012-' +
+      Label.year,
+      'font-size:96px;color:#3b3e43', 'font-size:12px;color:rgba(0,0,0,0.38);');
     if (isLoggedIn) {
       return false;
     }

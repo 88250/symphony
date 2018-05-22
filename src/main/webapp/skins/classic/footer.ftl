@@ -69,7 +69,7 @@
         <#if isLoggedIn>
             currentUserName: '${currentUser.userName}',
         </#if>
-        <#if csrfToken??>,
+        <#if csrfToken??>
             csrfToken: '${csrfToken}'
         </#if>
     };
