@@ -55,10 +55,10 @@ import java.util.Map;
  *
  * <ul>
  * <li>Shows watch breezemoons (/watch/breezemoons), GET</li>
- * <li>Adds a breezemoon (/bm), POST</li>
- * <li>Updates a breezemoon (/bm/{id}), PUT</li>
- * <li>Removes a breezemoon (/bm/{id}), DELETE</li>
- * <li>Shows a breezemoon (/bm/{id}), GET</li>
+ * <li>Adds a breezemoon (/breezemoon), POST</li>
+ * <li>Updates a breezemoon (/breezemoon/{id}), PUT</li>
+ * <li>Removes a breezemoon (/breezemoon/{id}), DELETE</li>
+ * <li>Shows a breezemoon (/breezemoon/{id}), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -154,7 +154,7 @@ public class BreezemoonProcessor {
      * @param context the specified context
      * @param request the specified request
      */
-    @RequestProcessing(value = "/bm", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/breezemoon", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void addBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
@@ -193,7 +193,7 @@ public class BreezemoonProcessor {
      * @param context the specified context
      * @param request the specified request
      */
-    @RequestProcessing(value = "/bm/{id}", method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/breezemoon/{id}", method = HTTPRequestMethod.PUT)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject,
@@ -226,7 +226,7 @@ public class BreezemoonProcessor {
      * @param context the specified context
      * @param request the specified request
      */
-    @RequestProcessing(value = "/bm/{id}", method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/breezemoon/{id}", method = HTTPRequestMethod.DELETE)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void removeBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject,

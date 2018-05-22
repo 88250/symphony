@@ -26,7 +26,7 @@
                            href="${servePath}/watch/users">${followingUsersLabel}</a>
                         /
                         <a pjax-title="${followingUsersLabel} - ${symphonyLabel}"
-                           class="<#if "/bm" == current>ft-gray</#if>"
+                           class="<#if "/breezemoons" == current>ft-gray</#if>"
                            href="${servePath}/watch/breezemoons">${breezemoonLabel}</a>
                     </span>
                 </div>
