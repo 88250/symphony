@@ -59,6 +59,7 @@
 </div>
 <#include "common/domains.ftl">
 <#include "footer.ftl">
+<script src="${staticServePath}/js/breezemoon${miniPostfix}.js?${staticResourceVersion}"></script>
 <@listScript/>
 <script>
     $.pjax({
@@ -72,7 +73,7 @@
             return 0 > href.indexOf('${servePath}/watch')
         },
         callback: function () {
-            Util.lazyLoadCSSImage()
+            Breezemoon.init()
         },
     })
     NProgress.configure({showSpinner: false})

@@ -21,20 +21,27 @@
 <#include "../macro-pagination.ftl">
 <@home "${type}">
 <div class="tabs-sub fn-clear">
-    <a pjax-title="${watchingArticlesLabel} - ${user.userName} - ${symphonyLabel}"  href="${servePath}/member/${user.userName}/watching/articles"<#if type == "watchingUsers"> class="current"</#if>>${watchingArticlesLabel}</a>
-    <a pjax-title="${followingUsersLabel} - ${user.userName} - ${symphonyLabel}"  href="${servePath}/member/${user.userName}/following/users"<#if type == "followingUsers"> class="current"</#if>>${followingUsersLabel}</a>
-    <a pjax-title="${followingTagsLabel} - ${user.userName} - ${symphonyLabel}"  href="${servePath}/member/${user.userName}/following/tags"<#if type == "followingTags"> class="current"</#if>>${followingTagsLabel}</a>
-    <a pjax-title="${followingArticlesLabel} - ${user.userName} - ${symphonyLabel}"  href="${servePath}/member/${user.userName}/following/articles"<#if type == "followingArticles"> class="current"</#if>>${followingArticlesLabel}</a>
-    <a pjax-title="${followersLabel} - ${user.userName} - ${symphonyLabel}"  href="${servePath}/member/${user.userName}/followers"<#if type == "followers"> class="current"</#if>>${followersLabel}</a>
-    <a pjax-title="${breezemoonLabel} - ${user.userName} - ${symphonyLabel}"  href="${servePath}/member/${user.userName}/breezemoons"<#if type == "breezemoons"> class="current"</#if>>${breezemoonLabel} &nbsp;<span class="count">${paginationRecordCount}</span></a>
+    <a pjax-title="${watchingArticlesLabel} - ${user.userName} - ${symphonyLabel}"
+       href="${servePath}/member/${user.userName}/watching/articles"<#if type == "watchingUsers">
+       class="current"</#if>>${watchingArticlesLabel}</a>
+    <a pjax-title="${followingUsersLabel} - ${user.userName} - ${symphonyLabel}"
+       href="${servePath}/member/${user.userName}/following/users"<#if type == "followingUsers">
+       class="current"</#if>>${followingUsersLabel}</a>
+    <a pjax-title="${followingTagsLabel} - ${user.userName} - ${symphonyLabel}"
+       href="${servePath}/member/${user.userName}/following/tags"<#if type == "followingTags">
+       class="current"</#if>>${followingTagsLabel}</a>
+    <a pjax-title="${followingArticlesLabel} - ${user.userName} - ${symphonyLabel}"
+       href="${servePath}/member/${user.userName}/following/articles"<#if type == "followingArticles">
+       class="current"</#if>>${followingArticlesLabel}</a>
+    <a pjax-title="${followersLabel} - ${user.userName} - ${symphonyLabel}"
+       href="${servePath}/member/${user.userName}/followers"<#if type == "followers">
+       class="current"</#if>>${followersLabel}</a>
+    <a pjax-title="${breezemoonLabel} - ${user.userName} - ${symphonyLabel}"
+       href="${servePath}/member/${user.userName}/breezemoons"<#if type == "breezemoons">
+       class="current"</#if>>${breezemoonLabel} &nbsp;<span class="count">${paginationRecordCount}</span></a>
 </div>
-<#if 0 == user.userFollowerStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
-<div class="main">
-    <div class="wrapper">
-        <div class="content fn-clear" id="watch-pjax-container">
-            <#if pjax><!---- pjax {#watch-pjax-container} start ----></#if>
-            <div class="module">
-                <#if permissions["commonAddBreezemoon"].permissionGrant>
+    <#if 0 == user.userFollowerStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
+        <#if permissions["commonAddBreezemoon"].permissionGrant>
                 <div class="list">
                     <ul class="form">
                         <li>
@@ -44,7 +51,7 @@
                         </li>
                     </ul>
                 </div>
-                </#if>
+        </#if>
                 <div class="list">
                     <ul id="breezemoonList">
                         <#list userHomeBreezemoons as item>
@@ -90,12 +97,8 @@
                         </#list>
                     </ul>
                 </div>
-            </div><#if pjax><!---- pjax {#watch-pjax-container} end ----></#if>
-        </div>
-    </div>
-</div>
-<@pagination url="${servePath}/member/${user.userName}/followers" pjaxTitle="${followersLabel} - ${user.userName} - ${symphonyLabel}"/>
-<#else>
+        <@pagination url="${servePath}/member/${user.userName}/breezemoons" pjaxTitle="${breezemoonLabel} - ${user.userName} - ${symphonyLabel}"/>
+    <#else>
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
-</#if>
+    </#if>
 </@home>

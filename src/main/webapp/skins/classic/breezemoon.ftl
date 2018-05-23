@@ -126,7 +126,7 @@
             return 0 > href.indexOf('${servePath}/watch')
         },
         callback: function () {
-            Util.lazyLoadCSSImage()
+            Breezemoon.init()
         },
     })
     NProgress.configure({showSpinner: false})
