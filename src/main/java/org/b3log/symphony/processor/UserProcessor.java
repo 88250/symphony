@@ -220,7 +220,7 @@ public class UserProcessor {
      */
     @RequestProcessing(value = "/member/{userName}/breezemoons", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeBreezemoons(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                     final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
@@ -261,7 +261,7 @@ public class UserProcessor {
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
-        final JSONObject result = breezemoonQueryService.getFollowingUserBreezemoons(avatarViewMode, followingId, pageNum, pageSize);
+        final JSONObject result = breezemoonQueryService.getFollowingUserBreezemoons(avatarViewMode, followingId, pageNum, pageSize, windowSize);
         final List<JSONObject> bms = (List<JSONObject>) result.opt(Breezemoon.BREEZEMOONS);
         dataModel.put(Common.USER_HOME_BREEZEMOONS, bms);
 

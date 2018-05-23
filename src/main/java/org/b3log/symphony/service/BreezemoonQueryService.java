@@ -89,6 +89,7 @@ public class BreezemoonQueryService {
      * @param userId         the specified user id
      * @param page           the specified page number
      * @param pageSize       the specified page size
+     * @param windowSize the specified window size
      * @return for example, <pre>
      * {
      *     "pagination": {
@@ -104,13 +105,13 @@ public class BreezemoonQueryService {
      * @throws ServiceException service exception
      */
     public JSONObject getFollowingUserBreezemoons(final int avatarViewMode, final String userId,
-                                                  final int page, final int pageSize) throws ServiceException {
+                                                  final int page, final int pageSize, final int windowSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
 
         final List<JSONObject> users = (List<JSONObject>) followQueryService.getFollowingUsers(
                 avatarViewMode, userId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
         if (users.isEmpty()) {
-            return getBreezemoons(avatarViewMode, "", page, pageSize);
+            return getBreezemoons(avatarViewMode, "", page, pageSize, windowSize);
         }
 
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
@@ -142,12 +143,10 @@ public class BreezemoonQueryService {
             Stopwatchs.end();
         }
 
-        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-        final JSONObject pagination = new JSONObject();
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         ret.put(Pagination.PAGINATION, pagination);
-        final int windowSize = 10;
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
         final List<Integer> pageNums = Paginator.paginate(page, pageSize, pageCount, windowSize);
-        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         return ret;
@@ -160,6 +159,7 @@ public class BreezemoonQueryService {
      * @param authorId       the specified user id, empty "" for all users
      * @param page           the specified current page number
      * @param pageSize       the specified page size
+     * @param windowSize the specified window size
      * @return for example, <pre>
      * {
      *     "pagination": {
@@ -175,9 +175,8 @@ public class BreezemoonQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getBreezemoons(final int avatarViewMode, final String authorId, final int page, final int pageSize) throws ServiceException {
+    private JSONObject getBreezemoons(final int avatarViewMode, final String authorId, final int page, final int pageSize, final int windowSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
-        final int windowSize = 10;
         CompositeFilter filter;
         final Filter statusFilter = new PropertyFilter(Breezemoon.BREEZEMOON_STATUS, FilterOperator.EQUAL, Breezemoon.BREEZEMOON_STATUS_C_VALID);
         if (StringUtils.isNotBlank(authorId)) {
@@ -195,11 +194,10 @@ public class BreezemoonQueryService {
             throw new ServiceException(e);
         }
 
-        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-        final JSONObject pagination = new JSONObject();
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         ret.put(Pagination.PAGINATION, pagination);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
         final List<Integer> pageNums = Paginator.paginate(page, pageSize, pageCount, windowSize);
-        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
