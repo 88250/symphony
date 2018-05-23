@@ -22,6 +22,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -39,6 +40,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.BreezemoonMgmtService;
 import org.b3log.symphony.service.BreezemoonQueryService;
 import org.b3log.symphony.service.DataModelService;
+import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Headers;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.StatusCodes;
@@ -62,7 +64,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, May 21, 2018
+ * @version 1.0.0.1, May 23, 2018
  * @since 2.8.0
  */
 @RequestProcessor
@@ -85,6 +87,18 @@ public class BreezemoonProcessor {
      */
     @Inject
     private DataModelService dataModelService;
+
+    /**
+     * Optiona query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Shows breezemoon page.
@@ -161,6 +175,10 @@ public class BreezemoonProcessor {
     public void addBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
         context.renderJSON();
 
+        if (isInvalid(context, requestJSONObject)) {
+            return;
+        }
+
         final JSONObject breezemoon = new JSONObject();
         final String breezemoonContent = requestJSONObject.optString(Breezemoon.BREEZEMOON_CONTENT);
         breezemoon.put(Breezemoon.BREEZEMOON_CONTENT, breezemoonContent);
@@ -200,6 +218,9 @@ public class BreezemoonProcessor {
     public void updateBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject,
                                  final String id) {
         context.renderJSON();
+        if (isInvalid(context, requestJSONObject)) {
+            return;
+        }
 
         final JSONObject breezemoon = new JSONObject();
         breezemoon.put(Keys.OBJECT_ID, id);
@@ -242,5 +263,28 @@ public class BreezemoonProcessor {
             context.renderMsg(e.getMessage());
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
         }
+    }
+
+    private boolean isInvalid(final HTTPRequestContext context, final JSONObject requestJSONObject) {
+        String breezemoonContent = requestJSONObject.optString(Breezemoon.BREEZEMOON_CONTENT);
+        breezemoonContent = StringUtils.trim(breezemoonContent);
+        final int length = StringUtils.length(breezemoonContent);
+        if (1 > length || 512 < length) {
+            context.renderMsg(langPropsService.get("breezemoonLengthLabel"));
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+
+            return true;
+        }
+
+        if (optionQueryService.containReservedWord(breezemoonContent)) {
+            context.renderMsg(langPropsService.get("contentContainReservedWordLabel"));
+            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+
+            return true;
+        }
+
+        requestJSONObject.put(Breezemoon.BREEZEMOON_CONTENT, breezemoonContent);
+
+        return false;
     }
 }
