@@ -48,6 +48,14 @@ var Breezemoon = {
       var $it = $(this)
       Util.clipboard($it, $it.next())
     })
+
+    $breezemoonList.find('.ua').each(function () {
+      var ua = $(this).data('ua'),
+        name = Util.getDeviceByUa(ua);
+      if (name !== '') {
+        $(this).text('via ' + name);
+      }
+    })
   },
   add: function () {
     if (!Label.isLoggedIn) {
