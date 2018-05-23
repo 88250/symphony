@@ -238,8 +238,8 @@ public class UserProcessor {
 
         final int pageNum = Integer.valueOf(pageNumStr);
 
-        final int pageSize = Symphonys.getInt("userHomeCmtsCnt");
-        final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
+        final int pageSize = Symphonys.getInt("userHomeBreezemoonsCnt");
+        final int windowSize = Symphonys.getInt("userHomeBreezemoonsWindowSize");
 
         fillHomeUser(dataModel, user, roleQueryService);
 
