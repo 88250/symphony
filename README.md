@@ -277,20 +277,12 @@ If you encounter problems, you can refer to this [post](https://hacpai.com/artic
 
 ## License
 
-There is no difference between a commercial license and an open source license, and you can choose one of the following two ways.
+Sym is available in two versions:
 
-### Open source license
+* Community version: Open source using AGPLv3. If you choose to use Community Edition, you must fully comply with the related terms of AGPLv3.
+* Commercial version: closed source, offer ¥20000, please contact QQ 845765 or micro signal DL88250 for details
 
-Sym is the use of GPL as an open source agreement, if you choose the open source license, you must fully comply with the relevant provisions of GPL.
-
-### Commercial license
-
-If you need to use Sym for commercial use, including but not limited to the following scenarios:
-
-* company use
-* profitability
-
-**You must pay the price for $4000, please contact QQ 845765 or email (d@b3log.org) for detailed consultation.**
+**For the comparison between commercial version and community version, please see [here](https://hacpai.com/article/1500543226433), for corporate websites, business websites, websites for profit or profit, please purchase the commercial version.**
 
 ## Contribution
 
