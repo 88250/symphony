@@ -34,20 +34,6 @@
         <div class="content fn-clear" id="watch-pjax-container">
             <#if pjax><!---- pjax {#watch-pjax-container} start ----></#if>
             <div class="module">
-                <div class="module-header fn-clear">
-                    <span class="fn-right ft-fade">
-                        <a pjax-title="${followingTagsLabel} - ${symphonyLabel}"
-                           class="<#if "" == current>ft-gray</#if>" href="${servePath}/watch">${followingTagsLabel}</a>
-                        /
-                        <a pjax-title="${followingUsersLabel} - ${symphonyLabel}"
-                           class="<#if "/users" == current>ft-gray</#if>"
-                           href="${servePath}/watch/users">${followingUsersLabel}</a>
-                        /
-                        <a pjax-title="${followingUsersLabel} - ${symphonyLabel}"
-                           class="<#if "/breezemoons" == current>ft-gray</#if>"
-                           href="${servePath}/watch/breezemoons">${breezemoonLabel}</a>
-                    </span>
-                </div>
                 <#if permissions["commonAddBreezemoon"].permissionGrant>
                 <div class="list">
                     <ul class="form">
@@ -61,7 +47,7 @@
                 </#if>
                 <div class="list">
                     <ul id="breezemoonList">
-                        <#list watchingBreezemoons as item>
+                        <#list userHomeBreezemoons as item>
                             <li class="fn-flex" id="${item.oId}">
                                 <a class="tooltipped tooltipped-n avatar"
                                    style="background-image:url('${item.breezemoonAuthorThumbnailURL48}')"
