@@ -88,7 +88,7 @@ public class BreezemoonQueryService {
      * Get following user breezemoons.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param userId         the specified user id
+     * @param userId         the specified user id, may be {@code null}
      * @param page           the specified page number
      * @param pageSize       the specified page size
      * @param windowSize     the specified window size
@@ -113,7 +113,7 @@ public class BreezemoonQueryService {
         final List<JSONObject> users = (List<JSONObject>) followQueryService.getFollowingUsers(
                 avatarViewMode, userId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
         if (users.isEmpty()) {
-            return getBreezemoons(avatarViewMode, "", page, pageSize, windowSize);
+            return getBreezemoons(avatarViewMode, userId, "", page, pageSize, windowSize);
         }
 
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
@@ -134,7 +134,11 @@ public class BreezemoonQueryService {
             result = breezemoonRepository.get(query);
             final JSONArray data = result.optJSONArray(Keys.RESULTS);
             final List<JSONObject> bms = CollectionUtils.jsonArrayToList(data);
-            organizeBreezemoons(avatarViewMode, bms);
+            if (bms.isEmpty()) {
+                return getBreezemoons(avatarViewMode, userId, "", page, pageSize, windowSize);
+            }
+
+            organizeBreezemoons(avatarViewMode, userId, bms);
             ret.put(Breezemoon.BREEZEMOONS, (Object) bms);
 
         } catch (final Exception e) {
@@ -158,6 +162,7 @@ public class BreezemoonQueryService {
      * Get breezemoon with the specified user id, current page number.
      *
      * @param avatarViewMode the specified avatar view mode
+     * @param currentUserId  the specified current user id, may be {@code null}
      * @param authorId       the specified user id, empty "" for all users
      * @param page           the specified current page number
      * @param pageSize       the specified page size
@@ -177,7 +182,8 @@ public class BreezemoonQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getBreezemoons(final int avatarViewMode, final String authorId, final int page, final int pageSize, final int windowSize) throws ServiceException {
+    public JSONObject getBreezemoons(final int avatarViewMode, final String currentUserId, final String authorId,
+                                     final int page, final int pageSize, final int windowSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         CompositeFilter filter;
         final Filter statusFilter = new PropertyFilter(Breezemoon.BREEZEMOON_STATUS, FilterOperator.EQUAL, Breezemoon.BREEZEMOON_STATUS_C_VALID);
@@ -205,7 +211,7 @@ public class BreezemoonQueryService {
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
         final List<JSONObject> bms = CollectionUtils.jsonArrayToList(data);
         try {
-            organizeBreezemoons(avatarViewMode, bms);
+            organizeBreezemoons(avatarViewMode, currentUserId, bms);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get breezemoons failed", e);
 
@@ -217,14 +223,14 @@ public class BreezemoonQueryService {
         return ret;
     }
 
-    private void organizeBreezemoons(final int avatarViewMode, final List<JSONObject> breezemoons) throws Exception {
+    private void organizeBreezemoons(final int avatarViewMode, final String currentUserId, final List<JSONObject> breezemoons) throws Exception {
         final Iterator<JSONObject> iterator = breezemoons.iterator();
         while (iterator.hasNext()) {
             final JSONObject bm = iterator.next();
 
             final String authorId = bm.optString(Breezemoon.BREEZEMOON_AUTHOR_ID);
             final JSONObject author = userRepository.get(authorId);
-            if (UserExt.USER_XXX_STATUS_C_PRIVATE == author.optInt(UserExt.USER_BREEZEMOON_STATUS)) {
+            if (UserExt.USER_XXX_STATUS_C_PRIVATE == author.optInt(UserExt.USER_BREEZEMOON_STATUS) && !StringUtils.equals(currentUserId, authorId)) {
                 iterator.remove();
 
                 continue;

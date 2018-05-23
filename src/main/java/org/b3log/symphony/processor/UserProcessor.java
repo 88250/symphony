@@ -78,7 +78,7 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.0, May 22, 2018
+ * @version 1.27.0.1, May 23, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -243,18 +243,19 @@ public class UserProcessor {
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
-        JSONObject currentUser = null;
+        JSONObject currentUser;
+        String currentUserId = null;
         if (isLoggedIn) {
             currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
-            final String followerId = currentUser.optString(Keys.OBJECT_ID);
+            currentUserId = currentUser.optString(Keys.OBJECT_ID);
 
-            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
+            final boolean isFollowing = followQueryService.isFollowing(currentUserId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
-        final JSONObject result = breezemoonQueryService.getBreezemoons(avatarViewMode, followingId, pageNum, pageSize, windowSize);
+        final JSONObject result = breezemoonQueryService.getBreezemoons(avatarViewMode, currentUserId, followingId, pageNum, pageSize, windowSize);
         final List<JSONObject> bms = (List<JSONObject>) result.opt(Breezemoon.BREEZEMOONS);
         dataModel.put(Common.USER_HOME_BREEZEMOONS, bms);
 

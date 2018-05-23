@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.ioc.inject.Inject;
@@ -41,7 +42,7 @@ import java.util.List;
  * Follow query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.6, Mar 7, 2018
+ * @version 1.4.0.7, May 23, 2018
  * @since 0.2.5
  */
 @Service
@@ -108,7 +109,7 @@ public class FollowQueryService {
      * Gets following users of the specified follower.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param followerId     the specified follower id
+     * @param followerId     the specified follower id, may be {@code null}
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
      * @return result json object, for example,      <pre>
@@ -125,6 +126,10 @@ public class FollowQueryService {
         final List<JSONObject> records = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) records);
         ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
+
+        if (StringUtils.isBlank(followerId)) {
+            return ret;
+        }
 
         try {
             final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_USER, currentPageNum, pageSize);
