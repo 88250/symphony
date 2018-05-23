@@ -88,7 +88,7 @@
                                                   aria-label="${copyLabel}">
                                                 <svg><use xlink:href="#articles"></use></svg>
                                             </span>
-                                            <textarea style="position: fixed;left: -10000px;">${servePath}/watch/breezemoons#${item.oId}</textarea>
+                                            <textarea style="position: fixed;left: -10000px;">${servePath}/member/${user.userName}/breezemoons#${item.oId}</textarea>
                                         </div>
                                     </div>
                                     <div class="content-reset">${item.breezemoonContent}</div>
