@@ -118,7 +118,7 @@ var Breezemoon = {
     }
     $content.hide()
     $content.after('<div class="form" style="margin-top: 15px"><input type="text" value="' +
-      $content.text() + '"><button class="absolute">' +
+      $content.text() + '"  style="padding-right: 89px;"><button class="absolute">' +
       Label.breezemoonLabel + '</button></div>')
     $content.next().find('input').keyup(function (event) {
       if (event.keyCode === 13) {

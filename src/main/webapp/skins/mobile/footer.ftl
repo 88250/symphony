@@ -41,6 +41,8 @@
 <script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     var Label = {
+        breezemoonLabel: '${breezemoonLabel}',
+        confirmRemoveLabel: "${confirmRemoveLabel}",
         invalidPasswordLabel: "${invalidPasswordLabel}",
         loginNameErrorLabel: "${loginNameErrorLabel}",
         followLabel: "${followLabel}",
@@ -66,6 +68,9 @@
         makeAsReadLabel: '${makeAsReadLabel}'
         <#if isLoggedIn>,
         currentUserName: '${currentUser.userName}'</#if>
+         <#if csrfToken??>,
+            csrfToken: '${csrfToken}'
+         </#if>
     };
     Util.init(${isLoggedIn?c});
     
