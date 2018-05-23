@@ -95,6 +95,14 @@
         <div class="fn-clear settings-secret">
             <div>
                 <label>
+                    <input id="userBreezemoonStatus" <#if 0 == currentUser.userBreezemoonStatus> checked="checked"</#if> type="checkbox" />
+                    ${userBreezemoonStatusLabel}
+                </label>
+            </div>
+        </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
                     <input id="joinPointRank" <#if 0 == currentUser.userJoinPointRank> checked="checked"</#if> type="checkbox" />
                     ${joinBalanceRankLabel}
                 </label>

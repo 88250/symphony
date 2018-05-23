@@ -33,6 +33,7 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Breezemoon;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.BreezemoonRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Markdowns;
@@ -41,13 +42,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Breezemoon query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, May 22, 2018
+ * @version 1.0.0.2, May 23, 2018
  * @since 2.8.0
  */
 @Service
@@ -89,7 +91,7 @@ public class BreezemoonQueryService {
      * @param userId         the specified user id
      * @param page           the specified page number
      * @param pageSize       the specified page size
-     * @param windowSize the specified window size
+     * @param windowSize     the specified window size
      * @return for example, <pre>
      * {
      *     "pagination": {
@@ -159,7 +161,7 @@ public class BreezemoonQueryService {
      * @param authorId       the specified user id, empty "" for all users
      * @param page           the specified current page number
      * @param pageSize       the specified page size
-     * @param windowSize the specified window size
+     * @param windowSize     the specified window size
      * @return for example, <pre>
      * {
      *     "pagination": {
@@ -175,7 +177,7 @@ public class BreezemoonQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
-    private JSONObject getBreezemoons(final int avatarViewMode, final String authorId, final int page, final int pageSize, final int windowSize) throws ServiceException {
+    public JSONObject getBreezemoons(final int avatarViewMode, final String authorId, final int page, final int pageSize, final int windowSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         CompositeFilter filter;
         final Filter statusFilter = new PropertyFilter(Breezemoon.BREEZEMOON_STATUS, FilterOperator.EQUAL, Breezemoon.BREEZEMOON_STATUS_C_VALID);
@@ -216,17 +218,24 @@ public class BreezemoonQueryService {
     }
 
     private void organizeBreezemoons(final int avatarViewMode, final List<JSONObject> breezemoons) throws Exception {
-        for (final JSONObject bm : breezemoons) {
+        final Iterator<JSONObject> iterator = breezemoons.iterator();
+        while (iterator.hasNext()) {
+            final JSONObject bm = iterator.next();
+
+            final String authorId = bm.optString(Breezemoon.BREEZEMOON_AUTHOR_ID);
+            final JSONObject author = userRepository.get(authorId);
+            if (UserExt.USER_XXX_STATUS_C_PRIVATE == author.optInt(UserExt.USER_BREEZEMOON_STATUS)) {
+                iterator.remove();
+
+                continue;
+            }
+            bm.put(Breezemoon.BREEZEMOON_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+            bm.put(Breezemoon.BREEZEMOON_T_AUTHOR_THUMBNAIL_URL + "48", avatarQueryService.getAvatarURLByUser(avatarViewMode, author, "48"));
+            bm.put(Common.TIME_AGO, Times.getTimeAgo(bm.optLong(Breezemoon.BREEZEMOON_CREATED), Locales.getLocale()));
             String content = bm.optString(Breezemoon.BREEZEMOON_CONTENT);
             content = Markdowns.toHTML(content);
             content = Markdowns.clean(content, "");
             bm.put(Breezemoon.BREEZEMOON_CONTENT, content);
-
-            final String authorId = bm.optString(Breezemoon.BREEZEMOON_AUTHOR_ID);
-            final JSONObject author = userRepository.get(authorId);
-            bm.put(Breezemoon.BREEZEMOON_T_AUTHOR_NAME, author.optString(User.USER_NAME));
-            bm.put(Breezemoon.BREEZEMOON_T_AUTHOR_THUMBNAIL_URL + "48", avatarQueryService.getAvatarURLByUser(avatarViewMode, author, "48"));
-            bm.put(Common.TIME_AGO, Times.getTimeAgo(bm.optLong(Breezemoon.BREEZEMOON_CREATED), Locales.getLocale()));
         }
     }
 }

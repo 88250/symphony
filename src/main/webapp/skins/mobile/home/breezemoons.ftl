@@ -20,7 +20,7 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
 <@home "${type}">
-    <#if permissions["commonAddBreezemoon"].permissionGrant>
+    <#if permissions["commonAddBreezemoon"].permissionGrant && isLoggedIn && currentUser.userName == user.userName>
     <div class="list">
         <ul class="form">
             <li>
@@ -31,6 +31,7 @@
         </ul>
     </div>
     </#if>
+    <#if 0 == user.userCommentStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
     <div class="list">
         <ul id="breezemoonList">
             <#list userHomeBreezemoons as item>
@@ -62,10 +63,11 @@
                                 </span>
                                 &nbsp;&nbsp;
                                  </#if>
-                                <span class="tooltipped tooltipped-n ft-a-title copy"
-                                      aria-label="${copyLabel}">
-                                    <svg><use xlink:href="#articles"></use></svg>
-                                </span>
+                            <#--
+                            <span class="tooltipped tooltipped-n ft-a-title copy" aria-label="${copyLabel}">
+                                <svg><use xlink:href="#articles"></use></svg>
+                            </span>
+                            -->
                                 <textarea
                                         style="position: fixed;left: -10000px;">${servePath}/member/${user.userName}/breezemoons?p=${paginationCurrentPageNum}#${item.oId}</textarea>
                             </div>
@@ -76,5 +78,8 @@
             </#list>
         </ul>
     </div>
-    <@pagination url="${servePath}/member/${user.userName}/breezemoons"/>
+        <@pagination url="${servePath}/member/${user.userName}/breezemoons"/>
+    <#else>
+<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+    </#if>
 </@home>

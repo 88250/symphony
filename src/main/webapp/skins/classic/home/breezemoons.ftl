@@ -40,7 +40,7 @@
        href="${servePath}/member/${user.userName}/breezemoons"<#if type == "breezemoons">
        class="current"</#if>>${breezemoonLabel} &nbsp;<span class="count">${paginationRecordCount}</span></a>
 </div>
-    <#if permissions["commonAddBreezemoon"].permissionGrant>
+    <#if permissions["commonAddBreezemoon"].permissionGrant && isLoggedIn && currentUser.userName == user.userName>
     <div class="list">
         <ul class="form">
             <li>
@@ -51,7 +51,11 @@
         </ul>
     </div>
     </#if>
+    <#if 0 == user.userBreezemoonStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
     <div class="list">
+        <#if userHomeBreezemoons?size == 0>
+        <p class="ft-center ft-gray home-invisible">${chickenEggLabel}</p>
+        </#if>
         <ul id="breezemoonList">
             <#list userHomeBreezemoons as item>
                 <li class="fn-flex" id="${item.oId}">
@@ -82,10 +86,11 @@
                                 </span>
                                 &nbsp;&nbsp;
                                  </#if>
-                                <span class="tooltipped tooltipped-n ft-a-title copy"
-                                      aria-label="${copyLabel}">
-                                    <svg><use xlink:href="#articles"></use></svg>
-                                </span>
+                            <#--
+                            <span class="tooltipped tooltipped-n ft-a-title copy" aria-label="${copyLabel}">
+                                <svg><use xlink:href="#articles"></use></svg>
+                            </span>
+                            -->
                                 <textarea
                                         style="position: fixed;left: -10000px;">${servePath}/member/${user.userName}/breezemoons#${item.oId}</textarea>
                             </div>
@@ -96,5 +101,8 @@
             </#list>
         </ul>
     </div>
-    <@pagination url="${servePath}/member/${user.userName}/breezemoons" pjaxTitle="${breezemoonLabel} - ${user.userName} - ${symphonyLabel}"/>
+        <@pagination url="${servePath}/member/${user.userName}/breezemoons" pjaxTitle="${breezemoonLabel} - ${user.userName} - ${symphonyLabel}"/>
+    <#else>
+<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+    </#if>
 </@home>

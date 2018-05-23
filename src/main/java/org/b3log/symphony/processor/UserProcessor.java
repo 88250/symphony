@@ -254,7 +254,7 @@ public class UserProcessor {
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
-        final JSONObject result = breezemoonQueryService.getFollowingUserBreezemoons(avatarViewMode, followingId, pageNum, pageSize, windowSize);
+        final JSONObject result = breezemoonQueryService.getBreezemoons(avatarViewMode, followingId, pageNum, pageSize, windowSize);
         final List<JSONObject> bms = (List<JSONObject>) result.opt(Breezemoon.BREEZEMOONS);
         dataModel.put(Common.USER_HOME_BREEZEMOONS, bms);
 

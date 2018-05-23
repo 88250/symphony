@@ -94,6 +94,13 @@
         </div>
         <div class="fn-clear">
             <label>
+                <input id="userBreezemoonStatus" <#if 0 == currentUser.userBreezemoonStatus> checked="checked"</#if>
+                       type="checkbox"/>
+                ${userBreezemoonStatusLabel}
+            </label>
+        </div>
+        <div class="fn-clear">
+            <label>
                 <input id="joinPointRank" <#if 0 == currentUser.userJoinPointRank> checked="checked"</#if>
                        type="checkbox"/>
             ${joinBalanceRankLabel}

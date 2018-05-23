@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.38.0.0, May 28, 2018",
+  "version": "4.38.0.1, May 23, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -1550,6 +1550,11 @@
           "name": "userPointStatus",
           "type": "int",
           "description": "0：公开积分列表，1：不公开积分列表"
+        },
+        {
+          "name": "userBreezemoonStatus",
+          "type": "int",
+          "description": "0：公开清风明月列表，1：不公开清风明月列表"
         },
         {
           "name": "userFollowerStatus",

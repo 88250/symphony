@@ -430,6 +430,7 @@ var Settings = {
           userFollowingArticleStatus: $("#userFollowingArticleStatus").prop("checked"),
           userWatchingArticleStatus: $("#userWatchingArticleStatus").prop("checked"),
           userFollowerStatus: $("#userFollowerStatus").prop("checked"),
+          userBreezemoonStatus: $("#userBreezemoonStatus").prop("checked"),
           userPointStatus: $("#userPointStatus").prop("checked"),
           userOnlineStatus: $("#userOnlineStatus").prop("checked"),
           userJoinPointRank: $("#joinPointRank").prop("checked"),
