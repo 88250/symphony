@@ -19,11 +19,11 @@
 -->
 <#include "macro-admin.ftl">
 <#include "../macro-pagination.ftl">
-<@admin "comments">
+<@admin "breezemoons">
 <div class="content admin">
     <div class="module list">
         <ul>
-            <#list comments as item>
+            <#list breezemoons as item>
             <li>
                 <div class="fn-flex">
                     <div class="avatar tooltipped tooltipped-w" style="background-image:url('${item.commentAuthorThumbnailURL}')"

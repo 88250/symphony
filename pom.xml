@@ -363,6 +363,7 @@
                         <include>**/src/*/webapp/WEB-INF/*.xml</include>
                         <include>**/src/*/webapp/*.xml</include>
                         <include>gulpfile.js</include>
+                        <include>**/src/*/webapp/**/*.ftl</include>
                     </includes>
                     <excludes>
                         <exclude>**/src/main/java/**/package-info.java</exclude>
