@@ -129,6 +129,12 @@ button.small,
   text-shadow: initial;
 }
 
+button.absolute {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
 /* end button */
 
 /* start icon */
@@ -2437,3 +2443,7 @@ code .dec {
 }
 
 /* end other */
+#breezemoonList button.absolute {
+  right: 0;
+  top: 0;
+}

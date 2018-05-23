@@ -18,7 +18,6 @@
 
 -->
 <#include "macro-head.ftl">
-<#include "macro-pagination.ftl">
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 <head>
@@ -52,7 +51,7 @@
                 <div class="list">
                     <ul class="form">
                         <li>
-                            <input id="breezemoonInput" type="text">
+                            <input  style="padding-right: 89px;" id="breezemoonInput" type="text">
                             <button onclick="Breezemoon.add()" id="breezemoonBtn"
                                     class="absolute">${breezemoonLabel}</button>
                         </li>

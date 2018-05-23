@@ -40,64 +40,61 @@
        href="${servePath}/member/${user.userName}/breezemoons"<#if type == "breezemoons">
        class="current"</#if>>${breezemoonLabel} &nbsp;<span class="count">${paginationRecordCount}</span></a>
 </div>
-    <#if 0 == user.userFollowerStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
-        <#if permissions["commonAddBreezemoon"].permissionGrant>
-                <div class="list">
-                    <ul class="form">
-                        <li>
-                            <input id="breezemoonInput" type="text">
-                            <button onclick="Breezemoon.add()" id="breezemoonBtn"
-                                    class="absolute">${breezemoonLabel}</button>
-                        </li>
-                    </ul>
-                </div>
-        </#if>
-                <div class="list">
-                    <ul id="breezemoonList">
-                        <#list userHomeBreezemoons as item>
-                            <li class="fn-flex" id="${item.oId}">
-                                <a class="tooltipped tooltipped-n avatar"
-                                   style="background-image:url('${item.breezemoonAuthorThumbnailURL48}')"
-                                   rel="nofollow" href="${servePath}/member/${item.breezemoonAuthorName}"
-                                   aria-label="Vanessa">
-                                </a>
-                                <div class="fn-flex-1">
-                                    <div class="ft-fade">
-                                        <a href="${servePath}/member/${item.breezemoonAuthorName}">${item.breezemoonAuthorName}</a>
-                                        •
-                                        <span class="ft-smaller">
-                                            ${item.timeAgo}
-                                        </span>
-                                        <span class="ft-smaller ua" data-ua="${item.breezemoonUA}"></span>
-
-                                        <div class="fn-right">
-                                             <#if isLoggedIn && permissions["commonAddBreezemoon"].permissionGrant &&
-                                             item.breezemoonAuthorName == currentUser.userName>
-                                            <span class="tooltipped tooltipped-n ft-red rm" aria-label="${removeLabel}">
-                                                <svg><use xlink:href="#remove"></use></svg>
-                                            </span>
-                                            &nbsp;&nbsp;
-                                            <span class="tooltipped tooltipped-n ft-a-title edit"
-                                                  aria-label="${editLabel}">
-                                                <svg><use xlink:href="#edit"></use></svg>
-                                            </span>
-                                            &nbsp;&nbsp;
-                                             </#if>
-                                            <span class="tooltipped tooltipped-n ft-a-title copy"
-                                                  aria-label="${copyLabel}">
-                                                <svg><use xlink:href="#articles"></use></svg>
-                                            </span>
-                                            <textarea style="position: fixed;left: -10000px;">${servePath}/member/${user.userName}/breezemoons#${item.oId}</textarea>
-                                        </div>
-                                    </div>
-                                    <div class="content-reset">${item.breezemoonContent}</div>
-                                </div>
-                            </li>
-                        </#list>
-                    </ul>
-                </div>
-        <@pagination url="${servePath}/member/${user.userName}/breezemoons" pjaxTitle="${breezemoonLabel} - ${user.userName} - ${symphonyLabel}"/>
-    <#else>
-<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+    <#if permissions["commonAddBreezemoon"].permissionGrant>
+    <div class="list">
+        <ul class="form">
+            <li>
+                <input id="breezemoonInput" type="text" style="padding-right: 89px;">
+                <button onclick="Breezemoon.add()" id="breezemoonBtn"
+                        class="absolute">${breezemoonLabel}</button>
+            </li>
+        </ul>
+    </div>
     </#if>
+    <div class="list">
+        <ul id="breezemoonList">
+            <#list userHomeBreezemoons as item>
+                <li class="fn-flex" id="${item.oId}">
+                    <a class="tooltipped tooltipped-n avatar"
+                       style="background-image:url('${item.breezemoonAuthorThumbnailURL48}')"
+                       rel="nofollow" href="${servePath}/member/${item.breezemoonAuthorName}"
+                       aria-label="Vanessa">
+                    </a>
+                    <div class="fn-flex-1">
+                        <div class="ft-fade">
+                            <a href="${servePath}/member/${item.breezemoonAuthorName}">${item.breezemoonAuthorName}</a>
+                            •
+                            <span class="ft-smaller">
+                                ${item.timeAgo}
+                            </span>
+                            <span class="ft-smaller ua" data-ua="${item.breezemoonUA}"></span>
+
+                            <div class="fn-right">
+                                 <#if isLoggedIn && permissions["commonAddBreezemoon"].permissionGrant &&
+                                 item.breezemoonAuthorName == currentUser.userName>
+                                <span class="tooltipped tooltipped-n ft-red rm" aria-label="${removeLabel}">
+                                    <svg><use xlink:href="#remove"></use></svg>
+                                </span>
+                                &nbsp;&nbsp;
+                                <span class="tooltipped tooltipped-n ft-a-title edit"
+                                      aria-label="${editLabel}">
+                                    <svg><use xlink:href="#edit"></use></svg>
+                                </span>
+                                &nbsp;&nbsp;
+                                 </#if>
+                                <span class="tooltipped tooltipped-n ft-a-title copy"
+                                      aria-label="${copyLabel}">
+                                    <svg><use xlink:href="#articles"></use></svg>
+                                </span>
+                                <textarea
+                                        style="position: fixed;left: -10000px;">${servePath}/member/${user.userName}/breezemoons#${item.oId}</textarea>
+                            </div>
+                        </div>
+                        <div class="content-reset">${item.breezemoonContent}</div>
+                    </div>
+                </li>
+            </#list>
+        </ul>
+    </div>
+    <@pagination url="${servePath}/member/${user.userName}/breezemoons" pjaxTitle="${breezemoonLabel} - ${user.userName} - ${symphonyLabel}"/>
 </@home>

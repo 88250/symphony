@@ -19,7 +19,6 @@
 -->
 <#include "macro-head.ftl">
 <#include "macro-list.ftl">
-<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
     <head>
@@ -34,6 +33,7 @@
                     <div class="domains fn-flex">
                         <a class="<#if "" == current>selected</#if>" href="${servePath}/watch">${followingTagsLabel}</a>
                         <a class="<#if "/users" == current>selected</#if>" href="${servePath}/watch/users">${followingUsersLabel}</a>
+                        <a class="<#if "/breezemoon" == current>selected</#if>" href="${servePath}/watch/breezemoons">${breezemoonLabel}</a>
                     </div>
                 <@list listData=watchingArticles/>
             </div>

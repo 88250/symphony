@@ -704,6 +704,8 @@ var Settings = {
 
     if ($.ua.device.type !== 'mobile') {
       Settings.homeScroll();
+    } else {
+      return
     }
 
     $.pjax({
