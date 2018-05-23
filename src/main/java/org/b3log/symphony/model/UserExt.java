@@ -28,7 +28,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.12.0.0, Apr 18, 2018
+ * @version 2.13.0.0, May 23, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -88,6 +88,11 @@ public final class UserExt {
      * Key of forge link status.
      */
     public static final String USER_FORGE_LINK_STATUS = "userForgeLinkStatus";
+
+    /**
+     * Key of user breezemoons status
+     */
+    public static final String USER_BREEZEMOON_STATUS = "userBreezemoonStatus";
 
     /**
      * Key of user point status.
@@ -500,12 +505,12 @@ public final class UserExt {
 
     //// User XXX Status constants
     /**
-     * User XXX (notify/point/follower/following article/following tag/following user/comment/article) status - public.
+     * User XXX (notify/point/follower/following article/following tag/following user/comment/article/breezemoon) status - public.
      */
     public static final int USER_XXX_STATUS_C_PUBLIC = 0;
 
     /**
-     * User XXX (notify/point/follower/following article/watching article/following tag/following user/comment/article) status - private.
+     * User XXX (notify/point/follower/following article/watching article/following tag/following user/comment/article/breezemoon) status - private.
      */
     public static final int USER_XXX_STATUS_C_PRIVATE = 1;
 

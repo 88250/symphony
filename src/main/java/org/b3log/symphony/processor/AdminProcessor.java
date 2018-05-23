@@ -111,7 +111,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.9.4, Apr 6, 2018
+ * @version 2.26.9.5, May 23, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1304,6 +1304,7 @@ public class AdminProcessor {
                 case UserExt.USER_FOLLOWING_TAG_STATUS:
                 case UserExt.USER_FOLLOWING_ARTICLE_STATUS:
                 case UserExt.USER_WATCHING_ARTICLE_STATUS:
+                case UserExt.USER_BREEZEMOON_STATUS:
                 case UserExt.USER_FOLLOWER_STATUS:
                 case UserExt.USER_POINT_STATUS:
                 case UserExt.USER_ONLINE_STATUS:
