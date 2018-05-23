@@ -102,7 +102,7 @@
                             <svg>
                                 <use xlink:href="#addfile"></use>
                             </svg> ${postLabel}</a>
-                        <a pjax-title="${watchingArticlesLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "watchingArticles" || type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers">
+                        <a pjax-title="${watchingArticlesLabel} - ${user.userName} - ${symphonyLabel}" <#if type == "watchingArticles" || type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers" || type == "breezemoons">
                            class="current"</#if>
                            href="${servePath}/member/${user.userName}/watching/articles">
                             <svg>

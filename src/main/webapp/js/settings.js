@@ -737,6 +737,10 @@ var Settings = {
               case '/member/' + Label.userName + '/followers':
                 $('.home-menu a:eq(1)').addClass('current');
                 break;
+              case '/member/' + Label.userName + '/breezemoons':
+                $('.home-menu a:eq(1)').addClass('current');
+                Breezemoon.init();
+                break;
               case '/member/' + Label.userName + '/points':
                 $('.home-menu a:eq(2)').addClass('current');
                 break;
