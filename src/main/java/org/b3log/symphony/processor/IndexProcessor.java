@@ -34,6 +34,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
@@ -132,13 +133,7 @@ public class IndexProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("watch.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         final JSONObject user = Sessions.currentUser(request);
@@ -261,13 +256,7 @@ public class IndexProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("recent.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
         final JSONObject user = userQueryService.getCurrentUser(request);
         if (null != user) {
@@ -440,13 +429,7 @@ public class IndexProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("perfect.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
         final JSONObject user = userQueryService.getCurrentUser(request);
         if (null != user) {

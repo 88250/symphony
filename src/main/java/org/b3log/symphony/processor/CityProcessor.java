@@ -171,12 +171,7 @@ public class CityProcessor {
             return;
         }
 
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageNum = Paginator.getPage(request);
         final int pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
         final int windowSize = Symphonys.getInt("cityArticlesWindowSize");
 
@@ -265,12 +260,7 @@ public class CityProcessor {
             return;
         }
 
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("cityUserPageSize");
         final int windowSize = Symphonys.getInt("cityUsersWindowSize");
 

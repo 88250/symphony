@@ -133,12 +133,7 @@ public class SearchProcessor {
         }
         dataModel.put(Common.KEY, Escapes.escapeHTML(keyword));
 
-        final String p = request.getParameter("p");
-        int pageNum = 1;
-        if (StringUtils.isNotBlank(p) && Strings.isNumeric(p)) {
-            pageNum = Integer.valueOf(p);
-        }
-
+        final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
         final JSONObject user = userQueryService.getCurrentUser(request);
         if (null != user) {

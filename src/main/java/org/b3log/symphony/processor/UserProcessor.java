@@ -230,14 +230,7 @@ public class UserProcessor {
         renderer.setTemplateName("/home/breezemoons.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
-
+        final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeBreezemoonsCnt");
         final int windowSize = Symphonys.getInt("userHomeBreezemoonsWindowSize");
 
@@ -465,13 +458,7 @@ public class UserProcessor {
             return;
         }
 
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
-
+        final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeCmtsCnt");
         final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
 
@@ -555,13 +542,7 @@ public class UserProcessor {
             return;
         }
 
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
-
+        final int pageNum = Paginator.getPage(request);
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
@@ -651,19 +632,7 @@ public class UserProcessor {
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                          final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        int pageNum = 1;
-        try {
-            pageNum = Integer.valueOf(pageNumStr);
-        } catch (final Exception e) {
-            pageNum = 1;
-        }
-
+        final int pageNum = Paginator.getPage(request);
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -748,14 +717,7 @@ public class UserProcessor {
         renderer.setTemplateName("/home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
-
+        final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeCmtsCnt");
         final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
 
@@ -826,14 +788,7 @@ public class UserProcessor {
         renderer.setTemplateName("/home/following-users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
-
+        final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeFollowingUsersCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingUsersWindowSize");
 
@@ -905,14 +860,7 @@ public class UserProcessor {
         renderer.setTemplateName("/home/following-tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
-
+        final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeFollowingTagsCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingTagsWindowSize");
 
@@ -983,14 +931,7 @@ public class UserProcessor {
         renderer.setTemplateName("/home/following-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
-
+        final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeFollowingArticlesCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingArticlesWindowSize");
 
@@ -1062,14 +1003,7 @@ public class UserProcessor {
         renderer.setTemplateName("/home/watching-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
-
+        final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeFollowingArticlesCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingArticlesWindowSize");
 
@@ -1141,14 +1075,7 @@ public class UserProcessor {
         renderer.setTemplateName("/home/followers.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
-
+        final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeFollowersCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowersWindowSize");
 
@@ -1227,14 +1154,7 @@ public class UserProcessor {
         renderer.setTemplateName("/home/points.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
-
+        final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomePointsCnt");
         final int windowSize = Symphonys.getInt("userHomePointsWindowSize");
 
