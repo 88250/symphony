@@ -1,34 +1,14 @@
-<#--
-
-    Symphony - A modern community (forum/BBS/SNS/blog) platform written in Java.
-    Copyright (C) 2012-2018, b3log.org & hacpai.com
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
--->
-<#include "macro-head.ftl">
-<#include "macro-pagination.ftl">
-<!DOCTYPE html>
-<html lang="zh-cmn-Hans">
-<head>
-<@head title="${breezemoonLabel} - ${symphonyLabel}">
-    <meta name="description" content="只与清风、明月为伴。清凉的风，明朗的月。"/>
-</@head>
-    <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}"/>
-</head>
-<body>
-<#include "header.ftl">
+<#include "macro-home.ftl">
+<#include "../macro-pagination.ftl">
+<div class="tabs-sub fn-clear">
+    <a pjax-title="${watchingArticlesLabel} - ${user.userName} - ${symphonyLabel}"  href="${servePath}/member/${user.userName}/watching/articles"<#if type == "watchingUsers"> class="current"</#if>>${watchingArticlesLabel}</a>
+    <a pjax-title="${followingUsersLabel} - ${user.userName} - ${symphonyLabel}"  href="${servePath}/member/${user.userName}/following/users"<#if type == "followingUsers"> class="current"</#if>>${followingUsersLabel}</a>
+    <a pjax-title="${followingTagsLabel} - ${user.userName} - ${symphonyLabel}"  href="${servePath}/member/${user.userName}/following/tags"<#if type == "followingTags"> class="current"</#if>>${followingTagsLabel}</a>
+    <a pjax-title="${followingArticlesLabel} - ${user.userName} - ${symphonyLabel}"  href="${servePath}/member/${user.userName}/following/articles"<#if type == "followingArticles"> class="current"</#if>>${followingArticlesLabel}</a>
+    <a pjax-title="${followersLabel} - ${user.userName} - ${symphonyLabel}"  href="${servePath}/member/${user.userName}/followers"<#if type == "followers"> class="current"</#if>>${followersLabel}</a>
+    <a pjax-title="${breezemoonLabel} - ${user.userName} - ${symphonyLabel}"  href="${servePath}/member/${user.userName}/breezemoons"<#if type == "breezemoons"> class="current"</#if>>${breezemoonLabel} &nbsp;<span class="count">${paginationRecordCount}</span></a>
+</div>
+<#if 0 == user.userFollowerStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="main">
     <div class="wrapper">
         <div class="content fn-clear" id="watch-pjax-container">
@@ -106,36 +86,10 @@
                 </div>
             </div><#if pjax><!---- pjax {#watch-pjax-container} end ----></#if>
         </div>
-        <div class="side">
-        <#include "side.ftl">
-        </div>
     </div>
 </div>
-<#include "common/domains.ftl">
-<#include "footer.ftl">
-<script src="${staticServePath}/js/breezemoon${miniPostfix}.js?${staticResourceVersion}"></script>
-<script>
-    $.pjax({
-        selector: 'a',
-        container: '#watch-pjax-container',
-        show: '',
-        cache: false,
-        storage: true,
-        titleSuffix: '',
-        filter: function (href) {
-            return 0 > href.indexOf('${servePath}/watch')
-        },
-        callback: function () {
-            Util.lazyLoadCSSImage()
-        },
-    })
-    NProgress.configure({showSpinner: false})
-    $('#watch-pjax-container').bind('pjax.start', function () {
-        NProgress.start()
-    })
-    $('#watch-pjax-container').bind('pjax.end', function () {
-        NProgress.done()
-    })
-</script>
-</body>
-</html>
+<@pagination url="${servePath}/member/${user.userName}/followers" pjaxTitle="${followersLabel} - ${user.userName} - ${symphonyLabel}"/>
+<#else>
+<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+</#if>
+</@home>

@@ -44,6 +44,10 @@ var Breezemoon = {
       var $it = $(this)
       Breezemoon.toggleUpdate($it, $it.closest('li').attr('id'))
     })
+    $breezemoonList.find('.copy').each(function () {
+      var $it = $(this)
+      Util.clipboard($it, $it.next())
+    })
   },
   add: function () {
     if (!Label.isLoggedIn) {
