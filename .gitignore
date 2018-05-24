@@ -5,7 +5,6 @@ node_modules/
 **/.DS_store
 .idea/
 symphony.iml
-nb-configuration.xml
 /bin/
 /.settings/
 /.classpath
