@@ -31,7 +31,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Strings;
+import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Breezemoon;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
@@ -180,6 +180,8 @@ public class BreezemoonProcessor {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         final String authorId = user.optString(Keys.OBJECT_ID);
         breezemoon.put(Breezemoon.BREEZEMOON_AUTHOR_ID, authorId);
+        final String ip = Requests.getRemoteAddr(request);
+        breezemoon.put(Breezemoon.BREEZEMOON_IP, ip);
         final String ua = Headers.getHeader(request, Common.USER_AGENT);
         breezemoon.put(Breezemoon.BREEZEMOON_UA, ua);
 
@@ -224,6 +226,8 @@ public class BreezemoonProcessor {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         final String authorId = user.optString(Keys.OBJECT_ID);
         breezemoon.put(Breezemoon.BREEZEMOON_AUTHOR_ID, authorId);
+        final String ip = Requests.getRemoteAddr(request);
+        breezemoon.put(Breezemoon.BREEZEMOON_IP, ip);
         final String ua = Headers.getHeader(request, Common.USER_AGENT);
         breezemoon.put(Breezemoon.BREEZEMOON_UA, ua);
 

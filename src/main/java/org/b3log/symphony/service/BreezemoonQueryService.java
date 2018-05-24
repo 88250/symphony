@@ -294,6 +294,23 @@ public class BreezemoonQueryService {
         return ret;
     }
 
+    /**
+     * Gets a breezemoon by the specified id.
+     *
+     * @param breezemoonId the specified id
+     * @return breezemoon, return {@code null} if not found
+     * @throws ServiceException service exception
+     */
+    public JSONObject getBreezemoon(final String breezemoonId) throws ServiceException {
+        try {
+            return breezemoonRepository.get(breezemoonId);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets a breezemoon [id=" + breezemoonId + "] failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
+
     private void organizeBreezemoons(final int avatarViewMode, final String currentUserId, final List<JSONObject> breezemoons) throws Exception {
         final Iterator<JSONObject> iterator = breezemoons.iterator();
         while (iterator.hasNext()) {

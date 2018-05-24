@@ -37,6 +37,9 @@
         <#if type == "comments">
         <@head title="${commentAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "breezemoons">
+        <@head title="${breezemoonAdminLabel} - ${symphonyLabel}"></@head>
+        </#if>
         <#if type == "addDomain">
         <@head title="${addDomainLabel} - ${symphonyLabel}"></@head>
         </#if>
@@ -89,6 +92,9 @@
                     <#if type == "comments" && permissions["menuAdminComments"].permissionGrant>
                     ${commentAdminLabel}
                     </#if>
+                    <#if type == "breezemoons" && permissions["menuAdminBreezemoons"].permissionGrant>
+                    ${breezemoonAdminLabel}
+                    </#if>
                     <#if (type == "domains" || type == "addDomain") && permissions["menuAdminDomains"].permissionGrant>
                     ${domainAdminLabel}
                     </#if>
@@ -125,6 +131,9 @@
                     </#if>
                     <#if permissions["menuAdminComments"].permissionGrant>
                     <li<#if type == "comments"> class="fn-none"</#if>><a href="${servePath}/admin/comments">${commentAdminLabel}</a></li>
+                    </#if>
+                    <#if permissions["menuAdminBreezemoons"].permissionGrant>
+                    <li<#if type == "breezemoons"> class="fn-none"</#if>><a href="${servePath}/admin/breezemoons">${breezemoonAdminLabel}</a></li>
                     </#if>
                     <#if permissions["menuAdminDomains"].permissionGrant>
                     <li<#if type == "domains" || type == "addDomain"> class="fn-none"</#if>><a href="${servePath}/admin/domains">${domainAdminLabel}</a></li>

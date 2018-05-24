@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all breeze moon model relevant keys. https://github.com/b3log/symphony/issues/507
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, May 21, 2018
+ * @version 1.1.0.0, May 24, 2018
  * @since 2.8.0
  */
 public final class Breezemoon {
@@ -55,6 +55,11 @@ public final class Breezemoon {
      * Key of breezemoon updated at.
      */
     public static final String BREEZEMOON_UPDATED = "breezemoonUpdated";
+
+    /**
+     * Key of breezemoon IP.
+     */
+    public static final String BREEZEMOON_IP = "breezemoonIP";
 
     /**
      * Key of breezemoon UA.

@@ -86,6 +86,7 @@ import java.util.*;
  * <li>Updates a comment (/admin/comment/{commentId}), POST</li>
  * <li>Removes a comment (/admin/remove-comment), POST</li>
  * <li>Show breezemoons (/admin/breezemoons), GET</li>
+ * <li>Showas a breezemoon (/admin/breezemoon/{breezemoonId}), GET</li>
  * <li>Updates a breezemoon (/admin/breezemoon/{breezemoonId}), POST</li>
  * <li>Removes a breezemoon (/admin/remove-breezemoon), POST</li>
  * <li>Shows domains (/admin/domains, GET</li>
@@ -274,6 +275,12 @@ public class AdminProcessor {
     private BreezemoonQueryService breezemoonQueryService;
 
     /**
+     * Breezemoon management service.
+     */
+    @Inject
+    private BreezemoonMgmtService breezemoonMgmtService;
+
+    /**
      * Show admin breezemoons.
      *
      * @param context  the specified context
@@ -320,6 +327,90 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows a breezemoon.
+     *
+     * @param context      the specified context
+     * @param request      the specified request
+     * @param response     the specified response
+     * @param breezemoonId the specified breezemoon id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/breezemoon/{breezemoonId}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                               final String breezemoonId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/breezemoon.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject breezemoon = breezemoonQueryService.getBreezemoon(breezemoonId);
+        Escapes.escapeHTML(breezemoon);
+        dataModel.put(Breezemoon.BREEZEMOON, breezemoon);
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Updates a breezemoon.
+     *
+     * @param context      the specified context
+     * @param request      the specified request
+     * @param response     the specified response
+     * @param breezemoonId the specified breezemoon id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/breezemoon/{breezemoonId}", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void updateBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                                 final String breezemoonId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/breezemoon.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        JSONObject breezemoon = breezemoonQueryService.getBreezemoon(breezemoonId);
+
+        final Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            final String name = parameterNames.nextElement();
+            final String value = request.getParameter(name);
+
+            if (name.equals(Breezemoon.BREEZEMOON_STATUS)) {
+                breezemoon.put(name, Integer.valueOf(value));
+            } else {
+                breezemoon.put(name, value);
+            }
+        }
+
+        breezemoonMgmtService.updateBreezemoon(breezemoon);
+
+        breezemoon = breezemoonQueryService.getBreezemoon(breezemoonId);
+        dataModel.put(Breezemoon.BREEZEMOON, breezemoon);
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Removes a breezemoon.
+     *
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/remove-breezemoon", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void removeBreezemoon(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final String id = request.getParameter(Common.ID);
+        breezemoonMgmtService.removeBreezemoon(id);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/breezemoons");
     }
 
     /**

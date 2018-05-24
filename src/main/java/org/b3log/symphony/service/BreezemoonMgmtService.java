@@ -75,6 +75,7 @@ public class BreezemoonMgmtService {
      * @param requestJSONObject the specified request json object, for example,
      *                          "breezemoonContent": "",
      *                          "breezemoonAuthorId": "",
+     *                          "breezemoonIP": "",
      *                          "breezemoonUA": ""
      * @throws ServiceException service exception
      */
@@ -87,6 +88,7 @@ public class BreezemoonMgmtService {
         final JSONObject bm = new JSONObject();
         bm.put(Breezemoon.BREEZEMOON_CONTENT, content);
         bm.put(Breezemoon.BREEZEMOON_AUTHOR_ID, requestJSONObject.optString(Breezemoon.BREEZEMOON_AUTHOR_ID));
+        bm.put(Breezemoon.BREEZEMOON_IP, requestJSONObject.optString(Breezemoon.BREEZEMOON_IP));
         bm.put(Breezemoon.BREEZEMOON_UA, requestJSONObject.optString(Breezemoon.BREEZEMOON_UA));
         final long now = System.currentTimeMillis();
         bm.put(Breezemoon.BREEZEMOON_CREATED, now);
@@ -109,7 +111,9 @@ public class BreezemoonMgmtService {
      *                          "oId": "",
      *                          "breezemoonContent": "",
      *                          "breezemoonAuthorId": "",
-     *                          "breezemoonUA": ""
+     *                          "breezemoonIP": "",
+     *                          "breezemoonUA": "",
+     *                          "breezemoonStatus": "" // optional, 0 as default
      * @throws ServiceException service exception
      */
     @Transactional
@@ -135,7 +139,9 @@ public class BreezemoonMgmtService {
 
         old.put(Breezemoon.BREEZEMOON_CONTENT, content);
         old.put(Breezemoon.BREEZEMOON_AUTHOR_ID, requestJSONObject.optString(Breezemoon.BREEZEMOON_AUTHOR_ID));
+        old.put(Breezemoon.BREEZEMOON_IP, requestJSONObject.optString(Breezemoon.BREEZEMOON_IP));
         old.put(Breezemoon.BREEZEMOON_UA, requestJSONObject.optString(Breezemoon.BREEZEMOON_UA));
+        old.put(Breezemoon.BREEZEMOON_STATUS, requestJSONObject.optInt(Breezemoon.BREEZEMOON_STATUS, Breezemoon.BREEZEMOON_STATUS_C_VALID));
         final long now = System.currentTimeMillis();
         old.put(Breezemoon.BREEZEMOON_UPDATED, now);
 
