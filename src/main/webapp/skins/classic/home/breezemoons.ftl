@@ -74,11 +74,12 @@
                             <span class="ft-smaller ua" data-ua="${item.breezemoonUA}"></span>
 
                             <div class="fn-right">
-                                 <#if isLoggedIn && permissions["commonAddBreezemoon"].permissionGrant &&
-                                 item.breezemoonAuthorName == currentUser.userName>
+                                <#if isLoggedIn && permissions["commonRemoveBreezemoon"].permissionGrant && item.breezemoonAuthorName == currentUser.userName>
                                 <span class="tooltipped tooltipped-n ft-red rm" aria-label="${removeLabel}">
                                     <svg><use xlink:href="#remove"></use></svg>
                                 </span>
+                                </#if>
+                                <#if isLoggedIn && permissions["commonUpdateBreezemoon"].permissionGrant && item.breezemoonAuthorName == currentUser.userName>
                                 &nbsp;&nbsp;
                                 <span class="tooltipped tooltipped-n ft-a-title edit"
                                       aria-label="${editLabel}">
