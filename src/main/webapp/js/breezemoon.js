@@ -27,12 +27,15 @@
  * @static
  */
 var Breezemoon = {
+  csrfToken: '',
   init: function () {
     $('#breezemoonInput').keyup(function (event) {
       if (event.keyCode === 13) {
         Breezemoon.add()
       }
     })
+
+    this.csrfToken =  $('#breezemoonBtn').data('csrftoken')
 
     var $breezemoonList = $('#breezemoonList')
     $breezemoonList.on('click', '.rm', function () {
@@ -71,7 +74,7 @@ var Breezemoon = {
       url: Label.servePath + '/breezemoon',
       type: 'POST',
       cache: false,
-      headers: {'csrfToken': Label.csrfToken},
+      headers: {'csrfToken': this.csrfToken},
       data: JSON.stringify({
         breezemoonContent: $('#breezemoonInput').val(),
       }),
@@ -93,7 +96,7 @@ var Breezemoon = {
       $.ajax({
         url: Label.servePath + '/breezemoon/' + id,
         type: 'DELETE',
-        headers: {'csrfToken': Label.csrfToken},
+        headers: {'csrfToken': this.csrfToken},
         cache: false,
         success: function (result) {
           if (result.sc === 0) {
@@ -137,7 +140,7 @@ var Breezemoon = {
       url: Label.servePath + '/breezemoon/' + id,
       type: 'PUT',
       cache: false,
-      headers: {'csrfToken': Label.csrfToken},
+      headers: {'csrfToken': this.csrfToken},
       data: JSON.stringify({
         breezemoonContent: val,
       }),

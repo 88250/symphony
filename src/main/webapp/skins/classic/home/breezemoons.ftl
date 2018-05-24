@@ -45,7 +45,7 @@
         <ul class="form">
             <li>
                 <input id="breezemoonInput" type="text" style="padding-right: 89px;">
-                <button onclick="Breezemoon.add()" id="breezemoonBtn"
+                <button onclick="Breezemoon.add()" id="breezemoonBtn"  data-csrftoken="${csrfToken}"
                         class="absolute">${breezemoonLabel}</button>
             </li>
         </ul>
