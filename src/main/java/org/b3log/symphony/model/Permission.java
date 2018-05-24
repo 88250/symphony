@@ -26,7 +26,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.0.0, May 22, 2018
+ * @version 1.11.0.1, May 24, 2018
  * @since 1.8.0
  */
 public final class Permission {
@@ -272,6 +272,16 @@ public final class Permission {
      * Id - comment - remove comment.
      */
     public static final String PERMISSION_ID_C_COMMENT_REMOVE_COMMENT = "commentRemoveComment";
+
+    /**
+     * Id - breezemoon - update breezemoon.
+     */
+    public static final String PERMISSION_ID_C_BREEZEMOON_UPDATE_BREEZEMOON = "breezemoonUpdateBreezemoon";
+
+    /**
+     * Id - breezemoon - remove breezemoon.
+     */
+    public static final String PERMISSION_ID_C_BREEZEMOON_REMOVE_BREEZEMOON = "breezemoonRemoveBreezemoon";
 
     /**
      * Id - domain - add domain.

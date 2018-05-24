@@ -38,6 +38,9 @@
         <@head title="${commentAdminLabel} - ${symphonyLabel}">
         <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
         </@head>
+        <#if type == "breezemoons">
+        <@head title="${breezemoonAdminLabel} - ${symphonyLabel}">
+        </@head>
         </#if>
         <#if type == "addDomain">
         <@head title="${addDomainLabel} - ${symphonyLabel}"></@head>
@@ -94,6 +97,9 @@
                                 </#if>
                                 <#if permissions["menuAdminComments"].permissionGrant>
                                 <a href="${servePath}/admin/comments"<#if type == "comments"> class="current"</#if>>${commentAdminLabel}</a>
+                                </#if>
+                                <#if permissions["menuAdminBreezemoons"].permissionGrant>
+                                <a href="${servePath}/admin/breezemoons"<#if type == "breezemoons"> class="current"</#if>>${breezemoonAdminLabel}</a>
                                 </#if>
                                 <#if permissions["menuAdminDomains"].permissionGrant>
                                 <a href="${servePath}/admin/domains"<#if type == "domains" || type == "addDomain"> class="current"</#if>>${domainAdminLabel}</a>
