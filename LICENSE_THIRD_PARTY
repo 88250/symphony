@@ -44,3 +44,5 @@ md5: BSD
 reconnecting-websocket: MIT
 to-markdown: MIT
 ua-parser: MIT
+diff2html: MIT
+flowchart: MIT
