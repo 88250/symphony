@@ -81,10 +81,13 @@ import java.util.*;
  * <li>Removes an article (/admin/remove-article), POST</li>
  * <li>Shows add article (/admin/add-article), GET</li>
  * <li>Adds an article (/admin/add-article), POST</li>
- * <li>Shows comments (/admin/comments), GET</li>
- * <li>Show a comment (/admin/comment/{commentId}), GET</li>
+ * <li>Show comments (/admin/comments), GET</li>
+ * <li>Shows a comment (/admin/comment/{commentId}), GET</li>
  * <li>Updates a comment (/admin/comment/{commentId}), POST</li>
  * <li>Removes a comment (/admin/remove-comment), POST</li>
+ * <li>Show breezemoons (/admin/breezemoons), GET</li>
+ * <li>Updates a breezemoon (/admin/breezemoon/{breezemoonId}), POST</li>
+ * <li>Removes a breezemoon (/admin/remove-breezemoon), POST</li>
  * <li>Shows domains (/admin/domains, GET</li>
  * <li>Show a domain (/admin/domain/{domainId}, GET</li>
  * <li>Updates a domain (/admin/domain/{domainId}), POST</li>
@@ -263,6 +266,52 @@ public class AdminProcessor {
      */
     @Inject
     private DataModelService dataModelService;
+
+    /**
+     * Breezemoon query service.
+     */
+    @Inject
+    private BreezemoonQueryService breezemoonQueryService;
+
+    /**
+     * Show admin breezemoons.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/breezemoons", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showBreezemoons(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/breezemoons.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        final int pageNum = Paginator.getPage(request);
+        final int pageSize = PAGE_SIZE;
+        final int windowSize = WINDOW_SIZE;
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        //breezemoonQueryService.getBreezemoons(avatarViewMode, )
+
+
+        final JSONObject result = null;
+        dataModel.put(Comment.COMMENTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Comment.COMMENTS)));
+
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
+        final JSONArray pageNums = pagination.optJSONArray(Pagination.PAGINATION_PAGE_NUMS);
+        dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.opt(0));
+        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.opt(pageNums.length() - 1));
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+    }
 
     /**
      * Removes unused tags.

@@ -38,9 +38,9 @@
         <@head title="${commentAdminLabel} - ${symphonyLabel}">
         <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
         </@head>
+        </#if>
         <#if type == "breezemoons">
-        <@head title="${breezemoonAdminLabel} - ${symphonyLabel}">
-        </@head>
+        <@head title="${breezemoonAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
         <#if type == "addDomain">
         <@head title="${addDomainLabel} - ${symphonyLabel}"></@head>

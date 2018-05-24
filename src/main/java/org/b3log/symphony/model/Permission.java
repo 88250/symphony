@@ -489,6 +489,10 @@ public final class Permission {
      */
     public static final int PERMISSION_CATEGORY_C_MENU = 10;
 
+    /**
+     * Category - breezemoon management.
+     */
+    public static final int PERMISSION_CATEGORY_C_BREEZEMOON = 11;
 
     /**
      * Private constructor.

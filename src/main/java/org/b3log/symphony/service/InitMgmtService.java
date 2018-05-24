@@ -43,7 +43,7 @@ import java.util.Set;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.9, May 22, 2018
+ * @version 1.2.1.10, May 24, 2018
  * @since 1.8.0
  */
 @Service
@@ -352,6 +352,14 @@ public class InitMgmtService {
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMENT_REMOVE_COMMENT);
             permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_COMMENT_UPDATE_COMMENT_BASIC);
+            permissionRepository.add(permission);
+
+            // breezemoon management permissions
+            permission.put(Permission.PERMISSION_CATEGORY, Permission.PERMISSION_CATEGORY_C_BREEZEMOON);
+
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_BREEZEMOON_REMOVE_BREEZEMOON);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_BREEZEMOON_UPDATE_BREEZEMOON);
             permissionRepository.add(permission);
 
             // common permissions

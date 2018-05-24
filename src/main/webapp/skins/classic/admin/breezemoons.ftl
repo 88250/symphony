@@ -26,28 +26,27 @@
             <#list breezemoons as item>
             <li>
                 <div class="fn-flex">
-                    <div class="avatar tooltipped tooltipped-w" style="background-image:url('${item.commentAuthorThumbnailURL}')"
-                         aria-label="${item.commentAuthorName}"></div>
+                    <div class="avatar tooltipped tooltipped-w" style="background-image:url('${item.breezemoonAuthorThumbnailURL}')"
+                         aria-label="${item.breezemoonAuthorName}"></div>
                     <div class="fn-flex-1">
                         <h2>
-                            <a href="${servePath}${item.commentSharpURL}">${item.commentArticleTitle}</a>
                             <span class="ft-smaller ft-gray">
-                            <#if item.commentStatus == 0>${validLabel}<#else>
+                            <#if item.breezemoonStatus == 0>${validLabel}<#else>
                             <font class="ft-red">${banLabel}</font>
-                            </#if> • ${item.commentCreateTime?string('yyyy-MM-dd HH:mm')}
+                            </#if> • ${item.breezemoonCreated}
                             </span>
                         </h2>
 
                         <div class="content-reset">
-                            ${item.commentContent}
+                            ${item.breezemoonContent}
                         </div>
                     </div>
-                    <a href="${servePath}/admin/comment/${item.oId}" class="fn-right tooltipped tooltipped-e ft-a-title" aria-label="${editLabel}"><svg><use xlink:href="#edit"></use></svg></a>
+                    <a href="${servePath}/admin/breezemoon/${item.oId}" class="fn-right tooltipped tooltipped-e ft-a-title" aria-label="${editLabel}"><svg><use xlink:href="#edit"></use></svg></a>
                 </div>
             </li>
             </#list>
         </ul>
-        <@pagination url="${servePath}/admin/comments"/>
+        <@pagination url="${servePath}/admin/breezemoons"/>
     </div>
 </div>
 </@admin>
