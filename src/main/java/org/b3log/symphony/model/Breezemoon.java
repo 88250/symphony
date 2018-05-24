@@ -88,5 +88,10 @@ public final class Breezemoon {
      * Key of breezemoon author thumbnail URL.
      */
     public static final String BREEZEMOON_T_AUTHOR_THUMBNAIL_URL = "breezemoonAuthorThumbnailURL";
+
+    /**
+     * Key of breezemoon create time.
+     */
+    public static final String BREEZEMOON_T_CREATE_TIME = "breezemoonCreateTime";
 }
 

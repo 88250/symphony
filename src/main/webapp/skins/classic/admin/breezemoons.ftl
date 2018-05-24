@@ -26,14 +26,14 @@
             <#list breezemoons as item>
             <li>
                 <div class="fn-flex">
-                    <div class="avatar tooltipped tooltipped-w" style="background-image:url('${item.breezemoonAuthorThumbnailURL}')"
+                    <div class="avatar tooltipped tooltipped-w" style="background-image:url('${item.breezemoonAuthorThumbnailURL48}')"
                          aria-label="${item.breezemoonAuthorName}"></div>
                     <div class="fn-flex-1">
                         <h2>
                             <span class="ft-smaller ft-gray">
                             <#if item.breezemoonStatus == 0>${validLabel}<#else>
                             <font class="ft-red">${banLabel}</font>
-                            </#if> • ${item.breezemoonCreated}
+                            </#if> • ${item.breezemoonCreateTime?string('yyyy-MM-dd HH:mm')}
                             </span>
                         </h2>
 

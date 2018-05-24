@@ -295,11 +295,20 @@ public class AdminProcessor {
         final int windowSize = WINDOW_SIZE;
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        //breezemoonQueryService.getBreezemoons(avatarViewMode, )
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
+        requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
+        final Map<String, Class<?>> fields = new HashMap<>();
+        fields.put(Keys.OBJECT_ID, String.class);
+        fields.put(Breezemoon.BREEZEMOON_CONTENT, String.class);
+        fields.put(Breezemoon.BREEZEMOON_CREATED, Long.class);
+        fields.put(Breezemoon.BREEZEMOON_AUTHOR_ID, String.class);
+        fields.put(Breezemoon.BREEZEMOON_STATUS, Integer.class);
 
-        final JSONObject result = null;
-        dataModel.put(Comment.COMMENTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Comment.COMMENTS)));
+        final JSONObject result = breezemoonQueryService.getBreezemoons(avatarViewMode, requestJSONObject, fields);
+        dataModel.put(Breezemoon.BREEZEMOONS, CollectionUtils.jsonArrayToList(result.optJSONArray(Breezemoon.BREEZEMOONS)));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
