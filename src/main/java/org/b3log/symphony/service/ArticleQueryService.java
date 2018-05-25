@@ -1125,7 +1125,7 @@ public class ArticleQueryService {
 
             if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
                     || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
-                return langPropsService.get("articleContentBlockLabel");
+                return Jsoup.clean(langPropsService.get("articleContentBlockLabel"), Whitelist.none());
             }
 
             final Set<String> userNames = userQueryService.getUserNames(ret);
@@ -2319,7 +2319,7 @@ public class ArticleQueryService {
                 article.put(Article.ARTICLE_T_TITLE_EMOJI, langPropsService.get("articleTitleBlockLabel"));
                 article.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, langPropsService.get("articleTitleBlockLabel"));
                 article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
-                article.put(Article.ARTICLE_T_PREVIEW_CONTENT, langPropsService.get("articleContentBlockLabel"));
+                article.put(Article.ARTICLE_T_PREVIEW_CONTENT, Jsoup.clean(langPropsService.get("articleContentBlockLabel"), Whitelist.none()));
                 article.put(Article.ARTICLE_T_TOC, "");
                 article.put(Article.ARTICLE_REWARD_CONTENT, "");
                 article.put(Article.ARTICLE_REWARD_POINT, 0);
