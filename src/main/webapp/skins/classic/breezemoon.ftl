@@ -47,17 +47,6 @@
                            href="${servePath}/watch/breezemoons">${breezemoonLabel}</a>
                     </span>
                 </div>
-                <#if permissions["commonAddBreezemoon"].permissionGrant>
-                <div class="list">
-                    <ul class="form">
-                        <li>
-                            <input  style="padding-right: 89px;" id="breezemoonInput" type="text">
-                            <button onclick="Breezemoon.add()" id="breezemoonBtn" data-csrftoken="${csrfToken}"
-                                    class="absolute">${breezemoonLabel}</button>
-                        </li>
-                    </ul>
-                </div>
-                </#if>
                 <div class="list">
                     <ul id="breezemoonList">
                         <#list watchingBreezemoons as item>
