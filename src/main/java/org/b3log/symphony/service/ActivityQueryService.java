@@ -32,11 +32,9 @@ import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.repository.UserRepository;
-import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +42,7 @@ import java.util.List;
  * Activity query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.5, Sep 23, 2016
+ * @version 1.5.1.6, May 27, 2018
  * @since 1.3.0
  */
 @Service
@@ -209,19 +207,10 @@ public class ActivityQueryService {
     public synchronized boolean isCheckedinToday(final String userId) {
         Stopwatchs.start("Checks checkin");
         try {
-            final Calendar calendar = Calendar.getInstance();
-            final int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            if (hour < Symphonys.getInt("activityDailyCheckinTimeMin")
-                    || hour > Symphonys.getInt("activityDailyCheckinTimeMax")) {
-                return true;
-            }
-
-            final Date now = new Date();
-
             final JSONObject user = userRepository.get(userId);
-
             final long time = user.optLong(UserExt.USER_CHECKIN_TIME);
-            return DateUtils.isSameDay(now, new Date(time));
+
+            return DateUtils.isSameDay(new Date(), new Date(time));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Checks checkin failed", e);
 
