@@ -86,7 +86,7 @@ import java.util.*;
  * <li>Updates a comment (/admin/comment/{commentId}), POST</li>
  * <li>Removes a comment (/admin/remove-comment), POST</li>
  * <li>Show breezemoons (/admin/breezemoons), GET</li>
- * <li>Showas a breezemoon (/admin/breezemoon/{breezemoonId}), GET</li>
+ * <li>Shows a breezemoon (/admin/breezemoon/{breezemoonId}), GET</li>
  * <li>Updates a breezemoon (/admin/breezemoon/{breezemoonId}), POST</li>
  * <li>Removes a breezemoon (/admin/remove-breezemoon), POST</li>
  * <li>Shows domains (/admin/domains, GET</li>
