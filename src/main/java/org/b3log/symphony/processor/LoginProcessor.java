@@ -70,8 +70,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="http://vanessa.b3log.org">LiYuan Li</a>
- * @version 1.13.12.1, May 17, 2018
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.13.12.2, May 31, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -375,7 +375,7 @@ public class LoginProcessor {
             context.renderTrueResult().renderMsg(langPropsService.get("verifycodeSentLabel"));
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("resetPwdLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", email);
+            LOGGER.log(Level.ERROR, msg + "[email=" + email + "]");
 
             context.renderMsg(msg);
         }

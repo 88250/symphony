@@ -19,7 +19,6 @@ package org.b3log.symphony.processor;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -49,16 +48,11 @@ import java.util.Set;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.4, Apr 12, 2018
+ * @version 1.3.0.5, May 31, 2018
  * @since 1.3.0
  */
 @RequestProcessor
 public class VoteProcessor {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(VoteProcessor.class);
 
     /**
      * Holds votes.

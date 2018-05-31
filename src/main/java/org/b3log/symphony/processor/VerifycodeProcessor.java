@@ -18,7 +18,6 @@
 package org.b3log.symphony.processor;
 
 import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -37,16 +36,11 @@ import javax.servlet.http.HttpServletResponse;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Feb 23, 2018
+ * @version 1.0.0.5, May 31, 2018
  * @since 1.3.0
  */
 @RequestProcessor
 public class VerifycodeProcessor {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(VerifycodeProcessor.class);
 
     /**
      * Verifycode management service.
