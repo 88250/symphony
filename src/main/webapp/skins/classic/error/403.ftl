@@ -31,7 +31,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="module">
-                    <h2 class="sub-head">${reloginLabel}</h2>
+                    <h2 class="sub-head">${sc403Label}</h2>
                     <div class="need-login">
                         <button onclick="Util.goLogin()" class="red">${loginLabel}</button> &nbsp;
                         <button onclick="Util.goRegister()" class="green">${nowLabel}${registerLabel}</button>

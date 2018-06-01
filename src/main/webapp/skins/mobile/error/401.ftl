@@ -21,7 +21,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="403 Forbidden! - ${symphonyLabel}">
+        <@head title="401 Unauthorized! - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
     </head>
@@ -29,7 +29,7 @@
         <#include "../header.ftl">
         <div class="slogan">
             <div class="wrapper block">
-                <h2>${sc403Label}</h2>
+                <h2>${reloginLabel}</h2>
                 <div class="slogan-border fn-clear">
                     <div class="slogan-register">
                         <button onclick="Util.goRegister()" class="green">${nowLabel}${registerLabel}</button>
