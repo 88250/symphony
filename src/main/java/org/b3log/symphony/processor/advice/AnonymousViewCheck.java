@@ -140,7 +140,7 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
 
         final JSONObject exception401 = new JSONObject();
         exception401.put(Keys.MSG, HttpServletResponse.SC_UNAUTHORIZED + ", " + request.getRequestURI());
-        exception401.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+        exception401.put(Keys.STATUS_CODE, HttpServletResponse.SC_UNAUTHORIZED);
 
         if (requestURI.startsWith(Latkes.getContextPath() + "/article/")) {
             final String articleId = StringUtils.substringAfter(requestURI, Latkes.getContextPath() + "/article/");
