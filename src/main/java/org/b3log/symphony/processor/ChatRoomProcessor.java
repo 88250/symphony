@@ -33,6 +33,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
+import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
@@ -225,7 +226,7 @@ public class ChatRoomProcessor {
      * @param request the specified request
      */
     @RequestProcessing(value = "/chat-room/send", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {ChatMsgAddValidation.class})
+    @Before(adviceClass = {LoginCheck.class, ChatMsgAddValidation.class})
     public synchronized void addChatRoomMsg(final HTTPRequestContext context, final HttpServletRequest request) {
         context.renderJSON();
 

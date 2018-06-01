@@ -42,7 +42,7 @@ import java.util.Map;
  * Validates for activity 1A0001.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Aug 22, 2016
+ * @version 1.0.0.4, Jun 2, 2018
  * @since 1.3.0
  */
 @Named
@@ -72,10 +72,6 @@ public class Activity1A0001Validation extends BeforeRequestProcessAdvice {
         final HttpServletRequest request = context.getRequest();
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
-        if (null == currentUser) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("reloginLabel")));
-        }
-
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int currentLiveness = livenessQueryService.getCurrentLivenessPoint(userId);
         final int livenessMax = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");

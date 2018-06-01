@@ -44,7 +44,7 @@ import java.util.Map;
  * Validates for chat message adding.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Apr 12, 2016
+ * @version 1.0.0.2, Jun 2, 2018
  * @since 1.4.0
  */
 @Named
@@ -83,13 +83,7 @@ public class ChatMsgAddValidation extends BeforeRequestProcessAdvice {
             requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             request.setAttribute(Keys.REQUEST, requestJSONObject);
 
-            final JSONObject currentUser = userQueryService.getCurrentUser(request);
-            if (null == currentUser) {
-                throw new Exception(langPropsService.get("reloginLabel"));
-            }
-
-            request.setAttribute(User.USER, currentUser);
-
+            final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
             if (System.currentTimeMillis() - currentUser.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepChatTime")
                     && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
                 throw new Exception(langPropsService.get("tooFrequentCmtLabel"));

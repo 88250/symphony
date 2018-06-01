@@ -41,7 +41,7 @@ import java.util.Map;
  * Validates for user point transfer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Apr 23, 2016
+ * @version 1.0.1.2, Jun 2, 2018
  * @since 1.3.0
  */
 @Named
@@ -95,10 +95,6 @@ public class PointTransferValidation extends BeforeRequestProcessAdvice {
         request.setAttribute(Common.TO_USER, toUser);
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
-        if (null == currentUser) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("reloginLabel")));
-        }
-
         if (UserExt.USER_STATUS_C_VALID != currentUser.optInt(UserExt.USER_STATUS)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
         }
