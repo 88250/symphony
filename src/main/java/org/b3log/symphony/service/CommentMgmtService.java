@@ -300,9 +300,6 @@ public class CommentMgmtService {
      *                          "commentOriginalCommentId": "", // optional
      *                          "clientCommentId": "" // optional,
      *                          "commentAuthorName": "" // If from client
-     *                          "commenter": {
-     *                          // User model
-     *                          },
      *                          "commentIP": "", // optional, default to ""
      *                          "commentUA": "", // optional, default to ""
      *                          "commentAnonymous": int, // optional, default to 0 (public)
@@ -313,8 +310,22 @@ public class CommentMgmtService {
      */
     public synchronized String addComment(final JSONObject requestJSONObject) throws ServiceException {
         final long currentTimeMillis = System.currentTimeMillis();
-        final JSONObject commenter = requestJSONObject.optJSONObject(Comment.COMMENT_T_COMMENTER);
         final String commentAuthorId = requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID);
+        JSONObject commenter;
+        try {
+            commenter = userRepository.get(commentAuthorId);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets comment author failed", e);
+
+            throw new ServiceException(langPropsService.get("systemErrLabel"));
+        }
+
+        if (null == commenter) {
+            LOGGER.log(Level.ERROR, "Not found user [id=" + commentAuthorId + "]");
+
+            throw new ServiceException(langPropsService.get("systemErrLabel"));
+        }
+
         final boolean fromClient = requestJSONObject.has(Comment.COMMENT_CLIENT_COMMENT_ID);
         final String articleId = requestJSONObject.optString(Comment.COMMENT_ON_ARTICLE_ID);
         final String ip = requestJSONObject.optString(Comment.COMMENT_IP);

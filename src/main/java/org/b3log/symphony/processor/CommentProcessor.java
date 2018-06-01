@@ -469,7 +469,6 @@ public class CommentProcessor {
 
             final String commentAuthorId = currentUser.optString(Keys.OBJECT_ID);
             comment.put(Comment.COMMENT_AUTHOR_ID, commentAuthorId);
-            comment.put(Comment.COMMENT_T_COMMENTER, currentUser);
             comment.put(Comment.COMMENT_ANONYMOUS, isAnonymous
                     ? Comment.COMMENT_ANONYMOUS_C_ANONYMOUS : Comment.COMMENT_ANONYMOUS_C_PUBLIC);
 

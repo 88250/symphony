@@ -197,10 +197,6 @@ public class ChatRoomProcessor {
                     comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, notification.optString(Comment.COMMENT_T_ID));
 
-                    xiaoV.remove(UserExt.USER_T_POINT_CC);
-                    xiaoV.remove(UserExt.USER_T_POINT_HEX);
-                    comment.put(Comment.COMMENT_T_COMMENTER, xiaoV);
-
                     commentMgmtService.addComment(comment);
                 }
             }
