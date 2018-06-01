@@ -43,7 +43,7 @@ import java.util.Map;
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.9, Jan 30, 2018
+ * @version 1.2.0.10, Jun 2, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -92,11 +92,9 @@ public class ErrorProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.putAll(langPropsService.getAll(Locales.getLocale()));
             dataModelService.fillHeaderAndFooter(request, response, dataModel);
-            if (HttpServletResponse.SC_FORBIDDEN == Integer.valueOf(statusCode)) {
-                dataModelService.fillSideHotArticles(dataModel);
-                dataModelService.fillRandomArticles(dataModel);
-                dataModelService.fillSideTags(dataModel);
-            }
+            dataModelService.fillSideHotArticles(dataModel);
+            dataModelService.fillRandomArticles(dataModel);
+            dataModelService.fillSideTags(dataModel);
         } else {
             context.renderJSON().renderMsg(statusCode);
         }

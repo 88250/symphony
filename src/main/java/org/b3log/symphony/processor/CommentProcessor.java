@@ -409,7 +409,7 @@ public class CommentProcessor {
      * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/comment", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {CSRFCheck.class, CommentAddValidation.class, PermissionCheck.class})
+    @Before(adviceClass = {CSRFCheck.class, LoginCheck.class, CommentAddValidation.class, PermissionCheck.class})
     public void addComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
         context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
@@ -440,13 +440,7 @@ public class CommentProcessor {
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, commentOriginalCommentId);
 
         try {
-            final JSONObject currentUser = userQueryService.getCurrentUser(request);
-            if (null == currentUser) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-                return;
-            }
-
+            final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
             final String currentUserName = currentUser.optString(User.USER_NAME);
             final JSONObject article = articleQueryService.getArticle(articleId);
             final String articleContent = article.optString(Article.ARTICLE_CONTENT);

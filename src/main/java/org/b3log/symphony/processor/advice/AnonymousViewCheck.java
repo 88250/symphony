@@ -51,7 +51,7 @@ import java.util.Map;
  * Anonymous view check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.5, Mar 1, 2018
+ * @version 1.3.1.6, Jun 2, 2018
  * @since 1.6.0
  */
 @Named
@@ -138,9 +138,9 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
         exception404.put(Keys.MSG, HttpServletResponse.SC_NOT_FOUND + ", " + request.getRequestURI());
         exception404.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
 
-        final JSONObject exception403 = new JSONObject();
-        exception403.put(Keys.MSG, HttpServletResponse.SC_FORBIDDEN + ", " + request.getRequestURI());
-        exception403.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+        final JSONObject exception401 = new JSONObject();
+        exception401.put(Keys.MSG, HttpServletResponse.SC_UNAUTHORIZED + ", " + request.getRequestURI());
+        exception401.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
 
         if (requestURI.startsWith(Latkes.getContextPath() + "/article/")) {
             final String articleId = StringUtils.substringAfter(requestURI, Latkes.getContextPath() + "/article/");
@@ -154,7 +154,7 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
                 if (Article.ARTICLE_ANONYMOUS_VIEW_C_NOT_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)
                         && null == userQueryService.getCurrentUser(request)
                         && !userMgmtService.tryLogInWithCookie(request, context.getResponse())) {
-                    throw new RequestProcessAdviceException(exception403);
+                    throw new RequestProcessAdviceException(exception401);
                 } else if (Article.ARTICLE_ANONYMOUS_VIEW_C_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)) {
                     return;
                 }
@@ -187,7 +187,7 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
 
                         uris.put(requestURI);
                         if (uris.length() > Symphonys.getInt("anonymousViewURIs")) {
-                            throw new RequestProcessAdviceException(exception403);
+                            throw new RequestProcessAdviceException(exception401);
                         }
 
                         addCookie(context.getResponse(), cookieNameVisits, uris.toString());
@@ -214,7 +214,7 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Anonymous view check failed: " + e.getMessage());
 
-            throw new RequestProcessAdviceException(exception403);
+            throw new RequestProcessAdviceException(exception401);
         }
     }
 }
