@@ -41,7 +41,7 @@ import java.util.Map;
  * Login check. Gets user from request attribute named "user" if logged in.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.2, Jun 28, 2015
+ * @version 1.2.0.3, Jun 2, 2018
  * @since 0.2.5
  */
 @Named
@@ -70,8 +70,8 @@ public class LoginCheck extends BeforeRequestProcessAdvice {
         final HttpServletRequest request = context.getRequest();
 
         final JSONObject exception = new JSONObject();
-        exception.put(Keys.MSG, HttpServletResponse.SC_FORBIDDEN + ", " + request.getRequestURI());
-        exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+        exception.put(Keys.MSG, HttpServletResponse.SC_UNAUTHORIZED + ", " + request.getRequestURI());
+        exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_UNAUTHORIZED);
 
         try {
             JSONObject currentUser = userQueryService.getCurrentUser(request);
