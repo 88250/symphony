@@ -42,8 +42,6 @@
                     ${functionLabel}
                     <#elseif type == "point">
                     ${pointLabel}
-                    <#elseif type == "location">
-                    ${geoLabel}
                     <#elseif type == "privacy">
                     ${privacyLabel}
                     <#elseif type == "password">
