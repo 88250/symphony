@@ -1,10 +1,11 @@
 User-agent: *
 Disallow: /settings
 Disallow: /admin/
-Disallow: /member/
 Disallow: /city
 Disallow: /search
 Disallow: /cr
+Disallow: /post
+Disallow: /guide
 
 User-agent: BUbiNG
 Disallow: /
