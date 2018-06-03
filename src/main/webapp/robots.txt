@@ -9,6 +9,9 @@ Disallow: /guide
 
 User-agent: BUbiNG
 Disallow: /
-
 User-agent: ltx71 - (http://ltx71.com/)
+Disallow: /
+User-agent: SemrushBot
+Disallow: /
+User-agent: AhrefsBot
 Disallow: /
