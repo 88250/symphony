@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.90, May 25, 2018
+    Version: 2.16.6.91, Jun 6, 2018
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -22,7 +22,7 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>2.4.2</latke.version>
+        <latke.version>2.4.3</latke.version>
 
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.2.7.v20150116</jetty.version>
