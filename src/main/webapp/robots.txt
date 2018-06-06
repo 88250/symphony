@@ -3,7 +3,7 @@ Disallow: /settings/
 Disallow: /notifications/
 Disallow: /watch/
 Disallow: /admin/
-Disallow: /city
+Disallow: /city/
 Disallow: /search
 Disallow: /cr
 Disallow: /post
