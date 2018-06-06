@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.3, May 2, 2018
+ * @version 2.18.2.4, Jun 6, 2018
  * @since 0.2.0
  */
 @Service
@@ -288,8 +288,7 @@ public class ArticleMgmtService {
      */
     public void genArticleAudio(final JSONObject article, final String userId) {
         if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)
-                || Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
-                || Article.ARTICLE_TYPE_C_BOOK == article.optInt(Article.ARTICLE_TYPE)) {
+                || Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)) {
             return;
         }
 
@@ -558,7 +557,7 @@ public class ArticleMgmtService {
                 }
             }
 
-            if (Article.ARTICLE_TYPE_C_DISCUSSION != articleType && Article.ARTICLE_TYPE_C_BOOK != articleType) {
+            if (Article.ARTICLE_TYPE_C_DISCUSSION != articleType) {
                 final JSONObject maybeExist = articleRepository.getByTitle(articleTitle);
                 if (null != maybeExist) {
                     final String existArticleAuthorId = maybeExist.optString(Article.ARTICLE_AUTHOR_ID);
@@ -1870,8 +1869,7 @@ public class ArticleMgmtService {
      */
     public void saveMarkdown(final JSONObject article) {
         if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)
-                || Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
-                || Article.ARTICLE_TYPE_C_BOOK == article.optInt(Article.ARTICLE_TYPE)) {
+                || Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)) {
             return;
         }
 

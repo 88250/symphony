@@ -30,7 +30,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
@@ -58,7 +57,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.12, May 4, 2018
+ * @version 1.7.0.13, Jun 6, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -206,10 +205,6 @@ public class TagProcessor {
         tag.put(Common.IS_RESERVED, tagQueryService.isReservedTag(tag.optString(Tag.TAG_TITLE)));
 
         dataModel.put(Tag.TAG, tag);
-
-        if ("book_share".equals(tagURI)) { // https://github.com/b3log/symphony/issues/376
-            dataModel.put(Common.SELECTED, Book.BOOK);
-        }
 
         final String tagId = tag.optString(Keys.OBJECT_ID);
 
