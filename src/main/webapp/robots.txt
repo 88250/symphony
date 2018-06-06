@@ -1,5 +1,7 @@
 User-agent: *
-Disallow: /settings
+Disallow: /settings/
+Disallow: /notifications/
+Disallow: /watch/
 Disallow: /admin/
 Disallow: /city
 Disallow: /search
