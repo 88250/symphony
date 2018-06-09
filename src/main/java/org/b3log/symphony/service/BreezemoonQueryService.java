@@ -36,6 +36,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.BreezemoonRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Times;
 import org.json.JSONArray;
@@ -47,7 +48,7 @@ import java.util.*;
  * Breezemoon query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, May 23, 2018
+ * @version 1.0.0.3, Jun 9, 2018
  * @since 2.8.0
  */
 @Service
@@ -330,6 +331,7 @@ public class BreezemoonQueryService {
             bm.put(Common.TIME_AGO, Times.getTimeAgo(time, Locales.getLocale()));
             bm.put(Breezemoon.BREEZEMOON_T_CREATE_TIME, new Date(time));
             String content = bm.optString(Breezemoon.BREEZEMOON_CONTENT);
+            content = Emotions.convert(content);
             content = Markdowns.toHTML(content);
             content = Markdowns.clean(content, "");
             bm.put(Breezemoon.BREEZEMOON_CONTENT, content);
