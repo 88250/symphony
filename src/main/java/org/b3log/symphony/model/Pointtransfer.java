@@ -24,7 +24,7 @@ import org.b3log.symphony.util.Symphonys;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.23.2.1, May 6, 2017
+ * @version 1.24.0.0, Jun 10, 2018
  * @since 1.3.0
  */
 public final class Pointtransfer {
@@ -360,6 +360,11 @@ public final class Pointtransfer {
      * Transfer sum - Update Comment.
      */
     public static final int TRANSFER_SUM_C_UPDATE_COMMENT = Symphonys.getInt("pointUpdateComment");
+
+    /**
+     * Transfer type - QnA Income/Outcome.
+     */
+    public static final int TRANSFER_TYPE_C_QNA_OFFER = 34;
 
     /**
      * Private constructor.

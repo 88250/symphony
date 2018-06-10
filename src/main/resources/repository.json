@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.38.0.3, Jun 6, 2018",
+  "version": "4.38.0.4, Jun 10, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -891,6 +891,11 @@
           "type": "String",
           "length": 256,
           "description": "回帖语音文件 URL"
+        },
+        {
+          "name": "commentQnAOffered",
+          "type": "int",
+          "description": "0：回帖未被采纳，1：回帖已被采纳（仅作用于问答帖）"
         }
       ]
     },
@@ -1698,6 +1703,11 @@
           "type": "String",
           "length": 256,
           "description": "帖子语音文件 URL"
+        },
+        {
+          "name": "articleQnAOfferPoint",
+          "type": "int",
+          "description": "问答悬赏积分（仅作用于问答帖）"
         }
       ]
     },

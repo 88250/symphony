@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.29.0.1, Jun 6, 2018
+ * @version 1.30.0.0, Jun 10, 2018
  * @since 0.2.0
  */
 public final class Article {
@@ -220,6 +220,11 @@ public final class Article {
      * Key of article audio URL.
      */
     public static final String ARTICLE_AUDIO_URL = "articleAudioURL";
+
+    /**
+     * Key of article qna offer point. https://github.com/b3log/symphony/issues/486
+     */
+    public static final String ARTICLE_QNA_OFFER_POINT = "articleQnAOfferPoint";
 
     //// Transient ////
     /**
@@ -446,6 +451,11 @@ public final class Article {
      * Article type - <a href="https://hacpai.com/article/1441942422856">thought</a>.
      */
     public static final int ARTICLE_TYPE_C_THOUGHT = 3;
+
+    /**
+     * Article type - <a href="https://github.com/b3log/symphony/issues/486">QnA</a>.
+     */
+    public static final int ARTICLE_TYPE_C_QNA = 5;
 
     /**
      * Private constructor.
