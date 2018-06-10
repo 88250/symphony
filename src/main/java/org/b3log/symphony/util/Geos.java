@@ -33,7 +33,7 @@ import java.net.URL;
  * Geography utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.2, May 19, 2018
+ * @version 1.3.0.0, Jun 10, 2018
  * @since 1.3.0
  */
 public final class Geos {
@@ -42,6 +42,12 @@ public final class Geos {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Geos.class);
+
+    /**
+     * Private constructor.
+     */
+    private Geos() {
+    }
 
     /**
      * Gets country, province and city of the specified IP.
@@ -76,7 +82,7 @@ public final class Geos {
 
             final JSONObject data = new JSONObject(sb.toString());
             if (0 != data.optInt("status")) {
-                return getAddressSina(ip); // Try it via Sina API
+                return getAddressTaobao(ip);
             }
 
             final String content = data.optString("address");
@@ -90,7 +96,7 @@ public final class Geos {
             final String province = content.split("\\|")[1];
             String city = content.split("\\|")[2];
             if ("None".equals(province) || "None".equals(city)) {
-                return getAddressSina(ip); // Try it via Sina API
+                return getAddressTaobao(ip);
             }
 
             city = StringUtils.replace(city, "市", "");
@@ -161,10 +167,6 @@ public final class Geos {
             ret.put(Common.CITY, city);
 
             return ret;
-        } catch (final SocketTimeoutException e) {
-            LOGGER.log(Level.ERROR, "Get location from Sina timeout [ip=" + ip + "]");
-
-            return null;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Can't get location from Sina [ip=" + ip + "]", e);
 
@@ -181,8 +183,59 @@ public final class Geos {
     }
 
     /**
-     * Private constructor.
+     * Gets province, city of the specified IP by Taobao API.
+     *
+     * @param ip the specified IP
+     * @return address info, for example      <pre>
+     * {
+     *     "province": "",
+     *     "city": ""
+     * }
+     * </pre>, returns {@code null} if not found
      */
-    private Geos() {
+    private static JSONObject getAddressTaobao(final String ip) {
+        HttpURLConnection conn = null;
+        try {
+            final URL url = new URL("http://ip.taobao.com/service/getIpInfo.php?ip=" + ip);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(1000);
+            conn.setReadTimeout(1000);
+            final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            String line;
+            final StringBuilder sb = new StringBuilder();
+            while (null != (line = bufferedReader.readLine())) {
+                sb.append(line);
+            }
+
+            final JSONObject data = new JSONObject(sb.toString());
+            if (0 != data.optInt("code")) {
+                return null;
+            }
+
+            final String country = data.optString("country");
+            final String province = data.optString("region");
+            String city = data.optString("city");
+            city = StringUtils.replace(city, "市", "");
+
+            final JSONObject ret = new JSONObject();
+            ret.put(Common.COUNTRY, country);
+            ret.put(Common.PROVINCE, province);
+            ret.put(Common.CITY, city);
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Can't get location from Taobao [ip=" + ip + "]", e);
+
+            return null;
+        } finally {
+            if (null != conn) {
+                try {
+                    conn.disconnect();
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Close HTTP connection error", e);
+                }
+            }
+        }
     }
 }
+
