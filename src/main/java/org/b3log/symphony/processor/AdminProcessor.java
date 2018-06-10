@@ -115,7 +115,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.9.5, May 23, 2018
+ * @version 2.26.9.6, Jun 10, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1906,6 +1906,7 @@ public class AdminProcessor {
             final String value = request.getParameter(name);
 
             if (name.equals(Article.ARTICLE_REWARD_POINT)
+                    || name.equals(Article.ARTICLE_QNA_OFFER_POINT)
                     || name.equals(Article.ARTICLE_STATUS)
                     || name.equals(Article.ARTICLE_TYPE)
                     || name.equals(Article.ARTICLE_GOOD_CNT)

@@ -88,7 +88,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.2.0, May 16, 2018
+ * @version 1.27.2.0, Jun 10, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -888,6 +888,7 @@ public class ArticleProcessor {
      *   "articleType": int,
      *   "articleRewardContent": "",
      *   "articleRewardPoint": int,
+     *   "articleQnAOfferPoint": int,
      *   "articleAnonymous": boolean
      * }
      * </pre>
@@ -897,8 +898,7 @@ public class ArticleProcessor {
      * @param request the specified request
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleAddValidation.class,
-            PermissionCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleAddValidation.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
         context.renderJSON();
@@ -911,6 +911,7 @@ public class ArticleProcessor {
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
         final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
+        final int articleQnAOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT);
         final String ip = Requests.getRemoteAddr(request);
         final String ua = Headers.getHeader(request, Common.USER_AGENT);
         final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
@@ -926,6 +927,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_TYPE, articleType);
         article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
         article.put(Article.ARTICLE_REWARD_POINT, articleRewardPoint);
+        article.put(Article.ARTICLE_QNA_OFFER_POINT, articleQnAOfferPoint);
         article.put(Article.ARTICLE_IP, "");
         if (StringUtils.isNotBlank(ip)) {
             article.put(Article.ARTICLE_IP, ip);
@@ -1055,7 +1057,8 @@ public class ArticleProcessor {
      *   "articleCommentable": boolean,
      *   "articleType": int,
      *   "articleRewardContent": "",
-     *   "articleRewardPoint": int
+     *   "articleRewardPoint": int,
+     *    "articleQnAOfferPoint": int
      * }
      * </pre>
      * </p>
@@ -1106,6 +1109,7 @@ public class ArticleProcessor {
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
         final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
+        final int articleQnAOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT);
         final String ip = Requests.getRemoteAddr(request);
         final String ua = Headers.getHeader(request, Common.USER_AGENT);
 
@@ -1118,6 +1122,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_TYPE, articleType);
         article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
         article.put(Article.ARTICLE_REWARD_POINT, articleRewardPoint);
+        article.put(Article.ARTICLE_QNA_OFFER_POINT, articleQnAOfferPoint);
         article.put(Article.ARTICLE_IP, "");
         if (StringUtils.isNotBlank(ip)) {
             article.put(Article.ARTICLE_IP, ip);

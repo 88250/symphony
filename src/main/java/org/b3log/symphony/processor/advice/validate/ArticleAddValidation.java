@@ -50,7 +50,7 @@ import java.util.Map;
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.0, Mar 2, 2018
+ * @version 1.3.5.1, Jun 10, 2018
  * @since 0.2.0
  */
 @Named
@@ -187,6 +187,11 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
         if (rewardPoint < 0) {
             throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("invalidRewardPointLabel")));
+        }
+
+        final int articleQnAOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT, 0);
+        if (articleQnAOfferPoint < 0) {
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("invalidQnAOfferPointLabel")));
         }
 
         final String articleRewardContnt = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);

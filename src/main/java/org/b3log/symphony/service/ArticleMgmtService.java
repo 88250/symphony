@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.4, Jun 6, 2018
+ * @version 2.18.2.5, Jun 10, 2018
  * @since 0.2.0
  */
 @Service
@@ -477,6 +477,7 @@ public class ArticleMgmtService {
      *                          "articleType": int, // optional, default to 0
      *                          "articleRewardContent": "", // optional, default to ""
      *                          "articleRewardPoint": int, // optional, default to 0
+     *                          "articleQnAOfferPoint": int, // optional, default to 0
      *                          "articleIP": "", // optional, default to ""
      *                          "articleUA": "", // optional, default to ""
      *                          "articleAnonymous": int, // optional, default to 0 (public)
@@ -505,7 +506,12 @@ public class ArticleMgmtService {
         articleTitle = Pangu.spacingText(articleTitle);
         articleTitle = StringUtils.trim(articleTitle);
 
+        final int qnaOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT, 0);
+
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
+        if (Article.ARTICLE_TYPE_C_QNA == articleType && 0 >= qnaOfferPoint) {
+            throw new ServiceException(langPropsService.get("invalidQnAOfferPointLabel"));
+        }
 
         try {
             // check if admin allow to add article
@@ -550,7 +556,7 @@ public class ArticleMgmtService {
                 final int broadcast = Article.ARTICLE_TYPE_C_CITY_BROADCAST == articleType ?
                         Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST : 0;
 
-                final int sum = Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition + rewardPoint + broadcast;
+                final int sum = Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition + rewardPoint + qnaOfferPoint + broadcast;
 
                 if (balance - sum < 0) {
                     throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
@@ -628,6 +634,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
             article.put(Article.ARTICLE_TYPE, articleType);
             article.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
+            article.put(Article.ARTICLE_QNA_OFFER_POINT, qnaOfferPoint);
             String city = "";
             if (UserExt.USER_GEO_STATUS_C_PUBLIC == author.optInt(UserExt.USER_GEO_STATUS)) {
                 city = author.optString(UserExt.USER_CITY);
@@ -665,6 +672,10 @@ public class ArticleMgmtService {
 
             if (StringUtils.isBlank(articleTags)) {
                 articleTags = "B3log";
+            }
+
+            if (Article.ARTICLE_TYPE_C_QNA == articleType) {
+                articleTags += "Q&A";
             }
 
             articleTags = Tag.formatTags(articleTags);
@@ -801,6 +812,7 @@ public class ArticleMgmtService {
      *                          "articleType": int // optional, default to 0
      *                          "articleRewardContent": "", // optional, default to ""
      *                          "articleRewardPoint": int, // optional, default to 0
+     *                          "articleQnAOfferPoint": int, // optional, default to 0
      *                          "articleIP": "", // optional, default to ""
      *                          "articleUA": "", // optional default to ""
      *                          , see {@link Article} for more details
@@ -915,6 +927,11 @@ public class ArticleMgmtService {
                 rewardContent = Emotions.toAliases(rewardContent);
                 oldArticle.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
                 oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
+            }
+
+            final int qnaOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT, 0);
+            if (qnaOfferPoint > oldArticle.optInt(Article.ARTICLE_QNA_OFFER_POINT)) { // Increase only to prevent lowering points when adopting answer
+                oldArticle.put(Article.ARTICLE_QNA_OFFER_POINT, qnaOfferPoint);
             }
 
             final String ip = requestJSONObject.optString(Article.ARTICLE_IP);
@@ -1434,6 +1451,10 @@ public class ArticleMgmtService {
             tagsString = "B3log";
         }
 
+        if (Article.ARTICLE_TYPE_C_QNA == articleType) {
+            tagsString += "Q&A";
+        }
+
         tagsString = Tag.formatTags(tagsString);
         newArticle.put(Article.ARTICLE_TAGS, tagsString);
         tagStrings = tagsString.split(",");
@@ -1765,6 +1786,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
             article.put(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
             article.put(Article.ARTICLE_REWARD_POINT, requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT));
+            article.put(Article.ARTICLE_QNA_OFFER_POINT, 0);
             article.put(Article.ARTICLE_CITY, "");
             String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);

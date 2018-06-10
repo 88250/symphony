@@ -470,6 +470,6 @@ public final class Article {
      * @return {@code true} if it is invalid, otherwise returns {@code false}
      */
     public static boolean isInvalidArticleType(final int articleType) {
-        return articleType < 0 || articleType > Article.ARTICLE_TYPE_C_THOUGHT;
+        return articleType < 0 || articleType > Article.ARTICLE_TYPE_C_QNA;
     }
 }

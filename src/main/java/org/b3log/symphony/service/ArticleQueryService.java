@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.36.7, Apr 19, 2018
+ * @version 2.27.36.8, Jun 10, 2018
  * @since 0.2.0
  */
 @Service
@@ -2323,6 +2323,7 @@ public class ArticleQueryService {
                 article.put(Article.ARTICLE_T_TOC, "");
                 article.put(Article.ARTICLE_REWARD_CONTENT, "");
                 article.put(Article.ARTICLE_REWARD_POINT, 0);
+                article.put(Article.ARTICLE_QNA_OFFER_POINT, 0);
 
                 return;
             }
@@ -2359,6 +2360,7 @@ public class ArticleQueryService {
                     article.put(Common.DISCUSSION_VIEWABLE, false);
                     article.put(Article.ARTICLE_REWARD_CONTENT, "");
                     article.put(Article.ARTICLE_REWARD_POINT, 0);
+                    article.put(Article.ARTICLE_QNA_OFFER_POINT, 0);
                     article.put(Article.ARTICLE_T_TOC, "");
                     article.put(Article.ARTICLE_AUDIO_URL, "");
 
