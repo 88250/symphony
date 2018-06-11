@@ -566,20 +566,15 @@ public class PointtransferQueryService {
                         } else {
                             user34 = userRepository.get(toId);
                         }
-                        final String commentId34 = reward34.optString(Reward.DATA_ID);
-                        final JSONObject comment34 = commentRepository.get(commentId34);
-                        if (null == comment34) {
+                        final String userLink34 = UserExt.getUserLink(user34);
+                        desTemplate = desTemplate.replace("{user}", userLink34);
+                        final String articleId34 = reward34.optString(Reward.DATA_ID);
+                        final JSONObject article34 = articleRepository.get(articleId34);
+                        if (null == article34) {
                             desTemplate = langPropsService.get("removedLabel");
 
                             break;
                         }
-
-                        final String articleId34 = comment34.optString(Comment.COMMENT_ON_ARTICLE_ID);
-
-                        final String userLink34 = UserExt.getUserLink(user34);
-                        desTemplate = desTemplate.replace("{user}", userLink34);
-
-                        final JSONObject article34 = articleRepository.get(articleId34);
                         final String articleLink34 = "<a href=\""
                                 + article34.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article34.optString(Article.ARTICLE_TITLE) + "</a>";
