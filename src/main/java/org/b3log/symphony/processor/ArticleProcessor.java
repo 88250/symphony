@@ -751,8 +751,8 @@ public class ArticleProcessor {
             final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
             if (Article.ARTICLE_TYPE_C_QNA == article.optInt(Article.ARTICLE_TYPE)) {
                 article.put(Common.OFFERED, rewardQueryService.isRewarded(articleAuthorId, articleId, Reward.TYPE_C_ACCEPT_COMMENT));
-                final JSONObject acceptedComment = commentQueryService.getAcceptedComment(avatarViewMode, cmtViewMode, articleId);
-                article.put(Article.ARTICLE_T_ACCEPTED_COMMENT, acceptedComment);
+                final JSONObject offeredComment = commentQueryService.getOfferedComment(avatarViewMode, cmtViewMode, articleId);
+                article.put(Article.ARTICLE_T_OFFERED_COMMENT, offeredComment);
             }
         } finally {
             Stopwatchs.end();

@@ -328,9 +328,9 @@ public final class Article {
     public static final String ARTICLE_T_NICE_COMMENTS = "articleNiceComments";
 
     /**
-     * Key of article accepted comment.
+     * Key of article offered (accepted) comment(answer).
      */
-    public static final String ARTICLE_T_ACCEPTED_COMMENT = "articleAcceptedComment";
+    public static final String ARTICLE_T_OFFERED_COMMENT = "articleOfferedComment";
 
     /**
      * Key of article participants.

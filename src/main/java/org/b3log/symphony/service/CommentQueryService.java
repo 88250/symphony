@@ -110,15 +110,15 @@ public class CommentQueryService {
     private ShortLinkQueryService shortLinkQueryService;
 
     /**
-     * Gets the accepted comment of an article specified by the given article id.
+     * Gets the offered (accepted) comment of an article specified by the given article id.
      *
      * @param avatarViewMode  the specified avatar view mode
      * @param commentViewMode the specified comment view mode
      * @param articleId       the given article id
      * @return accepted comment, return {@code null} if not found
      */
-    public JSONObject getAcceptedComment(final int avatarViewMode, final int commentViewMode,
-                                         final String articleId) {
+    public JSONObject getOfferedComment(final int avatarViewMode, final int commentViewMode,
+                                        final String articleId) {
         Stopwatchs.start("Gets accepted comment");
         try {
             final Query query = new Query().addSort(Comment.COMMENT_SCORE, SortDirection.DESCENDING).setCurrentPageNum(1).setPageCount(1)
