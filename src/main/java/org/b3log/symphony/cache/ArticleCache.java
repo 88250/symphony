@@ -49,7 +49,7 @@ import java.util.List;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.2, Apr 26, 2018
+ * @version 1.3.0.3, Jun 11, 2018
  * @since 1.4.0
  */
 @Named
@@ -235,7 +235,8 @@ public class ArticleCache {
                     addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                     addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                     addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                    addProjection(Article.ARTICLE_PERFECT, Integer.class);
+                    addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                    addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
 
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));

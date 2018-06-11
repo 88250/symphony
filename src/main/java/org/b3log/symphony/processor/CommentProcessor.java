@@ -162,7 +162,7 @@ public class CommentProcessor {
             }
             final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
             if (!StringUtils.equals(userId, commentAuthorId)) {
-                context.renderFalseResult().renderMsg("Not found comment to accept");
+                context.renderFalseResult().renderMsg(langPropsService.get("thankSelfLabel"));
 
                 return;
             }

@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all reward model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Jun 29, 2016
+ * @version 1.3.0.0, Jun 11, 2018
  * @since 0.2.5
  */
 public final class Reward {
@@ -66,11 +66,16 @@ public final class Reward {
      * Reward type - user.
      */
     public static final int TYPE_C_USER = 2;
-    
+
     /**
      * Reward type - thank article.
      */
     public static final int TYPE_C_THANK_ARTICLE = 3;
+
+    /**
+     * Reward type - accept comment.
+     */
+    public static final int TYPE_C_ACCEPT_COMMENT = 4;
 
     /**
      * Private constructor.

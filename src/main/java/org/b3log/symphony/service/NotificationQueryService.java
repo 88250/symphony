@@ -582,8 +582,8 @@ public class NotificationQueryService {
                     case Notification.DATA_TYPE_C_POINT_COMMENT_ACCEPT:
                         desTemplate = langPropsService.get("notificationCmtAcceptLabel");
 
-                        final JSONObject comment33 = commentRepository.get(dataId);
-                        final String articleId33 = comment33.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                        final JSONObject reward33 = rewardRepository.get(dataId);
+                        final String articleId33 = reward33.optString(Reward.DATA_ID);
                         final JSONObject article33 = articleRepository.get(articleId33);
                         if (null == article33) {
                             desTemplate = langPropsService.get("removedLabel");

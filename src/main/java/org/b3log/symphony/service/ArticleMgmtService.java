@@ -884,6 +884,12 @@ public class ArticleMgmtService {
             throw new ServiceException(e);
         }
 
+        final int qnaOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT, 0);
+        if (qnaOfferPoint < oldArticle.optInt(Article.ARTICLE_QNA_OFFER_POINT)) { // Increase only to prevent lowering points when adopting answer
+            throw new ServiceException(langPropsService.get("qnaOfferPointMustMoreThanOldLabel"));
+        }
+        oldArticle.put(Article.ARTICLE_QNA_OFFER_POINT, qnaOfferPoint);
+
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
 
         final Transaction transaction = articleRepository.beginTransaction();
@@ -927,11 +933,6 @@ public class ArticleMgmtService {
                 rewardContent = Emotions.toAliases(rewardContent);
                 oldArticle.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
                 oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
-            }
-
-            final int qnaOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT, 0);
-            if (qnaOfferPoint > oldArticle.optInt(Article.ARTICLE_QNA_OFFER_POINT)) { // Increase only to prevent lowering points when adopting answer
-                oldArticle.put(Article.ARTICLE_QNA_OFFER_POINT, qnaOfferPoint);
             }
 
             final String ip = requestJSONObject.optString(Article.ARTICLE_IP);

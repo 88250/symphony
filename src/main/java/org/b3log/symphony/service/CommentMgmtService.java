@@ -168,13 +168,15 @@ public class CommentMgmtService {
                 }
             }
 
+            final String rewardId = Ids.genTimeMillisId();
+
             final JSONObject article = articleRepository.get(articleId);
             final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
             final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
             final int offerPoint = article.optInt(Article.ARTICLE_QNA_OFFER_POINT);
             if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == comment.optInt(Comment.COMMENT_ANONYMOUS)) {
                 final boolean succ = null != pointtransferMgmtService.transfer(articleAuthorId, commentAuthorId,
-                        Pointtransfer.TRANSFER_TYPE_C_QNA_OFFER, offerPoint, commentId, System.currentTimeMillis());
+                        Pointtransfer.TRANSFER_TYPE_C_QNA_OFFER, offerPoint, rewardId, System.currentTimeMillis());
                 if (!succ) {
                     throw new ServiceException(langPropsService.get("transferFailLabel"));
                 }
@@ -182,14 +184,19 @@ public class CommentMgmtService {
 
             comment.put(Comment.COMMENT_QNA_OFFERED, Comment.COMMENT_QNA_OFFERED_C_YES);
             final Transaction transaction = commentRepository.beginTransaction();
-
             commentRepository.update(commentId, comment);
-
             transaction.commit();
+
+            final JSONObject reward = new JSONObject();
+            reward.put(Keys.OBJECT_ID, rewardId);
+            reward.put(Reward.SENDER_ID, articleAuthorId);
+            reward.put(Reward.DATA_ID, articleId);
+            reward.put(Reward.TYPE, Reward.TYPE_C_ACCEPT_COMMENT);
+            rewardMgmtService.addReward(reward);
 
             final JSONObject notification = new JSONObject();
             notification.put(Notification.NOTIFICATION_USER_ID, commentAuthorId);
-            notification.put(Notification.NOTIFICATION_DATA_ID, commentId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, rewardId);
             notificationMgmtService.addCommentAcceptNotification(notification);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Accepts a comment [id=" + commentId + "] failed", e);

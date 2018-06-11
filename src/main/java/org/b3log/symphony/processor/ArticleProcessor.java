@@ -748,6 +748,12 @@ public class ArticleProcessor {
         try {
             article.put(Common.THANKED, rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_THANK_ARTICLE));
             article.put(Common.THANKED_COUNT, rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_THANK_ARTICLE));
+            final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            if (Article.ARTICLE_TYPE_C_QNA == article.optInt(Article.ARTICLE_TYPE)) {
+                article.put(Common.OFFERED, rewardQueryService.isRewarded(articleAuthorId, articleId, Reward.TYPE_C_ACCEPT_COMMENT));
+                final JSONObject acceptedComment = commentQueryService.getAcceptedComment(avatarViewMode, cmtViewMode, articleId);
+                article.put(Article.ARTICLE_T_ACCEPTED_COMMENT, acceptedComment);
+            }
         } finally {
             Stopwatchs.end();
         }

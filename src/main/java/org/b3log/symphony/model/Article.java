@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.30.0.0, Jun 10, 2018
+ * @version 1.31.0.0, Jun 11, 2018
  * @since 0.2.0
  */
 public final class Article {
@@ -326,6 +326,11 @@ public final class Article {
      * Key of article nice comments.
      */
     public static final String ARTICLE_T_NICE_COMMENTS = "articleNiceComments";
+
+    /**
+     * Key of article accepted comment.
+     */
+    public static final String ARTICLE_T_ACCEPTED_COMMENT = "articleAcceptedComment";
 
     /**
      * Key of article participants.

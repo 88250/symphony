@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.36.8, Jun 10, 2018
+ * @version 2.27.36.8, Jun 11, 2018
  * @since 0.2.0
  */
 @Service
@@ -1306,7 +1306,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
                 addProjection(Article.ARTICLE_UA, String.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class);
+                addProjection(Article.ARTICLE_CONTENT, String.class).
+                addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
 
 
         return ret;
@@ -1356,7 +1357,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
                 addProjection(Article.ARTICLE_UA, String.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class);
+                addProjection(Article.ARTICLE_CONTENT, String.class).
+                addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
 
         return ret;
     }
@@ -1397,7 +1399,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
                 addProjection(Article.ARTICLE_UA, String.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class);
+                addProjection(Article.ARTICLE_CONTENT, String.class).
+                addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
 
         return ret;
     }
@@ -1438,7 +1441,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
                 addProjection(Article.ARTICLE_UA, String.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class);
+                addProjection(Article.ARTICLE_CONTENT, String.class).
+                addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
 
         return ret;
     }
@@ -1586,6 +1590,7 @@ public class ArticleQueryService {
                         + "	articleAnonymous,\n"
                         + "	articlePerfect,\n"
                         + "	articleContent,\n"
+                        + " articleQnAOfferPoint,\n"
                         + "	CASE\n"
                         + "WHEN articleLatestCmtTime = 0 THEN\n"
                         + "	oId\n"

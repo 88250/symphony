@@ -50,7 +50,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.10.2, Apr 19, 2018
+ * @version 2.12.0.0, Jun 11, 2018
  * @since 0.2.0
  */
 @Service
@@ -108,6 +108,48 @@ public class CommentQueryService {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
+    /**
+     * Gets the accepted comment of an article specified by the given article id.
+     *
+     * @param avatarViewMode  the specified avatar view mode
+     * @param commentViewMode the specified comment view mode
+     * @param articleId       the given article id
+     * @return accepted comment, return {@code null} if not found
+     */
+    public JSONObject getAcceptedComment(final int avatarViewMode, final int commentViewMode,
+                                         final String articleId) {
+        Stopwatchs.start("Gets accepted comment");
+        try {
+            final Query query = new Query().addSort(Comment.COMMENT_SCORE, SortDirection.DESCENDING).setCurrentPageNum(1).setPageCount(1)
+                    .setFilter(CompositeFilterOperator.and(
+                            new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
+                            new PropertyFilter(Comment.COMMENT_QNA_OFFERED, FilterOperator.EQUAL, Comment.COMMENT_QNA_OFFERED_C_YES),
+                            new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
+                    ));
+            try {
+                final List<JSONObject> comments = CollectionUtils.jsonArrayToList(commentRepository.get(query).optJSONArray(Keys.RESULTS));
+                if (comments.isEmpty()) {
+                    return null;
+                }
+
+                final JSONObject ret = comments.get(0);
+                organizeComment(avatarViewMode, ret);
+
+                final int pageSize = Symphonys.getInt("articleCommentsPageSize");
+                ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, getCommentPage(
+                        articleId, ret.optString(Keys.OBJECT_ID), commentViewMode, pageSize));
+
+                return ret;
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Gets accepted comment failed", e);
+
+                return null;
+            }
+        } finally {
+            Stopwatchs.end();
+        }
+    }
 
     /**
      * Gets the page number of a comment.
