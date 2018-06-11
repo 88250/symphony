@@ -161,7 +161,7 @@ public class CommentProcessor {
                 return;
             }
             final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
-            if (!StringUtils.equals(userId, commentAuthorId)) {
+            if (StringUtils.equals(userId, commentAuthorId)) {
                 context.renderFalseResult().renderMsg(langPropsService.get("thankSelfLabel"));
 
                 return;

@@ -117,8 +117,7 @@ public class CommentQueryService {
      * @param articleId       the given article id
      * @return accepted comment, return {@code null} if not found
      */
-    public JSONObject getOfferedComment(final int avatarViewMode, final int commentViewMode,
-                                        final String articleId) {
+    public JSONObject getOfferedComment(final int avatarViewMode, final int commentViewMode, final String articleId) {
         Stopwatchs.start("Gets accepted comment");
         try {
             final Query query = new Query().addSort(Comment.COMMENT_SCORE, SortDirection.DESCENDING).setCurrentPageNum(1).setPageCount(1)
