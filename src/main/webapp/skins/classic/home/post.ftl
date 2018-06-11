@@ -66,7 +66,7 @@
                 <#if (!article?? && 5 == articleType) || (article?? && article.articleType == 5)>
                  <input id="articleAskPoint"
                         value="<#if article??>${article.articleQnAOfferPoint}</#if>"
-                        type="number" tabindex="5" min="1" placeholder="${QnAOfferPointLabel}"/>
+                        type="number" tabindex="5" min="1" placeholder="${qnaOfferPointLabel}"/>
                 <#else>
                 <button id="showReward" class="fn-ellipsis"<#if requisite> readonly disabled</#if>
                 onclick="$(this).next().show(); $(this).hide()">

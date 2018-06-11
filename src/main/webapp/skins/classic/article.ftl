@@ -99,7 +99,7 @@
                             <#if article.articleQnAOfferPoint != 0>
                                 &nbsp;•&nbsp;
                                 <span class="article-level<#if article.articleQnAOfferPoint lt 400>${(article.articleQnAOfferPoint/100)?int}<#else>4</#if>">${article.articleQnAOfferPoint?c}</span>
-                                ${QnAOfferLabel}
+                                ${qnaOfferLabel}
                             </#if>
                                 &nbsp;•&nbsp;
                                 ${article.timeAgo}

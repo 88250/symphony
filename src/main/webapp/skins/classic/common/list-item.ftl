@@ -36,7 +36,7 @@
                 &nbsp;•&nbsp;
                 <a class="ft-fade" href="${servePath}${article.articlePermalink}">
                 <span class="article-level<#if article.articleQnAOfferPoint lt 400>${(article.articleQnAOfferPoint/100)?int}<#else>4</#if>">${article.articleQnAOfferPoint?c}</span>
-                    ${QnAOfferLabel}
+                    ${qnaOfferLabel}
                 </a>
             </#if>
         </span>
