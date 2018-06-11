@@ -48,9 +48,12 @@
                                 <#include "common/list-item.ftl">
                             </#list>
                             <#if recentArticles?size == 0>
+                            <li class="ft-center">
+                                <br><br>
                                 ${systemEmptyLabel}<br>
                                 ${systemEmptyTipLabel}<br>
                                 <img src="${staticServePath}/images/404/5.gif"/>
+                            </li>
                             </#if>
                             <li>
                                 <a class="more" href="${servePath}/recent">${moreRecentArticleLabel}</a>

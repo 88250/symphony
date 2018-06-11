@@ -31,6 +31,14 @@
             <#if article.articleViewCount != 0>
                 <a class="ft-fade" href="${servePath}${article.articlePermalink}"><span class="article-level<#if article.articleViewCount lt 400>${(article.articleViewCount/100)?int}<#else>4</#if>"><#if article.articleViewCount < 1000>${article.articleViewCount}<#else>${article.articleViewCntDisplayFormat}</#if></span> ${viewLabel}</a>
             </#if>
+
+            <#if article.articleQnAOfferPoint != 0>
+                &nbsp;•&nbsp;
+                <a class="ft-fade" href="${servePath}${article.articlePermalink}">
+                <span class="article-level<#if article.articleQnAOfferPoint lt 400>${(article.articleQnAOfferPoint/100)?int}<#else>4</#if>">${article.articleQnAOfferPoint?c}</span>
+                    ${QnAOfferLabel}
+                </a>
+            </#if>
         </span>
     </div>
     <h2 class="fn-ellipsis">

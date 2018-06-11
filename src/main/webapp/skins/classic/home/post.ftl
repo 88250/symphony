@@ -63,6 +63,11 @@
                     </div>
                     </#if>
                 </div>
+                <#if (!article?? && 5 == articleType) || (article?? && article.articleType == 5)>
+                 <input id="articleAskPoint"
+                        value="<#if article??>${article.articleQnAOfferPoint}</#if>"
+                        type="number" tabindex="5" min="1" placeholder="${QnAOfferPointLabel}"/>
+                <#else>
                 <button id="showReward" class="fn-ellipsis"<#if requisite> readonly disabled</#if>
                 onclick="$(this).next().show(); $(this).hide()">
                     ${rewardEditorPlaceholderLabel} &dtrif;
@@ -78,6 +83,7 @@
                         value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint?c}</#if>" placeholder="${rewardPointLabel}" />
                     </div>
                 </div>
+                </#if>
 
                 <div class="wrapper">
                     <br>
@@ -109,6 +115,11 @@
                         <input tabindex="8" type="radio" name="articleType" <#if 2 == articleType>checked="checked"</#if> value="2"/>
                                ${cityBroadcastLabel}
                     </label>
+                    <label> &nbsp;
+                        <input type="radio" name="articleType" <#if 5 == articleType>checked="checked"</#if>
+                               value="5"/>
+                        ${qnaLabel}
+                    </label>
                     <#else>
                     <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/>
                     </#if>
@@ -131,6 +142,11 @@
                         <svg class="post__info"><use xlink:href="#video"></use></svg> ${thoughtLabel}
                         <span class="ft-gray">${addThoughtArticleTipLabel}
                         <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
+                    <#elseif 5 == articleType>
+                        <svg class="post__info">
+                            <use xlink:href="#iconAsk"></use>
+                        </svg> ${qnaLabel}
+                        <span class="ft-gray">${addAskArticleTipLabel}</span>
                     </#if>
                     <div class="fn-right">
                         <#if article?? && permissions["commonRemoveArticle"].permissionGrant>
@@ -141,7 +157,7 @@
                                 <#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked</#if></#if>
                                 type="checkbox" id="syncWithSymphonyClient"></label>
                         </#if>
-                        <#if permissions["commonAddArticleAnonymous"].permissionGrant>
+                        <#if permissions["commonAddArticleAnonymous"].permissionGrant && ((!article?? && 5 != articleType) || (article?? && 5 != article.articleType) )>
                         <label class="article-anonymous">${anonymousLabel}<input<#if requisite> readonly disabled</#if>
                                 <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
                                 type="checkbox" id="articleAnonymous"></label>

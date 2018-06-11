@@ -77,7 +77,7 @@ var ArticleChannel = {
           }
 
           // ua
-          $("#" + data.commentId + ' .cmt-via').text(Util.getDeviceByUa(data.commentUA));
+          $("#" + data.commentId + ' .cmt-via').text('via ' + Util.getDeviceByUa(data.commentUA));
 
           // 回帖高亮，他人回帖不定位，只有自己回帖才定位
           if (Label.currentUserName === data.commentAuthorName) {

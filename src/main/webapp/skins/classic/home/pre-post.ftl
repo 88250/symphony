@@ -38,6 +38,13 @@
                     <div class="ft-gray">${addNormalArticleTipLabel}</div>
                 </div>
                 <div>
+                    <a rel="nofollow" href="${servePath}/post?type=5">
+                        <svg><use xlink:href="#iconAsk"></use></svg> <br/>
+                    ${qnaLabel}
+                    </a>
+                    <div class="ft-gray">${addAskArticleTipLabel}</div>
+                </div>
+                <div>
                     <a href="${servePath}/post?type=3">
                         <svg><use xlink:href="#video"></use></svg> <br/>
                         ${thoughtLabel}

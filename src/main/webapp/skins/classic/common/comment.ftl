@@ -18,7 +18,7 @@
 
 -->
 <li id="${comment.oId}"
-    class="<#if comment.commentStatus == 1>cmt-shield</#if><#if comment.commentNice> cmt-perfect</#if><#if comment.commentReplyCnt != 0> cmt-selected</#if>">
+    class="<#if comment.commentStatus == 1>cmt-shield</#if><#if comment.commentNice || comment.commentQnAOffered == 1> cmt-perfect</#if><#if comment.commentReplyCnt != 0> cmt-selected</#if>">
     <div class="fn-flex">
         <#if !comment.fromClient>
             <div>
@@ -105,6 +105,12 @@
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
                     </#if>><svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ${comment.commentBadCnt}</span> &nbsp;
+
+                   <#if isLoggedIn && !article.offered && article.articleAuthorId == currentUser.oId && comment.commentAuthorName != currentUser.userName && article.articleQnAOfferPoint != 0>
+                    <span aria-label="${adoptLabel}" class="icon-reply-btn tooltipped tooltipped-n"
+                          onclick="Comment.accept('${adoptTipLabel?replace('{point}', article.articleQnAOfferPoint)}', '${comment.oId}', this)"
+                    ><svg><use xlink:href="#icon-accept"></use></svg></span> &nbsp;
+                   </#if>
                     <#if isLoggedIn && comment.commentAuthorName != currentUser.userName && permissions["commonAddComment"].permissionGrant>
                         <span aria-label="${replyLabel}" class="icon-reply-btn tooltipped tooltipped-n"
                               onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')">
