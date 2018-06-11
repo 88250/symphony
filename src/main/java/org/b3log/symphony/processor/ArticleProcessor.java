@@ -676,6 +676,7 @@ public class ArticleProcessor {
         article.put(Common.IS_MY_ARTICLE, false);
         article.put(Article.ARTICLE_T_AUTHOR, author);
         article.put(Common.REWARDED, false);
+        article.put(Common.OFFERED, false);
         article.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_ARTICLE));
         article.put(Article.ARTICLE_REVISION_COUNT, revisionQueryService.count(articleId, Revision.DATA_TYPE_C_ARTICLE));
 
