@@ -254,6 +254,17 @@ public final class Comment {
      */
     public static final int COMMENT_ANONYMOUS_C_ANONYMOUS = 1;
 
+    // QnA offered constants
+    /**
+     * Comment offered - not yet.
+     */
+    public static final int COMMENT_QNA_OFFERED_C_NOT = 0;
+
+    /**
+     * Comment offered - yes.
+     */
+    public static final int COMMENT_QNA_OFFERED_C_YES = 1;
+
     /**
      * Private constructor.
      */

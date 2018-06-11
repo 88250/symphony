@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.16.0.1, Feb 19, 2017
+ * @version 1.17.0.0, Jun 11, 2017
  * @since 0.2.5
  */
 @Service
@@ -58,6 +58,28 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+
+    /**
+     * Adds a 'comment accept' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // comment id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addCommentAcceptNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_POINT_COMMENT_ACCEPT);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=comment_accept] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
 
     /**
      * Adds a 'article vote down' type notification with the specified request json object.

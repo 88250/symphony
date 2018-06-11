@@ -44,7 +44,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.6.0, May 17, 2018
+ * @version 1.13.6.1, Jun 11, 2018
  * @since 0.2.5
  */
 @Service
@@ -377,6 +377,8 @@ public class NotificationQueryService {
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_COMMENT_ACCEPT));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_TRANSFER));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_INVITECODE_USED));
@@ -441,6 +443,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_ABUSE_POINT_DEDUCT));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_COMMENT_ACCEPT));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_TRANSFER));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
@@ -573,6 +577,29 @@ public class NotificationQueryService {
                                 + Latkes.getServePath() + article8.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article8.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink8);
+
+                        break;
+                    case Notification.DATA_TYPE_C_POINT_COMMENT_ACCEPT:
+                        desTemplate = langPropsService.get("notificationCmtAcceptLabel");
+
+                        final JSONObject comment33 = commentRepository.get(dataId);
+                        final String articleId33 = comment33.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                        final JSONObject article33 = articleRepository.get(articleId33);
+                        if (null == article33) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
+                        final String articleAuthorId = article33.optString(Article.ARTICLE_AUTHOR_ID);
+                        final JSONObject user33 = userRepository.get(articleAuthorId);
+                        final String userLink33 = UserExt.getUserLink(user33);
+                        desTemplate = desTemplate.replace("{user}", userLink33);
+
+                        final String articleLink33 = "<a href=\""
+                                + Latkes.getServePath() + article33.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + article33.optString(Article.ARTICLE_TITLE) + "</a>";
+                        desTemplate = desTemplate.replace("{article}", Emotions.convert(articleLink33));
 
                         break;
                     case Notification.DATA_TYPE_C_POINT_TRANSFER:

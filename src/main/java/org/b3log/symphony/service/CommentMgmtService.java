@@ -26,12 +26,12 @@ import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.*;
@@ -48,7 +48,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.13.11.20, May 8, 2017
+ * @version 2.14.0.0, Jun 11, 2017
  * @since 0.2.0
  */
 @Service
@@ -150,7 +150,54 @@ public class CommentMgmtService {
     private LivenessMgmtService livenessMgmtService;
 
     /**
-     * Removes a comment specified with the given comemnt id. A comemnt is removable if:
+     * Accepts a comment specified with the given comment id.
+     *
+     * @param commentId
+     * @throws ServiceException
+     */
+    public void acceptComment(final String commentId) {
+        try {
+            final JSONObject comment = commentRepository.get(commentId);
+            final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+            final Query query = new Query().setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId));
+            final List<JSONObject> comments = CollectionUtils.jsonArrayToList(commentRepository.get(query).optJSONArray(Keys.RESULTS));
+            for (final JSONObject c : comments) {
+                final int offered = c.optInt(Comment.COMMENT_QNA_OFFERED);
+                if (Comment.COMMENT_QNA_OFFERED_C_YES == offered) {
+                    return;
+                }
+            }
+
+            final JSONObject article = articleRepository.get(articleId);
+            final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+            final int offerPoint = article.optInt(Article.ARTICLE_QNA_OFFER_POINT);
+            if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == comment.optInt(Comment.COMMENT_ANONYMOUS)) {
+                final boolean succ = null != pointtransferMgmtService.transfer(articleAuthorId, commentAuthorId,
+                        Pointtransfer.TRANSFER_TYPE_C_QNA_OFFER, offerPoint, commentId, System.currentTimeMillis());
+                if (!succ) {
+                    throw new ServiceException(langPropsService.get("transferFailLabel"));
+                }
+            }
+
+            comment.put(Comment.COMMENT_QNA_OFFERED, Comment.COMMENT_QNA_OFFERED_C_YES);
+            final Transaction transaction = commentRepository.beginTransaction();
+
+            commentRepository.update(commentId, comment);
+
+            transaction.commit();
+
+            final JSONObject notification = new JSONObject();
+            notification.put(Notification.NOTIFICATION_USER_ID, commentAuthorId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, commentId);
+            notificationMgmtService.addCommentAcceptNotification(notification);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Accepts a comment [id=" + commentId + "] failed", e);
+        }
+    }
+
+    /**
+     * Removes a comment specified with the given comment id. A comment is removable if:
      * <ul>
      * <li>No replies</li>
      * <li>No ups, downs</li>
@@ -471,6 +518,7 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_SCORE, 0D);
             comment.put(Comment.COMMENT_REPLY_CNT, 0);
             comment.put(Comment.COMMENT_AUDIO_URL, "");
+            comment.put(Comment.COMMENT_QNA_OFFERED, Comment.COMMENT_QNA_OFFERED_C_NOT);
 
             // Adds the comment
             final String commentId = commentRepository.add(comment);

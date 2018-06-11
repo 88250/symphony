@@ -20,7 +20,6 @@ package org.b3log.symphony.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -62,6 +61,7 @@ import java.util.Set;
  * <li>Gets a comment's replies (/comment/replies), GET </li>
  * <li>Gets a comment's revisions (/commment/{id}/revisions), GET</li>
  * <li>Removes a comment (/comment/{id}/remove), POST</li>
+ * <li>Accepts a comment (/comment/accept), POST</li>
  * </ul>
  * <p>
  * The '<em>locally</em>' means user post a comment on Symphony directly rather than receiving a comment from externally
@@ -69,7 +69,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.3.2, Apr 6, 2018
+ * @version 1.8.0.0, Jun 11, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -133,6 +133,47 @@ public class CommentProcessor {
      */
     @Inject
     private FollowMgmtService followMgmtService;
+
+    /**
+     * Accepts a comment.
+     *
+     * @param context           the specified context
+     * @param request           the specified request
+     * @param requestJSONObject the specified request json object, for example,
+     *                          {
+     *                          "commentId": ""
+     *                          }
+     */
+    @RequestProcessing(value = "/comment/accept", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
+    public void acceptComment(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
+        context.renderJSON();
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+        final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
+
+        try {
+            final JSONObject comment = commentQueryService.getComment(commentId);
+            if (null == comment) {
+                context.renderFalseResult().renderMsg("Not found comment to accept");
+
+                return;
+            }
+            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+            if (!StringUtils.equals(userId, commentAuthorId)) {
+                context.renderFalseResult().renderMsg("Not found comment to accept");
+
+                return;
+            }
+
+            commentMgmtService.acceptComment(commentId);
+
+            context.renderTrueResult();
+        } catch (final ServiceException e) {
+            context.renderMsg(e.getMessage());
+        }
+    }
 
     /**
      * Removes a comment.
@@ -487,36 +528,18 @@ public class CommentProcessor {
 
     /**
      * Thanks a comment.
-     * <p>
-     * The request json object:
-     * <pre>
-     * {
-     *     "commentId": "",
-     * }
-     * </pre>
-     * </p>
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws IOException      io exception
-     * @throws ServletException servlet exception
+     * @param context           the specified context
+     * @param request           the specified request
+     * @param requestJSONObject the specified request json object, for example,
+     *                          {
+     *                          "commentId": ""
+     *                          }
      */
     @RequestProcessing(value = "/comment/thank", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
-    public void thankComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException, ServletException {
+    public void thankComment(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
         context.renderJSON();
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Thank comment error", e);
-
-            return;
-        }
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
