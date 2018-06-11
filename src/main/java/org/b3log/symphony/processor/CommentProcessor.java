@@ -167,6 +167,14 @@ public class CommentProcessor {
                 return;
             }
 
+            final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+            final JSONObject article = articleQueryService.getArticle(articleId);
+            if (!StringUtils.equals(userId, article.optString(Article.ARTICLE_AUTHOR_ID))) {
+                context.renderFalseResult().renderMsg(langPropsService.get("sc403Label"));
+
+                return;
+            }
+
             commentMgmtService.acceptComment(commentId);
 
             context.renderTrueResult();
