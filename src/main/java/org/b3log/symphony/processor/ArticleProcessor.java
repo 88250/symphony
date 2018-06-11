@@ -753,6 +753,11 @@ public class ArticleProcessor {
                 article.put(Common.OFFERED, rewardQueryService.isRewarded(articleAuthorId, articleId, Reward.TYPE_C_ACCEPT_COMMENT));
                 final JSONObject offeredComment = commentQueryService.getOfferedComment(avatarViewMode, cmtViewMode, articleId);
                 article.put(Article.ARTICLE_T_OFFERED_COMMENT, offeredComment);
+                if (null != offeredComment) {
+                    final String offeredCmtId = offeredComment.optString(Keys.OBJECT_ID);
+                    offeredComment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(offeredCmtId, Reward.TYPE_C_COMMENT));
+                    offeredComment.put(Common.REWARDED, rewardQueryService.isRewarded(currentUserId, offeredCmtId, Reward.TYPE_C_COMMENT));
+                }
             }
         } finally {
             Stopwatchs.end();
@@ -810,8 +815,7 @@ public class ArticleProcessor {
 
                 final String commentId = comment.optString(Keys.OBJECT_ID);
                 if (isLoggedIn) {
-                    comment.put(Common.REWARDED,
-                            rewardQueryService.isRewarded(currentUserId, commentId, Reward.TYPE_C_COMMENT));
+                    comment.put(Common.REWARDED, rewardQueryService.isRewarded(currentUserId, commentId, Reward.TYPE_C_COMMENT));
                     final int commentVote = voteQueryService.isVoted(currentUserId, commentId);
                     comment.put(Comment.COMMENT_T_VOTE, commentVote);
                 }

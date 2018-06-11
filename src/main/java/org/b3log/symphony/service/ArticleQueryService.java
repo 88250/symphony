@@ -203,7 +203,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class);
+                addProjection(Article.ARTICLE_CONTENT, String.class).
+                addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
 
         JSONObject result = null;
         try {
@@ -269,6 +270,7 @@ public class ArticleQueryService {
         articleFields.put(Article.ARTICLE_ANONYMOUS, Integer.class);
         articleFields.put(Article.ARTICLE_PERFECT, Integer.class);
         articleFields.put(Article.ARTICLE_CONTENT, String.class);
+        articleFields.put(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
 
         return getArticlesByTags(avatarViewMode, currentPageNum, pageSize, articleFields, tags.toArray(new JSONObject[0]));
     }
@@ -948,7 +950,8 @@ public class ArticleQueryService {
                     addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                     addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                     addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                    addProjection(Article.ARTICLE_CONTENT, String.class);
+                    addProjection(Article.ARTICLE_CONTENT, String.class).
+                    addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
 
             result = articleRepository.get(query);
 

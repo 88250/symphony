@@ -674,11 +674,10 @@ public class ArticleMgmtService {
                 articleTags = "B3log";
             }
 
-            if (Article.ARTICLE_TYPE_C_QNA == articleType) {
-                articleTags += "Q&A";
-            }
-
             articleTags = Tag.formatTags(articleTags);
+            if (Article.ARTICLE_TYPE_C_QNA == articleType && !StringUtils.contains(articleTags, "Q&A")) {
+                articleTags += ",Q&A";
+            }
             article.put(Article.ARTICLE_TAGS, articleTags);
             tagTitles = articleTags.split(",");
 
@@ -1452,11 +1451,10 @@ public class ArticleMgmtService {
             tagsString = "B3log";
         }
 
-        if (Article.ARTICLE_TYPE_C_QNA == articleType) {
-            tagsString += "Q&A";
-        }
-
         tagsString = Tag.formatTags(tagsString);
+        if (Article.ARTICLE_TYPE_C_QNA == articleType && !StringUtils.contains(tagsString, "Q&A")) {
+            tagsString += ",Q&A";
+        }
         newArticle.put(Article.ARTICLE_TAGS, tagsString);
         tagStrings = tagsString.split(",");
 
