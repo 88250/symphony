@@ -50,7 +50,7 @@ import java.util.Set;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.12.2, Jan 30, 2018
+ * @version 1.7.12.3, Jun 11, 2018
  * @since 0.2.0
  */
 @Named
@@ -159,6 +159,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             chData.put(Comment.COMMENT_T_COMMENTER, commenter);
             chData.put(Keys.OBJECT_ID, commentId);
             chData.put(Article.ARTICLE_T_ID, articleId);
+            chData.put(Article.ARTICLE, originalArticle);
             chData.put(Comment.COMMENT_T_ID, commentId);
             chData.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCmtId);
 

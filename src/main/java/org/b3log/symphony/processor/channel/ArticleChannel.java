@@ -32,7 +32,6 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.SkinRenderer;
-import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.service.RoleQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Symphonys;
@@ -51,7 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.9.7, Jan 30, 2018
+ * @version 2.3.9.8, Jun 11, 2018
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/article-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -65,8 +64,7 @@ public class ArticleChannel {
     /**
      * Article viewing map &lt;articleId, count&gt;.
      */
-    public static final Map<String, Integer> ARTICLE_VIEWS
-            = Collections.synchronizedMap(new HashMap<String, Integer>());
+    public static final Map<String, Integer> ARTICLE_VIEWS = Collections.synchronizedMap(new HashMap<>());
 
     /**
      * Logger.
@@ -108,12 +106,12 @@ public class ArticleChannel {
 
         final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
         final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
-        final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
         final RoleQueryService roleQueryService = beanManager.getReference(RoleQueryService.class);
         final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+        final JSONObject article = message.optJSONObject(Article.ARTICLE);
 
         for (final Session session : SESSIONS) {
-            final String viewingArticleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
+            final String viewingArticleId = Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
             if (Strings.isEmptyOrNull(viewingArticleId)
                     || !viewingArticleId.equals(message.optString(Article.ARTICLE_T_ID))) {
                 continue;
@@ -131,11 +129,6 @@ public class ArticleChannel {
 
                     final String userName = user.optString(User.USER_NAME);
                     final String userRole = user.optString(User.USER_ROLE);
-
-                    final JSONObject article = articleRepository.get(viewingArticleId);
-                    if (null == article) {
-                        continue;
-                    }
 
                     final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
                     final String userId = user.optString(Keys.OBJECT_ID);
@@ -171,6 +164,8 @@ public class ArticleChannel {
                 final Map dataModel = new HashMap();
                 dataModel.put(Common.IS_LOGGED_IN, isLoggedIn);
                 dataModel.put(Common.CURRENT_USER, user);
+                article.put(Common.OFFERED, false);
+                dataModel.put(Article.ARTICLE, article);
                 dataModel.put(Common.CSRF_TOKEN, Channels.getHttpSessionAttribute(session, Common.CSRF_TOKEN));
                 Keys.fillServer(dataModel);
                 dataModel.put(Comment.COMMENT, message);
