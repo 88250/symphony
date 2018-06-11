@@ -27,5 +27,7 @@
     <span class="tooltipped tooltipped-e" aria-label="${cityBroadcastLabel}"><svg><use xlink:href="#feed"></use></svg></span>
 <#elseif 3 == type>
     <span class="tooltipped tooltipped-e" aria-label="${thoughtLabel}"><svg><use xlink:href="#video"></use></svg></span>
+<#elseif 5 == type>
+    <span class="tooltipped tooltipped-e" aria-label="${qnaLabel}"><svg><use xlink:href="#iconAsk"></use></svg></span>
 </#if>
 </#macro>

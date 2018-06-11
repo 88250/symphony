@@ -640,6 +640,11 @@ a[class*=" icon-"]:hover {
   margin: 0;
 }
 
+.list > ul > li.cmt-perfect,
+.list > ul > li.cmt-perfect:hover {
+  background-color: #f9f6f6;
+}
+
 .has-view {
   margin-right: 40px;
 }

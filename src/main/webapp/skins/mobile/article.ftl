@@ -139,6 +139,11 @@
                         </#if>
                         </span>
                         ${viewLabel}
+                             <#if article.articleQnAOfferPoint != 0>
+                                &nbsp;•&nbsp;
+                                <span class="article-level<#if article.articleQnAOfferPoint lt 400>${(article.articleQnAOfferPoint/100)?int}<#else>4</#if>">${article.articleQnAOfferPoint?c}</span>
+                                 ${QnAOfferLabel}
+                             </#if>
                         &nbsp;•&nbsp;
                         ${article.timeAgo}
                         <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
@@ -190,7 +195,58 @@
                 </div>
                 <div class="fn-hr10"></div>
                 </#if>
-                
+                <#if article.offered>
+                <div class="module nice">
+                    <div class="module-header">
+                        ${adoptLabel}
+                    </div>
+                    <div class="module-panel list comments">
+                        <ul>
+                            <li>
+                                <div class="fn-flex">
+                                    <#if !article.articleOfferedComment.fromClient>
+                                        <#if article.articleOfferedComment.commentAnonymous == 0>
+                                    <a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}"></#if>
+                                        <div class="avatar tooltipped tooltipped-se"
+                                             aria-label="${article.articleOfferedComment.commentAuthorName}" style="background-image:url('${article.articleOfferedComment.commentAuthorThumbnailURL}')"></div>
+                                        <#if article.articleOfferedComment.commentAnonymous == 0></a></#if>
+                                    <#else>
+                                    <div class="avatar tooltipped tooltipped-se"
+                                         aria-label="${article.articleOfferedComment.commentAuthorName}" style="background-image:url('${article.articleOfferedComment.commentAuthorThumbnailURL}')"></div>
+                                    </#if>
+                                    <div class="fn-flex-1">
+                                        <div class="fn-clear comment-info ft-smaller">
+                                            <span class="fn-left">
+                                                <#if !article.articleOfferedComment.fromClient>
+                                                    <#if article.articleOfferedComment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${article.articleOfferedComment.commentAuthorName}</span><#if article.articleOfferedComment.commentAnonymous == 0></a></#if>
+                                                <#else><span class="ft-gray">${article.articleOfferedComment.commentAuthorName}</span>
+                                                <span class="ft-fade"> • </span>
+                                                <a rel="nofollow" class="ft-green" href="https://hacpai.com/article/1457158841475">API</a>
+                                                </#if>
+                                                <span class="ft-fade">• ${article.articleOfferedComment.timeAgo}</span>
+
+                                                <#if article.articleOfferedComment.rewardedCnt gt 0>
+                                                    <#assign hasRewarded = isLoggedIn && article.articleOfferedComment.commentAuthorId != currentUser.oId && article.articleOfferedComment.rewarded>
+                                                <span aria-label="<#if hasRewarded>${thankedLabel}<#else>${thankLabel} ${article.articleOfferedComment.rewardedCnt}</#if>"
+                                                      class="tooltipped tooltipped-n rewarded-cnt <#if hasRewarded>ft-red<#else>ft-fade</#if>">
+                                                    <svg class="fn-text-top"><use xlink:href="#heart"></use></svg> ${article.articleOfferedComment.rewardedCnt}
+                                                </span>
+                                                </#if>
+                                                <#if 0 == article.articleOfferedComment.commenter.userUAStatus><span class="cmt-via ft-fade" data-ua="${article.articleOfferedComment.commentUA}"></span></#if>
+                                            </span>
+                                            <a class="ft-a-title fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
+                                               href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${article.articleOfferedComment.paginationCurrentPageNum}&m=${userCommentViewMode}#${article.articleOfferedComment.oId}')"><svg><use xlink:href="#down"></use></svg></a>
+                                        </div>
+                                        <div class="content-reset comment">
+                                            ${article.articleOfferedComment.commentContent}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                </#if>
                 <#if article.articleNiceComments?size != 0>
                     <div class="module nice">
                         <div class="module-header">

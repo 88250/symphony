@@ -36,6 +36,12 @@
                     <div class="ft-fade">${addNormalArticleTipLabel}</div>
                 </div>
                 <div>
+                    <a rel="nofollow" href="${servePath}/post?type=5">
+                        <svg><use xlink:href="#iconAsk"></use></svg> ${qnaLabel}
+                    </a>
+                    <div class="ft-fade">${addAskArticleTipLabel}</div>
+                </div>
+                <div>
                     <a href="${servePath}/post?type=1&tags=${discussionLabel}">
                         <svg><use xlink:href="#locked"></use></svg> ${discussionLabel}
                     </a>

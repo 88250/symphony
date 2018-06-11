@@ -67,6 +67,11 @@
                         </#if>
                         <br/>
                     </div>
+                    <#if (!article?? && 5 == articleType) || (article?? && article.articleType == 5)>
+                     <input id="articleAskPoint"
+                            value="<#if article??>${article.articleQnAOfferPoint}</#if>"
+                            type="number" tabindex="5" min="1" placeholder="${QnAOfferPointLabel}"/>
+                    <#else>
                     <button id="showReward" class="fn-ellipsis" onclick="$(this).next().show(); $(this).hide()">
                         ${rewardEditorPlaceholderLabel} &dtrif;
                     </button>
@@ -81,6 +86,7 @@
                                    value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" />
                         </div>
                     </div>
+                    </#if>
                     <div class="fn-hr10"></div>
                     <div class="tip" id="addArticleTip"></div>
                     <div class="fn-hr10"></div>
@@ -102,6 +108,11 @@
                             <input tabindex="8" type="radio" name="articleType" <#if 2 == articleType>checked="checked"</#if> value="2"/> 
                                    ${cityBroadcastLabel}
                         </label>
+                        <label> &nbsp;
+                            <input type="radio" name="articleType" <#if 5 == articleType>checked="checked"</#if>
+                                   value="5"/>
+                            ${qnaLabel}
+                        </label>
                         <#else>
                         <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/> 
                         </#if>
@@ -115,7 +126,7 @@
                                 <#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked</#if></#if>
                                 type="checkbox" id="syncWithSymphonyClient"></label>
                         </#if>
-                        <#if permissions["commonAddArticleAnonymous"].permissionGrant>
+                        <#if permissions["commonAddArticleAnonymous"].permissionGrant && ((!article?? && 5 != articleType) || (article?? && 5 != article.articleType) )>
                             <label class="article-anonymous">&nbsp;  ${anonymousLabel}<input
                                 <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
                                 type="checkbox" id="articleAnonymous"></label>
@@ -149,6 +160,11 @@
                                 <svg><use xlink:href="#video"></use></svg> ${thoughtLabel}
                             <span class="ft-gray">${addThoughtArticleTipLabel}
                                 <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
+                            <#elseif 5 == articleType>
+                            <svg class="post__info">
+                                <use xlink:href="#iconAsk"></use>
+                            </svg> ${qnaLabel}
+                            <span class="ft-gray">${addAskArticleTipLabel}</span>
                             </#if>
                     </div>
                 </div>

@@ -30,6 +30,34 @@
 var Comment = {
   editor: undefined,
   /**
+   * 采纳评论
+   * @param tip
+   * @param id
+   */
+  accept: function (tip, id, it) {
+    if (!confirm(tip)) {
+      return
+    }
+    $.ajax({
+      url: Label.servePath + '/comment/accept',
+      type: 'POST',
+      headers: {'csrfToken': Label.csrfToken},
+      cache: false,
+      data: JSON.stringify({
+        commentId: id,
+      }),
+      success: function (result) {
+        if (!result.sc) {
+          alert(result.msg)
+          return
+        } else {
+          $(it).closest('li').addClass('cmt-perfect')
+          $(it).remove()
+        }
+      },
+    })
+  },
+  /**
    * 删除评论
    * @param {integer} id 评论 id
    */
