@@ -246,8 +246,16 @@ public class SettingsProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         try {
-            final JSONObject verifycode = verifycodeQueryService.getVerifycode(captcha);
+            final JSONObject verifycode = verifycodeQueryService.getVerifycodeByUserId(Verifycode.TYPE_C_EMAIL, Verifycode.BIZ_TYPE_C_BIND_EMAIL, userId);
             if (null == verifycode) {
+                final String msg = langPropsService.get("updateFailLabel") + " - " + langPropsService.get("captchaErrorLabel");
+                context.renderMsg(msg);
+                context.renderJSONValue(Common.CODE, 2);
+
+                return;
+            }
+
+            if (!StringUtils.equals(verifycode.optString(Verifycode.CODE), captcha)) {
                 final String msg = langPropsService.get("updateFailLabel") + " - " + langPropsService.get("captchaErrorLabel");
                 context.renderMsg(msg);
                 context.renderJSONValue(Common.CODE, 2);
