@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.22.1.2, Apr 6, 2018
+ * @version 1.25.0.0, Jun 12, 2018
  */
 
 /**
@@ -29,6 +29,75 @@
  * @static
  */
 var Settings = {
+  /**
+   * 获取邮箱验证码
+   * @param csrfToken
+   */
+  getEmailCaptcha: function (csrfToken) {
+    $('#emailGetBtn').attr('disabled', 'disabled').css('opacity', '0.3')
+    $.ajax({
+      url: Label.servePath + '/settings/email/vc',
+      type: 'POST',
+      headers: {'csrfToken': csrfToken},
+      data: JSON.stringify({
+        userEmail: $('#emailInput').val(),
+        captcha: $('#emailVerify').val(),
+      }),
+      success: function (result) {
+        if (result.sc) {
+          $('#emailInput').prop('disabled', true)
+          $('.home-account__captch').hide()
+          $('#emailCodePanel').show()
+          $('#emailCode').show().focus()
+          $('#emailSubmitBtn').show()
+          $('#emailGetBtn').hide()
+        }
+        alert(result.msg)
+        $('#emailGetBtn').removeAttr('disabled').css('opacity', '1')
+      },
+    })
+  },
+  /**
+   * 更新邮箱
+   */
+  updateEmail: function (csrfToken) {
+    $('#emailSubmitBtn').attr('disabled', 'disabled').css('opacity', '0.3')
+    $.ajax({
+      url: Label.servePath + '/settings/email',
+      type: 'POST',
+      headers: {'csrfToken': csrfToken},
+      data: JSON.stringify({
+        userEmail: $('#emailInput').val(),
+        captcha: $('#emailCode').val(),
+      }),
+      success: function (result) {
+        if (result.sc) {
+          $('.home-account__captch').show()
+          $('#emailVerify').val('')
+          $('#emailCodePanel').hide()
+          $('#emailCode').val('')
+          $('#emailSubmitBtn').hide()
+          $('#emailGetBtn').show()
+          $('#emailInput').prop('disabled', false)
+          $('.home-account__captch img').click()
+          alert(Label.updateSuccLabel)
+        } else {
+          if (result.code === 1) {
+            $('.home-account__captch').show()
+            $('#emailVerify').val('')
+            $('#emailCodePanel').hide()
+            $('#emailCodePanel').hide()
+            $('#emailSubmitBtn').hide()
+            $('#emailGetBtn').show()
+            $('#emailInput').prop('disabled', false)
+            $('.home-account__captch img').click()
+          }
+          alert(result.msg)
+        }
+        $('#emailSubmitBtn').removeAttr('disabled').css('opacity', '1')
+      },
+    })
+  },
   /**
    * 个人主页滚动固定
    */

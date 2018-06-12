@@ -44,8 +44,8 @@
                     ${pointLabel}
                     <#elseif type == "privacy">
                     ${privacyLabel}
-                    <#elseif type == "password">
-                    ${passwordLabel}
+                    <#elseif type == "account">
+                    ${accountLabel}
                     <#elseif type == "b3">
                     B3
                     <#elseif type == "i18n">
@@ -61,12 +61,12 @@
                 <ul class="tab fn-clear fn-none">
                     <li<#if 'profile' == type> class="fn-none"</#if>><a href="${servePath}/settings">${profilesLabel}</a></li>
                     <li<#if 'avatar' == type> class="fn-none"</#if>><a href="${servePath}/settings/avatar">${avatarLabel}</a></li>
+                    <li<#if 'account' == type> class="fn-none"</#if>><a href="${servePath}/settings/account">${accountLabel}</a></li>
                     <li<#if 'invite' == type> class="fn-none"</#if>><a href="${servePath}/settings/invite">${inviteLabel}</a></li>
                     <li<#if 'function' == type> class="fn-none"</#if>><a href="${servePath}/settings/function">${functionLabel}</a></li>
                     <li<#if 'point' == type> class="fn-none"</#if>><a href="${servePath}/settings/point">${pointLabel}</a></li>
                     <li<#if 'location' == type> class="fn-none"</#if>><a href="${servePath}/settings/location">${geoLabel}</a></li>
                     <li<#if 'privacy' == type> class="fn-none"</#if>><a href="${servePath}/settings/privacy">${privacyLabel}</a></li>
-                    <li<#if 'password' == type> class="fn-none"</#if>><a href="${servePath}/settings/password">${passwordLabel}</a></li>
                     <li<#if 'b3' == type> class="fn-none"</#if>><a href="${servePath}/settings/b3">B3</a></li>
                     <li<#if 'i18n' == type> class="fn-none"</#if>><a href="${servePath}/settings/i18n">${i18nLabel}</a></li>
                     <li<#if 'data' == type> class="fn-none"</#if>><a href="${servePath}/settings/data">${dataLabel}</a></li>

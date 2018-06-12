@@ -23,7 +23,6 @@
     <div class="module-header fn-clear">
         <a rel="nofollow" href="${servePath}/member/${currentUser.userName}" target="_blank">${currentUser.userName}</a>
         <h2>${profilesLabel}</h2>
-        <span>(${currentUser.userEmail})</span>
     </div>
     <div class="module-panel form fn-clear">
         <label>${nicknameLabel}</label><br/>

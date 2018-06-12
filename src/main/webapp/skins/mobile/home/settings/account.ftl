@@ -18,7 +18,7 @@
 
 -->
 <#include "macro-settings.ftl">
-<@home "password">
+<@home "account">
 <div class="module">
     <div class="module-header">
         <h2>${passwordLabel}</h2>
@@ -33,7 +33,33 @@
         <label>${confirmPasswordLabel}</label>
         <input id="pwdRepeat" type="password" /> <br/><br/>
         <div id="passwordTip" class="tip"></div><br/>
-        <button class="green fn-right" onclick="Settings.update('password', '${csrfToken}')">${saveLabel}</button>
+        <button class="fn-right" onclick="Settings.update('password', '${csrfToken}')">${saveLabel}</button>
+    </div>
+</div>
+
+<div class="module">
+    <div class="module-header">
+        <h2>${emailLabel}</h2>
+    </div>
+    <div class="module-panel form fn-clear">
+        <label>${emailLabel}</label>
+        <input id="emailInput" type="text" value="<#if !currentUser.userEmail?ends_with("sym.b3log.org")>${currentUser.userEmail}</#if>" />
+
+        <div class="home-account__captch">
+            <label>${imageCaptchaLabel}</label>
+            <img class="fn-pointer" height="20px" src="${servePath}/captcha" onclick="this.src = '${servePath}/captcha?' + (new Date()).getTime()" />
+            <input id="emailVerify" type="text" />
+        </div>
+        <div class="fn-none" id="emailCodePanel">
+            <label>${emailCaptchaLabel}</label>
+            <input id="emailCode" type="text" />
+        </div>
+        <div id="emailTip" class="tip"></div><br/>
+        <button id="emailSubmitBtn" class="fn-right fn-none"
+                onclick="Settings.updateEmail('${csrfToken}')">${submitLabel}</button>
+        <button id="emailGetBtn"
+                class="fn-right"
+                onclick="Settings.getEmailCaptcha('${csrfToken}')">${getEmailCaptchaLabel}</button>
     </div>
 </div>
 </@home>
