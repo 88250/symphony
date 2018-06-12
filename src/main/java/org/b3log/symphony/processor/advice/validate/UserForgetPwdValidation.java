@@ -66,7 +66,7 @@ public class UserForgetPwdValidation extends BeforeRequestProcessAdvice {
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
-        checkField(UserRegisterValidation.invalidCaptcha(captcha, request), "submitFailedLabel", "captchaErrorLabel");
+        checkField(CaptchaProcessor.invalidCaptcha(captcha), "submitFailedLabel", "captchaErrorLabel");
         checkField(!Strings.isEmail(email), "submitFailedLabel", "invalidEmailLabel");
     }
 

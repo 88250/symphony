@@ -26,6 +26,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.PNGRenderer;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
 import org.patchca.color.SingleColorFactory;
@@ -48,7 +49,7 @@ import java.util.Set;
  * Captcha processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.10, Apr 5, 2018
+ * @version 2.3.0.0, Jun 12, 2018
  * @since 0.2.2
  */
 @RequestProcessor
@@ -73,6 +74,25 @@ public class CaptchaProcessor {
      * Captcha length.
      */
     private static final int CAPTCHA_LENGTH = 4;
+
+    /**
+     * Checks whether the specified captcha is invalid.
+     *
+     * @param captcha the specified captcha
+     * @return {@code true} if it is invalid, returns {@code false} otherwise
+     */
+    public static boolean invalidCaptcha(final String captcha) {
+        if (Strings.isEmptyOrNull(captcha) || captcha.length() != CAPTCHA_LENGTH) {
+            return true;
+        }
+
+        boolean ret = !CaptchaProcessor.CAPTCHAS.contains(captcha);
+        if (!ret) {
+            CaptchaProcessor.CAPTCHAS.remove(captcha);
+        }
+
+        return ret;
+    }
 
     /**
      * Gets captcha.

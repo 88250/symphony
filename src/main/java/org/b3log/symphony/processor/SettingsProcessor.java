@@ -18,8 +18,10 @@
 package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
@@ -71,10 +73,12 @@ import java.util.*;
  * <li>Updates emotions (/settings/emotionList), POST</li>
  * <li>Password (/settings/password), POST</li>
  * <li>Updates i18n (/settings/i18n), POST</li>
+ * <li>Sends email verify code (/settings/email/vc), POST</li>
+ * <li>Updates email (/settings/email), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, May 23, 2018
+ * @version 1.1.0.0, Jun 12, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -144,6 +148,130 @@ public class SettingsProcessor {
      */
     @Inject
     private RoleQueryService roleQueryService;
+
+    /**
+     * Verifycode query service.
+     */
+    @Inject
+    private VerifycodeQueryService verifycodeQueryService;
+
+    /**
+     * Verifycode management service.
+     */
+    @Inject
+    private VerifycodeMgmtService verifycodeMgmtService;
+
+
+    /**
+     * Sends email verify code.
+     *
+     * @param context           the specified context
+     * @param request           the specified request
+     * @param requestJSONObject the specified request json object
+     */
+    @RequestProcessing(value = "/settings/email/vc", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class})
+    public void sendEmailVC(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
+        context.renderJSON();
+
+        final String email = StringUtils.lowerCase(StringUtils.trim(requestJSONObject.optString(User.USER_EMAIL)));
+        if (!Strings.isEmail(email)) {
+            final String msg = langPropsService.get("sendFailedLabel") + " - " + langPropsService.get("invalidEmailLabel");
+            context.renderMsg(msg);
+
+            return;
+        }
+
+        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
+        if (CaptchaProcessor.invalidCaptcha(captcha)) {
+            final String msg = langPropsService.get("sendFailedLabel") + " - " + langPropsService.get("captchaErrorLabel");
+            context.renderMsg(msg);
+
+            return;
+        }
+
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        if (email.equalsIgnoreCase(user.optString(User.USER_EMAIL))) {
+            final String msg = langPropsService.get("sendFailedLabel") + " - " + langPropsService.get("bindedLabel");
+            context.renderMsg(msg);
+
+            return;
+        }
+
+        final String userId = user.optString(Keys.OBJECT_ID);
+        try {
+            JSONObject verifycode = verifycodeQueryService.getVerifycodeByUserId(Verifycode.TYPE_C_EMAIL, Verifycode.BIZ_TYPE_C_BIND_EMAIL, userId);
+            if (null != verifycode) {
+                context.renderTrueResult().renderMsg(langPropsService.get("vcSentLabel"));
+
+                return;
+            }
+
+            if (null != userQueryService.getUserByEmail(email)) {
+                context.renderMsg(langPropsService.get("duplicatedEmailLabel"));
+
+                return;
+            }
+
+            final String code = RandomStringUtils.randomNumeric(6);
+            verifycode = new JSONObject();
+            verifycode.put(Verifycode.USER_ID, userId);
+            verifycode.put(Verifycode.BIZ_TYPE, Verifycode.BIZ_TYPE_C_BIND_EMAIL);
+            verifycode.put(Verifycode.TYPE, Verifycode.TYPE_C_EMAIL);
+            verifycode.put(Verifycode.CODE, code);
+            verifycode.put(Verifycode.STATUS, Verifycode.STATUS_C_UNSENT);
+            verifycode.put(Verifycode.EXPIRED, DateUtils.addMinutes(new Date(), 10).getTime());
+            verifycode.put(Verifycode.RECEIVER, email);
+            verifycodeMgmtService.addVerifycode(verifycode);
+
+            context.renderTrueResult().renderMsg(langPropsService.get("verifycodeSentLabel"));
+        } catch (final ServiceException e) {
+            context.renderMsg(e.getMessage());
+        }
+    }
+
+    /**
+     * Updates email.
+     *
+     * @param context           the specified context
+     * @param request           the specified request
+     * @param requestJSONObject the specified request json object
+     */
+    @RequestProcessing(value = "/settings/email", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class})
+    public void updateEmail(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
+        context.renderJSON();
+
+        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+        try {
+            final JSONObject verifycode = verifycodeQueryService.getVerifycode(captcha);
+            if (null == verifycode) {
+                final String msg = langPropsService.get("updateFailLabel") + " - " + langPropsService.get("verifycodeExpiredLabel");
+                context.renderMsg(msg);
+                context.renderJSONValue(Common.CODE, 1);
+
+                return;
+            }
+
+            if (!StringUtils.equals(verifycode.optString(Verifycode.CODE), captcha)) {
+                final String msg = langPropsService.get("updateFailLabel") + " - " + langPropsService.get("captchaErrorLabel");
+                context.renderMsg(msg);
+                context.renderJSONValue(Common.CODE, 2);
+
+                return;
+            }
+
+            final String email = verifycode.optString(Verifycode.RECEIVER);
+            user.put(User.USER_EMAIL, email);
+            userMgmtService.updateUserEmail(userId, user);
+
+            context.renderTrueResult();
+        } catch (final ServiceException e) {
+            context.renderMsg(e.getMessage());
+        }
+    }
 
     /**
      * Updates user i18n.
