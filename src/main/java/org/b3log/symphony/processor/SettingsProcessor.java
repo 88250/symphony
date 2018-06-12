@@ -243,8 +243,8 @@ public class SettingsProcessor {
         context.renderJSON();
 
         final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        final String userId = user.optString(Keys.OBJECT_ID);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
         try {
             final JSONObject verifycode = verifycodeQueryService.getVerifycode(captcha);
             if (null == verifycode) {
@@ -263,6 +263,7 @@ public class SettingsProcessor {
                 return;
             }
 
+            final JSONObject user = userQueryService.getUser(userId);
             final String email = verifycode.optString(Verifycode.RECEIVER);
             user.put(User.USER_EMAIL, email);
             userMgmtService.updateUserEmail(userId, user);
