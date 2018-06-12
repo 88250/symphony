@@ -267,6 +267,7 @@ public class SettingsProcessor {
             final String email = verifycode.optString(Verifycode.RECEIVER);
             user.put(User.USER_EMAIL, email);
             userMgmtService.updateUserEmail(userId, user);
+            verifycodeMgmtService.removeByCode(captcha);
 
             context.renderTrueResult();
         } catch (final ServiceException e) {
