@@ -733,7 +733,6 @@ public class UserMgmtService {
                 throw new ServiceException(langPropsService.get("duplicatedEmailLabel") + " [" + newEmail + "]");
             }
 
-            // Update the user
             userRepository.update(userId, user);
 
             transaction.commit();
@@ -764,7 +763,6 @@ public class UserMgmtService {
                 throw new ServiceException(langPropsService.get("duplicatedUserNameLabel") + " [" + newUserName + "]");
             }
 
-            // Update the user
             userRepository.update(userId, user);
 
             transaction.commit();
