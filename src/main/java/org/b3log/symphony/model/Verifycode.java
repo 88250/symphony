@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all verifycode model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Jul 3, 2016
+ * @version 1.2.0.0, Jun 12, 2018
  * @since 1.3.0
  */
 public final class Verifycode {
@@ -82,11 +82,16 @@ public final class Verifycode {
      * Business type - Register.
      */
     public static final int BIZ_TYPE_C_REGISTER = 0;
-    
+
     /**
      * Business type - Reset password.
      */
     public static final int BIZ_TYPE_C_RESET_PWD = 1;
+
+    /**
+     * Business type - Bind email.
+     */
+    public static final int BIZ_TYPE_C_BIND_EMAIL = 3;
 
     // Status constants
     /**

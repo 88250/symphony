@@ -42,7 +42,7 @@ import java.util.*;
  * Verifycode management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Mar 2, 2018
+ * @version 1.2.0.1, Jun 12, 2018
  * @since 1.3.0
  */
 @Service
@@ -184,6 +184,11 @@ public class VerifycodeMgmtService {
                         subject = langPropsService.get("forgetEmailSubjectLabel", Latkes.getLocale());
 
                         break;
+                    case Verifycode.BIZ_TYPE_C_BIND_EMAIL:
+                        dataModel.put(Common.CODE, code);
+                        subject = langPropsService.get("bindEmailSubjectLabel", Latkes.getLocale());
+
+                        break;
                     default:
                         LOGGER.warn("Send email verify code failed with wrong biz type [" + bizType + "]");
 
@@ -195,8 +200,7 @@ public class VerifycodeMgmtService {
 
                 final String fromName = langPropsService.get("symphonyEnLabel")
                         + " " + langPropsService.get("verifycodeEmailFromNameLabel", Latkes.getLocale());
-                Mails.sendHTML(fromName, subject, toMail,
-                        Mails.TEMPLATE_NAME_VERIFYCODE, dataModel);
+                Mails.sendHTML(fromName, subject, toMail, Mails.TEMPLATE_NAME_VERIFYCODE, dataModel);
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Sends verifycode failed", e);

@@ -86,7 +86,11 @@
                                                                         ${userName}，你好：
                                                                     </p>
                                                                     <div align="left" style="font-size:13px;line-height:20px;color:#444444;margin-top:0px;margin-bottom:18px;font-family:Helvetica,Arial,sans-serif">
+                                                                        <#if url??>
                                                                         请尽快完成验证：<a href="${url}">${url}</a>
+                                                                        <#else>
+                                                                        验证码：${code}
+                                                                        </#if>
                                                                     </div>
                                                                     <div style="border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#eee;margin-bottom:30px"></div>
                                                                     <p align="left" style="font-size:18px;line-height:24px;color:#333;font-weight:bold;margin-top:0px;margin-bottom:18px;font-family:Helvetica,Arial,sans-serif">
@@ -96,16 +100,11 @@
                                                                         <table>
                                                                             <tbody><tr style="border-collapse:collapse">
                                                                                     <td style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;padding:0 0 15px">
-                                                                                        我们正在构建一个活跃的小众社区。大家在这里相互 信任 ，以 平等 • 自由 • 奔放 的价值观进行分享交流。
                                                                                         <ul>
-                                                                                            <li>分享自己见解的同时请对他人保持友善</li>
-                                                                                            <li>帖子和回帖都可以修改，每次修改都会留下版本记录</li>
-                                                                                            <li>禁止分享、讨论任何涉及版权盗用相关的内容</li>
-                                                                                            <li>禁止未经原作者授权的内容转载</li>
-                                                                                            <li>禁止讨论其他社区（比如使用方式、氛围等）</li>
-                                                                                            <li>禁止讨论违反中国法律的事情</li>
+                                                                                            <li>我们正在构建一个活跃的小众社区</li>
+                                                                                            <li>大家在这里相互信任，以 平等 • 自由 • 奔放 的价值观进行分享交流</li>
+                                                                                            <li>最终，希望大家能够找到与自己志同道合的伙伴，共同成长</li>
                                                                                         </ul>
-                                                                                        希望大家能够找找到与自己志同道合的伙伴，共同成长。
                                                                                     </td>
                                                                                 </tr>                                                        
                                                                             </tbody></table>
