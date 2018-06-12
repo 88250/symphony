@@ -48,7 +48,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.0.0, Jun 11, 2017
+ * @version 2.14.0.1, Jun 12, 2017
  * @since 0.2.0
  */
 @Service
@@ -153,9 +153,9 @@ public class CommentMgmtService {
      * Accepts a comment specified with the given comment id.
      *
      * @param commentId
-     * @throws ServiceException
+     * @throws ServiceException service exception
      */
-    public void acceptComment(final String commentId) {
+    public void acceptComment(final String commentId) throws ServiceException {
         try {
             final JSONObject comment = commentRepository.get(commentId);
             final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
@@ -198,8 +198,14 @@ public class CommentMgmtService {
             notification.put(Notification.NOTIFICATION_USER_ID, commentAuthorId);
             notification.put(Notification.NOTIFICATION_DATA_ID, rewardId);
             notificationMgmtService.addCommentAcceptNotification(notification);
+
+            livenessMgmtService.incLiveness(articleAuthorId, Liveness.LIVENESS_ACCEPT_ANSWER);
+        } catch (final ServiceException e) {
+            throw e;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Accepts a comment [id=" + commentId + "] failed", e);
+
+            throw new ServiceException(langPropsService.get("systemErrLabel"));
         }
     }
 

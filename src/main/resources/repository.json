@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.38.0.4, Jun 10, 2018",
+  "version": "4.38.0.5, Jun 12, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -448,6 +448,11 @@
           "name": "livenessPV",
           "type": "int",
           "description": "PV 计数"
+        },
+        {
+          "name": "livenessAcceptAnswer",
+          "type": "int",
+          "description": "采纳回答计数"
         }
       ]
     },

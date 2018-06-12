@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * This class defines all liveness model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Aug 17, 2016
+ * @version 1.1.0.0, Jun 12, 2018
  * @since 1.4.0
  */
 public final class Liveness {
@@ -85,6 +85,11 @@ public final class Liveness {
     public static final String LIVENESS_PV = "livenessPV";
 
     /**
+     * Key of liveness accept answer.
+     */
+    public static final String LIVENESS_ACCEPT_ANSWER = "livenessAcceptAnswer";
+
+    /**
      * Calculates point of the specified liveness.
      *
      * @param liveness the specified liveness
@@ -98,6 +103,7 @@ public final class Liveness {
         final float rewardPer = Symphonys.getFloat("activitYesterdayLivenessReward.reward.perPoint");
         final float thankPer = Symphonys.getFloat("activitYesterdayLivenessReward.thank.perPoint");
         final float votePer = Symphonys.getFloat("activitYesterdayLivenessReward.vote.perPoint");
+        final float acceptAnswerPer = Symphonys.getFloat("activitYesterdayLivenessReward.acceptAnswer.perPoint");
 
         final int activity = liveness.optInt(Liveness.LIVENESS_ACTIVITY);
         final int article = liveness.optInt(Liveness.LIVENESS_ARTICLE);
@@ -112,6 +118,7 @@ public final class Liveness {
         if (vote > 10) {
             vote = 10;
         }
+        final int acceptAnswer = liveness.optInt(Liveness.LIVENESS_ACCEPT_ANSWER);
 
         final int activityPoint = (int) (activity * activityPer);
         final int articlePoint = (int) (article * articlePer);
@@ -120,8 +127,9 @@ public final class Liveness {
         final int rewardPoint = (int) (reward * rewardPer);
         final int thankPoint = (int) (thank * thankPer);
         final int votePoint = (int) (vote * votePer);
+        final int acceptAnswerPoint = (int) (acceptAnswer * acceptAnswerPer);
 
-        int ret = activityPoint + articlePoint + commentPoint + pvPoint + rewardPoint + thankPoint + votePoint;
+        int ret = activityPoint + articlePoint + commentPoint + pvPoint + rewardPoint + thankPoint + votePoint + acceptAnswerPoint;
 
         final int max = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");
         if (ret > max) {

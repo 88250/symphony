@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Liveness management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 22, 2016
+ * @version 1.0.0.1, Jun 12, 2018
  * @since 1.4.0
  */
 @Service
@@ -78,6 +78,7 @@ public class LivenessMgmtService {
                 liveness.put(Liveness.LIVENESS_THANK, 0);
                 liveness.put(Liveness.LIVENESS_VOTE, 0);
                 liveness.put(Liveness.LIVENESS_VOTE, 0);
+                liveness.put(Liveness.LIVENESS_ACCEPT_ANSWER, 0);
 
                 livenessRepository.add(liveness);
             }
