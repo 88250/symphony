@@ -248,14 +248,6 @@ public class SettingsProcessor {
         try {
             final JSONObject verifycode = verifycodeQueryService.getVerifycode(captcha);
             if (null == verifycode) {
-                final String msg = langPropsService.get("updateFailLabel") + " - " + langPropsService.get("verifycodeExpiredLabel");
-                context.renderMsg(msg);
-                context.renderJSONValue(Common.CODE, 1);
-
-                return;
-            }
-
-            if (!StringUtils.equals(verifycode.optString(Verifycode.CODE), captcha)) {
                 final String msg = langPropsService.get("updateFailLabel") + " - " + langPropsService.get("captchaErrorLabel");
                 context.renderMsg(msg);
                 context.renderJSONValue(Common.CODE, 2);
