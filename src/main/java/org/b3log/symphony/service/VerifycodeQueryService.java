@@ -21,10 +21,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Verifycode;
 import org.b3log.symphony.repository.VerifycodeRepository;
@@ -35,7 +32,7 @@ import org.json.JSONObject;
  * Verifycode query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Jun 12, 2018
+ * @version 1.2.0.1, Jun 13, 2018
  * @since 1.3.0
  */
 @Service
@@ -65,7 +62,7 @@ public class VerifycodeQueryService {
                 new PropertyFilter(Verifycode.TYPE, FilterOperator.EQUAL, type),
                 new PropertyFilter(Verifycode.BIZ_TYPE, FilterOperator.EQUAL, bizType),
                 new PropertyFilter(Verifycode.USER_ID, FilterOperator.EQUAL, userId))
-        );
+        ).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
         try {
             final JSONObject result = verifycodeRepository.get(query);
