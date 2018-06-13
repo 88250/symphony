@@ -50,7 +50,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.0.0, Jun 11, 2018
+ * @version 2.12.1.0, Jun 13, 2018
  * @since 0.2.0
  */
 @Service
@@ -565,6 +565,11 @@ public class CommentQueryService {
                     comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, "");
                     comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, avatarQueryService.getDefaultAvatarURL("48"));
                 }
+
+                final String commentId = comment.optString(Keys.OBJECT_ID);
+                final int cmtViewMode = UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL;
+                final int cmtPage = getCommentPage(articleId, commentId, cmtViewMode, Symphonys.getInt("articleCommentsPageSize"));
+                comment.put(Comment.COMMENT_SHARP_URL, "/article/" + articleId + "?p=" + cmtPage + "&m=" + cmtViewMode + "#" + commentId);
 
                 if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
                         && Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
