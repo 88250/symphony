@@ -119,6 +119,7 @@
                     <option value="1"<#if 1 == article.articleType> selected</#if>>${discussionLabel}</option>
                     <option value="2"<#if 2 == article.articleType> selected</#if>>${cityBroadcastLabel}</option>
                     <option value="3"<#if 3 == article.articleType> selected</#if>>${thoughtLabel}</option>
+                    <option value="5"<#if 5 == article.articleType> selected</#if>>${qnaLabel}</option>
                 </select>
 
                 <label for="articleGoodCnt">${goodCntLabel}</label>
