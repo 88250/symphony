@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.0.0, Jun 11, 2017
+ * @version 1.17.0.1, Jun 15, 2018
  * @since 0.2.5
  */
 @Service
@@ -74,7 +74,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=comment_accept] failed";
+            final String msg = "Adds a notification [type=comment_accept] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -96,7 +96,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=article_vote_down] failed";
+            final String msg = "Adds a notification [type=article_vote_down] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -118,7 +118,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=article_vote_up] failed";
+            final String msg = "Adds a notification [type=article_vote_up] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -140,7 +140,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=comment_vote_down] failed";
+            final String msg = "Adds a notification [type=comment_vote_down] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -162,7 +162,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=comment_vote_up] failed";
+            final String msg = "Adds a notification [type=comment_vote_up] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -184,7 +184,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=article_new_watcher] failed";
+            final String msg = "Adds a notification [type=article_new_watcher] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -206,7 +206,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=article_new_follower] failed";
+            final String msg = "Adds a notification [type=article_new_follower] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -228,7 +228,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=perfect_article] failed";
+            final String msg = "Adds a notification [type=perfect_article] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -250,7 +250,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=following_article_comment] failed";
+            final String msg = "Adds a notification [type=following_article_comment] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -272,7 +272,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=following_article_update] failed";
+            final String msg = "Adds a notification [type=following_article_update] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -294,7 +294,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=sys_announce_role_changed] failed";
+            final String msg = "Adds a notification [type=sys_announce_role_changed] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -316,7 +316,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=invitation_link_used] failed";
+            final String msg = "Adds a notification [type=invitation_link_used] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -338,7 +338,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=new_follower] failed";
+            final String msg = "Adds a notification [type=new_follower] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -360,7 +360,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=sys_announce_article] failed";
+            final String msg = "Adds a notification [type=sys_announce_article] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -382,7 +382,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=sys_announce_new_user] failed";
+            final String msg = "Adds a notification [type=sys_announce_new_user] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -404,7 +404,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=invitecode_used] failed";
+            final String msg = "Adds a notification [type=invitecode_used] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -552,7 +552,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=broadcast] failed";
+            final String msg = "Adds a notification [type=broadcast] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -574,7 +574,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=point_charge] failed";
+            final String msg = "Adds a notification [type=point_charge] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -596,7 +596,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=abuse_point_deduct] failed";
+            final String msg = "Adds a notification [type=abuse_point_deduct] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -618,7 +618,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=point_exchange] failed";
+            final String msg = "Adds a notification [type=point_exchange] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -640,7 +640,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=point_transfer] failed";
+            final String msg = "Adds a notification [type=point_transfer] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -662,7 +662,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=article_reward] failed";
+            final String msg = "Adds a notification [type=article_reward] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -684,7 +684,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=article_thank] failed";
+            final String msg = "Adds a notification [type=article_thank] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -706,7 +706,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=comment_thank] failed";
+            final String msg = "Adds a notification [type=comment_thank] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -729,7 +729,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=comment] failed";
+            final String msg = "Adds a notification [type=comment] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -751,7 +751,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=at] failed";
+            final String msg = "Adds a notification [type=at] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -774,7 +774,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=article] failed";
+            final String msg = "Adds a notification [type=article] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -796,7 +796,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=following_user] failed";
+            final String msg = "Adds a notification [type=following_user] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -818,7 +818,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=commented] failed";
+            final String msg = "Adds a notification [type=commented] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -840,7 +840,7 @@ public class NotificationMgmtService {
 
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=reply] failed";
+            final String msg = "Adds a notification [type=reply] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
