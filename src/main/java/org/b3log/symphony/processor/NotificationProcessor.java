@@ -66,7 +66,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.10.1.12, Jun 2, 2018
+ * @version 1.10.1.13, Jun 17, 2018
  * @since 0.2.5
  */
 @RequestProcessor
@@ -175,24 +175,15 @@ public class NotificationProcessor {
     /**
      * Makes the specified type notifications as read.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param type     the specified type: "commented"/"at"/"following"
-     * @throws Exception exception
+     * @param context the specified context
+     * @param request the specified request
+     * @param type    the specified type: "commented"/"at"/"following"
      */
     @RequestProcessing(value = "/notification/read/{type}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void makeNotificationRead(final HTTPRequestContext context, final HttpServletRequest request,
-                                     final HttpServletResponse response, final String type) throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
-        if (null == currentUser) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
+    public void makeNotificationRead(final HTTPRequestContext context, final HttpServletRequest request, final String type) {
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
         switch (type) {
