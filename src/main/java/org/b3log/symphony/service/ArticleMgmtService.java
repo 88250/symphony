@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.5, Jun 10, 2018
+ * @version 2.18.2.6, Jun 19, 2018
  * @since 0.2.0
  */
 @Service
@@ -220,6 +220,23 @@ public class ArticleMgmtService {
         }
 
         return false;
+    }
+
+    /**
+     * Changes an article's email push order.
+     *
+     * @param articleId the specified article id
+     * @param order     the specified push order
+     */
+    @Transactional
+    public void changeArticleEmailPushOrder(final String articleId, final int order) {
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            article.put(Article.ARTICLE_PUSH_ORDER, order);
+            articleRepository.update(articleId, article);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Changes article email push order [id=" + articleId + "] failed", e);
+        }
     }
 
     /**
@@ -635,6 +652,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_TYPE, articleType);
             article.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
             article.put(Article.ARTICLE_QNA_OFFER_POINT, qnaOfferPoint);
+            article.put(Article.ARTICLE_PUSH_ORDER, 0);
             String city = "";
             if (UserExt.USER_GEO_STATUS_C_PUBLIC == author.optInt(UserExt.USER_GEO_STATUS)) {
                 city = author.optString(UserExt.USER_CITY);
@@ -1786,6 +1804,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
             article.put(Article.ARTICLE_REWARD_POINT, requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT));
             article.put(Article.ARTICLE_QNA_OFFER_POINT, 0);
+            article.put(Article.ARTICLE_PUSH_ORDER, 0);
             article.put(Article.ARTICLE_CITY, "");
             String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
