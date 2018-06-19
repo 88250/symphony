@@ -223,23 +223,6 @@ public class ArticleMgmtService {
     }
 
     /**
-     * Changes an article's email push order.
-     *
-     * @param articleId the specified article id
-     * @param order     the specified push order
-     */
-    @Transactional
-    public void changeArticleEmailPushOrder(final String articleId, final int order) {
-        try {
-            final JSONObject article = articleRepository.get(articleId);
-            article.put(Article.ARTICLE_PUSH_ORDER, order);
-            articleRepository.update(articleId, article);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Changes article email push order [id=" + articleId + "] failed", e);
-        }
-    }
-
-    /**
      * Removes an article specified with the given article id. An article is removable if:
      * <ul>
      * <li>No comments</li>
