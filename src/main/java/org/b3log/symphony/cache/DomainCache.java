@@ -27,12 +27,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Domain cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.1, Apr 26, 2017
+ * @version 1.0.2.2, Jun 19, 2018
  * @since 1.4.0
  */
 @Named
@@ -50,6 +52,11 @@ public class DomainCache {
     private static final List<JSONObject> DOMAINS = new ArrayList<>();
 
     /**
+     * Lock.
+     */
+    private static final ReadWriteLock LOCK = new ReentrantReadWriteLock();
+
+    /**
      * Domain query service.
      */
     @Inject
@@ -62,20 +69,30 @@ public class DomainCache {
      * @return domains
      */
     public List<JSONObject> getDomains(final int fetchSize) {
-        if (DOMAINS.isEmpty()) {
-            return Collections.emptyList();
+        LOCK.readLock().lock();
+        try {
+            if (DOMAINS.isEmpty()) {
+                return Collections.emptyList();
+            }
+
+            final int end = fetchSize >= DOMAINS.size() ? DOMAINS.size() : fetchSize;
+
+            return new ArrayList<>(DOMAINS.subList(0, end));
+        } finally {
+            LOCK.readLock().unlock();
         }
-
-        final int end = fetchSize >= DOMAINS.size() ? DOMAINS.size() : fetchSize;
-
-        return new ArrayList<>(DOMAINS.subList(0, end));
     }
 
     /**
      * Loads domains.
      */
     public void loadDomains() {
-        DOMAINS.clear();
-        DOMAINS.addAll(domainQueryService.getMostTagNaviDomains(Integer.MAX_VALUE));
+        LOCK.writeLock().lock();
+        try {
+            DOMAINS.clear();
+            DOMAINS.addAll(domainQueryService.getMostTagNaviDomains(Integer.MAX_VALUE));
+        } finally {
+            LOCK.writeLock().unlock();
+        }
     }
 }
