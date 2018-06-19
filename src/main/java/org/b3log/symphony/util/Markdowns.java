@@ -69,7 +69,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.20.4, May 2, 2018
+ * @version 1.11.21.0, Jun 19, 2018
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -262,6 +262,18 @@ public final class Markdowns {
         final Elements videos = doc.getElementsByTag("video");
         for (final Element video : videos) {
             video.attr("preload", "none");
+        }
+
+        final Elements forms = doc.getElementsByTag("form");
+        for (final Element form : forms) {
+            form.remove();
+        }
+
+        final Elements inputs = doc.getElementsByTag("input");
+        for (final Element input : inputs) {
+            if (!"checkbox".equalsIgnoreCase(input.attr("type"))) {
+                input.remove();
+            }
         }
 
         String ret = doc.body().html();
