@@ -115,7 +115,6 @@ public class TagProcessor {
         final String titlePrefix = request.getParameter("title");
 
         List<JSONObject> tags;
-
         final int fetchSize = 7;
         if (StringUtils.isBlank(titlePrefix)) {
             tags = tagQueryService.getTags(fetchSize);
@@ -145,9 +144,7 @@ public class TagProcessor {
     public void showTagsWall(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
-        ;
         context.setRenderer(renderer);
-
         renderer.setTemplateName("tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
@@ -177,7 +174,6 @@ public class TagProcessor {
                                 final String tagURI) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-
         renderer.setTemplateName("tag-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
