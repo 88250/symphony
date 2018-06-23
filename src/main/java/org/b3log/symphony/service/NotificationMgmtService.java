@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.0.1, Jun 15, 2018
+ * @version 1.18.0.0, Jun 23, 2018
  * @since 0.2.5
  */
 @Service
@@ -58,6 +58,20 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+
+    /**
+     * Removes a notification by the specified notification id.
+     *
+     * @param notificationId the specified notification id
+     */
+    @Transactional
+    public void removeNotification(final String notificationId) {
+        try {
+            notificationRepository.remove(notificationId);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Removes a notification [id=" + notificationId + "] failed", e);
+        }
+    }
 
     /**
      * Adds a 'comment accept' type notification with the specified request json object.

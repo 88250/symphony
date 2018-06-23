@@ -44,7 +44,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.6.1, Jun 11, 2018
+ * @version 1.14.0.0, Jun 23, 2018
  * @since 0.2.5
  */
 @Service
@@ -120,6 +120,22 @@ public class NotificationQueryService {
      */
     @Inject
     private RoleQueryService roleQueryService;
+
+    /**
+     * Gets a notification by the specified id.
+     *
+     * @param notificationId the specified id
+     * @return notification, returns {@code null} if not found
+     */
+    public JSONObject getNotification(final String notificationId) {
+        try {
+            return notificationRepository.get(notificationId);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets a notification [id=" + notificationId + "] failed", e);
+
+            return null;
+        }
+    }
 
     /**
      * Gets the count of unread 'following' notifications of a user specified with the given user id.
