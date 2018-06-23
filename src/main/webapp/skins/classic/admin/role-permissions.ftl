@@ -44,5 +44,18 @@
                 </div>
             </form>
         </div>
+        <div class="module">
+            <div class="module-header">
+                <h2 class="ft-red">${removeDataLabel}</h2>
+            </div>
+            <div class="module-panel form fn-clear">
+                <form action="${servePath}/admin/role/${role.oId}/remove" method="POST" onsubmit="return window.confirm('${confirmRemoveLabel}')">
+                    <label>${role.roleName}</label>
+
+                    <br><br>
+                    <button type="submit" class="red fn-right">${submitLabel}</button>
+                </form>
+            </div>
+        </div>
     </div>
 </@admin>

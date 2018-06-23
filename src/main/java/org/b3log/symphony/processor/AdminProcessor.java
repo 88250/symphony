@@ -110,12 +110,14 @@ import java.util.*;
  * <li>Updates ad (/admin/ad), POST</li>
  * <li>Shows role permissions (/admin/role/{roleId}/permissions), GET</li>
  * <li>Updates role permissions (/admin/role/{roleId}/permissions), POST</li>
+ * <li>Removes an role (/admin/role/{roleId}/remove), POST</li>
+ * <li>Adds an role (/admin/role), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.26.9.7, Jun 19, 2018
+ * @version 2.27.0.0, Jun 23, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -281,6 +283,36 @@ public class AdminProcessor {
     private BreezemoonMgmtService breezemoonMgmtService;
 
     /**
+     * Removes an role.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/role/{roleId}/remove", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void removeRole(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response, final String roleId) throws Exception {
+        final int count = roleQueryService.countUser(roleId);
+        if (0 < count) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, "Still [" + count + "] users are using this role.");
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        roleMgmtService.removeRole(roleId);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/roles");
+    }
+
+    /**
      * Show admin breezemoons.
      *
      * @param context  the specified context
@@ -431,7 +463,6 @@ public class AdminProcessor {
     /**
      * Adds an role.
      *
-     * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
      * @throws Exception exception
@@ -439,9 +470,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/role", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void addRole(final HTTPRequestContext context,
-                        final HttpServletRequest request, final HttpServletResponse response,
-                        final String roleId) throws Exception {
+    public void addRole(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String roleName = request.getParameter(Role.ROLE_NAME);
         if (StringUtils.isBlank(roleName)) {
             response.sendRedirect(Latkes.getServePath() + "/admin/roles");

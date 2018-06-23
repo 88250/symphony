@@ -46,7 +46,7 @@ import java.util.*;
  * Role query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.2, Apr 23, 2017
+ * @version 1.6.0.0, Jun 23, 2018
  * @since 1.8.0
  */
 @Service
@@ -86,6 +86,24 @@ public class RoleQueryService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Count the specified role's uses.
+     *
+     * @param roleId the specified role id
+     * @return use count, returns integer max value if fails
+     */
+    public int countUser(final String roleId) {
+        try {
+            final Query userCountQuery = new Query().setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, roleId));
+
+            return (int) userRepository.count(userCountQuery);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Count role [id=" + roleId + "] uses failed", e);
+
+            return Integer.MAX_VALUE;
+        }
+    }
 
     /**
      * Checks whether the specified user has the specified requisite permissions.
