@@ -63,11 +63,12 @@ import java.util.*;
  * <li>Makes all notifications as read (/notification/all-read), GET</li>
  * <li>Makes the specified type notifications as read (/notification/read/{type}), GET</li>
  * <li>Removes a notification (/notification/remove), POST</li>
+ * <li>Remove notifications by the specified type (/notification/remove/{type}), GET </li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.11.0.0, Jun 23, 2018
+ * @version 1.12.0.0, Jun 24, 2018
  * @since 0.2.5
  */
 @RequestProcessor
@@ -101,6 +102,70 @@ public class NotificationProcessor {
      */
     @Inject
     private DataModelService dataModelService;
+
+    /**
+     * Remove notifications by the specified type.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param type    the specified type: commented/reply/at/following/point/broadcast
+     */
+    @RequestProcessing(value = "/notification/remove/{type}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void removeNotifications(final HTTPRequestContext context, final HttpServletRequest request, final String type) {
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        switch (type) {
+            case "commented":
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_COMMENTED);
+
+                break;
+            case "reply":
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_REPLY);
+
+                break;
+            case "at":
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_AT);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_FOLLOWER);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_COMMENT_VOTE_UP);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_COMMENT_VOTE_DOWN);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_UP);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN);
+
+                break;
+            case "following":
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_UPDATE);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_COMMENT);
+
+                break;
+            case "point":
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_POINT_ARTICLE_THANK);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_POINT_CHARGE);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_POINT_COMMENT_ACCEPT);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_POINT_COMMENT_THANK);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_POINT_EXCHANGE);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_POINT_PERFECT_ARTICLE);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_POINT_TRANSFER);
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_ABUSE_POINT_DEDUCT);
+
+                break;
+            case "broadcast":
+                notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_BROADCAST);
+
+                break;
+            default:
+                context.renderJSON(false);
+
+                return;
+        }
+
+        context.renderJSON(true);
+    }
 
     /**
      * Removes a notification.

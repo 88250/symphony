@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.0.0, Jun 23, 2018
+ * @version 1.19.0.0, Jun 24, 2018
  * @since 0.2.5
  */
 @Service
@@ -58,6 +58,24 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+
+    /**
+     * Removes the specified user's notifications of the specified type.
+     *
+     * @param userId the specified user id
+     * @param type   the specified notification type
+     */
+    @Transactional
+    public void removeNotifications(final String userId, final int type) {
+        final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId),
+                new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, type)));
+        try {
+            notificationRepository.remove(query);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Removes user [id=" + userId + "]'s notifications [type=" + type + "] failed", e);
+        }
+    }
 
     /**
      * Removes a notification by the specified notification id.
