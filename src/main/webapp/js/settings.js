@@ -746,6 +746,22 @@ var Settings = {
     });
   },
   /**
+   * @description 删除消息.
+   */
+  removeNotifications: function (type) {
+    $.ajax({
+      url: Label.servePath + '/notification/remove/' + type,
+      type: 'GET',
+      cache: false,
+      success: function (result) {
+        if (result.sc) {
+          location.reload()
+        }
+      }
+    })
+    return false;
+  },
+  /**
    * @description 设置常用表情点击事件绑定.
    */
   initFunction: function () {

@@ -49,7 +49,7 @@
     </#list>
 </ul>
 <#else>
-<div class="no-list">${chickenEggLabel}</div>
+<div class="no-list">${noMessageLabel}</div>
 </#if>
 
 <@pagination url="${servePath}/notifications/commented"/></@notifications>
