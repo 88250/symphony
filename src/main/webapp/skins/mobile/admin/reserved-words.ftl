@@ -37,7 +37,7 @@
             </li>
             </#list>
         </ul>
-        <@pagination url="${servePath}/admin/tags"/>
+        <@pagination url="${servePath}/admin/reserved-words"/>
     </div>
 </div>
 </@admin>
