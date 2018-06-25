@@ -26,7 +26,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.0.1, May 24, 2018
+ * @version 1.12.0.0, Jun 25, 2018
  * @since 1.8.0
  */
 public final class Permission {
@@ -427,6 +427,11 @@ public final class Permission {
      * Id - menu - admin - roles.
      */
     public static final String PERMISSION_ID_C_MENU_ADMIN_ROLES = "menuAdminRoles";
+
+    /**
+     * Id - menu - admin - reports.
+     */
+    public static final String PERMISSION_ID_C_MENU_ADMIN_REPORTS = "menuAdminReports";
 
     /**
      * Id - menu - admin - misc.

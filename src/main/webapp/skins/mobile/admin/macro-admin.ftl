@@ -73,6 +73,9 @@
         <#if type == "roles">
             <@head title="${rolesAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "reports">
+            <@head title="${reportsAdminLabel} - ${symphonyLabel}"></@head>
+        </#if>
     </head>
     <body>
         <#include "../header.ftl">
@@ -113,6 +116,9 @@
                     <#if type == "roles" && permissions["menuAdminRoles"].permissionGrant>
                     ${rolesAdminLabel}
                     </#if>
+                    <#if type == "reports" && permissions["menuAdminReports"].permissionGrant>
+                    ${reportsAdminLabel}
+                    </#if>
                     <#if type == "misc"  && permissions["menuAdminMisc"].permissionGrant>
                     ${miscAdminLabel}
                     </#if>
@@ -152,6 +158,9 @@
                     </#if>
                     <#if permissions["menuAdminRoles"].permissionGrant>
                     <li<#if type == "roles"> class="fn-none"</#if>><a href="${servePath}/admin/roles">${rolesAdminLabel}</a></li>
+                    </#if>
+                    <#if permissions["menuAdminReports"].permissionGrant>
+                    <li<#if type == "reports"> class="fn-none"</#if>><a href="${servePath}/admin/reports">${reportsAdminLabel}</a></li>
                     </#if>
                     <#if permissions["menuAdminMisc"].permissionGrant>
                     <li<#if type == "misc"> class="fn-none"</#if>><a href="${servePath}/admin/misc">${miscAdminLabel}</a></li>

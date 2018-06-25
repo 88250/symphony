@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.38.0.6, Jun 19, 2018",
+  "version": "4.39.0.0, Jun 25, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -8,6 +8,51 @@
   ],
   "since": "0.2.0",
   "repositories": [
+    {
+      "name": "report",
+      "description": "举报表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "reportUserId",
+          "type": "String",
+          "length": 19,
+          "description": "举报人 id"
+        },
+        {
+          "name": "reportDataId",
+          "type": "String",
+          "length": 19,
+          "description": "举报数据 id"
+        },
+        {
+          "name": "reportDataType",
+          "type": "int",
+          "description": "0：帖子，1：回帖，2：用户"
+        },
+        {
+          "name": "reportType",
+          "type": "int",
+          "description": "0：（内容）垃圾广告，1：（内容）色情低俗，2：（内容）违法违规，3：（内容）涉嫌侵权，4：（内容）人身攻击，5：（用户）冒充账号，6：（用户）垃圾广告账号，7：（用户）个人信息违规，49：其他"
+        },
+        {
+          "name": "reportMemo",
+          "type": "String",
+          "length": 10240,
+          "description": "举报情况备注"
+        },
+        {
+          "name": "reportHandled",
+          "type": "int",
+          "description": "0：未处理，1：已处理"
+        }
+      ]
+    },
     {
       "name": "breezemoon",
       "description": "清风明月表",

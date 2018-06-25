@@ -75,6 +75,9 @@
         <#if type == "roles">
             <@head title="${rolesAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "reports">
+            <@head title="${reportsAdminLabel} - ${symphonyLabel}"></@head>
+        </#if>
         <link rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
     </head>
     <body>
@@ -118,6 +121,9 @@
                                 </#if>
                                 <#if permissions["menuAdminRoles"].permissionGrant>
                                 <a href="${servePath}/admin/roles"<#if type == "roles"> class="current"</#if>>${rolesAdminLabel}</a>
+                                </#if>
+                                <#if permissions["menuAdminReports"].permissionGrant>
+                                <a href="${servePath}/admin/reports"<#if type == "reports"> class="current"</#if>>${reportsAdminLabel}</a>
                                 </#if>
                                 <#if permissions["menuAdminMisc"].permissionGrant>
                                 <a href="${servePath}/admin/misc"<#if type == "misc"> class="current"</#if>>${miscAdminLabel}</a>

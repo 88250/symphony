@@ -43,7 +43,7 @@ import java.util.Set;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.10, May 24, 2018
+ * @version 1.2.1.11, Jun 25, 2018
  * @since 1.8.0
  */
 @Service
@@ -157,6 +157,7 @@ public class InitMgmtService {
         ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_AD);
         ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_ROLES);
         ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_MISC);
+        ADMIN_PERMISSIONS.add(Permission.PERMISSION_ID_C_MENU_ADMIN_REPORTS);
     }
 
     /**
@@ -512,6 +513,8 @@ public class InitMgmtService {
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_MISC);
             permissionRepository.add(permission);
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_ROLES);
+            permissionRepository.add(permission);
+            permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_REPORTS);
             permissionRepository.add(permission);
 
             // Init roles

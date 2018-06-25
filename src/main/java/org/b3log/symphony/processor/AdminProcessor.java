@@ -112,12 +112,14 @@ import java.util.*;
  * <li>Updates role permissions (/admin/role/{roleId}/permissions), POST</li>
  * <li>Removes an role (/admin/role/{roleId}/remove), POST</li>
  * <li>Adds an role (/admin/role), POST</li>
+ * <li>Show reports (/admin/reports), GET</li>
+ * <li>Makes a report as handled (/admin/report/{reportId}), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.0.0, Jun 23, 2018
+ * @version 2.28.0.0, Jun 25, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -281,6 +283,76 @@ public class AdminProcessor {
      */
     @Inject
     private BreezemoonMgmtService breezemoonMgmtService;
+
+    /**
+     * Report management service.
+     */
+    @Inject
+    private ReportMgmtService reportMgmtService;
+
+    /**
+     * Report query service.
+     */
+    @Inject
+    private ReportQueryService reportQueryService;
+
+    /**
+     * Makes a report as handled .
+     *
+     * @param response the specified response
+     * @param reportId the specified report id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/report/{reportId}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void makeReportHandled(final HttpServletResponse response, final String reportId) throws Exception {
+        reportMgmtService.makeReportHandled(reportId);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/reports");
+    }
+
+    /**
+     * Shows reports.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/reports", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showReports(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/reports.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final int pageNum = Paginator.getPage(request);
+        final int pageSize = PAGE_SIZE;
+        final int windowSize = WINDOW_SIZE;
+
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
+        requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
+
+        final JSONObject result = reportQueryService.getReports(requestJSONObject);
+        dataModel.put(Report.REPORTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Report.REPORTS)));
+
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
+        final JSONArray pageNums = pagination.optJSONArray(Pagination.PAGINATION_PAGE_NUMS);
+        dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.opt(0));
+        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.opt(pageNums.length() - 1));
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+    }
 
     /**
      * Removes an role.
