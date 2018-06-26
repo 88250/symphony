@@ -164,6 +164,7 @@ public class ReportQueryService {
         final List<JSONObject> reports = new ArrayList<>();
         for (final JSONObject record : records) {
             final JSONObject report = new JSONObject();
+            report.put(Keys.OBJECT_ID, record.optString(Keys.OBJECT_ID));
             try {
                 final String reportUserId = record.optString(Report.REPORT_USER_ID);
                 final JSONObject reporter = userRepository.get(reportUserId);
@@ -204,9 +205,7 @@ public class ReportQueryService {
                     case Report.REPORT_DATA_TYPE_C_USER:
                         report.put(Report.REPORT_T_DATA_TYPE_STR, langPropsService.get("accountLabel"));
                         final JSONObject reported = userRepository.get(dataId);
-                        final String reportedUserName = reported.optString(User.USER_NAME);
-                        reportData = "<a href=\"" + Latkes.getServePath() + "/member/" + reportedUserName + "\" target=\"_blank\">"
-                                + reportedUserName + "</a>";
+                        reportData = UserExt.getUserLink(reported);
 
                         break;
                     default:
