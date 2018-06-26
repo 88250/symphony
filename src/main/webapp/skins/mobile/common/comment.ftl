@@ -111,6 +111,9 @@
                           onclick="Comment.accept('${adoptTipLabel?replace('{point}', article.articleQnAOfferPoint)}', '${comment.oId}', this)"
                     ><svg><use xlink:href="#icon-accept"></use></svg></span> &nbsp;
                    </#if>
+                    <span aria-label="${reportLabel}" class="tooltipped tooltipped-n"
+                          onclick="$('#reportDialog').data('type', 1).data('id', '${comment.oId}').dialog('open')"
+                    ><svg><use xlink:href="#icon-report"></use></svg></span> &nbsp;
                     <#if isLoggedIn && comment.commentAuthorName != currentUser.userName && permissions["commonAddComment"].permissionGrant>
                         <span aria-label="${replyLabel}" class="icon-reply-btn tooltipped tooltipped-n"
                               onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')">

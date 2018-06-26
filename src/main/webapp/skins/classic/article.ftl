@@ -131,6 +131,9 @@
                             <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"
                                class="tooltipped tooltipped-n"><svg class="icon-edit"><use xlink:href="#edit"></use></svg></a> &nbsp;
                         </#if>
+                        <span aria-label="${reportLabel}" class="tooltipped tooltipped-n"
+                              onclick="$('#reportDialog').data('type', 0).data('id', '${article.oId}').dialog('open')"
+                        ><svg><use xlink:href="#icon-report"></use></svg></span> &nbsp;
                         <#if permissions["articleUpdateArticleBasic"].permissionGrant>
                             <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><svg class="icon-setting"><use xlink:href="#setting"></use></svg></a> &nbsp;
                         </#if>
@@ -382,6 +385,19 @@
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <div id="revision"><div id="revisions"></div></div>
+        <div id="reportDialog">
+            <div class="form fn-clear">
+                <div class="fn-clear"><label><input type="radio" value="0" name="report" checked> ${spamADLabel}</label></div>
+                <div class="fn-clear"><label><input type="radio" value="1" name="report"> ${pornographicLabel}</label></div>
+                <div class="fn-clear"><label><input type="radio" value="2" name="report"> ${violationOfRegulationsLabel}</label></div>
+                <div class="fn-clear"><label><input type="radio" value="3" name="report"> ${allegedlyInfringingLabel}</label></div>
+                <div class="fn-clear"><label><input type="radio" value="4" name="report"> ${personalAttacksLabel}</label></div>
+                <div class="fn-clear"><label><input type="radio" value="49" name="report"> ${miscLabel}</label></div>
+                <br>
+                <textarea id="reportTextarea" placeholder="${reportContentLabel}" rows="3"></textarea><br><br>
+                <button onclick="Comment.report(this)" class="fn-right green">${reportLabel}</button>
+            </div>
+        </div>
         <#include "footer.ftl">
         <div class="share fn-none">
             <span id="thankArticle" aria-label="${thankLabel}"

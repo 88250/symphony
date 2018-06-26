@@ -171,6 +171,29 @@
             <#nested>
         </div>
         <#include "../footer.ftl">
+    <#if type == "comments">
+        <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script>
+            Settings.initHljs();
+        </script>
+    <#elseif type == 'reports'>
+        <script>
+            AdminReportHandled = function (it, id) {
+                var $btn = $(it);
+                $btn.attr('disabled', 'disabled').css('opacity', '0.3');
+                $.ajax({
+                    url: '/admin/report/' + id,
+                    cache: false,
+                    success: function() {
+                        window.location.reload();
+                    },
+                    complete: function() {
+                        $btn.removeAttr('disabled').css('opacity', '1');
+                    },
+                });
+            }
+        </script>
+    </#if>
     </body>
 </html>
 </#macro>

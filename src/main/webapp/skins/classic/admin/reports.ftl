@@ -22,17 +22,30 @@
 <@admin "reports">
 <div class="content admin">
     <div class="module list">
-        <ul>
+        <ul class="notification">
             <#list reports as item>
-            <li>
-                <div class="fn-clear">
-                    ${item.reportUserName}
-                    ${item.reportTypeStr}
-                    ${item.reportData}
-                    ${item.reportDataTypeStr}
-                    ${item.reportMemo}
+                <li class="<#if item.reportHandled != 0>read</#if>">
+                    <div class="fn-flex">
+                        <div class="fn-flex-1">
+                            ${item.reportUserName}
+                            ${reportLabel}
+                            ${item.reportDataTypeStr}
+                            ${item.reportData}
+                            <div class="ft-smaller ft-gray">
+                                ${item.reportTypeStr} •
+                                ${item.reportTime?string('yyyy-MM-dd HH:mm')}
+                            </div>
+                        </div>
+                <#if item.reportHandled == 0>
+                <div>
+                    <button class="mid" onclick="AdminReportHandled(this, '${item.oId}')">${processLabel}</button>
                 </div>
-            </li>
+                </#if>
+                    </div>
+                    <div class="content-reset">
+                        ${item.reportMemo}
+                    </div>
+                </li>
             </#list>
         </ul>
         <@pagination url="${servePath}/admin/reports"/>

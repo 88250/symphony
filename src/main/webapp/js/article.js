@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.41.0.0, Feb 7, 2018
+ * @version 1.42.0.0, June 26, 2018
  */
 
 /**
@@ -29,6 +29,35 @@
  */
 var Comment = {
   editor: undefined,
+  /**
+   * 举报
+   * @param it
+   */
+  report: function (it) {
+    var $btn = $(it)
+    $btn.attr('disabled', 'disabled').css('opacity', '0.3')
+    $.ajax({
+      url: Label.servePath + '/report',
+      type: 'POST',
+      cache: false,
+      data: JSON.stringify({
+        reportDataId: $('#reportDialog').data('id'),
+        reportDataType: $('#reportDialog').data('type'),
+        reportType: $('input[name=report]:checked').val( ),
+        reportMemo: $('#reportTextarea').val()
+      }),
+      complete: function (result) {
+        $btn.removeAttr('disabled').css('opacity', '1')
+        if (result.responseJSON.sc === 0) {
+          alert(Label.reportSuccLabel)
+          $('#reportTextarea').val('')
+          $('#reportDialog').dialog('close')
+        } else {
+          alert(result.responseJSON.msg)
+        }
+      },
+    })
+  },
   /**
    * 采纳评论
    * @param tip
@@ -1140,8 +1169,16 @@ var Article = {
 
     // his
     $('#revision').dialog({
-      'width': $(window).width() - 50,
+      'width': $(window).width() > 500 ? 500 : $(window).width() - 50,
       'height': $(window).height() - 50,
+      'modal': true,
+      'hideFooter': true,
+    })
+
+    // report
+    $('#reportDialog').dialog({
+      'width': $(window).width() > 500 ? 500 : $(window).width() - 50,
+      'height': 450,
       'modal': true,
       'hideFooter': true,
     })

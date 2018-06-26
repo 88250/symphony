@@ -19,7 +19,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.3.0.0, Nov 10, 2017
+ * @version 0.4.0.0, June 26, 2018
  * @since 2.1.0
  */
 
@@ -29,6 +29,35 @@
  */
 var Comment = {
   editor: undefined,
+  /**
+   * 举报
+   * @param it
+   */
+  report: function (it) {
+    var $btn = $(it)
+    $btn.attr('disabled', 'disabled').css('opacity', '0.3')
+    $.ajax({
+      url: Label.servePath + '/report',
+      type: 'POST',
+      cache: false,
+      data: JSON.stringify({
+        reportDataId: $('#reportDialog').data('id'),
+        reportDataType: $('#reportDialog').data('type'),
+        reportType: $('input[name=report]:checked').val( ),
+        reportMemo: $('#reportTextarea').val()
+      }),
+      complete: function (result) {
+        $btn.removeAttr('disabled').css('opacity', '1')
+        if (result.responseJSON.sc === 0) {
+          alert(Label.reportSuccLabel)
+          $('#reportTextarea').val('')
+          $('#reportDialog').dialog('close')
+        } else {
+          alert(result.responseJSON.msg)
+        }
+      },
+    })
+  },
   /**
    * 采纳评论
    * @param tip
@@ -911,6 +940,14 @@ var Article = {
       "modal": true,
       "hideFooter": true
     });
+
+    // report
+    $('#reportDialog').dialog({
+      'width': $(window).width() > 500 ? 500 : $(window).width() - 50,
+      'height': 450,
+      'modal': true,
+      'hideFooter': true,
+    })
 
     this.initAudio();
   },

@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.25.0.0, Jun 12, 2018
+ * @version 1.26.0.0, June 26, 2018
  */
 
 /**
@@ -29,6 +29,35 @@
  * @static
  */
 var Settings = {
+  /**
+   * 举报
+   * @param it
+   */
+  report: function (it) {
+    var $btn = $(it)
+    $btn.attr('disabled', 'disabled').css('opacity', '0.3')
+    $.ajax({
+      url: Label.servePath + '/report',
+      type: 'POST',
+      cache: false,
+      data: JSON.stringify({
+        reportDataId: $('#reportDialog').data('id'),
+        reportDataType: 2,
+        reportType: $('input[name=report]:checked').val( ),
+        reportMemo: $('#reportTextarea').val()
+      }),
+      complete: function (result) {
+        $btn.removeAttr('disabled').css('opacity', '1')
+        if (result.responseJSON.sc === 0) {
+          alert(Label.reportSuccLabel)
+          $('#reportTextarea').val('')
+          $('#reportDialog').dialog('close')
+        } else {
+          alert(result.responseJSON.msg)
+        }
+      },
+    })
+  },
   /**
    * 获取邮箱验证码
    * @param csrfToken
@@ -787,6 +816,13 @@ var Settings = {
     if (Label.type === 'linkForge') {
       Util.linkForge();
     }
+
+    $('#reportDialog').dialog({
+      'width': $(window).width() > 500 ? 500 : $(window).width() - 50,
+      'height': 365,
+      'modal': true,
+      'hideFooter': true,
+    })
 
     if ($.ua.device.type !== 'mobile') {
       Settings.homeScroll();

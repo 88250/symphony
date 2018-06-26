@@ -100,6 +100,9 @@
                         <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>
                         aria-label="${rewardLabel}"><svg class="icon-points"><use xlink:href="#points"></use></svg> ${article.rewardedCnt}</span>
                         </#if>
+                        <span aria-label="${reportLabel}" class="tooltipped tooltipped-n"
+                              onclick="$('#reportDialog').data('type', 0).data('id', '${article.oId}').dialog('open')"
+                        ><svg><use xlink:href="#icon-report"></use></svg></span>
                         <#if article.isMyArticle && 3 != article.articleType && permissions["commonUpdateArticle"].permissionGrant>
                         <a href="${servePath}/update?id=${article.oId}"><svg><use xlink:href="#edit"></use></svg></a>
                         </#if>
@@ -447,6 +450,19 @@
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <div id="revision"><div id="revisions"></div></div>
+        <div id="reportDialog">
+            <div class="form fn-clear">
+                <div class="fn-clear"><label><input type="radio" value="0" name="report" checked> ${spamADLabel}</label></div>
+                <div class="fn-clear"><label><input type="radio" value="1" name="report"> ${pornographicLabel}</label></div>
+                <div class="fn-clear"><label><input type="radio" value="2" name="report"> ${violationOfRegulationsLabel}</label></div>
+                <div class="fn-clear"><label><input type="radio" value="3" name="report"> ${allegedlyInfringingLabel}</label></div>
+                <div class="fn-clear"><label><input type="radio" value="4" name="report"> ${personalAttacksLabel}</label></div>
+                <div class="fn-clear"><label><input type="radio" value="49" name="report"> ${miscLabel}</label></div>
+                <br>
+                <textarea id="reportTextarea" placeholder="${reportContentLabel}" rows="3"></textarea><br><br>
+                <button onclick="Comment.report(this)" class="fn-right green">${reportLabel}</button>
+            </div>
+        </div>
         <#include "footer.ftl">
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/m-article${miniPostfix}.js?${staticResourceVersion}"></script>

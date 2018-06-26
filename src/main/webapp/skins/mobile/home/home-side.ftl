@@ -44,6 +44,9 @@
                         permissions["userUpdateUserBasic"].permissionGrant>
                     <a class="ft-13 ft-a-title" href="${servePath}/admin/user/${user.oId}"><svg><use xlink:href="#setting"></use></svg></a>
                 </#if>
+                <span aria-label="${reportLabel}" class="tooltipped tooltipped-n"
+                      onclick="$('#reportDialog').data('id', '${user.oId}').dialog('open')"
+                ><svg><use xlink:href="#icon-report"></use></svg></span>
             </div>
 
             <#if isLoggedIn && (currentUser.userName != user.userName)>
@@ -122,5 +125,17 @@
                 <span class="ft-gray">${cmtLabel}</span>
             </li>
         </ul>
+    </div>
+</div>
+
+<div id="reportDialog">
+    <div class="form fn-clear">
+        <div class="fn-clear"><label><input type="radio" value="5" name="report" checked> ${posingAccountLabel}</label></div>
+        <div class="fn-clear"><label><input type="radio" value="6" name="report"> ${spamADAccountLabel}</label></div>
+        <div class="fn-clear"><label><input type="radio" value="7" name="report"> ${personalInfoViolationLabel}</label></div>
+        <div class="fn-clear"><label><input type="radio" value="49" name="report"> ${miscLabel}</label></div>
+        <br>
+        <textarea id="reportTextarea" placeholder="${reportContentLabel}" rows="3"></textarea><br><br>
+        <button onclick="Settings.report(this)" class="fn-right green">${reportLabel}</button>
     </div>
 </div>
