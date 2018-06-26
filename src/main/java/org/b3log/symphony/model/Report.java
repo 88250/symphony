@@ -139,6 +139,27 @@ public final class Report {
      */
     public static final int REPORT_HANDLED_C_YES = 1;
 
+    //// Transient ////
+    /**
+     * Key of report user name.
+     */
+    public static final String REPORT_T_USERNAME = "reportUserName";
+
+    /**
+     * Key of report data.
+     */
+    public static final String REPORT_T_DATA = "reportData";
+
+    /**
+     * Key of report data type display string.
+     */
+    public static final String REPORT_T_DATA_TYPE_STR = "reportDataTypeStr";
+
+    /**
+     * Key of report type display string.
+     */
+    public static final String REPORT_T_TYPE_STR = "reportTypeStr";
+
     /**
      * Private constructor.
      */

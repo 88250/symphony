@@ -26,6 +26,10 @@
             <#list reports as item>
             <li>
                 <div class="fn-clear">
+                    ${item.reportUserName}
+                    ${item.reportTypeStr}
+                    ${item.reportData}
+                    ${item.reportDataTypeStr}
                     ${item.reportMemo}
                 </div>
             </li>

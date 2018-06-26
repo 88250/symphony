@@ -18,29 +18,42 @@
 package org.b3log.symphony.service;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
+import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Report;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.ReportRepository;
+import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Markdowns;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.owasp.encoder.Encode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Report management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 25, 2018
+ * @version 1.0.0.1, Jun 26, 2018
  * @since 3.1.0
  */
 @Service
@@ -56,6 +69,36 @@ public class ReportQueryService {
      */
     @Inject
     private ReportRepository reportRepository;
+
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
+
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
+
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
+     * Comment query service.
+     */
+    @Inject
+    private CommentQueryService commentQueryService;
 
     /**
      * Gets report by the specified request json object.
@@ -74,9 +117,14 @@ public class ReportQueryService {
      *     },
      *     "reports": [{
      *         "oId": "",
-     *         "code": "",
-     *         "memo": "",
-     *         ....
+     *         "reportUserName": "<a>/member/username</a>",
+     *         "reportData": "<a>Article or user</a>",
+     *         "reportDataType": int,
+     *         "reportDataTypeStr": "",
+     *         "reportType": int,
+     *         "reportTypeStr": "",
+     *         "reportMemo": "",
+     *         "reportHandled": int
      *      }, ....]
      * }
      * </pre>
@@ -110,7 +158,120 @@ public class ReportQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> reports = CollectionUtils.jsonArrayToList(data);
+        final List<JSONObject> records = CollectionUtils.jsonArrayToList(data);
+        final List<JSONObject> reports = new ArrayList<>();
+        for (final JSONObject record : records) {
+            final JSONObject report = new JSONObject();
+            try {
+                final String reportUserId = record.optString(Report.REPORT_USER_ID);
+                final JSONObject reporter = userRepository.get(reportUserId);
+                report.put(Report.REPORT_T_USERNAME, "<a href=\"" + Latkes.getServePath() + "/member/" + reporter.optString(User.USER_NAME) +
+                        "\" target=\"_blank\">" + reporter.optString(User.USER_NAME) + "</a>");
+
+                final String dataId = record.optString(Report.REPORT_DATA_ID);
+                final int dataType = record.optInt(Report.REPORT_DATA_TYPE);
+                report.put(Report.REPORT_DATA_TYPE, dataType);
+                String reportData = langPropsService.get("removedLabel");
+                switch (dataType) {
+                    case Report.REPORT_DATA_TYPE_C_ARTICLE:
+                        report.put(Report.REPORT_T_DATA_TYPE_STR, langPropsService.get("articleLabel"));
+                        final JSONObject article = articleRepository.get(dataId);
+                        if (null != article) {
+                            final String title = Encode.forHtml(article.optString(Article.ARTICLE_TITLE));
+                            reportData = "<a href=\"" + Latkes.getServePath() + "/article/" + article.optString(Keys.OBJECT_ID) +
+                                    "\" target=\"_blank\">" + title + "</a>";
+                        }
+
+                        break;
+                    case Report.REPORT_DATA_TYPE_C_COMMENT:
+                        report.put(Report.REPORT_T_DATA_TYPE_STR, langPropsService.get("cmtLabel"));
+                        final JSONObject comment = commentRepository.get(dataId);
+                        if (null != comment) {
+                            final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                            final JSONObject cmtArticle = articleRepository.get(articleId);
+                            final String title = Encode.forHtml(cmtArticle.optString(Article.ARTICLE_TITLE));
+                            final String commentId = comment.optString(Keys.OBJECT_ID);
+                            final int cmtViewMode = UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME;
+                            final int cmtPage = commentQueryService.getCommentPage(articleId, commentId, cmtViewMode
+                                    , Symphonys.getInt("articleCommentsPageSize"));
+                            reportData = "<a href=\"" + Latkes.getServePath() + "/article/" + articleId + "?p=" + cmtPage
+                                    + "&m=" + cmtViewMode + "#" + commentId + "\" target=\"_blank\">" + title + "</a>";
+                        }
+
+                        break;
+                    case Report.REPORT_DATA_TYPE_C_USER:
+                        report.put(Report.REPORT_T_DATA_TYPE_STR, langPropsService.get("accountLabel"));
+                        final JSONObject reported = userRepository.get(dataId);
+                        final String reportedUserName = reported.optString(User.USER_NAME);
+                        reportData = "<a href=\"" + Latkes.getServePath() + "/member/" + reportedUserName + "\" target=\"_blank\">"
+                                + reportedUserName + "</a>";
+
+                        break;
+                    default:
+                        LOGGER.log(Level.ERROR, "Unknown report data type [" + dataType + "]");
+
+                        continue;
+                }
+                report.put(Report.REPORT_T_DATA, reportData);
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Builds report data failed", e);
+
+                continue;
+            }
+
+            final int type = record.optInt(Report.REPORT_TYPE);
+            report.put(Report.REPORT_TYPE, type);
+            switch (type) {
+                case Report.REPORT_TYPE_C_SPAM_AD:
+                    report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("spamADLabel"));
+
+                    break;
+                case Report.REPORT_TYPE_C_PORNOGRAPHIC:
+                    report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("pornographicLabel"));
+
+                    break;
+                case Report.REPORT_TYPE_C_VIOLATION_OF_REGULATIONS:
+                    report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("violationOfRegulationsLabel"));
+
+                    break;
+                case Report.REPORT_TYPE_C_ALLEGEDLY_INFRINGING:
+                    report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("allegedlyInfringingLabel"));
+
+                    break;
+                case Report.REPORT_TYPE_C_PERSONAL_ATTACKS:
+                    report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("personalAttacksLabel"));
+
+                    break;
+                case Report.REPORT_TYPE_C_POSING_ACCOUNT:
+                    report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("posingAccountLabel"));
+
+                    break;
+                case Report.REPORT_TYPE_C_SPAM_AD_ACCOUNT:
+                    report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("spamADAccountLabel"));
+
+                    break;
+                case Report.REPORT_TYPE_C_PERSONAL_INFO_VIOLATION:
+                    report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("personalInfoViolationLabel"));
+
+                    break;
+                case Report.REPORT_TYPE_C_OTHER:
+                    report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("miscLabel"));
+
+                    break;
+                default:
+                    LOGGER.log(Level.ERROR, "Unknown report type [" + type + "]");
+
+                    continue;
+            }
+
+            String memo = record.optString(Report.REPORT_MEMO);
+            memo = Markdowns.toHTML(memo);
+            memo = Markdowns.clean(memo, "");
+            report.put(Report.REPORT_MEMO, memo);
+            report.put(Report.REPORT_HANDLED, record.optInt(Report.REPORT_HANDLED));
+
+            reports.add(report);
+        }
         ret.put(Report.REPORTS, reports);
 
         return ret;
