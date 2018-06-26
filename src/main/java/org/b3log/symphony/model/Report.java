@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all report model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 25, 2018
+ * @version 1.1.0.0, Jun 26, 2018
  * @since 3.1.0
  */
 public final class Report {
@@ -65,6 +65,22 @@ public final class Report {
      * Key of report handled.
      */
     public static final String REPORT_HANDLED = "reportHandled";
+
+    // Report data type constants
+    /**
+     * Report data type - Article.
+     */
+    public static final int REPORT_DATA_TYPE_C_ARTICLE = 0;
+
+    /**
+     * Report data type - comment.
+     */
+    public static final int REPORT_DATA_TYPE_C_COMMENT = 1;
+
+    /**
+     * Report data type - user.
+     */
+    public static final int REPORT_DATA_TYPE_C_USER = 2;
 
     // Report type constants
     /**

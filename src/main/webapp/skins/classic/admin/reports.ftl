@@ -26,7 +26,7 @@
             <#list reports as item>
             <li>
                 <div class="fn-clear">
-                    ${item.memo}
+                    ${item.reportMemo}
                 </div>
             </li>
             </#list>
