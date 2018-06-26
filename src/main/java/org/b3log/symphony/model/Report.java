@@ -161,6 +161,11 @@ public final class Report {
     public static final String REPORT_T_TYPE_STR = "reportTypeStr";
 
     /**
+     * Key of report time.
+     */
+    public static final String REPORT_T_TIME = "reportTime";
+
+    /**
      * Private constructor.
      */
     private Report() {

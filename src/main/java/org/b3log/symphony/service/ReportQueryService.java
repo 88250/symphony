@@ -47,6 +47,7 @@ import org.json.JSONObject;
 import org.owasp.encoder.Encode;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -124,7 +125,8 @@ public class ReportQueryService {
      *         "reportType": int,
      *         "reportTypeStr": "",
      *         "reportMemo": "",
-     *         "reportHandled": int
+     *         "reportHandled": int,
+     *
      *      }, ....]
      * }
      * </pre>
@@ -165,8 +167,8 @@ public class ReportQueryService {
             try {
                 final String reportUserId = record.optString(Report.REPORT_USER_ID);
                 final JSONObject reporter = userRepository.get(reportUserId);
-                report.put(Report.REPORT_T_USERNAME, "<a href=\"" + Latkes.getServePath() + "/member/" + reporter.optString(User.USER_NAME) +
-                        "\" target=\"_blank\">" + reporter.optString(User.USER_NAME) + "</a>");
+                report.put(Report.REPORT_T_USERNAME, UserExt.getUserLink(reporter));
+                report.put(Report.REPORT_T_TIME, new Date(record.optLong(Keys.OBJECT_ID)));
 
                 final String dataId = record.optString(Report.REPORT_DATA_ID);
                 final int dataType = record.optInt(Report.REPORT_DATA_TYPE);
