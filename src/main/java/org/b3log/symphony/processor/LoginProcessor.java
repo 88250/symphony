@@ -71,7 +71,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.13.12.2, May 31, 2018
+ * @version 1.13.12.3, Jun 27, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -722,7 +722,15 @@ public class LoginProcessor {
             throws ServletException, IOException {
         context.renderJSON().renderMsg(langPropsService.get("loginFailLabel"));
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        } catch (final Exception e) {
+            context.renderMsg(langPropsService.get("paramsParseFailedLabel"));
+
+            return;
+        }
+
         final String nameOrEmail = requestJSONObject.optString("nameOrEmail");
 
         try {
