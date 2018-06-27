@@ -53,7 +53,6 @@ import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -337,15 +336,12 @@ public class LoginProcessor {
     /**
      * Forget password.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/forget-pwd", method = HTTPRequestMethod.POST)
     @Before(adviceClass = UserForgetPwdValidation.class)
-    public void forgetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void forgetPwd(final HTTPRequestContext context, final HttpServletRequest request) {
         context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
@@ -421,12 +417,9 @@ public class LoginProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @throws ServletException servlet exception
-     * @throws IOException      io exception
      */
     @RequestProcessing(value = "/reset-pwd", method = HTTPRequestMethod.POST)
-    public void resetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+    public void resetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
@@ -547,16 +540,12 @@ public class LoginProcessor {
     /**
      * Register Step 1.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws ServletException servlet exception
-     * @throws IOException      io exception
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/register", method = HTTPRequestMethod.POST)
     @Before(adviceClass = UserRegisterValidation.class)
-    public void register(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+    public void register(final HTTPRequestContext context, final HttpServletRequest request) {
         context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
@@ -614,13 +603,10 @@ public class LoginProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @throws ServletException servlet exception
-     * @throws IOException      io exception
      */
     @RequestProcessing(value = "/register2", method = HTTPRequestMethod.POST)
     @Before(adviceClass = UserRegister2Validation.class)
-    public void register2(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+    public void register2(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
@@ -714,12 +700,9 @@ public class LoginProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @throws ServletException servlet exception
-     * @throws IOException      io exception
      */
     @RequestProcessing(value = "/login", method = HTTPRequestMethod.POST)
-    public void login(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+    public void login(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         context.renderJSON().renderMsg(langPropsService.get("loginFailLabel"));
 
         JSONObject requestJSONObject;
