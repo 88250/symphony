@@ -23,7 +23,6 @@ import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
@@ -40,6 +39,7 @@ import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.ReportRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
@@ -54,7 +54,7 @@ import java.util.List;
  * Report management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jun 26, 2018
+ * @version 1.0.0.2, Jun 27, 2018
  * @since 3.1.0
  */
 @Service
@@ -182,7 +182,7 @@ public class ReportQueryService {
                         if (null != article) {
                             final String title = Encode.forHtml(article.optString(Article.ARTICLE_TITLE));
                             reportData = "<a href=\"" + Latkes.getServePath() + "/article/" + article.optString(Keys.OBJECT_ID) +
-                                    "\" target=\"_blank\">" + title + "</a>";
+                                    "\" target=\"_blank\">" + Emotions.convert(title) + "</a>";
                         }
 
                         break;
@@ -195,10 +195,7 @@ public class ReportQueryService {
                             final String title = Encode.forHtml(cmtArticle.optString(Article.ARTICLE_TITLE));
                             final String commentId = comment.optString(Keys.OBJECT_ID);
                             final int cmtViewMode = UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME;
-                            final int cmtPage = commentQueryService.getCommentPage(articleId, commentId, cmtViewMode
-                                    , Symphonys.getInt("articleCommentsPageSize"));
-                            reportData = "<a href=\"" + Latkes.getServePath() + "/article/" + articleId + "?p=" + cmtPage
-                                    + "&m=" + cmtViewMode + "#" + commentId + "\" target=\"_blank\">" + title + "</a>";
+                            reportData = commentQueryService.getCommentURL(commentId, cmtViewMode, Symphonys.getInt("articleCommentsPageSize"));
                         }
 
                         break;

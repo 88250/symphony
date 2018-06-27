@@ -48,7 +48,7 @@ import java.util.Set;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.5, May 31, 2018
+ * @version 1.3.0.6, Jun 27, 2018
  * @since 1.3.0
  */
 @RequestProcessor
@@ -108,13 +108,11 @@ public class VoteProcessor {
      *
      * @param context  the specified context
      * @param request  the specified request
-     * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/vote/up/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void voteUpComment(final HTTPRequestContext context, final HttpServletRequest request,
-                              final HttpServletResponse response) throws Exception {
+    public void voteUpComment(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());

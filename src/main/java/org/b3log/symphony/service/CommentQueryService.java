@@ -20,6 +20,7 @@ package org.b3log.symphony.service;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -43,6 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.owasp.encoder.Encode;
 
 import java.util.*;
 
@@ -50,7 +52,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.1.0, Jun 13, 2018
+ * @version 2.12.1.1, Jun 27, 2018
  * @since 0.2.0
  */
 @Service
@@ -108,6 +110,40 @@ public class CommentQueryService {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
+
+    /**
+     * Gets the URL of a comment.
+     *
+     * @param commentId the specified comment id
+     * @param sortMode  the specified sort mode
+     * @param pageSize  the specified comment page size
+     * @return comment URL, return {@code null} if not found
+     */
+    public String getCommentURL(final String commentId, final int sortMode, final int pageSize) {
+        try {
+            final JSONObject comment = commentRepository.get(commentId);
+            if (null == comment) {
+                return null;
+            }
+
+            final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+            final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                return null;
+            }
+            String title = Encode.forHtml(article.optString(Article.ARTICLE_TITLE));
+            title = Emotions.convert(title);
+            final int commentPage = getCommentPage(articleId, commentId, sortMode, pageSize);
+
+            return "<a href=\"" + Latkes.getServePath() + "/article/" + articleId + "?p=" + commentPage
+                    + "&m=" + sortMode + "#" + commentId + "\" target=\"_blank\">" + title + "</a>";
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets comment URL failed", e);
+
+            return null;
+        }
+    }
 
     /**
      * Gets the offered (accepted) comment of an article specified by the given article id.

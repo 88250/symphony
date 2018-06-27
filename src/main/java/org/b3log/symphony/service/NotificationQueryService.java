@@ -44,7 +44,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.0.0, Jun 23, 2018
+ * @version 1.14.0.1, Jun 27, 2018
  * @since 0.2.5
  */
 @Service
@@ -1061,28 +1061,24 @@ public class NotificationQueryService {
                         break;
                     case Notification.DATA_TYPE_C_COMMENT_VOTE_UP:
                     case Notification.DATA_TYPE_C_COMMENT_VOTE_DOWN:
-                    case Notification.DATA_TYPE_C_ARTICLE_VOTE_UP:
-                    case Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN:
-                        final String commentOrArticleId = dataId.split("-")[0];
-                        final String voterId = dataId.split("-")[1];
-
-                        final JSONObject voter = userRepository.get(voterId);
-                        final String voterUserName = voter.optString(User.USER_NAME);
+                        final JSONObject user = userRepository.get(userId);
+                        final int cmtViewMode = user.optInt(UserExt.USER_COMMENT_VIEW_MODE);
+                        final String commentId = dataId.split("-")[0];
+                        final String cmtVoterId = dataId.split("-")[1];
+                        final JSONObject cmtVoter = userRepository.get(cmtVoterId);
+                        String voterUserName = cmtVoter.optString(User.USER_NAME);
                         atNotification.put(User.USER_NAME, voterUserName);
-
-                        final String thumbnailURLVote = avatarQueryService.getAvatarURLByUser(avatarViewMode, voter, "48");
+                        String thumbnailURLVote = avatarQueryService.getAvatarURLByUser(avatarViewMode, cmtVoter, "48");
                         atNotification.put(Common.THUMBNAIL_URL, thumbnailURLVote);
-                        atNotification.put(Common.THUMBNAIL_UPDATE_TIME, voter.optLong(UserExt.USER_UPDATE_TIME));
+                        atNotification.put(Common.THUMBNAIL_UPDATE_TIME, cmtVoter.optLong(UserExt.USER_UPDATE_TIME));
 
                         JSONObject articleVote = null;
-
                         if (Notification.DATA_TYPE_C_COMMENT_VOTE_UP == dataType) {
                             description = langPropsService.get("notificationCommentVoteUpLabel");
-                            articleVote = commentRepository.get(commentOrArticleId);
+                            articleVote = commentRepository.get(commentId);
                             if (null == articleVote) {
                                 description = langPropsService.get("removedLabel");
                                 atNotification.put(Common.DESCRIPTION, description);
-
                                 rslts.add(atNotification);
 
                                 continue;
@@ -1091,43 +1087,66 @@ public class NotificationQueryService {
                             articleVote = articleRepository.get(articleVote.optString(Comment.COMMENT_ON_ARTICLE_ID));
                         } else if (Notification.DATA_TYPE_C_COMMENT_VOTE_DOWN == dataType) {
                             description = langPropsService.get("notificationCommentVoteDownLabel");
-                            articleVote = commentRepository.get(commentOrArticleId);
+                            articleVote = commentRepository.get(commentId);
                             if (null == articleVote) {
                                 description = langPropsService.get("removedLabel");
                                 atNotification.put(Common.DESCRIPTION, description);
-
                                 rslts.add(atNotification);
 
                                 continue;
                             }
 
                             articleVote = articleRepository.get(articleVote.optString(Comment.COMMENT_ON_ARTICLE_ID));
-                        } else if (Notification.DATA_TYPE_C_ARTICLE_VOTE_UP == dataType) {
-                            description = langPropsService.get("notificationArticleVoteUpLabel");
-                            articleVote = articleRepository.get(commentOrArticleId);
-                        } else if (Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN == dataType) {
-                            description = langPropsService.get("notificationArticleVoteDownLabel");
-                            articleVote = articleRepository.get(commentOrArticleId);
                         }
-
                         if (null == articleVote) {
                             description = langPropsService.get("removedLabel");
                             atNotification.put(Common.DESCRIPTION, description);
-
                             rslts.add(atNotification);
 
                             continue;
                         }
 
-                        final String userLinkVote = UserExt.getUserLink(voterUserName);
+                        String userLinkVote = UserExt.getUserLink(voterUserName);
                         description = description.replace("{user}", userLinkVote);
+                        final String cmtVoteURL = commentQueryService.getCommentURL(commentId, cmtViewMode, Symphonys.getInt("articleCommentsPageSize"));
+                        atNotification.put(Common.DESCRIPTION, description.replace("{article}", Emotions.convert(cmtVoteURL)));
+                        rslts.add(atNotification);
 
-                        final String articleLinkVote = " <a href=\"" + Latkes.getServePath() + articleVote.optString(Article.ARTICLE_PERMALINK) + "\">"
-                                + Emotions.convert(articleVote.optString(Article.ARTICLE_TITLE)) + "</a>";
+                        break;
+                    case Notification.DATA_TYPE_C_ARTICLE_VOTE_UP:
+                    case Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN:
+                        final String voteArticleId = dataId.split("-")[0];
+                        final String voterId = dataId.split("-")[1];
+                        final JSONObject voter = userRepository.get(voterId);
+                        voterUserName = voter.optString(User.USER_NAME);
+                        atNotification.put(User.USER_NAME, voterUserName);
+                        thumbnailURLVote = avatarQueryService.getAvatarURLByUser(avatarViewMode, voter, "48");
+                        atNotification.put(Common.THUMBNAIL_URL, thumbnailURLVote);
+                        atNotification.put(Common.THUMBNAIL_UPDATE_TIME, voter.optLong(UserExt.USER_UPDATE_TIME));
+
+                        JSONObject voteArticle = null;
+                        if (Notification.DATA_TYPE_C_ARTICLE_VOTE_UP == dataType) {
+                            description = langPropsService.get("notificationArticleVoteUpLabel");
+                            voteArticle = articleRepository.get(voteArticleId);
+                        } else if (Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN == dataType) {
+                            description = langPropsService.get("notificationArticleVoteDownLabel");
+                            voteArticle = articleRepository.get(voteArticleId);
+                        }
+
+                        if (null == voteArticle) {
+                            description = langPropsService.get("removedLabel");
+                            atNotification.put(Common.DESCRIPTION, description);
+                            rslts.add(atNotification);
+
+                            continue;
+                        }
+
+                        userLinkVote = UserExt.getUserLink(voterUserName);
+                        description = description.replace("{user}", userLinkVote);
+                        final String articleLinkVote = " <a href=\"" + Latkes.getServePath() + voteArticle.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + Emotions.convert(voteArticle.optString(Article.ARTICLE_TITLE)) + "</a>";
                         description = description.replace("{article}", articleLinkVote);
-
                         atNotification.put(Common.DESCRIPTION, description);
-
                         rslts.add(atNotification);
 
                         break;
