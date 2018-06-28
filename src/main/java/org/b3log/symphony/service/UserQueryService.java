@@ -49,7 +49,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.8.6.14, Jan 25, 2018
+ * @version 1.8.7.0, Jan 28, 2018
  * @since 0.2.0
  */
 @Service
@@ -279,11 +279,10 @@ public class UserQueryService {
     public void loadUserNames() {
         USER_NAMES.clear();
 
-        final Query query = new Query().setPageCount(1);
-        query.setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.NOT_EQUAL, UserExt.NULL_USER_NAME));
-        query.addProjection(User.USER_NAME, String.class);
-        query.addProjection(UserExt.USER_AVATAR_URL, String.class);
-
+        final Query query = new Query().setPageCount(1).
+                setFilter(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID)).
+                addProjection(User.USER_NAME, String.class).
+                addProjection(UserExt.USER_AVATAR_URL, String.class);
         try {
             final JSONObject result = userRepository.get(query); // XXX: Performance Issue
             final JSONArray array = result.optJSONArray(Keys.RESULTS);
