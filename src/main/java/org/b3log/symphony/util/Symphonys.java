@@ -52,7 +52,7 @@ import java.util.concurrent.Executors;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.10, Apr 5, 2018
+ * @version 1.7.1.11, Jun 29, 2018
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -65,7 +65,7 @@ public final class Symphonys {
     /**
      * HacPai bot User-Agent.
      */
-    public static final String USER_AGENT_BOT = "Mozilla/5.0 (compatible; HacPai/1.1; +https://hacpai.com)";
+    public static final String USER_AGENT_BOT = "Mozilla/5.0 (compatible; Sym/" + SymphonyServletListener.VERSION + "; +" + Latkes.getServePath() + ")";
 
     /**
      * Reserved tags.
