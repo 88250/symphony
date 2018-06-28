@@ -46,7 +46,7 @@
         <meta property="og:description" content="${article.articlePreviewContent}" />
         <meta property="og:image" content="${article.articleAuthorThumbnailURL210}" />
         <meta property="og:url" content="${servePath}${article.articlePermalink}" />
-        <meta property="og:site_name" content="HacPai" />
+        <meta property="og:site_name" content="${symphonyLabel}" />
         <!-- Twitter Card -->
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:description" content="${article.articlePreviewContent}" />
