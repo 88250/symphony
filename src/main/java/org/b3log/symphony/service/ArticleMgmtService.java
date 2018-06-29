@@ -319,6 +319,10 @@ public class ArticleMgmtService {
                 audioURL = audioMgmtService.tts(contentToTTS, Article.ARTICLE, articleId, userId);
             }
 
+            if (StringUtils.isBlank(audioURL)) {
+                return;
+            }
+
             article.put(Article.ARTICLE_AUDIO_URL, audioURL);
 
             try {
