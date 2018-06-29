@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.6, Jun 19, 2018
+ * @version 2.18.2.7, Jun 29, 2018
  * @since 0.2.0
  */
 @Service
@@ -312,20 +312,19 @@ public class ArticleMgmtService {
         new Thread(() -> {
             final Transaction transaction = articleRepository.beginTransaction();
 
-            String audioURL = "";
-            if (StringUtils.length(contentToTTS) < 96 || Runes.getChinesePercent(contentToTTS) < 40) {
-                LOGGER.trace("Content is too short to TTS [contentToTTS=" + contentToTTS + "]");
-            } else {
-                audioURL = audioMgmtService.tts(contentToTTS, Article.ARTICLE, articleId, userId);
-            }
-
-            if (StringUtils.isBlank(audioURL)) {
-                return;
-            }
-
-            article.put(Article.ARTICLE_AUDIO_URL, audioURL);
-
             try {
+                String audioURL = "";
+                if (StringUtils.length(contentToTTS) < 96 || Runes.getChinesePercent(contentToTTS) < 40) {
+                    LOGGER.trace("Content is too short to TTS [contentToTTS=" + contentToTTS + "]");
+                } else {
+                    audioURL = audioMgmtService.tts(contentToTTS, Article.ARTICLE, articleId, userId);
+                }
+                if (StringUtils.isBlank(audioURL)) {
+                    return;
+                }
+
+                article.put(Article.ARTICLE_AUDIO_URL, audioURL);
+
                 final JSONObject toUpdate = articleRepository.get(articleId);
                 toUpdate.put(Article.ARTICLE_AUDIO_URL, audioURL);
 
@@ -341,9 +340,9 @@ public class ArticleMgmtService {
                 }
 
                 LOGGER.log(Level.ERROR, "Updates article's audio URL failed", e);
+            } finally {
+                JdbcRepository.dispose();
             }
-
-            JdbcRepository.dispose();
         }).start();
     }
 
