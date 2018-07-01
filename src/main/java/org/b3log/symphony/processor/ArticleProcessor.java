@@ -253,16 +253,14 @@ public class ArticleProcessor {
     /**
      * Checks article title.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
+     * @param request the specified request
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/check-title", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void checkArticleTitle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void checkArticleTitle(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
@@ -337,16 +335,13 @@ public class ArticleProcessor {
      * Gets article image.
      *
      * @param context   the specified context
-     * @param request   the specified request
-     * @param response  the specified response
      * @param articleId the specified article id
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{articleId}/image", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void getArticleImage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                final String articleId) throws Exception {
+    public void getArticleImage(final HTTPRequestContext context, final String articleId) throws Exception {
         final JSONObject article = articleQueryService.getArticle(articleId);
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
