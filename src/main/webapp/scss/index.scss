@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.32.30.62, Apr 13, 2018
+ * @version 2.33.0.0, Jul 5, 2018
  */
 
 @import "variables";
@@ -735,6 +735,24 @@ label.cmt-anonymous {
   color: $theme-accent;
 }
 
+.recent-rss {
+  color: #ff9933 !important;
+  float: right;
+  margin: 2px 0 0 10px;
+  &:hover {
+    color: $blue !important;
+  }
+}
+
+.domain-rss {
+  color: #ff9933 !important;
+  svg {
+    vertical-align: sub;
+  }
+  &:hover {
+    color: $blue !important;
+  }
+}
 /* end article list */
 
 /* start verify */

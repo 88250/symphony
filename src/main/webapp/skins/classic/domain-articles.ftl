@@ -43,6 +43,9 @@
                                 <#list navDomain.domainTags as tag>
                                 <a rel="nofollow" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
                                 </#list>
+                            <a class="domain-rss" href="${servePath}/rss/${domain.domainURI}.xml">
+                                <svg><use xlink:href="#iconRss"></use></svg>  RSS
+                            </a>
                             <#else>
                                 <div class="no-list fn-flex-1">${chickenEggLabel}</div>
                             </#if>

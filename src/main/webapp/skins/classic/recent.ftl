@@ -55,6 +55,9 @@
                                 <a pjax-title="${goodCmtsLabel} - ${symphonyLabel}"  class="<#if "/good" == current>ft-gray</#if>" href="${servePath}/recent/good"><svg class="fn-text-top"><use xlink:href="#thumbs-up"></use></svg> ${goodCmtsLabel}</a>
                                 /
                                 <a pjax-title="${recentCommentLabel} - ${symphonyLabel}"  class="<#if "/reply" == current>ft-gray</#if>" href="${servePath}/recent/reply">${recentCommentLabel}</a>
+                            <a class="recent-rss" href="${servePath}/rss/recent.xml">
+                              <svg><use xlink:href="#iconRss"></use></svg>
+                            </a>
                             </span>
                         </div>
                         <@list listData=latestArticles/>

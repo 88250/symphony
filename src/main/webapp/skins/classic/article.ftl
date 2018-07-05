@@ -182,6 +182,7 @@
                 <#if article.offered>
                 <div class="module nice">
                     <div class="module-header">
+                        <svg class="ft-blue"><use xlink:href="#iconAdopt"></use></svg>
                         ${adoptLabel}
                     </div>
                     <div class="module-panel list comments">
