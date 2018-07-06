@@ -53,7 +53,7 @@ import java.util.List;
  *
  * <ul>
  * <li>Generates recent articles' RSS (/rss/recent.xml), GET/HEAD</li>
- * <li>Generates domain articles' RSS (/rss/{domainURL}.xml), GET/HEAD</li>
+ * <li>Generates domain articles' RSS (/rss/domain/{domainURL}.xml), GET/HEAD</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -138,7 +138,7 @@ public class FeedProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/rss/{domainURI}.xml", method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = "/rss/domain/{domainURI}.xml", method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void genDomainRSS(final HTTPRequestContext context, final String domainURI) {
         final RssRenderer renderer = new RssRenderer();
         context.setRenderer(renderer);
