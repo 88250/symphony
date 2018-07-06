@@ -172,8 +172,9 @@ public class NotificationProcessor {
     /**
      * Removes a notification.
      *
-     * @param context the specified context
-     * @param request the specified request
+     * @param context           the specified context
+     * @param request           the specified request
+     * @param requestJSONObject the specified request json object
      */
     @RequestProcessing(value = "/notification/remove", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
