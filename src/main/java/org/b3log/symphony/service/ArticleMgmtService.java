@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.7, Jun 29, 2018
+ * @version 2.18.2.8, Jul 8, 2018
  * @since 0.2.0
  */
 @Service
@@ -512,7 +512,7 @@ public class ArticleMgmtService {
         final int qnaOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT, 0);
 
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
-        if (Article.ARTICLE_TYPE_C_QNA == articleType && 0 >= qnaOfferPoint) {
+        if (Article.ARTICLE_TYPE_C_QNA == articleType && 20 > qnaOfferPoint) { // https://github.com/b3log/symphony/issues/672
             throw new ServiceException(langPropsService.get("invalidQnAOfferPointLabel"));
         }
 
