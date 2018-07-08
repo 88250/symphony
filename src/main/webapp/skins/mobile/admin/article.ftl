@@ -135,7 +135,7 @@
                     <option value="2"<#if 2 == article.articleAnonymousView> selected</#if>>${yesLabel}</option>
                 </select>
 
-                <label for="articleId">Email  ${pushLabel}</label>
+                <label for="articleId">${pushLabel} Email  ${sortLabel}</label>
                 <input type="number" id="articlePushOrder" name="articlePushOrder" value="${article.articlePushOrder}" />
 
                 <br/><br/>
