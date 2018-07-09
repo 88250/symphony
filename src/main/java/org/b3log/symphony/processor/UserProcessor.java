@@ -35,7 +35,6 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.*;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
@@ -78,7 +77,7 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.1, May 23, 2018
+ * @version 1.27.0.2, Jul 9, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1265,33 +1264,22 @@ public class UserProcessor {
     /**
      * Lists usernames.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
+     * @param request the specified request
      * @throws Exception exception
      */
     @RequestProcessing(value = "/users/names", method = HTTPRequestMethod.GET)
-    public void listNames(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        if (null == Sessions.currentUser(request)) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
+    public void listNames(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         context.renderJSON().renderTrueResult();
 
         final String namePrefix = request.getParameter("name");
         if (StringUtils.isBlank(namePrefix)) {
             final List<JSONObject> admins = userQueryService.getAdmins();
             final List<JSONObject> userNames = new ArrayList<>();
-
             for (final JSONObject admin : admins) {
                 final JSONObject userName = new JSONObject();
                 userName.put(User.USER_NAME, admin.optString(User.USER_NAME));
-
-                final String avatar = avatarQueryService.getAvatarURLByUser(
-                        UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, admin, "20");
+                final String avatar = avatarQueryService.getAvatarURLByUser(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, admin, "20");
                 userName.put(UserExt.USER_AVATAR_URL, avatar);
 
                 userNames.add(userName);
@@ -1303,7 +1291,6 @@ public class UserProcessor {
         }
 
         final List<JSONObject> userNames = userQueryService.getUserNamesByPrefix(namePrefix);
-
         context.renderJSONValue(Common.USER_NAMES, userNames);
     }
 
