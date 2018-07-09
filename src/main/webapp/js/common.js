@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.44.2.0, Feb 26, 2018
+ * @version 1.44.3.0, Jul 9, 2018
  */
 
 /**
@@ -38,7 +38,9 @@ var Util = {
     var hasFlow = false;
     $('.content-reset').each(function () {
       $(this).find('p').each(function () {
-        if ($(this).text().indexOf('$\\') > -1 || $(this).text().indexOf('$$') > -1) {
+        if ($(this).text().split('$').length > 2 ||
+          ($(this).text().split('\\(').length > 1 &&
+            $(this).text().split('\\)').length > 1)) {
           hasMathJax = true;
         }
       });
