@@ -18,7 +18,7 @@
 
 -->
 <#include "macro-admin.ftl">
-    <@admin "roles">
+<@admin "roles">
     <div class="content admin">
         <div class="module">
             <form action="${servePath}/admin/role/${role.oId}/permissions" method="POST">
@@ -33,7 +33,7 @@
                                 <#list permissionCategories[category] as permission>
                                     <label><input name="${permission.oId}" type="checkbox"
                                         <#if permission.permissionGrant>checked</#if>
-                                        > ${permission.permissionLabel} &nbsp; &nbsp;</label>
+                                    > ${permission.permissionLabel} &nbsp; &nbsp;</label>
                                 </#list>
                             </li>
                         </#list>
@@ -48,12 +48,16 @@
             <div class="module-header">
                 <h2 class="ft-red">${removeDataLabel}</h2>
             </div>
-            <div class="module-panel form fn-clear">
-                <form action="${servePath}/admin/role/${role.oId}/remove" method="POST" onsubmit="return window.confirm('${confirmRemoveLabel}')">
-                    <label>${role.roleName}</label>
-
-                    <br><br>
-                    <button type="submit" class="red fn-right">${submitLabel}</button>
+            <div class="module-panel form fn-clear form--admin">
+                <form action="${servePath}/admin/role/${role.oId}/remove" method="POST"
+                      class="fn__flex"
+                      onsubmit="return window.confirm('${confirmRemoveLabel}')">
+                    <label>
+                        <div>${role.roleName}</div>
+                    </label>
+                    <div>
+                        <button type="submit" class="red fn-right">${submitLabel}</button>
+                    </div>
                 </form>
             </div>
         </div>

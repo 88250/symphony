@@ -24,30 +24,48 @@
         <div class="module-header">
             <h2>${unmodifiableLabel}</h2>
         </div>
-        <div class="module-panel form fn-clear">
-            <label for="oId">Id</label>
-            <input type="text" id="oId" value="${comment.oId}" readonly="readonly" />
-
-            <label for="commentAuthorId">${authorIdLabel}</label>
-            <input type="text" id="commentAuthorId" name="commentAuthorId" value="${comment.commentAuthorId}" readonly="readonly" />
-
-            <label for="commentOnArticleId">${articleLabel} Id</label>
-            <input type="text" id="commentOnArticleId" name="commentOnArticleId" value="${comment.commentOnArticleId}" readonly="readonly" />
-
-            <label for="commentSharpURL">URL</label>
-            <input type="text" id="commentSharpURL" name="commentSharpURL" value="${comment.commentSharpURL}" readonly="readonly" />
-
-            <label for="commentIP">IP</label>
-            <input type="text" id="commentIP" name="commentIP" value="${comment.commentIP}" readonly="readonly" />
-
-            <label for="commentUA">UA</label>
-            <input type="text" id="commentUA" name="commentUA" value="${comment.commentUA}" readonly="readonly" />
-
-            <label for="commentAnonymous">${anonymousLabel}</label>
-            <select id="commentAnonymous" name="commentAnonymous" disabled="disabled">
-                <option value="0"<#if 0 == comment.commentAnonymous> selected</#if>>${noLabel}</option>
-                <option value="1"<#if 1 == comment.commentAnonymous> selected</#if>>${yesLabel}</option>
-            </select>
+        <div class="module-panel form fn-clear form--admin">
+            <div class="fn__flex">
+                <label>
+                    <div>Id</div>
+                    <input onfocus="this.select()" type="text" id="oId" value="${comment.oId}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${authorIdLabel}</div>
+                    <input onfocus="this.select()" type="text" id="commentAuthorId" name="commentAuthorId"
+                           value="${comment.commentAuthorId}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${articleLabel} Id</div>
+                    <input onfocus="this.select()" type="text" id="commentOnArticleId" name="commentOnArticleId"
+                           value="${comment.commentOnArticleId}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>IP</div>
+                    <input onfocus="this.select()" type="text" id="commentIP" name="commentIP"
+                           value="${comment.commentIP}" readonly="readonly"/>
+                </label>
+            </div>
+            <div class="fn__flex">
+                <label>
+                    <div>URL</div>
+                    <input onfocus="this.select()" type="text" id="commentSharpURL" name="commentSharpURL"
+                           value="${comment.commentSharpURL}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${anonymousLabel}</div>
+                    <input onfocus="this.select()" type="text"
+                           value="<#if 0 == comment.commentAnonymous>${noLabel}<#else>${yesLabel}</#if>"
+                           readonly="readonly"/>
+                </label>
+            </div>
+            <div class="fn__flex">
+                <label>
+                    <div>UA</div>
+                    <input onfocus="this.select()" type="text" id="commentUA" name="commentUA"
+                           value="${comment.commentUA}" readonly="readonly"/>
+                </label>
+            </div>
         </div>
     </div>
 
@@ -56,24 +74,33 @@
         <div class="module-header">
             <h2>${modifiableLabel}</h2>
         </div>
-        <div class="module-panel form fn-clear">
+        <div class="module-panel form fn-clear form--admin">
             <form action="${servePath}/admin/comment/${comment.oId}" method="POST">
-                <label>${commentStatusLabel}</label>
-                <select id="commentStatus" name="commentStatus">
-                    <option value="0"<#if 0 == comment.commentStatus> selected</#if>>${validLabel}</option>
-                    <option value="1"<#if 1 == comment.commentStatus> selected</#if>>${banLabel}</option>
-                </select>
-
-                <label for="commentContent">${commentContentLabel}</label>
-                <textarea id="commentContent" name="commentContent" rows="10">${comment.commentContent}</textarea>
-
-                <label for="commentGoodCnt">${goodCntLabel}</label>
-                <input type="text" id="commentGoodCnt" name="commentGoodCnt" value="${comment.commentGoodCnt}" />
-
-                <label for="commentBadCnt">${badCntLabel}</label>
-                <input type="text" id="commentBadCnt" name="commentBadCnt" value="${comment.commentBadCnt}" />
-
-                <br/><br/>
+                <div class="fn__flex">
+                    <label>
+                        <div>${commentContentLabel}</div>
+                        <textarea id="commentContent" name="commentContent"
+                                  rows="10">${comment.commentContent}</textarea>
+                    </label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${commentStatusLabel}</div>
+                        <select id="commentStatus" name="commentStatus">
+                            <option value="0"<#if 0 == comment.commentStatus> selected</#if>>${validLabel}</option>
+                            <option value="1"<#if 1 == comment.commentStatus> selected</#if>>${banLabel}</option>
+                        </select>
+                    </label>
+                    <label class="mid">
+                        <div>${goodCntLabel}</div>
+                        <input type="text" id="commentGoodCnt" name="commentGoodCnt" value="${comment.commentGoodCnt}"/>
+                    </label>
+                    <label>
+                        <div>${badCntLabel}</div>
+                        <input type="text" id="commentBadCnt" name="commentBadCnt" value="${comment.commentBadCnt}"/>
+                    </label>
+                </div>
+                <br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
         </div>
@@ -85,13 +112,17 @@
         <div class="module-header">
             <h2 class="ft-red">${removeDataLabel}</h2>
         </div>
-        <div class="module-panel form fn-clear">
-            <form action="${servePath}/admin/remove-comment" method="POST" onsubmit="return window.confirm('${confirmRemoveLabel}')">
-                <label for="commentId">Id</label>
-                <input type="text" id="commentId" name="commentId" value="${comment.oId}" readonly="readonly"/>
-
-                <br/><br/>
-                <button type="submit" class="green fn-right" >${submitLabel}</button>
+        <div class="module-panel form fn-clear form--admin">
+            <form class="fn__flex" action="${servePath}/admin/remove-comment" method="POST"
+                  onsubmit="return window.confirm('${confirmRemoveLabel}')">
+                <label>
+                    <div>Id</div>
+                    <input type="text" id="commentId" name="commentId" value="${comment.oId}" disabled/>
+                </label>
+                <div>
+                    &nbsp; &nbsp;
+                    <button type="submit" class="red fn-right btn--admin">${submitLabel}</button>
+                </div>
             </form>
         </div>
     </div>

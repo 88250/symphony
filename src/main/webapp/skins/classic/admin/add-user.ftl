@@ -24,24 +24,37 @@
         <div class="module-header">
             <h2>${addUserLabel}</h2>
         </div>
-        <div class="module-panel form fn-clear">
+        <div class="module-panel form fn-clear form--admin">
             <form action="${servePath}/admin/add-user" method="POST">
-                <label>${userNameLabel}</label>
-                <input name="userName" type="text" />
-
-                <label>${emailLabel}</label>
-                <input name="userEmail" type="text" />
-
-                <label>${passwordLabel}</label>
-                <input name="userPassword" type="text" />
-
-                <label><input name="userAppRole" type="radio" value="0" checked="checked" />${programmerLabel}&nbsp;&nbsp;</label>
-                <label><input name="userAppRole" type="radio" value="1" />${designerLabel}</label>
-
-                <br/><br/><br/>
+                <div class="fn__flex">
+                    <label>
+                        <div>${userNameLabel}</div>
+                        <input name="userName" type="text"/>
+                    </label>
+                    <label class="mid">
+                        <div>${emailLabel}</div>
+                        <input name="userEmail" type="text"/>
+                    </label>
+                    <label>
+                        <div>${passwordLabel}</div>
+                        <input name="userPassword" type="text"/>
+                    </label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${roleLabel}</div>
+                        <select id="domainNav" name="domainNav">
+                            <option value="0">${programmerLabel}</option>
+                            <option value="1">${designerLabel}</option>
+                        </select>
+                    </label>
+                    <label class="mid"></label>
+                    <label></label>
+                </div>
+                <br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
         </div>
-    </div>   
+    </div>
 </div>
 </@admin>

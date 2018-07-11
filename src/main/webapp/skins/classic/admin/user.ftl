@@ -24,60 +24,99 @@
         <div class="module-header">
             <h2>${unmodifiableLabel}</h2>
         </div>
-        <div class="module-panel form fn-clear">
-            <label>Id</label>
-            <input type="text" value="${user.oId}" readonly="readonly" />
-
-            <label>${userNameLabel}</label>
-            <input type="text" value="${user.userName}" readonly="readonly" />
-
-            <label>${userNoLabel}</label>
-            <input type="text" value="${user.userNo?c}" readonly="readonly" />
-
-            <label>${userEmailLabel}</label>
-            <input type="text" value="${user.userEmail}" readonly="readonly" />
-
-            <label>${articleCountLabel}</label>
-            <input type="text" value="${user.userArticleCount}" readonly="readonly" />
-
-            <label>${commentCountLabel}</label>
-            <input type="text" value="${user.userCommentCount}" readonly="readonly" />
-
-            <label>${tagCountLabel}</label>
-            <input type="text" value="${user.userTagCount}" readonly="readonly" />
-
-            <label>${pointLabel}</label>
-            <input type="text" value="${user.userPoint?c}" readonly="readonly" />
-
-            <label>${countryLabel}</label>
-            <input type="text" value="${user.userCountry}" readonly="readonly" />
-
-            <label>${provinceLabel}</label>
-            <input type="text" value="${user.userProvince}" readonly="readonly" />
-
-            <label>${cityLabel}</label>
-            <input type="text" value="${user.userCity}" readonly="readonly" />
-
-            <label>IP</label>
-            <input type="text" value="${user.userLatestLoginIP}" readonly="readonly" />
-
-            <label>${registerTimeLabel}</label>
-            <input type="text" value="${user.oId?number?number_to_datetime}" readonly="readonly" />
-
-            <label>${loginTimeLabel}</label>
-            <input type="text" value="${user.userLatestLoginTime?number_to_datetime}" readonly="readonly" />
-
-            <label>${commentTimeLabel}</label>
-            <input type="text" value="${user.userLatestCmtTime?number_to_datetime}" readonly="readonly" />
-
-            <label>${articleTimeLabel}</label>
-            <input type="text" value="${user.userLatestArticleTime?number_to_datetime}" readonly="readonly" />
-
-            <label>${checkinStreakLabel}</label>
-            <input type="text" value="${user.userCurrentCheckinStreak}" readonly="readonly" />
-
-            <label>${checkinStreakPart0Label}</label>
-            <input type="text" value="${user.userLongestCheckinStreak}" readonly="readonly" />
+        <div class="module-panel form form--admin fn-clear">
+            <div class="fn__flex">
+                <label>
+                    <div>Id</div>
+                    <input onfocus="this.select()" type="text" value="${user.oId}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${userNameLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userName}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${userNoLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userNo?c}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${userEmailLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userEmail}" readonly="readonly"/>
+                </label>
+            </div>
+            <div class="fn__flex">
+                <label>
+                    <div>${articleCountLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userArticleCount?c}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${commentCountLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userCommentCount?c}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${tagCountLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userTagCount}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${pointLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userPoint?c}" readonly="readonly"/>
+                </label>
+            </div>
+            <div class="fn__flex">
+                <label>
+                    <div>${countryLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userCountry}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${provinceLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userProvince}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${cityLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userCity}" readonly="readonly"/>
+                </label>
+                <label>
+                    <div>IP</div>
+                    <input onfocus="this.select()" type="text" value="${user.userLatestLoginIP}" readonly="readonly"/>
+                </label>
+            </div>
+            <div class="fn__flex">
+                <label>
+                    <div>${registerTimeLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.oId?number?number_to_datetime}"
+                           readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${loginTimeLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userLatestLoginTime?number_to_datetime}"
+                           readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${commentTimeLabel}</div>
+                    <input onfocus="this.select()" type="text"
+                           value="<#if user.userLatestCmtTime != 0>${user.userLatestCmtTime?number_to_datetime}</#if>"
+                           readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${articleTimeLabel}</div>
+                    <input onfocus="this.select()" type="text"
+                           value="<#if user.userLatestArticleTime != 0>${user.userLatestArticleTime?number_to_datetime}</#if>"
+                           readonly="readonly"/>
+                </label>
+            </div>
+            <div class="fn__flex">
+                <label>
+                    <div>${checkinStreakLabel}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userCurrentCheckinStreak}"
+                           readonly="readonly"/>
+                </label>
+                <label>
+                    <div>${checkinStreakPart0Label}</div>
+                    <input onfocus="this.select()" type="text" value="${user.userLongestCheckinStreak}"
+                           readonly="readonly"/>
+                </label>
+                <label></label>
+                <label></label>
+            </div>
         </div>
     </div>
 
@@ -86,182 +125,259 @@
         <div class="module-header">
             <h2>${modifiableLabel}</h2>
         </div>
-        <div class="module-panel form fn-clear">
+        <div class="module-panel form fn-clear form--admin">
             <form action="${servePath}/admin/user/${user.oId}" method="POST">
-                <label for="userPassword">${passwordLabel}</label>
-                <input type="text" id="userPassword" name="userPassword" value="${user.userPassword}" />
-
-                <label for="userNickname">${nicknameLabel}</label>
-                <input type="text" id="userNickname" name="userNickname" value="${user.userNickname}" />
-
-                <label for="userTags">${selfTagLabel}</label>
-                <input type="text" id="userTags" name="userTags" value="${user.userTags}" />
-
-                <label for="userURL">URL</label>
-                <input type="text" id="userURL" name="userURL" value="${user.userURL}" />
-
-                <#--
-                <label for="userQQ">QQ</label>
-                <input type="text" id="userQQ" name="userQQ" value="${user.userQQ}" />
-                -->
-
-                <label for="userIntro">${userIntroLabel}</label>
-                <input type="text" id="userIntro" name="userIntro" value="${user.userIntro}" />
-
-                <label for="userIntro">${avatarURLLabel}</label>
-                <input type="text" id="userAvatarURL" name="userAvatarURL" value="${user.userAvatarURL}" />
-
-                <label for="userListPageSize">${userListPageSizeLabel}</label>
-                <input type="number" id="userListPageSize" name="userListPageSize" value="${user.userListPageSize}" />
-
-                <label>${cmtViewModeLabel}</label>
-                <select id="userCommentViewMode" name="userCommentViewMode">
-                    <option value="0"<#if 0 == user.userCommentViewMode> selected</#if>>${traditionLabel}</option>
-                    <option value="1"<#if 1 == user.userCommentViewMode> selected</#if>>${realTimeLabel}</option>
-                </select>
-
-                <label>${avatarViewModeLabel}</label>
-                <select id="userAvatarViewMode" name="userAvatarViewMode">
-                    <option value="0"<#if 0 == user.userAvatarViewMode> selected</#if>>${orgImgLabel}</option>
-                    <option value="1"<#if 1 == user.userAvatarViewMode> selected</#if>>${staticImgLabel}</option>
-                </select>
-
-                <label>${useNotifyLabel}</label>
-                <select id="userNotifyStatus" name="userNotifyStatus">
-                    <option value="0"<#if 0 == user.userNotifyStatus> selected</#if>>${yesLabel}</option>
-                    <option value="1"<#if 1 == user.userNotifyStatus> selected</#if>>${noLabel}</option>
-                </select>
-
-                <label>${subMailLabel}</label>
-                <select id="userSubMailStatus" name="userSubMailStatus">
-                    <option value="0"<#if 0 == user.userSubMailStatus> selected</#if>>${yesLabel}</option>
-                    <option value="1"<#if 1 == user.userSubMailStatus> selected</#if>>${noLabel}</option>
-                </select>
-
-                <label>${enableKbdLabel}</label>
-                <select id="userKeyboardShortcutsStatus" name="userKeyboardShortcutsStatus">
-                    <option value="0"<#if 0 == user.userKeyboardShortcutsStatus> selected</#if>>${yesLabel}</option>
-                    <option value="1"<#if 1 == user.userKeyboardShortcutsStatus> selected</#if>>${noLabel}</option>
-                </select>
-
-                <label>${geoLabel}</label>
-                <select id="userGeoStatus" name="userGeoStatus">
-                    <option value="0"<#if 0 == user.userGeoStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userGeoStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${userArticleStatusLabel}</label>
-                <select id="userArticleStatus" name="userArticleStatus">
-                    <option value="0"<#if 0 == user.userArticleStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userArticleStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${userCommentStatusLabel}</label>
-                <select id="userCommentStatus" name="userCommentStatus">
-                    <option value="0"<#if 0 == user.userCommentStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userCommentStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${userFollowingUserStatusLabel}</label>
-                <select id="userFollowingUserStatus" name="userFollowingUserStatus">
-                    <option value="0"<#if 0 == user.userFollowingUserStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userFollowingUserStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${userFollowingTagStatusLabel}</label>
-                <select id="userFollowingTagStatus" name="userFollowingTagStatus">
-                    <option value="0"<#if 0 == user.userFollowingTagStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userFollowingTagStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${userFollowingArticleStatusLabel}</label>
-                <select id="userFollowingArticleStatus" name="userFollowingArticleStatus">
-                    <option value="0"<#if 0 == user.userFollowingArticleStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userFollowingArticleStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${userWatchingArticleStatusLabel}</label>
-                <select id="userWatchingArticleStatus" name="userWatchingArticleStatus">
-                    <option value="0"<#if 0 == user.userWatchingArticleStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userWatchingArticleStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${userFollowerStatusLabel}</label>
-                <select id="userFollowerStatus" name="userFollowerStatus">
-                    <option value="0"<#if 0 == user.userFollowerStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userFollowerStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${userPointStatusLabel}</label>
-                <select id="userPointStatus" name="userPointStatus">
-                    <option value="0"<#if 0 == user.userPointStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userPointStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${userOnlineStatusLabel}</label>
-                <select id="userOnlineStatus" name="userOnlineStatus">
-                    <option value="0"<#if 0 == user.userOnlineStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userOnlineStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${displayUALabel}</label>
-                <select id="userUAStatus" name="userUAStatus">
-                    <option value="0"<#if 0 == user.userUAStatus> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userUAStatus> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${joinBalanceRankLabel}</label>
-                <select id="userJoinPointRank" name="userJoinPointRank">
-                    <option value="0"<#if 0 == user.userJoinPointRank> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userJoinPointRank> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${joinCosumptionRankLabel}</label>
-                <select id="userJoinUsedPointRank" name="userJoinUsedPointRank">
-                    <option value="0"<#if 0 == user.userJoinUsedPointRank> selected</#if>>${publicLabel}</option>
-                    <option value="1"<#if 1 == user.userJoinUsedPointRank> selected</#if>>${privateLabel}</option>
-                </select>
-
-                <label>${roleLabel}</label>
-                <select id="userRole" name="userRole">
+                <div class="fn__flex">
+                    <label>
+                        <div>${passwordLabel}</div>
+                        <input type="text" id="userPassword" name="userPassword" value="${user.userPassword}"/>
+                    </label>
+                    <label class="mid">
+                        <div>${nicknameLabel}</div>
+                        <input type="text" id="userNickname" name="userNickname" value="${user.userNickname}"/>
+                    </label>
+                    <label>
+                        <div>${avatarViewModeLabel}</div>
+                        <select id="userAvatarViewMode" name="userAvatarViewMode">
+                            <option value="0"<#if 0 == user.userAvatarViewMode> selected</#if>>${orgImgLabel}</option>
+                            <option value="1"<#if 1 == user.userAvatarViewMode>
+                                    selected</#if>>${staticImgLabel}</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${selfTagLabel}</div>
+                        <input type="text" id="userTags" name="userTags" value="${user.userTags}"/>
+                    </label>
+                    <label class="mid">
+                        <div>${userIntroLabel}</div>
+                        <input type="text" id="userIntro" name="userIntro" value="${user.userIntro}"/>
+                    </label>
+                    <label>
+                        <div>URL</div>
+                        <input type="text" id="userURL" name="userURL" value="${user.userURL}"/>
+                    </label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${avatarURLLabel}</div>
+                        <input type="text" id="userAvatarURL" name="userAvatarURL" value="${user.userAvatarURL}"/>
+                    </label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${userListPageSizeLabel}</div>
+                        <input type="number" id="userListPageSize" name="userListPageSize"
+                               value="${user.userListPageSize}"/>
+                    </label>
+                    <label class="mid">
+                        <div>${cmtViewModeLabel}</div>
+                        <select id="userCommentViewMode" name="userCommentViewMode">
+                            <option value="0"<#if 0 == user.userCommentViewMode>
+                                    selected</#if>>${traditionLabel}</option>
+                            <option value="1"<#if 1 == user.userCommentViewMode>
+                                    selected</#if>>${realTimeLabel}</option>
+                        </select>
+                    </label>
+                    <label></label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${useNotifyLabel}</div>
+                        <select id="userNotifyStatus" name="userNotifyStatus">
+                            <option value="0"<#if 0 == user.userNotifyStatus> selected</#if>>${yesLabel}</option>
+                            <option value="1"<#if 1 == user.userNotifyStatus> selected</#if>>${noLabel}</option>
+                        </select>
+                    </label>
+                    <label class="mid">
+                        <div>${subMailLabel}</div>
+                        <select id="userSubMailStatus" name="userSubMailStatus">
+                            <option value="0"<#if 0 == user.userSubMailStatus> selected</#if>>${yesLabel}</option>
+                            <option value="1"<#if 1 == user.userSubMailStatus> selected</#if>>${noLabel}</option>
+                        </select>
+                    </label>
+                    <label>
+                        <div>${enableKbdLabel}</div>
+                        <select id="userKeyboardShortcutsStatus" name="userKeyboardShortcutsStatus">
+                            <option value="0"<#if 0 == user.userKeyboardShortcutsStatus>
+                                    selected</#if>>${yesLabel}</option>
+                            <option value="1"<#if 1 == user.userKeyboardShortcutsStatus>
+                                    selected</#if>>${noLabel}</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${userCommentStatusLabel}</div>
+                        <select id="userCommentStatus" name="userCommentStatus">
+                            <option value="0"<#if 0 == user.userCommentStatus> selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userCommentStatus> selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                    <label class="mid">
+                        <div>${userFollowingUserStatusLabel}</div>
+                        <select id="userFollowingUserStatus" name="userFollowingUserStatus">
+                            <option value="0"<#if 0 == user.userFollowingUserStatus>
+                                    selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userFollowingUserStatus>
+                                    selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                    <label>
+                        <div>${userFollowingTagStatusLabel}</div>
+                        <select id="userFollowingTagStatus" name="userFollowingTagStatus">
+                            <option value="0"<#if 0 == user.userFollowingTagStatus>
+                                    selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userFollowingTagStatus>
+                                    selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${userFollowingArticleStatusLabel}</div>
+                        <select id="userFollowingArticleStatus" name="userFollowingArticleStatus">
+                            <option value="0"<#if 0 == user.userFollowingArticleStatus>
+                                selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userFollowingArticleStatus>
+                                selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                    <label class="mid">
+                        <div>${userWatchingArticleStatusLabel}</div>
+                        <select id="userWatchingArticleStatus" name="userWatchingArticleStatus">
+                            <option value="0"<#if 0 == user.userWatchingArticleStatus>
+                                selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userWatchingArticleStatus>
+                                selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                    <label>
+                        <div>${userFollowerStatusLabel}</div>
+                        <select id="userFollowerStatus" name="userFollowerStatus">
+                            <option value="0"<#if 0 == user.userFollowerStatus> selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userFollowerStatus> selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${userPointStatusLabel}</div>
+                        <select id="userPointStatus" name="userPointStatus">
+                            <option value="0"<#if 0 == user.userPointStatus> selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userPointStatus> selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                    <label class="mid">
+                        <div>${userOnlineStatusLabel}</div>
+                        <select id="userOnlineStatus" name="userOnlineStatus">
+                            <option value="0"<#if 0 == user.userOnlineStatus> selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userOnlineStatus> selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                    <label>
+                        <div>${displayUALabel}</div>
+                        <select id="userUAStatus" name="userUAStatus">
+                            <option value="0"<#if 0 == user.userUAStatus> selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userUAStatus> selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${userArticleStatusLabel}</div>
+                        <select id="userArticleStatus" name="userArticleStatus">
+                            <option value="0"<#if 0 == user.userArticleStatus> selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userArticleStatus> selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                    <label class="mid">
+                        <div>${geoLabel}</div>
+                        <select id="userGeoStatus" name="userGeoStatus">
+                            <option value="0"<#if 0 == user.userGeoStatus> selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userGeoStatus> selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                    <label></label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${joinBalanceRankLabel}</div>
+                        <select id="userJoinPointRank" name="userJoinPointRank">
+                            <option value="0"<#if 0 == user.userJoinPointRank> selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userJoinPointRank> selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                    <label class="mid">
+                        <div>${joinCosumptionRankLabel}</div>
+                        <select id="userJoinUsedPointRank" name="userJoinUsedPointRank">
+                            <option value="0"<#if 0 == user.userJoinUsedPointRank>
+                                    selected</#if>>${publicLabel}</option>
+                            <option value="1"<#if 1 == user.userJoinUsedPointRank>
+                                    selected</#if>>${privateLabel}</option>
+                        </select>
+                    </label>
+                    <label></label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${roleLabel}</div>
+                        <select id="userRole" name="userRole">
                     <#list roles as role>
                         <option value=${role.oId}<#if role.oId == user.userRole> selected</#if>>${role.roleName}</option>
                     </#list>
-                </select>
-
-                <label>${appRoleLabel}</label>
-                <select id="userAppRole" name="userAppRole">
-                    <option value="0"<#if 0 == user.userAppRole> selected</#if>>${hackerLabel}</option>
-                    <option value="1"<#if 1 == user.userAppRole> selected</#if>>${painterLabel}</option>
-                </select>
-
-                <label>${userStatusLabel}</label>
-                <select id="userStatus" name="userStatus">
-                    <option value="0"<#if 0 == user.userStatus> selected</#if>>${validLabel}</option>
-                    <option value="1"<#if 1 == user.userStatus> selected</#if>>${banLabel}</option>
-                    <option value="2"<#if 2 == user.userStatus> selected</#if>>${notVerifiedLabel}</option>
-                    <option value="3"<#if 3 == user.userStatus> selected</#if>>${invalidLoginLabel}</option>
-                </select>
-
-                <label>${syncWithSymphonyClientLabel}</label>
-                <select id="syncWithSymphonyClient" name="syncWithSymphonyClient">
-                    <option value="true"<#if user.syncWithSymphonyClient> selected</#if>>${yesLabel}</option>
-                    <option value="false"<#if !user.syncWithSymphonyClient> selected</#if>>${noLabel}</option>
-                </select>
-
-                <label for="userB3Key">B3 Key</label>
-                <input type="text" id="userB3Key" name="userB3Key" value="${user.userB3Key}" />
-
-                <label for="userB3ClientAddArticleURL">${clientArticleLabel}</label>
-                <input type="text" id="userB3ClientAddArticleURL" name="userB3ClientAddArticleURL" value="${user.userB3ClientAddArticleURL}" />
-
-                <label for="userB3ClientUpdateArticleURL">${clientUpdateArticleLabel}</label>
-                <input type="text" id="userB3ClientUpdateArticleURL" name="userB3ClientUpdateArticleURL" value="${user.userB3ClientUpdateArticleURL}" />
-
-                <label for="userB3ClientAddCommentURL">${clientCmtLabel}</label>
-                <input type="text" id="userB3ClientAddCommentURL" name="userB3ClientAddCommentURL" value="${user.userB3ClientAddCommentURL}" />
-
-                <br/><br/>
+                        </select>
+                    </label>
+                    <label class="mid">
+                        <div>${appRoleLabel}</div>
+                        <select id="userAppRole" name="userAppRole">
+                            <option value="0"<#if 0 == user.userAppRole> selected</#if>>${hackerLabel}</option>
+                            <option value="1"<#if 1 == user.userAppRole> selected</#if>>${painterLabel}</option>
+                        </select>
+                    </label>
+                    <label>
+                        <div>${userStatusLabel}</div>
+                        <select id="userStatus" name="userStatus">
+                            <option value="0"<#if 0 == user.userStatus> selected</#if>>${validLabel}</option>
+                            <option value="1"<#if 1 == user.userStatus> selected</#if>>${banLabel}</option>
+                            <option value="2"<#if 2 == user.userStatus> selected</#if>>${notVerifiedLabel}</option>
+                            <option value="3"<#if 3 == user.userStatus> selected</#if>>${invalidLoginLabel}</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${syncWithSymphonyClientLabel}</div>
+                        <select id="syncWithSymphonyClient" name="syncWithSymphonyClient">
+                            <option value="true"<#if user.syncWithSymphonyClient> selected</#if>>${yesLabel}</option>
+                            <option value="false"<#if !user.syncWithSymphonyClient> selected</#if>>${noLabel}</option>
+                        </select>
+                    </label>
+                    <label class="mid">
+                        <div>B3 Key</div>
+                        <input type="text" id="userB3Key" name="userB3Key" value="${user.userB3Key}"/>
+                    </label>
+                    <label></label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${clientArticleLabel}</div>
+                        <input type="text" id="userB3ClientAddArticleURL" name="userB3ClientAddArticleURL"
+                               value="${user.userB3ClientAddArticleURL}"/>
+                    </label>
+                    <label class="mid">
+                        <div>${clientUpdateArticleLabel}</div>
+                        <input type="text" id="userB3ClientUpdateArticleURL" name="userB3ClientUpdateArticleURL"
+                               value="${user.userB3ClientUpdateArticleURL}"/>
+                    </label>
+                    <label>
+                        <div>${clientCmtLabel}</div>
+                        <input type="text" id="userB3ClientAddCommentURL" name="userB3ClientAddCommentURL"
+                               value="${user.userB3ClientAddCommentURL}"/>
+                    </label>
+                </div>
+                <br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
         </div>
@@ -273,22 +389,26 @@
         <div class="module-header">
             <h2>${advancedUpdateLabel}</h2>
         </div>
-        <div class="module-panel form fn-clear">
-            <form action="${servePath}/admin/user/${user.oId}/email" method="POST">
-                <label for="userEmail">${userEmailLabel}</label>
-                <input type="text" id="userEmail" name="userEmail" value="${user.userEmail}" />
-
-                <br/><br/>
-                <button type="submit" class="green fn-right">${submitLabel}</button>
+        <div class="module-panel form fn-clear form--admin">
+            <form class="fn__flex" action="${servePath}/admin/user/${user.oId}/email" method="POST">
+                <label>
+                    <div>${userEmailLabel}</div>
+                    <input type="text" id="userEmail" name="userEmail" value="${user.userEmail}"/>
+                </label>
+                <div>
+                    &nbsp; &nbsp;
+                    <button type="submit" class="green fn-right btn--admin">${submitLabel}</button>
+                </div>
             </form>
-            <br/>
-
-            <form action="${servePath}/admin/user/${user.oId}/username" method="POST">
-                <label for="userName">${userNameLabel}</label>
-                <input type="text" name="userName" value="${user.userName}" />
-
-                <br/><br/>
-                <button type="submit" class="green fn-right">${submitLabel}</button>
+            <form action="${servePath}/admin/user/${user.oId}/username" method="POST" class="fn__flex">
+                <label>
+                    <div>${userNameLabel}</div>
+                    <input type="text" name="userName" value="${user.userName}"/>
+                </label>
+                <div>
+                    &nbsp; &nbsp;
+                    <button type="submit" class="green fn-right btn--admin">${submitLabel}</button>
+                </div>
             </form>
         </div>
     </div>
@@ -299,18 +419,24 @@
         <div class="module-header">
             <h2>${chargePointLabel}</h2>
         </div>
-        <div class="module-panel form fn-clear">
+        <div class="module-panel form fn-clear form--admin">
             <form action="${servePath}/admin/user/${user.oId}/charge-point" method="POST">
-                <label>${userNameLabel}</label>
-                <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
-
-                <label>${pointLabel}</label>
-                <input type="text" name="point" value="" />
-
-                <label>${memoLabel}</label>
-                <input type="text" name="memo" value="" placeholder="${chargePointPlaceholderLabel}" />
-
-                <br/><br/>
+                <div class="fn__flex">
+                    <label>
+                        <div>${userNameLabel}</div>
+                        <input onfocus="this.select()" type="text" name="userName" value="${user.userName}"
+                               disabled=""/>
+                    </label>
+                    <label class="mid">
+                        <div>${pointLabel}</div>
+                        <input type="text" name="point" value=""/>
+                    </label>
+                    <label>
+                        <div>${memoLabel}</div>
+                        <input type="text" name="memo" value="" placeholder="${chargePointPlaceholderLabel}"/>
+                    </label>
+                </div>
+                <br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
         </div>
@@ -322,16 +448,19 @@
         <div class="module-header">
             <h2>${exchangePointLabel}</h2>
         </div>
-        <div class="module-panel form fn-clear">
+        <div class="module-panel form fn-clear form--admin">
             <form action="${servePath}/admin/user/${user.oId}/exchange-point" method="POST">
-                <label>${userNameLabel}</label>
-                <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
-
-                <label>${pointLabel}</label>
-                <input type="text" name="point" value="" />
-
-                <br/><br/>
-                <button type="submit" class="green fn-right">${submitLabel}</button>
+                <label>
+                    <div>${userNameLabel}</div>
+                    <input type="text" name="userName" value="${user.userName}" disabled="disabled"/>
+                </label>
+                <label class="mid">
+                    <div>${pointLabel}</div>
+                    <input type="text" name="point" value=""/>
+                </label>
+                <div class="fn__flex-1">
+                    <button type="submit" class="green fn-right btn--admin">${submitLabel}</button>
+                </div>
             </form>
         </div>
     </div>
@@ -342,18 +471,23 @@
         <div class="module-header">
             <h2>${abusePointLabel}</h2>
         </div>
-        <div class="module-panel form fn-clear">
+        <div class="module-panel form fn-clear form--admin">
             <form action="${servePath}/admin/user/${user.oId}/abuse-point" method="POST">
-                <label>${userNameLabel}</label>
-                <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
-
-                <label>${pointLabel}</label>
-                <input type="text" name="point" value="" />
-
-                <label>${memoLabel}</label>
-                <input type="text" name="memo" value="" />
-
-                <br/><br/>
+                <div class="fn__flex">
+                    <label>
+                        <div>${userNameLabel}</div>
+                        <input type="text" name="userName" value="${user.userName}" disabled/>
+                    </label>
+                    <label class="mid">
+                        <div>${pointLabel}</div>
+                        <input type="text" name="point" value=""/>
+                    </label>
+                    <label>
+                        <div>${memoLabel}</div>
+                        <input type="text" name="memo" value=""/>
+                    </label>
+                </div>
+                <br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
         </div>
@@ -364,13 +498,16 @@
         <div class="module-header">
             <h2>${compensateInitPointLabel}</h2>
         </div>
-        <div class="module-panel form fn-clear">
-            <form action="${servePath}/admin/user/${user.oId}/init-point" method="POST">
-                <label>${userNameLabel}</label>
-                <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
-
-                <br/><br/>
-                <button type="submit" class="green fn-right">${submitLabel}</button>
+        <div class="module-panel form fn-clear form--admin">
+            <form action="${servePath}/admin/user/${user.oId}/init-point" class="fn__flex" method="POST">
+                <label>
+                    <div>${userNameLabel}</div>
+                    <input type="text" name="userName" value="${user.userName}" disabled/>
+                </label>
+                <div>
+                    &nbsp; &nbsp;
+                    <button type="submit" class="green fn-right btn--admin">${submitLabel}</button>
+                </div>
             </form>
         </div>
     </div>
