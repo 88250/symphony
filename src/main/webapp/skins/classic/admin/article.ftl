@@ -231,7 +231,7 @@
             <form action="${servePath}/admin/stick-article" method="POST" class="fn__flex">
                 <label>
                     <div>Id</div>
-                    <input type="text" id="articleId" name="articleId" value="${article.oId}" disabled/>
+                    <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly class="input--admin-readonly"/>
                 </label>
                 <div>
                     &nbsp; &nbsp;
@@ -251,7 +251,7 @@
             <form action="${servePath}/admin/cancel-stick-article" method="POST" class="fn__flex">
                 <label>
                     <div>Id</div>
-                    <input type="text" id="articleId" name="articleId" value="${article.oId}" disabled/>
+                    <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly class="input--admin-readonly"/>
                 </label>
                 <div>
                     &nbsp; &nbsp;
@@ -271,7 +271,7 @@
             <form action="${servePath}/admin/search-index-article" method="POST" class="fn__flex">
                 <label>
                     <div>Id</div>
-                    <input type="text" id="articleId" name="articleId" value="${article.oId}" disabled/>
+                    <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly class="input--admin-readonly"/>
                 </label>
                 <div>
                     &nbsp; &nbsp;
@@ -293,7 +293,7 @@
                   onsubmit="return window.confirm('${confirmRemoveLabel}')">
                 <label>
                     <div>Id</div>
-                    <input type="text" id="articleId" name="articleId" value="${article.oId}" disabled/>
+                    <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly class="input--admin-readonly"/>
                 </label>
                 <div>
                     &nbsp; &nbsp;

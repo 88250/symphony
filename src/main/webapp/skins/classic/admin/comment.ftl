@@ -117,7 +117,7 @@
                   onsubmit="return window.confirm('${confirmRemoveLabel}')">
                 <label>
                     <div>Id</div>
-                    <input type="text" id="commentId" name="commentId" value="${comment.oId}" disabled/>
+                    <input type="text" id="commentId" name="commentId" value="${comment.oId}" readonly class="input--admin-readonly"/>
                 </label>
                 <div>
                     &nbsp; &nbsp;

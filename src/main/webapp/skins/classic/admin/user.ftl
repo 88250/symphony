@@ -425,7 +425,7 @@
                     <label>
                         <div>${userNameLabel}</div>
                         <input onfocus="this.select()" type="text" name="userName" value="${user.userName}"
-                               disabled=""/>
+                               readonly />
                     </label>
                     <label class="mid">
                         <div>${pointLabel}</div>
@@ -449,10 +449,10 @@
             <h2>${exchangePointLabel}</h2>
         </div>
         <div class="module-panel form fn-clear form--admin">
-            <form action="${servePath}/admin/user/${user.oId}/exchange-point" method="POST">
+            <form action="${servePath}/admin/user/${user.oId}/exchange-point" method="POST" class="fn__flex">
                 <label>
                     <div>${userNameLabel}</div>
-                    <input type="text" name="userName" value="${user.userName}" disabled="disabled"/>
+                    <input type="text" name="userName" value="${user.userName}" readonly class="input--admin-readonly"/>
                 </label>
                 <label class="mid">
                     <div>${pointLabel}</div>
@@ -476,7 +476,7 @@
                 <div class="fn__flex">
                     <label>
                         <div>${userNameLabel}</div>
-                        <input type="text" name="userName" value="${user.userName}" disabled/>
+                        <input type="text" name="userName" value="${user.userName}" readonly class="input--admin-readonly"/>
                     </label>
                     <label class="mid">
                         <div>${pointLabel}</div>
@@ -502,7 +502,7 @@
             <form action="${servePath}/admin/user/${user.oId}/init-point" class="fn__flex" method="POST">
                 <label>
                     <div>${userNameLabel}</div>
-                    <input type="text" name="userName" value="${user.userName}" disabled/>
+                    <input type="text" name="userName" value="${user.userName}" readonly class="input--admin-readonly"/>
                 </label>
                 <div>
                     &nbsp; &nbsp;

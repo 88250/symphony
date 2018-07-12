@@ -94,7 +94,7 @@
                   onsubmit="return window.confirm('${confirmRemoveLabel}')" class="fn__flex">
                 <label>
                     <div>Id</div>
-                    <input type="text" id="id" name="id" value="${breezemoon.oId}" disabled/>
+                    <input type="text" id="id" name="id" value="${breezemoon.oId}" readonly class="input--admin-readonly"/>
                 </label>
                 <div>
                     &nbsp; &nbsp;
