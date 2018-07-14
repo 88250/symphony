@@ -68,7 +68,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.12.0.0, Jun 24, 2018
+ * @version 1.12.0.1, Jul 14, 2018
  * @since 0.2.5
  */
 @RequestProcessor
@@ -817,21 +817,14 @@ public class NotificationProcessor {
     /**
      * Gets unread count of notifications.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/notification/unread/count", method = HTTPRequestMethod.GET)
-    public void getUnreadNotificationCount(final HTTPRequestContext context, final HttpServletRequest request,
-                                           final HttpServletResponse response) throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
-        if (null == currentUser) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {StopwatchEndAdvice.class})
+    public void getUnreadNotificationCount(final HTTPRequestContext context, final HttpServletRequest request) {
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final Map<String, Object> dataModel = new HashMap<>();
 
