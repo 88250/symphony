@@ -119,7 +119,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.28.0.0, Jun 25, 2018
+ * @version 2.29.0.0, Jul 15, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -295,6 +295,22 @@ public class AdminProcessor {
      */
     @Inject
     private ReportQueryService reportQueryService;
+
+    /**
+     * Makes a report as ignored .
+     *
+     * @param response the specified response
+     * @param reportId the specified report id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/report/ignore/{reportId}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void makeReportIgnored(final HttpServletResponse response, final String reportId) throws Exception {
+        reportMgmtService.makeReportIgnored(reportId);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/reports");
+    }
 
     /**
      * Makes a report as handled .

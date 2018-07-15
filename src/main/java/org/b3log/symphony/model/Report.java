@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all report model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jun 26, 2018
+ * @version 1.2.0.0, Jul 15, 2018
  * @since 3.1.0
  */
 public final class Report {
@@ -138,6 +138,11 @@ public final class Report {
      * Report handled - yes.
      */
     public static final int REPORT_HANDLED_C_YES = 1;
+
+    /**
+     * Report handled - ignored.
+     */
+    public static final int REPORT_HANDLED_C_IGNORED = 2;
 
     //// Transient ////
     /**

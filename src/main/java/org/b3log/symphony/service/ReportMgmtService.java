@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Report management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jun 26, 2018
+ * @version 1.2.0.0, Jul 15, 2018
  * @since 3.1.0
  */
 @Service
@@ -54,6 +54,23 @@ public class ReportMgmtService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Makes the specified report as ignored.
+     *
+     * @param reportId the specified report id
+     */
+    @Transactional
+    public void makeReportIgnored(final String reportId) {
+        try {
+            final JSONObject report = reportRepository.get(reportId);
+            report.put(Report.REPORT_HANDLED, Report.REPORT_HANDLED_C_IGNORED);
+
+            reportRepository.update(reportId, report);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Makes report [id=" + reportId + "] as ignored failed", e);
+        }
+    }
 
     /**
      * Makes the specified report as handled.
