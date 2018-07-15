@@ -44,7 +44,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.0.1, Jun 27, 2018
+ * @version 1.14.0.2, Jul 15, 2018
  * @since 0.2.5
  */
 @Service
@@ -380,33 +380,22 @@ public class NotificationQueryService {
         filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
 
         final List<Filter> subFilters = new ArrayList<>();
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_ARTICLE_THANK));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_CHARGE));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_EXCHANGE));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_ABUSE_POINT_DEDUCT));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_COMMENT_ACCEPT));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_TRANSFER));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_INVITECODE_USED));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_INVITATION_LINK_USED));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_PERFECT_ARTICLE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_ARTICLE_THANK));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_CHARGE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_EXCHANGE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_ABUSE_POINT_DEDUCT));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_COMMENT_ACCEPT));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_TRANSFER));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_INVITECODE_USED));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_INVITATION_LINK_USED));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_PERFECT_ARTICLE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_REPORT_HANDLED));
 
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
 
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
         try {
             final JSONObject result = notificationRepository.get(query);
 
@@ -447,28 +436,18 @@ public class NotificationQueryService {
         filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
 
         final List<Filter> subFilters = new ArrayList<>();
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_ARTICLE_THANK));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_CHARGE));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_EXCHANGE));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_ABUSE_POINT_DEDUCT));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_COMMENT_ACCEPT));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_TRANSFER));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_INVITECODE_USED));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_INVITATION_LINK_USED));
-        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
-                Notification.DATA_TYPE_C_POINT_PERFECT_ARTICLE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_ARTICLE_THANK));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_CHARGE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_EXCHANGE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_ABUSE_POINT_DEDUCT));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_COMMENT_ACCEPT));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_TRANSFER));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_INVITECODE_USED));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_INVITATION_LINK_USED));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_PERFECT_ARTICLE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_POINT_REPORT_HANDLED));
 
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
 
@@ -476,7 +455,6 @@ public class NotificationQueryService {
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                 addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
         try {
             final JSONObject queryResult = notificationRepository.get(query);
             final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
@@ -663,6 +641,10 @@ public class NotificationQueryService {
                                 + Latkes.getServePath() + article22.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article22.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink22);
+
+                        break;
+                    case Notification.DATA_TYPE_C_POINT_REPORT_HANDLED:
+                        desTemplate = langPropsService.get("notification36Label");
 
                         break;
                     default:

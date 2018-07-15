@@ -42,7 +42,7 @@ import java.util.Set;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.19.0.0, Jun 24, 2018
+ * @version 1.20.0.0, Jul 15, 2018
  * @since 0.2.5
  */
 @Service
@@ -58,6 +58,28 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+
+    /**
+     * Adds a 'report handled' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userId"; "",
+     *                          "dataId": "" // report handled point transfer id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addReportHandledNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_POINT_REPORT_HANDLED);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds a notification [type=report_handled] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
 
     /**
      * Removes the specified user's notifications of the specified type.

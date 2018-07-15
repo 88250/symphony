@@ -20,10 +20,13 @@ package org.b3log.symphony.service;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Report;
 import org.b3log.symphony.repository.ReportRepository;
 import org.json.JSONObject;
@@ -56,6 +59,18 @@ public class ReportMgmtService {
     private LangPropsService langPropsService;
 
     /**
+     * Pointtransfer management service.
+     */
+    @Inject
+    private PointtransferMgmtService pointtransferMgmtService;
+
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
+
+    /**
      * Makes the specified report as ignored.
      *
      * @param reportId the specified report id
@@ -77,14 +92,28 @@ public class ReportMgmtService {
      *
      * @param reportId the specified report id
      */
-    @Transactional
     public void makeReportHandled(final String reportId) {
+        final Transaction transaction = reportRepository.beginTransaction();
         try {
             final JSONObject report = reportRepository.get(reportId);
             report.put(Report.REPORT_HANDLED, Report.REPORT_HANDLED_C_YES);
 
             reportRepository.update(reportId, report);
+            transaction.commit();
+
+            final String reporterId = report.optString(Report.REPORT_USER_ID);
+            final String transferId = pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, reporterId,
+                    Pointtransfer.TRANSFER_TYPE_C_REPORT_HANDLED, Pointtransfer.TRANSFER_SUM_C_REPORT_HANDLED, reportId, System.currentTimeMillis());
+
+            final JSONObject notification = new JSONObject();
+            notification.put(Notification.NOTIFICATION_USER_ID, reporterId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, transferId);
+            notificationMgmtService.addReportHandledNotification(notification);
         } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
             LOGGER.log(Level.ERROR, "Makes report [id=" + reportId + "] as handled failed", e);
         }
     }

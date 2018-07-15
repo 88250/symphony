@@ -42,7 +42,7 @@ import java.util.List;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.2.3, Jun 11, 2017
+ * @version 1.21.2.4, Jun 15, 2017
  * @since 1.3.0
  */
 @Service
@@ -462,6 +462,7 @@ public class PointtransferQueryService {
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_EATINGSNAKE_COLLECT:
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_GOBANG:
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_GOBANG_COLLECT:
+                    case Pointtransfer.TRANSFER_TYPE_C_REPORT_HANDLED:
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_AT_PARTICIPANTS:
                         final JSONObject comment20 = commentRepository.get(dataId);
