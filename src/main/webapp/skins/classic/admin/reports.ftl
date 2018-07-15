@@ -34,11 +34,18 @@
                             <div class="ft-smaller ft-gray">
                                 ${item.reportTypeStr} •
                                 ${item.reportTime?string('yyyy-MM-dd HH:mm')}
+                                <#if item.reportHandled == 1>
+                                • <span class="ft-green">${processLabel}</span>
+                                <#elseif item.reportHandled == 2>
+                                • <span class="ft-fade">${ignoreLabel}</span>
+                                </#if>
                             </div>
                         </div>
                 <#if item.reportHandled == 0>
                 <div>
-                    <button class="mid" onclick="AdminReportHandled(this, '${item.oId}')">${processLabel}</button>
+                    <button class="mid green" onclick="AdminReportHandled(this, '${item.oId}')">${processLabel}</button>
+                    &nbsp;
+                    <button class="mid" onclick="AdminReportCancel(this, '${item.oId}')">${ignoreLabel}</button>
                 </div>
                 </#if>
                     </div>
