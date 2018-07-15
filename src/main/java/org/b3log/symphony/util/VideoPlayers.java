@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * Video player utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Mar 30, 2018
+ * @version 1.0.1.0, Jul 15, 2018
  * @since 2.2.0
  */
 public final class VideoPlayers {
@@ -46,9 +46,6 @@ public final class VideoPlayers {
      */
     private static final Pattern PATTERN = Pattern.compile(VIDEO_URL_REGEX, Pattern.CASE_INSENSITIVE);
 
-    private VideoPlayers() {
-    }
-
     /**
      * Renders the specified content with video player if need.
      *
@@ -63,8 +60,11 @@ public final class VideoPlayers {
         final Matcher m = PATTERN.matcher(content);
 
         while (m.find()) {
-            String videoURL = m.group();
-            videoURL = StringUtils.substringBetween(videoURL, "href=\"", "\" rel=");
+            final String g = m.group();
+            String videoURL = StringUtils.substringBetween(g, "href=\"", "\" rel=");
+            if (StringUtils.isBlank(videoURL)) {
+                videoURL = StringUtils.substringBetween(g, "href=\"", "\"");
+            }
 
             m.appendReplacement(contentBuilder, "<video width=\"100%\" src=\""
                     + videoURL + "\" controls=\"controls\">" + langPropsService.get("notSupportPlayLabel") + "</video>\n");
@@ -72,5 +72,8 @@ public final class VideoPlayers {
         m.appendTail(contentBuilder);
 
         return contentBuilder.toString();
+    }
+
+    private VideoPlayers() {
     }
 }
