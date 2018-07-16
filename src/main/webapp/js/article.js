@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.42.0.0, June 26, 2018
+ * @version 1.42.0.1, Jul 16, 2018
  */
 
 /**
@@ -806,6 +806,7 @@ var Comment = {
     var requestJSONObject = {
       articleId: id,
       commentAnonymous: $('#commentAnonymous').prop('checked'),
+      commentVisible: $('#commentVisible').prop('checked'),
       commentContent: Comment.editor.getValue(), // 实际提交时不去除空格，因为直接贴代码时需要空格
       userCommentViewMode: Label.userCommentViewMode,
     }

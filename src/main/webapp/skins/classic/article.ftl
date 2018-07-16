@@ -530,6 +530,7 @@
                             <#if permissions["commonAddCommentAnonymous"].permissionGrant>
                                 <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
                             </#if>
+                            <label class="cmt-anonymous">${onlyArticleAuthorVisibleLabel}<input type="checkbox" id="commentVisible"></label>
                             <button class="green" onclick="Comment.add('${article.oId}', '${csrfToken}', this)">${submitLabel}</button> &nbsp; &nbsp;
                             <a class="fn-pointer ft-a-title" href="javascript:Comment._toggleReply()">${cancelLabel}</a>
                             <div class="tip fn-right" id="addCommentTip"></div>
