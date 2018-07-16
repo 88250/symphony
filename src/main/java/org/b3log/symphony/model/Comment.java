@@ -270,6 +270,17 @@ public final class Comment {
      */
     public static final int COMMENT_QNA_OFFERED_C_YES = 1;
 
+    // Visible constants
+    /**
+     * Comment visible - all.
+     */
+    public static final int COMMENT_VISIBLE_C_ALL = 0;
+
+    /**
+     * Comment visible - only author.
+     */
+    public static final int COMMENT_VISIBLE_C_AUTHOR = 1;
+
     /**
      * Private constructor.
      */
