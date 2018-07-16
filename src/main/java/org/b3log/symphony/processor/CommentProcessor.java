@@ -292,7 +292,8 @@ public class CommentProcessor {
      * The request json object:
      * <pre>
      * {
-     *     "commentContent": ""
+     *     "commentContent": "",
+     *     "commentVisible": boolean
      * }
      * </pre>
      * </p>
@@ -326,6 +327,7 @@ public class CommentProcessor {
             final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
             String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
+            final boolean isOnlyAuthorVisible = requestJSONObject.optBoolean(Comment.COMMENT_VISIBLE);
             final String ip = Requests.getRemoteAddr(request);
             final String ua = Headers.getHeader(request, Common.USER_AGENT);
 
@@ -338,6 +340,8 @@ public class CommentProcessor {
             if (StringUtils.isNotBlank(ua)) {
                 comment.put(Comment.COMMENT_UA, ua);
             }
+            comment.put(Comment.COMMENT_VISIBLE, isOnlyAuthorVisible
+                    ? Comment.COMMENT_VISIBLE_C_AUTHOR : Comment.COMMENT_VISIBLE_C_ALL);
 
             commentMgmtService.updateComment(comment.optString(Keys.OBJECT_ID), comment);
 
