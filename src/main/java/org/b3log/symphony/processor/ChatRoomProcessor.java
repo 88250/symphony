@@ -63,7 +63,7 @@ import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.12, May 2, 2018
+ * @version 1.3.5.13, Jul 17, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -335,12 +335,12 @@ public class ChatRoomProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public synchronized void receiveXiaoV(final HTTPRequestContext context,
                                           final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-//        final String key = Symphonys.get("xiaov.key");
-//        if (!key.equals(request.getParameter("key"))) {
-//            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-//
-//            return;
-//        }
+        final String key = Symphonys.get("xiaov.key");
+        if (!key.equals(request.getParameter("key"))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
 
         final String msg = request.getParameter("msg");
         if (StringUtils.isBlank(msg)) {
