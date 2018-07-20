@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.39.0.1, Jul 16, 2018",
+  "version": "4.39.0.2, Jul 20, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -101,6 +101,12 @@
           "name": "breezemoonStatus",
           "type": "int",
           "description": "0：正常，1：封禁"
+        },
+        {
+          "name": "breezemoonCity",
+          "type": "String",
+          "length": 32,
+          "description": "发布时所在城市"
         }
       ]
     },
