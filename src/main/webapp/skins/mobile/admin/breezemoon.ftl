@@ -34,6 +34,9 @@
             <label for="breezemoonIP">IP</label>
             <input type="text" id="breezemoonIP" name="breezemoonIP" value="${breezemoon.breezemoonIP}" readonly="readonly" />
 
+            <label for="breezemoonCity">${cityLabel}</label>
+            <input type="text" id="breezemoonCity" name="breezemoonCity" value="${breezemoon.breezemoonCity}" readonly="readonly" />
+
             <label for="breezemoonUA">UA</label>
             <input type="text" id="breezemoonUA" name="breezemoonUA" value="${breezemoon.breezemoonUA}" readonly="readonly" />
         </div>
