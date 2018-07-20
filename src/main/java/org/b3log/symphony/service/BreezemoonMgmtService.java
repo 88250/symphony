@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Breezemoon management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, May 21, 2018
+ * @version 1.0.0.1, Jul 20, 2018
  * @since 2.8.0
  */
 @Service
@@ -76,7 +76,8 @@ public class BreezemoonMgmtService {
      *                          "breezemoonContent": "",
      *                          "breezemoonAuthorId": "",
      *                          "breezemoonIP": "",
-     *                          "breezemoonUA": ""
+     *                          "breezemoonUA": "",
+     *                          "breezemoonCity": ""
      * @throws ServiceException service exception
      */
     @Transactional
@@ -94,6 +95,7 @@ public class BreezemoonMgmtService {
         bm.put(Breezemoon.BREEZEMOON_CREATED, now);
         bm.put(Breezemoon.BREEZEMOON_UPDATED, now);
         bm.put(Breezemoon.BREEZEMOON_STATUS, Breezemoon.BREEZEMOON_STATUS_C_VALID);
+        bm.put(Breezemoon.BREEZEMOON_CITY, requestJSONObject.optString(Breezemoon.BREEZEMOON_CITY));
 
         try {
             breezemoonRepository.add(bm);
