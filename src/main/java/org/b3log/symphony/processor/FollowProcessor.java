@@ -46,17 +46,17 @@ import java.util.Set;
  * Follow processor.
  * <ul>
  * <li>Follows a user (/follow/user), POST</li>
- * <li>Unfollows a user (/follow/user), DELETE</li>
+ * <li>Unfollows a user (/follow/user), POST</li>
  * <li>Follows a tag (/follow/tag), POST</li>
- * <li>Unfollows a tag (/follow/tag), DELETE</li>
+ * <li>Unfollows a tag (/follow/tag), POST</li>
  * <li>Follows an article (/follow/article), POST</li>
- * <li>Unfollows an article (/follow/article), DELETE</li>
+ * <li>Unfollows an article (/follow/article), POST</li>
  * <li>Watches an article (/follow/article-watch), POST</li>
- * <li>Unwatches an article (/follow/article-watch), DELETE</li>
+ * <li>Unwatches an article (/follow/article-watch), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.4, Mar 7, 2017
+ * @version 1.3.0.5, Jul 22, 2018
  * @since 0.2.5
  */
 @RequestProcessor
@@ -145,7 +145,7 @@ public class FollowProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/follow/user", method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/unfollow/user", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void unfollowUser(final HTTPRequestContext context, final HttpServletRequest request,
                              final HttpServletResponse response) throws Exception {
@@ -211,7 +211,7 @@ public class FollowProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/follow/tag", method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/unfollow/tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void unfollowTag(final HTTPRequestContext context, final HttpServletRequest request,
                             final HttpServletResponse response) throws Exception {
@@ -291,7 +291,7 @@ public class FollowProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/follow/article", method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/unfollow/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void unfollowArticle(final HTTPRequestContext context, final HttpServletRequest request,
                                 final HttpServletResponse response) throws Exception {
@@ -371,7 +371,7 @@ public class FollowProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/follow/article-watch", method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/unfollow/article-watch", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void unwatchArticle(final HTTPRequestContext context, final HttpServletRequest request,
                                final HttpServletResponse response) throws Exception {
