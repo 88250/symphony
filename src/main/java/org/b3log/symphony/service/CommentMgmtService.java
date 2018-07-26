@@ -48,7 +48,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.0.2, Jul 16, 2018
+ * @version 2.14.0.3, Jul 26, 2018
  * @since 0.2.0
  */
 @Service
@@ -387,6 +387,10 @@ public class CommentMgmtService {
             throw new ServiceException(langPropsService.get("systemErrLabel"));
         }
 
+        if (UserExt.USER_STATUS_C_VALID != commenter.optInt(UserExt.USER_STATUS)) {
+            throw new ServiceException(langPropsService.get("userStatusInvalidLabel"));
+        }
+
         final boolean fromClient = requestJSONObject.has(Comment.COMMENT_CLIENT_COMMENT_ID);
         final String articleId = requestJSONObject.optString(Comment.COMMENT_ON_ARTICLE_ID);
         final String ip = requestJSONObject.optString(Comment.COMMENT_IP);
@@ -614,6 +618,12 @@ public class CommentMgmtService {
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
+            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+            final JSONObject author = userRepository.get(commentAuthorId);
+            if (UserExt.USER_STATUS_C_VALID != author.optInt(UserExt.USER_STATUS)) {
+                throw new ServiceException(langPropsService.get("userStatusInvalidLabel"));
+            }
+
             final JSONObject oldComment = commentRepository.get(commentId);
             final String oldContent = oldComment.optString(Comment.COMMENT_CONTENT);
 
@@ -627,7 +637,6 @@ public class CommentMgmtService {
 
             commentRepository.update(commentId, comment);
 
-            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
             if (!oldContent.equals(content)) {
                 // Revision
                 final JSONObject revision = new JSONObject();

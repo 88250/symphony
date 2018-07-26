@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.8, Jul 8, 2018
+ * @version 2.18.2.9, Jul 26, 2018
  * @since 0.2.0
  */
 @Service
@@ -493,7 +493,7 @@ public class ArticleMgmtService {
         final long currentTimeMillis = System.currentTimeMillis();
         final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
         final String authorId = requestJSONObject.optString(Article.ARTICLE_AUTHOR_ID);
-        JSONObject author = null;
+        JSONObject author;
 
         final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
         if (rewardPoint < 0) {
@@ -525,6 +525,9 @@ public class ArticleMgmtService {
             }
 
             author = userRepository.get(authorId);
+            if (UserExt.USER_STATUS_C_VALID != author.optInt(UserExt.USER_STATUS)) {
+                throw new ServiceException(langPropsService.get("userStatusInvalidLabel"));
+            }
 
             if (currentTimeMillis - author.optLong(Keys.OBJECT_ID) < Symphonys.getLong("newbieFirstArticle")) {
                 String tip = langPropsService.get("newbieFirstArticleLabel");
@@ -844,6 +847,9 @@ public class ArticleMgmtService {
             oldArticle = articleRepository.get(articleId);
             authorId = oldArticle.optString(Article.ARTICLE_AUTHOR_ID);
             author = userRepository.get(authorId);
+            if (UserExt.USER_STATUS_C_VALID != author.optInt(UserExt.USER_STATUS)) {
+                throw new ServiceException(langPropsService.get("userStatusInvalidLabel"));
+            }
 
             final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
             int addition = (int) Math.round(Math.sqrt(followerCnt));
