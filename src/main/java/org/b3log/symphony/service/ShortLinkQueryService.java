@@ -44,7 +44,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.2.0, Jun 9, 2018
+ * @version 1.2.2.1, Jul 26, 2018
  * @since 1.3.0
  */
 @Service
@@ -108,11 +108,16 @@ public class ShortLinkQueryService {
                     }
                     String linkId;
                     String queryStr = null;
+                    String anchor = null;
                     if (StringUtils.contains(url, "?")) {
                         linkId = StringUtils.substringBetween(matcher.group(), "/article/", "?");
                         queryStr = StringUtils.substringAfter(url, "?");
                     } else {
                         linkId = StringUtils.substringAfter(matcher.group(), "/article/");
+                    }
+                    if (StringUtils.contains(url, "#")) {
+                        linkId = StringUtils.substringBefore(linkId, "#");
+                        anchor = StringUtils.substringAfter(url, "#");
                     }
 
                     final Query query = new Query().addProjection(Article.ARTICLE_TITLE, String.class)
@@ -127,6 +132,9 @@ public class ShortLinkQueryService {
                     String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/article/" + linkId;
                     if (StringUtils.isNotBlank(queryStr)) {
                         link += "?" + queryStr;
+                    }
+                    if (StringUtils.isNotBlank(anchor)) {
+                        link += "#" + anchor;
                     }
                     link += ") ";
 
