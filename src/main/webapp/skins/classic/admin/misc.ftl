@@ -56,11 +56,14 @@
                         </label>
                     </div>
                     </#if>
-                    <#if "miscPreventTags" == item.oId>
+                    <#if "miscArticleVisitCountMode" == item.oId>
                     <div class="fn__flex">
                         <label>
                             <div>${item.label}</div>
-                            <input type="text" name="miscPreventTags" value="${item.optionValue}">
+                            <select name="${item.oId}">
+                                <option value="0"<#if "0" == item.optionValue> selected</#if>>${noDeduplicateLabel}</option>
+                                <option value="1"<#if "1" == item.optionValue> selected</#if>>${deduplicateLabel}</option>
+                            </select>
                         </label>
                     </div>
                     </#if>

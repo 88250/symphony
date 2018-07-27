@@ -43,7 +43,7 @@ import java.util.Set;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.11, Jun 25, 2018
+ * @version 1.2.1.12, Jul 27, 2018
  * @since 1.8.0
  */
 @Service
@@ -314,6 +314,12 @@ public class InitMgmtService {
             option = new JSONObject();
             option.put(Keys.OBJECT_ID, Option.ID_C_MISC_LANGUAGE);
             option.put(Option.OPTION_VALUE, DEFAULT_LANG);
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_MISC_ARTICLE_VISIT_COUNT_MODE);
+            option.put(Option.OPTION_VALUE, "0");
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
             optionRepository.add(option);
 

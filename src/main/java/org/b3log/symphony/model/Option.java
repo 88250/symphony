@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.8.0.2, Dec 24, 2016
+ * @version 2.9.0.0, Jul 27, 2018
  * @since 0.2.0
  */
 public final class Option {
@@ -106,6 +106,11 @@ public final class Option {
      * Key of language.
      */
     public static final String ID_C_MISC_LANGUAGE = "miscLanguage";
+
+    /**
+     * Key of article visit count mode. https://github.com/b3log/symphony/issues/694
+     */
+    public static final String ID_C_MISC_ARTICLE_VISIT_COUNT_MODE = "miscArticleVisitCountMode";
 
     /**
      * Key of side full ad.
