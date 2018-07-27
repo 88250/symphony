@@ -179,7 +179,7 @@ public class BreezemoonProcessor {
         breezemoon.put(Breezemoon.BREEZEMOON_AUTHOR_ID, authorId);
         final String ip = Requests.getRemoteAddr(request);
         breezemoon.put(Breezemoon.BREEZEMOON_IP, ip);
-        final String ua = Headers.getHeader(request, Common.USER_AGENT);
+        final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
         breezemoon.put(Breezemoon.BREEZEMOON_UA, ua);
         final JSONObject address = Geos.getAddress(ip);
         if (null != address) {
@@ -229,7 +229,7 @@ public class BreezemoonProcessor {
         breezemoon.put(Breezemoon.BREEZEMOON_AUTHOR_ID, authorId);
         final String ip = Requests.getRemoteAddr(request);
         breezemoon.put(Breezemoon.BREEZEMOON_IP, ip);
-        final String ua = Headers.getHeader(request, Common.USER_AGENT);
+        final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
         breezemoon.put(Breezemoon.BREEZEMOON_UA, ua);
 
         try {

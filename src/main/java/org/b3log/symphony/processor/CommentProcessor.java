@@ -329,7 +329,7 @@ public class CommentProcessor {
             String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
             final boolean isOnlyAuthorVisible = requestJSONObject.optBoolean(Comment.COMMENT_VISIBLE);
             final String ip = Requests.getRemoteAddr(request);
-            final String ua = Headers.getHeader(request, Common.USER_AGENT);
+            final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
 
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             comment.put(Comment.COMMENT_IP, "");
@@ -475,7 +475,7 @@ public class CommentProcessor {
         final String commentOriginalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
         final int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         final String ip = Requests.getRemoteAddr(request);
-        final String ua = Headers.getHeader(request, Common.USER_AGENT);
+        final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
 
         final boolean isAnonymous = requestJSONObject.optBoolean(Comment.COMMENT_ANONYMOUS);
         final boolean isOnlyAuthorVisible = requestJSONObject.optBoolean(Comment.COMMENT_VISIBLE);

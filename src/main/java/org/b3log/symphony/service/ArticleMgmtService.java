@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.9, Jul 26, 2018
+ * @version 2.18.2.10, Jul 27, 2018
  * @since 0.2.0
  */
 @Service
@@ -203,6 +203,12 @@ public class ArticleMgmtService {
      */
     @Inject
     private AudioMgmtService audioMgmtService;
+
+    /**
+     * Visit management service.
+     */
+    @Inject
+    private VisitMgmtService visitMgmtService;
 
     /**
      * Determines whether the specified tag title exists in the specified tags.
@@ -429,12 +435,27 @@ public class ArticleMgmtService {
     }
 
     /**
-     * Increments the view count of the specified article by the given article id.
+     * Increments the view count of the specified article by the given visit.
      *
-     * @param articleId the given article id
+     * @param visit the given visit
      */
-    public void incArticleViewCount(final String articleId) {
+    public void incArticleViewCount(final JSONObject visit) {
         Symphonys.EXECUTOR_SERVICE.submit(() -> {
+            final String visitURL = visit.optString(Visit.VISIT_URL);
+            final String articleId = StringUtils.substringAfter(visitURL, "/article/");
+            boolean visitedB4 = false;
+            try {
+                if ("1".equals(optionRepository.get(Option.ID_C_MISC_ARTICLE_VISIT_COUNT_MODE).optString(Option.OPTION_VALUE))) {
+                    visitedB4 = visitMgmtService.add(visit);
+                }
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Gets visit count mode failed", e);
+            }
+
+            if (visitedB4) {
+                return;
+            }
+
             final Transaction transaction = articleRepository.beginTransaction();
             try {
                 final JSONObject article = articleRepository.get(articleId);
