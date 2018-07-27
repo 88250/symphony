@@ -1979,7 +1979,12 @@ public class ArticleQueryService {
             article.put(Article.ARTICLE_T_THUMBNAIL_URL, "");
         }
 
-        qiniuImgProcessing(article);
+        final int articleType = article.optInt(Article.ARTICLE_TYPE);
+        if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+            String content = article.optString(Article.ARTICLE_CONTENT);
+            content = Images.qiniuImgProcessing(content);
+            article.put(Article.ARTICLE_CONTENT, content);
+        }
 
         final String title = Encode.forHtml(article.optString(Article.ARTICLE_TITLE));
         article.put(Article.ARTICLE_TITLE, title);
@@ -2097,43 +2102,6 @@ public class ArticleQueryService {
         }
 
         return ret;
-    }
-
-    /**
-     * Qiniu image processing.
-     *
-     * @param article the specified article
-     * @return the first image URL, returns {@code ""} if not found
-     */
-    private void qiniuImgProcessing(final JSONObject article) {
-        final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
-        if (!qiniuEnabled) {
-            return;
-        }
-
-        final int articleType = article.optInt(Article.ARTICLE_TYPE);
-        if (Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
-            return;
-        }
-
-        final String qiniuDomain = Symphonys.get("qiniu.domain");
-        String content = article.optString(Article.ARTICLE_CONTENT);
-        final String html = Markdowns.toHTML(content);
-
-        final String[] imgSrcs = StringUtils.substringsBetween(html, "<img src=\"", "\"");
-        if (null == imgSrcs) {
-            return;
-        }
-
-        for (final String imgSrc : imgSrcs) {
-            if (!StringUtils.startsWith(imgSrc, qiniuDomain) || StringUtils.contains(imgSrc, ".gif")) {
-                continue;
-            }
-
-            content = StringUtils.replaceOnce(content, imgSrc, imgSrc + "?imageView2/2/w/768/format/jpg/interlace/0/q");
-        }
-
-        article.put(Article.ARTICLE_CONTENT, content);
     }
 
     /**
