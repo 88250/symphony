@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.70.0.0, Jun 11, 2018
+ * @version 1.71.0.0, Jul 27, 2018
  * @since 0.2.0
  */
 public final class Common {
@@ -215,6 +215,11 @@ public final class Common {
      * Max length of UA.
      */
     public static final int MAX_LENGTH_UA = 255;
+
+    /**
+     * Max length of URL.
+     */
+    public static final int MAX_LENGTH_URL = 255;
 
     /**
      * Key of words.

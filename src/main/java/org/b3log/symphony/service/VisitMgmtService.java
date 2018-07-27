@@ -78,6 +78,11 @@ public class VisitMgmtService {
                 ua = StringUtils.substring(ua, 0, Common.MAX_LENGTH_UA);
             }
             visit.put(Visit.VISIT_UA, ua);
+            String referer = visit.optString(Visit.VISIT_REFERER_URL);
+            if (StringUtils.length(referer) > Common.MAX_LENGTH_URL) {
+                referer = StringUtils.substring(referer, 0, Common.MAX_LENGTH_URL);
+            }
+            visit.put(Visit.VISIT_REFERER_URL, referer);
 
             visitRepository.add(visit);
 
