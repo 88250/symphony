@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -26,6 +27,7 @@ import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Visit;
 import org.b3log.symphony.repository.VisitRepository;
 import org.json.JSONObject;
@@ -70,6 +72,12 @@ public class VisitMgmtService {
             if (0 < count) {
                 return true;
             }
+
+            String ua = visit.optString(Visit.VISIT_UA);
+            if (StringUtils.length(ua) > Common.MAX_LENGTH_UA) {
+                ua = StringUtils.substring(ua, 0, Common.MAX_LENGTH_UA);
+            }
+            visit.put(Visit.VISIT_UA, ua);
 
             visitRepository.add(visit);
 

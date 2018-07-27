@@ -450,6 +450,8 @@ public class ArticleMgmtService {
                 }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Gets visit count mode failed", e);
+            } finally {
+                JdbcRepository.dispose();
             }
 
             if (visitedB4) {
