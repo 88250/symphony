@@ -19,7 +19,7 @@ package org.b3log.symphony.processor;
 
 import jodd.io.FileUtil;
 import jodd.io.upload.MultipartRequestInputStream;
-import jodd.util.net.MimeTypes;
+import jodd.net.MimeTypes;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;

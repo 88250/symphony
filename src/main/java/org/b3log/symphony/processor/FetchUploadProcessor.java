@@ -22,7 +22,7 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
-import jodd.util.net.MimeTypes;
+import jodd.net.MimeTypes;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
