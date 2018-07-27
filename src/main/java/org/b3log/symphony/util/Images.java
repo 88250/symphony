@@ -56,7 +56,7 @@ public final class Images {
                 continue;
             }
 
-            ret = StringUtils.replaceOnce(content, imgSrc, imgSrc + "?imageView2/2/w/768/format/jpg/interlace/0/q");
+            ret = StringUtils.replace(ret, imgSrc, imgSrc + "?imageView2/2/w/768/format/jpg/interlace/0/q");
         }
 
         return ret;
