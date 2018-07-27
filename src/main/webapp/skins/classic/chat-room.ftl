@@ -21,8 +21,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${communityDynamicLabel} - ${symphonyLabel}">
-        <meta name="description" content="${communityDynamicLabel}"/>
+        <@head title="${chatRoomLabel} - ${symphonyLabel}">
+        <meta name="description" content="${chatRoomLabel}"/>
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css?${staticResourceVersion}">
@@ -34,9 +34,7 @@
             <div class="wrapper">
                 <div class="content chat-room">
                     <div class="module">
-                        <h2 class="sub-head">${communityDynamicLabel}
-                            <span class="ft-gray ft-13">${communityDynamicSubLabel}</span>
-                        </h2>
+                        <h2 class="sub-head">${chatRoomLabel}</h2>
                         <div class="form fn-content">
                             <div class="reply">
                                 <#if isLoggedIn>

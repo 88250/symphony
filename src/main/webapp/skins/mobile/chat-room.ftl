@@ -22,8 +22,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${communityDynamicLabel} - ${symphonyLabel}">
-        <meta name="description" content="${timelineLabel}"/>
+        <@head title="${chatRoomLabel} - ${symphonyLabel}">
+        <meta name="description" content="${chatRoomLabel}"/>
         </@head>
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
     </head>
@@ -33,11 +33,6 @@
             <@subNav 'community' ''/>
             <div class="wrapper">
                 <div class="content chat-room">
-                    <div class="content-reset">
-                        <h1>${communityDynamicLabel}</h1>
-                        <i class="ft-gray">${communityDynamicSubLabel}</i>
-                        <br><br>
-                    </div>
                     <div class="form">
                         <div class="reply">
                             <#if isLoggedIn>

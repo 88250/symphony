@@ -52,7 +52,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.1.1, Jun 27, 2018
+ * @version 2.12.1.2, Jul 16, 2018
  * @since 0.2.0
  */
 @Service
@@ -562,6 +562,11 @@ public class CommentQueryService {
                 return ret;
             }
 
+            String currentUserId = null;
+            if (null != viewer) {
+                currentUserId = viewer.optString(Keys.OBJECT_ID);
+            }
+
             final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
             final int recordCount = pagination.optInt(Pagination.PAGINATION_RECORD_COUNT);
             final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -640,6 +645,13 @@ public class CommentQueryService {
                 }
 
                 processCommentContent(comment);
+
+                // https://github.com/b3log/symphony/issues/682
+                if (Comment.COMMENT_VISIBLE_C_AUTHOR == comment.optInt(Comment.COMMENT_VISIBLE)) {
+                    if (StringUtils.isBlank(currentUserId) || (!StringUtils.equals(currentUserId, userId) && !StringUtils.equals(currentUserId, articleAuthorId))) {
+                        comment.put(Comment.COMMENT_CONTENT, langPropsService.get("onlySelfAndArticleAuthorVisibleLabel"));
+                    }
+                }
             }
 
             return ret;

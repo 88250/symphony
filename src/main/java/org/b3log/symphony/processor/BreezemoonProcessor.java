@@ -42,10 +42,7 @@ import org.b3log.symphony.service.BreezemoonMgmtService;
 import org.b3log.symphony.service.BreezemoonQueryService;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.OptionQueryService;
-import org.b3log.symphony.util.Headers;
-import org.b3log.symphony.util.Sessions;
-import org.b3log.symphony.util.StatusCodes;
-import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +62,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, May 23, 2018
+ * @version 1.0.0.2, Jul 20, 2018
  * @since 2.8.0
  */
 @RequestProcessor
@@ -182,8 +179,12 @@ public class BreezemoonProcessor {
         breezemoon.put(Breezemoon.BREEZEMOON_AUTHOR_ID, authorId);
         final String ip = Requests.getRemoteAddr(request);
         breezemoon.put(Breezemoon.BREEZEMOON_IP, ip);
-        final String ua = Headers.getHeader(request, Common.USER_AGENT);
+        final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
         breezemoon.put(Breezemoon.BREEZEMOON_UA, ua);
+        final JSONObject address = Geos.getAddress(ip);
+        if (null != address) {
+            breezemoon.put(Breezemoon.BREEZEMOON_CITY, address.optString(Common.CITY));
+        }
 
         try {
             breezemoonMgmtService.addBreezemoon(breezemoon);
@@ -228,7 +229,7 @@ public class BreezemoonProcessor {
         breezemoon.put(Breezemoon.BREEZEMOON_AUTHOR_ID, authorId);
         final String ip = Requests.getRemoteAddr(request);
         breezemoon.put(Breezemoon.BREEZEMOON_IP, ip);
-        final String ua = Headers.getHeader(request, Common.USER_AGENT);
+        final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
         breezemoon.put(Breezemoon.BREEZEMOON_UA, ua);
 
         try {

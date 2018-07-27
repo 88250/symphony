@@ -321,6 +321,7 @@
                         <#if permissions["commonAddCommentAnonymous"].permissionGrant>
                         <label class="anonymous-check">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
                         </#if>
+                        <label class="anonymous-check">${onlyArticleAuthorVisibleLabel}<input type="checkbox" id="commentVisible"></label>
                         <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
                     </div>
                 </div>

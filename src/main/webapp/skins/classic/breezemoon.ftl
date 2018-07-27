@@ -63,6 +63,9 @@
                                         <span class="ft-smaller">
                                             ${item.timeAgo}
                                         </span>
+                                        <#if "" != item.breezemoonCity>
+                                        <a href="${servePath}/city/${item.breezemoonCity}" target="_blank" class="ft-gray ft-13" rel="nofollow">${item.breezemoonCity}</a>
+                                        </#if>
                                         <span class="ft-smaller ua" data-ua="${item.breezemoonUA}"></span>
 
                                         <div class="fn-right">

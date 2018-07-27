@@ -37,6 +37,7 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.BreezemoonRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Images;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Times;
 import org.json.JSONArray;
@@ -48,7 +49,7 @@ import java.util.*;
  * Breezemoon query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Jun 9, 2018
+ * @version 1.0.0.4, Jul 27, 2018
  * @since 2.8.0
  */
 @Service
@@ -334,6 +335,7 @@ public class BreezemoonQueryService {
             content = Emotions.convert(content);
             content = Markdowns.toHTML(content);
             content = Markdowns.clean(content, "");
+            content = Images.qiniuImgProcessing(content);
             bm.put(Breezemoon.BREEZEMOON_CONTENT, content);
         }
     }

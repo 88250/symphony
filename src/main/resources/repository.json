@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.39.0.0, Jun 25, 2018",
+  "version": "4.40.0.0, Jul 27, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -8,6 +8,70 @@
   ],
   "since": "0.2.0",
   "repositories": [
+    {
+      "name": "visit",
+      "description": "浏览表 https://github.com/b3log/symphony/issues/687",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "visitURL",
+          "type": "String",
+          "length": 255,
+          "description": "浏览链接"
+        },
+        {
+          "name": "visitIP",
+          "type": "String",
+          "length": 128,
+          "description": "IP"
+        },
+        {
+          "name": "visitUA",
+          "type": "String",
+          "length": 255,
+          "description": "User-Agent"
+        },
+        {
+          "name": "visitCity",
+          "type": "String",
+          "length": 32,
+          "description": "城市"
+        },
+        {
+          "name": "visitDeviceId",
+          "type": "String",
+          "length": 255,
+          "description": "设备唯一标识"
+        },
+        {
+          "name": "visitUserId",
+          "type": "String",
+          "length": 19,
+          "description": "浏览者 id"
+        },
+        {
+          "name": "visitRefererURL",
+          "type": "String",
+          "length": 255,
+          "description": "上游链接"
+        },
+        {
+          "name": "visitCreated",
+          "type": "long",
+          "description": "统计时间"
+        },
+        {
+          "name": "visitExpired",
+          "type": "long",
+          "description": "统计过期时间"
+        }
+      ]
+    },
     {
       "name": "report",
       "description": "举报表",
@@ -101,6 +165,12 @@
           "name": "breezemoonStatus",
           "type": "int",
           "description": "0：正常，1：封禁"
+        },
+        {
+          "name": "breezemoonCity",
+          "type": "String",
+          "length": 32,
+          "description": "发布时所在城市"
         }
       ]
     },
@@ -946,6 +1016,11 @@
           "name": "commentQnAOffered",
           "type": "int",
           "description": "0：回帖未被采纳，1：回帖已被采纳（仅作用于问答帖）"
+        },
+        {
+          "name": "commentVisible",
+          "type": "int",
+          "description": "0：所有人可见，1：仅楼主和自己可见"
         }
       ]
     },

@@ -69,7 +69,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.0, Jun 11, 2018
+ * @version 1.8.0.1, Jul 16, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -292,7 +292,8 @@ public class CommentProcessor {
      * The request json object:
      * <pre>
      * {
-     *     "commentContent": ""
+     *     "commentContent": "",
+     *     "commentVisible": boolean
      * }
      * </pre>
      * </p>
@@ -326,8 +327,9 @@ public class CommentProcessor {
             final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
             String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
+            final boolean isOnlyAuthorVisible = requestJSONObject.optBoolean(Comment.COMMENT_VISIBLE);
             final String ip = Requests.getRemoteAddr(request);
-            final String ua = Headers.getHeader(request, Common.USER_AGENT);
+            final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
 
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             comment.put(Comment.COMMENT_IP, "");
@@ -338,6 +340,8 @@ public class CommentProcessor {
             if (StringUtils.isNotBlank(ua)) {
                 comment.put(Comment.COMMENT_UA, ua);
             }
+            comment.put(Comment.COMMENT_VISIBLE, isOnlyAuthorVisible
+                    ? Comment.COMMENT_VISIBLE_C_AUTHOR : Comment.COMMENT_VISIBLE_C_ALL);
 
             commentMgmtService.updateComment(comment.optString(Keys.OBJECT_ID), comment);
 
@@ -445,6 +449,7 @@ public class CommentProcessor {
      *     "articleId": "",
      *     "commentContent": "",
      *     "commentAnonymous": boolean,
+     *     "commentVisible": boolean,
      *     "commentOriginalCommentId": "", // optional
      *     "userCommentViewMode": int
      * }
@@ -470,9 +475,10 @@ public class CommentProcessor {
         final String commentOriginalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
         final int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         final String ip = Requests.getRemoteAddr(request);
-        final String ua = Headers.getHeader(request, Common.USER_AGENT);
+        final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
 
-        final boolean isAnonymous = requestJSONObject.optBoolean(Comment.COMMENT_ANONYMOUS, false);
+        final boolean isAnonymous = requestJSONObject.optBoolean(Comment.COMMENT_ANONYMOUS);
+        final boolean isOnlyAuthorVisible = requestJSONObject.optBoolean(Comment.COMMENT_VISIBLE);
 
         final JSONObject comment = new JSONObject();
         comment.put(Comment.COMMENT_CONTENT, commentContent);
@@ -520,6 +526,8 @@ public class CommentProcessor {
             comment.put(Comment.COMMENT_AUTHOR_ID, commentAuthorId);
             comment.put(Comment.COMMENT_ANONYMOUS, isAnonymous
                     ? Comment.COMMENT_ANONYMOUS_C_ANONYMOUS : Comment.COMMENT_ANONYMOUS_C_PUBLIC);
+            comment.put(Comment.COMMENT_VISIBLE, isOnlyAuthorVisible
+                    ? Comment.COMMENT_VISIBLE_C_AUTHOR : Comment.COMMENT_VISIBLE_C_ALL);
 
             commentMgmtService.addComment(comment);
 

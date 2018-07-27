@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.44.3.0, Jul 9, 2018
+ * @version 1.44.3.1, Jul 22, 2018
  */
 
 /**
@@ -1080,8 +1080,8 @@ var Util = {
     };
     $(it).addClass("disabled");
     $.ajax({
-      url: Label.servePath + "/follow/" + type,
-      type: "DELETE",
+      url: Label.servePath + "/unfollow/" + type,
+      type: "POST",
       cache: false,
       data: JSON.stringify(requestJSONObject),
       success: function (result, textStatus) {

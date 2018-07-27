@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.0.0, Jun 10, 2018
+ * @version 1.14.0.0, Jul 16, 2018
  * @since 0.2.0
  */
 public final class Comment {
@@ -125,6 +125,11 @@ public final class Comment {
      * Key of comment offered. https://github.com/b3log/symphony/issues/486
      */
     public static final String COMMENT_QNA_OFFERED = "commentQnAOffered";
+
+    /**
+     * Key of comment visible.
+     */
+    public static final String COMMENT_VISIBLE = "commentVisible";
 
     //// Transient ////
     /**
@@ -264,6 +269,17 @@ public final class Comment {
      * Comment offered - yes.
      */
     public static final int COMMENT_QNA_OFFERED_C_YES = 1;
+
+    // Visible constants
+    /**
+     * Comment visible - all.
+     */
+    public static final int COMMENT_VISIBLE_C_ALL = 0;
+
+    /**
+     * Comment visible - only author.
+     */
+    public static final int COMMENT_VISIBLE_C_AUTHOR = 1;
 
     /**
      * Private constructor.

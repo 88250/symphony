@@ -48,7 +48,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.0.1, Jun 12, 2017
+ * @version 2.14.0.3, Jul 26, 2018
  * @since 0.2.0
  */
 @Service
@@ -363,6 +363,7 @@ public class CommentMgmtService {
      *                          "commentIP": "", // optional, default to ""
      *                          "commentUA": "", // optional, default to ""
      *                          "commentAnonymous": int, // optional, default to 0 (public)
+     *                          "commentVisible": int, // optional, default to 0 (all)
      *                          "userCommentViewMode": int
      *                          , see {@link Comment} for more details
      * @return generated comment id
@@ -386,11 +387,16 @@ public class CommentMgmtService {
             throw new ServiceException(langPropsService.get("systemErrLabel"));
         }
 
+        if (UserExt.USER_STATUS_C_VALID != commenter.optInt(UserExt.USER_STATUS)) {
+            throw new ServiceException(langPropsService.get("userStatusInvalidLabel"));
+        }
+
         final boolean fromClient = requestJSONObject.has(Comment.COMMENT_CLIENT_COMMENT_ID);
         final String articleId = requestJSONObject.optString(Comment.COMMENT_ON_ARTICLE_ID);
         final String ip = requestJSONObject.optString(Comment.COMMENT_IP);
         String ua = requestJSONObject.optString(Comment.COMMENT_UA);
         final int commentAnonymous = requestJSONObject.optInt(Comment.COMMENT_ANONYMOUS);
+        final int commentVisible = requestJSONObject.optInt(Comment.COMMENT_VISIBLE);
         final int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
 
         if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")
@@ -494,14 +500,13 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_SHARP_URL, "/article/" + articleId + "#" + ret);
             comment.put(Comment.COMMENT_STATUS, Comment.COMMENT_STATUS_C_VALID);
             comment.put(Comment.COMMENT_IP, ip);
-
             if (StringUtils.length(ua) > Common.MAX_LENGTH_UA) {
                 LOGGER.log(Level.WARN, "UA is too long [" + ua + "]");
                 ua = StringUtils.substring(ua, 0, Common.MAX_LENGTH_UA);
             }
             comment.put(Comment.COMMENT_UA, ua);
-
             comment.put(Comment.COMMENT_ANONYMOUS, commentAnonymous);
+            comment.put(Comment.COMMENT_VISIBLE, commentVisible);
 
             final JSONObject cmtCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
             final int cmtCnt = cmtCntOption.optInt(Option.OPTION_VALUE);
@@ -613,6 +618,12 @@ public class CommentMgmtService {
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
+            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+            final JSONObject author = userRepository.get(commentAuthorId);
+            if (UserExt.USER_STATUS_C_VALID != author.optInt(UserExt.USER_STATUS)) {
+                throw new ServiceException(langPropsService.get("userStatusInvalidLabel"));
+            }
+
             final JSONObject oldComment = commentRepository.get(commentId);
             final String oldContent = oldComment.optString(Comment.COMMENT_CONTENT);
 
@@ -626,7 +637,6 @@ public class CommentMgmtService {
 
             commentRepository.update(commentId, comment);
 
-            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
             if (!oldContent.equals(content)) {
                 // Revision
                 final JSONObject revision = new JSONObject();

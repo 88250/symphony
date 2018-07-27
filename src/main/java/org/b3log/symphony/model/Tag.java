@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.17.0.1, Jun 22, 2017
+ * @version 1.17.0.2, Jul 19, 2018
  * @since 0.2.0
  */
 public final class Tag {
@@ -257,8 +257,7 @@ public final class Tag {
     /**
      * Max tag title length.
      */
-    public static final int MAX_TAG_TITLE_LENGTH = (null == Symphonys.getInt("tag.maxTagTitleLength"))
-            ? 9 : Symphonys.getInt("tag.maxTagTitleLength");
+    public static final int MAX_TAG_TITLE_LENGTH = Symphonys.getInt("tag.maxTagTitleLength");
 
     /**
      * Max tag count.

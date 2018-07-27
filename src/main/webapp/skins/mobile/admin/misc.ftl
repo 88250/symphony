@@ -51,6 +51,13 @@
                             </#if>
                         </select>
                     </#if>
+                    <#if "miscArticleVisitCountMode" == item.oId>
+                    <label>${item.label}</label>
+                    <select name="${item.oId}">
+                        <option value="0"<#if "0" == item.optionValue> selected</#if>>${noDeduplicateLabel}</option>
+                        <option value="1"<#if "1" == item.optionValue> selected</#if>>${deduplicateLabel}</option>
+                    </select>
+                    </#if>
                 </#list>
 
                 <br/><br/>

@@ -41,6 +41,10 @@
                            value="${breezemoon.breezemoonIP}"
                            readonly="readonly"/>
                 </label>
+                <label>
+                    <div>${cityLabel}</div>
+                    <input onfocus="this.select()" type="text" name="breezemoonCity" value="${breezemoon.breezemoonCity}" readonly="readonly"/>
+                </label>
             </div>
             <div class="fn__flex">
                 <label>

@@ -18,7 +18,6 @@
 package org.b3log.symphony.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.util.MD5;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,7 +27,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.1.1, Mar 31, 2017
+ * @version 1.0.2.0, Jul 15, 2018
  * @since 2.1.0
  */
 public final class MP3Players {
@@ -54,9 +53,12 @@ public final class MP3Players {
 
         final Matcher m = PATTERN.matcher(content);
         while (m.find()) {
-            String mp3URL = m.group();
-            String mp3Name = StringUtils.substringBetween(mp3URL, "\">", ".mp3</a>");
-            mp3URL = StringUtils.substringBetween(mp3URL, "href=\"", "\" rel=");
+            final String g = m.group();
+            String mp3Name = StringUtils.substringBetween(g, "\">", ".mp3</a>");
+            String mp3URL = StringUtils.substringBetween(g, "href=\"", "\" rel=");
+            if (StringUtils.isBlank(mp3URL)) {
+                mp3URL = StringUtils.substringBetween(g, "href=\"", "\"");
+            }
 
             m.appendReplacement(contentBuilder, "<div class=\"aplayer content-audio\" data-title=\""
                     + mp3Name + "\" data-url=\"" + mp3URL + "\" ></div>\n");
@@ -66,5 +68,6 @@ public final class MP3Players {
         return contentBuilder.toString();
     }
 
-    private MP3Players() {}
+    private MP3Players() {
+    }
 }

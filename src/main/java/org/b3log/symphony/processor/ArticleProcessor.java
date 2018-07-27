@@ -21,6 +21,7 @@ import com.qiniu.util.Auth;
 import jodd.util.Base64;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
@@ -88,7 +89,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.2.0, Jun 10, 2018
+ * @version 1.27.2.2, Jul 27, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -711,13 +712,32 @@ public class ArticleProcessor {
         final int cmtViewMode = Integer.valueOf(cmtViewModeStr);
         dataModel.put(UserExt.USER_COMMENT_VIEW_MODE, cmtViewMode);
 
-        if (!(Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
-            articleMgmtService.incArticleViewCount(articleId);
-        }
-
         final JSONObject viewer = (JSONObject) request.getAttribute(User.USER);
         if (null != viewer) {
             livenessMgmtService.incLiveness(viewer.optString(Keys.OBJECT_ID), Liveness.LIVENESS_PV);
+        }
+
+        if (!(Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
+            final long created = System.currentTimeMillis();
+            final long expired = DateUtils.addMonths(new Date(created), 1).getTime();
+            final String ip = Requests.getRemoteAddr(request);
+            final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
+            final String referer = Headers.getHeader(request, "Referer", "");
+            final JSONObject visit = new JSONObject();
+            visit.put(Visit.VISIT_IP, ip);
+            visit.put(Visit.VISIT_CITY, "");
+            visit.put(Visit.VISIT_CREATED, created);
+            visit.put(Visit.VISIT_DEVICE_ID, "");
+            visit.put(Visit.VISIT_EXPIRED, expired);
+            visit.put(Visit.VISIT_REFERER_URL, referer);
+            visit.put(Visit.VISIT_UA, ua);
+            visit.put(Visit.VISIT_URL, "/article/" + articleId);
+            visit.put(Visit.VISIT_USER_ID, "");
+            if (null != viewer) {
+                visit.put(Visit.VISIT_USER_ID, viewer.optString(Keys.OBJECT_ID));
+            }
+
+            articleMgmtService.incArticleViewCount(visit);
         }
 
         dataModelService.fillRelevantArticles(avatarViewMode, dataModel, article);
@@ -817,6 +837,14 @@ public class ArticleProcessor {
                 }
 
                 comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
+
+                // https://github.com/b3log/symphony/issues/682
+                if (Comment.COMMENT_VISIBLE_C_AUTHOR == comment.optInt(Comment.COMMENT_VISIBLE)) {
+                    final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+                    if (!isLoggedIn || (!StringUtils.equals(currentUserId, commentAuthorId) && !StringUtils.equals(currentUserId, authorId))) {
+                        comment.put(Comment.COMMENT_CONTENT, langPropsService.get("onlySelfAndArticleAuthorVisibleLabel"));
+                    }
+                }
             }
         }
 
@@ -845,6 +873,14 @@ public class ArticleProcessor {
                 }
 
                 comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
+
+                // https://github.com/b3log/symphony/issues/682
+                if (Comment.COMMENT_VISIBLE_C_AUTHOR == comment.optInt(Comment.COMMENT_VISIBLE)) {
+                    final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+                    if (!isLoggedIn || (!StringUtils.equals(currentUserId, commentAuthorId) && !StringUtils.equals(currentUserId, authorId))) {
+                        comment.put(Comment.COMMENT_CONTENT, langPropsService.get("onlySelfAndArticleAuthorVisibleLabel"));
+                    }
+                }
             }
         } finally {
             Stopwatchs.end();
@@ -919,7 +955,7 @@ public class ArticleProcessor {
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
         final int articleQnAOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT);
         final String ip = Requests.getRemoteAddr(request);
-        final String ua = Headers.getHeader(request, Common.USER_AGENT);
+        final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
         final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
         final int articleAnonymous = isAnonymous
                 ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;
@@ -938,10 +974,7 @@ public class ArticleProcessor {
         if (StringUtils.isNotBlank(ip)) {
             article.put(Article.ARTICLE_IP, ip);
         }
-        article.put(Article.ARTICLE_UA, "");
-        if (StringUtils.isNotBlank(ua)) {
-            article.put(Article.ARTICLE_UA, ua);
-        }
+        article.put(Article.ARTICLE_UA, ua);
         article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncWithSymphonyClient);
 
@@ -1117,7 +1150,7 @@ public class ArticleProcessor {
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
         final int articleQnAOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT);
         final String ip = Requests.getRemoteAddr(request);
-        final String ua = Headers.getHeader(request, Common.USER_AGENT);
+        final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
 
         final JSONObject article = new JSONObject();
         article.put(Keys.OBJECT_ID, id);
@@ -1133,10 +1166,7 @@ public class ArticleProcessor {
         if (StringUtils.isNotBlank(ip)) {
             article.put(Article.ARTICLE_IP, ip);
         }
-        article.put(Article.ARTICLE_UA, "");
-        if (StringUtils.isNotBlank(ua)) {
-            article.put(Article.ARTICLE_UA, ua);
-        }
+        article.put(Article.ARTICLE_UA, ua);
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser
