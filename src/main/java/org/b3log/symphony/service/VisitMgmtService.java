@@ -80,4 +80,19 @@ public class VisitMgmtService {
             return true;
         }
     }
+
+
+    /**
+     * Expires visits.
+     */
+    @Transactional
+    public void expire() {
+        try {
+            final Query query = new Query().setFilter(new PropertyFilter(Visit.VISIT_EXPIRED, FilterOperator.LESS_THAN_OR_EQUAL, System.currentTimeMillis()))
+                    .setPageCount(1);
+            visitRepository.remove(query);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Expires visits failed", e);
+        }
+    }
 }

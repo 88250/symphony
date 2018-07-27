@@ -55,7 +55,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.1.0, Apr 4, 2018
+ * @version 1.2.1.1, Jul 27, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -132,6 +132,12 @@ public class StatisticProcessor {
     private DataModelService dataModelService;
 
     /**
+     * Visit management service.
+     */
+    @Inject
+    private VisitMgmtService visitMgmtService;
+
+    /**
      * Loads statistic data.
      *
      * @param request  the specified HTTP servlet request
@@ -202,6 +208,8 @@ public class StatisticProcessor {
             final int commentCnt = commentQueryService.getCommentCntInMonth(month);
             historyCommentCnts.add(commentCnt);
         }
+
+        visitMgmtService.expire();
 
         context.renderJSON().renderTrueResult();
     }
