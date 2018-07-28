@@ -48,7 +48,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.0.3, Jul 26, 2018
+ * @version 2.14.0.4, Jul 28, 2018
  * @since 0.2.0
  */
 @Service
@@ -401,7 +401,7 @@ public class CommentMgmtService {
 
         if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")
                 && !Role.ROLE_ID_C_ADMIN.equals(commenter.optString(User.USER_ROLE))
-                && !UserExt.DEFAULT_CMTER_NAME.equals(commenter.optString(User.USER_NAME))) {
+                && !UserExt.COM_BOT_NAME.equals(commenter.optString(User.USER_NAME))) {
             LOGGER.log(Level.WARN, "Adds comment too frequent [userName={0}]", commenter.optString(User.USER_NAME));
             throw new ServiceException(langPropsService.get("tooFrequentCmtLabel"));
         }

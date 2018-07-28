@@ -52,7 +52,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.1.2, Jul 16, 2018
+ * @version 2.12.1.3, Jul 28, 2018
  * @since 0.2.0
  */
 @Service
@@ -520,7 +520,7 @@ public class CommentQueryService {
 
                 final String commenterEmail = commenter.optString(User.USER_EMAIL);
                 String avatarURL = Symphonys.get("defaultThumbnailURL");
-                if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
+                if (!UserExt.COM_BOT_EMAIL.equals(commenterEmail)) {
                     avatarURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, commenter, "20");
                 }
                 commenter.put(UserExt.USER_AVATAR_URL, avatarURL);

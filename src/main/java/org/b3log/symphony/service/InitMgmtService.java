@@ -43,7 +43,7 @@ import java.util.Set;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.12, Jul 27, 2018
+ * @version 1.2.1.13, Jul 28, 2018
  * @since 1.8.0
  */
 @Service
@@ -618,16 +618,16 @@ public class InitMgmtService {
             final String adminId = userMgmtService.addUser(admin);
             admin.put(Keys.OBJECT_ID, adminId);
 
-            // Init default commenter (for sync comment from client)
-            final JSONObject defaultCommenter = new JSONObject();
-            defaultCommenter.put(User.USER_EMAIL, UserExt.DEFAULT_CMTER_EMAIL);
-            defaultCommenter.put(User.USER_NAME, UserExt.DEFAULT_CMTER_NAME);
-            defaultCommenter.put(User.USER_PASSWORD, MD5.hash(String.valueOf(new Random().nextInt())));
-            defaultCommenter.put(UserExt.USER_LANGUAGE, "en_US");
-            defaultCommenter.put(UserExt.USER_GUIDE_STEP, UserExt.USER_GUIDE_STEP_FIN);
-            defaultCommenter.put(User.USER_ROLE, Role.ROLE_ID_C_DEFAULT);
-            defaultCommenter.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
-            userMgmtService.addUser(defaultCommenter);
+            // Init community bot
+            final JSONObject comBot = new JSONObject();
+            comBot.put(User.USER_EMAIL, UserExt.COM_BOT_EMAIL);
+            comBot.put(User.USER_NAME, UserExt.COM_BOT_NAME);
+            comBot.put(User.USER_PASSWORD, MD5.hash(String.valueOf(new Random().nextInt())));
+            comBot.put(UserExt.USER_LANGUAGE, "en_US");
+            comBot.put(UserExt.USER_GUIDE_STEP, UserExt.USER_GUIDE_STEP_FIN);
+            comBot.put(User.USER_ROLE, Role.ROLE_ID_C_DEFAULT);
+            comBot.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
+            userMgmtService.addUser(comBot);
 
             // Add tags
             String tagTitle = Symphonys.get("systemAnnounce");

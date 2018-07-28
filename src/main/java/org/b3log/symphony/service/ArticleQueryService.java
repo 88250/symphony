@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.36.9, Jun 19, 2018
+ * @version 2.27.36.10, Jul 28, 2018
  * @since 0.2.0
  */
 @Service
@@ -2239,7 +2239,7 @@ public class ArticleQueryService {
                 final String email = commenter.optString(User.USER_EMAIL);
 
                 String thumbnailURL = Symphonys.get("defaultThumbnailURL");
-                if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
+                if (!UserExt.COM_BOT_EMAIL.equals(email)) {
                     thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, commenter, "48");
                 }
 

@@ -49,7 +49,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.8.7.0, Jan 28, 2018
+ * @version 1.8.7.1, Jal 28, 2018
  * @since 0.2.0
  */
 @Service
@@ -412,13 +412,12 @@ public class UserQueryService {
     }
 
     /**
-     * Gets the default commenter.
+     * Gets the community bot.
      *
      * @return default commenter
-     * @throws ServiceException service exception
      */
-    public JSONObject getDefaultCommenter() throws ServiceException {
-        final JSONObject ret = getUserByName(UserExt.DEFAULT_CMTER_NAME);
+    public JSONObject getComBot() {
+        final JSONObject ret = getUserByName(UserExt.COM_BOT_NAME);
         ret.remove(UserExt.USER_T_POINT_HEX);
         ret.remove(UserExt.USER_T_POINT_CC);
 

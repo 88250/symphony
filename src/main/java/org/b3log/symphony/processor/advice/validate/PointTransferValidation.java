@@ -41,7 +41,7 @@ import java.util.Map;
  * Validates for user point transfer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Jun 2, 2018
+ * @version 1.0.1.3, Jul 28, 2018
  * @since 1.3.0
  */
 @Named
@@ -74,7 +74,7 @@ public class PointTransferValidation extends BeforeRequestProcessAdvice {
 
         final String userName = requestJSONObject.optString(User.USER_NAME);
         if (Strings.isEmptyOrNull(userName)
-                || UserExt.DEFAULT_CMTER_NAME.equals(userName) || UserExt.NULL_USER_NAME.equals(userName)) {
+                || UserExt.COM_BOT_NAME.equals(userName) || UserExt.NULL_USER_NAME.equals(userName)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("notFoundUserLabel")));
         }
 
