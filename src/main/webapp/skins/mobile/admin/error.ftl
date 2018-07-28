@@ -21,7 +21,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${msg} - ${symphonyLabel}">
+        <@head title="Error - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
     </head>
