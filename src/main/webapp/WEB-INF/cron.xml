@@ -94,12 +94,6 @@
     </cron>
 
     <cron>
-        <url>/cron/forge/link/purge?key=dev_key</url>
-        <description>Purges link forge</description>
-        <schedule>every 7 hours</schedule>
-    </cron>
-
-    <cron>
         <url>/cron/ipfs/articles/publish?key=dev_key</url>
         <description>Publishes article markdown files to IPFS</description>
         <schedule>every 60 minutes</schedule>

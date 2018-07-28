@@ -17,29 +17,23 @@
  */
 package org.b3log.symphony.processor;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Link;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
-import org.b3log.symphony.service.LinkForgeMgmtService;
 import org.b3log.symphony.service.LinkForgeQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Networks;
@@ -48,36 +42,21 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Link forge processor.
  * <ul>
  * <li>Shows link forge (/link-forge), GET</li>
- * <li>Submits a link into forge (/forge/link), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.0.8, Jun 15, 2017
+ * @version 1.1.0.9, Jul 28, 2018
  * @since 1.6.0
  */
 @RequestProcessor
 public class LinkForgeProcessor {
-
-    /**
-     * Forge thread.
-     */
-    private static final ExecutorService FORGE_EXECUTOR_SERVICE = Executors.newFixedThreadPool(1);
-
-    /**
-     * Link forget management service.
-     */
-    @Inject
-    private LinkForgeMgmtService linkForgeMgmtService;
 
     /**
      * Link forge query service.
@@ -98,33 +77,6 @@ public class LinkForgeProcessor {
     private DataModelService dataModelService;
 
     /**
-     * Submits a link into forge.
-     *
-     * @param context the specified context
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/forge/link", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
-    public void forgeLink(final HTTPRequestContext context) throws Exception {
-        context.renderJSON(true);
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = Requests.parseRequestJSONObject(context.getRequest(), context.getResponse());
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
-        }
-
-        final JSONObject user = (JSONObject) context.getRequest().getAttribute(User.USER);
-        final String userId = user.optString(Keys.OBJECT_ID);
-
-        final String url = requestJSONObject.optString(Common.URL);
-
-        FORGE_EXECUTOR_SERVICE.submit(() -> linkForgeMgmtService.forge(url, userId));
-    }
-
-    /**
      * Shows link forge.
      *
      * @param context  the specified context
@@ -143,8 +95,7 @@ public class LinkForgeProcessor {
         renderer.setTemplateName("other/link-forge.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final List<JSONObject> tags = linkForgeQueryService.getForgedLinks();
-        dataModel.put(Tag.TAGS, (Object) tags);
+        // TODO https://github.com/b3log/symphony/issues/686
 
         dataModel.put(Common.SELECTED, Common.FORGE);
 
@@ -184,8 +135,6 @@ public class LinkForgeProcessor {
 
             return;
         }
-
-        linkForgeMgmtService.purge();
 
         context.renderJSON().renderTrueResult();
     }

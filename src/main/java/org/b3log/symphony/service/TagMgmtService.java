@@ -95,12 +95,6 @@ public class TagMgmtService {
     private DomainTagRepository domainTagRepository;
 
     /**
-     * Tag-User-Link repository.
-     */
-    @Inject
-    private TagUserLinkRepository tagUserLinkRepository;
-
-    /**
      * Language service.
      */
     @Inject
@@ -136,7 +130,6 @@ public class TagMgmtService {
                 if (0 == tag.optInt(Tag.TAG_REFERENCE_CNT) // article ref cnt
                         && 0 == domainTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
                         .optJSONArray(Keys.RESULTS).length() // domainTagRefCnt
-                        && 0 == tagUserLinkRepository.countTagLink(tagId) // tagUserLinkRefCnt
                         ) {
                     final JSONArray userTagRels = userTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
                             .optJSONArray(Keys.RESULTS);

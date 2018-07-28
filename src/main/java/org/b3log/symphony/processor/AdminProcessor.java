@@ -1575,8 +1575,6 @@ public class AdminProcessor {
                 case UserExt.USER_POINT_STATUS:
                 case UserExt.USER_ONLINE_STATUS:
                 case UserExt.USER_UA_STATUS:
-                case UserExt.USER_TIMELINE_STATUS:
-                case UserExt.USER_FORGE_LINK_STATUS:
                 case UserExt.USER_JOIN_POINT_RANK:
                 case UserExt.USER_JOIN_USED_POINT_RANK:
                     user.put(name, Integer.valueOf(value));

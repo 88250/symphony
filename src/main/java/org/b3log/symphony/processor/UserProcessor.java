@@ -277,51 +277,6 @@ public class UserProcessor {
     }
 
     /**
-     * Shows user link forge.
-     *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param userName the specified user name
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/member/{userName}/forge/link", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showLinkForge(final HTTPRequestContext context, final HttpServletRequest request,
-                              final HttpServletResponse response, final String userName) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("/home/link-forge.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-        fillHomeUser(dataModel, user, roleQueryService);
-
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
-
-        final String followingId = user.optString(Keys.OBJECT_ID);
-        dataModel.put(Follow.FOLLOWING_ID, followingId);
-
-        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
-        if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
-            final String followerId = currentUser.optString(Keys.OBJECT_ID);
-
-            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
-            dataModel.put(Common.IS_FOLLOWING, isFollowing);
-        }
-
-        final List<JSONObject> tags = linkForgeQueryService.getUserForgedLinks(user.optString(Keys.OBJECT_ID));
-        dataModel.put(Tag.TAGS, (Object) tags);
-
-        dataModel.put(Common.TYPE, "linkForge");
-    }
-
-    /**
      * Queries invitecode state.
      *
      * @param context  the specified context

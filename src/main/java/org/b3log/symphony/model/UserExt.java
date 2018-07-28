@@ -85,11 +85,6 @@ public final class UserExt {
     public static final String USER_LIST_VIEW_MODE = "userListViewMode";
 
     /**
-     * Key of forge link status.
-     */
-    public static final String USER_FORGE_LINK_STATUS = "userForgeLinkStatus";
-
-    /**
      * Key of user breezemoons status
      */
     public static final String USER_BREEZEMOON_STATUS = "userBreezemoonStatus";
@@ -138,11 +133,6 @@ public final class UserExt {
      * Key of user online status.
      */
     public static final String USER_ONLINE_STATUS = "userOnlineStatus";
-
-    /**
-     * Key of user timeline status.
-     */
-    public static final String USER_TIMELINE_STATUS = "userTimelineStatus";
 
     /**
      * Key of user User-Agent status.

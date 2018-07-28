@@ -262,11 +262,6 @@
           "description": "链接标题"
         },
         {
-          "name": "linkType",
-          "type": "int",
-          "description": "0：熔炉"
-        },
-        {
           "name": "linkSubmitCnt",
           "type": "int",
           "description": "提交计数"
@@ -305,41 +300,6 @@
           "name": "linkPingErrCnt",
           "type": "int",
           "description": "Ping 失败计数"
-        }
-      ]
-    },
-    {
-      "name": "tag_user_link",
-      "description": "标签 - 用户 - 链接关联表",
-      "keys": [
-        {
-          "name": "oId",
-          "type": "String",
-          "length": 19,
-          "description": "主键"
-        },
-        {
-          "name": "linkId",
-          "type": "String",
-          "length": 19,
-          "description": "链接 id"
-        },
-        {
-          "name": "tagId",
-          "type": "String",
-          "length": 19,
-          "description": "标签 id"
-        },
-        {
-          "name": "userId",
-          "type": "String",
-          "length": 19,
-          "description": "用户 id"
-        },
-        {
-          "name": "linkScore",
-          "type": "double",
-          "description": "链接评分"
         }
       ]
     },
