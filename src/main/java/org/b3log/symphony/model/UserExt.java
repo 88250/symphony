@@ -28,7 +28,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.13.0.0, May 23, 2018
+ * @version 2.13.0.1, Jul 28, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -438,11 +438,6 @@ public final class UserExt {
      * Default commenter email.
      */
     public static final String DEFAULT_CMTER_EMAIL = "default_commenter" + USER_BUILTIN_EMAIL_SUFFIX;
-
-    /**
-     * Default commenter role.
-     */
-    public static final String DEFAULT_CMTER_ROLE = "defaultCommenterRole";
 
     //// Null user
     /**

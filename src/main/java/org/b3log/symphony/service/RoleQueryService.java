@@ -32,7 +32,6 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.Role;
-import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.PermissionRepository;
 import org.b3log.symphony.repository.RolePermissionRepository;
 import org.b3log.symphony.repository.RoleRepository;
@@ -146,15 +145,6 @@ public class RoleQueryService {
      * @return an role, returns {@code null} if not found
      */
     public JSONObject getRole(final String roleId) {
-        if (UserExt.DEFAULT_CMTER_ROLE.equals(roleId)) { // virtual role
-            final JSONObject ret = new JSONObject();
-
-            ret.put(Role.ROLE_NAME, langPropsService.get(UserExt.DEFAULT_CMTER_ROLE + "NameLabel"));
-            ret.put(Role.ROLE_DESCRIPTION, langPropsService.get(UserExt.DEFAULT_CMTER_ROLE + "DescLabel"));
-
-            return ret;
-        }
-
         try {
             final JSONObject ret = roleRepository.get(roleId);
 

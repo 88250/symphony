@@ -625,7 +625,7 @@ public class InitMgmtService {
             defaultCommenter.put(User.USER_PASSWORD, MD5.hash(String.valueOf(new Random().nextInt())));
             defaultCommenter.put(UserExt.USER_LANGUAGE, "en_US");
             defaultCommenter.put(UserExt.USER_GUIDE_STEP, UserExt.USER_GUIDE_STEP_FIN);
-            defaultCommenter.put(User.USER_ROLE, UserExt.DEFAULT_CMTER_ROLE);
+            defaultCommenter.put(User.USER_ROLE, Role.ROLE_ID_C_DEFAULT);
             defaultCommenter.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             userMgmtService.addUser(defaultCommenter);
 
