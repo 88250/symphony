@@ -1531,16 +1531,6 @@
           "description": "0：公开在线状态，1：不公开在线状态"
         },
         {
-          "name": "userTimelineStatus",
-          "type": "int",
-          "description": "0：公开此刻，1：不公开此刻"
-        },
-        {
-          "name": "userForgeLinkStatus",
-          "type": "int",
-          "description": "0：公开链接熔炉，1：不公开链接熔炉"
-        },
-        {
           "name": "userListPageSize",
           "type": "int",
           "description": "帖子列表每页显示条数"
