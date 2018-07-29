@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.0.0, June 26, 2018
+ * @version 1.26.0.1, Jul 29, 2018
  */
 
 /**
@@ -49,11 +49,11 @@ var Settings = {
       complete: function (result) {
         $btn.removeAttr('disabled').css('opacity', '1')
         if (result.responseJSON.sc === 0) {
-          alert(Label.reportSuccLabel)
+          Util.alert(Label.reportSuccLabel)
           $('#reportTextarea').val('')
           $('#reportDialog').dialog('close')
         } else {
-          alert(result.responseJSON.msg)
+          Util.alert(result.responseJSON.msg)
         }
       },
     })
@@ -81,7 +81,7 @@ var Settings = {
           $('#emailSubmitBtn').show()
           $('#emailGetBtn').hide()
         }
-        alert(result.msg)
+        Util.alert(result.msg)
         $('#emailGetBtn').removeAttr('disabled').css('opacity', '1')
       },
     })
@@ -109,7 +109,7 @@ var Settings = {
           $('#emailGetBtn').show()
           $('#emailInput').prop('disabled', false)
           $('.home-account__captch img').click()
-          alert(Label.updateSuccLabel)
+          Util.alert(Label.updateSuccLabel)
         } else {
           if (result.code === 1) {
             $('.home-account__captch').show()
@@ -121,7 +121,7 @@ var Settings = {
             $('#emailInput').prop('disabled', false)
             $('.home-account__captch img').click()
           }
-          alert(result.msg)
+          Util.alert(result.msg)
         }
         $('#emailSubmitBtn').removeAttr('disabled').css('opacity', '1')
       },
@@ -227,13 +227,13 @@ var Settings = {
               var isImg = isImage(fileBuf);
 
               if (!isImg) {
-                alert("Image only~");
+                Util.alert("Image only~");
 
                 return;
               }
 
               if (evt.target.result.byteLength > 1024 * 1024) {
-                alert("This image is too large (max 1M)");
+                Util.alert("This image is too large (max 1M)");
 
                 return;
               }
@@ -253,19 +253,19 @@ var Settings = {
         done: function (e, data) {
           var qiniuKey = data.result.key;
           if (!qiniuKey) {
-            alert("Upload error");
+            Util.alert("Upload error");
             return;
           }
 
           succCB(data);
         },
         fail: function (e, data) {
-          alert("Upload error: " + data.errorThrown);
+          Util.alert("Upload error: " + data.errorThrown);
         }
       }).on('fileuploadprocessalways', function (e, data) {
         var currentFile = data.files[data.index];
         if (data.files.error && currentFile.error) {
-          alert(currentFile.error);
+          Util.alert(currentFile.error);
         }
       });
     } else {
@@ -287,13 +287,13 @@ var Settings = {
               var isImg = isImage(fileBuf);
 
               if (!isImg) {
-                alert("Image only~");
+                Util.alert("Image only~");
 
                 return;
               }
 
               if (evt.target.result.byteLength > 1024 * 1024) {
-                alert("This image is too large (max 1M)");
+                Util.alert("This image is too large (max 1M)");
 
                 return;
               }
@@ -318,19 +318,19 @@ var Settings = {
         done: function (e, data) {
           var qiniuKey = data.result.key;
           if (!qiniuKey) {
-            alert("Upload error");
+            Util.alert("Upload error");
             return;
           }
 
           succCBQN(data);
         },
         fail: function (e, data) {
-          alert("Upload error: " + data.errorThrown);
+          Util.alert("Upload error: " + data.errorThrown);
         }
       }).on('fileuploadprocessalways', function (e, data) {
         var currentFile = data.files[data.index];
         if (data.files.error && currentFile.error) {
-          alert(currentFile.error);
+          Util.alert(currentFile.error);
         }
       });
     }
@@ -345,7 +345,7 @@ var Settings = {
       cache: false,
       success: function (result, textStatus) {
         if (!result.sc) {
-          alert("TBD: V, tip display it....");
+          Util.alert("TBD: V, tip display it....");
 
           return;
         }
@@ -408,7 +408,7 @@ var Settings = {
           $("#pointTransferTip").removeClass("succ").removeClass("error").html("");
         },
         error: function (jqXHR, textStatus, errorThrown) {
-          alert(errorThrown);
+          Util.alert(errorThrown);
         },
         success: function (result, textStatus) {
           if (result.sc) {
@@ -445,7 +445,7 @@ var Settings = {
         $("#pointBuyInvitecodeTip").removeClass("succ").removeClass("error").html("");
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        alert(errorThrown);
+        Util.alert(errorThrown);
       },
       success: function (result, textStatus) {
         if (result.sc) {
@@ -477,7 +477,7 @@ var Settings = {
         $("#invitecodeStateTip").removeClass("succ").removeClass("error").html("");
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        alert(errorThrown);
+        Util.alert(errorThrown);
       },
       success: function (result, textStatus) {
         switch (result.sc) {
@@ -580,7 +580,7 @@ var Settings = {
         $("#" + type.replace(/\//g, "") + "Tip").removeClass("succ").removeClass("error").html("");
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        alert(errorThrown);
+        Util.alert(errorThrown);
       },
       success: function (result, textStatus) {
         if (result.sc) {
@@ -631,7 +631,7 @@ var Settings = {
       beforeSend: function () {
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        alert(errorThrown);
+        Util.alert(errorThrown);
       },
       success: function (result, textStatus) {
         if (result.sc) {

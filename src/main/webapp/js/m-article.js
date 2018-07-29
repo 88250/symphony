@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 0.4.0.1, Jul 16, 2018
+ * @version 0.4.0.2, Jul 29, 2018
  * @since 2.1.0
  */
 
@@ -50,11 +50,11 @@ var Comment = {
       complete: function (result) {
         $btn.removeAttr('disabled').css('opacity', '1')
         if (result.responseJSON.sc === 0) {
-          alert(Label.reportSuccLabel)
+          Util.alert(Label.reportSuccLabel)
           $('#reportTextarea').val('')
           $('#reportDialog').dialog('close')
         } else {
-          alert(result.responseJSON.msg)
+          Util.alert(result.responseJSON.msg)
         }
       },
     })
@@ -78,7 +78,7 @@ var Comment = {
       }),
       success: function (result) {
         if (!result.sc) {
-          alert(result.msg)
+          Util.alert(result.msg)
           return
         } else {
           $(it).closest('li').addClass('cmt-perfect')
@@ -103,7 +103,7 @@ var Comment = {
         if (result.sc === 0) {
           $('#' + id).remove();
         } else {
-          alert(result.msg);
+          Util.alert(result.msg);
         }
       }
     });
@@ -460,7 +460,7 @@ var Comment = {
       cache: false,
       data: JSON.stringify(requestJSONObject),
       error: function (jqXHR, textStatus, errorThrown) {
-        alert(errorThrown);
+        Util.alert(errorThrown);
       },
       success: function (result, textStatus) {
         if (result.sc) {
@@ -492,7 +492,7 @@ var Comment = {
           );
 
         } else {
-          alert(result.msg);
+          Util.alert(result.msg);
         }
       }
     });
@@ -541,7 +541,7 @@ var Comment = {
       },
       success: function (result, textStatus) {
         if (!result.sc) {
-          alert(result.msg);
+          Util.alert(result.msg);
           return false;
         }
 
@@ -604,7 +604,7 @@ var Comment = {
         $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up').find('use').attr('xlink:href', '#chevron-up');
       },
       error: function (result) {
-        alert(result.statusText);
+        Util.alert(result.statusText);
       },
       complete: function () {
         $(it).css("opacity", "1");
@@ -819,7 +819,7 @@ var Article = {
           return;
         }
 
-        alert(result.msg);
+        Util.alert(result.msg);
       }
     });
   },
@@ -868,7 +868,7 @@ var Article = {
           return false;
         }
 
-        alert(result.msg);
+        Util.alert(result.msg);
       }
     });
   },
@@ -1009,7 +1009,7 @@ var Article = {
           return false;
         }
 
-        alert(result.msg);
+        Util.alert(result.msg);
       }
     });
     $('#revision').dialog('open');
@@ -1172,7 +1172,7 @@ var Article = {
             return;
           }
 
-          alert(result.msg);
+          Util.alert(result.msg);
         },
         error: function (result) {
           Util.needLogin();
@@ -1195,7 +1195,7 @@ var Article = {
     }
 
     if (Label.currentUserName === Label.articleAuthorName) {
-      alert(Label.thankSelfLabel);
+      Util.alert(Label.thankSelfLabel);
       return false;
     }
 
@@ -1234,7 +1234,7 @@ var Article = {
           return false;
         }
 
-        alert(result.msg);
+        Util.alert(result.msg);
       }
     });
   },
@@ -1250,7 +1250,7 @@ var Article = {
         type: "POST",
         cache: false,
         success: function (result, textStatus) {
-          alert(result.msg);
+          Util.alert(result.msg);
 
           window.location.href = Label.servePath + "/recent";
         }

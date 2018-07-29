@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.44.3.1, Jul 22, 2018
+ * @version 1.44.3.2, Jul 29, 2018
  */
 
 /**
@@ -456,7 +456,7 @@ var Util = {
             url: $('.link-forge-upload input').val()
           }),
           error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            Util.alert(errorThrown);
           },
           success: function (result, textStatus) {
             if (result.sc) {
@@ -466,7 +466,7 @@ var Util = {
                 $('#uploadLinkTip').html('').removeClass('succ');
               }, 5000);
             } else {
-              alert(result.msg);
+              Util.alert(result.msg);
             }
           }
         });
@@ -833,7 +833,7 @@ var Util = {
                 CodeMirror.Pos(cursor.line, cursor.ch - Label.uploadingLabel.length), cursor);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-              alert("Error: " + errorThrown);
+              Util.alert("Error: " + errorThrown);
               var cursor = cm.getCursor();
               cm.replaceRange('', CodeMirror.Pos(cursor.line, cursor.ch - Label.uploadingLabel.length), cursor);
             }
@@ -856,7 +856,7 @@ var Util = {
                 CodeMirror.Pos(cursor.line, cursor.ch - Label.uploadingLabel.length), cursor);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-              alert("Error: " + errorThrown);
+              Util.alert("Error: " + errorThrown);
               var cursor = cm.getCursor();
               cm.replaceRange('', CodeMirror.Pos(cursor.line, cursor.ch - Label.uploadingLabel.length), cursor);
             }
@@ -1402,13 +1402,13 @@ var Util = {
               isImg = isImage(fileBuf);
 
               if (isImg && evt.target.result.byteLength > obj.imgMaxSize) {
-                alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
+                Util.alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
 
                 return;
               }
 
               if (!isImg && evt.target.result.byteLength > obj.fileMaxSize) {
-                alert("This file is too large (max " + obj.fileMaxSize / 1024 / 1024 + "M)");
+                Util.alert("This file is too large (max " + obj.fileMaxSize / 1024 / 1024 + "M)");
 
                 return;
               }
@@ -1434,7 +1434,7 @@ var Util = {
         done: function (e, data) {
           var filename = data.result.name;
           if (data.result.code === 1) {
-            alert(data.result.msg)
+            Util.alert(data.result.msg)
             if (obj.editor.replaceRange) {
               var cursor = obj.editor.getCursor();
               obj.editor.replaceRange('[' + filename + '](Error) \n\n',
@@ -1448,7 +1448,7 @@ var Util = {
 
           var filePath = data.result.key;
           if (!filePath) {
-            alert("Upload error");
+            Util.alert("Upload error");
 
             return;
           }
@@ -1469,7 +1469,7 @@ var Util = {
           fileIndex--;
         },
         fail: function (e, data) {
-          alert("Upload error: " + data.errorThrown);
+          Util.alert("Upload error: " + data.errorThrown);
           if (obj.editor.replaceRange) {
             var cursor = obj.editor.getCursor();
             obj.editor.replaceRange('',
@@ -1482,7 +1482,7 @@ var Util = {
       }).on('fileuploadprocessalways', function (e, data) {
         var currentFile = data.files[data.index];
         if (data.files.error && currentFile.error) {
-          alert(currentFile.error);
+          Util.alert(currentFile.error);
         }
       });
 
@@ -1517,13 +1517,13 @@ var Util = {
             isImg = isImage(fileBuf);
 
             if (isImg && evt.target.result.byteLength > obj.imgMaxSize) {
-              alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
+              Util.alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
 
               return;
             }
 
             if (!isImg && evt.target.result.byteLength > obj.fileMaxSize) {
-              alert("This file is too large (max " + obj.fileMaxSize / 1024 / 1024 + "M)");
+              Util.alert("This file is too large (max " + obj.fileMaxSize / 1024 / 1024 + "M)");
 
               return;
             }
@@ -1558,7 +1558,7 @@ var Util = {
       done: function (e, data) {
         var qiniuKey = data.result.key;
         if (!qiniuKey) {
-          alert("Upload error");
+          Util.alert("Upload error");
 
           return;
         }
@@ -1586,7 +1586,7 @@ var Util = {
         fileIndex--;
       },
       fail: function (e, data) {
-        alert("Upload error: " + data.errorThrown);
+        Util.alert("Upload error: " + data.errorThrown);
         if (obj.editor.replaceRange) {
           var cursor = obj.editor.getCursor();
           obj.editor.replaceRange('',
@@ -1599,7 +1599,7 @@ var Util = {
     }).on('fileuploadprocessalways', function (e, data) {
       var currentFile = data.files[data.index];
       if (data.files.error && currentFile.error) {
-        alert(currentFile.error);
+        Util.alert(currentFile.error);
       }
     });
   },

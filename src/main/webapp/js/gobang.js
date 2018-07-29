@@ -20,7 +20,7 @@
  *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.0.2, Apr 6, 2017
+ * @version 1.0.0.3, Jul 29, 2017
  * @since 2.1.0
  */
 var Gobang = {
@@ -213,7 +213,7 @@ var GobangChannel = {
                     Gobang.drawChess(resp.chess);
                     Gobang.drawChessMan(resp.posX,resp.posY,5,"red");
                     if(resp.result != null && resp.result != ""){
-                        alert(resp.result);
+                        Util.alert(resp.result);
                         document.getElementById("gobangCanvas").removeEventListener("click",Gobang.moveChess);
                         $(".side button.green").show();
                         $(".side button.red").hide();

@@ -22,7 +22,7 @@
  * @author Alexar
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author zonghua
- * @version 1.1.0.1, Sep 22, 2016
+ * @version 1.1.0.2, Jul 29, 2016
  */
 var EatingSnake = {
     dir: null,
@@ -158,7 +158,7 @@ var EatingSnake = {
             },
             success: function (result, textStatus) {
                 if (!result.sc) {
-                    alert(result.msg);
+                    Util.alert(result.msg);
 
                     return;
                 }

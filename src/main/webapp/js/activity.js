@@ -21,7 +21,7 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.2.5, Apr 6, 2017
+ * @version 1.4.2.6, Jul 29, 2017
  */
 
 /**
@@ -165,7 +165,7 @@ var Activity = {
                 $btn.attr("disabled", "disabled").css("opacity", "0.3").text($btn.text() + 'ing');
             },
             success: function (result, textStatus) {
-                alert(result.msg);
+                Util.alert(result.msg);
 
                 if (result.sc) {
                     window.location.reload();
