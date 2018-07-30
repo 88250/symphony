@@ -43,7 +43,7 @@ import java.util.Set;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.13, Jul 28, 2018
+ * @version 1.2.1.14, Jul 30, 2018
  * @since 1.8.0
  */
 @Service
@@ -237,9 +237,11 @@ public class InitMgmtService {
 
             final List<JdbcRepositories.CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
             for (final JdbcRepositories.CreateTableResult createTableResult : createTableResults) {
-                LOGGER.log(Level.INFO, "Creates table result [tableName={0}, isSuccess={1}]",
+                LOGGER.log(Level.TRACE, "Creates table result [tableName={0}, isSuccess={1}]",
                         createTableResult.getName(), createTableResult.isSuccess());
             }
+
+            LOGGER.log(Level.INFO, "Created all tables, initializing database");
 
             final Transaction transaction = optionRepository.beginTransaction();
 
@@ -322,6 +324,8 @@ public class InitMgmtService {
             option.put(Option.OPTION_VALUE, "0");
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
             optionRepository.add(option);
+
+            LOGGER.info("Initialized option data");
 
             // Init permissions
             final JSONObject permission = new JSONObject();
@@ -523,6 +527,8 @@ public class InitMgmtService {
             permission.put(Keys.OBJECT_ID, Permission.PERMISSION_ID_C_MENU_ADMIN_REPORTS);
             permissionRepository.add(permission);
 
+            LOGGER.info("Initialized permission data");
+
             // Init roles
             final JSONObject role = new JSONObject();
 
@@ -555,6 +561,8 @@ public class InitMgmtService {
             role.put(Role.ROLE_NAME, "Visitor");
             role.put(Role.ROLE_DESCRIPTION, "");
             roleRepository.add(role);
+
+            LOGGER.info("Initialized role data");
 
             // Init Role-Permission
             final JSONObject rolePermission = new JSONObject();
@@ -604,6 +612,8 @@ public class InitMgmtService {
                 rolePermissionRepository.add(rolePermission);
             }
 
+            LOGGER.info("Initialized role-permission data");
+
             transaction.commit();
 
             // Init admin
@@ -628,6 +638,8 @@ public class InitMgmtService {
             comBot.put(User.USER_ROLE, Role.ROLE_ID_C_DEFAULT);
             comBot.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             userMgmtService.addUser(comBot);
+
+            LOGGER.info("Initialized admin user");
 
             // Add tags
             String tagTitle = Symphonys.get("systemAnnounce");
@@ -679,6 +691,8 @@ public class InitMgmtService {
             tag.put(Tag.TAG_DESCRIPTION, "[Wide](https://github.com/b3log/wide) 是一个基于 [Web] 的 <a href='/tags/golang'>Go</a> 语言团队 IDE。通过浏览器就可以进行 Go 开发，并有代码自动完成、查看表达式、编译反馈、Lint、实时结果输出等功能。");
             tagMgmtService.updateTag(tagId, tag);
 
+            LOGGER.log(Level.INFO, "Initialized tag data");
+
             // Hello World!
             final JSONObject article = new JSONObject();
             article.put(Article.ARTICLE_TITLE, "Welcome to Sym community :gift_heart:");
@@ -689,7 +703,7 @@ public class InitMgmtService {
 
             articleMgmtService.addArticle(article);
 
-            LOGGER.info("Initialized Sym, have fun :)");
+            LOGGER.info("Initialized Sym, have fun!");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Initializes Sym failed", e);
 
