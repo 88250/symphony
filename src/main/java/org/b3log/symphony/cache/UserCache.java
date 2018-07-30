@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * User cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Oct 2, 2017
+ * @version 1.1.0.1, Jul 30, 2018
  * @since 1.4.0
  */
 @Named
@@ -93,7 +93,7 @@ public class UserCache {
      *
      * @param user the specified user
      */
-    public void RemoveUser(final JSONObject user) {
+    public void removeUser(final JSONObject user) {
         ID_CACHE.remove(user.optString(Keys.OBJECT_ID));
         NAME_CACHE.remove(user.optString(User.USER_NAME));
     }
