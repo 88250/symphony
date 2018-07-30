@@ -49,7 +49,7 @@ import java.util.Set;
  * Captcha processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.0.0, Jun 12, 2018
+ * @version 2.3.0.1, Jul 30, 2018
  * @since 0.2.2
  */
 @RequestProcessor
@@ -74,6 +74,11 @@ public class CaptchaProcessor {
      * Captcha length.
      */
     private static final int CAPTCHA_LENGTH = 4;
+
+    /**
+     * Captcha chars.
+     */
+    private static final String CHARS = "acdefhijklmnprstuvwxy234578";
 
     /**
      * Checks whether the specified captcha is invalid.
@@ -109,7 +114,7 @@ public class CaptchaProcessor {
             cs.setColorFactory(new SingleColorFactory(new Color(25, 60, 170)));
             cs.setFilterFactory(new CurvesRippleFilterFactory(cs.getColorFactory()));
             final RandomWordFactory randomWordFactory = new RandomWordFactory();
-            randomWordFactory.setCharacters("abcdefghijklmnprstuvwxy23456789");
+            randomWordFactory.setCharacters(CHARS);
             randomWordFactory.setMinLength(CAPTCHA_LENGTH);
             randomWordFactory.setMaxLength(CAPTCHA_LENGTH);
             cs.setWordFactory(randomWordFactory);
@@ -166,7 +171,7 @@ public class CaptchaProcessor {
             cs.setColorFactory(new SingleColorFactory(new Color(26, 52, 96)));
             cs.setFilterFactory(new CurvesRippleFilterFactory(cs.getColorFactory()));
             final RandomWordFactory randomWordFactory = new RandomWordFactory();
-            randomWordFactory.setCharacters("abcdefghijklmnprstuvwxy23456789");
+            randomWordFactory.setCharacters(CHARS);
             randomWordFactory.setMinLength(CAPTCHA_LENGTH);
             randomWordFactory.setMaxLength(CAPTCHA_LENGTH);
             cs.setWordFactory(randomWordFactory);
