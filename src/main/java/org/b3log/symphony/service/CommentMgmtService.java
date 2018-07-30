@@ -48,7 +48,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.0.4, Jul 28, 2018
+ * @version 2.14.1.0, Jul 30, 2018
  * @since 0.2.0
  */
 @Service
@@ -242,12 +242,16 @@ public class CommentMgmtService {
         final int ups = comment.optInt(Comment.COMMENT_GOOD_CNT);
         final int downs = comment.optInt(Comment.COMMENT_BAD_CNT);
         if (ups > 0 || downs > 0) {
-            throw new ServiceException("removeCommentFoundWatchEtcLabel");
+            throw new ServiceException(langPropsService.get("removeCommentFoundWatchEtcLabel"));
         }
 
         final int thankCnt = (int) rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT);
         if (thankCnt > 0) {
-            throw new ServiceException("removeCommentFoundThankLabel");
+            throw new ServiceException(langPropsService.get("removeCommentFoundThankLabel"));
+        }
+
+        if (Comment.COMMENT_QNA_OFFERED_C_YES == comment.optInt(Comment.COMMENT_QNA_OFFERED)) {
+            throw new ServiceException(langPropsService.get("removeCommentFoundThankLabel"));
         }
 
         // Perform removal
