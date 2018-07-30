@@ -24,8 +24,10 @@ import org.b3log.latke.model.User;
 import org.b3log.symphony.util.JSONs;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * User cache.
@@ -47,6 +49,30 @@ public class UserCache {
      * Name, User.
      */
     private static final Map<String, JSONObject> NAME_CACHE = new ConcurrentHashMap<>();
+
+    /**
+     * Administrators cache.
+     */
+    private static final List<JSONObject> ADMINS_CACHE = new CopyOnWriteArrayList<>();
+
+    /**
+     * Gets admins.
+     *
+     * @return admins
+     */
+    public List<JSONObject> getAdmins() {
+        return ADMINS_CACHE;
+    }
+
+    /**
+     * Puts the specified admins.
+     *
+     * @param admins the specified admins
+     */
+    public void putAdmins(final List<JSONObject> admins) {
+        ADMINS_CACHE.clear();
+        ADMINS_CACHE.addAll(admins);
+    }
 
     /**
      * Gets a user by the specified user id.

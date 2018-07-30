@@ -142,12 +142,18 @@ public class UserRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public List<JSONObject> getAdmins() throws RepositoryException {
-        final Query query = new Query().setFilter(
-                new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ROLE_ID_C_ADMIN)).setPageCount(1)
-                .addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+        List<JSONObject> ret = userCache.getAdmins();
+        if (ret.isEmpty()) {
+            final Query query = new Query().setFilter(
+                    new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ROLE_ID_C_ADMIN)).setPageCount(1)
+                    .addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
+            final JSONObject result = get(query);
+            final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        return CollectionUtils.jsonArrayToList(array);
+            ret = CollectionUtils.jsonArrayToList(array);
+            userCache.putAdmins(ret);
+        }
+
+        return ret;
     }
 }
