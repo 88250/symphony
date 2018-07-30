@@ -251,7 +251,7 @@ public class CommentMgmtService {
         }
 
         if (Comment.COMMENT_QNA_OFFERED_C_YES == comment.optInt(Comment.COMMENT_QNA_OFFERED)) {
-            throw new ServiceException(langPropsService.get("removeCommentFoundThankLabel"));
+            throw new ServiceException(langPropsService.get("removeCommentFoundOfferedLabel"));
         }
 
         // Perform removal
