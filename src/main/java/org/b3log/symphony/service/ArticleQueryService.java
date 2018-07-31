@@ -62,7 +62,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.36.11, Jul 31, 2018
+ * @version 2.28.0.0, Jul 31, 2018
  * @since 0.2.0
  */
 @Service
@@ -155,6 +155,123 @@ public class ArticleQueryService {
      */
     @Inject
     private ArticleCache articleCache;
+
+    /**
+     * Gets the question articles with the specified fetch size.
+     *
+     * @param avatarViewMode the specified avatar view mode
+     * @param sortMode       the specified sort mode, 0: default, 1: unanswered, 2: reward, 3: hot
+     * @param currentPageNum the specified current page number
+     * @param fetchSize      the specified fetch size
+     * @return for example,      <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "articles": [{
+     *         "oId": "",
+     *         "articleTitle": "",
+     *         "articleContent": "",
+     *         ....
+     *      }, ....]
+     * }
+     * </pre>
+     * @throws ServiceException service exception
+     */
+    public JSONObject getQuestionArticles(final int avatarViewMode, final int sortMode, final int currentPageNum, final int fetchSize)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
+        Query query;
+        switch (sortMode) {
+            case 0:
+                query = new Query().
+                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
+                        setFilter(makeQuestionArticleShowingFilter());
+
+                break;
+            case 1:
+                query = new Query().
+                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+                final CompositeFilter compositeFilter1 = makeQuestionArticleShowingFilter();
+                final List<Filter> filters1 = new ArrayList<>();
+                filters1.add(new PropertyFilter(Article.ARTICLE_COMMENT_CNT, FilterOperator.EQUAL, 0));
+                filters1.addAll(compositeFilter1.getSubFilters());
+                query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters1));
+
+                break;
+            case 2:
+                final String id = String.valueOf(DateUtils.addMonths(new Date(), -1).getTime());
+                query = new Query().
+                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                        addSort(Article.ARTICLE_QNA_OFFER_POINT, SortDirection.DESCENDING).
+                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+                final CompositeFilter compositeFilter2 = makeQuestionArticleShowingFilter();
+                final List<Filter> filters2 = new ArrayList<>();
+                filters2.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
+                filters2.addAll(compositeFilter2.getSubFilters());
+                query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters2));
+
+                break;
+            case 3:
+                query = new Query().
+                        addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING).
+                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
+                        setFilter(makeQuestionArticleShowingFilter());
+
+                break;
+            default:
+                query = new Query().
+                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
+                        setFilter(makeQuestionArticleShowingFilter());
+        }
+
+        JSONObject result;
+        try {
+            Stopwatchs.start("Query question articles");
+
+            result = articleRepository.get(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets articles failed", e);
+
+            throw new ServiceException(e);
+        } finally {
+            Stopwatchs.end();
+        }
+
+        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+
+        final int windowSize = Symphonys.getInt("latestArticlesWindowSize");
+
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, fetchSize, pageCount, windowSize);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
+
+        final JSONArray data = result.optJSONArray(Keys.RESULTS);
+        final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
+
+        try {
+            organizeArticles(avatarViewMode, articles);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Organizes articles failed", e);
+
+            throw new ServiceException(e);
+        }
+
+        //final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
+        //genParticipants(articles, participantsCnt);
+        ret.put(Article.ARTICLES, (Object) articles);
+
+        return ret;
+    }
 
     /**
      * Gets following user articles.

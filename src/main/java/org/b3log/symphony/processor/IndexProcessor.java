@@ -36,7 +36,6 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
@@ -63,10 +62,11 @@ import java.util.*;
  * Index processor.
  * <ul>
  * <li>Shows index (/), GET</li>
- * <li>Shows recent articles (/recent), GET</li>
- * <li>Shows watch relevant pages (/watch/*), GET</li>
- * <li>Shows hot articles (/hot), GET</li>
- * <li>Shows perfect articles (/perfect), GET</li>
+ * <li>Show recent articles (/recent), GET</li>
+ * <li>Show question articles (/qna), GET</li>
+ * <li>Show watch relevant pages (/watch/*), GET</li>
+ * <li>Show hot articles (/hot), GET</li>
+ * <li>Show perfect articles (/perfect), GET</li>
  * <li>Shows about (/about), GET</li>
  * <li>Shows b3log (/b3log), GET</li>
  * <li>Shows SymHub (/symhub), GET</li>
@@ -75,7 +75,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.14.0.0, May 21, 2018
+ * @version 1.15.0.0, Jul 31, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -115,6 +115,88 @@ public class IndexProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Shows question articles.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = {"/qna", "/qna/unanswered", "/qna/reward", "/qna/hot"}, method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showQnA(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("qna.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final int pageNum = Paginator.getPage(request);
+        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        final JSONObject user = Sessions.currentUser(request);
+        if (null != user) {
+            pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+
+            if (!UserExt.finshedGuide(user)) {
+                response.sendRedirect(Latkes.getServePath() + "/guide");
+
+                return;
+            }
+        }
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/qna");
+        int sortMode;
+        switch (sortModeStr) {
+            case "":
+                sortMode = 0;
+
+                break;
+            case "/unanswered":
+                sortMode = 1;
+
+                break;
+            case "/reward":
+                sortMode = 2;
+
+                break;
+            case "/hot":
+                sortMode = 3;
+
+                break;
+            default:
+                sortMode = 0;
+        }
+
+        dataModel.put(Common.SELECTED, Common.RECENT);
+        final JSONObject result = articleQueryService.getQuestionArticles(avatarViewMode, sortMode, pageNum, pageSize);
+        final List<JSONObject> allArticles = (List<JSONObject>) result.get(Article.ARTICLES);
+        dataModel.put(Common.LATEST_ARTICLES, allArticles);
+
+        final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
+        final List<Integer> pageNums = (List<Integer>) pagination.get(Pagination.PAGINATION_PAGE_NUMS);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillRandomArticles(dataModel);
+        dataModelService.fillSideHotArticles(dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
+
+        dataModel.put(Common.CURRENT, StringUtils.substringAfter(request.getRequestURI(), "/qna"));
+    }
 
     /**
      * Shows watch articles or users.
