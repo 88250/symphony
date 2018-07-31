@@ -18,11 +18,9 @@
   * [Real\-time message notification](#real-time-message-notification)
   * [Fun activities](#fun-activities)
   * [Powered management background](#powered-management-background)
-  * [Open content API](#open-content-api)
   * [Integrated cloud mail service](#integrated-cloud-mail-service)
   * [Integrated cloud search service](#integrated-cloud-search-service)
 * [Roadmap](#roadmap)
-  * [trust system](#trust-system)
   * [badge system](#badge-system)
 * [Installation](#installation)
   * [Requirements](#requirements)
@@ -32,7 +30,6 @@
   * [Open source license](#open-source-license)
   * [Commercial license](#commercial-license)
 * [Community](#community)
-* [Feeling](#feeling)
 * [Credits](#credits)
 
 ## Introduction
@@ -115,9 +112,10 @@ The traditional node type community requires the post must belong to a node, the
 
 ![3](https://cloud.githubusercontent.com/assets/873584/19893288/afc3a74c-a083-11e6-8d1a-356fcb17e94a.png)
 
-Currently supports 4 types of posts, to meet the different user preferences:
+Currently supports 5 types of posts, to meet the different user preferences:
 
-* General Post: ask or share experiences and insights that help others
+* Posts: Sharing experiences and insights that are helpful to others
+* Q&A: There is always someone who knows the answer to your question
 * Thoughts: to record and replay the writing process, the text version of the watch [(?)](https://hacpai.com/article/1441942422856)
 * Private Discussion: invite friends to communicate in a private space
 * City Broadcast: the recruitment of your city, Meetup, etc.
@@ -207,12 +205,6 @@ Follow up will continue to add some fun online games.
 * advertising management: sidebar exclusive booth maintenance
 * other management post / replies: open / close / switch; user registration invitation code switch
 
-### Open content API
-
-Sym [API](https://hacpai.com/article/1457158841475) synchronous posts, replies [B3log idea](https://hacpai.com/b3log), the [Solo](https://github.com/b3log/solo), [Typecho](https://github.com/DT27/B3logForHacPai), [Z-BlogPHP](https://github.com/zblogapp/hacpai), [WordPress](https://github.com/zh-h/hacpai-sync-wordpress) have provided plug-ins to content synchronization, welcome to access!
-
-In the future will be added to the new interface, to facilitate the production of APP client or some of the value of the application.
-
 ### Integrated cloud mail service
 
 ![10](https://cloud.githubusercontent.com/assets/873584/19893292/aff5f918-a083-11e6-96be-8519149ff43f.png)
@@ -232,10 +224,6 @@ Through the configuration can be integrated [SendCloud](http://sendcloud.sohu.co
 Follow up on the search function to strengthen, to achieve the conditions for filtering, the results highlight, please look forward to.
 
 ## Roadmap
-
-### trust system
-
-Through the historical data to carry on the classification to the user, lets the user gradually change to the participant, the organizer, the management, realizes the autonomous community ecosystem.
 
 ### badge system
 
@@ -291,18 +279,6 @@ Everyone can discuss the project through the following ways to help the project 
 * Join Sym development support QQ group 17370164
 
 We are very much looking forward to your joining the project. Whether it is using feedback or code patches, it is a full of love for Sym :heart:
-
-## Feeling
-
-In the implementation of [B3log idea](https://hacpai.com/b3log) of these years:
-
-* we have witnessed the rise and fall of xAE (GAE/BAE/SAE/etc). In 2009 GAE was selected as a server, and began to implement [Latke](https://github.com/b3log/latke) framework to solve the cross platform cloud, until [GAE](https://hacpai.com/article/1443685401909), bid farewell to sigh technical change quickly
-* feel the advantages and disadvantages of self-made wheels, and certainly a bit: for a long to product, technology advantages far outweigh the disadvantages of self-made frame
-* a playful product or the details of the characteristics of the egg, it needs to be done is a product / feature that can continue to provide user value.
-* the use of open source software, to understand the idea of open source, into the open source ecology
-* [如果你想做个程序员相关的论坛，请三思](https://hacpai.com/article/1471007706462)
-* [你怎么看待社群、社区这两个词？](https://hacpai.com/article/1465652829809)
-* [UGC 社区价值生态](https://hacpai.com/article/1462028669762)
 
 ## Credits
 
