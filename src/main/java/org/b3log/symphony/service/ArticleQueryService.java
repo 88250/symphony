@@ -1523,40 +1523,6 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets the index hot articles with the specified fetch size.
-     *
-     * @param avatarViewMode the specified avatar view mode
-     * @return hot articles, returns an empty list if not found
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getIndexHotArticles(final int avatarViewMode) throws ServiceException {
-        final Query query = new Query()
-                .addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING)
-                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(Symphonys.getInt("indexListCnt")).setCurrentPageNum(1);
-        query.setFilter(makeArticleShowingFilter());
-        addListProjections(query);
-
-        try {
-            List<JSONObject> ret;
-            Stopwatchs.start("Query index hot articles");
-            try {
-                final JSONObject result = articleRepository.get(query);
-                ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            } finally {
-                Stopwatchs.end();
-            }
-
-            organizeArticles(avatarViewMode, ret);
-
-            return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets index hot articles failed", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
      * Gets the index perfect articles.
      *
      * @return hot articles, returns an empty list if not found
