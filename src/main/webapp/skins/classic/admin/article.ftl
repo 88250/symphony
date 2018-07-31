@@ -210,14 +210,7 @@
                         </select>
                     </label>
                     <label>
-                        <div>${sourceLabel}</div>
-                        <input type="text" id="clientArticlePermalink" name="clientArticlePermalink"
-                               value="${article.clientArticlePermalink}"/>
-                    </label>
-                </div>
-                <div class="fn__flex">
-                    <label>
-                        <div>Email ${pushLabel}</div>
+                        <div>${pushLabel} Email ${pushLabel}</div>
                         <input type="number" name="articlePushOrder" value="${article.articlePushOrder}" />
                     </label>
                 </div>
