@@ -185,25 +185,15 @@
                         <ul>
                             <li>
                                 <div class="fn-flex">
-                                    <#if !article.articleOfferedComment.fromClient>
-                                        <#if article.articleOfferedComment.commentAnonymous == 0>
-                                    <a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}"></#if>
-                                        <div class="avatar tooltipped tooltipped-se"
-                                             aria-label="${article.articleOfferedComment.commentAuthorName}" style="background-image:url('${article.articleOfferedComment.commentAuthorThumbnailURL}')"></div>
-                                        <#if article.articleOfferedComment.commentAnonymous == 0></a></#if>
-                                    <#else>
+                                    <#if article.articleOfferedComment.commentAnonymous == 0>
+                                <a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}"></#if>
                                     <div class="avatar tooltipped tooltipped-se"
                                          aria-label="${article.articleOfferedComment.commentAuthorName}" style="background-image:url('${article.articleOfferedComment.commentAuthorThumbnailURL}')"></div>
-                                    </#if>
+                                    <#if article.articleOfferedComment.commentAnonymous == 0></a></#if>
                                     <div class="fn-flex-1">
                                         <div class="fn-clear comment-info ft-smaller">
                                             <span class="fn-left">
-                                                <#if !article.articleOfferedComment.fromClient>
-                                                    <#if article.articleOfferedComment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${article.articleOfferedComment.commentAuthorName}</span><#if article.articleOfferedComment.commentAnonymous == 0></a></#if>
-                                                <#else><span class="ft-gray">${article.articleOfferedComment.commentAuthorName}</span>
-                                                <span class="ft-fade"> • </span>
-                                                <a rel="nofollow" class="ft-green" href="https://hacpai.com/article/1457158841475">API</a>
-                                                </#if>
+                                                <#if article.articleOfferedComment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${article.articleOfferedComment.commentAuthorName}</span><#if article.articleOfferedComment.commentAnonymous == 0></a></#if>
                                                 <span class="ft-fade">• ${article.articleOfferedComment.timeAgo}</span>
 
                                                 <#if article.articleOfferedComment.rewardedCnt gt 0>
@@ -239,25 +229,15 @@
                         <#list article.articleNiceComments as comment>
                             <li>
                                 <div class="fn-flex">
-                                    <#if !comment.fromClient>
                                     <#if comment.commentAnonymous == 0>
                                     <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
                                         <div class="avatar tooltipped tooltipped-se"
                                              aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                     <#if comment.commentAnonymous == 0></a></#if>
-                                    <#else>
-                                    <div class="avatar tooltipped tooltipped-se"
-                                         aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
-                                    </#if>
                                     <div class="fn-flex-1">
                                         <div class="fn-clear comment-info ft-smaller">
                                             <span class="fn-left">
-                                                <#if !comment.fromClient>
                                                 <#if comment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${comment.commentAuthorName}</span><#if comment.commentAnonymous == 0></a></#if>
-                                                <#else><span class="ft-gray">${comment.commentAuthorName}</span>
-                                                <span class="ft-fade"> • </span>
-                                                <a rel="nofollow" class="ft-green" href="https://hacpai.com/article/1457158841475">API</a>
-                                                </#if>
                                                 <span class="ft-fade">• ${comment.timeAgo}</span>
 
                                                 <#if comment.rewardedCnt gt 0>

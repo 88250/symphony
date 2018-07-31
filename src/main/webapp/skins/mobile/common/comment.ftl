@@ -20,28 +20,18 @@
 <li id="${comment.oId}"
     class="<#if comment.commentStatus == 1>cmt-shield</#if><#if comment.commentNice || comment.commentQnAOffered == 1> cmt-perfect</#if><#if comment.commentReplyCnt != 0> cmt-selected</#if>">
     <div class="fn-flex">
-        <#if !comment.fromClient>
-            <div>
-                <#if comment.commentAnonymous == 0>
-                    <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
-                <div class="avatar tooltipped tooltipped-se"
-                     aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
-                <#if comment.commentAnonymous == 0></a></#if>
-            </div>
-        <#else>
-                <div class="avatar tooltipped tooltipped-se"
-                     aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
-        </#if>
+        <div>
+            <#if comment.commentAnonymous == 0>
+                <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
+            <div class="avatar tooltipped tooltipped-se"
+                 aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
+            <#if comment.commentAnonymous == 0></a></#if>
+        </div>
         <div class="fn-flex-1">
             <div class="comment-get-comment list"></div>
             <div class="fn-clear comment-info">
                 <span class="fn-left ft-smaller">
-                    <#if !comment.fromClient>
-                        <#if comment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${comment.commentAuthorName}</span><#if comment.commentAnonymous == 0></a></#if>
-                    <#else><span class="ft-gray">${comment.commentAuthorName}</span>
-                    <span class="ft-fade"> • </span>
-                    <a rel="nofollow" class="ft-green" href="https://hacpai.com/article/1457158841475">API</a>
-                    </#if>
+                    <#if comment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${comment.commentAuthorName}</span><#if comment.commentAnonymous == 0></a></#if>
                     <span class="ft-fade">• ${comment.timeAgo}</span>
                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade hover-show fn-hidden" data-ua="${comment.commentUA}"></span></#if>
                 </span>
