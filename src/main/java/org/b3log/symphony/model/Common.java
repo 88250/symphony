@@ -487,6 +487,11 @@ public final class Common {
     public static final String RECENT = "recent";
 
     /**
+     * Key of qna.
+     */
+    public static final String QNA = "qna";
+
+    /**
      * Key of watch.
      */
     public static final String WATCH = "watch";

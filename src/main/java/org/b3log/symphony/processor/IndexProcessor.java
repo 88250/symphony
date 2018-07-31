@@ -172,7 +172,7 @@ public class IndexProcessor {
                 sortMode = 0;
         }
 
-        dataModel.put(Common.SELECTED, Common.RECENT);
+        dataModel.put(Common.SELECTED, Common.QNA);
         final JSONObject result = articleQueryService.getQuestionArticles(avatarViewMode, sortMode, pageNum, pageSize);
         final List<JSONObject> allArticles = (List<JSONObject>) result.get(Article.ARTICLES);
         dataModel.put(Common.LATEST_ARTICLES, allArticles);
