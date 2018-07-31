@@ -362,7 +362,6 @@ public class CommentMgmtService {
      *                          "commentAuthorId": "",
      *                          "commentOnArticleId": "",
      *                          "commentOriginalCommentId": "", // optional
-     *                          "clientCommentId": "" // optional,
      *                          "commentAuthorName": "" // If from client
      *                          "commentIP": "", // optional, default to ""
      *                          "commentUA": "", // optional, default to ""

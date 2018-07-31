@@ -496,8 +496,6 @@ public class ArticleMgmtService {
      *                          "articleEditorType": "",
      *                          "articleAuthorId": "",
      *                          "articleCommentable": boolean, // optional, default to true
-     *                          "clientArticleId": "", // optional
-     *                          "isBroadcast": boolean, // Client broadcast, optional
      *                          "articleType": int, // optional, default to 0
      *                          "articleRewardContent": "", // optional, default to ""
      *                          "articleRewardPoint": int, // optional, default to 0
