@@ -1198,26 +1198,6 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets the random articles with the specified fetch size.
-     *
-     * @param avatarViewMode the specified avatar view mode
-     * @param fetchSize      the specified fetch size
-     * @return random articles, returns an empty list if not found
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getRandomArticles(final int avatarViewMode, final int fetchSize) throws ServiceException {
-        try {
-            final List<JSONObject> ret = articleRepository.getRandomly(fetchSize);
-            organizeArticles(avatarViewMode, ret);
-
-            return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets random articles failed", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
      * Makes article showing filters.
      *
      * @return filter the article showing to user
@@ -1762,34 +1742,6 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getIndexPerfectArticles() {
         return articleCache.getPerfectArticles();
-    }
-
-    /**
-     * Gets the recent articles with the specified fetch size.
-     *
-     * @param avatarViewMode the specified avatar view mode
-     * @param currentPageNum the specified current page number
-     * @param fetchSize      the specified fetch size
-     * @return recent articles, returns an empty list if not found
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getRecentArticlesWithComments(final int avatarViewMode,
-                                                          final int currentPageNum, final int fetchSize) throws ServiceException {
-        return getArticles(avatarViewMode, makeRecentDefaultQuery(currentPageNum, fetchSize));
-    }
-
-    /**
-     * Gets the index articles with the specified fetch size.
-     *
-     * @param avatarViewMode the specified avatar view mode
-     * @param currentPageNum the specified current page number
-     * @param fetchSize      the specified fetch size
-     * @return recent articles, returns an empty list if not found
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getTopArticlesWithComments(final int avatarViewMode,
-                                                       final int currentPageNum, final int fetchSize) throws ServiceException {
-        return getArticles(avatarViewMode, makeTopQuery(currentPageNum, fetchSize));
     }
 
     /**
