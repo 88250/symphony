@@ -185,25 +185,7 @@ public class ArticleQueryService {
         filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
         filters.add(new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.IN, followingUserIds));
         query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
-        query.addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Article.ARTICLE_STICK, Long.class).
-                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
-                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_STATUS, Integer.class).
-                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
-                addProjection(Article.ARTICLE_TYPE, Integer.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_TAGS, String.class).
-                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class).
-                addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
+        addListProjections(query);
 
         JSONObject result = null;
         try {
@@ -930,25 +912,8 @@ public class ArticleQueryService {
                 articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
             }
 
-            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
-                    addProjection(Keys.OBJECT_ID, String.class).
-                    addProjection(Article.ARTICLE_STICK, Long.class).
-                    addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                    addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                    addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
-                    addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                    addProjection(Article.ARTICLE_TITLE, String.class).
-                    addProjection(Article.ARTICLE_STATUS, Integer.class).
-                    addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
-                    addProjection(Article.ARTICLE_TYPE, Integer.class).
-                    addProjection(Article.ARTICLE_PERMALINK, String.class).
-                    addProjection(Article.ARTICLE_TAGS, String.class).
-                    addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                    addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                    addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                    addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                    addProjection(Article.ARTICLE_CONTENT, String.class).
-                    addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
+            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
+            addListProjections(query);
 
             result = articleRepository.get(query);
 
@@ -1236,29 +1201,7 @@ public class ArticleQueryService {
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
         ret.setFilter(makeRecentArticleShowingFilter());
-        ret.addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Article.ARTICLE_STICK, Long.class).
-                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
-                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_STATUS, Integer.class).
-                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
-                addProjection(Article.ARTICLE_TYPE, Integer.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_TAGS, String.class).
-                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
-                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
-                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
-                addProjection(Article.ARTICLE_UA, String.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class).
-                addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
+        addListProjections(ret);
 
 
         return ret;
@@ -1286,29 +1229,7 @@ public class ArticleQueryService {
         filters.addAll(compositeFilter.getSubFilters());
 
         ret.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-        ret.addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Article.ARTICLE_STICK, Long.class).
-                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
-                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_STATUS, Integer.class).
-                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
-                addProjection(Article.ARTICLE_TYPE, Integer.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_TAGS, String.class).
-                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
-                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
-                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
-                addProjection(Article.ARTICLE_UA, String.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class).
-                addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
+        addListProjections(ret);
 
         return ret;
     }
@@ -1327,29 +1248,7 @@ public class ArticleQueryService {
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
         ret.setFilter(makeRecentArticleShowingFilter());
-        ret.addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Article.ARTICLE_STICK, Long.class).
-                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
-                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_STATUS, Integer.class).
-                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
-                addProjection(Article.ARTICLE_TYPE, Integer.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_TAGS, String.class).
-                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
-                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
-                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
-                addProjection(Article.ARTICLE_UA, String.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class).
-                addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
+        addListProjections(ret);
 
         return ret;
     }
@@ -1368,29 +1267,7 @@ public class ArticleQueryService {
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
         ret.setFilter(makeRecentArticleShowingFilter());
-        ret.addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Article.ARTICLE_STICK, Long.class).
-                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
-                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_STATUS, Integer.class).
-                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
-                addProjection(Article.ARTICLE_TYPE, Integer.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_TAGS, String.class).
-                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
-                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
-                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
-                addProjection(Article.ARTICLE_UA, String.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class).
-                addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
+        addListProjections(ret);
 
         return ret;
     }
@@ -1699,22 +1576,7 @@ public class ArticleQueryService {
                 .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
                 .setPageCount(1).setPageSize(Symphonys.getInt("indexListCnt")).setCurrentPageNum(1);
         query.setFilter(makeArticleShowingFilter());
-        query.addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Article.ARTICLE_STICK, Long.class).
-                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
-                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_STATUS, Integer.class).
-                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
-                addProjection(Article.ARTICLE_TYPE, Integer.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_TAGS, String.class).
-                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class);
+        addListProjections(query);
 
         try {
             List<JSONObject> ret;
@@ -2585,5 +2447,31 @@ public class ArticleQueryService {
         } finally {
             Stopwatchs.end();
         }
+    }
+
+    private void addListProjections(final Query query) {
+        query.addProjection(Keys.OBJECT_ID, String.class).
+                addProjection(Article.ARTICLE_STICK, Long.class).
+                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
+                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                addProjection(Article.ARTICLE_TITLE, String.class).
+                addProjection(Article.ARTICLE_STATUS, Integer.class).
+                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
+                addProjection(Article.ARTICLE_TYPE, Integer.class).
+                addProjection(Article.ARTICLE_PERMALINK, String.class).
+                addProjection(Article.ARTICLE_TAGS, String.class).
+                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
+                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
+                addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
+                addProjection(Article.ARTICLE_UA, String.class).
+                addProjection(Article.ARTICLE_CONTENT, String.class).
+                addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
     }
 }
