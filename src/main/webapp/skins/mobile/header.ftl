@@ -40,6 +40,7 @@
                 <a href="${servePath}/pre-post" title="${addArticleLabel}"><svg><use xlink:href="#addfile"></use></svg></a>
             </#if>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
+            <a href="${servePath}/qna"><svg><use xlink:href="#iconAsk"></use></svg></a>
             <a href="${servePath}/recent"><svg><use xlink:href="#refresh"></use></svg></a>
             <#else>
                 <a href="javascript: Util.goLogin();" title="${loginLabel}" class="unlogin">${loginLabel}</a>
