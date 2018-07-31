@@ -206,8 +206,8 @@ public class ArticleQueryService {
             case 2:
                 final String id = String.valueOf(DateUtils.addMonths(new Date(), -1).getTime());
                 query = new Query().
-                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                         addSort(Article.ARTICLE_QNA_OFFER_POINT, SortDirection.DESCENDING).
+                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                         setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
                 final CompositeFilter compositeFilter2 = makeQuestionArticleShowingFilter();
                 final List<Filter> filters2 = new ArrayList<>();
