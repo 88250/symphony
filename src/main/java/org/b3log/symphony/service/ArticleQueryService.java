@@ -32,7 +32,10 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.*;
+import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.cache.ArticleCache;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
@@ -1607,100 +1610,6 @@ public class ArticleQueryService {
     }
 
     /**
-     * The specific articles.
-     *
-     * @param avatarViewMode the specified avatar view mode
-     * @param query          conditions
-     * @return articles
-     * @throws ServiceException service exception
-     */
-    private List<JSONObject> getArticles(final int avatarViewMode, final Query query) throws ServiceException {
-        try {
-            final JSONObject result = articleRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            organizeArticles(avatarViewMode, ret);
-            final List<JSONObject> stories = new ArrayList<>();
-
-            for (final JSONObject article : ret) {
-                final JSONObject story = new JSONObject();
-                final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-                final JSONObject author = userRepository.get(authorId);
-                if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
-                    story.put("title", langPropsService.get("articleTitleBlockLabel"));
-                } else {
-                    story.put("title", article.optString(Article.ARTICLE_TITLE));
-                }
-                story.put("id", article.optLong("oId"));
-                story.put("url", Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
-                story.put("user_display_name", article.optString(Article.ARTICLE_T_AUTHOR_NAME));
-                story.put("user_job", author.optString(UserExt.USER_INTRO));
-                story.put("comment_html", article.optString(Article.ARTICLE_CONTENT));
-                story.put("comment_count", article.optInt(Article.ARTICLE_COMMENT_CNT));
-                story.put("vote_count", article.optInt(Article.ARTICLE_GOOD_CNT));
-                story.put("created_at", formatDate(article.get(Article.ARTICLE_CREATE_TIME)));
-                story.put("user_portrait_url", article.optString(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL));
-                story.put("comments", getAllComments(avatarViewMode, article.optString("oId")));
-                final String tagsString = article.optString(Article.ARTICLE_TAGS);
-                String[] tags = null;
-                if (!Strings.isEmptyOrNull(tagsString)) {
-                    tags = tagsString.split(",");
-                }
-                story.put("badge", tags == null ? "" : tags[0]);
-                stories.add(story);
-            }
-            final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
-            genParticipants(avatarViewMode, stories, participantsCnt);
-            return stories;
-        } catch (final RepositoryException | JSONException e) {
-            LOGGER.log(Level.ERROR, "Gets index articles failed", e);
-
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * Gets the article comments with the specified article id.
-     *
-     * @param avatarViewMode the specified avatar view mode
-     * @param articleId      the specified article id
-     * @return comments, return an empty list if not found
-     * @throws ServiceException    service exception
-     * @throws JSONException       json exception
-     * @throws RepositoryException repository exception
-     */
-    private List<JSONObject> getAllComments(final int avatarViewMode, final String articleId)
-            throws ServiceException, JSONException, RepositoryException {
-        final List<JSONObject> commments = new ArrayList<>();
-        final List<JSONObject> articleComments = commentQueryService.getArticleComments(
-                avatarViewMode, articleId, 1, Integer.MAX_VALUE, UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL);
-        for (final JSONObject ac : articleComments) {
-            final JSONObject comment = new JSONObject();
-            final JSONObject author = userRepository.get(ac.optString(Comment.COMMENT_AUTHOR_ID));
-            comment.put("id", ac.optLong("oId"));
-            comment.put("body_html", ac.optString(Comment.COMMENT_CONTENT));
-            comment.put("depth", 0);
-            comment.put("user_display_name", ac.optString(Comment.COMMENT_T_AUTHOR_NAME));
-            comment.put("user_job", author.optString(UserExt.USER_INTRO));
-            comment.put("vote_count", 0);
-            comment.put("created_at", formatDate(ac.get(Comment.COMMENT_CREATE_TIME)));
-            comment.put("user_portrait_url", ac.optString(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL));
-            commments.add(comment);
-        }
-        return commments;
-    }
-
-    /**
-     * The demand format date.
-     *
-     * @param date the original date
-     * @return the format date like "2015-08-03T07:26:57Z"
-     */
-    private String formatDate(final Object date) {
-        return DateFormatUtils.format(((Date) date).getTime(), "yyyy-MM-dd")
-                + "T" + DateFormatUtils.format(((Date) date).getTime(), "HH:mm:ss") + "Z";
-    }
-
-    /**
      * Organizes the specified articles.
      *
      * @param avatarViewMode the specified avatarViewMode
@@ -2195,8 +2104,7 @@ public class ArticleQueryService {
             query.setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, requestJSONObject.optString(Keys.OBJECT_ID)));
         }
 
-        JSONObject result = null;
-
+        JSONObject result;
         try {
             result = articleRepository.get(query);
         } catch (final RepositoryException e) {
@@ -2275,7 +2183,7 @@ public class ArticleQueryService {
      * @param article the specified article
      * @return meta description
      */
-    public String getArticleMetaDesc(final JSONObject article) {
+    String getArticleMetaDesc(final JSONObject article) {
         final String articleId = article.optString(Keys.OBJECT_ID);
         String articleAbstract = articleCache.getArticleAbstract(articleId);
         if (StringUtils.isNotBlank(articleAbstract)) {
