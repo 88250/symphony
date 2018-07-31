@@ -185,7 +185,6 @@
     Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}"
     Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}"
     Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}"
-    Label.forgeUploadSuccLabel = "${forgeUploadSuccLabel}"
     Label.type = '${type}'
     Label.userName = '${user.userName}'
 

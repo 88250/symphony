@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.44.3.2, Jul 29, 2018
+ * @version 1.44.3.3, Jul 31, 2018
  */
 
 /**
@@ -414,84 +414,6 @@ var Util = {
 
     // At last, if the user already denied any notification, and you
     // want to be respectful there is no need to bother them any more.
-  },
-  /**
-   * 链接熔炉
-   * @returns {undefined}
-   */
-  linkForge: function () {
-    $('.link-forge .module-header > a').click(function () {
-      var $panel = $(this).closest('.module').find('.module-panel');
-      if ($panel.css('overflow') !== 'hidden') {
-        $panel.css({
-          'max-height': '409px',
-          'overflow': 'hidden'
-        });
-        return false;
-      }
-      $panel.css({
-        'max-height': 'inherit',
-        'overflow': 'inherit'
-      });
-    });
-
-    var postLink = function () {
-      if (!Label.isLoggedIn) {
-        Util.needLogin();
-        return false;
-      }
-      if (Validate.goValidate({
-          target: $('#uploadLinkTip'),
-          data: [{
-            "target": $('.link-forge-upload input'),
-            "type": "url",
-            "msg": Label.invalidUserURLLabel
-          }]
-        })) {
-        $.ajax({
-          url: Label.servePath + "/forge/link",
-          type: "POST",
-          cache: false,
-          data: JSON.stringify({
-            url: $('.link-forge-upload input').val()
-          }),
-          error: function (jqXHR, textStatus, errorThrown) {
-            Util.alert(errorThrown);
-          },
-          success: function (result, textStatus) {
-            if (result.sc) {
-              $('#uploadLinkTip').html('<ul><li>' + Label.forgeUploadSuccLabel + '</li></ul>').addClass('succ');
-              $('.link-forge-upload input').val('');
-              setTimeout(function () {
-                $('#uploadLinkTip').html('').removeClass('succ');
-              }, 5000);
-            } else {
-              Util.alert(result.msg);
-            }
-          }
-        });
-      }
-    };
-
-    $('.link-forge-upload button').click(function () {
-      postLink();
-    });
-
-    $('.link-forge-upload input').focus().keypress(function (event) {
-      if (event.which === 13) {
-        postLink();
-        return false;
-      }
-
-      Validate.goValidate({
-        target: $('#uploadLinkTip'),
-        data: [{
-          "target": $('.link-forge-upload input'),
-          "type": "url",
-          "msg": Label.invalidUserURLLabel
-        }]
-      });
-    });
   },
   /**
    * 粘贴中包含图片和文案时，需要处理为 markdown 语法
