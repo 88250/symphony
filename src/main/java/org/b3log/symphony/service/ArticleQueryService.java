@@ -1178,7 +1178,7 @@ public class ArticleQueryService {
     }
 
     /**
-     * Makes recent article showing filters.
+     * Makes recent articles showing filter.
      *
      * @return filter the article showing to user
      */
@@ -1188,91 +1188,22 @@ public class ArticleQueryService {
         filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, "B3log%"));
+
         return new CompositeFilter(CompositeFilterOperator.AND, filters);
     }
 
     /**
-     * Makes the recent (sort by create time desc) articles with the specified fetch size.
+     * Makes question articles showing filter.
      *
-     * @param currentPageNum the specified current page number
-     * @param fetchSize      the specified fetch size
-     * @return recent articles query
+     * @return filter the article showing to user
      */
-    private Query makeRecentDefaultQuery(final int currentPageNum, final int fetchSize) {
-        final Query ret = new Query()
-                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
-        ret.setFilter(makeRecentArticleShowingFilter());
-        addListProjections(ret);
-
-
-        return ret;
-    }
-
-    /**
-     * Makes the recent (sort by comment count desc) articles with the specified fetch size.
-     *
-     * @param currentPageNum the specified current page number
-     * @param fetchSize      the specified fetch size
-     * @return recent articles query
-     */
-    private Query makeRecentHotQuery(final int currentPageNum, final int fetchSize) {
-        final String id = String.valueOf(DateUtils.addMonths(new Date(), -1).getTime());
-
-        final Query ret = new Query()
-                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
-                .addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING)
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
-
-        final CompositeFilter compositeFilter = makeRecentArticleShowingFilter();
+    private CompositeFilter makeQuestionArticleShowingFilter() {
         final List<Filter> filters = new ArrayList<>();
-        filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
-        filters.addAll(compositeFilter.getSubFilters());
+        filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.EQUAL, Article.ARTICLE_TYPE_C_QNA));
+        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
+        filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
 
-        ret.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-        addListProjections(ret);
-
-        return ret;
-    }
-
-    /**
-     * Makes the recent (sort by score desc) articles with the specified fetch size.
-     *
-     * @param currentPageNum the specified current page number
-     * @param fetchSize      the specified fetch size
-     * @return recent articles query
-     */
-    private Query makeRecentGoodQuery(final int currentPageNum, final int fetchSize) {
-        final Query ret = new Query()
-                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
-                .addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING)
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
-        ret.setFilter(makeRecentArticleShowingFilter());
-        addListProjections(ret);
-
-        return ret;
-    }
-
-    /**
-     * Makes the recent (sort by latest comment time desc) articles with the specified fetch size.
-     *
-     * @param currentPageNum the specified current page number
-     * @param fetchSize      the specified fetch size
-     * @return recent articles query
-     */
-    private Query makeRecentReplyQuery(final int currentPageNum, final int fetchSize) {
-        final Query ret = new Query()
-                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
-                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
-        ret.setFilter(makeRecentArticleShowingFilter());
-        addListProjections(ret);
-
-        return ret;
+        return new CompositeFilter(CompositeFilterOperator.AND, filters);
     }
 
     /**
@@ -1323,24 +1254,51 @@ public class ArticleQueryService {
         Query query;
         switch (sortMode) {
             case 0:
-                query = makeRecentDefaultQuery(currentPageNum, fetchSize);
+                query = new Query().
+                        addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
+                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
+                        setFilter(makeRecentArticleShowingFilter());
 
                 break;
             case 1:
-                query = makeRecentHotQuery(currentPageNum, fetchSize);
+                final String id = String.valueOf(DateUtils.addMonths(new Date(), -1).getTime());
+                query = new Query().
+                        addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
+                        addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
+                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+                final CompositeFilter compositeFilter = makeRecentArticleShowingFilter();
+                final List<Filter> filters = new ArrayList<>();
+                filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
+                filters.addAll(compositeFilter.getSubFilters());
+                query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
 
                 break;
             case 2:
-                query = makeRecentGoodQuery(currentPageNum, fetchSize);
+                query = new Query().
+                        addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
+                        addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING).
+                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
+                        setFilter(makeRecentArticleShowingFilter());
 
                 break;
             case 3:
-                query = makeRecentReplyQuery(currentPageNum, fetchSize);
+                query = new Query().
+                        addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
+                        addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING).
+                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
+                        setFilter(makeRecentArticleShowingFilter());
 
                 break;
             default:
-                LOGGER.warn("Unknown sort mode [" + sortMode + "]");
-                query = makeRecentDefaultQuery(currentPageNum, fetchSize);
+                query = new Query().
+                        addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
+                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
+                        setFilter(makeRecentArticleShowingFilter());
         }
 
         JSONObject result;
