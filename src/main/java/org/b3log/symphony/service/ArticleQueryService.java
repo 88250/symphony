@@ -190,7 +190,7 @@ public class ArticleQueryService {
         query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
         addListProjections(query);
 
-        JSONObject result = null;
+        JSONObject result;
         try {
             Stopwatchs.start("Query following user articles");
 
@@ -1343,8 +1343,7 @@ public class ArticleQueryService {
                 query = makeRecentDefaultQuery(currentPageNum, fetchSize);
         }
 
-        JSONObject result = null;
-
+        JSONObject result;
         try {
             Stopwatchs.start("Query recent articles");
 
@@ -1523,8 +1522,7 @@ public class ArticleQueryService {
 
         final JSONObject ret = new JSONObject();
 
-        JSONObject result = null;
-
+        JSONObject result;
         try {
             Stopwatchs.start("Query recent articles");
 
