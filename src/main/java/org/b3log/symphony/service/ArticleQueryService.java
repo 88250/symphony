@@ -1413,7 +1413,7 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets the recent (sort by create time) articles with the specified fetch size.
+     * Gets the recent articles with the specified fetch size.
      *
      * @param avatarViewMode the specified avatar view mode
      * @param sortMode       the specified sort mode, 0: default, 1: hot, 2: score, 3: reply
