@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.32.0.0, Jun 19, 2018
+ * @version 1.32.0.1, Jul 31, 2018
  * @since 0.2.0
  */
 public final class Article {
@@ -125,21 +125,6 @@ public final class Article {
      * Key of article commentable.
      */
     public static final String ARTICLE_COMMENTABLE = "articleCommentable";
-
-    /**
-     * Key of article sync to client.
-     */
-    public static final String ARTICLE_SYNC_TO_CLIENT = "syncWithSymphonyClient";
-
-    /**
-     * Key of client article id.
-     */
-    public static final String ARTICLE_CLIENT_ARTICLE_ID = "clientArticleId";
-
-    /**
-     * Key of client article permalink.
-     */
-    public static final String ARTICLE_CLIENT_ARTICLE_PERMALINK = "clientArticlePermalink";
 
     /**
      * Key of article editor type.

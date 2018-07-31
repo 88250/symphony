@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.40.0.0, Jul 27, 2018",
+  "version": "4.40.0.1, Jul 31, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -883,13 +883,6 @@
           "description": "主键"
         },
         {
-          "name": "clientCommentId",
-          "type": "String",
-          "length": 32,
-          "nullable": true,
-          "description": "客户端评论 id"
-        },
-        {
           "name": "commentContent",
           "type": "String",
           "length": 2000,
@@ -1290,30 +1283,6 @@
           "description": "用户是否在线"
         },
         {
-          "name": "userB3Key",
-          "type": "String",
-          "length": 20,
-          "description": "B3 Key"
-        },
-        {
-          "name": "userB3ClientAddArticleURL",
-          "type": "String",
-          "length": 150,
-          "description": "客户端收文接口"
-        },
-        {
-          "name": "userB3ClientUpdateArticleURL",
-          "type": "String",
-          "length": 150,
-          "description": "客户端更新接口"
-        },
-        {
-          "name": "userB3ClientAddCommentURL",
-          "type": "String",
-          "length": 150,
-          "description": "客户端收评接口"
-        },
-        {
           "name": "userRole",
           "type": "String",
           "length": 20,
@@ -1459,11 +1428,6 @@
           "name": "userGeoStatus",
           "type": "int",
           "description": "0：公开地理位置，1：不公开地理位置"
-        },
-        {
-          "name": "syncWithSymphonyClient",
-          "type": "boolean",
-          "description": "是否开启 B3 同步"
         },
         {
           "name": "userCommentViewMode",
@@ -1675,25 +1639,6 @@
           "name": "articleCommentable",
           "type": "boolean",
           "description": "帖子是否可回帖"
-        },
-        {
-          "name": "syncWithSymphonyClient",
-          "type": "boolean",
-          "description": "是否开启客户端同步，社区版不用关注该字段"
-        },
-        {
-          "name": "clientArticleId",
-          "type": "String",
-          "length": 32,
-          "nullable": true,
-          "description": "客户端文章 id，社区版不用关注该字段"
-        },
-        {
-          "name": "clientArticlePermalink",
-          "type": "String",
-          "length": 255,
-          "nullable": true,
-          "description": "客户端文章访问路径，社区版不用关注该字段"
         },
         {
           "name": "articleEditorType",

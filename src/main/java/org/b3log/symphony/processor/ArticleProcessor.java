@@ -596,11 +596,6 @@ public class ArticleProcessor {
                 String.valueOf(ArticleAddValidation.MAX_ARTICLE_CONTENT_LENGTH));
         dataModel.put("articleContentErrorLabel", articleContentErrorLabel);
 
-        final String b3Key = currentUser.optString(UserExt.USER_B3_KEY);
-        final String b3ClientAddArticle = currentUser.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL);
-        final String b3ClientUpdateArticle = currentUser.optString(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL);
-        dataModel.put("hasB3Key", StringUtils.isNotBlank(b3Key) && StringUtils.isNotBlank(b3ClientAddArticle) && StringUtils.isNotBlank(b3ClientUpdateArticle));
-
         fillPostArticleRequisite(dataModel, currentUser);
         fillDomainsWithTags(dataModel);
     }
@@ -959,7 +954,6 @@ public class ArticleProcessor {
         final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
         final int articleAnonymous = isAnonymous
                 ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;
-        final boolean syncWithSymphonyClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT, false);
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
@@ -976,7 +970,6 @@ public class ArticleProcessor {
         }
         article.put(Article.ARTICLE_UA, ua);
         article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
-        article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncWithSymphonyClient);
 
         try {
             final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
@@ -1077,9 +1070,6 @@ public class ArticleProcessor {
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD));
         dataModel.put("rewardEditorPlaceholderLabel", rewardEditorPlaceholderLabel);
         dataModel.put(Common.BROADCAST_POINT, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST);
-
-        final String b3logKey = currentUser.optString(UserExt.USER_B3_KEY);
-        dataModel.put("hasB3Key", !Strings.isEmptyOrNull(b3logKey));
 
         fillPostArticleRequisite(dataModel, currentUser);
     }

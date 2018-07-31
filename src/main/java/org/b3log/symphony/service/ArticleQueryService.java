@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.27.36.10, Jul 28, 2018
+ * @version 2.27.36.11, Jul 31, 2018
  * @since 0.2.0
  */
 @Service
@@ -199,7 +199,6 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
                 addProjection(Article.ARTICLE_TAGS, String.class).
                 addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
@@ -265,7 +264,6 @@ public class ArticleQueryService {
         articleFields.put(Article.ARTICLE_PERMALINK, String.class);
         articleFields.put(Article.ARTICLE_TAGS, String.class);
         articleFields.put(Article.ARTICLE_LATEST_CMTER_NAME, String.class);
-        articleFields.put(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class);
         articleFields.put(Article.ARTICLE_COMMENT_CNT, Integer.class);
         articleFields.put(Article.ARTICLE_ANONYMOUS, Integer.class);
         articleFields.put(Article.ARTICLE_PERFECT, Integer.class);
@@ -946,7 +944,6 @@ public class ArticleQueryService {
                     addProjection(Article.ARTICLE_PERMALINK, String.class).
                     addProjection(Article.ARTICLE_TAGS, String.class).
                     addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                    addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                     addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                     addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                     addProjection(Article.ARTICLE_PERFECT, Integer.class).
@@ -1019,34 +1016,6 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles by tag [tagTitle=" + tag.optString(Tag.TAG_TITLE) + "] failed", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * Gets an article by the specified client article id.
-     *
-     * @param authorId        the specified author id
-     * @param clientArticleId the specified client article id
-     * @return article, return {@code null} if not found
-     * @throws ServiceException service exception
-     */
-    public JSONObject getArticleByClientArticleId(final String authorId, final String clientArticleId) throws ServiceException {
-        final List<Filter> filters = new ArrayList<>();
-        filters.add(new PropertyFilter(Article.ARTICLE_CLIENT_ARTICLE_ID, FilterOperator.EQUAL, clientArticleId));
-        filters.add(new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, authorId));
-
-        final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-        try {
-            final JSONObject result = articleRepository.get(query);
-            final JSONArray array = result.optJSONArray(Keys.RESULTS);
-            if (0 == array.length()) {
-                return null;
-            }
-
-            return array.optJSONObject(0);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets article [clientArticleId=" + clientArticleId + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -1300,7 +1269,6 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
                 addProjection(Article.ARTICLE_TAGS, String.class).
                 addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
@@ -1351,7 +1319,6 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
                 addProjection(Article.ARTICLE_TAGS, String.class).
                 addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
@@ -1393,7 +1360,6 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
                 addProjection(Article.ARTICLE_TAGS, String.class).
                 addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
@@ -1435,7 +1401,6 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
                 addProjection(Article.ARTICLE_TAGS, String.class).
                 addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
@@ -1587,7 +1552,6 @@ public class ArticleQueryService {
                         + "	articlePermalink,\n"
                         + "	articleTags,\n"
                         + "	articleLatestCmterName,\n"
-                        + "	syncWithSymphonyClient,\n"
                         + "	articleCommentCount,\n"
                         + "	articleAnonymous,\n"
                         + "	articlePerfect,\n"
@@ -1768,7 +1732,6 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
                 addProjection(Article.ARTICLE_TAGS, String.class).
                 addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class);
@@ -2039,7 +2002,6 @@ public class ArticleQueryService {
         final JSONArray cmts = commentRepository.get(query).optJSONArray(Keys.RESULTS);
         if (cmts.length() > 0) {
             final JSONObject latestCmt = cmts.optJSONObject(0);
-            latestCmt.put(Comment.COMMENT_CLIENT_COMMENT_ID, latestCmt.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
             article.put(Article.ARTICLE_T_LATEST_CMT, latestCmt);
         }
 

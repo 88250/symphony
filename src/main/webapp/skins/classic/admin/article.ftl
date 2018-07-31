@@ -70,17 +70,6 @@
                            readonly
                            value="${article.articleUpdateTime?number_to_datetime}"/>
                 </label>
-                <label>
-                    <div>${symClientSyncLabel}</div>
-                    <input onfocus="this.select()" type="text" id="syncWithSymphonyClient" name="syncWithSymphonyClient"
-                           value="${article.syncWithSymphonyClient?c}" readonly="readonly"/>
-                </label>
-                <label>
-                    <div>${clientArticleIdLabel}</div>
-                    <input onfocus="this.select()" type="text" id="clientArticleId" name="clientArticleId"
-                           value="${article.clientArticleId}"
-                           readonly="readonly"/>
-                </label>
             </div>
             <div class="fn__flex">
                 <label>
@@ -208,11 +197,6 @@
                             <option value="1"<#if 1 == article.articleAnonymousView> selected</#if>>${noLabel}</option>
                             <option value="2"<#if 2 == article.articleAnonymousView> selected</#if>>${yesLabel}</option>
                         </select>
-                    </label>
-                    <label>
-                        <div>${sourceLabel}</div>
-                        <input type="text" id="clientArticlePermalink" name="clientArticlePermalink"
-                               value="${article.clientArticlePermalink}"/>
                     </label>
                 </div>
                 <br/>

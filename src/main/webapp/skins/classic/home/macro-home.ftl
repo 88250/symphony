@@ -135,8 +135,6 @@
     Label.tagsErrorLabel = "${tagsErrorLabel}"
     Label.invalidUserQQLabel = "${invalidUserQQLabel}"
     Label.invalidUserIntroLabel = "${invalidUserIntroLabel}"
-    Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}"
-    Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}"
     Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}"
     Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}"
     Label.forgeUploadSuccLabel = "${forgeUploadSuccLabel}"

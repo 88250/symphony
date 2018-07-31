@@ -346,37 +346,6 @@
                         </select>
                     </label>
                 </div>
-                <div class="fn__flex">
-                    <label>
-                        <div>${syncWithSymphonyClientLabel}</div>
-                        <select id="syncWithSymphonyClient" name="syncWithSymphonyClient">
-                            <option value="true"<#if user.syncWithSymphonyClient> selected</#if>>${yesLabel}</option>
-                            <option value="false"<#if !user.syncWithSymphonyClient> selected</#if>>${noLabel}</option>
-                        </select>
-                    </label>
-                    <label class="mid">
-                        <div>B3 Key</div>
-                        <input type="text" id="userB3Key" name="userB3Key" value="${user.userB3Key}"/>
-                    </label>
-                    <label></label>
-                </div>
-                <div class="fn__flex">
-                    <label>
-                        <div>${clientArticleLabel}</div>
-                        <input type="text" id="userB3ClientAddArticleURL" name="userB3ClientAddArticleURL"
-                               value="${user.userB3ClientAddArticleURL}"/>
-                    </label>
-                    <label class="mid">
-                        <div>${clientUpdateArticleLabel}</div>
-                        <input type="text" id="userB3ClientUpdateArticleURL" name="userB3ClientUpdateArticleURL"
-                               value="${user.userB3ClientUpdateArticleURL}"/>
-                    </label>
-                    <label>
-                        <div>${clientCmtLabel}</div>
-                        <input type="text" id="userB3ClientAddCommentURL" name="userB3ClientAddCommentURL"
-                               value="${user.userB3ClientAddCommentURL}"/>
-                    </label>
-                </div>
                 <br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>

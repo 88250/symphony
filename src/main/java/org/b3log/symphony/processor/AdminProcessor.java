@@ -1587,10 +1587,6 @@ public class AdminProcessor {
                     }
 
                     break;
-                case UserExt.SYNC_TO_CLIENT:
-                    user.put(UserExt.SYNC_TO_CLIENT, Boolean.valueOf(value));
-
-                    break;
                 default:
                     user.put(name, value);
 

@@ -53,7 +53,6 @@
                                 <a href="${servePath}/settings/function"<#if 'function' == type> class="current"</#if>>${functionLabel}</a>
                                 <a href="${servePath}/settings/point"<#if 'point' == type> class="current"</#if>>${pointLabel}</a>
                                 <a href="${servePath}/settings/privacy"<#if 'privacy' == type> class="current"</#if>>${privacyLabel}</a>
-                                <a href="${servePath}/settings/b3"<#if 'b3' == type> class="current"</#if>>B3</a>
                                 <a href="${servePath}/settings/data"<#if 'data' == type> class="current"</#if>>${dataLabel}</a>
                                 <a href="${servePath}/settings/i18n"<#if 'i18n' == type> class="current"</#if>>${i18nLabel}</a>
                                 <a href="${servePath}/settings/help"<#if 'help' == type> class="current"</#if>>${helpLabel}</a>
@@ -78,8 +77,6 @@
             Label.tagsErrorLabel = "${tagsErrorLabel}";
             Label.invalidUserQQLabel = "${invalidUserQQLabel}";
             Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
-            Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
-            Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
             Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
             Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}";
             Label.previewLabel = "${previewLabel}";

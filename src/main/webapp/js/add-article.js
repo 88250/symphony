@@ -115,7 +115,6 @@ var AddArticle = {
         articleTags: articleTags,
         articleCommentable: true,
         articleType: articleType,
-        syncWithSymphonyClient: $('#syncWithSymphonyClient').prop('checked'),
       }
 
       if (articleType !== 5) {

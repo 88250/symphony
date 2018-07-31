@@ -33,7 +33,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
 import org.b3log.symphony.repository.CommentRepository;
@@ -50,7 +49,7 @@ import java.util.Set;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.12.3, Jun 11, 2018
+ * @version 1.7.12.4, Jul 31, 2018
  * @since 0.2.0
  */
 @Named
@@ -142,7 +141,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
-            final boolean fromClient = data.optBoolean(Common.FROM_CLIENT);
             final int commentViewMode = data.optInt(UserExt.USER_COMMENT_VIEW_MODE);
 
             final String articleId = originalArticle.optString(Keys.OBJECT_ID);
@@ -228,23 +226,8 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             cc = MP3Players.render(cc);
             cc = VideoPlayers.render(cc);
 
-            if (fromClient) {
-                // "<i class='ft-small'>by 88250</i>"
-                String syncCommenterName = StringUtils.substringAfter(cc, "<i class=\"ft-small\">by ");
-                syncCommenterName = StringUtils.substringBefore(syncCommenterName, "</i>");
-
-                if (UserRegisterValidation.invalidUserName(syncCommenterName)) {
-                    syncCommenterName = UserExt.ANONYMOUS_USER_NAME;
-                }
-
-                cc = cc.replaceAll("<i class=\"ft-small\">by .*</i>", "");
-
-                chData.put(Comment.COMMENT_T_AUTHOR_NAME, syncCommenterName);
-            }
-
             chData.put(Comment.COMMENT_CONTENT, cc);
             chData.put(Comment.COMMENT_UA, originalComment.optString(Comment.COMMENT_UA));
-            chData.put(Common.FROM_CLIENT, fromClient);
 
             ArticleChannel.notifyComment(chData);
 

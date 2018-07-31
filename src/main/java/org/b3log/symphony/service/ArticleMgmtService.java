@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.10, Jul 27, 2018
+ * @version 2.18.2.11, Jul 31, 2018
  * @since 0.2.0
  */
 @Service
@@ -496,9 +496,7 @@ public class ArticleMgmtService {
      *                          "articleEditorType": "",
      *                          "articleAuthorId": "",
      *                          "articleCommentable": boolean, // optional, default to true
-     *                          "syncWithSymphonyClient": boolean, // optional
      *                          "clientArticleId": "", // optional
-     *                          "clientArticlePermalink": "", // optional
      *                          "isBroadcast": boolean, // Client broadcast, optional
      *                          "articleType": int, // optional, default to 0
      *                          "articleRewardContent": "", // optional, default to ""
@@ -514,7 +512,6 @@ public class ArticleMgmtService {
      */
     public synchronized String addArticle(final JSONObject requestJSONObject) throws ServiceException {
         final long currentTimeMillis = System.currentTimeMillis();
-        final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
         final String authorId = requestJSONObject.optString(Article.ARTICLE_AUTHOR_ID);
         JSONObject author;
 
@@ -524,8 +521,6 @@ public class ArticleMgmtService {
         }
 
         final int articleAnonymous = requestJSONObject.optInt(Article.ARTICLE_ANONYMOUS);
-
-        final boolean syncWithSymphonyClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
 
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         articleTitle = Emotions.toAliases(articleTitle);
@@ -578,7 +573,7 @@ public class ArticleMgmtService {
                 }
             }
 
-            if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
+            if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
                 final int addition = (int) Math.round(Math.sqrt(followerCnt));
@@ -624,9 +619,6 @@ public class ArticleMgmtService {
             final JSONObject article = new JSONObject();
             article.put(Keys.OBJECT_ID, ret);
 
-            final String clientArticleId = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_ID, ret);
-            final String clientArticlePermalink = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK);
-
             article.put(Article.ARTICLE_TITLE, articleTitle);
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
 
@@ -642,7 +634,6 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
 
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
-            article.put(Article.ARTICLE_SYNC_TO_CLIENT, fromClient ? true : author.optBoolean(UserExt.SYNC_TO_CLIENT));
             article.put(Article.ARTICLE_AUTHOR_ID, authorId);
             article.put(Article.ARTICLE_COMMENT_CNT, 0);
             article.put(Article.ARTICLE_VIEW_CNT, 0);
@@ -656,8 +647,6 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_LATEST_CMT_TIME, 0);
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, "");
             article.put(Article.ARTICLE_PERMALINK, "/article/" + ret);
-            article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
-            article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, clientArticlePermalink);
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.REDDIT_SCORE, 0);
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
@@ -671,7 +660,6 @@ public class ArticleMgmtService {
             }
             article.put(Article.ARTICLE_CITY, city);
             article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
-            article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncWithSymphonyClient);
             article.put(Article.ARTICLE_PERFECT, Article.ARTICLE_PERFECT_C_NOT_PERFECT);
             article.put(Article.ARTICLE_ANONYMOUS_VIEW,
                     requestJSONObject.optInt(Article.ARTICLE_ANONYMOUS_VIEW, Article.ARTICLE_ANONYMOUS_VIEW_C_USE_GLOBAL));
@@ -781,7 +769,7 @@ public class ArticleMgmtService {
             // Grows the tag graph
             tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
 
-            if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
+            if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
                 final int addition = (int) Math.round(Math.sqrt(followerCnt));
@@ -808,7 +796,6 @@ public class ArticleMgmtService {
 
             // Event
             final JSONObject eventData = new JSONObject();
-            eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, article);
             try {
                 eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
@@ -837,7 +824,6 @@ public class ArticleMgmtService {
      *                          "articleContent": "",
      *                          "articleEditorType": "",
      *                          "articleCommentable": boolean, // optional, default to true
-     *                          "clientArticlePermalink": "", // optional
      *                          "articleType": int // optional, default to 0
      *                          "articleRewardContent": "", // optional, default to ""
      *                          "articleRewardPoint": int, // optional, default to 0
@@ -849,7 +835,6 @@ public class ArticleMgmtService {
      */
     public synchronized void updateArticle(final JSONObject requestJSONObject) throws ServiceException {
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
-        final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
 
         String articleId;
         JSONObject oldArticle;
@@ -883,7 +868,7 @@ public class ArticleMgmtService {
 
             articleAnonymous = oldArticle.optInt(Article.ARTICLE_ANONYMOUS);
 
-            if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
+            if ( Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final int balance = author.optInt(UserExt.USER_POINT);
                 if (balance - updatePointSum < 0) {
@@ -976,9 +961,6 @@ public class ArticleMgmtService {
             }
             oldArticle.put(Article.ARTICLE_UA, ua);
 
-            final String clientArticlePermalink = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK);
-            oldArticle.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, clientArticlePermalink);
-
             articleRepository.update(articleId, oldArticle);
 
             if (Article.ARTICLE_TYPE_C_THOUGHT != articleType
@@ -1005,7 +987,7 @@ public class ArticleMgmtService {
             } catch (final Exception e) {
             }
 
-            if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
+            if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 if (currentTimeMillis - createTime > 1000 * 60 * 5) {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE,
@@ -1021,7 +1003,6 @@ public class ArticleMgmtService {
 
             // Event
             final JSONObject eventData = new JSONObject();
-            eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, oldArticle);
             try {
                 eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
@@ -1056,7 +1037,6 @@ public class ArticleMgmtService {
             final JSONObject author = userRepository.get(authorId);
 
             article.put(Article.ARTICLE_COMMENTABLE, Boolean.valueOf(article.optBoolean(Article.ARTICLE_COMMENTABLE)));
-            article.put(Article.ARTICLE_SYNC_TO_CLIENT, author.optBoolean(UserExt.SYNC_TO_CLIENT));
 
             final JSONObject oldArticle = articleRepository.get(articleId);
 
@@ -1793,14 +1773,11 @@ public class ArticleMgmtService {
             final String ret = String.valueOf(time);
             final JSONObject article = new JSONObject();
             article.put(Keys.OBJECT_ID, ret);
-            article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, ret);
-            article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, "");
             article.put(Article.ARTICLE_AUTHOR_ID, author.optString(Keys.OBJECT_ID));
             article.put(Article.ARTICLE_TITLE, Emotions.toAliases(requestJSONObject.optString(Article.ARTICLE_TITLE)));
             article.put(Article.ARTICLE_CONTENT, Emotions.toAliases(requestJSONObject.optString(Article.ARTICLE_CONTENT)));
             article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
             article.put(Article.ARTICLE_EDITOR_TYPE, 0);
-            article.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
             article.put(Article.ARTICLE_COMMENT_CNT, 0);
             article.put(Article.ARTICLE_VIEW_CNT, 0);
             article.put(Article.ARTICLE_GOOD_CNT, 0);
@@ -1898,7 +1875,6 @@ public class ArticleMgmtService {
 
             // Event
             final JSONObject eventData = new JSONObject();
-            eventData.put(Common.FROM_CLIENT, false);
             eventData.put(Article.ARTICLE, article);
             try {
                 eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));

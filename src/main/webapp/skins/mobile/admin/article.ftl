@@ -46,12 +46,6 @@
             <label for="articleUpdateTime">${updateTimeLabel}</label>
             <input type="text" id="articleUpdateTime" name="articleUpdateTime" value="${article.articleUpdateTime?c}" />
 
-            <label for="syncWithSymphonyClient">${symClientSyncLabel}</label>
-            <input type="text" id="syncWithSymphonyClient" name="syncWithSymphonyClient" value="${article.syncWithSymphonyClient?c}" readonly="readonly" />
-
-            <label for="clientArticleId">${clientArticleIdLabel}</label>
-            <input type="text" id="clientArticleId" name="clientArticleId" value="${article.clientArticleId}" readonly="readonly" />
-
             <label for="articleEditorType">${eidotrTypeLabel}</label>
             <input type="text" id="articleEditorType" name="articleEditorType" value="${article.articleEditorType}" readonly="readonly" />
 

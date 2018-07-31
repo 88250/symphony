@@ -46,8 +46,6 @@
                     ${privacyLabel}
                     <#elseif type == "account">
                     ${accountLabel}
-                    <#elseif type == "b3">
-                    B3
                     <#elseif type == "i18n">
                     ${i18nLabel}
                     <#elseif type == "data">
@@ -67,7 +65,6 @@
                     <li<#if 'point' == type> class="fn-none"</#if>><a href="${servePath}/settings/point">${pointLabel}</a></li>
                     <li<#if 'location' == type> class="fn-none"</#if>><a href="${servePath}/settings/location">${geoLabel}</a></li>
                     <li<#if 'privacy' == type> class="fn-none"</#if>><a href="${servePath}/settings/privacy">${privacyLabel}</a></li>
-                    <li<#if 'b3' == type> class="fn-none"</#if>><a href="${servePath}/settings/b3">B3</a></li>
                     <li<#if 'i18n' == type> class="fn-none"</#if>><a href="${servePath}/settings/i18n">${i18nLabel}</a></li>
                     <li<#if 'data' == type> class="fn-none"</#if>><a href="${servePath}/settings/data">${dataLabel}</a></li>
                     <li<#if 'help' == type> class="current"</#if>><a href="${servePath}/settings/help">${helpLabel}</a></li>
@@ -96,8 +93,6 @@
                     Label.tagsErrorLabel = "${tagsErrorLabel}";
                     Label.invalidUserQQLabel = "${invalidUserQQLabel}";
                     Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
-                    Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
-                    Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
                     Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
                     Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}";
                     Label.previewLabel = "${previewLabel}";

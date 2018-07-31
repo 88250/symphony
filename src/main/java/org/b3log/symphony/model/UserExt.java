@@ -28,7 +28,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.13.0.2, Jul 28, 2018
+ * @version 2.13.0.3, Jul 31, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -153,11 +153,6 @@ public final class UserExt {
      * Key of user comment view mode.
      */
     public static final String USER_COMMENT_VIEW_MODE = "userCommentViewMode";
-
-    /**
-     * Key of sync to client.
-     */
-    public static final String SYNC_TO_CLIENT = "syncWithSymphonyClient";
 
     /**
      * Key of user geo status.
@@ -298,26 +293,6 @@ public final class UserExt {
      * Key of user avatar URL.
      */
     public static final String USER_AVATAR_URL = "userAvatarURL";
-
-    /**
-     * Key of user B3log key.
-     */
-    public static final String USER_B3_KEY = "userB3Key";
-
-    /**
-     * Key of user B3log client add article URL.
-     */
-    public static final String USER_B3_CLIENT_ADD_ARTICLE_URL = "userB3ClientAddArticleURL";
-
-    /**
-     * Key of user B3log client update article URL.
-     */
-    public static final String USER_B3_CLIENT_UPDATE_ARTICLE_URL = "userB3ClientUpdateArticleURL";
-
-    /**
-     * Key of user B3log client add comment URL.
-     */
-    public static final String USER_B3_CLIENT_ADD_COMMENT_URL = "userB3ClientAddCommentURL";
 
     /**
      * Key of online flag.

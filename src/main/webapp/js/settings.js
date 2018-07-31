@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.0.1, Jul 29, 2018
+ * @version 1.26.0.2, Jul 31, 2018
  */
 
 /**
@@ -511,10 +511,6 @@ var Settings = {
         requestJSONObject = this._validateProfiles();
 
         break;
-      case "sync/b3":
-        requestJSONObject = this._validateSyncB3();
-
-        break;
       case "password":
         requestJSONObject = this._validatePassword();
 
@@ -678,43 +674,6 @@ var Settings = {
         userTags: $("#userTags").val().replace(/(^\s*)|(\s*$)/g, ""),
         userURL: $("#userURL").val().replace(/(^\s*)|(\s*$)/g, ""),
         userIntro: $("#userIntro").val().replace(/(^\s*)|(\s*$)/g, "")
-      };
-    } else {
-      return false;
-    }
-  },
-  /**
-   * @description settings 页面 solo 数据同步校验
-   * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
-   */
-  _validateSyncB3: function () {
-    if (Validate.goValidate({
-      target: $("#syncb3Tip"),
-      data: [{
-        "target": $("#soloKey"),
-        "type": "string",
-        'max': 20,
-        "msg": Label.invalidUserB3KeyLabel
-      }, {
-        "target": $("#soloPostURL"),
-        "type": "url",
-        "msg": Label.invalidUserB3ClientURLLabel
-      }, {
-        "target": $("#soloUpdateURL"),
-        "type": "url",
-        "msg": Label.invalidUserB3ClientURLLabel
-      }, {
-        "target": $("#soloCmtURL"),
-        "type": "url",
-        "msg": Label.invalidUserB3ClientURLLabel
-      }]
-    })) {
-      return {
-        userB3Key: $("#soloKey").val().replace(/(^\s*)|(\s*$)/g, ""),
-        userB3ClientAddArticleURL: $("#soloPostURL").val().replace(/(^\s*)|(\s*$)/g, ""),
-        userB3ClientUpdateArticleURL: $("#soloUpdateURL").val().replace(/(^\s*)|(\s*$)/g, ""),
-        userB3ClientAddCommentURL: $("#soloCmtURL").val().replace(/(^\s*)|(\s*$)/g, ""),
-        syncWithSymphonyClient: $("#syncWithSymphonyClient").prop("checked")
       };
     } else {
       return false;

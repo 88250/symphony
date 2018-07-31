@@ -149,9 +149,6 @@
                              </#if>
                         &nbsp;•&nbsp;
                         ${article.timeAgo}
-                        <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
-                        &nbsp;•&nbsp; <a href="${servePath}/forward?goto=${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
-                        </#if>
                     </span>
                         <#if 0 == article.articleAuthor.userUAStatus>
                         <span id="articltVia" class="ft-fade" data-ua="${article.articleUA}"></span>

@@ -48,7 +48,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.1.0, Jul 30, 2018
+ * @version 2.14.1.1, Jul 31, 2018
  * @since 0.2.0
  */
 @Service
@@ -395,7 +395,6 @@ public class CommentMgmtService {
             throw new ServiceException(langPropsService.get("userStatusInvalidLabel"));
         }
 
-        final boolean fromClient = requestJSONObject.has(Comment.COMMENT_CLIENT_COMMENT_ID);
         final String articleId = requestJSONObject.optString(Comment.COMMENT_ON_ARTICLE_ID);
         final String ip = requestJSONObject.optString(Comment.COMMENT_IP);
         String ua = requestJSONObject.optString(Comment.COMMENT_UA);
@@ -435,7 +434,7 @@ public class CommentMgmtService {
 
             article = articleRepository.get(articleId);
 
-            if (!fromClient && !TuringQueryService.ROBOT_NAME.equals(commenterName)) {
+            if (!TuringQueryService.ROBOT_NAME.equals(commenterName)) {
                 int pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT;
 
                 // Point
@@ -473,13 +472,6 @@ public class CommentMgmtService {
 
             comment.put(Comment.COMMENT_AUTHOR_ID, commentAuthorId);
             comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
-            if (fromClient) {
-                comment.put(Comment.COMMENT_CLIENT_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
-
-                // Appends original commenter name
-                final String authorName = requestJSONObject.optString(Comment.COMMENT_T_AUTHOR_NAME);
-                content += " <i class='ft-small'>by " + authorName + "</i>";
-            }
 
             final String originalCmtId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCmtId);
@@ -569,7 +561,7 @@ public class CommentMgmtService {
 
             transaction.commit();
 
-            if (!fromClient && Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous
+            if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous
                     && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous
                     && !TuringQueryService.ROBOT_NAME.equals(commenterName)) {
                 // Point
@@ -590,7 +582,6 @@ public class CommentMgmtService {
             // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
-            eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, article);
             eventData.put(UserExt.USER_COMMENT_VIEW_MODE, commentViewMode);
 
@@ -674,11 +665,8 @@ public class CommentMgmtService {
                 }
             }
 
-            final boolean fromClient = comment.has(Comment.COMMENT_CLIENT_COMMENT_ID);
-
             // Event
             final JSONObject eventData = new JSONObject();
-            eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, article);
             eventData.put(Comment.COMMENT, comment);
             try {

@@ -121,11 +121,6 @@
                         <#if article?? && permissions["commonRemoveArticle"].permissionGrant>
                             <label class="ft-red fn-pointer" tabindex="11" onclick="AddArticle.remove('${csrfToken}', this)">${removeArticleLabel} &nbsp; &nbsp;</label>
                         </#if>
-                        <#if hasB3Key>
-                            <label class="article-anonymous">${syncLabel}<input
-                                <#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked</#if></#if>
-                                type="checkbox" id="syncWithSymphonyClient"></label>
-                        </#if>
                         <#if permissions["commonAddArticleAnonymous"].permissionGrant && ((!article?? && 5 != articleType) || (article?? && 5 != article.articleType) )>
                             <label class="article-anonymous">&nbsp;  ${anonymousLabel}<input
                                 <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>

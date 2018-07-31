@@ -237,24 +237,6 @@
                     <option value="3"<#if 3 == user.userStatus> selected</#if>>${invalidLoginLabel}</option>
                 </select>
 
-                <label>${syncWithSymphonyClientLabel}</label>
-                <select id="syncWithSymphonyClient" name="syncWithSymphonyClient">
-                    <option value="true"<#if user.syncWithSymphonyClient> selected</#if>>${yesLabel}</option>
-                    <option value="false"<#if !user.syncWithSymphonyClient> selected</#if>>${noLabel}</option>
-                </select>
-
-                <label for="userB3Key">B3 Key</label>
-                <input type="text" id="userB3Key" name="userB3Key" value="${user.userB3Key}" />
-
-                <label for="userB3ClientAddArticleURL">${clientArticleLabel}</label>
-                <input type="text" id="userB3ClientAddArticleURL" name="userB3ClientAddArticleURL" value="${user.userB3ClientAddArticleURL}" />
-
-                <label for="userB3ClientUpdateArticleURL">${clientUpdateArticleLabel}</label>
-                <input type="text" id="userB3ClientUpdateArticleURL" name="userB3ClientUpdateArticleURL" value="${user.userB3ClientUpdateArticleURL}" />
-
-                <label for="userB3ClientAddCommentURL">${clientCmtLabel}</label>
-                <input type="text" id="userB3ClientAddCommentURL" name="userB3ClientAddCommentURL" value="${user.userB3ClientAddCommentURL}" />
-
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
