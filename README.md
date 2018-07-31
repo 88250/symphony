@@ -197,12 +197,15 @@ Follow up will continue to add some fun online games.
 * background: data statistics, version check
 * user management: search users, add users, user data maintenance (state settings, points, etc.)
 * post management: add new search posts, posts, post maintenance data (top, rebuild index etc.)
-* replies Management: setting up, update
+* replies management: setting up, update
+* breezmoon management: status settings, content updates
 * domain management: add fields, field data maintenance (associated labels, icons, URI, CSS, description, etc.)
 * label management: add tags, tag data maintenance (pictures, URI, CSS, description, etc.)
 * keep word management: add the reserved word, keep the word data maintenance
 * invitation code management: generate invitation code, invitation code data maintenance
 * advertising management: sidebar exclusive booth maintenance
+* role management: Role Permission Data Maintenance
+* report management: Report Processing
 * other management post / replies: open / close / switch; user registration invitation code switch
 
 ### Integrated cloud mail service
