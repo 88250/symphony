@@ -157,6 +157,12 @@ public class ArticleQueryService {
     private ArticleCache articleCache;
 
     /**
+     * Reward query service.
+     */
+    @Inject
+    private RewardQueryService rewardQueryService;
+
+    /**
      * Gets the question articles with the specified fetch size.
      *
      * @param avatarViewMode the specified avatar view mode
@@ -260,6 +266,12 @@ public class ArticleQueryService {
 
         try {
             organizeArticles(avatarViewMode, articles);
+
+            for (final JSONObject article : articles) {
+                final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                final String articleId = article.optString(Keys.OBJECT_ID);
+                article.put(Common.OFFERED, rewardQueryService.isRewarded(articleAuthorId, articleId, Reward.TYPE_C_ACCEPT_COMMENT));
+            }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Organizes articles failed", e);
 
