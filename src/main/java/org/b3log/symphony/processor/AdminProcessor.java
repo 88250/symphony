@@ -119,7 +119,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.29.0.0, Jul 15, 2018
+ * @version 2.29.0.1, Jul 31, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -2310,6 +2310,16 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject tag = tagQueryService.getTag(tagId);
+        if (null == tag) {
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+
+            dataModel.put(Keys.MSG, langPropsService.get("notFoundTagLabel"));
+            dataModelService.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
         dataModel.put(Tag.TAG, tag);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
