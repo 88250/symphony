@@ -84,10 +84,5 @@
             </div>
         </div>
         <#include "../footer.ftl">
-        <script>
-            Label.invalidUserURLLabel = "${invalidUserURLLabel}";
-            Label.forgeUploadSuccLabel = "${forgeUploadSuccLabel}";
-            Util.linkForge();
-        </script>
     </body>
 </html>

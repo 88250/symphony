@@ -183,7 +183,6 @@
     Label.invalidUserIntroLabel = "${invalidUserIntroLabel}"
     Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}"
     Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}"
-    Label.forgeUploadSuccLabel = "${forgeUploadSuccLabel}"
     Label.type = '${type}'
     Label.userName = '${user.userName}'
 
