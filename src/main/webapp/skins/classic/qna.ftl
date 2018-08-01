@@ -58,8 +58,7 @@
                                 <use xlink:href="#thumbs-up"></use>
                             </svg> ${hotArticlesLabel}</a>
                         &nbsp;
-                        <a class="recent-rss" href="${servePath}/post?type=5">
-                         <svg class="fn-text-top"><use xlink:href="#iconAsk"></use></svg>
+                        <a class="ft-red" href="${servePath}/post?type=5">
                         ${IHaveAQuestionLabel}</a>
                     </span>
                 </div>
