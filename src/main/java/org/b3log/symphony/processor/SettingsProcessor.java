@@ -38,6 +38,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
+import org.b3log.latke.util.TimeZones;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.CSRFToken;
@@ -51,7 +52,6 @@ import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Languages;
 import org.b3log.symphony.util.Symphonys;
-import org.b3log.symphony.util.TimeZones;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;

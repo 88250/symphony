@@ -20,6 +20,7 @@ package org.b3log.symphony.service;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -34,13 +35,13 @@ import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.MD5;
-import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Strings;
+import org.b3log.latke.util.*;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
-import org.b3log.symphony.util.*;
+import org.b3log.symphony.util.Geos;
+import org.b3log.symphony.util.Gravatars;
+import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -497,7 +498,7 @@ public class UserMgmtService {
                 try {
                     byte[] avatarData;
 
-                    final String hash = MD5.hash(ret);
+                    final String hash = DigestUtils.md5Hex(ret);
                     avatarData = Gravatars.getRandomAvatarData(hash); // https://github.com/b3log/symphony/issues/569
                     if (null == avatarData) {
                         final BufferedImage img = avatarQueryService.createAvatar(hash, 512);

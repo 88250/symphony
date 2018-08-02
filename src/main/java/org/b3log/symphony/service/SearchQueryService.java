@@ -22,9 +22,9 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.*;
+import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.util.Symphonys;
-import org.b3log.symphony.util.URLs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

@@ -29,8 +29,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.URLs;
 import org.b3log.symphony.util.Symphonys;
-import org.b3log.symphony.util.URLs;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;

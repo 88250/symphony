@@ -30,9 +30,9 @@ import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.HTTPResponse;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
+import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.util.Symphonys;
-import org.b3log.symphony.util.URLs;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;

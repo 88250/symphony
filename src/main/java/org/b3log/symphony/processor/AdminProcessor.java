@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.processor;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -38,7 +39,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.ArticleBaiduSender;
@@ -1496,7 +1496,7 @@ public class AdminProcessor {
             final JSONObject user = new JSONObject();
             user.put(User.USER_NAME, userName);
             user.put(User.USER_EMAIL, email);
-            user.put(User.USER_PASSWORD, MD5.hash(password));
+            user.put(User.USER_PASSWORD, DigestUtils.md5Hex(password));
             user.put(UserExt.USER_APP_ROLE, appRole);
             user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
 
@@ -1583,7 +1583,7 @@ public class AdminProcessor {
                 case User.USER_PASSWORD:
                     final String oldPwd = user.getString(name);
                     if (!oldPwd.equals(value) && !Strings.isEmptyOrNull(value)) {
-                        user.put(name, MD5.hash(value));
+                        user.put(name, DigestUtils.md5Hex(value));
                     }
 
                     break;

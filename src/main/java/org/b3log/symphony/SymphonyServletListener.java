@@ -43,7 +43,6 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.InitMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Crypts;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 

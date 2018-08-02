@@ -23,9 +23,9 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.URLs;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.util.URLs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

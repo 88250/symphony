@@ -20,6 +20,7 @@ package org.b3log.symphony.processor;
 import jodd.io.FileUtil;
 import jodd.io.upload.MultipartRequestInputStream;
 import jodd.net.MimeTypes;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
@@ -28,7 +29,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.util.Symphonys;
@@ -115,7 +115,7 @@ public class FileUploadProcessor {
         final byte[] data = IOUtils.toByteArray(new FileInputStream(path));
 
         final String ifNoneMatch = req.getHeader("If-None-Match");
-        final String etag = "\"" + MD5.hash(new String(data)) + "\"";
+        final String etag = "\"" + DigestUtils.md5Hex(new String(data)) + "\"";
 
         resp.addHeader("Cache-Control", "public, max-age=31536000");
         resp.addHeader("ETag", etag);

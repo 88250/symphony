@@ -37,6 +37,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
+import org.b3log.latke.util.URLs;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
@@ -866,7 +867,7 @@ public class ArticleMgmtService {
 
             articleAnonymous = oldArticle.optInt(Article.ARTICLE_ANONYMOUS);
 
-            if ( Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
+            if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final int balance = author.optInt(UserExt.USER_POINT);
                 if (balance - updatePointSum < 0) {
@@ -1609,8 +1610,7 @@ public class ArticleMgmtService {
                         tagTitle, article.optString(Article.ARTICLE_TITLE));
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
-                String tagURI = tagTitle;
-                tagURI = URLs.encode(tagTitle);
+                final String tagURI = URLs.encode(tagTitle);
                 tag.put(Tag.TAG_URI, tagURI);
                 tag.put(Tag.TAG_CSS, "");
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);

@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -28,7 +29,6 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Symphonys;
@@ -620,7 +620,7 @@ public class InitMgmtService {
             final JSONObject admin = new JSONObject();
             admin.put(User.USER_EMAIL, "admin" + UserExt.USER_BUILTIN_EMAIL_SUFFIX);
             admin.put(User.USER_NAME, "admin");
-            admin.put(User.USER_PASSWORD, MD5.hash("admin"));
+            admin.put(User.USER_PASSWORD, DigestUtils.md5Hex("admin"));
             admin.put(UserExt.USER_LANGUAGE, DEFAULT_LANG);
             admin.put(User.USER_ROLE, Role.ROLE_ID_C_ADMIN);
             admin.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
@@ -632,7 +632,7 @@ public class InitMgmtService {
             final JSONObject comBot = new JSONObject();
             comBot.put(User.USER_EMAIL, UserExt.COM_BOT_EMAIL);
             comBot.put(User.USER_NAME, UserExt.COM_BOT_NAME);
-            comBot.put(User.USER_PASSWORD, MD5.hash(String.valueOf(new Random().nextInt())));
+            comBot.put(User.USER_PASSWORD, DigestUtils.md5Hex(String.valueOf(new Random().nextInt())));
             comBot.put(UserExt.USER_LANGUAGE, "en_US");
             comBot.put(UserExt.USER_GUIDE_STEP, UserExt.USER_GUIDE_STEP_FIN);
             comBot.put(User.USER_ROLE, Role.ROLE_ID_C_DEFAULT);

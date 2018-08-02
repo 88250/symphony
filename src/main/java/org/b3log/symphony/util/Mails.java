@@ -26,6 +26,8 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.util.Crypts;
+import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
 
