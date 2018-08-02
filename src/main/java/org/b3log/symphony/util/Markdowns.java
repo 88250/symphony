@@ -70,7 +70,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.0, Jun 19, 2018
+ * @version 1.11.21.1, Aug 2, 2018
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -331,6 +331,7 @@ public final class Markdowns {
                 }
             }
 
+            html = Jsoup.clean(html, Whitelist.relaxed());
             final Document doc = Jsoup.parse(html);
             final List<org.jsoup.nodes.Node> toRemove = new ArrayList<>();
             doc.traverse(new NodeVisitor() {
@@ -388,6 +389,12 @@ public final class Markdowns {
             doc.select("pre>code").addClass("hljs");
             doc.select("a").forEach(a -> {
                 String src = a.attr("href");
+                if (StringUtils.containsIgnoreCase(src, "javascript:")) {
+                    a.remove();
+
+                    return;
+                }
+
                 if (!StringUtils.startsWithAny(src, new String[]{Latkes.getServePath(), Symphonys.get("qiniu.domain")})) {
                     src = URLs.encode(src);
                     a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
