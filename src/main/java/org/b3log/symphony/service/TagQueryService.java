@@ -17,6 +17,8 @@
  */
 package org.b3log.symphony.service;
 
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -28,8 +30,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.urlfetch.*;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.cache.TagCache;
@@ -43,15 +43,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 
 /**
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.7.0, Feb 22, 2018
+ * @version 1.8.7.1, Aug 2, 2018
  * @since 0.2.0
  */
 @Service
@@ -61,11 +59,6 @@ public class TagQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TagQueryService.class);
-
-    /**
-     * URL fetch service.
-     */
-    private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     /**
      * Tag repository.
@@ -196,19 +189,13 @@ public class TagQueryService {
             return ret;
         }
 
-        final HTTPRequest request = new HTTPRequest();
         try {
-            request.setURL(new URL("http://api.bosonnlp.com/keywords/analysis?top_k=" + tagFetchSize));
-            request.setRequestMethod(HTTPRequestMethod.POST);
-
-            request.addHeader(new HTTPHeader("Content-Type", "application/json"));
-            request.addHeader(new HTTPHeader("Accept", "application/json"));
-            request.addHeader(new HTTPHeader("X-Token", token));
-            request.setPayload(("\"" + content + "\"").getBytes("UTF-8"));
-
-            final HTTPResponse response = urlFetchService.fetch(request);
-            final String str = new String(response.getContent(), "UTF-8");
-
+            final HttpResponse response = HttpRequest.post("http://api.bosonnlp.com/keywords/analysis?top_k=" + tagFetchSize).
+                    header("Content-Type", "application/json").
+                    header("Accept", "application/json").
+                    header("X-Token", token).bodyText("\"" + content + "\"").timeout(5000).send();
+            response.charset("UTF-8");
+            final String str = response.bodyText();
             try {
                 final JSONArray data = new JSONArray(str);
 
@@ -221,7 +208,7 @@ public class TagQueryService {
 
                 LOGGER.log(Level.ERROR, "Boson process failed [" + data.toString(4) + "]");
             }
-        } catch (final IOException | JSONException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates tags error: " + content, e);
         }
 

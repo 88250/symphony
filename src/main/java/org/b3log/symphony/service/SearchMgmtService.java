@@ -17,20 +17,18 @@
  */
 package org.b3log.symphony.service;
 
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
+import jodd.net.MimeTypes;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.urlfetch.*;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
-
-import java.net.URL;
-import java.net.UnknownHostException;
 
 /**
  * Search management service.
@@ -39,11 +37,16 @@ import java.net.UnknownHostException;
  * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.6, May 22, 2018
+ * @version 1.3.2.7, May 22, 2018
  * @since 1.4.0
  */
 @Service
 public class SearchMgmtService {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(SearchMgmtService.class);
 
     /**
      * Elasticsearch index name.
@@ -56,33 +59,12 @@ public class SearchMgmtService {
     public static final String ES_SERVER = Symphonys.get("es.server");
 
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(SearchMgmtService.class);
-
-    /**
-     * URL fetch service.
-     */
-    private static final URLFetchService URL_FETCH_SVC = URLFetchServiceFactory.getURLFetchService();
-
-    /**
      * Rebuilds ES index.
      */
     public void rebuildESIndex() {
         try {
-            final HTTPRequest removeRequest = new HTTPRequest();
-            removeRequest.setRequestMethod(HTTPRequestMethod.DELETE);
-            removeRequest.setURL(new URL(ES_SERVER + "/" + ES_INDEX_NAME));
-            URL_FETCH_SVC.fetch(removeRequest);
-
-            final HTTPRequest createRequest = new HTTPRequest();
-            createRequest.setRequestMethod(HTTPRequestMethod.PUT);
-            createRequest.setURL(new URL(ES_SERVER + "/" + ES_INDEX_NAME));
-            URL_FETCH_SVC.fetch(createRequest);
-
-            final HTTPRequest mappingRequest = new HTTPRequest();
-            mappingRequest.setRequestMethod(HTTPRequestMethod.POST);
-            mappingRequest.setURL(new URL(ES_SERVER + "/" + ES_INDEX_NAME + "/" + Article.ARTICLE + "/_mapping"));
+            HttpRequest.delete(ES_SERVER + "/" + ES_INDEX_NAME).timeout(3000).send();
+            HttpRequest.put(ES_SERVER + "/" + ES_INDEX_NAME).timeout(3000).send();
 
             final JSONObject mapping = new JSONObject();
             final JSONObject article = new JSONObject();
@@ -100,9 +82,7 @@ public class SearchMgmtService {
             content.put("analyzer", "ik_smart");
             content.put("search_analyzer", "ik_smart");
 
-            mappingRequest.setPayload(mapping.toString().getBytes("UTF-8"));
-
-            URL_FETCH_SVC.fetch(mappingRequest);
+            HttpRequest.post(ES_SERVER + "/" + ES_INDEX_NAME + "/" + Article.ARTICLE + "/_mapping").bodyText(mapping.toString()).timeout(3000).contentTypeJson();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes index failed", e);
         }
@@ -123,31 +103,21 @@ public class SearchMgmtService {
             String host = appId + "-" + retries + ".algolianet.com";
 
             try {
-                final HTTPRequest request = new HTTPRequest();
-                request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
-                request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
-                request.setRequestMethod(HTTPRequestMethod.POST);
-
-                request.setURL(new URL("https://" + host + "/1/indexes/" + index + "/clear"));
-
-                final HTTPResponse response = URL_FETCH_SVC.fetch(request);
-                if (200 != response.getResponseCode()) {
+                final HttpResponse response = HttpRequest.post("https://" + host + "/1/indexes/" + index + "/clear").
+                        header("X-Algolia-API-Key", key).
+                        header("X-Algolia-Application-Id", appId).timeout(5000).send();
+                if (200 != response.statusCode()) {
                     LOGGER.warn(response.toString());
                 }
 
                 break;
-            } catch (final UnknownHostException e) {
-                LOGGER.log(Level.ERROR, "Clear index failed [UnknownHostException=" + host + "]");
+            } catch (final Exception e) {
+                LOGGER.log(Level.WARN, "Clear index failed", e);
 
                 retries++;
-
                 if (retries > maxRetries) {
-                    LOGGER.log(Level.ERROR, "Clear index failed [UnknownHostException]");
+                    LOGGER.log(Level.ERROR, "Clear index failed", e);
                 }
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Clear index failed", e);
-
-                break;
             }
         }
     }
@@ -159,19 +129,13 @@ public class SearchMgmtService {
      * @param type the specified document type
      */
     public void updateESDocument(final JSONObject doc, final String type) {
-        final HTTPRequest request = new HTTPRequest();
-        request.setRequestMethod(HTTPRequestMethod.POST);
-
         try {
-            request.setURL(new URL(ES_SERVER + "/" + ES_INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID) + "/_update"));
-
             final JSONObject payload = new JSONObject();
             payload.put("doc", doc);
             payload.put("upsert", doc);
 
-            request.setPayload(payload.toString().getBytes("UTF-8"));
-
-            URL_FETCH_SVC.fetchAsync(request);
+            HttpRequest.post(ES_SERVER + "/" + ES_INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID) + "/_update").
+                    bodyText(payload.toString()).contentTypeJson().timeout(5000).sendAsync();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates doc failed", e);
         }
@@ -184,13 +148,8 @@ public class SearchMgmtService {
      * @param type the specified document type
      */
     public void removeESDocument(final JSONObject doc, final String type) {
-        final HTTPRequest request = new HTTPRequest();
-        request.setRequestMethod(HTTPRequestMethod.DELETE);
-
         try {
-            request.setURL(new URL(ES_SERVER + "/" + ES_INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID)));
-
-            URL_FETCH_SVC.fetchAsync(request);
+            HttpRequest.delete(ES_SERVER + "/" + ES_INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID)).timeout(5000).sendAsync();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates doc failed", e);
         }
@@ -199,9 +158,10 @@ public class SearchMgmtService {
     /**
      * Updates/Adds indexing the specified document in Algolia.
      *
-     * @param doc the specified document
+     * @param doc       the specified document
+     * @param skipCheck the specified skip check flag
      */
-    public void updateAlgoliaDocument(final JSONObject doc) {
+    public void updateAlgoliaDocument(final JSONObject doc, final boolean skipCheck) {
         final int maxRetries = 3;
         int retries = 1;
 
@@ -213,11 +173,6 @@ public class SearchMgmtService {
             String host = appId + "-" + retries + ".algolianet.com";
 
             try {
-                final HTTPRequest request = new HTTPRequest();
-                request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
-                request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
-                request.setRequestMethod(HTTPRequestMethod.PUT);
-
                 final String id = doc.optString(Keys.OBJECT_ID);
 
                 String content = doc.optString(Article.ARTICLE_CONTENT);
@@ -227,39 +182,34 @@ public class SearchMgmtService {
                 doc.put(Article.ARTICLE_CONTENT, content);
                 final byte[] data = doc.toString().getBytes("UTF-8");
 
-                if (content.length() < 32) {
-                    LOGGER.log(Level.INFO, "This article is too small [length=" + data.length + "], so skip it [title="
+                if (!skipCheck && content.length() < 32) {
+                    LOGGER.log(Level.INFO, "This article is too small [length=" + content.length() + "], so skip it [title="
                             + doc.optString(Article.ARTICLE_TITLE) + ", id=" + id + "]");
                     return;
                 }
 
-                if (data.length > 102400) {
+                if (!skipCheck && data.length > 102400) {
                     LOGGER.log(Level.INFO, "This article is too big [length=" + data.length + "], so skip it [title="
                             + doc.optString(Article.ARTICLE_TITLE) + ", id=" + id + "]");
                     return;
                 }
 
-                request.setURL(new URL("https://" + host + "/1/indexes/" + index + "/" + id));
-                request.setPayload(data);
-
-                final HTTPResponse response = URL_FETCH_SVC.fetch(request);
-                if (200 != response.getResponseCode()) {
-                    LOGGER.warn(new String(response.getContent(), "UTF-8"));
+                final HttpResponse response = HttpRequest.put("https://" + host + "/1/indexes/" + index + "/" + id).
+                        header("X-Algolia-API-Key", key).
+                        header("X-Algolia-Application-Id", appId).body(data, MimeTypes.MIME_APPLICATION_JSON).timeout(5000).send();
+                response.charset("UTF-8");
+                if (200 != response.statusCode()) {
+                    LOGGER.warn(response.bodyText());
                 }
 
                 break;
-            } catch (final UnknownHostException e) {
-                LOGGER.log(Level.WARN, "Index failed [UnknownHostException=" + host + "]");
+            } catch (final Exception e) {
+                LOGGER.log(Level.WARN, "Index failed", e);
 
                 retries++;
-
                 if (retries > maxRetries) {
-                    LOGGER.log(Level.ERROR, "Index failed [UnknownHostException], doc [" + doc + "]");
+                    LOGGER.log(Level.ERROR, "Index failed [doc=" + doc + "]", e);
                 }
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Index failed [doc=" + doc + "]", e);
-
-                break;
             }
 
             try {
@@ -287,34 +237,22 @@ public class SearchMgmtService {
             String host = appId + "-" + retries + ".algolianet.com";
 
             try {
-                final HTTPRequest request = new HTTPRequest();
-                request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
-                request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
-                request.setRequestMethod(HTTPRequestMethod.DELETE);
-
                 final String id = doc.optString(Keys.OBJECT_ID);
-                request.setURL(new URL("https://" + host + "/1/indexes/" + index + "/" + id));
-
-                request.setPayload(doc.toString().getBytes("UTF-8"));
-
-                final HTTPResponse response = URL_FETCH_SVC.fetch(request);
-                if (200 != response.getResponseCode()) {
+                final HttpResponse response = HttpRequest.delete("https://" + host + "/1/indexes/" + index + "/" + id).
+                        header("X-Algolia-API-Key", key).
+                        header("X-Algolia-Application-Id", appId).body(doc.toString().getBytes("UTF-8"), MimeTypes.MIME_APPLICATION_JSON).timeout(5000).send();
+                if (200 != response.statusCode()) {
                     LOGGER.warn(response.toString());
                 }
 
                 break;
-            } catch (final UnknownHostException e) {
-                LOGGER.log(Level.WARN, "Remove object failed [UnknownHostException=" + host + "]");
+            } catch (final Exception e) {
+                LOGGER.log(Level.WARN, "Remove object failed", e);
 
                 retries++;
-
                 if (retries > maxRetries) {
-                    LOGGER.log(Level.ERROR, "Remove object failed [UnknownHostException]");
+                    LOGGER.log(Level.ERROR, "Remove object failed", e);
                 }
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Remove object failed", e);
-
-                break;
             }
         }
     }

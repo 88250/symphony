@@ -2775,7 +2775,7 @@ public class AdminProcessor {
 
                     for (final JSONObject article : articles) {
                         if (Symphonys.getBoolean("algolia.enabled")) {
-                            searchMgmtService.updateAlgoliaDocument(article);
+                            searchMgmtService.updateAlgoliaDocument(article, false);
                         }
 
                         if (Symphonys.getBoolean("es.enabled")) {
@@ -2814,7 +2814,7 @@ public class AdminProcessor {
         }
 
         if (Symphonys.getBoolean("algolia.enabled")) {
-            searchMgmtService.updateAlgoliaDocument(article);
+            searchMgmtService.updateAlgoliaDocument(article, true);
 
             final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
             ArticleBaiduSender.sendToBaidu(articlePermalink);

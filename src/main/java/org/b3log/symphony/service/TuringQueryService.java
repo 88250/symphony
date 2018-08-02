@@ -17,28 +17,23 @@
  */
 package org.b3log.symphony.service;
 
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.urlfetch.HTTPRequest;
-import org.b3log.latke.urlfetch.HTTPResponse;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.net.URL;
 
 /**
  * Turing query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, May 1, 2018
+ * @version 1.0.0.3, Aug 2, 2018
  * @since 1.4.0
  */
 @Service
@@ -75,11 +70,6 @@ public class TuringQueryService {
     public static final String ROBOT_AVATAR = Symphonys.get("turing.avatar");
 
     /**
-     * URL fetch service.
-     */
-    private static final URLFetchService URL_FETCH_SVC = URLFetchServiceFactory.getURLFetchService();
-
-    /**
      * Language service.
      */
     @Inject
@@ -97,12 +87,7 @@ public class TuringQueryService {
             return null;
         }
 
-        final HTTPRequest request = new HTTPRequest();
-        request.setRequestMethod(HTTPRequestMethod.POST);
-
         try {
-            request.setURL(new URL(TURING_API));
-
             final JSONObject reqData = new JSONObject();
             reqData.put("reqType", 0);
             final JSONObject perception = new JSONObject();
@@ -116,10 +101,9 @@ public class TuringQueryService {
             userInfo.put("userIdName", userName);
             reqData.put("userInfo", userInfo);
 
-            request.setPayload(reqData.toString().getBytes("UTF-8"));
-
-            final HTTPResponse response = URL_FETCH_SVC.fetch(request);
-            final JSONObject data = new JSONObject(new String(response.getContent(), "UTF-8"));
+            final HttpResponse response = HttpRequest.post(TURING_API).bodyText(reqData.toString()).contentTypeJson().timeout(5000).send();
+            response.charset("UTF-8");
+            final JSONObject data = new JSONObject(response.bodyText());
             final JSONObject intent = data.optJSONObject("intent");
             final int code = intent.optInt("code");
             final JSONArray results = data.optJSONArray("results");
