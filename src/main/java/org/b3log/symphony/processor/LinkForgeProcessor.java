@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -36,8 +35,6 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.LinkForgeQueryService;
 import org.b3log.symphony.service.OptionQueryService;
-import org.b3log.symphony.util.Networks;
-import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +49,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.0.9, Jul 28, 2018
+ * @version 1.1.0.10, Aug 2, 2018
  * @since 1.6.0
  */
 @RequestProcessor
@@ -107,35 +104,5 @@ public class LinkForgeProcessor {
         dataModel.put(Link.LINK_T_COUNT, linkCnt);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-    }
-
-    /**
-     * Purges link forge.
-     *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/cron/forge/link/purge", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class})
-    @After(adviceClass = {StopwatchEndAdvice.class})
-    public void purgeLinkForge(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final String key = Symphonys.get("keyOfSymphony");
-        if (!key.equals(request.getParameter("key"))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
-        if (Latkes.getServePath().contains("localhost") || Networks.isIPv4(Latkes.getServerHost())
-                || Latkes.RuntimeMode.DEVELOPMENT == Latkes.getRuntimeMode()) {
-            response.sendError(HttpServletResponse.SC_OK);
-
-            return;
-        }
-
-        context.renderJSON().renderTrueResult();
     }
 }
