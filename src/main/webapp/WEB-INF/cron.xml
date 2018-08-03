@@ -20,7 +20,7 @@
 -->
 <!--
     Description: Cron job configurations. 
-    Version: 1.12.0.2, Apr 3, 2018
+    Version: 1.12.0.3, Aug 3, 2018
     Author: Liang Ding
 -->
 <cronentries>
@@ -97,5 +97,6 @@
         <url>/cron/ipfs/articles/publish?key=dev_key</url>
         <description>Publishes article markdown files to IPFS</description>
         <schedule>every 60 minutes</schedule>
+        <timeout>600000</timeout>
     </cron>
 </cronentries>
