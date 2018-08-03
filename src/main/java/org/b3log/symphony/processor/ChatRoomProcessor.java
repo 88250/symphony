@@ -57,13 +57,13 @@ import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
 /**
  * Chat room processor.
  * <ul>
- * <li>Shows char room (/cr, /chat-room, /community), GET</li>
+ * <li>Shows char room (/cr), GET</li>
  * <li>Sends chat message (/chat-room/send), POST</li>
  * <li>Receives <a href="https://github.com/b3log/xiaov">XiaoV</a> message (/community/push), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.13, Jul 17, 2018
+ * @version 1.3.5.14, Aug 3, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -287,11 +287,10 @@ public class ChatRoomProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"/cr", "/chat-room", "/community"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/cr", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showChatRoom(final HTTPRequestContext context,
-                             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void showChatRoom(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("chat-room.ftl");
@@ -309,13 +308,9 @@ public class ChatRoomProcessor {
         dataModel.put("imgMaxSize", imgMaxSize);
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
         dataModel.put("fileMaxSize", fileMaxSize);
-
         dataModel.put(Common.ONLINE_CHAT_CNT, SESSIONS.size());
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -333,8 +328,7 @@ public class ChatRoomProcessor {
     @RequestProcessing(value = "/community/push", method = HTTPRequestMethod.POST)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public synchronized void receiveXiaoV(final HTTPRequestContext context,
-                                          final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public synchronized void receiveXiaoV(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String key = Symphonys.get("xiaov.key");
         if (!key.equals(request.getParameter("key"))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
