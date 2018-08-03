@@ -22,7 +22,7 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>2.4.6</latke.version>
+        <latke.version>2.4.7</latke.version>
 
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.2.7.v20150116</jetty.version>
