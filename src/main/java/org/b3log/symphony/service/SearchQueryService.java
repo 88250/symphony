@@ -19,7 +19,6 @@ package org.b3log.symphony.service;
 
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
-import jodd.net.MimeTypes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
@@ -151,8 +150,8 @@ public class SearchQueryService {
                         + "&hitsPerPage=" + pageSize + "&page=" + (currentPage - 1));
                 final HttpResponse response = HttpRequest.post("https://" + host + "/1/indexes/" + index + "/query").
                         header("X-Algolia-API-Key", key).
-                        header("X-Algolia-Application-Id", appId).body(params.toString().getBytes("UTF-8"), MimeTypes.MIME_APPLICATION_JSON).
-                        timeout(5000).send();
+                        header("X-Algolia-Application-Id", appId).bodyText(params.toString()).contentTypeJson().
+                        connectionTimeout(5000).timeout(5000).send();
                 response.charset("UTF-8");
                 final JSONObject ret = new JSONObject(response.bodyText());
                 if (200 != response.statusCode()) {
