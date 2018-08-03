@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.28.0.1, Aug 1, 2018
+ * @version 2.28.0.2, Aug 4, 2018
  * @since 0.2.0
  */
 @Service
@@ -1116,6 +1116,9 @@ public class ArticleQueryService {
 
     /**
      * Gets an article with {@link #organizeArticle(int, JSONObject)} by the specified id.
+     * <p>
+     * Saves thumbnail if it updated.
+     * </p>
      *
      * @param avatarViewMode the specified avatar view mode
      * @param articleId      the specified id
@@ -1130,7 +1133,22 @@ public class ArticleQueryService {
                 return null;
             }
 
+            final JSONObject articleDO = JSONs.clone(ret);
+
             organizeArticle(avatarViewMode, ret);
+
+            final String generatedThumb = ret.optString(Article.ARTICLE_T_THUMBNAIL_URL);
+            final String articleImg1 = ret.optString(Article.ARTICLE_IMG1_URL);
+            if (StringUtils.isNotBlank(generatedThumb) && !StringUtils.equals(generatedThumb, articleImg1)) {
+                try {
+                    final Transaction transaction = articleRepository.beginTransaction();
+                    articleDO.put(Article.ARTICLE_IMG1_URL, generatedThumb);
+                    articleRepository.update(articleId, articleDO);
+                    transaction.commit();
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Saves article img1 URL failed", e);
+                }
+            }
 
             return ret;
         } catch (final RepositoryException e) {

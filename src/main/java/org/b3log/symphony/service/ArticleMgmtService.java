@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.11, Jul 31, 2018
+ * @version 2.18.2.12, Aug 4, 2018
  * @since 0.2.0
  */
 @Service
@@ -653,6 +653,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
             article.put(Article.ARTICLE_QNA_OFFER_POINT, qnaOfferPoint);
             article.put(Article.ARTICLE_PUSH_ORDER, 0);
+            article.put(Article.ARTICLE_IMG1_URL, "");
             String city = "";
             if (UserExt.USER_GEO_STATUS_C_PUBLIC == author.optInt(UserExt.USER_GEO_STATUS)) {
                 city = author.optString(UserExt.USER_CITY);
@@ -1795,6 +1796,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_REWARD_POINT, requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT));
             article.put(Article.ARTICLE_QNA_OFFER_POINT, 0);
             article.put(Article.ARTICLE_PUSH_ORDER, 0);
+            article.put(Article.ARTICLE_IMG1_URL, "");
             article.put(Article.ARTICLE_CITY, "");
             String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);

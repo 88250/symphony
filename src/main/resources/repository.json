@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.40.0.1, Jul 31, 2018",
+  "version": "4.40.0.2, Aug 4, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -1733,6 +1733,12 @@
           "name": "articlePushOrder",
           "type": "int",
           "description": "周/月邮件推送优先级"
+        },
+        {
+          "name": "articleImg1URL",
+          "type": "String",
+          "length": 255,
+          "description": "帖子首图地址"
         }
       ]
     },
