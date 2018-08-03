@@ -19,6 +19,7 @@ package org.b3log.symphony.service;
 
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
+import jodd.net.MimeTypes;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -179,14 +180,13 @@ public class SearchMgmtService {
                 content = Jsoup.parse(content).text();
 
                 doc.put(Article.ARTICLE_CONTENT, content);
-                final String docData = doc.toString();
                 if (!skipCheck && content.length() < 32) {
                     LOGGER.log(Level.INFO, "This article is too small [length=" + content.length() + "], so skip it [title="
                             + doc.optString(Article.ARTICLE_TITLE) + ", id=" + id + "]");
                     return;
                 }
 
-                final byte[] data = docData.getBytes("UTF-8");
+                final byte[] data = doc.toString().getBytes("UTF-8");
                 if (!skipCheck && data.length > 102400) {
                     LOGGER.log(Level.INFO, "This article is too big [length=" + data.length + "], so skip it [title="
                             + doc.optString(Article.ARTICLE_TITLE) + ", id=" + id + "]");
@@ -195,7 +195,7 @@ public class SearchMgmtService {
 
                 final HttpResponse response = HttpRequest.put("https://" + host + "/1/indexes/" + index + "/" + id).
                         header("X-Algolia-API-Key", key).
-                        header("X-Algolia-Application-Id", appId).bodyText(content).contentTypeJson().
+                        header("X-Algolia-Application-Id", appId).body(data, MimeTypes.MIME_APPLICATION_JSON).
                         connectionTimeout(5000).timeout(5000).send();
                 response.charset("UTF-8");
                 if (200 != response.statusCode()) {
