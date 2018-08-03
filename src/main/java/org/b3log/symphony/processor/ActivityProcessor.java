@@ -75,7 +75,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.9.1.12, Jun 18, 2018
+ * @version 1.9.1.13, Aug 3, 2018
  * @since 1.3.0
  */
 @RequestProcessor
@@ -140,9 +140,6 @@ public class ActivityProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -225,9 +222,6 @@ public class ActivityProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -236,8 +230,7 @@ public class ActivityProcessor {
         dataModel.put("pointActivityCheckinMin", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN);
         dataModel.put("pointActivityCheckinMax", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MAX);
         dataModel.put("pointActivityCheckinStreak", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK);
-        dataModel.put("activitYesterdayLivenessRewardMaxPoint",
-                Symphonys.getInt("activitYesterdayLivenessReward.maxPoint"));
+        dataModel.put("activitYesterdayLivenessRewardMaxPoint", Symphonys.getInt("activitYesterdayLivenessReward.maxPoint"));
     }
 
     /**
@@ -266,9 +259,6 @@ public class ActivityProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -421,9 +411,6 @@ public class ActivityProcessor {
         }
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -451,7 +438,6 @@ public class ActivityProcessor {
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
 
         final JSONObject ret = activityMgmtService.bet1A0001(fromId, amount, smallOrLarge);
-
         if (ret.optBoolean(Keys.STATUS_CODE)) {
             String msg = langPropsService.get("activity1A0001BetedLabel");
             final String small = langPropsService.get("activity1A0001BetSmallLabel");
@@ -507,11 +493,10 @@ public class ActivityProcessor {
         dataModelService.fillLatestCmts(dataModel);
 
         final List<JSONObject> maxUsers = activityQueryService.getTopEatingSnakeUsersMax(avatarViewMode, 10);
-        dataModel.put("maxUsers", (Object) maxUsers);
+        dataModel.put("maxUsers", maxUsers);
 
-        final List<JSONObject> sumUsers
-                = activityQueryService.getTopEatingSnakeUsersSum(avatarViewMode, 10);
-        dataModel.put("sumUsers", (Object) sumUsers);
+        final List<JSONObject> sumUsers = activityQueryService.getTopEatingSnakeUsersSum(avatarViewMode, 10);
+        dataModel.put("sumUsers", sumUsers);
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         final String userId = user.optString(Keys.OBJECT_ID);
@@ -558,9 +543,7 @@ public class ActivityProcessor {
         try {
             requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             final int score = requestJSONObject.optInt("score");
-
             final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-
             final JSONObject ret = activityMgmtService.collectEatingSnake(user.optString(Keys.OBJECT_ID), score);
 
             context.renderJSON(ret);
@@ -586,11 +569,9 @@ public class ActivityProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/activity/gobang.ftl");
-
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -611,13 +592,10 @@ public class ActivityProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void startGobang(final HTTPRequestContext context, final HttpServletRequest request) {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
-        final String fromId = currentUser.optString(Keys.OBJECT_ID);
-
         final JSONObject ret = Results.falseResult();
 
         final boolean succ = currentUser.optInt(UserExt.USER_POINT) - Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START >= 0;
         ret.put(Keys.STATUS_CODE, succ);
-
         final String msg = succ ? "started" : langPropsService.get("activityStartGobangFailLabel");
         ret.put(Keys.MSG, msg);
 
