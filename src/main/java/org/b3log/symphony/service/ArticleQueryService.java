@@ -1725,12 +1725,7 @@ public class ArticleQueryService {
 
         final String previewContent = getArticleMetaDesc(article);
         article.put(Article.ARTICLE_T_PREVIEW_CONTENT, previewContent);
-
-        if (StringUtils.length(previewContent) > 100) {
-            article.put(Article.ARTICLE_T_THUMBNAIL_URL, getArticleThumbnail(article));
-        } else {
-            article.put(Article.ARTICLE_T_THUMBNAIL_URL, "");
-        }
+        article.put(Article.ARTICLE_T_THUMBNAIL_URL, getArticleThumbnail(article));
 
         final int articleType = article.optInt(Article.ARTICLE_TYPE);
         if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
