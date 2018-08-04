@@ -1826,6 +1826,10 @@ public class ArticleQueryService {
         }
 
         final String content = article.optString(Article.ARTICLE_CONTENT);
+        if (StringUtils.isBlank(content)) {
+            return "";
+        }
+
         final String html = Markdowns.toHTML(content);
         String ret = StringUtils.substringBetween(html, "<img src=\"", "\"");
 
