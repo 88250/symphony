@@ -39,7 +39,7 @@ import java.util.Map;
  * CSRF check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Apr 19, 2016
+ * @version 1.0.1.0, Aug 4, 2018
  * @since 1.3.0
  */
 @Named
@@ -50,7 +50,7 @@ public class CSRFCheck extends BeforeRequestProcessAdvice {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CSRFCheck.class);
-    
+
     /**
      * Language service.
      */
@@ -67,7 +67,7 @@ public class CSRFCheck extends BeforeRequestProcessAdvice {
 
         // 1. Check Referer
         final String referer = request.getHeader("Referer");
-        if (!StringUtils.startsWith(referer, Latkes.getServePath())) {
+        if (!StringUtils.startsWith(referer, StringUtils.substringBeforeLast(Latkes.getServePath(), ":"))) {
             throw new RequestProcessAdviceException(exception);
         }
 
