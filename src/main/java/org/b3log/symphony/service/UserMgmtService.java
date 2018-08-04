@@ -62,7 +62,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.22.4, Jul 31, 2018
+ * @version 1.15.22.5, Aug 5, 2018
  * @since 0.2.0
  */
 @Service
@@ -749,13 +749,14 @@ public class UserMgmtService {
 
             for (int i = 0; i < users.length(); i++) {
                 final JSONObject user = users.optJSONObject(i);
-                final String id = user.optString(Keys.OBJECT_ID);
-
                 user.put(User.USER_NAME, UserExt.NULL_USER_NAME);
+                final String email = user.optString(User.USER_EMAIL);
+                user.put(User.USER_EMAIL, "");
 
+                final String id = user.optString(Keys.OBJECT_ID);
                 userRepository.update(id, user);
 
-                LOGGER.log(Level.INFO, "Reset unverified user [email=" + user.optString(User.USER_EMAIL) + "]");
+                LOGGER.log(Level.INFO, "Reset unverified user [email=" + email + "]");
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Reset unverified users failed", e);
