@@ -69,7 +69,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.2, Aug 4, 2018
+ * @version 1.8.0.3, Aug 4, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -280,6 +280,7 @@ public class CommentProcessor {
             }
 
             context.renderJSONValue(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
+            context.renderJSONValue(Comment.COMMENT_VISIBLE, comment.optInt(Comment.COMMENT_VISIBLE));
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
