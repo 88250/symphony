@@ -48,7 +48,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.1.4, Jul 31, 2018
+ * @version 2.12.2.0, Aug 4, 2018
  * @since 0.2.0
  */
 @Service
@@ -228,12 +228,13 @@ public class CommentQueryService {
     /**
      * Gets original comment of a comment specified by the given comment id.
      *
+     * @param currentUserId   the specified current user id, may be null
      * @param avatarViewMode  the specified avatar view mode
      * @param commentViewMode the specified comment view mode
      * @param commentId       the given comment id
      * @return original comment, return {@code null} if not found
      */
-    public JSONObject getOriginalComment(final int avatarViewMode, final int commentViewMode, final String commentId) {
+    public JSONObject getOriginalComment(final String currentUserId, final int avatarViewMode, final int commentViewMode, final String commentId) {
         try {
             final JSONObject comment = commentRepository.get(commentId);
 
@@ -260,6 +261,18 @@ public class CommentQueryService {
                     comment.optString(Comment.COMMENT_ON_ARTICLE_ID), commentId,
                     commentViewMode, pageSize));
 
+            // https://github.com/b3log/symphony/issues/682
+            if (Comment.COMMENT_VISIBLE_C_AUTHOR == comment.optInt(Comment.COMMENT_VISIBLE)) {
+                final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+                final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                final JSONObject article = articleRepository.get(articleId);
+                final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                if (StringUtils.isBlank(currentUserId) ||
+                        (!StringUtils.equals(currentUserId, commentAuthorId) && !StringUtils.equals(currentUserId, articleAuthorId))) {
+                    ret.put(Comment.COMMENT_CONTENT, langPropsService.get("onlySelfAndArticleAuthorVisibleLabel"));
+                }
+            }
+
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Get replies failed", e);
@@ -271,12 +284,13 @@ public class CommentQueryService {
     /**
      * Gets replies of a comment specified by the given comment id.
      *
+     * @param currentUserId   the specified current user id, may be null
      * @param avatarViewMode  the specified avatar view mode
      * @param commentViewMode the specified comment view mode
      * @param commentId       the given comment id
      * @return a list of replies, return an empty list if not found
      */
-    public List<JSONObject> getReplies(final int avatarViewMode, final int commentViewMode, final String commentId) {
+    public List<JSONObject> getReplies(final String currentUserId, final int avatarViewMode, final int commentViewMode, final String commentId) {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setPageSize(Integer.MAX_VALUE).setCurrentPageNum(1).setPageCount(1)
                 .setFilter(CompositeFilterOperator.and(
@@ -312,6 +326,19 @@ public class CommentQueryService {
                 reply.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, getCommentPage(
                         comment.optString(Comment.COMMENT_ON_ARTICLE_ID), reply.optString(Keys.OBJECT_ID),
                         commentViewMode, pageSize));
+                reply.put(Comment.COMMENT_VISIBLE, comment.optInt(Comment.COMMENT_VISIBLE));
+
+                // https://github.com/b3log/symphony/issues/682
+                if (Comment.COMMENT_VISIBLE_C_AUTHOR == comment.optInt(Comment.COMMENT_VISIBLE)) {
+                    final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+                    final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                    final JSONObject article = articleRepository.get(articleId);
+                    final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                    if (StringUtils.isBlank(currentUserId) ||
+                            (!StringUtils.equals(currentUserId, commentAuthorId) && !StringUtils.equals(currentUserId, articleAuthorId))) {
+                        reply.put(Comment.COMMENT_CONTENT, langPropsService.get("onlySelfAndArticleAuthorVisibleLabel"));
+                    }
+                }
             }
 
             return ret;

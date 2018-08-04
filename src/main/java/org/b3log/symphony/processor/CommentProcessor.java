@@ -69,7 +69,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.1, Jul 16, 2018
+ * @version 1.8.0.2, Aug 4, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -376,11 +376,13 @@ public class CommentProcessor {
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        String currentUserId = null;
         if (null != currentUser) {
             avatarViewMode = currentUser.optInt(UserExt.USER_AVATAR_VIEW_MODE);
+            currentUserId = currentUser.optString(Keys.OBJECT_ID);
         }
 
-        final JSONObject originalCmt = commentQueryService.getOriginalComment(avatarViewMode, commentViewMode, commentId);
+        final JSONObject originalCmt = commentQueryService.getOriginalComment(currentUserId, avatarViewMode, commentViewMode, commentId);
 
         // Fill thank
         final String originalCmtId = originalCmt.optString(Keys.OBJECT_ID);
@@ -412,8 +414,10 @@ public class CommentProcessor {
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        String currentUserId = null;
         if (null != currentUser) {
             avatarViewMode = currentUser.optInt(UserExt.USER_AVATAR_VIEW_MODE);
+            currentUserId = currentUser.optString(Keys.OBJECT_ID);
         }
 
         if (StringUtils.isBlank(commentId)) {
@@ -422,7 +426,7 @@ public class CommentProcessor {
             return;
         }
 
-        final List<JSONObject> replies = commentQueryService.getReplies(avatarViewMode, commentViewMode, commentId);
+        final List<JSONObject> replies = commentQueryService.getReplies(currentUserId, avatarViewMode, commentViewMode, commentId);
 
         // Fill reply thank
         for (final JSONObject reply : replies) {
