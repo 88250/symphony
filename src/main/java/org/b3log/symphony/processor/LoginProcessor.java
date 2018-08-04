@@ -70,7 +70,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.13.12.3, Jun 27, 2018
+ * @version 1.13.12.4, Aug 4, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -349,7 +349,7 @@ public class LoginProcessor {
 
         try {
             final JSONObject user = userQueryService.getUserByEmail(email);
-            if (null == user) {
+            if (null == user || UserExt.USER_STATUS_C_VALID != user.optInt(UserExt.USER_STATUS)) {
                 context.renderFalseResult().renderMsg(langPropsService.get("notFoundUserLabel"));
 
                 return;
@@ -437,7 +437,7 @@ public class LoginProcessor {
         String email = null;
         try {
             final JSONObject user = userQueryService.getUser(userId);
-            if (null == user) {
+            if (null == user || UserExt.USER_STATUS_C_VALID != user.optInt(UserExt.USER_STATUS)) {
                 context.renderMsg(langPropsService.get("resetPwdLabel") + " - " + "User Not Found");
 
                 return;
