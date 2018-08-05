@@ -102,7 +102,7 @@
                                 ${qnaOfferLabel}
                             </#if>
                                 &nbsp;•&nbsp;
-                                <#if "" != article.articleCity>
+                                <#if "" != article.articleCity && article.articleAnonymous == 0>
                                 &nbsp;•&nbsp; <a href="${servePath}/city/${article.articleCity}" target="_blank" rel="nofollow"><span class="ft-green">${article.articleCity}</span></a>
                                 </#if>
                             </span>
