@@ -414,7 +414,7 @@ public final class UserExt {
     /**
      * Anonymous user name.
      */
-    public static final String ANONYMOUS_USER_NAME = "Someone";
+    public static final String ANONYMOUS_USER_NAME = "someone";
 
     /**
      * Anonymous user id.
