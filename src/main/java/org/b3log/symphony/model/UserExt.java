@@ -28,7 +28,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.13.0.3, Jul 31, 2018
+ * @version 2.13.0.4, Aug 5, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -414,7 +414,7 @@ public final class UserExt {
     /**
      * Anonymous user name.
      */
-    public static final String ANONYMOUS_USER_NAME = "someone";
+    public static final String ANONYMOUS_USER_NAME = "Someone";
 
     /**
      * Anonymous user id.
