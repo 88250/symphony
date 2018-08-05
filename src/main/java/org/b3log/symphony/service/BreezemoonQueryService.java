@@ -45,7 +45,7 @@ import java.util.*;
  * Breezemoon query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Jul 27, 2018
+ * @version 1.0.0.5, Aug 5, 2018
  * @since 2.8.0
  */
 @Service
@@ -155,7 +155,7 @@ public class BreezemoonQueryService {
     }
 
     /**
-     * Get breezemoon with the specified user id, current page number.
+     * Get breezemoons with the specified user id, current page number.
      *
      * @param avatarViewMode the specified avatar view mode
      * @param currentUserId  the specified current user id, may be {@code null}
