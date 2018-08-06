@@ -50,7 +50,7 @@ import java.util.Set;
  * Sends article add related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.15, Jun 6, 2018
+ * @version 1.3.4.16, Aug 6, 2018
  * @since 0.2.0
  */
 @Named
@@ -164,7 +164,8 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
             final String articleTitle = Escapes.escapeHTML(originalArticle.optString(Article.ARTICLE_TITLE));
 
             // 'Broadcast' Notification
-            if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == originalArticle.optInt(Article.ARTICLE_TYPE)) {
+            if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == originalArticle.optInt(Article.ARTICLE_TYPE)
+                    && Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)) {
                 final String city = originalArticle.optString(Article.ARTICLE_CITY);
 
                 if (StringUtils.isNotBlank(city)) {
