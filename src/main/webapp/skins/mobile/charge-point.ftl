@@ -52,10 +52,6 @@
                         <li>充值 ￥200 将获得 28,000 积分</li>
                         <li><em>请勿充值其他金额</em></li>
                     </ul>
-                    <hr>
-                    <h3>兑换红包</h3>
-                    <h4>积分兑换红包规则</h4>
-                    黑客派的积分可以兑换成红包，具体兑换规则请看<a href="https://hacpai.com/article/1455692733962">这里</a>。
                 </div>
                 <div class="fn-hr10"></div>
                 <div class="side">
