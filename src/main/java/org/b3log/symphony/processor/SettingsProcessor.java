@@ -76,7 +76,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jun 12, 2018
+ * @version 1.2.0.0, Aug 6, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -159,6 +159,47 @@ public class SettingsProcessor {
     @Inject
     private VerifycodeMgmtService verifycodeMgmtService;
 
+    /**
+     * Pointtransfer management service.
+     */
+    @Inject
+    private PointtransferMgmtService pointtransferMgmtService;
+
+    /**
+     * Updates username.
+     *
+     * @param context           the specified context
+     * @param request           the specified request
+     * @param requestJSONObject the specified request json object
+     */
+    @RequestProcessing(value = "/settings/username", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class})
+    public void updateUserName(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
+        context.renderJSON();
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+        try {
+            if (currentUser.optInt(UserExt.USER_POINT) < Pointtransfer.TRANSFER_SUM_C_CHANGE_USERNAME) {
+                throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
+            }
+
+            final JSONObject user = userQueryService.getUser(userId);
+            final String oldName = user.optString(User.USER_NAME);
+            final String newName = requestJSONObject.optString(User.USER_NAME);
+            user.put(User.USER_NAME, newName);
+
+            userMgmtService.updateUserName(userId, user);
+
+            pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
+                    Pointtransfer.TRANSFER_TYPE_C_CHANGE_USERNAME, Pointtransfer.TRANSFER_SUM_C_CHANGE_USERNAME,
+                    oldName + "-" + newName, System.currentTimeMillis());
+
+            context.renderTrueResult();
+        } catch (final ServiceException e) {
+            context.renderMsg(e.getMessage());
+        }
+    }
 
     /**
      * Sends email verify code.

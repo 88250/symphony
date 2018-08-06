@@ -24,7 +24,7 @@ import org.b3log.symphony.util.Symphonys;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.25.0.0, Jul 15, 2018
+ * @version 1.26.0.0, Aug 6, 2018
  * @since 1.3.0
  */
 public final class Pointtransfer {
@@ -375,6 +375,16 @@ public final class Pointtransfer {
      * Transfer sum - Report Handled.
      */
     public static final int TRANSFER_SUM_C_REPORT_HANDLED = Symphonys.getInt("pointReportHandled");
+
+    /**
+     * Transfer type - Change Username.
+     */
+    public static final int TRANSFER_TYPE_C_CHANGE_USERNAME = 36;
+
+    /**
+     * Transfer sum - Change Username.
+     */
+    public static final int TRANSFER_SUM_C_CHANGE_USERNAME = Symphonys.getInt("pointChangeUsername");
 
     /**
      * Private constructor.

@@ -42,7 +42,7 @@ import java.util.List;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.2.4, Jun 15, 2017
+ * @version 1.21.2.5, Aug 6, 2018
  * @since 1.3.0
  */
 @Service
@@ -582,6 +582,11 @@ public class PointtransferQueryService {
                         desTemplate = desTemplate.replace("{article}", articleLink34);
 
                         break;
+                    case Pointtransfer.TRANSFER_TYPE_C_CHANGE_USERNAME:
+                        final String oldName = dataId.split("-")[0];
+                        final String newName = dataId.split("-")[1];
+                        desTemplate = desTemplate.replace("{oldName}", oldName).replace("{newName}", newName);
+
                     default:
                         LOGGER.warn("Invalid point type [" + type + "]");
                 }

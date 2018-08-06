@@ -37,6 +37,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.*;
 import org.b3log.symphony.model.*;
+import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Geos;
 import org.b3log.symphony.util.Gravatars;
@@ -711,6 +712,10 @@ public class UserMgmtService {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
+            if (UserRegisterValidation.invalidUserName(newUserName)) {
+                throw  new ServiceException(langPropsService.get("invalidUserNameLabel") + " [" + newUserName + "]");
+            }
+
             if (!UserExt.NULL_USER_NAME.equals(newUserName) && null != userRepository.getByName(newUserName)) {
                 throw new ServiceException(langPropsService.get("duplicatedUserNameLabel") + " [" + newUserName + "]");
             }

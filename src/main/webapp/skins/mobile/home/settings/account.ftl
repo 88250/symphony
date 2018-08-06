@@ -21,6 +21,22 @@
 <@home "account">
 <div class="module">
     <div class="module-header">
+        <h2>${userNameLabel}</h2>
+    </div>
+    <div class="module-panel form fn-clear">
+        <label>${currentUsernameLabel}</label>
+        <input value="${currentUser.userName}" type="text" readonly />
+
+        <label>${newUsernameLabel}</label>
+        <input id="newUsername" type="text" /><br/><br/>
+
+        <div id="usernameTip" class="tip"></div><br/>
+        <button class="fn-right" onclick="Settings.update('username', '${csrfToken}')">${saveLabel}</button>
+    </div>
+</div>
+
+<div class="module">
+    <div class="module-header">
         <h2>${passwordLabel}</h2>
     </div>
     <div class="module-panel form fn-clear">

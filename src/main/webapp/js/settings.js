@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.0.2, Jul 31, 2018
+ * @version 1.26.0.3, Aug 6, 2018
  */
 
 /**
@@ -43,7 +43,7 @@ var Settings = {
       data: JSON.stringify({
         reportDataId: $('#reportDialog').data('id'),
         reportDataType: 2,
-        reportType: $('input[name=report]:checked').val( ),
+        reportType: $('input[name=report]:checked').val(),
         reportMemo: $('#reportTextarea').val()
       }),
       complete: function (result) {
@@ -558,6 +558,12 @@ var Settings = {
         };
 
         break;
+      case "username":
+        requestJSONObject = {
+          userName: $("#newUsername").val()
+        };
+
+        break;
       default:
         console.log("update settings has no type");
     }
@@ -590,8 +596,6 @@ var Settings = {
 
             return;
           }
-
-
         } else {
           $("#" + type.replace(/\//g, "") + "Tip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
         }
@@ -605,7 +609,6 @@ var Settings = {
             window.location.reload();
           }
         }, 5000);
-
       }
     });
   },
