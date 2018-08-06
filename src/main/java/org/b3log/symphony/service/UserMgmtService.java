@@ -62,7 +62,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.22.5, Aug 5, 2018
+ * @version 1.15.22.6, Aug 6, 2018
  * @since 0.2.0
  */
 @Service
@@ -458,7 +458,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
             user.put(UserExt.USER_SUB_MAIL_SEND_TIME, System.currentTimeMillis());
             user.put(UserExt.USER_KEYBOARD_SHORTCUTS_STATUS, UserExt.USER_XXX_STATUS_C_DISABLED);
-            user.put(UserExt.USER_REPLY_WATCH_ARTICLE_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_REPLY_WATCH_ARTICLE_STATUS, UserExt.USER_SUB_MAIL_STATUS_DISABLED);
 
             final JSONObject optionLanguage = optionRepository.get(Option.ID_C_MISC_LANGUAGE);
             final String adminSpecifiedLang = optionLanguage.optString(Option.OPTION_VALUE);
