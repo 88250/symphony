@@ -21,7 +21,7 @@
 <@home "account">
 <div class="module">
     <div class="module-header">
-        <h2>${userNameLabel}</h2>
+        <h2>${userNameLabel} (${updateNameTipLabel})</h2>
     </div>
     <div class="module-panel form fn-clear">
         <label>${currentUsernameLabel}</label>

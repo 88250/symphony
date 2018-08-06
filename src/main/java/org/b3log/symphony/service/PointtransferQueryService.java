@@ -587,6 +587,7 @@ public class PointtransferQueryService {
                         final String newName = dataId.split("-")[1];
                         desTemplate = desTemplate.replace("{oldName}", oldName).replace("{newName}", newName);
 
+                        break;
                     default:
                         LOGGER.warn("Invalid point type [" + type + "]");
                 }

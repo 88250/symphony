@@ -436,6 +436,10 @@ public class SettingsProcessor {
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_INVITECODE_USED));
         dataModel.put("buyInvitecodeLabel", buyInvitecodeLabel);
 
+        String updateNameTipLabel = (String) dataModel.get("updateNameTipLabel");
+        updateNameTipLabel = updateNameTipLabel.replace("{point}", Symphonys.get("pointChangeUsername"));
+        dataModel.put("updateNameTipLabel", updateNameTipLabel);
+
         final List<JSONObject> invitecodes = invitecodeQueryService.getValidInvitecodes(userId);
         for (final JSONObject invitecode : invitecodes) {
             String msg = langPropsService.get("expireTipLabel");
