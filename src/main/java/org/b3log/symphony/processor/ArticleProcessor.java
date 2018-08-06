@@ -89,7 +89,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.2.3, Aug 1, 2018
+ * @version 1.27.2.4, Aug 6, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1044,6 +1044,7 @@ public class ArticleProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModel.put(Article.ARTICLE, article);
+        dataModel.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
