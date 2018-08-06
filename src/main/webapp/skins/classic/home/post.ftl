@@ -152,7 +152,7 @@
                         <#if article?? && permissions["commonRemoveArticle"].permissionGrant>
                             <span class="ft-red article-anonymous fn-pointer" tabindex="11" onclick="AddArticle.remove('${csrfToken}', this)">${removeArticleLabel}</span>
                         </#if>
-                        <#if permissions["commonAddArticleAnonymous"].permissionGrant && ((!article?? && 5 != articleType) || (article?? && 5 != article.articleType) )>
+                        <#if permissions["commonAddArticleAnonymous"].permissionGrant && articleType != 2 && articleType != 5>
                         <label class="article-anonymous">${anonymousLabel}<input<#if requisite> readonly disabled</#if>
                                 <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
                                 type="checkbox" id="articleAnonymous"></label>
