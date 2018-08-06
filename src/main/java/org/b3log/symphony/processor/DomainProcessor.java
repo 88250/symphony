@@ -48,11 +48,11 @@ import java.util.Map;
  * Domain processor.
  * <ul>
  * <li>Shows domains (/domains), GET</li>
- * <li>Shows domain article (/{domainURI}), GET</li>
+ * <li>Shows domain article (/domain/{domainURI}), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.10, Apr 3, 2018
+ * @version 1.1.0.11, Apr 6, 2018
  * @since 1.4.0
  */
 @RequestProcessor
