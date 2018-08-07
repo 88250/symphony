@@ -156,6 +156,8 @@ public class UserMgmtService {
             user.put(UserExt.USER_CITY, "");
             user.put(UserExt.USER_PROVINCE, "");
             user.put(UserExt.USER_COUNTRY, "");
+            user.put(User.USER_ROLE, Role.ROLE_ID_C_DEFAULT);
+            user.put(UserExt.USER_ONLINE_FLAG, false);
             user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_DEACTIVATED);
 
             userRepository.update(userId, user);
