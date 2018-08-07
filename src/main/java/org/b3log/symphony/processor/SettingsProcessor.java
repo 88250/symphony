@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -51,6 +52,7 @@ import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Languages;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -73,10 +75,12 @@ import java.util.*;
  * <li>Updates i18n (/settings/i18n), POST</li>
  * <li>Sends email verify code (/settings/email/vc), POST</li>
  * <li>Updates email (/settings/email), POST</li>
+ * <li>Updates username (/settings/username), POST</li>
+ * <li>Deactivates user (/settings/deactivate), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Aug 6, 2018
+ * @version 1.3.0.0, Aug 7, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -164,6 +168,29 @@ public class SettingsProcessor {
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
+
+    /**
+     * Deactivates user.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     */
+    @RequestProcessing(value = "/settings/deactivate", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class})
+    public void deactivateUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+        context.renderJSON();
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        try {
+            userMgmtService.deactivateUser(currentUser);
+            Sessions.logout(request, response);
+
+            response.sendRedirect(Latkes.getServePath());
+        } catch (final Exception e) {
+            context.renderMsg(e.getMessage());
+        }
+    }
 
     /**
      * Updates username.

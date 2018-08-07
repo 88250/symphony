@@ -63,7 +63,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.22.7, Aug 7, 2018
+ * @version 1.16.0.0, Aug 7, 2018
  * @since 0.2.0
  */
 @Service
@@ -133,6 +133,34 @@ public class UserMgmtService {
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
+
+    /**
+     * Deactivates the specified user.
+     *
+     * @param user the specified user
+     * @throws ServiceException service exception
+     */
+    public void deactivateUser(final JSONObject user) throws ServiceException {
+        final String userId = user.optString(Keys.OBJECT_ID);
+
+        final Transaction transaction = userRepository.beginTransaction();
+        try {
+            final String userNo = user.optString(UserExt.USER_NO);
+            final String newName = UserExt.ANONYMOUS_USER_NAME + userNo;
+            user.put(User.USER_NAME, newName);
+            user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_DEACTIVATED);
+
+            userRepository.update(userId, user);
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.ERROR, "Deactivates a user [id=" + userId + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Tries to login with cookie.
