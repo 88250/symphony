@@ -63,7 +63,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.22.6, Aug 6, 2018
+ * @version 1.15.22.7, Aug 7, 2018
  * @since 0.2.0
  */
 @Service
@@ -169,7 +169,8 @@ public class UserMgmtService {
                 final String ip = Requests.getRemoteAddr(request);
 
                 if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)
-                        || UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)) {
+                        || UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)
+                        || UserExt.USER_STATUS_C_DEACTIVATED == user.optInt(UserExt.USER_STATUS)) {
                     Sessions.logout(request, response);
 
                     updateOnlineStatus(userId, ip, false);
@@ -371,6 +372,7 @@ public class UserMgmtService {
             JSONObject user = userRepository.getByName(userName);
             if (null != user && (UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)
                     || UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)
+                    || UserExt.USER_STATUS_C_DEACTIVATED == user.optInt(UserExt.USER_STATUS)
                     || UserExt.NULL_USER_NAME.equals(userName))) {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -386,7 +388,8 @@ public class UserMgmtService {
             int userNo = 0;
             if (null != user) {
                 if (UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)
-                        || UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)) {
+                        || UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)
+                        || UserExt.USER_STATUS_C_DEACTIVATED == user.optInt(UserExt.USER_STATUS)) {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
@@ -713,7 +716,7 @@ public class UserMgmtService {
 
         try {
             if (UserRegisterValidation.invalidUserName(newUserName)) {
-                throw  new ServiceException(langPropsService.get("invalidUserNameLabel") + " [" + newUserName + "]");
+                throw new ServiceException(langPropsService.get("invalidUserNameLabel") + " [" + newUserName + "]");
             }
 
             if (!UserExt.NULL_USER_NAME.equals(newUserName) && null != userRepository.getByName(newUserName)) {

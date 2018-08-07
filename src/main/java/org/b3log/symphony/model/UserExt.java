@@ -28,7 +28,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.13.0.4, Aug 5, 2018
+ * @version 2.13.0.5, Aug 7, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -441,6 +441,11 @@ public final class UserExt {
      * User status - invalid login.
      */
     public static final int USER_STATUS_C_INVALID_LOGIN = 3;
+
+    /**
+     * User status - deactivated.
+     */
+    public static final int USER_STATUS_C_DEACTIVATED = 4;
 
     //// Join point rank constants
     /**
