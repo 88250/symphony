@@ -137,14 +137,13 @@ public class UserMgmtService {
     /**
      * Deactivates the specified user.
      *
-     * @param user the specified user
+     * @param userId the specified user id
      * @throws ServiceException service exception
      */
-    public void deactivateUser(final JSONObject user) throws ServiceException {
-        final String userId = user.optString(Keys.OBJECT_ID);
-
+    public void deactivateUser(final String userId) throws ServiceException {
         final Transaction transaction = userRepository.beginTransaction();
         try {
+            final JSONObject user = userRepository.get(userId);
             final String userNo = user.optString(UserExt.USER_NO);
             final String newName = UserExt.ANONYMOUS_USER_NAME + userNo;
             user.put(User.USER_NAME, newName);

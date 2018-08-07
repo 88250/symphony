@@ -564,6 +564,8 @@ var Settings = {
         };
 
         break;
+      case "deactivate":
+        break;
       default:
         console.log("update settings has no type");
     }
@@ -607,6 +609,10 @@ var Settings = {
 
           if (type === 'i18n') {
             window.location.reload();
+          }
+
+          if (type === 'deactivate') {
+            window.location.href = Label.servePath;
           }
         }, 5000);
       }

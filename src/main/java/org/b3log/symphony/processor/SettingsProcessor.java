@@ -23,7 +23,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -183,10 +182,10 @@ public class SettingsProcessor {
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         try {
-            userMgmtService.deactivateUser(currentUser);
+            userMgmtService.deactivateUser(currentUser.optString(Keys.OBJECT_ID));
             Sessions.logout(request, response);
 
-            response.sendRedirect(Latkes.getServePath());
+            context.renderTrueResult();
         } catch (final Exception e) {
             context.renderMsg(e.getMessage());
         }
