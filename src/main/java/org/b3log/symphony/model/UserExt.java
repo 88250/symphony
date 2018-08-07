@@ -28,7 +28,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.13.0.4, Aug 5, 2018
+ * @version 2.13.0.5, Aug 7, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -442,6 +442,11 @@ public final class UserExt {
      */
     public static final int USER_STATUS_C_INVALID_LOGIN = 3;
 
+    /**
+     * User status - deactivated.
+     */
+    public static final int USER_STATUS_C_DEACTIVATED = 4;
+
     //// Join point rank constants
     /**
      * User join point rank - join.
@@ -630,6 +635,10 @@ public final class UserExt {
             if (StringUtils.equalsIgnoreCase(userName, reservedUserName)) {
                 return true;
             }
+        }
+
+        if (StringUtils.containsIgnoreCase(userName, UserExt.ANONYMOUS_USER_NAME)) {
+            return true;
         }
 
         return false;

@@ -70,7 +70,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.13.12.4, Aug 4, 2018
+ * @version 1.13.12.5, Aug 7, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -742,7 +742,8 @@ public class LoginProcessor {
                 return;
             }
 
-            if (UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)) {
+            if (UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)
+                    || UserExt.USER_STATUS_C_DEACTIVATED == user.optInt(UserExt.USER_STATUS)) {
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
                 context.renderMsg(langPropsService.get("invalidLoginLabel"));
 
