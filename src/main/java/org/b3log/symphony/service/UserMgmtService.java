@@ -153,6 +153,9 @@ public class UserMgmtService {
             user.put(User.USER_URL, "");
             user.put(UserExt.USER_INTRO, "");
             user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+            user.put(UserExt.USER_CITY, "");
+            user.put(UserExt.USER_PROVINCE, "");
+            user.put(UserExt.USER_COUNTRY, "");
             user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_DEACTIVATED);
 
             userRepository.update(userId, user);
