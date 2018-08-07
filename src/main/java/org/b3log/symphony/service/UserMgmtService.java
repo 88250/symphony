@@ -147,6 +147,12 @@ public class UserMgmtService {
             final String userNo = user.optString(UserExt.USER_NO);
             final String newName = UserExt.ANONYMOUS_USER_NAME + userNo;
             user.put(User.USER_NAME, newName);
+            user.put(User.USER_EMAIL, newName + UserExt.USER_BUILTIN_EMAIL_SUFFIX);
+            user.put(UserExt.USER_NICKNAME, "");
+            user.put(UserExt.USER_TAGS, "");
+            user.put(User.USER_URL, "");
+            user.put(UserExt.USER_INTRO, "");
+            user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
             user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_DEACTIVATED);
 
             userRepository.update(userId, user);
