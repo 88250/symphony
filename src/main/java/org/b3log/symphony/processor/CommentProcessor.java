@@ -69,7 +69,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.3, Aug 4, 2018
+ * @version 1.8.0.4, Aug 7, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -536,8 +536,9 @@ public class CommentProcessor {
 
             commentMgmtService.addComment(comment);
 
-            if (!commentAuthorId.equals(articleAuthorId) &&
-                    UserExt.USER_XXX_STATUS_C_ENABLED == currentUser.optInt(UserExt.USER_REPLY_WATCH_ARTICLE_STATUS)) {
+            if ((!commentAuthorId.equals(articleAuthorId) &&
+                    UserExt.USER_XXX_STATUS_C_ENABLED == currentUser.optInt(UserExt.USER_REPLY_WATCH_ARTICLE_STATUS))
+                    || Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)) {
                 followMgmtService.watchArticle(commentAuthorId, articleId);
             }
 
