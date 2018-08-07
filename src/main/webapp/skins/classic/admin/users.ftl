@@ -43,6 +43,8 @@
                     <span class="ft-red">${banLabel}</span>
                     <#elseif item.userStatus == 2>
                     <span class="ft-red">${notVerifiedLabel}</span>
+                    <#elseif item.userStatus == 4>
+                    <span class="ft-red">${deactivateAccountLabel}</span>
                     <#else>
                     <span class="ft-red">${invalidLoginLabel}</span>
                     </#if>
