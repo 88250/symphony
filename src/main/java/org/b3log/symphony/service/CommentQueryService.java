@@ -746,6 +746,8 @@ public class CommentQueryService {
                         organizeComment(avatarViewMode, originalCmt);
                         comment.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
                                 originalCmt.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                    } else {
+                        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
                     }
                 }
             } finally {
