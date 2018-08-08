@@ -48,7 +48,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.2.0, Aug 4, 2018
+ * @version 2.12.2.0, Aug 8, 2018
  * @since 0.2.0
  */
 @Service
@@ -742,9 +742,11 @@ public class CommentQueryService {
 
                     // Fill original comment
                     final JSONObject originalCmt = commentRepository.get(originalCmtId);
-                    organizeComment(avatarViewMode, originalCmt);
-                    comment.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
-                            originalCmt.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                    if (null != originalCmt) {
+                        organizeComment(avatarViewMode, originalCmt);
+                        comment.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
+                                originalCmt.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                    }
                 }
             } finally {
                 Stopwatchs.end();
