@@ -1,18 +1,5 @@
 <img src="https://cloud.githubusercontent.com/assets/873584/19897669/e6a6f5ce-a093-11e6-8cf3-8e5c2acea033.png">  
 
-<p align = "center">
-<a href="https://github.com/b3log/symphony/blob/master/README.md"><strong>English</strong></a> | <a href="https://github.com/b3log/symphony/blob/master/README_zh_CN.md"><strong>中文</strong></a>
-</p>
-
-* [简介](#简介)
-* [动机](#动机)
-* [案例](#案例)
-* [功能](#功能)
-* [文档](#文档)
-* [授权](#授权)
-* [社区](#社区)
-* [鸣谢](#鸣谢)
-
 ## 简介
 
 [Symphony](https://github.com/b3log/symphony)（[ˈsɪmfəni]，n.交响乐）是一个现代化的社区平台，因为它：
