@@ -658,10 +658,11 @@ public class UserQueryService {
                 .setCurrentPageNum(currentPageNum).setPageSize(pageSize)
                 .setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(UserExt.USER_CITY, FilterOperator.EQUAL, city),
+                        new PropertyFilter(UserExt.USER_GEO_STATUS, FilterOperator.EQUAL, UserExt.USER_GEO_STATUS_C_PUBLIC),
                         new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID),
                         new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, latestTime)
                 ));
-        JSONObject result = null;
+        JSONObject result;
         try {
             result = userRepository.get(query);
         } catch (final RepositoryException e) {

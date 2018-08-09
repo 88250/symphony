@@ -62,7 +62,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.3.1.9, Apr 26, 2018
+ * @version 1.3.1.10, Aug 9, 2018
  * @since 1.3.0
  */
 @RequestProcessor
@@ -218,7 +218,6 @@ public class CityProcessor {
 
         dataModel.put(Common.CURRENT, "/users");
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
