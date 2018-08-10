@@ -39,6 +39,7 @@
 * [IT遇岛](https://www.ityudao.com)
 * [四方环视](http://bbs.ivrpano.com)
 * [TapDealing](http://www.tapdealing.com)
+* [乾学院](http://c.raqsoft.com.cn)
 
 ## 功能
 
