@@ -149,24 +149,26 @@
                         <span class="ft-gray">${addAskArticleTipLabel}</span>
                     </#if>
                     <div class="fn-right">
-                        <#if article?? && permissions["commonRemoveArticle"].permissionGrant>
-                            <span class="ft-red article-anonymous fn-pointer" tabindex="11" onclick="AddArticle.remove('${csrfToken}', this)">${removeArticleLabel}</span>
-                        </#if>
                         <#if permissions["commonAddArticleAnonymous"].permissionGrant && articleType != 2 && articleType != 5>
                         <label class="article-anonymous">${anonymousLabel}<input<#if requisite> readonly disabled</#if>
                                 <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
                                 type="checkbox" id="articleAnonymous"></label>
                         </#if>
-
+                        <label class="article-anonymous">&nbsp;  ${commentableLabel}<input
+                                <#if (article?? && article.articleCommentable) || !article??> checked="checked"</#if>
+                                                                                              type="checkbox" id="articleCommentable"></label>
+                        <#if article?? && permissions["commonRemoveArticle"].permissionGrant>
+                            <button class="red" tabindex="11" onclick="AddArticle.remove('${csrfToken}', this)">${removeArticleLabel}</button>
+                        </#if>
                         <#if article??>
                             <#if permissions["commonUpdateArticle"].permissionGrant>
                             <button class="green" id="addArticleBtn" tabindex="10"<#if requisite> readonly disabled</#if>
-                                onclick="AddArticle.add('${csrfToken}', this)">${submitLabel}</button>
+                                    onclick="AddArticle.add('${csrfToken}', this)">${submitLabel}</button>
                             </#if>
                         <#else>
                             <#if permissions["commonAddArticle"].permissionGrant>
                             <button class="green" id="addArticleBtn" tabindex="10"<#if requisite> readonly disabled</#if>
-                                onclick="AddArticle.add('${csrfToken}', this)">${postLabel}</button>
+                                    onclick="AddArticle.add('${csrfToken}', this)">${postLabel}</button>
                             </#if>
                         </#if>
                     </div>

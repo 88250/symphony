@@ -101,7 +101,8 @@
                                 <span class="article-level<#if article.articleQnAOfferPoint lt 400>${(article.articleQnAOfferPoint/100)?int}<#else>4</#if>">${article.articleQnAOfferPoint?c}</span>
                                 ${qnaOfferLabel}
                             </#if>
-                                &nbsp;•&nbsp;
+                             &nbsp;•&nbsp;
+                        ${article.timeAgo}
                                 <#if "" != article.articleCity && article.articleAnonymous == 0>
                                 &nbsp;•&nbsp; <a href="${servePath}/city/${article.articleCity}" target="_blank" rel="nofollow"><span class="ft-green">${article.articleCity}</span></a>
                                 </#if>

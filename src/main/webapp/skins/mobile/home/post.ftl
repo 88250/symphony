@@ -118,14 +118,14 @@
                         </#if>
                     </div>
                     <div class="fn-clear">
-                        <#if article?? && permissions["commonRemoveArticle"].permissionGrant>
-                            <label class="ft-red fn-pointer" tabindex="11" onclick="AddArticle.remove('${csrfToken}', this)">${removeArticleLabel} &nbsp; &nbsp;</label>
-                        </#if>
                         <#if permissions["commonAddArticleAnonymous"].permissionGrant && articleType != 2 && articleType != 5>
                             <label class="article-anonymous">&nbsp;  ${anonymousLabel}<input
                                 <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
                                 type="checkbox" id="articleAnonymous"></label>
                         </#if>
+                        <label class="article-anonymous">&nbsp;  ${commentableLabel}<input
+                                <#if (article?? && article.articleCommentable) || !article??> checked="checked"</#if>
+                                                type="checkbox" id="articleCommentable"></label>
 
                         <#if article??>
                             <#if permissions["commonUpdateArticle"].permissionGrant>
@@ -135,6 +135,10 @@
                             <#if permissions["commonAddArticle"].permissionGrant>
                                 <button class="fn-right" tabindex="10" onclick="AddArticle.add('${csrfToken}', this)">${postLabel}</button>
                             </#if>
+                        </#if>
+                        <span class="fn-right">&nbsp; &nbsp;</span>
+                        <#if article?? && permissions["commonRemoveArticle"].permissionGrant>
+                            <button class="red fn-right" tabindex="11" onclick="AddArticle.remove('${csrfToken}', this)">${removeArticleLabel}</button>
                         </#if>
                     </div>
                     <br/>
