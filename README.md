@@ -61,9 +61,9 @@
 
 ## 社区
 
-* Sym [讨论区](https://hacpai.com/tag/Sym)
+* [讨论区](https://hacpai.com/tag/Sym)
 * [报告问题](https://github.com/b3log/symphony/issues/new)
-* Sym 开发支持 [Q 群 17370164](https://shang.qq.com/wpa/qunwpa?idkey=0bb80e452d38d5113c7bb2534cefc8155589d0bdce81c7d2e6d91930bcb6e2d7)
+* [Q 群 17370164](https://shang.qq.com/wpa/qunwpa?idkey=0bb80e452d38d5113c7bb2534cefc8155589d0bdce81c7d2e6d91930bcb6e2d7)
 
 ## 鸣谢
 
