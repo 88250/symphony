@@ -605,6 +605,7 @@ public class UserMgmtService {
                         final JSONObject u = others.optJSONObject(i);
                         final String id = u.optString(Keys.OBJECT_ID);
                         u.put(User.USER_NAME, UserExt.NULL_USER_NAME);
+                        u.put(User.USER_EMAIL, "");
                         u.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
 
                         userRepository.update(id, u);
