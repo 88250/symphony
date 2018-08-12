@@ -68,7 +68,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.12.0.1, Jul 14, 2018
+ * @version 1.12.0.2, Aug 12, 2018
  * @since 0.2.5
  */
 @RequestProcessor
@@ -232,8 +232,6 @@ public class NotificationProcessor {
         dataModel.put(Common.SYS_ANNOUNCE_NOTIFICATIONS, notifications);
 
         fillNotificationCount(userId, dataModel);
-
-        notificationMgmtService.makeRead(notifications);
 
         final int recordCnt = result.getInt(Pagination.PAGINATION_RECORD_COUNT);
         final int pageCount = (int) Math.ceil((double) recordCnt / (double) pageSize);
