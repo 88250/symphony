@@ -28,7 +28,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.13.0.5, Aug 7, 2018
+ * @version 2.14.0.0, Aug 12, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -624,10 +624,28 @@ public final class UserExt {
         return hex.substring(0, 6);
     }
 
+
+    /**
+     * Checks the specified email whether in a whitelist mail domain.
+     *
+     * @param email the specified email
+     * @return {@code true} if it is, returns {@code false} otherwise
+     */
+    public static boolean isWhitelistMailDomain(final String email) {
+        final String whitelistMailDomains = Symphonys.get("whitelist.mailDomains");
+        if (StringUtils.isBlank(whitelistMailDomains)) {
+            return true;
+        }
+
+        final String domain = StringUtils.substringAfter(email, "@");
+
+        return StringUtils.containsIgnoreCase(whitelistMailDomains, domain);
+    }
+
     /**
      * Checks the specified user name whether is a reserved user name.
      *
-     * @param userName the specified tag string
+     * @param userName the specified username
      * @return {@code true} if it is, returns {@code false} otherwise
      */
     public static boolean isReservedUserName(final String userName) {

@@ -47,7 +47,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.11, Jan 10, 2017
+ * @version 1.5.2.12, Aug 12, 2018
  * @since 0.2.0
  */
 @Named
@@ -236,6 +236,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
         checkField(invalidUserName(name), "registerFailLabel", "invalidUserNameLabel");
         checkField(!Strings.isEmail(email), "registerFailLabel", "invalidEmailLabel");
+        checkField(!UserExt.isWhitelistMailDomain(email), "registerFailLabel", "invalidEmail1Label");
         checkField(UserExt.USER_APP_ROLE_C_HACKER != appRole
                 && UserExt.USER_APP_ROLE_C_PAINTER != appRole, "registerFailLabel", "invalidAppRoleLabel");
         //checkField(invalidUserPassword(password), "registerFailLabel", "invalidPasswordLabel");
