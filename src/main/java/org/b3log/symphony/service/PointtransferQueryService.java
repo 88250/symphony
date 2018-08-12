@@ -42,7 +42,7 @@ import java.util.List;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.2.5, Aug 6, 2018
+ * @version 1.21.3.0, Aug 12, 2018
  * @since 1.3.0
  */
 @Service
@@ -513,8 +513,8 @@ public class PointtransferQueryService {
 
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN_STREAK:
-                        desTemplate = desTemplate.replace("{point}",
-                                String.valueOf(Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK));
+                        desTemplate = desTemplate.replace("{point}", record.optString(Pointtransfer.SUM));
+
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_CHARGE:
                         final String yuan = dataId.split("-")[0];
