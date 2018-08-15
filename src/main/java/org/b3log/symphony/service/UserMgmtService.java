@@ -63,7 +63,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.16.0.0, Aug 7, 2018
+ * @version 1.16.0.1, Aug 15, 2018
  * @since 0.2.0
  */
 @Service
@@ -604,13 +604,15 @@ public class UserMgmtService {
                     for (int i = 0; i < others.length(); i++) {
                         final JSONObject u = others.optJSONObject(i);
                         final String id = u.optString(Keys.OBJECT_ID);
+                        final String mail = u.optString(User.USER_EMAIL);
+
                         u.put(User.USER_NAME, UserExt.NULL_USER_NAME);
                         u.put(User.USER_EMAIL, "");
                         u.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
 
                         userRepository.update(id, u);
 
-                        LOGGER.log(Level.INFO, "Defeated a user [email=" + u.optString(User.USER_EMAIL) + "]");
+                        LOGGER.log(Level.INFO, "Defeated a user [email=" + mail + "]");
                     }
 
                     trans.commit();
