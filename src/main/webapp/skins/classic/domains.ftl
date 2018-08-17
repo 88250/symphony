@@ -21,7 +21,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel}">
+        <@head title="${domainLabel} - ${symphonyLabel}">
         <meta name="description" content="${symDescriptionLabel}"/>
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />

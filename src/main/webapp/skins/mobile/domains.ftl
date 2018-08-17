@@ -22,7 +22,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel}">
+        <@head title="${domainLabel} - ${symphonyLabel}">
         <meta name="description" content="${symDescriptionLabel}"/>
         </@head>
     </head>
