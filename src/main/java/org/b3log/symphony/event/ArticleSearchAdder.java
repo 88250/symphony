@@ -20,7 +20,6 @@ package org.b3log.symphony.event;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
@@ -34,10 +33,10 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
- * Sends an article to local search engine.
+ * Sends an article to search engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.1, Sep 5, 2017
+ * @version 1.1.3.2, Aug 19, 2018
  * @since 1.4.0
  */
 @Named
@@ -56,7 +55,7 @@ public class ArticleSearchAdder extends AbstractEventListener<JSONObject> {
     private SearchMgmtService searchMgmtService;
 
     @Override
-    public void action(final Event<JSONObject> event) throws EventException {
+    public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
         LOGGER.log(Level.TRACE, "Processing an event [type={0}, data={1}]", event.getType(), data);
 
