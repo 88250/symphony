@@ -49,7 +49,7 @@ import java.util.*;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.7.1, Aug 2, 2018
+ * @version 1.9.0.0, Aug 19, 2018
  * @since 0.2.0
  */
 @Service
@@ -113,6 +113,46 @@ public class TagQueryService {
      */
     @Inject
     private TagCache tagCache;
+
+    /**
+     * Gets domains of the specified tag belongs to.
+     *
+     * @param tagTitle the specified tag title
+     * @return domains, returns an empty list if not found
+     */
+    public List<JSONObject> getDomains(final String tagTitle) {
+        final List<JSONObject> ret = new ArrayList<>();
+
+        try {
+            final JSONObject tag = tagRepository.getByTitle(tagTitle);
+            if (null == tag) {
+                return ret;
+            }
+
+            final String tagId = tag.optString(Keys.OBJECT_ID);
+            final JSONArray relations = domainTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE).optJSONArray(Keys.RESULTS);
+            if (1 > relations.length()) {
+                return ret;
+            }
+
+            final List<String> domainIds = new ArrayList<>();
+            for (int i = 0; i < relations.length(); i++) {
+                final JSONObject relation = relations.optJSONObject(i);
+                final String domainId = relation.optString(Domain.DOMAIN + "_" + Keys.OBJECT_ID);
+                domainIds.add(domainId);
+            }
+
+            Collections.sort(domainIds);
+            for (final String domainId : domainIds) {
+                final JSONObject domain = domainRepository.get(domainId);
+                ret.add(domain);
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets domains of tag [title=" + tagTitle + "] failed", e);
+        }
+
+        return ret;
+    }
 
     /**
      * Gets tags by the specified title prefix.
@@ -283,22 +323,13 @@ public class TagQueryService {
                 ret.put(Tag.TAG_SEO_KEYWORDS, tagURI);
             }
 
-            final List<JSONObject> domains = new ArrayList<>();
+            final String tagTitle = ret.optString(Tag.TAG_TITLE);
+            final List<JSONObject> domains = getDomains(tagTitle);
             ret.put(Tag.TAG_T_DOMAINS, (Object) domains);
-
-            final Query query = new Query().setFilter(
-                    new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, ret.optString(Keys.OBJECT_ID)));
-            final JSONArray relations = domainTagRepository.get(query).optJSONArray(Keys.RESULTS);
-            for (int i = 0; i < relations.length(); i++) {
-                final JSONObject relation = relations.optJSONObject(i);
-                final String domainId = relation.optString(Domain.DOMAIN + "_" + Keys.OBJECT_ID);
-                final JSONObject domain = domainRepository.get(domainId);
-                domains.add(domain);
-            }
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets tag [title=" + tagURI + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets tag [uri=" + tagURI + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -335,18 +366,8 @@ public class TagQueryService {
                 ret.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
             }
 
-            final List<JSONObject> domains = new ArrayList<>();
+            final List<JSONObject> domains = getDomains(tagTitle);
             ret.put(Tag.TAG_T_DOMAINS, (Object) domains);
-
-            final Query query = new Query().setFilter(
-                    new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, ret.optString(Keys.OBJECT_ID)));
-            final JSONArray relations = domainTagRepository.get(query).optJSONArray(Keys.RESULTS);
-            for (int i = 0; i < relations.length(); i++) {
-                final JSONObject relation = relations.optJSONObject(i);
-                final String domainId = relation.optString(Domain.DOMAIN + "_" + Keys.OBJECT_ID);
-                final JSONObject domain = domainRepository.get(domainId);
-                domains.add(domain);
-            }
 
             return ret;
         } catch (final RepositoryException e) {
