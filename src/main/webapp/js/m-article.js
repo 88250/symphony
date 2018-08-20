@@ -1146,6 +1146,9 @@ var Article = {
    * @description 解析语法高亮
    */
   parseLanguage: function () {
+    if (Label.markedAvailable) {
+      return
+    }
     $('pre code').each(function (i, block) {
       hljs.highlightBlock(block);
     });

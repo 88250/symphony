@@ -45,11 +45,14 @@ ${md}
                 </div>
             </div>
         </div>
-        <#include "../footer.ftl"><script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
+        <#include "../footer.ftl">
+    <#if !markedAvailable>
+    <script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
             <script>
              $('pre code').each(function (i, block) {
                     hljs.highlightBlock(block);
                 });
         </script>
+    </#if>
     </body>
     </html>

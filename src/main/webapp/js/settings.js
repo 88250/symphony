@@ -170,7 +170,7 @@ var Settings = {
    * @returns {Boolean}
    */
   initHljs: function () {
-    if ($('pre code').length === 0) {
+    if ($('pre code').length === 0 || Label.markedAvailable) {
       return false;
     }
     $.ajax({

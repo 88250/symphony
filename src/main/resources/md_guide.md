@@ -195,6 +195,23 @@ public class HelloWorld {
 
 请注意后面 Markdown 源代码的换行留空情况。
 
+### 数学公式
+
+$$a^2 + b^2 = \color{red}c^2$$
+
+### 流程图
+
+```flow
+st=>start: Start
+op=>operation: Your Operation
+cond=>condition: Yes or No?
+e=>end
+
+st->op->cond
+cond(yes)->e
+cond(no)->op
+```
+
 
 ### 排版
 
