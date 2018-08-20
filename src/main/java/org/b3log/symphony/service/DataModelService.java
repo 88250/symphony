@@ -32,6 +32,7 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.*;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -44,7 +45,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.34, Apr 3, 2018
+ * @version 1.12.2.35, Aug 20, 2018
  * @since 0.2.0
  */
 @Service
@@ -335,6 +336,7 @@ public class DataModelService {
         }
 
         dataModel.put(Common.WEBSOCKET_SCHEME, Symphonys.get("websocket.scheme"));
+        dataModel.put(Common.MARKED_AVAILABLE, Markdowns.MARKED_AVAILABLE);
     }
 
     /**
