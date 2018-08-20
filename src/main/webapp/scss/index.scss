@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.33.1.0, Aug 10, 2018
+ * @version 2.33.1.1, Aug 20, 2018
  */
 
 @import "variables";
@@ -1059,7 +1059,9 @@ code .dec {
 
 /* start chat room */
 .chat-room .online-cnt {
-  margin-top: 11px;
+  line-height: 33px;
+  margin-right: 10px;
+  color: $gray;
 }
 
 .chat-room .list {

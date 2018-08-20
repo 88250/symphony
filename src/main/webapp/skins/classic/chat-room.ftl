@@ -39,15 +39,16 @@
                             <div class="reply">
                                 <#if isLoggedIn>
                                 <textarea id="chatContent" rows="10" placeholder="Say sth...."></textarea>
-                                <div class="tip" id="chatContentTip"></div>
                                 <div class="fn-clear comment-submit">
+                                    <div class="fn-left online-cnt">${onlineVisitorCountLabel} <span id="onlineCnt"></span></div>
+                                    <div class="tip fn-left" id="chatContentTip"></div>
                                     <div class="fn-right">
-                                        <button class="red" onclick="ChatRoom.send()">${postLabel}</button>
+                                        <button class="green" onclick="ChatRoom.send()">${postLabel}</button>
                                     </div>
                                 </div>
                                 <#else>
                                 <div class="comment-login">
-                                    <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
+                                    <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.goLogin();">${loginDiscussLabel}</a>
                                 </div>
                                 </#if>
                             </div>
@@ -56,30 +57,22 @@
                     <div class="list module" id="comments">
                         <ul>
                             <#list messages as msg>
-                            <li>
-                                <div class="fn-flex">
-                                    <#if !msg.userAvatarURL?contains("user-thumbnail.png")>
-                                    <a rel="nofollow" href="${servePath}/member/${msg.userName}">
-                                        <div class="avatar tooltipped tooltipped-n"
-                                             aria-label="${msg.userName}" style="background-image:url('${msg.userAvatarURL}')"></div>
-                                    </a>
-                                    <#else>
+                            <li class="fn-flex">
+                                <a rel="nofollow" href="${servePath}/member/${msg.userName}">
                                     <div class="avatar tooltipped tooltipped-n"
                                          aria-label="${msg.userName}" style="background-image:url('${msg.userAvatarURL}')"></div>
-                                    </#if>
-                                    <div class="fn-flex-1">
-                                        <div class="fn-clear">
-                                            <span class="fn-left">
-                                                <#if !msg.userAvatarURL?contains("user-thumbnail.png")>
-                                                <a rel="nofollow" href="${servePath}/member/${msg.userName}">${msg.userName}</a>
-                                                <#else>
-                                                ${msg.userName}
-                                                </#if>
-                                            </span>
-                                        </div>
-                                        <div class="content-reset comment">
-                                            ${msg.content}
-                                        </div>
+                                </a>
+                                <div class="fn-flex-1">
+                                    <div class="ft-smaller">
+                                        <a rel="nofollow" href="${servePath}/member/${msg.userName}">
+                                            <span class="ft-gray">${msg.userName}</span>
+                                        </a>
+                                        <span class="ft-fade">
+                                             • ${msg.time}
+                                        </span>
+                                    </div>
+                                    <div class="content-reset comment">
+                                        ${msg.content}
                                     </div>
                                 </div>
                             </li>
