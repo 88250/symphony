@@ -31,6 +31,8 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Times;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.LoginCheck;
@@ -41,6 +43,7 @@ import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
 import org.b3log.symphony.processor.channel.ChatRoomChannel;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -51,6 +54,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
 
@@ -63,7 +67,7 @@ import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.14, Aug 3, 2018
+ * @version 1.3.5.15, Aug 20, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -243,13 +247,17 @@ public class ChatRoomProcessor {
         msg.put(UserExt.USER_AVATAR_URL, currentUser.optString(UserExt.USER_AVATAR_URL));
         msg.put(Common.CONTENT, content);
 
-        ChatRoomChannel.notifyChat(msg);
-
         messages.addFirst(msg);
         final int maxCnt = Symphonys.getInt("chatRoom.msgCnt");
         if (messages.size() > maxCnt) {
             messages.remove(maxCnt);
         }
+
+        ChatRoomChannel.notifyChat(msg);
+
+        final JSONObject pushMsg = JSONs.clone(msg);
+        pushMsg.put(Common.TIME, Times.getTimeAgo(msg.optLong(Common.TIME), Locales.getLocale()));
+        ChatRoomChannel.notifyChat(pushMsg);
 
         if (content.contains("@" + TuringQueryService.ROBOT_NAME + " ")) {
             content = content.replaceAll("@" + TuringQueryService.ROBOT_NAME + " ", "");
@@ -260,12 +268,14 @@ public class ChatRoomProcessor {
                 xiaoVMsg.put(UserExt.USER_AVATAR_URL, TuringQueryService.ROBOT_AVATAR + "?imageView2/1/w/48/h/48/interlace/0/q/100");
                 xiaoVMsg.put(Common.CONTENT, "<p>@" + userName + " " + xiaoVSaid + "</p>");
 
-                ChatRoomChannel.notifyChat(xiaoVMsg);
-
                 messages.addFirst(xiaoVMsg);
                 if (messages.size() > maxCnt) {
                     messages.remove(maxCnt);
                 }
+
+                final JSONObject pushXiaoVMsg = JSONs.clone(xiaoVMsg);
+                pushXiaoVMsg.put(Common.TIME, Times.getTimeAgo(System.currentTimeMillis(), Locales.getLocale()));
+                ChatRoomChannel.notifyChat(pushXiaoVMsg);
             }
         }
 
@@ -296,7 +306,9 @@ public class ChatRoomProcessor {
         renderer.setTemplateName("chat-room.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModel.put(Common.MESSAGES, messages);
+        final List<JSONObject> msgs = messages.stream().
+                map(msg -> JSONs.clone(msg).put(Common.TIME, Times.getTimeAgo(msg.optLong(Common.TIME), Locales.getLocale()))).collect(Collectors.toList());
+        dataModel.put(Common.MESSAGES, msgs);
         dataModel.put("chatRoomMsgCnt", Symphonys.getInt("chatRoom.msgCnt"));
 
         // Qiniu file upload authenticate
