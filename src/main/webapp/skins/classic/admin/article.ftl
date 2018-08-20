@@ -206,8 +206,7 @@
                 <div class="fn__flex">
                     <label>
                         <div>${qnaOfferPointLabel}</div>
-                        <input type="text" name="articleQnAOfferPoint"
-                               value="${article.articleQnAOfferPoint?c}"/>
+                        <input type="text" name="articleQnAOfferPoint" value="${article.articleQnAOfferPoint?c}"/>
                     </label>
                 </div>
                 <br/>
