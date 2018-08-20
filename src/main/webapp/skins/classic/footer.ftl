@@ -20,14 +20,25 @@
 <div class="footer">
     <div class="wrapper">
         <div class="slogan">
-            ${indexIntroLabel} &nbsp; &nbsp;
-            <a href="https://github.com/b3log/symphony" target="_blank" class="tooltipped tooltipped-n" aria-label="${siteCodeLabel}">
-                <svg class="icon-github"><use xlink:href="#github"></use></svg></a> &nbsp;
-            <a href="http://weibo.com/u/2778228501" target="_blank" class="tooltipped tooltipped-n" aria-label="${followWeiboLabel}">
-                <svg class="icon-weibo"><use xlink:href="#weibo"></use></svg></a>   &nbsp;
+        ${indexIntroLabel} &nbsp; &nbsp;
+            <a href="https://github.com/b3log/symphony" target="_blank" class="tooltipped tooltipped-n"
+               aria-label="${siteCodeLabel}">
+                <svg class="icon-github">
+                    <use xlink:href="#github"></use>
+                </svg>
+            </a> &nbsp;
+            <a href="http://weibo.com/u/2778228501" target="_blank" class="tooltipped tooltipped-n"
+               aria-label="${followWeiboLabel}">
+                <svg class="icon-weibo">
+                    <use xlink:href="#weibo"></use>
+                </svg>
+            </a> &nbsp;
             <a target="_blank" rel="noopener" class="tooltipped tooltipped-n" aria-label="${joinTelegramLabel}"
                href="https://t.me/b3log">
-                <svg class="icon-telegram"><use xlink:href="#icon-telegram"></use></svg></a>
+                <svg class="icon-telegram">
+                    <use xlink:href="#icon-telegram"></use>
+                </svg>
+            </a>
         </div>
         <div class="fn-flex-1">
             <div class="footer-nav fn-clear">
@@ -37,19 +48,19 @@
                 <a href="${servePath}/domains">${domainLabel}</a>
                 <a href="${servePath}/tags">${tagLabel}</a>
                 <a href="${servePath}/statistic">${dataStatLabel}</a>
-
-                <div class="fn-right">&COPY; ${year}
+                <div class="fn-right">
                     <a rel="copyright" href="https://hacpai.com" target="_blank">hacpai.com</a>
-                    ${visionLabel}</div>
+                ${visionLabel}
+                </div>
             </div>
             <div class="fn-clear ft-smaller">
-                       ${sloganLabel}
-                    <div class="fn-right">
-                       Powered by <a href="https://b3log.org" target="_blank">B3log 开源</a> •
-                            <a href="https://sym.b3log.org" target="_blank">Sym</a>
-                            ${version} • ${elapsed?c}ms
-                    </div>
+            ${sloganLabel}
+                <div class="fn-right">
+                    © ${year} <a href="https://b3log.org" target="_blank">B3log 开源</a>旗下云南链滴科技有限公司版权所有 •
+                    <a href="https://sym.b3log.org" target="_blank">Sym</a>
+                ${version} • ${elapsed?c}ms
                 </div>
+            </div>
         </div>
     </div>
 </div>
@@ -77,14 +88,14 @@
         staticServePath: "${staticServePath}",
         isLoggedIn: ${isLoggedIn?c},
         funNeedLoginLabel: '${funNeedLoginLabel}',
-		notificationCommentedLabel: '${notificationCommentedLabel}',
-		notificationReplyLabel: '${notificationReplyLabel}',
-		notificationAtLabel: '${notificationAtLabel}',
-		notificationFollowingLabel: '${notificationFollowingLabel}',
-		pointLabel: '${pointLabel}',
-		sameCityLabel: '${sameCityLabel}',
-		systemLabel: '${systemLabel}',
-		newFollowerLabel: '${newFollowerLabel}',
+        notificationCommentedLabel: '${notificationCommentedLabel}',
+        notificationReplyLabel: '${notificationReplyLabel}',
+        notificationAtLabel: '${notificationAtLabel}',
+        notificationFollowingLabel: '${notificationFollowingLabel}',
+        pointLabel: '${pointLabel}',
+        sameCityLabel: '${sameCityLabel}',
+        systemLabel: '${systemLabel}',
+        newFollowerLabel: '${newFollowerLabel}',
         makeAsReadLabel: '${makeAsReadLabel}',
         <#if isLoggedIn>
             currentUserName: '${currentUser.userName}',
@@ -92,27 +103,27 @@
         <#if csrfToken??>
             csrfToken: '${csrfToken}'
         </#if>
-    };
+    }
 
     <#if isLoggedIn>
-    Label.userKeyboardShortcutsStatus = '${currentUser.userKeyboardShortcutsStatus}';
+    Label.userKeyboardShortcutsStatus = '${currentUser.userKeyboardShortcutsStatus}'
     </#if>
 
-    Util.init(${isLoggedIn?c});
+    Util.init(${isLoggedIn?c})
 
     <#if isLoggedIn>
     // Init [User] channel
-    Util.initUserChannel("${wsScheme}://${serverHost}:${serverPort}${contextPath}/user-channel");
+    Util.initUserChannel("${wsScheme}://${serverHost}:${serverPort}${contextPath}/user-channel")
     </#if>
 
     <#if mouseEffects>
-    Util.mouseClickEffects();
+    Util.mouseClickEffects()
     </#if>
 </script>
 <#if algoliaEnabled>
 <script src="${staticServePath}/js/lib/algolia/algolia.min.js"></script>
 <script>
-    Util.initSearch('${algoliaAppId}', '${algoliaSearchKey}', '${algoliaIndex}');
+    Util.initSearch('${algoliaAppId}', '${algoliaSearchKey}', '${algoliaIndex}')
 </script>
 </#if>
 ${footerPCCode}

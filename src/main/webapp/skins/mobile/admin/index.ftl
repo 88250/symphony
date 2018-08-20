@@ -20,42 +20,46 @@
 <#include "macro-admin.ftl">
 <@admin "index">
 <div class="wrapper">
+    <div class="content-reset ft-blue fn-content">
+        使用须知使用须知使用须知使用须知
+    </div>
     <div class="fn-hr10"></div>
-    <ul>
-        <li>${onlineVisitorCountLabel} ${onlineVisitorCnt?c}</li>
-        <li>${onlineMemberCountLabel} ${onlineMemberCnt?c}</li>
-        <li>${maxOnlineVisitorCountLabel} ${statistic.statisticMaxOnlineVisitorCount?c}</li>
-        <li>${memberLabel} ${statistic.statisticMemberCount?c}</li>
-        <li>${articleLabel} ${statistic.statisticArticleCount?c}</li>
-        <li>${cmtLabel} ${statistic.statisticCmtCount?c}</li>
-        <li>${domainLabel} ${statistic.statisticDomainCount?c}</li>
-        <li>${tagLabel} ${statistic.statisticTagCount?c}</li>
-    </ul>
+    <div class="content-reset">
+        <ul>
+            <li>${onlineVisitorCountLabel} ${onlineVisitorCnt?c}</li>
+            <li>${onlineMemberCountLabel} ${onlineMemberCnt?c}</li>
+            <li>${maxOnlineVisitorCountLabel} ${statistic.statisticMaxOnlineVisitorCount?c}</li>
+            <li>${memberLabel} ${statistic.statisticMemberCount?c}</li>
+            <li>${articleLabel} ${statistic.statisticArticleCount?c}</li>
+            <li>${cmtLabel} ${statistic.statisticCmtCount?c}</li>
+            <li>${domainLabel} ${statistic.statisticDomainCount?c}</li>
+            <li>${tagLabel} ${statistic.statisticTagCount?c}</li>
+        </ul>
 
-    <br>
-    <div>
-        ${currentVersionLabel} <span id="version">${version}</span>${commaLabel}
-        <span id="upgrade">${checkVersionLabel}</span>
+        <p>
+            ${currentVersionLabel} <span id="version">${version}</span>${commaLabel}
+            <span id="upgrade">${checkVersionLabel}</span>
+        </>
     </div>
 </div>
 </@admin>
 <script>
-    document.addEventListener("DOMContentLoaded", function (event) {
+    document.addEventListener('DOMContentLoaded', function (event) {
         $.ajax({
-            url: "https://rhythm.b3log.org/version/symphony/latest",
-            type: "GET",
-            dataType: "jsonp",
-            jsonp: "callback",
+            url: 'https://rhythm.b3log.org/version/symphony/latest',
+            type: 'GET',
+            dataType: 'jsonp',
+            jsonp: 'callback',
             success: function (data, textStatus) {
-                if ($("#version").text() === data.symphonyVersion) {
-                    $("#upgrade").text('${upToDateLabel}');
+                if ($('#version').text() === data.symphonyVersion) {
+                    $('#upgrade').text('${upToDateLabel}')
                 } else {
-                    $("#upgrade").html('${newVersionAvailableLabel}' + '${colonLabel}'
-                            + "<a href='" + data.symphonyDownload
-                            + "' target='_blank'>" + data.symphonyVersion + "</a>");
+                    $('#upgrade').html('${newVersionAvailableLabel}' + '${colonLabel}'
+                            + '<a href=\'' + data.symphonyDownload
+                            + '\' target=\'_blank\'>' + data.symphonyVersion + '</a>')
                 }
-            }
-        });
-    });
+            },
+        })
+    })
 
 </script>
