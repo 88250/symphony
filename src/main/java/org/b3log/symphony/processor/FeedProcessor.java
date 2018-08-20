@@ -39,7 +39,9 @@ import org.b3log.symphony.model.feed.RSSItem;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.DomainQueryService;
 import org.b3log.symphony.service.OptionQueryService;
+import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -57,7 +59,7 @@ import java.util.List;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 5, 2018
+ * @version 1.0.0.1, Aug 20, 2018
  * @since 3.1.0
  */
 @RequestProcessor
@@ -91,6 +93,12 @@ public class FeedProcessor {
      */
     @Inject
     private DomainQueryService domainQueryService;
+
+    /**
+     * Short link query service.
+     */
+    @Inject
+    private ShortLinkQueryService shortLinkQueryService;
 
     /**
      * Generates recent articles' RSS.
@@ -188,8 +196,12 @@ public class FeedProcessor {
         String title = article.getString(Article.ARTICLE_TITLE);
         title = Emotions.toAliases(title);
         ret.setTitle(title);
-        String description = article.getString(Article.ARTICLE_T_PREVIEW_CONTENT);
+        String description = article.getString(Article.ARTICLE_CONTENT);
+        description = shortLinkQueryService.linkArticle(description);
+        description = shortLinkQueryService.linkTag(description);
         description = Emotions.toAliases(description);
+        description = Emotions.convert(description);
+        description = Markdowns.toHTML(description);
         ret.setDescription(description);
         final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_TIME);
         ret.setPubDate(pubDate);
