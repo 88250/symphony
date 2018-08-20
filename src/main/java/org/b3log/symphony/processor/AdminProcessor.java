@@ -104,8 +104,8 @@ import java.util.*;
  * <li>Updates an invitecode (/admin/invitecode/{invitecodeId}), POST</li>
  * <li>Shows miscellaneous (/admin/misc), GET</li>
  * <li>Updates miscellaneous (/admin/misc), POST</li>
- * <li>Search index (/admin/search/index), POST</li>
- * <li>Search index one article (/admin/search-index-article), POST</li>
+ * <li>Rebuilds article search index (/admin/search/index), POST</li>
+ * <li>Rebuilds one article search index(/admin/search-index-article), POST</li>
  * <li>Shows ad (/admin/ad), GET</li>
  * <li>Updates ad (/admin/ad), POST</li>
  * <li>Shows role permissions (/admin/role/{roleId}/permissions), GET</li>
@@ -119,7 +119,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.29.0.1, Jul 31, 2018
+ * @version 2.29.0.2, Aug 20, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -2746,14 +2746,14 @@ public class AdminProcessor {
     }
 
     /**
-     * Search index.
+     * Rebuilds article search index.
      *
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/search/index", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void searchIndex(final HTTPRequestContext context) {
+    public void rebuildArticleSearchIndex(final HTTPRequestContext context) {
         context.renderJSON(true);
 
         if (Symphonys.getBoolean("es.enabled")) {
@@ -2796,7 +2796,7 @@ public class AdminProcessor {
     }
 
     /**
-     * Search index one article.
+     * Rebuilds one article search index.
      *
      * @param context the specified context
      * @throws Exception exception
@@ -2804,7 +2804,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/search-index-article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void searchIndexArticle(final HTTPRequestContext context) throws Exception {
+    public void rebuildOneArticleSearchIndex(final HTTPRequestContext context) throws Exception {
         final String articleId = context.getRequest().getParameter(Article.ARTICLE_T_ID);
         final JSONObject article = articleQueryService.getArticle(articleId);
 
