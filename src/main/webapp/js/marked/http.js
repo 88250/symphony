@@ -48,7 +48,10 @@ marked.setOptions({
   gfm: true,
   tables: true,
   breaks: true,
-  smartLists: true
+  smartLists: true,
+  highlight: function(code) {
+    return require('highlight.js').highlightAuto(code).value;
+  }
 });
 
 process.on('uncaughtException', function (err) {

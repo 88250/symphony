@@ -59,7 +59,7 @@ gulp.task('build', ['sass', 'clean'], function () {
 
     // min article css
     gulp.src(['./src/main/webapp/js/lib/editor/codemirror.min.css',
-            './src/main/webapp/js/lib/highlight.js-9.6.0/styles/github.css',
+            './src/main/webapp/js/lib/highlight/styles/github.css',
             './src/main/webapp/js/lib/diff2html/diff2html.min.css'])
             .pipe(cleanCSS())
             .pipe(concat('article.min.css'))
@@ -113,7 +113,7 @@ gulp.task('build', ['sass', 'clean'], function () {
         './src/main/webapp/js/lib/editor/editor.js',
         './src/main/webapp/js/lib/to-markdown.js',
         // end codemirror.min.js
-        './src/main/webapp/js/lib/highlight.js-9.6.0/highlight.pack.js',
+        './src/main/webapp/js/lib/highlight/highlight.pack.js',
         // start jquery.fileupload.min.js
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js',
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js',

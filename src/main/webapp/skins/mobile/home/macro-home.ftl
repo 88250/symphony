@@ -77,7 +77,7 @@
         <meta name="description" content="只与清风、明月为伴。清凉的风，明朗的月。"/>
             </@head>
         </#if>
-    <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
+    <link rel="stylesheet" href="${staticServePath}/js/lib/highlight/styles/github.css">
 </head>
 <body>
         <#include "../header.ftl">

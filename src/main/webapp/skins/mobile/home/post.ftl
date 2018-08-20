@@ -25,7 +25,7 @@
         <meta name="robots" content="none" />
         </@head>
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
-        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight/styles/github.css">
     </head>
     <body>
         <#include "../header.ftl">
@@ -171,7 +171,7 @@
         </div>
         <#include "../footer.ftl"/>
         <script src="${staticServePath}/js/lib/editor/codemirror.min.js?4.13"></script>
-        <script src="${staticServePath}/js/lib/highlight.js-9.6.0/highlight.pack.js"></script>
+        <script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
         <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
         <script>

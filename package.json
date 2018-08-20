@@ -34,6 +34,7 @@
     "marked": "^0.3.19"
   },
   "dependencies": {
-    "gulp-util": "^3.0.8"
+    "gulp-util": "^3.0.8",
+    "highlight.js": "^9.12.0"
   }
 }

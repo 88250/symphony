@@ -36,7 +36,7 @@
         </#if>
         <#if type == "comments">
         <@head title="${commentAdminLabel} - ${symphonyLabel}">
-        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight/styles/github.css">
         </@head>
         </#if>
         <#if type == "breezemoons">
