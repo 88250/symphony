@@ -253,8 +253,6 @@ public class ChatRoomProcessor {
             messages.remove(maxCnt);
         }
 
-        ChatRoomChannel.notifyChat(msg);
-
         final JSONObject pushMsg = JSONs.clone(msg);
         pushMsg.put(Common.TIME, Times.getTimeAgo(msg.optLong(Common.TIME), Locales.getLocale()));
         ChatRoomChannel.notifyChat(pushMsg);
@@ -282,6 +280,8 @@ public class ChatRoomProcessor {
         context.renderTrueResult();
 
         currentUser.put(UserExt.USER_LATEST_CMT_TIME, System.currentTimeMillis());
+        currentUser.remove(UserExt.USER_T_POINT_CC);
+        currentUser.remove(UserExt.USER_T_POINT_HEX);
         try {
             userMgmtService.updateUser(currentUser.optString(Keys.OBJECT_ID), currentUser);
         } catch (final Exception e) {
