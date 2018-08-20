@@ -88,6 +88,9 @@
                 <label for="articleRewardPoint">${rewardPointLabel}</label>
                 <input type="text" id="articleRewardPoint" name="articleRewardPoint" value="${article.articleRewardPoint?c}"/>
 
+                <label for="articleQnAOfferPoint">${qnaOfferPointLabel}</label>
+                <input type="text" id="articleQnAOfferPoint" name="articleQnAOfferPoint" value="${article.articleQnAOfferPoint?c}"/>
+
                 <label>${perfectLabel}</label>
                 <select id="articlePerfect" name="articlePerfect">
                     <option value="0"<#if 0 == article.articlePerfect> selected</#if>>${noLabel}</option>

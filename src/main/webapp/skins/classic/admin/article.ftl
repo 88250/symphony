@@ -203,6 +203,13 @@
                         <input type="number" name="articlePushOrder" value="${article.articlePushOrder}" />
                     </label>
                 </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${qnaOfferPointLabel}</div>
+                        <input type="text" name="articleQnAOfferPoint"
+                               value="${article.articleQnAOfferPoint?c}"/>
+                    </label>
+                </div>
                 <br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
