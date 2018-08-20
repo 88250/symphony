@@ -51,7 +51,7 @@ import java.util.Map;
  * Anonymous view check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.6, Jun 2, 2018
+ * @version 1.3.1.7, Aug 21, 2018
  * @since 1.6.0
  */
 @Named
@@ -211,6 +211,8 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
                     }
                 }
             }
+        } catch (final RequestProcessAdviceException e) {
+            throw e;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Anonymous view check failed: " + e.getMessage());
 
