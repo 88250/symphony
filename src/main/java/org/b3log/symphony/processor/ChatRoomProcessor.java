@@ -246,6 +246,7 @@ public class ChatRoomProcessor {
         msg.put(User.USER_NAME, userName);
         msg.put(UserExt.USER_AVATAR_URL, currentUser.optString(UserExt.USER_AVATAR_URL));
         msg.put(Common.CONTENT, content);
+        msg.put(Common.TIME, System.currentTimeMillis());
 
         messages.addFirst(msg);
         final int maxCnt = Symphonys.getInt("chatRoom.msgCnt");
@@ -265,6 +266,7 @@ public class ChatRoomProcessor {
                 xiaoVMsg.put(User.USER_NAME, TuringQueryService.ROBOT_NAME);
                 xiaoVMsg.put(UserExt.USER_AVATAR_URL, TuringQueryService.ROBOT_AVATAR + "?imageView2/1/w/48/h/48/interlace/0/q/100");
                 xiaoVMsg.put(Common.CONTENT, "<p>@" + userName + " " + xiaoVSaid + "</p>");
+                xiaoVMsg.put(Common.TIME, System.currentTimeMillis());
 
                 messages.addFirst(xiaoVMsg);
                 if (messages.size() > maxCnt) {

@@ -119,7 +119,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.29.0.2, Aug 20, 2018
+ * @version 2.29.0.3, Aug 20, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -138,7 +138,7 @@ public class AdminProcessor {
     /**
      * Pagination page size.
      */
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 60;
 
     /**
      * Language service.
