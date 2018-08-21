@@ -31,9 +31,7 @@ import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.service.ActivityQueryService;
-import org.b3log.symphony.service.DataModelService;
-import org.b3log.symphony.service.PointtransferQueryService;
+import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -45,13 +43,15 @@ import java.util.Map;
 /**
  * Top ranking list processor.
  * <ul>
- * <li>Top balance (/top/balance), GET</li>
- * <li>Top consumption (/top/consumption), GET</li>
- * <li>Top checkin (/top/checkin), GET</li>
+ * <li>Shows top (/top), GET</li>
+ * <li>Top balance ranking list (/top/balance), GET</li>
+ * <li>Top consumption ranking list (/top/consumption), GET</li>
+ * <li>Top checkin ranking list (/top/checkin), GET</li>
+ * <li>Top link ranking list (/top/link), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, Jun 24, 2018
+ * @version 1.4.0.0, Aug 21, 2018
  * @since 1.3.0
  */
 @RequestProcessor
@@ -74,6 +74,73 @@ public class TopProcessor {
      */
     @Inject
     private ActivityQueryService activityQueryService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
+    /**
+     * Link query service.
+     */
+    @Inject
+    private LinkQueryService linkQueryService;
+
+    /**
+     * Shows top.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/top", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showTop(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/top/index.ftl");
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        dataModel.put(Common.SELECTED, Common.TOP);
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillRandomArticles(dataModel);
+        dataModelService.fillSideHotArticles(dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
+    }
+
+    /**
+     * Shows link ranking list.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/top/link", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showLink(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/top/link.ftl");
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        final List<JSONObject> topLinks = linkQueryService.getTopLink(50);
+        dataModel.put(Common.TOP_LINKS, topLinks);
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillRandomArticles(dataModel);
+        dataModelService.fillSideHotArticles(dataModel);
+        dataModelService.fillSideTags(dataModel);
+        dataModelService.fillLatestCmts(dataModel);
+    }
 
     /**
      * Shows balance ranking list.

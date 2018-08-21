@@ -927,6 +927,16 @@ public final class Common {
     public static final String TOP_CHECKIN_USERS = "topCheckinUsers";
 
     /**
+     * Key of top links.
+     */
+    public static final String TOP_LINKS = "topLinks";
+
+    /**
+     * Key of top.
+     */
+    public static final String TOP = "top";
+
+    /**
      * Private constructor.
      */
     private Common() {
