@@ -34,6 +34,10 @@
         <@head title="${checkinTopLabel} - ${symphonyLabel}">
         </@head>
         </#if>
+        <#if type == "link">
+            <@head title="${linkRankLabel} - ${symphonyLabel}">
+            </@head>
+        </#if>
     </head>
     <body>
         <#include "../header.ftl">

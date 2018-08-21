@@ -37,6 +37,11 @@
         <link rel="canonical" href="${servePath}/top/checkin">
         </@head>
         </#if>
+        <#if type == "link">
+            <@head title="${linkRankLabel} - ${symphonyLabel}">
+        <link rel="canonical" href="${servePath}/top/link">
+            </@head>
+        </#if>
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         <link rel="stylesheet" href="${staticServePath}/css/responsive.css?${staticResourceVersion}" />
     </head>
