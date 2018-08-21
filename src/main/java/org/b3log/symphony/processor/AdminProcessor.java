@@ -119,7 +119,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.29.0.3, Aug 20, 2018
+ * @version 2.29.0.4, Aug 21, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -2815,17 +2815,14 @@ public class AdminProcessor {
 
         if (Symphonys.getBoolean("algolia.enabled")) {
             searchMgmtService.updateAlgoliaDocument(article, true);
-
-            final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
-            ArticleBaiduSender.sendToBaidu(articlePermalink);
         }
 
         if (Symphonys.getBoolean("es.enabled")) {
             searchMgmtService.updateESDocument(article, Article.ARTICLE);
-
-            final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
-            ArticleBaiduSender.sendToBaidu(articlePermalink);
         }
+
+        final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+        ArticleBaiduSender.sendToBaidu(articlePermalink);
 
         context.getResponse().sendRedirect(Latkes.getServePath() + "/admin/articles");
     }
