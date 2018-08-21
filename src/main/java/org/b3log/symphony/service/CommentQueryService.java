@@ -48,7 +48,7 @@ import java.util.*;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.2.0, Aug 8, 2018
+ * @version 2.12.2.1, Aug 21, 2018
  * @since 0.2.0
  */
 @Service
@@ -511,7 +511,7 @@ public class CommentQueryService {
                 .setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
         try {
             final JSONObject result = commentRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             for (final JSONObject comment : ret) {
                 comment.put(Comment.COMMENT_CREATE_TIME, comment.optLong(Comment.COMMENT_CREATE_TIME));
@@ -580,7 +580,7 @@ public class CommentQueryService {
                         ));
         try {
             final JSONObject result = commentRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             if (ret.isEmpty()) {
                 return ret;
             }
@@ -718,7 +718,7 @@ public class CommentQueryService {
             } finally {
                 Stopwatchs.end();
             }
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             organizeComments(avatarViewMode, ret);
 
@@ -823,7 +823,7 @@ public class CommentQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> comments = CollectionUtils.<JSONObject>jsonArrayToList(data);
+        final List<JSONObject> comments = CollectionUtils.jsonArrayToList(data);
 
         try {
             for (final JSONObject comment : comments) {
