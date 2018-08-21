@@ -2039,6 +2039,8 @@ public class AdminProcessor {
         article = articleQueryService.getArticle(articleId);
         dataModel.put(Article.ARTICLE, article);
 
+        updateArticleSearchIndex(article);
+
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
@@ -2808,6 +2810,12 @@ public class AdminProcessor {
         final String articleId = context.getRequest().getParameter(Article.ARTICLE_T_ID);
         final JSONObject article = articleQueryService.getArticle(articleId);
 
+        updateArticleSearchIndex(article);
+
+        context.getResponse().sendRedirect(Latkes.getServePath() + "/admin/articles");
+    }
+
+    private void updateArticleSearchIndex(final JSONObject article) {
         if (null == article || Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
                 || Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
             return;
@@ -2823,7 +2831,5 @@ public class AdminProcessor {
 
         final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
         ArticleBaiduSender.sendToBaidu(articlePermalink);
-
-        context.getResponse().sendRedirect(Latkes.getServePath() + "/admin/articles");
     }
 }

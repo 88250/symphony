@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.12, Aug 4, 2018
+ * @version 2.18.2.13, Aug 21, 2018
  * @since 0.2.0
  */
 @Service
@@ -1088,16 +1088,6 @@ public class ArticleMgmtService {
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, authorId,
                         Pointtransfer.TRANSFER_TYPE_C_PERFECT_ARTICLE, Pointtransfer.TRANSFER_SUM_C_PERFECT_ARTICLE,
                         articleId, System.currentTimeMillis());
-            }
-
-            if (Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
-                if (Symphonys.getBoolean("algolia.enabled")) {
-                    searchMgmtService.removeAlgoliaDocument(article);
-                }
-
-                if (Symphonys.getBoolean("es.enabled")) {
-                    searchMgmtService.removeESDocument(article, Article.ARTICLE);
-                }
             }
         } catch (final Exception e) {
             if (transaction.isActive()) {
