@@ -71,13 +71,12 @@ import java.util.Map;
  * <li>Lists emotions (/users/emotions), GET</li>
  * <li>Exports posts(article/comment) to a file (/export/posts), POST</li>
  * <li>Queries invitecode state (/invitecode/state), GET</li>
- * <li>Shows link forge (/member/{userName}/forge/link), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.2, Jul 9, 2018
+ * @version 1.27.0.3, Aug 21, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -183,12 +182,6 @@ public class UserProcessor {
      */
     @Inject
     private InvitecodeMgmtService invitecodeMgmtService;
-
-    /**
-     * Link forge query service.
-     */
-    @Inject
-    private LinkForgeQueryService linkForgeQueryService;
 
     /**
      * Role query service.

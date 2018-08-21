@@ -162,11 +162,6 @@ public final class Common {
     public static final String TIMEZONES = "timezones";
 
     /**
-     * Key of forge.
-     */
-    public static final String FORGE = "forge";
-
-    /**
      * Key of selected.
      */
     public static final String SELECTED = "selected";
