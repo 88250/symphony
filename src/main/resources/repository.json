@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.40.0.2, Aug 4, 2018",
+  "version": "4.40.0.3, Aug 22, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -300,6 +300,17 @@
           "name": "linkPingErrCnt",
           "type": "int",
           "description": "Ping 失败计数"
+        },
+        {
+          "name": "linkPingTime",
+          "type": "long",
+          "description": "Ping 时间"
+        },
+        {
+          "name": "linkCardHTML",
+          "type": "String",
+          "length": 10240,
+          "description": "链接卡片 HTML"
         }
       ]
     },

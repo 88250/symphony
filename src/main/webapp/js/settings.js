@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.0.3, Aug 6, 2018
+ * @version 1.26.0.4, Aug 22, 2018
  */
 
 /**
@@ -781,9 +781,6 @@ var Settings = {
     if (Label.type === 'commentsAnonymous' || 'comments' === Label.type) {
       Settings.initHljs();
     }
-    if (Label.type === 'linkForge') {
-      Util.linkForge();
-    }
 
     $('#reportDialog').dialog({
       'width': $(window).width() > 500 ? 500 : $(window).width() - 50,
@@ -835,10 +832,6 @@ var Settings = {
                 break;
               case '/member/' + Label.userName + '/points':
                 $('.home-menu a:eq(2)').addClass('current');
-                break;
-              case '/member/' + Label.userName + '/forge/link':
-                $('.home-menu a:eq(3)').addClass('current');
-                Util.linkForge();
                 break;
             }
           case 'error':

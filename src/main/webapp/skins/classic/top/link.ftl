@@ -29,7 +29,7 @@
            <li class="fn-flex-1 fn-clear">
                <h2 class="fn-left">
                    <a rel="bookmark" href="${servePath}/forward?goto=${link.linkAddr}">
-                       ${link_index + 1}.${link.linkTitle}</a>
+                       ${link_index + 1}. ${link.linkTitle}</a>
                </h2>
                <div class="ft-gray fn-right">
                    ${link.linkClickCnt?c} ${clickLabel}

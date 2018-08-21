@@ -68,10 +68,6 @@
             <@head title="${anonymousCommentLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${anonymousCommentLabel}"/>
             </@head>
-        <#elseif type == "linkForge">
-            <@head title="${linkForgeLabel} - ${user.userName} - ${symphonyLabel}">
-        <meta name="description" content="${user.userName}${deLabel}${linkForgeLabel}"/>
-            </@head>
         <#elseif type == "breezemoons">
             <@head title="${breezemoonLabel} - ${user.userName} - ${symphonyLabel}">
        <meta name="description" content="只与清风、明月为伴。清凉的风，明朗的月。"/>
@@ -86,7 +82,7 @@
     <div class="wrapper">
         <div class="content" id="home-pjax-container">
                     <#if pjax><!---- pjax {#home-pjax-container} start ----></#if>
-            <div<#if type != "linkForge"> class="module"</#if>>
+            <div class="module">
                     <#nested>
             </div><#if pjax><!---- pjax {#home-pjax-container} end ----></#if>
         </div>

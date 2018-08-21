@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all link model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.6, Jul 28, 2018
+ * @version 1.3.0.7, Aug 21, 2018
  * @since 1.6.0
  */
 public final class Link {
@@ -86,6 +86,16 @@ public final class Link {
      */
     public static final String LINK_PING_ERR_CNT = "linkPingErrCnt";
 
+    /**
+     * Key of link ping time.
+     */
+    public static final String LINK_PING_TIME = "linkPingTime";
+
+    /**
+     * Key of link card HTML.
+     */
+    public static final String LINK_CARD_HTML = "linkCardHTML";
+
     //// Transient ////
     /**
      * Key of link keywords.
@@ -108,9 +118,38 @@ public final class Link {
     public static final String LINK_T_COUNT = "linkCnt";
 
     /**
+     * Key of link description.
+     */
+    public static final String LINK_T_DESCRIPTION = "linkDescription";
+
+    /**
+     * Key of link image.
+     */
+    public static final String LINK_T_IMAGE = "linkImage";
+
+    /**
+     * Key of link site.
+     */
+    public static final String LINK_T_SITE = "linkSite";
+
+    /**
+     * Key of link site domain.
+     */
+    public static final String LINK_T_SITE_DOMAIN = "linkSiteDomain";
+
+    /**
+     * Key of link site address.
+     */
+    public static final String LINK_T_SITE_ADDR = "linkSiteAddr";
+
+    /**
+     * Key of link site icon.
+     */
+    public static final String LINK_T_SITE_ICON = "linkSiteIcon";
+
+    /**
      * Private constructor.
      */
     private Link() {
     }
-
 }

@@ -18,7 +18,9 @@
 package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -31,6 +33,8 @@ import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
+import org.b3log.symphony.service.LinkPingMgmtService;
+import org.b3log.symphony.util.Symphonys;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +47,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 7, 2017
+ * @version 1.0.0.1, Aug 22, 2018
  * @since 2.3.0
  */
 @RequestProcessor
@@ -54,6 +58,12 @@ public class ForwardProcessor {
      */
     @Inject
     private DataModelService dataModelService;
+
+    /**
+     * Ping management service.
+     */
+    @Inject
+    private LinkPingMgmtService linkPingMgmtService;
 
     /**
      * Shows jump page.
@@ -72,9 +82,18 @@ public class ForwardProcessor {
 
         String to = request.getParameter(Common.GOTO);
         if (StringUtils.isBlank(to)) {
-            to = "https://hacpai.com";
+            to = Latkes.getServePath();
         }
         dataModel.put("forwardURL", to);
+
+        final String url = to;
+        Symphonys.EXECUTOR_SERVICE.submit(() -> {
+            try {
+                linkPingMgmtService.addLink(url);
+            } finally {
+                JdbcRepository.dispose();
+            }
+        });
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
