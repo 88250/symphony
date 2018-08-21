@@ -132,7 +132,7 @@ public class TopProcessor {
         renderer.setTemplateName("/top/link.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final List<JSONObject> topLinks = linkQueryService.getTopLink(50);
+        final List<JSONObject> topLinks = linkQueryService.getTopLink(Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_LINKS, topLinks);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -161,7 +161,7 @@ public class TopProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        final List<JSONObject> users = pointtransferQueryService.getTopBalanceUsers(avatarViewMode, Symphonys.getInt("topBalanceCnt"));
+        final List<JSONObject> users = pointtransferQueryService.getTopBalanceUsers(avatarViewMode, Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_BALANCE_USERS, users);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -190,7 +190,7 @@ public class TopProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        final List<JSONObject> users = pointtransferQueryService.getTopConsumptionUsers(avatarViewMode, Symphonys.getInt("topConsumptionCnt"));
+        final List<JSONObject> users = pointtransferQueryService.getTopConsumptionUsers(avatarViewMode, Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_CONSUMPTION_USERS, users);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -218,7 +218,7 @@ public class TopProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        final List<JSONObject> users = activityQueryService.getTopCheckinUsers(avatarViewMode, Symphonys.getInt("topCheckinCnt"));
+        final List<JSONObject> users = activityQueryService.getTopCheckinUsers(avatarViewMode, Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_CHECKIN_USERS, users);
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
