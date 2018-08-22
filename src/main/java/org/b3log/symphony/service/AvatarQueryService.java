@@ -18,7 +18,6 @@
 package org.b3log.symphony.service;
 
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.UserExt;
@@ -32,16 +31,11 @@ import java.awt.image.BufferedImage;
  * User avatar query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.0, Nov 18, 2017
+ * @version 1.5.2.1, Aug 22, 2018
  * @since 0.3.0
  */
 @Service
 public class AvatarQueryService {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(AvatarQueryService.class);
 
     /**
      * Default avatar URL.
