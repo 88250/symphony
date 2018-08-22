@@ -76,7 +76,7 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.3, Aug 21, 2018
+ * @version 1.27.0.4, Aug 22, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -207,14 +207,12 @@ public class UserProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @param userName the specified user name
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/breezemoons", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHomeBreezemoons(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                    final String userName) throws Exception {
+    public void showHomeBreezemoons(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -272,15 +270,12 @@ public class UserProcessor {
     /**
      * Queries invitecode state.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/invitecode/state", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
-    public void queryInvitecode(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void queryInvitecode(final HTTPRequestContext context, final HttpServletRequest request) {
         final JSONObject ret = Results.falseResult();
         context.renderJSON(ret);
 
@@ -330,15 +325,12 @@ public class UserProcessor {
     /**
      * Point buy invitecode.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/point/buy-invitecode", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
-    public void pointBuy(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void pointBuy(final HTTPRequestContext context, final HttpServletRequest request) {
         final JSONObject ret = Results.falseResult();
         context.renderJSON(ret);
 
@@ -377,14 +369,12 @@ public class UserProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @param userName the specified user name
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/comments/anonymous", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHomeAnonymousComments(final HTTPRequestContext context, final HttpServletRequest request,
-                                          final HttpServletResponse response, final String userName) throws Exception {
+    public void showHomeAnonymousComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
@@ -650,14 +640,12 @@ public class UserProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @param userName the specified user name
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/comments", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                 final String userName) throws Exception {
+    public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -721,14 +709,13 @@ public class UserProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @param userName the specified user name
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/following/users", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingUsers(final HTTPRequestContext context, final HttpServletRequest request,
-                                       final HttpServletResponse response, final String userName) throws Exception {
+                                       final HttpServletResponse response) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -793,14 +780,13 @@ public class UserProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @param userName the specified user name
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/following/tags", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingTags(final HTTPRequestContext context, final HttpServletRequest request,
-                                      final HttpServletResponse response, final String userName) throws Exception {
+                                      final HttpServletResponse response) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -864,14 +850,13 @@ public class UserProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @param userName the specified user name
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/following/articles", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingArticles(final HTTPRequestContext context, final HttpServletRequest request,
-                                          final HttpServletResponse response, final String userName) throws Exception {
+                                          final HttpServletResponse response) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -936,14 +921,13 @@ public class UserProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @param userName the specified user name
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/watching/articles", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeWatchingArticles(final HTTPRequestContext context, final HttpServletRequest request,
-                                         final HttpServletResponse response, final String userName) throws Exception {
+                                         final HttpServletResponse response) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1008,14 +992,13 @@ public class UserProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @param userName the specified user name
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/followers", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowers(final HTTPRequestContext context, final HttpServletRequest request,
-                                  final HttpServletResponse response, final String userName) throws Exception {
+                                  final HttpServletResponse response) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1087,14 +1070,13 @@ public class UserProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @param userName the specified user name
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/points", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomePoints(final HTTPRequestContext context, final HttpServletRequest request,
-                               final HttpServletResponse response, final String userName) throws Exception {
+                               final HttpServletResponse response) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1150,15 +1132,13 @@ public class UserProcessor {
     /**
      * Point transfer.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
+     * @param request the specified request
      * @throws Exception exception
      */
     @RequestProcessing(value = "/point/transfer", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PointTransferValidation.class})
-    public void pointTransfer(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void pointTransfer(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         final JSONObject ret = Results.falseResult();
         context.renderJSON(ret);
 
@@ -1245,14 +1225,11 @@ public class UserProcessor {
     /**
      * Lists emotions.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/users/emotions", method = HTTPRequestMethod.GET)
-    public void getEmotions(final HTTPRequestContext context, final HttpServletRequest request,
-                            final HttpServletResponse response) throws Exception {
+    public void getEmotions(final HTTPRequestContext context, final HttpServletRequest request) {
         context.renderJSON();
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
