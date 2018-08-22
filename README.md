@@ -52,6 +52,7 @@
 ## 文档
 
 * [Sym 安装指南](https://hacpai.com/article/1486188905847)
+* [Sym 配置项说明](https://hacpai.com/article/1524715380797)
 
 ## 授权
 
