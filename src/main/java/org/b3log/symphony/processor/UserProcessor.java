@@ -76,7 +76,7 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.3, Aug 21, 2018
+ * @version 1.27.0.4, Aug 22, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -272,15 +272,12 @@ public class UserProcessor {
     /**
      * Queries invitecode state.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/invitecode/state", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
-    public void queryInvitecode(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void queryInvitecode(final HTTPRequestContext context, final HttpServletRequest request) {
         final JSONObject ret = Results.falseResult();
         context.renderJSON(ret);
 
@@ -330,15 +327,12 @@ public class UserProcessor {
     /**
      * Point buy invitecode.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/point/buy-invitecode", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
-    public void pointBuy(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void pointBuy(final HTTPRequestContext context, final HttpServletRequest request) {
         final JSONObject ret = Results.falseResult();
         context.renderJSON(ret);
 
@@ -1150,15 +1144,13 @@ public class UserProcessor {
     /**
      * Point transfer.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
+     * @param request the specified request
      * @throws Exception exception
      */
     @RequestProcessing(value = "/point/transfer", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PointTransferValidation.class})
-    public void pointTransfer(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void pointTransfer(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         final JSONObject ret = Results.falseResult();
         context.renderJSON(ret);
 
@@ -1195,8 +1187,7 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/cron/users/reset-unverified", method = HTTPRequestMethod.GET)
-    public void resetUnverifiedUsers(final HTTPRequestContext context,
-                                     final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void resetUnverifiedUsers(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String key = Symphonys.get("keyOfSymphony");
         if (!key.equals(request.getParameter("key"))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -1245,14 +1236,11 @@ public class UserProcessor {
     /**
      * Lists emotions.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
+     * @param request the specified request
      */
     @RequestProcessing(value = "/users/emotions", method = HTTPRequestMethod.GET)
-    public void getEmotions(final HTTPRequestContext context, final HttpServletRequest request,
-                            final HttpServletResponse response) throws Exception {
+    public void getEmotions(final HTTPRequestContext context, final HttpServletRequest request) {
         context.renderJSON();
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
@@ -1277,8 +1265,7 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/cron/users/load-names", method = HTTPRequestMethod.GET)
-    public void loadUserNames(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void loadUserNames(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String key = Symphonys.get("keyOfSymphony");
         if (!key.equals(request.getParameter("key"))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
