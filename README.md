@@ -46,7 +46,7 @@
 [**Sym 功能点脑图**](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
 
 <a href="http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a" target="_blank">
-<img src="https://oscimg.oschina.net/oscnet/d6cb88cd238acc27a6d5034b0f724d9d678.jpg" />
+<img src="https://user-images.githubusercontent.com/873584/44509003-f0593d00-a6e2-11e8-856f-3fdad10c0b58.png" />
 </a>
 
 ## 文档
@@ -68,8 +68,6 @@
 * [Q 群 17370164](https://shang.qq.com/wpa/qunwpa?idkey=0bb80e452d38d5113c7bb2534cefc8155589d0bdce81c7d2e6d91930bcb6e2d7)
 
 ## 鸣谢
-
-Sym 的诞生离不开以下开源项目：
 
 * [jQuery](https://github.com/jquery/jquery)：前端 JavaScript 工具库
 * [CodeMirror](https://github.com/codemirror/CodeMirror)：前端 Markdown 编辑器内核
