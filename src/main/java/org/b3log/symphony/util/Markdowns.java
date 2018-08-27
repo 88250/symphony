@@ -70,7 +70,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.2, Aug 20, 2018
+ * @version 1.11.21.3, Aug 27, 2018
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -188,18 +188,9 @@ public final class Markdowns {
         final Document.OutputSettings outputSettings = new Document.OutputSettings();
         outputSettings.prettyPrint(false);
 
-        final String tmp = Jsoup.clean(content, baseURI, Whitelist.relaxed().
-                        addAttributes(":all", "id", "target", "class").
-                        addTags("span", "hr", "kbd", "samp", "tt", "del", "s", "strike", "u").
-                        addAttributes("iframe", "src", "width", "height", "border", "marginwidth", "marginheight").
-                        addAttributes("audio", "controls", "src").
-                        addAttributes("video", "controls", "src", "width", "height").
-                        addAttributes("source", "src", "media", "type").
-                        addAttributes("object", "width", "height", "data", "type").
-                        addAttributes("param", "name", "value").
-                        addAttributes("input", "type", "disabled", "checked").
-                        addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking"),
-                outputSettings);
+        final Whitelist whitelist = Whitelist.relaxed().addAttributes(":all", "id", "target", "class", "data-src", "aria-name", "aria-label");
+        inputWhitelist(whitelist);
+        final String tmp = Jsoup.clean(content, baseURI, whitelist, outputSettings);
         final Document doc = Jsoup.parse(tmp, baseURI, Parser.htmlParser());
 
         final Elements ps = doc.getElementsByTag("p");
@@ -331,10 +322,9 @@ public final class Markdowns {
                 }
             }
 
-            final Whitelist relaxed = Whitelist.relaxed();
-            relaxed.addAttributes("code", "class").
-                    addAttributes("span", "class");
-            html = Jsoup.clean(html, relaxed);
+            final Whitelist whitelist = Whitelist.relaxed();
+            inputWhitelist(whitelist);
+            html = Jsoup.clean(html, whitelist);
             final Document doc = Jsoup.parse(html);
             final List<org.jsoup.nodes.Node> toRemove = new ArrayList<>();
             doc.traverse(new NodeVisitor() {
@@ -490,5 +480,19 @@ public final class Markdowns {
         final JSONObject value = new JSONObject();
         value.put(Common.DATA, html);
         MD_CACHE.put(hash, value);
+    }
+
+    private static void inputWhitelist(final Whitelist whitelist) {
+        whitelist.addTags("span", "hr", "kbd", "samp", "tt", "del", "s", "strike", "u").
+                addAttributes("iframe", "src", "width", "height", "border", "marginwidth", "marginheight").
+                addAttributes("audio", "controls", "src").
+                addAttributes("video", "controls", "src", "width", "height").
+                addAttributes("source", "src", "media", "type").
+                addAttributes("object", "width", "height", "data", "type").
+                addAttributes("param", "name", "value").
+                addAttributes("input", "type", "disabled", "checked").
+                addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking").
+                addAttributes("code", "class").
+                addAttributes("span", "class");
     }
 }
