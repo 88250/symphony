@@ -1110,8 +1110,7 @@ public class UserProcessor {
 
         final JSONObject userPointsResult
                 = pointtransferQueryService.getUserPoints(user.optString(Keys.OBJECT_ID), pageNum, pageSize);
-        final List<JSONObject> userPoints
-                = CollectionUtils.<JSONObject>jsonArrayToList(userPointsResult.optJSONArray(Keys.RESULTS));
+        final List<JSONObject> userPoints = CollectionUtils.jsonArrayToList(userPointsResult.optJSONArray(Keys.RESULTS));
         dataModel.put(Common.USER_HOME_POINTS, userPoints);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
