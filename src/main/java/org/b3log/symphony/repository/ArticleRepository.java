@@ -21,7 +21,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.cache.ArticleCache;
 import org.b3log.symphony.model.Article;
 import org.json.JSONArray;
@@ -34,7 +33,7 @@ import java.util.List;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.5, Apr 6, 2018
+ * @version 1.1.1.6, Aug 27, 2018
  * @since 0.2.0
  */
 @Repository
@@ -100,13 +99,10 @@ public class ArticleRepository extends AbstractRepository {
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
                 addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
                 setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
-        final JSONObject result1 = get(query);
-        final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
-
-        final List<JSONObject> list1 = CollectionUtils.jsonArrayToList(array1);
+        final List<JSONObject> list1 = getList(query);
         ret.addAll(list1);
 
-        final int reminingSize = fetchSize - array1.length();
+        final int reminingSize = fetchSize - list1.size();
         if (0 != reminingSize) { // Query for remains
             query = new Query().setFilter(
                     CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
@@ -117,9 +113,7 @@ public class ArticleRepository extends AbstractRepository {
                     addProjection(Article.ARTICLE_PERMALINK, String.class).
                     addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
                     setCurrentPageNum(1).setPageSize(reminingSize).setPageCount(1);
-            final JSONObject result2 = get(query);
-            final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
-            final List<JSONObject> list2 = CollectionUtils.jsonArrayToList(array2);
+            final List<JSONObject> list2 = getList(query);
 
             ret.addAll(list2);
         }

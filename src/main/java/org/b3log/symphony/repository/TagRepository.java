@@ -22,7 +22,6 @@ import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Tag;
@@ -36,7 +35,7 @@ import java.util.List;
  * Tag repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Nov 4, 2016
+ * @version 1.2.0.2, Aug 27, 2018
  * @since 0.2.0
  */
 @Repository
@@ -171,10 +170,7 @@ public class TagRepository extends AbstractRepository {
         final Query query = new Query().addSort(Tag.TAG_REFERENCE_CNT, SortDirection.DESCENDING).
                 setCurrentPageNum(1).setPageSize(num).setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        return CollectionUtils.jsonArrayToList(array);
+        return getList(query);
     }
 
     /**

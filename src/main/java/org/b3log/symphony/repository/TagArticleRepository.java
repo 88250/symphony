@@ -20,10 +20,8 @@ package org.b3log.symphony.repository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -32,7 +30,7 @@ import java.util.List;
  * Tag-Article relation repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Mar 19, 2016
+ * @version 1.1.0.1, Aug 27, 2018
  * @since 0.2.0
  */
 @Repository
@@ -44,10 +42,10 @@ public class TagArticleRepository extends AbstractRepository {
     public TagArticleRepository() {
         super(Tag.TAG + "_" + Article.ARTICLE);
     }
-    
+
     /**
      * Removes tag-articles relations by the specified article id.
-     * 
+     *
      * @param articleId the specified article id
      * @throws RepositoryException repository exception
      */
@@ -69,7 +67,6 @@ public class TagArticleRepository extends AbstractRepository {
      *         "article_oId": articleId
      * }, ....], returns an empty list if not found
      * </pre>
-     *
      * @throws RepositoryException repository exception
      */
     public List<JSONObject> getByArticleId(final String articleId) throws RepositoryException {
@@ -77,18 +74,15 @@ public class TagArticleRepository extends AbstractRepository {
                 new PropertyFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId)).
                 setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        return CollectionUtils.jsonArrayToList(array);
+        return getList(query);
     }
 
     /**
      * Gets tag-article relations by the specified tag id.
      *
-     * @param tagId the specified tag id
+     * @param tagId          the specified tag id
      * @param currentPageNum the specified current page number, MUST greater then {@code 0}
-     * @param pageSize the specified page size(count of a page contains objects), MUST greater then {@code 0}
+     * @param pageSize       the specified page size(count of a page contains objects), MUST greater then {@code 0}
      * @return for example      <pre>
      * {
      *     "pagination": {
@@ -101,7 +95,6 @@ public class TagArticleRepository extends AbstractRepository {
      *     }, ....]
      * }
      * </pre>
-     *
      * @throws RepositoryException repository exception
      */
     public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize)

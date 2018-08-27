@@ -20,10 +20,8 @@ package org.b3log.symphony.repository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.Role;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -32,7 +30,7 @@ import java.util.List;
  * Role-Permission repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 3, 2016
+ * @version 1.0.0.1, Aug 27, 2018
  * @since 1.8.0
  */
 @Repository
@@ -76,9 +74,6 @@ public class RolePermissionRepository extends AbstractRepository {
                 new PropertyFilter(Role.ROLE_ID, FilterOperator.EQUAL, roleId)).
                 setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        return CollectionUtils.jsonArrayToList(array);
+        return getList(query);
     }
 }

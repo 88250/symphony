@@ -22,7 +22,6 @@ import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.cache.UserCache;
 import org.b3log.symphony.model.Role;
 import org.json.JSONArray;
@@ -34,7 +33,7 @@ import java.util.List;
  * User repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.2.1, Jul 30, 2018
+ * @version 2.1.2.2, Aug 27, 2018
  * @since 0.2.0
  */
 @Repository
@@ -147,10 +146,7 @@ public class UserRepository extends AbstractRepository {
             final Query query = new Query().setFilter(
                     new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ROLE_ID_C_ADMIN)).setPageCount(1)
                     .addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
-            final JSONObject result = get(query);
-            final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-            ret = CollectionUtils.jsonArrayToList(array);
+            ret = getList(query);
             userCache.putAdmins(ret);
         }
 
