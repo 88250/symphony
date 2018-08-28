@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.42.0.2, Jul 29, 2018
+ * @version 1.42.1.0, Aug 28, 2018
  */
 
 /**
@@ -230,7 +230,7 @@ var Comment = {
       css('margin-bottom', $('.editor-panel > .wrapper').outerHeight() + 'px')
     $('#replyUseName').
       html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'.article-content\'))" class="ft-a-title"><svg><use xlink:href="#reply-to"></use></svg>'
-        + $('.article-title').text() + '</a>').
+        + $('.article-title').text().replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</a>').
       removeData()
 
     // 如果 hide 初始化， focus 无效
