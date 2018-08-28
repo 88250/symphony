@@ -48,7 +48,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.1.1, Jul 31, 2018
+ * @version 2.15.0.0, Aug 28, 2018
  * @since 0.2.0
  */
 @Service
@@ -678,7 +678,51 @@ public class CommentMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.ERROR, "Updates a comment[id=" + commentId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Updates a comment [id=" + commentId + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Updates the specified comment by the given comment id.
+     * <p>
+     * <b>Note</b>: This method just for admin console.
+     * </p>
+     *
+     * @param commentId the given comment id
+     * @param comment   the specified comment
+     * @throws ServiceException service exception
+     */
+    public void updateCommentByAdmin(final String commentId, final JSONObject comment) throws ServiceException {
+        final Transaction transaction = commentRepository.beginTransaction();
+
+        try {
+            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+            final JSONObject author = userRepository.get(commentAuthorId);
+            if (UserExt.USER_STATUS_C_VALID != author.optInt(UserExt.USER_STATUS)) {
+                throw new ServiceException(langPropsService.get("userStatusInvalidLabel"));
+            }
+
+            final JSONObject oldComment = commentRepository.get(commentId);
+            final String oldContent = oldComment.optString(Comment.COMMENT_CONTENT);
+
+            String content = comment.optString(Comment.COMMENT_CONTENT);
+            content = Emotions.toAliases(content);
+            content = content.replaceAll("\\s+$", ""); // https://github.com/b3log/symphony/issues/389
+            content += " "; // in case of tailing @user
+            content = content.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
+            content = content.replace(langPropsService.get("uploadingLabel", Locale.US), "");
+            comment.put(Comment.COMMENT_CONTENT, content);
+
+            commentRepository.update(commentId, comment);
+
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.ERROR, "Updates a comment [id=" + commentId + "] failed", e);
             throw new ServiceException(e);
         }
     }
