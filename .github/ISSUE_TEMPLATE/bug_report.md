@@ -1,7 +1,6 @@
 ---
 name: Bug report 报告缺陷
 about: Create a report to help us improve 报告缺陷以帮助我们改进
-
 ---
 
 **Describe the bug 描述问题**

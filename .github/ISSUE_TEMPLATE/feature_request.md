@@ -1,7 +1,6 @@
 ---
 name: Feature request 请求新功能
 about: Suggest an idea for this project 请提出你的建议或意见
-
 ---
 
 **Is your feature request related to a problem? Please describe. 你在什么场景下需要该功能？**
