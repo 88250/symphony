@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.72.0.0, Aug 20, 2018
+ * @version 1.73.0.0, Aug 29, 2018
  * @since 0.2.0
  */
 public final class Common {
@@ -820,6 +820,11 @@ public final class Common {
      * Key of footer mobile code.
      */
     public static final String FOOTER_MOBILE_CODE = "footerMobileCode";
+
+    /**
+     * Key of footer bei an hao.
+     */
+    public static final String FOOTER_BEI_AN_HAO = "footerBeiAnHao";
 
     /**
      * Key of online visitor count.
