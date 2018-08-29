@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.40.0.3, Aug 22, 2018",
+  "version": "4.40.0.4, Aug 29, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -1556,6 +1556,11 @@
           "name": "userGuideStep",
           "type": "int",
           "description": "新注册后向导到达第几步"
+        },
+        {
+          "name": "userForwardPageStatus",
+          "type": "int",
+          "description": "0：使用重定向页面，1：禁用重定向页面"
         }
       ]
     },

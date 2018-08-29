@@ -28,11 +28,16 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.14.0.0, Aug 12, 2018
+ * @version 2.15.0.0, Aug 29, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
 public final class UserExt {
+
+    /**
+     * Key of status of using forward page.
+     */
+    public static final String USER_FORWARD_PAGE_STATUS = "userForwardPageStatus";
 
     /**
      * Key of user guide step.
@@ -480,12 +485,12 @@ public final class UserExt {
     public static final int USER_XXX_STATUS_C_PRIVATE = 1;
 
     /**
-     * User XXX (UA) status - enabled.
+     * User XXX status - enabled.
      */
     public static final int USER_XXX_STATUS_C_ENABLED = 0;
 
     /**
-     * User XXX (UA) status - disabled.
+     * User XXX status - disabled.
      */
     public static final int USER_XXX_STATUS_C_DISABLED = 1;
 
