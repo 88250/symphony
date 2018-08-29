@@ -81,6 +81,9 @@
                 <label for="tagCSS">CSS</label>
                 <textarea rows="20" id="tagCSS" name="tagCSS">${tag.tagCSS}</textarea>
 
+                <label for="tagAd">${adPosLabel}</label>
+                <textarea rows="20" id="tagAd" name="tagAd">${tag.tagAd}</textarea>
+
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>

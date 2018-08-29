@@ -115,6 +115,12 @@
                         <textarea rows="5" id="tagCSS" name="tagCSS">${tag.tagCSS}</textarea>
                     </label>
                 </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${adPosLabel}</div>
+                        <textarea rows="5" id="tagAd" name="tagAd">${tag.tagAd}</textarea>
+                    </label>
+                </div>
                 <br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
