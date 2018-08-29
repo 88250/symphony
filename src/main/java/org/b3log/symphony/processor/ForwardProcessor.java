@@ -20,6 +20,7 @@ package org.b3log.symphony.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -29,12 +30,14 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.LinkPingMgmtService;
 import org.b3log.symphony.util.Symphonys;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,7 +50,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Aug 22, 2018
+ * @version 1.0.0.2, Aug 29, 2018
  * @since 2.3.0
  */
 @RequestProcessor
@@ -75,16 +78,10 @@ public class ForwardProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showForward(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("forward.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
         String to = request.getParameter(Common.GOTO);
         if (StringUtils.isBlank(to)) {
             to = Latkes.getServePath();
         }
-        dataModel.put("forwardURL", to);
 
         final String url = to;
         Symphonys.EXECUTOR_SERVICE.submit(() -> {
@@ -95,7 +92,18 @@ public class ForwardProcessor {
             }
         });
 
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        if (null != user && UserExt.USER_XXX_STATUS_C_DISABLED == user.optInt(UserExt.USER_FORWARD_PAGE_STATUS)) {
+            response.sendRedirect(to);
+
+            return;
+        }
+
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("forward.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        dataModel.put("forwardURL", to);
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
-
 }

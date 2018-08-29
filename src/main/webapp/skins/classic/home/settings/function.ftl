@@ -67,6 +67,14 @@
                 </label>
             </div>
         </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    <input id="userForwardPageStatus" <#if 0 == currentUser.userForwardPageStatus> checked="checked"</#if> type="checkbox" />
+                    ${useForwardPageLabel}
+                </label>
+            </div>
+        </div>
         <div class="fn-clear"></div>
         <div id="functionTip" class="tip"></div>
         <div class="fn-hr5"></div>
