@@ -47,7 +47,7 @@ import java.util.List;
  * Tag management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.6, Apr 16, 2017
+ * @version 1.3.1.7, Aug 29, 2018
  * @since 1.1.0
  */
 @Service
@@ -130,7 +130,7 @@ public class TagMgmtService {
                 if (0 == tag.optInt(Tag.TAG_REFERENCE_CNT) // article ref cnt
                         && 0 == domainTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
                         .optJSONArray(Keys.RESULTS).length() // domainTagRefCnt
-                        ) {
+                ) {
                     final JSONArray userTagRels = userTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
                             .optJSONArray(Keys.RESULTS);
                     if (1 == userTagRels.length()
@@ -197,6 +197,7 @@ public class TagMgmtService {
             tag.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
             tag.put(Tag.TAG_SEO_DESC, "");
             tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
+            tag.put(Tag.TAG_AD, "");
 
             ret = tagRepository.add(tag);
             tag.put(Keys.OBJECT_ID, ret);

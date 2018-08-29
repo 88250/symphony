@@ -1085,6 +1085,12 @@
           "name": "tagRandomDouble",
           "type": "double",
           "description": "标签随机数，用于快速选择随机标签"
+        },
+        {
+          "name": "tagAd",
+          "type": "String",
+          "length": 1024,
+          "description": "标签广告展位"
         }
       ]
     },
