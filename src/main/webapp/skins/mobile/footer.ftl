@@ -37,7 +37,7 @@
          <#if footerBeiAnHao != ''>
              <div class="fn-hr5"></div>
              <div>
-                 <a href="http://www.miitbeian.gov.cn/" target="_blank">#{footerBeiAnHao}</a>
+                 <a href="http://www.miitbeian.gov.cn/" target="_blank">${footerBeiAnHao}</a>
              </div>
          </#if>
     </div>
