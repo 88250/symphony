@@ -197,6 +197,8 @@ public class TagMgmtService {
             tag.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
             tag.put(Tag.TAG_SEO_DESC, "");
             tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
+            tag.put(Tag.TAG_AD, "");
+            tag.put(Tag.TAG_SHOW_SIDE_AD, 0);
 
             ret = tagRepository.add(tag);
             tag.put(Keys.OBJECT_ID, ret);

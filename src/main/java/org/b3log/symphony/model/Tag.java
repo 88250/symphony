@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.17.0.2, Jul 19, 2018
+ * @version 1.18.0.0, Aug 30, 2018
  * @since 0.2.0
  */
 public final class Tag {
@@ -133,6 +133,16 @@ public final class Tag {
      * Key of tag random double value.
      */
     public static final String TAG_RANDOM_DOUBLE = "tagRandomDouble";
+
+    /**
+     * Key of tag ad.
+     */
+    public static final String TAG_AD = "tagAd";
+
+    /**
+     * Key of tag show side ad.
+     */
+    public static final String TAG_SHOW_SIDE_AD = "tagShowSideAd";
 
     //// Transient ////
     /**

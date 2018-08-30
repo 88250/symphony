@@ -115,6 +115,21 @@
                         <textarea rows="5" id="tagCSS" name="tagCSS">${tag.tagCSS}</textarea>
                     </label>
                 </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${adPosLabel}</div>
+                        <textarea rows="5" name="tagAd">${tag.tagAd}</textarea>
+                    </label>
+                </div>
+                <div class="fn__flex">
+                    <label>
+                        <div>${showSideAdLabel}</div>
+                        <select name="tagShowSideAd">
+                            <option value="0"<#if 0 == tag.tagShowSideAd> selected</#if>>${yesLabel}</option>
+                            <option value="1"<#if 1 == tag.tagShowSideAd> selected</#if>>${noLabel}</option>
+                        </select>
+                    </label>
+                </div>
                 <br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
