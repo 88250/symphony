@@ -1618,6 +1618,7 @@ public class ArticleMgmtService {
                 tag.put(Tag.TAG_SEO_DESC, "");
                 tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
                 tag.put(Tag.TAG_AD, "");
+                tag.put(Tag.TAG_SHOW_SIDE_AD, 0);
 
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
@@ -1654,6 +1655,7 @@ public class ArticleMgmtService {
                 tagTmp.put(Tag.TAG_URI, tag.optString(Tag.TAG_URI));
                 tagTmp.put(Tag.TAG_CSS, tag.optString(Tag.TAG_CSS));
                 tagTmp.put(Tag.TAG_AD, tag.optString(Tag.TAG_AD));
+                tagTmp.put(Tag.TAG_SHOW_SIDE_AD, tag.optInt(Tag.TAG_SHOW_SIDE_AD));
 
                 tagRepository.update(tagId, tagTmp);
 

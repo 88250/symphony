@@ -1090,7 +1090,12 @@
           "name": "tagAd",
           "type": "String",
           "length": 1024,
-          "description": "标签广告展位"
+          "description": "标签广告"
+        },
+        {
+          "name": "tagShowSideAd",
+          "type": "int",
+          "description": "是否显示全站侧边栏广告"
         }
       ]
     },
