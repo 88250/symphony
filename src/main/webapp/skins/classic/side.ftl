@@ -18,8 +18,15 @@
 
 -->
 <#include 'common/person-info.ftl'/>
+<#if tag?? && tag.tagAd != ''>
+    <div class="module">
+        <div class="module-panel">
+            ${tag.tagAd}
+        </div>
+    </div>
+</#if>
 
-<#if ADLabel!="">
+<#if ADLabel!="" && ((tag?? && tag.tagShowSideAd == 0) || !tag??)>
 <div class="module">
     <div class="module-header">
         <h2>
