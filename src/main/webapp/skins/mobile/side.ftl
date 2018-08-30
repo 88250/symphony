@@ -17,7 +17,15 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<#if ADLabel!="">
+<#if tag?? && tag.tagAd != ''>
+    <div class="module">
+        <div class="module-panel">
+            ${tag.tagAd}
+        </div>
+    </div>
+</#if>
+
+<#if ADLabel!="" && ((tag?? && tag.tagShowSideAd == 0) || !tag??)>
 <div class="module">
     <div class="module-header">
         <h2>
