@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://blog.thinkjava.top">VirutalPier</a>
  * @author <a href="https://github.com/snowflake3721">snowflake</a>
- * @version 1.2.6.7, Jun 12, 2018
+ * @version 1.2.6.8, Aug 30, 2018
  * @since 1.3.0
  */
 public final class Mails {
@@ -133,6 +133,11 @@ public final class Mails {
      */
     private static final Configuration TEMPLATE_CFG = new Configuration(Skins.FREEMARKER_VER);
 
+    /**
+     * Domain - Channel mapping. &lt;163.com, aliyun&gt; https://github.com/b3log/symphony/issues/737
+     */
+    private static final Map<String, String> DOMAIN_CHANNEL = new HashMap<>();
+
     static {
         try {
             TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(Mails.class.getResource("/mail_tpl").toURI()));
@@ -141,6 +146,22 @@ public final class Mails {
             TEMPLATE_CFG.setLogTemplateExceptions(false);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Loads mail templates failed", e);
+        }
+
+        final String mailDomains = Symphonys.get("mail.channel.mailDomains");
+        if (StringUtils.isNotBlank(mailDomains)) {
+            // aliyun:163.com,126.com;sendcloud:qq.com
+            final String[] channelMaps = StringUtils.split(mailDomains, ";");
+            for (int i = 0; i < channelMaps.length; i++) {
+                final String channelMap = channelMaps[i];
+                final String[] channelDomain = StringUtils.split(channelMap, ":");
+                final String channel = channelDomain[0];
+                final String[] domains = StringUtils.split(channelDomain[1], ",");
+                for (int j = 0; j < domains.length; j++) {
+                    final String domain = domains[j];
+                    DOMAIN_CHANNEL.put(domain, channel);
+                }
+            }
         }
     }
 
@@ -186,41 +207,46 @@ public final class Mails {
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         try {
-            final Map<String, Object> formData = new HashMap<>();
-
             final Template template = TEMPLATE_CFG.getTemplate(templateName + ".ftl");
             final StringWriter stringWriter = new StringWriter();
             template.process(dataModel, stringWriter);
             stringWriter.close();
             final String html = stringWriter.toString();
 
-            if ("aliyun".equals(MAIL_CHANNEL)) {
-                aliSendHtml(ALIYUN_FROM, fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
+            final String domain = StringUtils.substringAfter(toMail, "@");
+            final String channel = DOMAIN_CHANNEL.getOrDefault(domain, MAIL_CHANNEL);
+            switch (channel) {
+                case "aliyun":
+                    aliSendHtml(ALIYUN_FROM, fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
 
-                return;
-            } else if ("local".equals(MAIL_CHANNEL.toLowerCase())) {
-                MailSender.getInstance().sendHTML(fromName, subject, toMail, html);
+                    return;
+                case "local":
+                    MailSender.getInstance().sendHTML(fromName, subject, toMail, html);
 
-                return;
+                    return;
+                case "sendcloud":
+                    final Map<String, Object> formData = new HashMap<>();
+                    formData.put("apiUser", SENDCLOUD_API_USER);
+                    formData.put("apiKey", SENDCLOUD_API_KEY);
+                    formData.put("from", SENDCLOUD_FROM);
+                    formData.put("fromName", fromName);
+                    formData.put("subject", subject);
+                    formData.put("to", toMail);
+                    formData.put("html", html);
+
+                    final HttpResponse response = HttpRequest.post("http://api.sendcloud.net/apiv2/mail/send").form(formData).timeout(5000).send();
+                    response.charset("UTF-8");
+                    LOGGER.debug(response.bodyText());
+                    response.close();
+
+                    return;
+                default:
+                    LOGGER.error("Unknown mail channel [" + channel + "]");
             }
-
-            // SendCloud
-            formData.put("apiUser", SENDCLOUD_API_USER);
-            formData.put("apiKey", SENDCLOUD_API_KEY);
-            formData.put("from", SENDCLOUD_FROM);
-            formData.put("fromName", fromName);
-            formData.put("subject", subject);
-            formData.put("to", toMail);
-            formData.put("html", html);
-
-            final HttpResponse response = HttpRequest.post("http://api.sendcloud.net/apiv2/mail/send").form(formData).send();
-            LOGGER.debug(response.bodyText());
-            response.close();
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Send mail error", e);
+            LOGGER.log(Level.ERROR, "Sends a mail [subject=" + subject + ", to=" + toMail + "] failed", e);
         }
     }
-
 
     /**
      * Batch send HTML mails.
