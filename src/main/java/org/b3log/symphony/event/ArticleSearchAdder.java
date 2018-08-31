@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Sends an article to search engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.2, Aug 19, 2018
+ * @version 1.1.3.3, Aug 31, 2018
  * @since 1.4.0
  */
 @Named
@@ -71,7 +71,7 @@ public class ArticleSearchAdder extends AbstractEventListener<JSONObject> {
         }
 
         if (Symphonys.getBoolean("algolia.enabled")) {
-            searchMgmtService.updateAlgoliaDocument(JSONs.clone(article), false);
+            searchMgmtService.updateAlgoliaDocument(JSONs.clone(article));
         }
 
         if (Symphonys.getBoolean("es.enabled")) {

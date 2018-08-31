@@ -20,6 +20,7 @@ package org.b3log.symphony.service;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import jodd.net.MimeTypes;
+import okio.Utf8;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -37,7 +38,7 @@ import org.jsoup.Jsoup;
  * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.8, Aug 3, 2018
+ * @version 1.3.2.9, Aug 31, 2018
  * @since 1.4.0
  */
 @Service
@@ -158,10 +159,9 @@ public class SearchMgmtService {
     /**
      * Updates/Adds indexing the specified document in Algolia.
      *
-     * @param doc       the specified document
-     * @param skipCheck the specified skip check flag
+     * @param doc the specified document
      */
-    public void updateAlgoliaDocument(final JSONObject doc, final boolean skipCheck) {
+    public void updateAlgoliaDocument(final JSONObject doc) {
         final int maxRetries = 3;
         int retries = 1;
 
@@ -178,21 +178,32 @@ public class SearchMgmtService {
                 String content = doc.optString(Article.ARTICLE_CONTENT);
                 content = Markdowns.toHTML(content);
                 content = Jsoup.parse(content).text();
-
                 doc.put(Article.ARTICLE_CONTENT, content);
-                if (!skipCheck && content.length() < 32) {
-                    LOGGER.log(Level.INFO, "This article is too small [length=" + content.length() + "], so skip it [title="
-                            + doc.optString(Article.ARTICLE_TITLE) + ", id=" + id + "]");
-                    return;
+
+                final long dataLength = Utf8.size(doc.toString());
+                final int maxLength = 9000; // Essential plan is 20000, Community plan is 10000
+                if (dataLength >= maxLength) {
+                    LOGGER.log(Level.INFO, "This article [id=" + id + "] is too big [length=" + dataLength + "], so cuts it");
+
+                    final int length = content.length();
+                    int idx = length;
+                    int continueCnt = 0;
+                    while (idx > 0) {
+                        idx -= 128;
+                        content = content.substring(0, idx);
+                        if (Utf8.size(content) < maxLength) {
+                            continueCnt++;
+                        }
+
+                        if (3 < continueCnt) {
+                            break;
+                        }
+                    }
+
+                    doc.put(Article.ARTICLE_CONTENT, content);
                 }
 
                 final byte[] data = doc.toString().getBytes("UTF-8");
-                if (!skipCheck && data.length > 102400) {
-                    LOGGER.log(Level.INFO, "This article is too big [length=" + data.length + "], so skip it [title="
-                            + doc.optString(Article.ARTICLE_TITLE) + ", id=" + id + "]");
-                    return;
-                }
-
                 final HttpResponse response = HttpRequest.put("https://" + host + "/1/indexes/" + index + "/" + id).
                         header("X-Algolia-API-Key", key).
                         header("X-Algolia-Application-Id", appId).body(data, MimeTypes.MIME_APPLICATION_JSON).
