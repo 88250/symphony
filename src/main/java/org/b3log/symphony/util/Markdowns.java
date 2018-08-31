@@ -25,8 +25,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.ioc.Lifecycle;
@@ -57,6 +55,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.*;
 
@@ -70,7 +69,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.3, Aug 27, 2018
+ * @version 1.11.21.4, Aug 31, 2018
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -99,12 +98,12 @@ public final class Markdowns {
     /**
      * Markdown cache.
      */
-    private static final Cache MD_CACHE = CacheFactory.getCache("markdown");
+    private static final Map<String, JSONObject> MD_CACHE = new ConcurrentHashMap<>();
 
     /**
      * Markdown to HTML timeout.
      */
-    private static final int MD_TIMEOUT = 2000;
+    private static final int MD_TIMEOUT = 10000;
 
     /**
      * Marked engine serve path.
@@ -133,8 +132,6 @@ public final class Markdowns {
     public static boolean MARKED_AVAILABLE;
 
     static {
-        MD_CACHE.setMaxCount(1024 * 10 * 4);
-
         if (null != beanManager) {
             userQueryService = beanManager.getReference(UserQueryService.class);
         } else {
