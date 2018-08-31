@@ -40,7 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.4, Apr 3, 2018
+ * @version 1.5.6.5, Aug 31, 2018
  * @since 1.4.0
  */
 @Named
@@ -143,7 +143,7 @@ public class TagCache {
             return Collections.emptyList();
         }
 
-        return new ArrayList<>(NEW_TAGS);
+        return JSONs.clone(NEW_TAGS);
     }
 
     /**
@@ -159,7 +159,7 @@ public class TagCache {
 
         final int end = fetchSize >= ICON_TAGS.size() ? ICON_TAGS.size() : fetchSize;
 
-        return new ArrayList<>(ICON_TAGS.subList(0, end));
+        return JSONs.clone(ICON_TAGS.subList(0, end));
     }
 
     /**
@@ -172,7 +172,7 @@ public class TagCache {
             return Collections.emptyList();
         }
 
-        return new ArrayList<>(TAGS);
+        return JSONs.clone(TAGS);
     }
 
     /**

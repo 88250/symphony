@@ -49,7 +49,7 @@ import java.util.List;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.4, Jul 31, 2018
+ * @version 1.3.0.5, Aug 31, 2018
  * @since 1.4.0
  */
 @Named
@@ -102,7 +102,7 @@ public class ArticleCache {
             return Collections.emptyList();
         }
 
-        return new ArrayList<>(SIDE_HOT_ARTICLES);
+        return JSONs.clone(SIDE_HOT_ARTICLES);
     }
 
     /**
@@ -152,7 +152,7 @@ public class ArticleCache {
         size = size > SIDE_RANDOM_ARTICLES.size() ? SIDE_RANDOM_ARTICLES.size() : size;
         Collections.shuffle(SIDE_RANDOM_ARTICLES);
 
-        return new ArrayList<>(SIDE_RANDOM_ARTICLES.subList(0, size));
+        return JSONs.clone(SIDE_RANDOM_ARTICLES.subList(0, size));
     }
 
     /**
@@ -202,7 +202,7 @@ public class ArticleCache {
             return Collections.emptyList();
         }
 
-        return new ArrayList<>(PERFECT_ARTICLES);
+        return JSONs.clone(PERFECT_ARTICLES);
     }
 
     /**
