@@ -103,7 +103,7 @@ public final class Markdowns {
     /**
      * Markdown to HTML timeout.
      */
-    private static final int MD_TIMEOUT = 10000;
+    private static final int MD_TIMEOUT = Symphonys.getInt("markdown.timeout");
 
     /**
      * Marked engine serve path.
@@ -137,9 +137,7 @@ public final class Markdowns {
         } else {
             userQueryService = null;
         }
-    }
 
-    static {
         try {
             final URL url = new URL(MARKED_ENGINE_URL);
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
