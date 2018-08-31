@@ -23,6 +23,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -62,7 +63,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Jul 20, 2018
+ * @version 1.0.1.0, Aug 31, 2018
  * @since 2.8.0
  */
 @RequestProcessor
@@ -220,19 +221,26 @@ public class BreezemoonProcessor {
             return;
         }
 
-        final JSONObject breezemoon = new JSONObject();
-        breezemoon.put(Keys.OBJECT_ID, id);
-        final String breezemoonContent = requestJSONObject.optString(Breezemoon.BREEZEMOON_CONTENT);
-        breezemoon.put(Breezemoon.BREEZEMOON_CONTENT, breezemoonContent);
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        final String authorId = user.optString(Keys.OBJECT_ID);
-        breezemoon.put(Breezemoon.BREEZEMOON_AUTHOR_ID, authorId);
-        final String ip = Requests.getRemoteAddr(request);
-        breezemoon.put(Breezemoon.BREEZEMOON_IP, ip);
-        final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
-        breezemoon.put(Breezemoon.BREEZEMOON_UA, ua);
-
         try {
+            final JSONObject old = breezemoonQueryService.getBreezemoon(id);
+            if (null == old) {
+                throw new ServiceException(langPropsService.get("queryFailedLabel"));
+            }
+
+            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+            if (!old.optString(Breezemoon.BREEZEMOON_AUTHOR_ID).equals(user.optString(Keys.OBJECT_ID))) {
+                throw new ServiceException(langPropsService.get("sc403Label"));
+            }
+
+            final JSONObject breezemoon = new JSONObject();
+            breezemoon.put(Keys.OBJECT_ID, id);
+            final String breezemoonContent = requestJSONObject.optString(Breezemoon.BREEZEMOON_CONTENT);
+            breezemoon.put(Breezemoon.BREEZEMOON_CONTENT, breezemoonContent);
+            final String ip = Requests.getRemoteAddr(request);
+            breezemoon.put(Breezemoon.BREEZEMOON_IP, ip);
+            final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
+            breezemoon.put(Breezemoon.BREEZEMOON_UA, ua);
+
             breezemoonMgmtService.updateBreezemoon(breezemoon);
 
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
@@ -256,6 +264,16 @@ public class BreezemoonProcessor {
         context.renderJSON();
 
         try {
+            final JSONObject breezemoon = breezemoonQueryService.getBreezemoon(id);
+            if (null == breezemoon) {
+                throw new ServiceException(langPropsService.get("queryFailedLabel"));
+            }
+
+            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+            if (!breezemoon.optString(Breezemoon.BREEZEMOON_AUTHOR_ID).equals(user.optString(Keys.OBJECT_ID))) {
+                throw new ServiceException(langPropsService.get("sc403Label"));
+            }
+
             breezemoonMgmtService.removeBreezemoon(id);
 
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
