@@ -208,7 +208,7 @@ public final class Symphonys {
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Symphonys() {
     }

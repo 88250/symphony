@@ -58,7 +58,7 @@ public final class Sessions {
     private static final int COOKIE_EXPIRY = 60 * 60 * 24 * 30;
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Sessions() {
     }
