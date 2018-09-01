@@ -17,23 +17,21 @@
  */
 package org.b3log.symphony.util;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
  * Geography utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Jun 10, 2018
+ * @version 1.3.0.1, Sep 1, 2018
  * @since 1.3.0
  */
 public final class Geos {
@@ -73,14 +71,7 @@ public final class Geos {
             conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(1000);
             conn.setReadTimeout(1000);
-            final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            String line;
-            final StringBuilder sb = new StringBuilder();
-            while (null != (line = bufferedReader.readLine())) {
-                sb.append(line);
-            }
-
-            final JSONObject data = new JSONObject(sb.toString());
+            final JSONObject data = new JSONObject(IOUtils.toString(conn.getInputStream(), "UTF-8"));
             if (0 != data.optInt("status")) {
                 return getAddressTaobao(ip);
             }
@@ -107,70 +98,10 @@ public final class Geos {
             ret.put(Common.CITY, city);
 
             return ret;
-        } catch (final SocketTimeoutException e) {
-            LOGGER.log(Level.ERROR, "Get location from Baidu timeout [ip=" + ip + "]");
-
-            return null;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Can't get location from Baidu [ip=" + ip + "]", e);
 
-            return null;
-        } finally {
-            if (null != conn) {
-                try {
-                    conn.disconnect();
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Close HTTP connection error", e);
-                }
-            }
-        }
-    }
-
-    /**
-     * Gets province, city of the specified IP by Sina API.
-     *
-     * @param ip the specified IP
-     * @return address info, for example      <pre>
-     * {
-     *     "province": "",
-     *     "city": ""
-     * }
-     * </pre>, returns {@code null} if not found
-     */
-    private static JSONObject getAddressSina(final String ip) {
-        HttpURLConnection conn = null;
-        try {
-            final URL url = new URL("http://int.dpool.sina.com.cn/iplookup/iplookup.php?ip=" + ip + "&format=json");
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(1000);
-            conn.setReadTimeout(1000);
-            final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            String line;
-            final StringBuilder sb = new StringBuilder();
-            while (null != (line = bufferedReader.readLine())) {
-                sb.append(line);
-            }
-
-            final JSONObject data = new JSONObject(sb.toString());
-            if (1 != data.optInt("ret")) {
-                return null;
-            }
-
-            final String country = data.optString("country");
-            final String province = data.optString("province");
-            String city = data.optString("city");
-            city = StringUtils.replace(city, "市", "");
-
-            final JSONObject ret = new JSONObject();
-            ret.put(Common.COUNTRY, country);
-            ret.put(Common.PROVINCE, province);
-            ret.put(Common.CITY, city);
-
-            return ret;
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Can't get location from Sina [ip=" + ip + "]", e);
-
-            return null;
+            return getAddressTaobao(ip);
         } finally {
             if (null != conn) {
                 try {
@@ -200,14 +131,7 @@ public final class Geos {
             conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(1000);
             conn.setReadTimeout(1000);
-            final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            String line;
-            final StringBuilder sb = new StringBuilder();
-            while (null != (line = bufferedReader.readLine())) {
-                sb.append(line);
-            }
-
-            final JSONObject data = new JSONObject(sb.toString());
+            final JSONObject data = new JSONObject(IOUtils.toString(conn.getInputStream(), "UTF-8"));
             if (0 != data.optInt("code")) {
                 return null;
             }
@@ -238,4 +162,3 @@ public final class Geos {
         }
     }
 }
-
