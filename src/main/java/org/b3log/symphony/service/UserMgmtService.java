@@ -259,6 +259,12 @@ public class UserMgmtService {
                 return;
             }
 
+            final long updatedAt = user.optLong(UserExt.USER_UPDATE_TIME);
+            final long now = System.currentTimeMillis();
+            if (now - updatedAt < 1000 * 60 && onlineFlag) {
+                return;
+            }
+
             if (StringUtils.isNotBlank(ip)) {
                 final JSONObject address = Geos.getAddress(ip);
                 if (null != address) {
@@ -276,7 +282,8 @@ public class UserMgmtService {
             transaction = userRepository.beginTransaction();
 
             user.put(UserExt.USER_ONLINE_FLAG, onlineFlag);
-            user.put(UserExt.USER_LATEST_LOGIN_TIME, System.currentTimeMillis());
+            user.put(UserExt.USER_LATEST_LOGIN_TIME, now);
+            user.put(UserExt.USER_UPDATE_TIME, now);
 
             userRepository.update(userId, user);
 

@@ -343,11 +343,6 @@ public final class Article {
     public static final String ARTICLE_T_PARTICIPANT_THUMBNAIL_URL = "articleParticipantThumbnailURL";
 
     /**
-     * Key of article participant thumbnail update time.
-     */
-    public static final String ARTICLE_T_PARTICIPANT_THUMBNAIL_UPDATE_TIME = "articleParticipantThumbnailUpdateTime";
-
-    /**
      * Key of article participant URL.
      */
     public static final String ARTICLE_T_PARTICIPANT_URL = "articleParticipantURL";

@@ -1994,8 +1994,6 @@ public class ArticleQueryService {
                 final JSONObject participant = new JSONObject();
                 participant.put(Article.ARTICLE_T_PARTICIPANT_NAME, commenter.optString(User.USER_NAME));
                 participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
-                participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_UPDATE_TIME,
-                        commenter.optLong(UserExt.USER_UPDATE_TIME));
                 participant.put(Article.ARTICLE_T_PARTICIPANT_URL, commenter.optString(User.USER_URL));
                 participant.put(Keys.OBJECT_ID, commenter.optString(Keys.OBJECT_ID));
                 participant.put(Comment.COMMENT_T_ID, comment.optString(Keys.OBJECT_ID));
