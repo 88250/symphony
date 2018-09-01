@@ -772,11 +772,6 @@ public final class Common {
     public static final String URL = "url";
 
     /**
-     * Key of update time.
-     */
-    public static final String UPDATE_TIME = "updateTime";
-
-    /**
      * Key of Create time.
      */
     public static final String CREATE_TIME = "createTime";
