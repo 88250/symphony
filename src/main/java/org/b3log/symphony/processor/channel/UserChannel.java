@@ -79,7 +79,7 @@ public class UserChannel {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
         final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
-        userMgmtService.updateOnlineStatus(userId, ip, true);
+        userMgmtService.updateOnlineStatus(userId, ip, true, false);
     }
 
     /**
@@ -110,7 +110,7 @@ public class UserChannel {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
         final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
-        userMgmtService.updateOnlineStatus(userId, ip, true);
+        userMgmtService.updateOnlineStatus(userId, ip, true, false);
     }
 
     /**
@@ -170,14 +170,14 @@ public class UserChannel {
 
         Set<Session> userSessions = SESSIONS.get(userId);
         if (null == userSessions) {
-            userMgmtService.updateOnlineStatus(userId, ip, false);
+            userMgmtService.updateOnlineStatus(userId, ip, false, false);
 
             return;
         }
 
         userSessions.remove(session);
         if (userSessions.isEmpty()) {
-            userMgmtService.updateOnlineStatus(userId, ip, false);
+            userMgmtService.updateOnlineStatus(userId, ip, false, false);
 
             return;
         }

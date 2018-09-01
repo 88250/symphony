@@ -168,7 +168,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             final JSONObject user = (JSONObject) userObj;
 
             final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-            userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
+            userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false, true);
         }
 
         super.sessionDestroyed(httpSessionEvent);

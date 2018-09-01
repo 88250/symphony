@@ -211,7 +211,7 @@ public class UserMgmtService {
                         || UserExt.USER_STATUS_C_DEACTIVATED == user.optInt(UserExt.USER_STATUS)) {
                     Sessions.logout(request, response);
 
-                    updateOnlineStatus(userId, ip, false);
+                    updateOnlineStatus(userId, ip, false, true);
 
                     return false;
                 }
@@ -223,7 +223,7 @@ public class UserMgmtService {
                 if (userPassword.equals(password)) {
                     Sessions.login(request, response, user, cookieJSONObject.optBoolean(Common.REMEMBER_LOGIN));
 
-                    updateOnlineStatus(userId, ip, true);
+                    updateOnlineStatus(userId, ip, true, true);
 
                     LOGGER.log(Level.TRACE, "Logged in with cookie[userId={0}]", userId);
 
@@ -249,8 +249,9 @@ public class UserMgmtService {
      * @param userId     the specified user id
      * @param ip         the specified IP, could be {@code null}
      * @param onlineFlag the specified online flag
+     * @param force the specified force flag to update
      */
-    public void updateOnlineStatus(final String userId, final String ip, final boolean onlineFlag) {
+    public void updateOnlineStatus(final String userId, final String ip, final boolean onlineFlag, final boolean force) {
         Transaction transaction = null;
 
         try {
@@ -261,7 +262,7 @@ public class UserMgmtService {
 
             final long updatedAt = user.optLong(UserExt.USER_UPDATE_TIME);
             final long now = System.currentTimeMillis();
-            if (now - updatedAt < 1000 * 60 && onlineFlag) {
+            if (now - updatedAt < 1000 * 60 && !force) {
                 return;
             }
 

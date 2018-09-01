@@ -638,7 +638,7 @@ public class LoginProcessor {
             Sessions.login(request, response, user, false);
 
             final String ip = Requests.getRemoteAddr(request);
-            userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
+            userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true, true);
 
             if (!Strings.isEmptyOrNull(referral) && !UserRegisterValidation.invalidUserName(referral)) {
                 final JSONObject referralUser = userQueryService.getUserByName(referral);
@@ -729,14 +729,14 @@ public class LoginProcessor {
             }
 
             if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
-                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false, true);
                 context.renderMsg(langPropsService.get("userBlockLabel"));
 
                 return;
             }
 
             if (UserExt.USER_STATUS_C_NOT_VERIFIED == user.optInt(UserExt.USER_STATUS)) {
-                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false, true);
                 context.renderMsg(langPropsService.get("notVerifiedLabel"));
 
                 return;
@@ -744,7 +744,7 @@ public class LoginProcessor {
 
             if (UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)
                     || UserExt.USER_STATUS_C_DEACTIVATED == user.optInt(UserExt.USER_STATUS)) {
-                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false, true);
                 context.renderMsg(langPropsService.get("invalidLoginLabel"));
 
                 return;
@@ -772,7 +772,7 @@ public class LoginProcessor {
                 final String token = Sessions.login(request, response, user, requestJSONObject.optBoolean(Common.REMEMBER_LOGIN));
 
                 final String ip = Requests.getRemoteAddr(request);
-                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true, true);
 
                 context.renderMsg("").renderTrueResult();
                 context.renderJSONValue(Keys.TOKEN, token);
