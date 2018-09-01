@@ -25,6 +25,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.Crypts;
+import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
 
@@ -37,7 +38,7 @@ import javax.servlet.http.HttpSession;
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.3.0, Nov 8, 2017
+ * @version 2.0.3.1, Sep 1, 2018
  */
 public final class Sessions {
 
@@ -108,6 +109,7 @@ public final class Sessions {
         }
 
         session.setAttribute(User.USER, user);
+        request.setAttribute(Common.IP, Requests.getRemoteAddr(request));
         session.setAttribute(Common.CSRF_TOKEN, RandomStringUtils.randomAlphanumeric(12));
 
         try {

@@ -253,7 +253,6 @@ public class TagProcessor {
 
         tag.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, tagCreator.optString(Tag.TAG_T_CREATOR_THUMBNAIL_URL));
         tag.put(Tag.TAG_T_CREATOR_NAME, tagCreator.optString(Tag.TAG_T_CREATOR_NAME));
-        tag.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, tagCreator.optLong(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME));
         tag.put(Tag.TAG_T_PARTICIPANTS, (Object) tagQueryService.getParticipants(
                 avatarViewMode, tagId, Symphonys.getInt("tagParticipantsCnt")));
 

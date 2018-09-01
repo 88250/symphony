@@ -485,8 +485,6 @@ public class TagQueryService {
             final JSONObject creatorTagRelation = results.optJSONObject(0);
             if (null == creatorTagRelation) {
                 LOGGER.log(Level.WARN, "Can't find tag [id=" + tagId + "]'s creator, uses anonymous user instead");
-                ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, avatarQueryService.getDefaultAvatarURL("48"));
-                ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, 0L);
                 ret.put(Tag.TAG_T_CREATOR_NAME, UserExt.ANONYMOUS_USER_NAME);
 
                 return ret;
@@ -494,8 +492,6 @@ public class TagQueryService {
 
             final String creatorId = creatorTagRelation.optString(User.USER + '_' + Keys.OBJECT_ID);
             if (UserExt.ANONYMOUS_USER_ID.equals(creatorId)) {
-                ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, avatarQueryService.getDefaultAvatarURL("48"));
-                ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, 0L);
                 ret.put(Tag.TAG_T_CREATOR_NAME, UserExt.ANONYMOUS_USER_NAME);
 
                 return ret;
@@ -504,9 +500,7 @@ public class TagQueryService {
             final JSONObject creator = userRepository.get(creatorId);
 
             final String thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, creator, "48");
-
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
-            ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, creator.optLong(UserExt.USER_UPDATE_TIME));
             ret.put(Tag.TAG_T_CREATOR_NAME, creator.optString(User.USER_NAME));
 
             return ret;

@@ -176,11 +176,6 @@ public final class Tag {
     public static final String TAG_T_CREATOR_THUMBNAIL_URL = "tagCreatorThumbnailURL";
 
     /**
-     * Key of tag creator thumbnail update time.
-     */
-    public static final String TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME = "tagCreatorThumbnailUpdateTime";
-
-    /**
      * Key of tag creator name.
      */
     public static final String TAG_T_CREATOR_NAME = "tagCreatorName";

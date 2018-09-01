@@ -767,11 +767,6 @@ public final class Common {
     public static final String THUMBNAIL_URL = "thumbnailURL";
 
     /**
-     * Key of thumbnail update time.
-     */
-    public static final String THUMBNAIL_UPDATE_TIME = "thumbnailUpdateTime";
-
-    /**
      * Key of URL.
      */
     public static final String URL = "url";

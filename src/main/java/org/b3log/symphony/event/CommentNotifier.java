@@ -210,7 +210,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getDefaultAvatarURL("48"));
             }
 
-            chData.put(Common.THUMBNAIL_UPDATE_TIME, commenter.optLong(UserExt.USER_UPDATE_TIME));
             chData.put(Common.TIME_AGO, langPropsService.get("justNowLabel"));
             chData.put(Comment.COMMENT_CREATE_TIME_STR, DateFormatUtils.format(chData.optLong(Comment.COMMENT_CREATE_TIME), "yyyy-MM-dd HH:mm:ss"));
             String thankTemplate = langPropsService.get("thankConfirmLabel");
