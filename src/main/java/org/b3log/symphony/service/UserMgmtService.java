@@ -63,7 +63,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.16.0.2, Aug 29, 2018
+ * @version 1.16.0.3, Sep 1, 2018
  * @since 0.2.0
  */
 @Service
@@ -247,29 +247,30 @@ public class UserMgmtService {
      * Updates a user's online status and saves the login time and IP.
      *
      * @param userId     the specified user id
-     * @param ip         the specified IP, could be "" if the {@code onlineFlag} is {@code false}
+     * @param ip         the specified IP, could be {@code null}
      * @param onlineFlag the specified online flag
-     * @throws ServiceException service exception
      */
-    public void updateOnlineStatus(final String userId, final String ip, final boolean onlineFlag) throws ServiceException {
+    public void updateOnlineStatus(final String userId, final String ip, final boolean onlineFlag) {
         Transaction transaction = null;
 
         try {
-            final JSONObject address = Geos.getAddress(ip);
-
             final JSONObject user = userRepository.get(userId);
             if (null == user) {
                 return;
             }
 
-            if (null != address) {
-                final String country = address.optString(Common.COUNTRY);
-                final String province = address.optString(Common.PROVINCE);
-                final String city = address.optString(Common.CITY);
+            if (StringUtils.isNotBlank(ip)) {
+                final JSONObject address = Geos.getAddress(ip);
+                if (null != address) {
+                    final String country = address.optString(Common.COUNTRY);
+                    final String province = address.optString(Common.PROVINCE);
+                    final String city = address.optString(Common.CITY);
 
-                user.put(UserExt.USER_COUNTRY, country);
-                user.put(UserExt.USER_PROVINCE, province);
-                user.put(UserExt.USER_CITY, city);
+                    user.put(UserExt.USER_COUNTRY, country);
+                    user.put(UserExt.USER_PROVINCE, province);
+                    user.put(UserExt.USER_CITY, city);
+                }
+                user.put(UserExt.USER_LATEST_LOGIN_IP, ip);
             }
 
             transaction = userRepository.beginTransaction();
@@ -277,21 +278,15 @@ public class UserMgmtService {
             user.put(UserExt.USER_ONLINE_FLAG, onlineFlag);
             user.put(UserExt.USER_LATEST_LOGIN_TIME, System.currentTimeMillis());
 
-            if (onlineFlag) {
-                user.put(UserExt.USER_LATEST_LOGIN_IP, ip);
-            }
-
             userRepository.update(userId, user);
 
             transaction.commit();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Updates user online status failed [id=" + userId + "]", e);
+            LOGGER.log(Level.ERROR, "Updates user online status failed [id=" + userId + ", ip=" + ip + ", flag=" + onlineFlag + "]", e);
 
             if (null != transaction && transaction.isActive()) {
                 transaction.rollback();
             }
-
-            throw new ServiceException(e);
         }
     }
 

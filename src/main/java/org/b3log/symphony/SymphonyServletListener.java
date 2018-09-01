@@ -29,7 +29,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.*;
 import org.b3log.symphony.cache.DomainCache;
@@ -169,12 +168,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             final JSONObject user = (JSONObject) userObj;
 
             final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-
-            try {
-                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
-            } catch (final ServiceException e) {
-                LOGGER.log(Level.ERROR, "Changes user online from [true] to [false] failed", e);
-            }
+            userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
         }
 
         super.sessionDestroyed(httpSessionEvent);

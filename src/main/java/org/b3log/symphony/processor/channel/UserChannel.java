@@ -20,15 +20,11 @@ package org.b3log.symphony.processor.channel;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.LatkeBeanManagerImpl;
-import org.b3log.latke.logging.Level;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.service.UserMgmtService;
 import org.json.JSONObject;
 
 import javax.websocket.*;
@@ -42,7 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * User channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Nov 3, 2016
+ * @version 1.0.1.1, Sep 1, 2018
  * @since 1.4.0
  */
 @ServerEndpoint(value = "/user-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -80,13 +76,16 @@ public class UserChannel {
 
         SESSIONS.put(userId, userSessions);
 
-        updateUserOnlineFlag(userId, true);
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
+        final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
+        userMgmtService.updateOnlineStatus(userId, ip, true);
     }
 
     /**
      * Called when the connection closed.
      *
-     * @param session session
+     * @param session     session
      * @param closeReason close reason
      */
     @OnClose
@@ -107,14 +106,18 @@ public class UserChannel {
             return;
         }
 
-        updateUserOnlineFlag(user.optString(Keys.OBJECT_ID), true);
+        final String userId = user.optString(Keys.OBJECT_ID);
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
+        final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
+        userMgmtService.updateOnlineStatus(userId, ip, true);
     }
 
     /**
      * Called in case of an error.
      *
      * @param session session
-     * @param error error
+     * @param error   error
      */
     @OnError
     public void onError(final Session session, final Throwable error) {
@@ -124,12 +127,9 @@ public class UserChannel {
     /**
      * Sends command to browsers.
      *
-     * @param message the specified message, for example      <pre>
-     * {
-     *     "userId": "",
-     *     "cmd": ""
-     * }
-     * </pre>
+     * @param message the specified message, for example,
+     *                "userId": "",
+     *                "cmd": ""
      */
     public static void sendCmd(final JSONObject message) {
         final String recvUserId = message.optString(Common.USER_ID);
@@ -164,43 +164,22 @@ public class UserChannel {
         }
 
         final String userId = user.optString(Keys.OBJECT_ID);
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
+        final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
 
         Set<Session> userSessions = SESSIONS.get(userId);
         if (null == userSessions) {
-            updateUserOnlineFlag(userId, false);
+            userMgmtService.updateOnlineStatus(userId, ip, false);
 
             return;
         }
 
         userSessions.remove(session);
         if (userSessions.isEmpty()) {
-            updateUserOnlineFlag(userId, false);
+            userMgmtService.updateOnlineStatus(userId, ip, false);
 
             return;
-        }
-    }
-
-    private void updateUserOnlineFlag(final String userId, final boolean online) {
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
-        final UserRepository userRepository = beanManager.getReference(UserRepository.class);
-
-        final Transaction transaction = userRepository.beginTransaction();
-        try {
-            final JSONObject user = userRepository.get(userId);
-            user.put(UserExt.USER_ONLINE_FLAG, online);
-            user.put(UserExt.USER_LATEST_LOGIN_TIME, System.currentTimeMillis());
-
-            userRepository.update(userId, user);
-
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            LOGGER.log(Level.ERROR, "Update user error", e);
-        } finally {
-            JdbcRepository.dispose();
         }
     }
 }
