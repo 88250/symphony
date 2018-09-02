@@ -38,7 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * User channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Sep 1, 2018
+ * @version 1.0.1.2, Sep 3, 2018
  * @since 1.4.0
  */
 @ServerEndpoint(value = "/user-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -79,7 +79,7 @@ public class UserChannel {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
         final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
-        userMgmtService.updateOnlineStatus(userId, ip, true, false);
+        userMgmtService.updateOnlineStatus(userId, ip, true, true);
     }
 
     /**
@@ -110,7 +110,7 @@ public class UserChannel {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
         final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
-        userMgmtService.updateOnlineStatus(userId, ip, true, false);
+        userMgmtService.updateOnlineStatus(userId, ip, true, true);
     }
 
     /**
