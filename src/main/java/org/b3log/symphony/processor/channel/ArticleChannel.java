@@ -29,7 +29,6 @@ import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.SkinRenderer;
 import org.b3log.symphony.service.RoleQueryService;
@@ -84,8 +83,8 @@ public class ArticleChannel {
         final String msgStr = message.toString();
 
         for (final Session session : SESSIONS) {
-            final String viewingArticleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
-            if (Strings.isEmptyOrNull(viewingArticleId)
+            final String viewingArticleId = Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
+            if (StringUtils.isBlank(viewingArticleId)
                     || !viewingArticleId.equals(message.optString(Article.ARTICLE_T_ID))) {
                 continue;
             }
@@ -112,7 +111,7 @@ public class ArticleChannel {
 
         for (final Session session : SESSIONS) {
             final String viewingArticleId = Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
-            if (Strings.isEmptyOrNull(viewingArticleId)
+            if (StringUtils.isBlank(viewingArticleId)
                     || !viewingArticleId.equals(message.optString(Article.ARTICLE_T_ID))) {
                 continue;
             }

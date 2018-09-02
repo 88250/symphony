@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.processor.advice.validate;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.ioc.inject.Named;
@@ -27,7 +28,6 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserQueryService;
@@ -73,7 +73,7 @@ public class PointTransferValidation extends BeforeRequestProcessAdvice {
         }
 
         final String userName = requestJSONObject.optString(User.USER_NAME);
-        if (Strings.isEmptyOrNull(userName)
+        if (StringUtils.isBlank(userName)
                 || UserExt.COM_BOT_NAME.equals(userName) || UserExt.NULL_USER_NAME.equals(userName)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("notFoundUserLabel")));
         }

@@ -526,7 +526,7 @@ public class ArticleProcessor {
             for (final String title : tagTitles) {
                 final String tagTitle = title.trim();
 
-                if (Strings.isEmptyOrNull(tagTitle)) {
+                if (StringUtils.isBlank(tagTitle)) {
                     continue;
                 }
 
@@ -696,10 +696,10 @@ public class ArticleProcessor {
                 article.put(Common.REWARDED, rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_ARTICLE));
             }
 
-            if (Strings.isEmptyOrNull(cmtViewModeStr) || !Strings.isNumeric(cmtViewModeStr)) {
+            if (StringUtils.isBlank(cmtViewModeStr) || !Strings.isNumeric(cmtViewModeStr)) {
                 cmtViewModeStr = currentUser.optString(UserExt.USER_COMMENT_VIEW_MODE);
             }
-        } else if (Strings.isEmptyOrNull(cmtViewModeStr) || !Strings.isNumeric(cmtViewModeStr)) {
+        } else if (StringUtils.isBlank(cmtViewModeStr) || !Strings.isNumeric(cmtViewModeStr)) {
             cmtViewModeStr = "0";
         }
 
@@ -1015,7 +1015,7 @@ public class ArticleProcessor {
     public void showUpdateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final String articleId = request.getParameter("id");
-        if (Strings.isEmptyOrNull(articleId)) {
+        if (StringUtils.isBlank(articleId)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
@@ -1103,7 +1103,7 @@ public class ArticleProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                               final String id) throws Exception {
-        if (Strings.isEmptyOrNull(id)) {
+        if (StringUtils.isBlank(id)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
@@ -1215,7 +1215,7 @@ public class ArticleProcessor {
     public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         context.renderJSON(true);
         String markdownText = request.getParameter("markdownText");
-        if (Strings.isEmptyOrNull(markdownText)) {
+        if (StringUtils.isBlank(markdownText)) {
             context.renderJSONValue("html", "");
 
             return;
@@ -1286,7 +1286,7 @@ public class ArticleProcessor {
         }
 
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
-        if (Strings.isEmptyOrNull(articleId)) {
+        if (StringUtils.isBlank(articleId)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
             return;
@@ -1330,7 +1330,7 @@ public class ArticleProcessor {
         }
 
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
-        if (Strings.isEmptyOrNull(articleId)) {
+        if (StringUtils.isBlank(articleId)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
             return;
@@ -1370,7 +1370,7 @@ public class ArticleProcessor {
         }
 
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
-        if (Strings.isEmptyOrNull(articleId)) {
+        if (StringUtils.isBlank(articleId)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
             return;

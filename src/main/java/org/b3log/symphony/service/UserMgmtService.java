@@ -35,7 +35,10 @@ import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.*;
+import org.b3log.latke.util.Crypts;
+import org.b3log.latke.util.Ids;
+import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.*;
@@ -195,7 +198,7 @@ public class UserMgmtService {
                 final JSONObject cookieJSONObject = new JSONObject(value);
 
                 final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
-                if (Strings.isEmptyOrNull(userId)) {
+                if (StringUtils.isBlank(userId)) {
                     break;
                 }
 

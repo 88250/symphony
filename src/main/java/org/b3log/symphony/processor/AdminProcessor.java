@@ -801,7 +801,7 @@ public class AdminProcessor {
             throws Exception {
         String title = StringUtils.trim(request.getParameter(Tag.TAG_TITLE));
         try {
-            if (Strings.isEmptyOrNull(title)) {
+            if (StringUtils.isBlank(title)) {
                 throw new Exception(langPropsService.get("tagsErrorLabel"));
             }
 
@@ -1380,7 +1380,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
         final String query = request.getParameter(Common.QUERY);
-        if (!Strings.isEmptyOrNull(query)) {
+        if (StringUtils.isNotBlank(query)) {
             requestJSONObject.put(Common.QUERY, query);
         }
 
@@ -1583,7 +1583,7 @@ public class AdminProcessor {
                     break;
                 case User.USER_PASSWORD:
                     final String oldPwd = user.getString(name);
-                    if (!oldPwd.equals(value) && !Strings.isEmptyOrNull(value)) {
+                    if (!oldPwd.equals(value) && StringUtils.isNotBlank(value)) {
                         user.put(name, DigestUtils.md5Hex(value));
                     }
 
@@ -1932,7 +1932,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final String articleId = request.getParameter("id");
-        if (!Strings.isEmptyOrNull(articleId)) {
+        if (StringUtils.isNotBlank(articleId)) {
             requestJSONObject.put(Keys.OBJECT_ID, articleId);
         }
 
@@ -2260,7 +2260,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final String tagTitle = request.getParameter(Common.TITLE);
-        if (!Strings.isEmptyOrNull(tagTitle)) {
+        if (StringUtils.isNotBlank(tagTitle)) {
             requestJSONObject.put(Tag.TAG_TITLE, tagTitle);
         }
 
@@ -2409,7 +2409,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final String domainTitle = request.getParameter(Common.TITLE);
-        if (!Strings.isEmptyOrNull(domainTitle)) {
+        if (StringUtils.isNotBlank(domainTitle)) {
             requestJSONObject.put(Domain.DOMAIN_TITLE, domainTitle);
         }
 
@@ -2638,7 +2638,7 @@ public class AdminProcessor {
             tagId = tag.optString(Keys.OBJECT_ID);
         } else {
             try {
-                if (Strings.isEmptyOrNull(tagTitle)) {
+                if (StringUtils.isBlank(tagTitle)) {
                     throw new Exception(langPropsService.get("tagsErrorLabel"));
                 }
 

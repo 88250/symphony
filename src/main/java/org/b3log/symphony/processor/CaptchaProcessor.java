@@ -92,7 +92,7 @@ public class CaptchaProcessor {
      * @return {@code true} if it is invalid, returns {@code false} otherwise
      */
     public static boolean invalidCaptcha(final String captcha) {
-        if (Strings.isEmptyOrNull(captcha) || captcha.length() != CAPTCHA_LENGTH) {
+        if (StringUtils.isBlank(captcha) || captcha.length() != CAPTCHA_LENGTH) {
             return true;
         }
 

@@ -309,7 +309,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
                         final JSONObject cookieJSONObject = new JSONObject(value);
 
                         final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
-                        if (Strings.isEmptyOrNull(userId)) {
+                        if (StringUtils.isBlank(userId)) {
                             break;
                         }
 

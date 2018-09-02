@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.processor.advice.validate;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.ioc.inject.Named;
@@ -25,7 +26,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -61,10 +61,10 @@ public class ShowArticleUpdateValidation extends BeforeRequestProcessAdvice {
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
 
-        JSONObject article = null;
+        JSONObject article;
         try {
             final String articleId = request.getParameter("id");
-            if (Strings.isEmptyOrNull(articleId)) {
+            if (StringUtils.isBlank(articleId)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("updateArticleNotFoundLabel")));
             }
 

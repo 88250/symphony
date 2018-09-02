@@ -31,7 +31,6 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.UserExt;
@@ -97,7 +96,7 @@ public class CommentAddValidation extends BeforeRequestProcessAdvice {
         exception.put(Keys.STATUS_CODE, StatusCodes.ERR);
 
         final String commentContent = StringUtils.trim(requestJSONObject.optString(Comment.COMMENT_CONTENT));
-        if (Strings.isEmptyOrNull(commentContent) || commentContent.length() > MAX_COMMENT_CONTENT_LENGTH) {
+        if (StringUtils.isBlank(commentContent) || commentContent.length() > MAX_COMMENT_CONTENT_LENGTH) {
             throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentErrorLabel")));
         }
 
@@ -107,7 +106,7 @@ public class CommentAddValidation extends BeforeRequestProcessAdvice {
 
         try {
             final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
-            if (Strings.isEmptyOrNull(articleId)) {
+            if (StringUtils.isBlank(articleId)) {
                 throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
             }
 

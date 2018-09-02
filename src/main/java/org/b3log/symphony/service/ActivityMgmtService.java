@@ -28,7 +28,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
@@ -480,7 +479,7 @@ public class ActivityMgmtService {
             return ret;
         }
 
-        if (Strings.isEmptyOrNull(smallOrLarge)) {
+        if (StringUtils.isBlank(smallOrLarge)) {
             ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFailLabel"));
 
             return ret;

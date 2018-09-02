@@ -38,7 +38,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.CSRFToken;
 import org.b3log.symphony.processor.advice.LoginCheck;
@@ -501,7 +500,7 @@ public class LoginProcessor {
         }
 
         final String code = request.getParameter("code");
-        if (Strings.isEmptyOrNull(code)) { // Register Step 1
+        if (StringUtils.isBlank(code)) { // Register Step 1
             renderer.setTemplateName("verify/register.ftl");
         } else { // Register Step 2
             final JSONObject verifycode = verifycodeQueryService.getVerifycode(code);
@@ -521,7 +520,7 @@ public class LoginProcessor {
                     renderer.setTemplateName("/error/custom.ftl");
                 } else {
                     referral = StringUtils.substringAfter(code, "r=");
-                    if (!Strings.isEmptyOrNull(referral)) {
+                    if (StringUtils.isNotBlank(referral)) {
                         dataModel.put(Common.REFERRAL, referral);
                     }
                 }
@@ -567,7 +566,7 @@ public class LoginProcessor {
             final JSONObject verifycode = new JSONObject();
             verifycode.put(Verifycode.BIZ_TYPE, Verifycode.BIZ_TYPE_C_REGISTER);
             String code = RandomStringUtils.randomAlphanumeric(6);
-            if (!Strings.isEmptyOrNull(referral)) {
+            if (StringUtils.isNotBlank(referral)) {
                 code += "r=" + referral;
             }
             verifycode.put(Verifycode.CODE, code);
@@ -640,7 +639,7 @@ public class LoginProcessor {
             final String ip = Requests.getRemoteAddr(request);
             userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true, true);
 
-            if (!Strings.isEmptyOrNull(referral) && !UserRegisterValidation.invalidUserName(referral)) {
+            if (StringUtils.isNotBlank(referral) && !UserRegisterValidation.invalidUserName(referral)) {
                 final JSONObject referralUser = userQueryService.getUserByName(referral);
                 if (null != referralUser) {
                     final String referralId = referralUser.optString(Keys.OBJECT_ID);

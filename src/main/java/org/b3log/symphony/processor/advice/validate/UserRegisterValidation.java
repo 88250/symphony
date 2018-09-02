@@ -204,7 +204,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
         if (!useInvitationLink && "2".equals(option.optString(Option.OPTION_VALUE))) {
             final String invitecode = requestJSONObject.optString(Invitecode.INVITECODE);
 
-            if (Strings.isEmptyOrNull(invitecode) || INVITECODE_LENGHT != invitecode.length()) {
+            if (StringUtils.isBlank(invitecode) || INVITECODE_LENGHT != invitecode.length()) {
                 checkField(true, "registerFailLabel", "invalidInvitecodeLabel");
             }
 

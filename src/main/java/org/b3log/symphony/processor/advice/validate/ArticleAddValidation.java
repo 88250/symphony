@@ -30,7 +30,6 @@ import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Tag;
@@ -101,7 +100,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
 
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         articleTitle = StringUtils.trim(articleTitle);
-        if (Strings.isEmptyOrNull(articleTitle) || articleTitle.length() > MAX_ARTICLE_TITLE_LENGTH) {
+        if (StringUtils.isBlank(articleTitle) || articleTitle.length() > MAX_ARTICLE_TITLE_LENGTH) {
             throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("articleTitleErrorLabel")));
         }
         if (optionQueryService.containReservedWord(articleTitle)) {
@@ -136,7 +135,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
             for (int i = 0; i < tagTitles.length; i++) {
                 final String tagTitle = tagTitles[i].trim();
 
-                if (Strings.isEmptyOrNull(tagTitle)) {
+                if (StringUtils.isBlank(tagTitle)) {
                     throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
                 }
 
@@ -172,7 +171,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
 
         String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
         articleContent = StringUtils.trim(articleContent);
-        if (Strings.isEmptyOrNull(articleContent) || articleContent.length() > MAX_ARTICLE_CONTENT_LENGTH
+        if (StringUtils.isBlank(articleContent) || articleContent.length() > MAX_ARTICLE_CONTENT_LENGTH
                 || articleContent.length() < MIN_ARTICLE_CONTENT_LENGTH) {
             String msg = langPropsService.get("articleContentErrorLabel");
             msg = msg.replace("{maxArticleContentLength}", String.valueOf(MAX_ARTICLE_CONTENT_LENGTH));
@@ -200,7 +199,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         }
 
         if (rewardPoint > 0) {
-            if (Strings.isEmptyOrNull(articleRewardContnt) || articleRewardContnt.length() > MAX_ARTICLE_CONTENT_LENGTH
+            if (StringUtils.isBlank(articleRewardContnt) || articleRewardContnt.length() > MAX_ARTICLE_CONTENT_LENGTH
                     || articleRewardContnt.length() < MIN_ARTICLE_CONTENT_LENGTH) {
                 String msg = langPropsService.get("articleRewardContentErrorLabel");
                 msg = msg.replace("{maxArticleRewardContentLength}", String.valueOf(MAX_ARTICLE_REWARD_CONTENT_LENGTH));

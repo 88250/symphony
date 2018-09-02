@@ -28,7 +28,6 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.UserExt;
@@ -94,7 +93,7 @@ public class ChatMsgAddValidation extends BeforeRequestProcessAdvice {
 
         String content = requestJSONObject.optString(Common.CONTENT);
         content = StringUtils.trim(content);
-        if (Strings.isEmptyOrNull(content) || content.length() > MAX_CONTENT_LENGTH) {
+        if (StringUtils.isBlank(content) || content.length() > MAX_CONTENT_LENGTH) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentErrorLabel")));
         }
 

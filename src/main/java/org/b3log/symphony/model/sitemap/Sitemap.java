@@ -17,7 +17,7 @@
  */
 package org.b3log.symphony.model.sitemap;
 
-import org.b3log.latke.util.Strings;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -242,19 +242,19 @@ public final class Sitemap {
             stringBuilder.append(loc);
             stringBuilder.append(END_LOC_ELEMENT);
 
-            if (!Strings.isEmptyOrNull(lastMod)) {
+            if (StringUtils.isNotBlank(lastMod)) {
                 stringBuilder.append(START_LAST_MOD_ELEMENT);
                 stringBuilder.append(lastMod);
                 stringBuilder.append(END_LAST_MOD_ELEMENT);
             }
 
-            if (!Strings.isEmptyOrNull(changeFreq)) {
+            if (StringUtils.isNotBlank(changeFreq)) {
                 stringBuilder.append(START_CHANGE_REQ_ELEMENT);
                 stringBuilder.append(changeFreq);
                 stringBuilder.append(END_CHANGE_REQ_ELEMENT);
             }
 
-            if (!Strings.isEmptyOrNull(priority)) {
+            if (StringUtils.isNotBlank(priority)) {
                 stringBuilder.append(START_PRIORITY_ELEMENT);
                 stringBuilder.append(priority);
                 stringBuilder.append(END_PRIORITY_ELEMENT);

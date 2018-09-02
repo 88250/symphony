@@ -18,6 +18,7 @@
 package org.b3log.symphony.processor.advice.validate;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.ioc.inject.Named;
@@ -36,8 +37,6 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -92,24 +91,24 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
         }
 
         final String userURL = requestJSONObject.optString(User.USER_URL);
-        if (!Strings.isEmptyOrNull(userURL) && invalidUserURL(userURL)) {
+        if (StringUtils.isNotBlank(userURL) && invalidUserURL(userURL)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
                     "URL" + langPropsService.get("colonLabel") + langPropsService.get("invalidUserURLLabel")));
         }
 
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
-        if (!Strings.isEmptyOrNull(userQQ) && (!Strings.isNumeric(userQQ) || userQQ.length() > MAX_USER_QQ_LENGTH)) {
+        if (StringUtils.isNotBlank(userQQ) && (!Strings.isNumeric(userQQ) || userQQ.length() > MAX_USER_QQ_LENGTH)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
                     langPropsService.get("invalidUserQQLabel")));
         }
 
         final String userNickname = requestJSONObject.optString(UserExt.USER_NICKNAME);
-        if (!Strings.isEmptyOrNull(userNickname) && userNickname.length() > MAX_USER_NICKNAME_LENGTH) {
+        if (StringUtils.isNotBlank(userNickname) && userNickname.length() > MAX_USER_NICKNAME_LENGTH) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserNicknameLabel")));
         }
 
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
-        if (!Strings.isEmptyOrNull(userIntro) && userIntro.length() > MAX_USER_INTRO_LENGTH) {
+        if (StringUtils.isNotBlank(userIntro) && userIntro.length() > MAX_USER_INTRO_LENGTH) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserIntroLabel")));
         }
 
@@ -123,20 +122,20 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
                 + langPropsService.get("tagsErrorLabel");
 
         String userTags = requestJSONObject.optString(UserExt.USER_TAGS);
-        if (!Strings.isEmptyOrNull(userTags)) {
+        if (StringUtils.isNotBlank(userTags)) {
             userTags = Tag.formatTags(userTags);
             String[] tagTitles = userTags.split(",");
             if (null == tagTitles || 0 == tagTitles.length) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
             }
 
-            tagTitles = new LinkedHashSet<String>(Arrays.asList(tagTitles)).toArray(new String[0]);
+            tagTitles = new LinkedHashSet<>(Arrays.asList(tagTitles)).toArray(new String[0]);
 
             final StringBuilder tagBuilder = new StringBuilder();
             for (int i = 0; i < tagTitles.length; i++) {
                 final String tagTitle = tagTitles[i].trim();
 
-                if (Strings.isEmptyOrNull(tagTitle)) {
+                if (StringUtils.isBlank(tagTitle)) {
                     throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
                 }
 
