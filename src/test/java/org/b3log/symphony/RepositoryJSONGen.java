@@ -15,6 +15,6 @@ import java.util.HashSet;
 public class RepositoryJSONGen {
 
     public static void main(final String[] args) {
-       // JdbcRepositories.initRepositoryJSON("symphony_", new HashSet<>(Arrays.asList("article")), "reverse-repository.json");
+        JdbcRepositories.initRepositoryJSON("symphony_", new HashSet<>(Arrays.asList("article")), "reverse-repository.json");
     }
 }
