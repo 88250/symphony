@@ -587,11 +587,6 @@ public final class Common {
     public static final String INDEX = "index";
 
     /**
-     * Key of user id.
-     */
-    public static final String USER_ID = "userId";
-
-    /**
      * Key of user home articles.
      */
     public static final String USER_HOME_ARTICLES = "userHomeArticles";

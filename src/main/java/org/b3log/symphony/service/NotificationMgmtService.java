@@ -28,6 +28,7 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.UserChannel;
 import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.util.Symphonys;
@@ -922,7 +923,7 @@ public class NotificationMgmtService {
 
         Symphonys.EXECUTOR_SERVICE.submit(() -> {
             final JSONObject cmd = new JSONObject();
-            cmd.put(Common.USER_ID, requestJSONObject.optString(Notification.NOTIFICATION_USER_ID));
+            cmd.put(UserExt.USER_T_ID, requestJSONObject.optString(Notification.NOTIFICATION_USER_ID));
             cmd.put(Common.COMMAND, "refreshNotification");
 
             UserChannel.sendCmd(cmd);

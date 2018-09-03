@@ -24,6 +24,7 @@ import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserMgmtService;
 import org.json.JSONObject;
 
@@ -132,7 +133,7 @@ public class UserChannel {
      *                "cmd": ""
      */
     public static void sendCmd(final JSONObject message) {
-        final String recvUserId = message.optString(Common.USER_ID);
+        final String recvUserId = message.optString(UserExt.USER_T_ID);
         if (StringUtils.isBlank(recvUserId)) {
             return;
         }

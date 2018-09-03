@@ -423,7 +423,7 @@ public class LoginProcessor {
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
         final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
-        final String userId = requestJSONObject.optString(Common.USER_ID);
+        final String userId = requestJSONObject.optString(UserExt.USER_T_ID);
         final String code = requestJSONObject.optString(Common.CODE);
         final JSONObject verifycode = verifycodeQueryService.getVerifycode(code);
         if (null == verifycode || !verifycode.optString(Verifycode.USER_ID).equals(userId)) {
@@ -613,7 +613,7 @@ public class LoginProcessor {
         final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
         final int appRole = requestJSONObject.optInt(UserExt.USER_APP_ROLE);
         final String referral = requestJSONObject.optString(Common.REFERRAL);
-        final String userId = requestJSONObject.optString(Common.USER_ID);
+        final String userId = requestJSONObject.optString(UserExt.USER_T_ID);
 
         String name = null;
         String email = null;
