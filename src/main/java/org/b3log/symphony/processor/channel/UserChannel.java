@@ -23,6 +23,7 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserMgmtService;
@@ -80,7 +81,11 @@ public class UserChannel {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
         final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
-        userMgmtService.updateOnlineStatus(userId, ip, true, true);
+        try {
+            userMgmtService.updateOnlineStatus(userId, ip, true, true);
+        } finally {
+            JdbcRepository.dispose();
+        }
     }
 
     /**
@@ -111,7 +116,11 @@ public class UserChannel {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
         final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
-        userMgmtService.updateOnlineStatus(userId, ip, true, true);
+        try {
+            userMgmtService.updateOnlineStatus(userId, ip, true, true);
+        } finally {
+            JdbcRepository.dispose();
+        }
     }
 
     /**
@@ -171,14 +180,22 @@ public class UserChannel {
 
         Set<Session> userSessions = SESSIONS.get(userId);
         if (null == userSessions) {
-            userMgmtService.updateOnlineStatus(userId, ip, false, false);
+            try {
+                userMgmtService.updateOnlineStatus(userId, ip, false, false);
+            } finally {
+                JdbcRepository.dispose();
+            }
 
             return;
         }
 
         userSessions.remove(session);
         if (userSessions.isEmpty()) {
-            userMgmtService.updateOnlineStatus(userId, ip, false, false);
+            try {
+                userMgmtService.updateOnlineStatus(userId, ip, false, false);
+            } finally {
+                JdbcRepository.dispose();
+            }
 
             return;
         }
