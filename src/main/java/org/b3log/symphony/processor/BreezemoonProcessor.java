@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.processor;
 
+import okio.Utf8;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -63,7 +64,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Aug 31, 2018
+ * @version 1.0.1.1, Sep 4, 2018
  * @since 2.8.0
  */
 @RequestProcessor
@@ -286,7 +287,7 @@ public class BreezemoonProcessor {
     private boolean isInvalid(final HTTPRequestContext context, final JSONObject requestJSONObject) {
         String breezemoonContent = requestJSONObject.optString(Breezemoon.BREEZEMOON_CONTENT);
         breezemoonContent = StringUtils.trim(breezemoonContent);
-        final int length = StringUtils.length(breezemoonContent);
+        final long length = Utf8.size(breezemoonContent);
         if (1 > length || 512 < length) {
             context.renderMsg(langPropsService.get("breezemoonLengthLabel"));
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
