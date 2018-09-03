@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.28.0.3, Aug 22, 2018
+ * @version 2.28.0.4, Sep 3, 2018
  * @since 0.2.0
  */
 @Service
@@ -1831,7 +1831,25 @@ public class ArticleQueryService {
         }
 
         final String html = Markdowns.toHTML(content);
-        String ret = StringUtils.substringBetween(html, "<img src=\"", "\"");
+        final String[] imgs = StringUtils.substringsBetween(html, "<img", ">");
+        if (null == imgs || 0 == imgs.length) {
+            return "";
+        }
+
+        String ret = null;
+        for (int i = 0; i < imgs.length; i++) {
+            ret = StringUtils.substringBetween(imgs[i], "data-src=\"", "\"");
+            if (StringUtils.isBlank(ret)) {
+                ret = StringUtils.substringBetween(ret, "src=\"", "\"");
+            }
+
+            if (!StringUtils.containsIgnoreCase(ret, ".ico")) {
+                break;
+            }
+        }
+        if (StringUtils.isBlank(ret)) {
+            return "";
+        }
 
         final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
         if (qiniuEnabled) {
