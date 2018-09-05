@@ -18,7 +18,6 @@
 package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -54,7 +53,7 @@ import java.util.Set;
  * Captcha processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.0.3, Aug 30, 2018
+ * @version 2.3.0.4, Sep 5, 2018
  * @since 0.2.2
  */
 @RequestProcessor
@@ -221,9 +220,11 @@ public class CaptchaProcessor {
             }
         }
 
-        if (ret.isEmpty() && 0 < fonts.length) {
-            ret.add(fonts[RandomUtils.nextInt(fonts.length)].getFontName());
-        }
+        ret.add(Font.DIALOG);
+        ret.add(Font.DIALOG_INPUT);
+        ret.add(Font.SERIF);
+        ret.add(Font.SANS_SERIF);
+        ret.add(Font.MONOSPACED);
 
         return ret;
     }
