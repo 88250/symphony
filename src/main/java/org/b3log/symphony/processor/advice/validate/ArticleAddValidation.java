@@ -49,7 +49,7 @@ import java.util.Map;
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.1, Jun 10, 2018
+ * @version 1.3.5.2, Sep 5, 2018
  * @since 0.2.0
  */
 @Named
@@ -128,7 +128,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         if (StringUtils.isNotBlank(articleTags)) {
             String[] tagTitles = articleTags.split(",");
 
-            tagTitles = new LinkedHashSet<String>(Arrays.asList(tagTitles)).toArray(new String[0]);
+            tagTitles = new LinkedHashSet<>(Arrays.asList(tagTitles)).toArray(new String[0]);
             final List<String> invalidTags = tagQueryService.getInvalidTags();
 
             final StringBuilder tagBuilder = new StringBuilder();
@@ -157,8 +157,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
                 }
 
                 if (invalidTags.contains(tagTitle)) {
-                    throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("articleTagInvalidLabel")
-                            + " [" + tagTitle + "]"));
+                    continue;
                 }
 
                 tagBuilder.append(tagTitle).append(",");

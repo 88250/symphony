@@ -44,12 +44,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.0, Aug 19, 2018
+ * @version 1.9.0.1, Sep 5, 2018
  * @since 0.2.0
  */
 @Service
@@ -271,24 +272,14 @@ public class TagQueryService {
      * @return invalid tags, returns an empty list if not found
      */
     public List<String> getInvalidTags() {
-        final List<String> ret = new ArrayList<>();
-
-        final Query query = new Query().setFilter(
-                new PropertyFilter(Tag.TAG_STATUS, FilterOperator.NOT_EQUAL, Tag.TAG_STATUS_C_VALID));
-
         try {
-            final JSONArray records = tagRepository.get(query).optJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < records.length(); i++) {
-                final String title = records.optJSONObject(i).optString(Tag.TAG_TITLE);
-
-                ret.add(title);
-            }
+            return tagRepository.getList(new Query().setFilter(new PropertyFilter(Tag.TAG_STATUS, FilterOperator.NOT_EQUAL, Tag.TAG_STATUS_C_VALID))).
+                    stream().map(record -> record.optString(Tag.TAG_TITLE)).collect(Collectors.toList());
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets invalid tags error", e);
-        }
 
-        return ret;
+            return Collections.emptyList();
+        }
     }
 
     /**
