@@ -45,7 +45,7 @@ import java.util.*;
  * Breezemoon query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Aug 5, 2018
+ * @version 1.0.0.6, Sep 7, 2018
  * @since 2.8.0
  */
 @Service
@@ -79,6 +79,12 @@ public class BreezemoonQueryService {
      */
     @Inject
     private AvatarQueryService avatarQueryService;
+
+    /**
+     * Short link query service.
+     */
+    @Inject
+    private ShortLinkQueryService shortLinkQueryService;
 
     /**
      * Get following user breezemoons.
@@ -328,6 +334,8 @@ public class BreezemoonQueryService {
             bm.put(Common.TIME_AGO, Times.getTimeAgo(time, Locales.getLocale()));
             bm.put(Breezemoon.BREEZEMOON_T_CREATE_TIME, new Date(time));
             String content = bm.optString(Breezemoon.BREEZEMOON_CONTENT);
+            content = shortLinkQueryService.linkArticle(content);
+            content = shortLinkQueryService.linkTag(content);
             content = Emotions.convert(content);
             content = Markdowns.toHTML(content);
             content = Markdowns.clean(content, "");
