@@ -215,7 +215,7 @@ public class IndexProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("watch.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final int pageNum = Paginator.getPage(request);
+
         int pageSize = Symphonys.getInt("indexArticlesCnt");
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         final JSONObject user = Sessions.currentUser(request);
@@ -481,7 +481,6 @@ public class IndexProcessor {
 
         Stopwatchs.start("Fills");
         try {
-            final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
             dataModelService.fillHeaderAndFooter(request, response, dataModel);
             if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
                 dataModelService.fillRandomArticles(dataModel);
@@ -581,7 +580,6 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
