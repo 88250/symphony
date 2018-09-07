@@ -66,7 +66,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.16.0.3, Sep 1, 2018
+ * @version 1.16.0.4, Sep 7, 2018
  * @since 0.2.0
  */
 @Service
@@ -252,7 +252,7 @@ public class UserMgmtService {
      * @param userId     the specified user id
      * @param ip         the specified IP, could be {@code null}
      * @param onlineFlag the specified online flag
-     * @param force the specified force flag to update
+     * @param force      the specified force flag to update
      */
     public void updateOnlineStatus(final String userId, final String ip, final boolean onlineFlag, final boolean force) {
         Transaction transaction = null;
@@ -402,7 +402,8 @@ public class UserMgmtService {
      *                          "userAppRole": int, // optional, default to 0
      *                          "userRole": "", // optional, uses {@value Role#ROLE_ID_C_DEFAULT} instead if not specified
      *                          "userStatus": int, // optional, uses {@value UserExt#USER_STATUS_C_NOT_VERIFIED} instead if not specified
-     *                          "userGuideStep": int // optional, uses {@value UserExt#USER_GUIDE_STEP_UPLOAD_AVATAR} instead if not specified
+     *                          "userGuideStep": int, // optional, uses {@value UserExt#USER_GUIDE_STEP_UPLOAD_AVATAR} instead if not specified
+     *                          "userAvatarURL": "" // optional, generate it if not specified
      *                          ,see {@link User} for more details
      * @return generated user id
      * @throws ServiceException if user name or email duplicated, or repository exception
@@ -478,7 +479,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_JOIN_POINT_RANK, UserExt.USER_JOIN_POINT_RANK_C_JOIN);
             user.put(UserExt.USER_JOIN_USED_POINT_RANK, UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN);
             user.put(UserExt.USER_TAGS, "");
-            user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName")); // TODO: set default skin by app role
+            user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName"));
             user.put(UserExt.USER_MOBILE_SKIN, Symphonys.get("mobileSkinDirName"));
             user.put(UserExt.USER_COUNTRY, "");
             user.put(UserExt.USER_PROVINCE, "");
@@ -544,39 +545,44 @@ public class UserMgmtService {
                 ret = Ids.genTimeMillisId();
                 user.put(Keys.OBJECT_ID, ret);
 
-                try {
-                    byte[] avatarData;
+                final String specifiedAvatar = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
+                if (StringUtils.isBlank(specifiedAvatar)) {
+                    try {
+                        byte[] avatarData;
 
-                    final String hash = DigestUtils.md5Hex(ret);
-                    avatarData = Gravatars.getRandomAvatarData(hash); // https://github.com/b3log/symphony/issues/569
-                    if (null == avatarData) {
-                        final BufferedImage img = avatarQueryService.createAvatar(hash, 512);
-                        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        ImageIO.write(img, "jpg", baos);
-                        baos.flush();
-                        avatarData = baos.toByteArray();
-                        baos.close();
-                    }
-
-                    if (Symphonys.getBoolean("qiniu.enabled")) {
-                        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-                        final UploadManager uploadManager = new UploadManager(new Configuration());
-
-                        uploadManager.put(avatarData, "avatar/" + ret, auth.uploadToken(Symphonys.get("qiniu.bucket")),
-                                null, "image/jpeg", false);
-                        user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?" + new Date().getTime());
-                    } else {
-                        final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
-                        try (final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName)) {
-                            IOUtils.write(avatarData, output);
+                        final String hash = DigestUtils.md5Hex(ret);
+                        avatarData = Gravatars.getRandomAvatarData(hash); // https://github.com/b3log/symphony/issues/569
+                        if (null == avatarData) {
+                            final BufferedImage img = avatarQueryService.createAvatar(hash, 512);
+                            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            ImageIO.write(img, "jpg", baos);
+                            baos.flush();
+                            avatarData = baos.toByteArray();
+                            baos.close();
                         }
 
-                        user.put(UserExt.USER_AVATAR_URL, Latkes.getServePath() + "/upload/" + fileName);
-                    }
-                } catch (final IOException e) {
-                    LOGGER.log(Level.ERROR, "Generates avatar error, using default thumbnail instead", e);
+                        if (Symphonys.getBoolean("qiniu.enabled")) {
+                            final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+                            final UploadManager uploadManager = new UploadManager(new Configuration());
 
-                    user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+                            uploadManager.put(avatarData, "avatar/" + ret, auth.uploadToken(Symphonys.get("qiniu.bucket")),
+                                    null, "image/jpeg", false);
+                            user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?" + new Date().getTime());
+                        } else {
+                            final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
+                            try (final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName)) {
+                                IOUtils.write(avatarData, output);
+                            }
+
+                            user.put(UserExt.USER_AVATAR_URL, Latkes.getServePath() + "/upload/" + fileName);
+                        }
+                    } catch (final IOException e) {
+                        LOGGER.log(Level.ERROR, "Generates avatar error, using default thumbnail instead", e);
+
+                        user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+                    }
+                } else {
+                    user.put(UserExt.USER_AVATAR_URL, specifiedAvatar);
                 }
 
                 final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);

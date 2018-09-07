@@ -43,7 +43,7 @@ import java.util.Set;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.14, Jul 30, 2018
+ * @version 1.2.1.15, Sep 7, 2018
  * @since 1.8.0
  */
 @Service
@@ -625,6 +625,7 @@ public class InitMgmtService {
             admin.put(User.USER_ROLE, Role.ROLE_ID_C_ADMIN);
             admin.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             admin.put(UserExt.USER_GUIDE_STEP, UserExt.USER_GUIDE_STEP_FIN);
+            admin.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
             final String adminId = userMgmtService.addUser(admin);
             admin.put(Keys.OBJECT_ID, adminId);
 
