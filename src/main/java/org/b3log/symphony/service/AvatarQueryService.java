@@ -31,7 +31,7 @@ import java.awt.image.BufferedImage;
  * User avatar query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.1, Aug 22, 2018
+ * @version 1.5.2.2, Sep 8, 2018
  * @since 0.3.0
  */
 @Service
@@ -40,7 +40,7 @@ public class AvatarQueryService {
     /**
      * Default avatar URL.
      */
-    private static final String DEFAULT_AVATAR_URL = Symphonys.get("defaultThumbnailURL");
+    public static final String DEFAULT_AVATAR_URL = Symphonys.get("defaultThumbnailURL");
 
     /**
      * Fills the specified user thumbnail URL.

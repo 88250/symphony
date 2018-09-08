@@ -542,7 +542,7 @@ public class CommentQueryService {
                 }
 
                 final String commenterEmail = commenter.optString(User.USER_EMAIL);
-                String avatarURL = Symphonys.get("defaultThumbnailURL");
+                String avatarURL = AvatarQueryService.DEFAULT_AVATAR_URL;
                 if (!UserExt.COM_BOT_EMAIL.equals(commenterEmail)) {
                     avatarURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, commenter, "20");
                 }

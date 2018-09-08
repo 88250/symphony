@@ -155,7 +155,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_TAGS, "");
             user.put(User.USER_URL, "");
             user.put(UserExt.USER_INTRO, "");
-            user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+            user.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
             user.put(UserExt.USER_CITY, "");
             user.put(UserExt.USER_PROVINCE, "");
             user.put(UserExt.USER_COUNTRY, "");
@@ -524,7 +524,7 @@ public class UserMgmtService {
             if (toUpdate) {
                 user.put(UserExt.USER_NO, userNo);
 
-                if (!Symphonys.get("defaultThumbnailURL").equals(avatarURL)) { // generate/upload avatar succ
+                if (!AvatarQueryService.DEFAULT_AVATAR_URL.equals(avatarURL)) { // generate/upload avatar succ
                     if (Symphonys.getBoolean("qiniu.enabled")) {
                         user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
                                 + new Date().getTime());
@@ -535,7 +535,7 @@ public class UserMgmtService {
                     avatarURL = user.optString(UserExt.USER_AVATAR_URL);
                     if (255 < StringUtils.length(avatarURL)) {
                         LOGGER.warn("Length of user [" + userName + "]'s avatar URL [" + avatarURL + "] larger then 255");
-                        avatarURL = Symphonys.get("defaultThumbnailURL");
+                        avatarURL = AvatarQueryService.DEFAULT_AVATAR_URL;
                         user.put(UserExt.USER_AVATAR_URL, avatarURL);
                     }
 
@@ -546,7 +546,9 @@ public class UserMgmtService {
                 user.put(Keys.OBJECT_ID, ret);
 
                 final String specifiedAvatar = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
-                if (StringUtils.isBlank(specifiedAvatar)) {
+                if (AvatarQueryService.DEFAULT_AVATAR_URL.equals(specifiedAvatar)) {
+                    user.put(UserExt.USER_AVATAR_URL, specifiedAvatar);
+                } else {
                     try {
                         byte[] avatarData;
 
@@ -579,10 +581,8 @@ public class UserMgmtService {
                     } catch (final IOException e) {
                         LOGGER.log(Level.ERROR, "Generates avatar error, using default thumbnail instead", e);
 
-                        user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+                        user.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
                     }
-                } else {
-                    user.put(UserExt.USER_AVATAR_URL, specifiedAvatar);
                 }
 
                 final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);

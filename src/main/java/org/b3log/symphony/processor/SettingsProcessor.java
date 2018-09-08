@@ -749,13 +749,13 @@ public class SettingsProcessor {
         user.put(UserExt.USER_UPDATE_TIME, System.currentTimeMillis());
 
         if (Strings.contains(userAvatarURL, new String[]{"<", ">", "\"", "'"})) {
-            user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+            user.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
         } else {
             if (Symphonys.getBoolean("qiniu.enabled")) {
                 final String qiniuDomain = Symphonys.get("qiniu.domain");
 
                 if (!StringUtils.startsWith(userAvatarURL, qiniuDomain)) {
-                    user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+                    user.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
                 } else {
                     user.put(UserExt.USER_AVATAR_URL, userAvatarURL);
                 }

@@ -365,10 +365,9 @@ public class ChatRoomProcessor {
         final JSONObject ret = new JSONObject();
         context.renderJSON(ret);
 
-        final String defaultAvatarURL = Symphonys.get("defaultThumbnailURL");
         final JSONObject chatroomMsg = new JSONObject();
         chatroomMsg.put(User.USER_NAME, user);
-        chatroomMsg.put(UserExt.USER_AVATAR_URL, defaultAvatarURL);
+        chatroomMsg.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
         chatroomMsg.put(Common.CONTENT, msg);
 
         ChatRoomChannel.notifyChat(chatroomMsg);

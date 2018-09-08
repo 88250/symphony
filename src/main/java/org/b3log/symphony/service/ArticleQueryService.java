@@ -2004,7 +2004,7 @@ public class ArticleQueryService {
                 final JSONObject commenter = userRepository.get(userId);
                 final String email = commenter.optString(User.USER_EMAIL);
 
-                String thumbnailURL = Symphonys.get("defaultThumbnailURL");
+                String thumbnailURL = AvatarQueryService.DEFAULT_AVATAR_URL;
                 if (!UserExt.COM_BOT_EMAIL.equals(email)) {
                     thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, commenter, "48");
                 }
