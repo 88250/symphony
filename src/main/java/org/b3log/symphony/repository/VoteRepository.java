@@ -31,7 +31,7 @@ import java.util.List;
  * Vote repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jul 31, 2016
+ * @version 1.0.0.2, Sep 10, 2018
  * @since 1.3.0
  */
 @Repository
@@ -40,29 +40,25 @@ public class VoteRepository extends AbstractRepository {
     /**
      * Removes vote if it exists.
      *
-     * @param userId the specified user id
-     * @param dataId the specified data entity id
+     * @param userId   the specified user id
+     * @param dataId   the specified data entity id
      * @param dataType the specified data type
      * @return the removed vote type, returns {@code -1} if removed nothing
      * @throws RepositoryException repository exception
      */
     public int removeIfExists(final String userId, final String dataId, final int dataType) throws RepositoryException {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Vote.USER_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Vote.DATA_ID, FilterOperator.EQUAL, dataId));
         filters.add(new PropertyFilter(Vote.DATA_TYPE, FilterOperator.EQUAL, dataType));
-
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
         if (0 == array.length()) {
             return -1;
         }
 
         final JSONObject voteToRemove = array.optJSONObject(0);
-
         remove(voteToRemove.optString(Keys.OBJECT_ID));
 
         return voteToRemove.optInt(Vote.TYPE);
