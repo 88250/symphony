@@ -687,7 +687,7 @@ public class LoginProcessor {
             LOGGER.log(Level.INFO, "Registered a user [name={0}, email={1}]", name, email);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);
+            LOGGER.log(Level.ERROR, msg + " [name={0}, email={1}]", name, email);
 
             context.renderMsg(msg);
         }
