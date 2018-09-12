@@ -30,7 +30,6 @@ import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
-import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Callstacks;
 import org.b3log.latke.util.Stopwatchs;
@@ -67,7 +66,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.4, Aug 31, 2018
+ * @version 1.11.21.5, Sep 12, 2018
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -76,12 +75,6 @@ public final class Markdowns {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Markdowns.class);
-
-    /**
-     * Language service.
-     */
-    private static final LangPropsService LANG_PROPS_SERVICE
-            = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
 
     /**
      * Bean manager.
@@ -284,13 +277,15 @@ public final class Markdowns {
             return cachedHTML;
         }
 
+        final LangPropsServiceImpl langPropsService = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
+
         final ExecutorService pool = Executors.newSingleThreadExecutor();
         final long[] threadId = new long[1];
 
         final Callable<String> call = () -> {
             threadId[0] = Thread.currentThread().getId();
 
-            String html = LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
+            String html = langPropsService.get("contentRenderFailedLabel");
 
             if (MARKED_AVAILABLE) {
                 try {
@@ -423,7 +418,7 @@ public final class Markdowns {
             Stopwatchs.end();
         }
 
-        return LANG_PROPS_SERVICE.get("contentRenderFailedLabel");
+        return langPropsService.get("contentRenderFailedLabel");
     }
 
     private static String toHtmlByMarked(final String markdownText) throws Exception {
