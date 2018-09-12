@@ -79,7 +79,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.1, Aug 29, 2018
+ * @version 1.3.0.2, Sep 12, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -411,7 +411,6 @@ public class SettingsProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
         UserProcessor.fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);

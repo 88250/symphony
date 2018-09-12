@@ -76,7 +76,7 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.4, Aug 22, 2018
+ * @version 1.27.0.5, Sep 12, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -244,8 +244,6 @@ public class UserProcessor {
             final boolean isFollowing = followQueryService.isFollowing(currentUserId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
-
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
         final JSONObject result = breezemoonQueryService.getBreezemoons(avatarViewMode, currentUserId, followingId, pageNum, pageSize, windowSize);
         final List<JSONObject> bms = (List<JSONObject>) result.opt(Breezemoon.BREEZEMOONS);
@@ -420,8 +418,6 @@ public class UserProcessor {
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-
         final List<JSONObject> userComments = commentQueryService.getUserComments(
                 avatarViewMode, user.optString(Keys.OBJECT_ID), Comment.COMMENT_ANONYMOUS_C_ANONYMOUS,
                 pageNum, pageSize, currentUser);
@@ -500,8 +496,6 @@ public class UserProcessor {
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
-
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
         final int pageSize = Symphonys.getInt("userHomeArticlesCnt");
         final int windowSize = Symphonys.getInt("userHomeArticlesWindowSize");
@@ -600,8 +594,6 @@ public class UserProcessor {
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-
         final int pageSize = Symphonys.getInt("userHomeArticlesCnt");
         final int windowSize = Symphonys.getInt("userHomeArticlesWindowSize");
 
@@ -680,8 +672,6 @@ public class UserProcessor {
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
-
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
         final List<JSONObject> userComments = commentQueryService.getUserComments(avatarViewMode,
                 user.optString(Keys.OBJECT_ID), Comment.COMMENT_ANONYMOUS_C_PUBLIC, pageNum, pageSize, currentUser);
@@ -762,8 +752,6 @@ public class UserProcessor {
             }
         }
 
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-
         final int followingUserCnt = followingUsersResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
         final int pageCount = (int) Math.ceil((double) followingUserCnt / (double) pageSize);
 
@@ -832,8 +820,6 @@ public class UserProcessor {
                 followingTag.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowingTagId, Follow.FOLLOWING_TYPE_C_TAG));
             }
         }
-
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
         final int followingTagCnt = followingTagsResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
         final int pageCount = (int) Math.ceil(followingTagCnt / (double) pageSize);
@@ -905,8 +891,6 @@ public class UserProcessor {
             }
         }
 
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-
         final int followingArticleCnt = followingArticlesResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
         final int pageCount = (int) Math.ceil(followingArticleCnt / (double) pageSize);
 
@@ -976,8 +960,6 @@ public class UserProcessor {
                 followingArticle.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH));
             }
         }
-
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
         final int followingArticleCnt = followingArticlesResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
         final int pageCount = (int) Math.ceil(followingArticleCnt / (double) pageSize);
@@ -1054,8 +1036,6 @@ public class UserProcessor {
             }
         }
 
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-
         final int followerUserCnt = followerUsersResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
         final int pageCount = (int) Math.ceil((double) followerUserCnt / (double) pageSize);
 
@@ -1121,8 +1101,6 @@ public class UserProcessor {
             final boolean isFollowing = followQueryService.isFollowing(followerId, user.optString(Keys.OBJECT_ID), Follow.FOLLOWING_TYPE_C_USER);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
-
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
         final int pointsCnt = userPointsResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
         final int pageCount = (int) Math.ceil((double) pointsCnt / (double) pageSize);
@@ -1290,5 +1268,6 @@ public class UserProcessor {
         final String roleId = user.optString(User.USER_ROLE);
         final JSONObject role = roleQueryService.getRole(roleId);
         user.put(Role.ROLE_NAME, role.optString(Role.ROLE_NAME));
+        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.optLong(Keys.OBJECT_ID)));
     }
 }
