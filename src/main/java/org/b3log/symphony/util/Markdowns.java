@@ -26,7 +26,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -82,7 +81,7 @@ public final class Markdowns {
      * Language service.
      */
     private static final LangPropsService LANG_PROPS_SERVICE
-            = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
+            = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
 
     /**
      * Bean manager.

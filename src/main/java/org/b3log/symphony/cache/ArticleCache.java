@@ -22,7 +22,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.LatkeBeanManagerImpl;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
@@ -109,7 +109,7 @@ public class ArticleCache {
      * Loads side hot articles.
      */
     public void loadSideHotArticles() {
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
         final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
 
@@ -160,7 +160,7 @@ public class ArticleCache {
      * Loads side random articles.
      */
     public void loadSideRandomArticles() {
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
         final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
 
@@ -210,7 +210,7 @@ public class ArticleCache {
      * Loads perfect articles.
      */
     public void loadPerfectArticles() {
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
         final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
 

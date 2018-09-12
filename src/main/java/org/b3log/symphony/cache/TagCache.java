@@ -20,7 +20,7 @@ package org.b3log.symphony.cache;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.LatkeBeanManagerImpl;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
@@ -188,7 +188,7 @@ public class TagCache {
      * Loads new tags.
      */
     private void loadNewTags() {
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
 
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
@@ -209,7 +209,7 @@ public class TagCache {
      * Loads icon tags.
      */
     private void loadIconTags() {
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
 
         final Query query = new Query().setFilter(
@@ -251,7 +251,7 @@ public class TagCache {
      * Loads all tags.
      */
     public void loadAllTags() {
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
 
         final Query query = new Query().setFilter(

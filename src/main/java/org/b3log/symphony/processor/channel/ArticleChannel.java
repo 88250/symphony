@@ -21,7 +21,7 @@ import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.LatkeBeanManagerImpl;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -103,7 +103,7 @@ public class ArticleChannel {
     public static void notifyComment(final JSONObject message) {
         message.put(Common.TYPE, Comment.COMMENT);
 
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
         final RoleQueryService roleQueryService = beanManager.getReference(RoleQueryService.class);
         final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);

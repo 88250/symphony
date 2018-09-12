@@ -19,7 +19,6 @@ package org.b3log.symphony.model;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.TagCache;
@@ -446,7 +445,7 @@ public final class Tag {
      * @return normalized title
      */
     private static String normalize(final String title) {
-        final TagCache cache = LatkeBeanManagerImpl.getInstance().getReference(TagCache.class);
+        final TagCache cache = Lifecycle.getBeanManager().getReference(TagCache.class);
         final List<JSONObject> iconTags = cache.getIconTags(Integer.MAX_VALUE);
         Collections.sort(iconTags, (t1, t2) -> {
             final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
