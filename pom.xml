@@ -29,7 +29,7 @@
         <slf4j.version>1.7.7</slf4j.version>
         <mysql-connector-java.version>5.1.42</mysql-connector-java.version>
         <jsoup.version>1.10.2</jsoup.version>
-        <flexmark.version>0.28.18</flexmark.version>
+        <flexmark.version>0.34.30</flexmark.version>
         <qiniu.version>7.2.11</qiniu.version>
         <jodd.version>5.0.3</jodd.version>
         <emoji-java.version>4.0.0</emoji-java.version>
