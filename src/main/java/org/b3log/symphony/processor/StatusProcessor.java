@@ -20,6 +20,7 @@ package org.b3log.symphony.processor;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -43,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Apr 3, 2018
+ * @version 1.1.0.5, Sep 14, 2018
  * @since 1.3.0
  */
 @RequestProcessor
@@ -85,6 +86,8 @@ public class StatusProcessor {
         ret.put(Common.ONLINE_CHAT_CNT, ChatRoomChannel.SESSIONS.size());
         ret.put(Common.ARTICLE_CHANNEL_CNT, ArticleChannel.SESSIONS.size());
         ret.put(Common.ARTICLE_LIST_CHANNEL_CNT, ArticleListChannel.SESSIONS.size());
+        ret.put(Common.THREAD_CNT, Symphonys.getActiveThreadCount() + "/" + Symphonys.getMaxThreadCount());
+        ret.put(Common.DB_CONN_CNT, Connections.getActiveConnectionCount() + "/" + Connections.getMaxConnectionCount());
 
         final JSONObject memory = new JSONObject();
         ret.put("memory", memory);

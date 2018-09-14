@@ -18,16 +18,13 @@
 package org.b3log.symphony.util;
 
 import org.apache.commons.io.IOUtils;
-import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
@@ -38,21 +35,22 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
+import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.11, Jun 29, 2018
+ * @version 1.8.0.0, Sep 14, 2018
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -85,7 +83,7 @@ public final class Symphonys {
     /**
      * Thread pool.
      */
-    public static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(50);
+    public static final ThreadPoolExecutor EXECUTOR_SERVICE = (ThreadPoolExecutor) Executors.newFixedThreadPool(50);
 
     /**
      * Logger.
@@ -208,49 +206,21 @@ public final class Symphonys {
     }
 
     /**
-     * Private constructor.
+     * Gets active thread count of thread pool.
+     *
+     * @return active thread count
      */
-    private Symphonys() {
+    public static int getActiveThreadCount() {
+        return EXECUTOR_SERVICE.getActiveCount();
     }
 
     /**
-     * Gets all symphonies.
+     * Gets the max thread count of thread pool.
      *
-     * @return a list of symphonies
+     * @return max thread count
      */
-    public static List<JSONObject> getSyms() {
-        HttpURLConnection httpConn = null;
-        try {
-            httpConn = (HttpURLConnection) new URL("https://rhythm.b3log.org/syms").openConnection();
-            httpConn.setConnectTimeout(10000);
-            httpConn.setReadTimeout(10000);
-            httpConn.setRequestMethod("GET");
-            httpConn.setRequestProperty(Common.USER_AGENT, "B3log Symphony/" + SymphonyServletListener.VERSION);
-
-            httpConn.connect();
-
-            try (final InputStream inputStream = httpConn.getInputStream()) {
-                final String data = IOUtils.toString(inputStream, "UTF-8");
-                final JSONObject result = new JSONObject(data);
-                if (!result.optBoolean(Keys.STATUS_CODE)) {
-                    return Collections.emptyList();
-                }
-
-                return CollectionUtils.jsonArrayToList(result.optJSONArray("syms"));
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets syms from Rhythm failed", e);
-
-            return Collections.emptyList();
-        } finally {
-            if (null != httpConn) {
-                try {
-                    httpConn.disconnect();
-                } catch (final Exception e) {
-                    // ignore
-                }
-            }
-        }
+    public static int getMaxThreadCount() {
+        return EXECUTOR_SERVICE.getMaximumPoolSize();
     }
 
     /**
@@ -331,5 +301,11 @@ public final class Symphonys {
         }
 
         return Long.valueOf(stringValue);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Symphonys() {
     }
 }

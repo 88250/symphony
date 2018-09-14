@@ -69,13 +69,12 @@ import java.util.*;
  * <li>Show perfect articles (/perfect), GET</li>
  * <li>Shows about (/about), GET</li>
  * <li>Shows b3log (/b3log), GET</li>
- * <li>Shows SymHub (/symhub), GET</li>
  * <li>Shows kill browser (/kill-browser), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.15.0.0, Jul 31, 2018
+ * @version 1.15.0.1, Sep 14, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -443,41 +442,6 @@ public class IndexProcessor {
         final List<JSONObject> indexArticles = articleQueryService.getHotArticles(avatarViewMode, pageSize);
         dataModel.put(Common.INDEX_ARTICLES, indexArticles);
         dataModel.put(Common.SELECTED, Common.HOT);
-
-        Stopwatchs.start("Fills");
-        try {
-            dataModelService.fillHeaderAndFooter(request, response, dataModel);
-            if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
-                dataModelService.fillRandomArticles(dataModel);
-            }
-            dataModelService.fillSideHotArticles(dataModel);
-            dataModelService.fillSideTags(dataModel);
-            dataModelService.fillLatestCmts(dataModel);
-        } finally {
-            Stopwatchs.end();
-        }
-    }
-
-    /**
-     * Shows SymHub page.
-     *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/symhub", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showSymHub(final HTTPRequestContext context,
-                           final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("other/symhub.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        final List<JSONObject> syms = Symphonys.getSyms();
-        dataModel.put("syms", (Object) syms);
 
         Stopwatchs.start("Fills");
         try {

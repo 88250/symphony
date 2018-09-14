@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.73.0.0, Aug 29, 2018
+ * @version 1.73.0.1, Sep 14, 2018
  * @since 0.2.0
  */
 public final class Common {
@@ -835,6 +835,16 @@ public final class Common {
      * Key of article list channel count.
      */
     public static final String ARTICLE_LIST_CHANNEL_CNT = "articleListChannelCnt";
+
+    /**
+     * Key of thread count.
+     */
+    public static final String THREAD_CNT = "threadCnt";
+
+    /**
+     * Key of DB connection count.
+     */
+    public static final String DB_CONN_CNT = "dbConnCnt";
 
     /**
      * Key of symphony key.
