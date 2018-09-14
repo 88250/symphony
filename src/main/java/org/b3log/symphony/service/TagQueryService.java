@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.1, Sep 5, 2018
+ * @version 1.9.0.2, Sep 14, 2018
  * @since 0.2.0
  */
 @Service
@@ -239,10 +239,11 @@ public class TagQueryService {
             final String str = response.bodyText();
             try {
                 final JSONArray data = new JSONArray(str);
-
                 for (int i = 0; i < data.length(); i++) {
-                    final JSONArray key = data.getJSONArray(i);
-                    ret.add(key.optString(1));
+                    final String tag = data.getJSONArray(i).optString(1);
+                    if (!StringUtils.isAlphanumericSpace(tag)) {
+                        ret.add(tag);
+                    }
                 }
             } catch (final JSONException e) {
                 final JSONObject data = new JSONObject(str);
