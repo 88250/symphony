@@ -89,7 +89,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
         Latkes.setScanPath("org.b3log.symphony");
         super.contextInitialized(servletContextEvent);
 
-        // del this after done TODO: https://github.com/b3log/symphony/issues/98
         final String skinDirName = Symphonys.get("skinDirName");
         Latkes.loadSkin(skinDirName);
 
@@ -215,7 +214,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         }
 
         if (BrowserType.ROBOT == browserType) {
-            LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]",
+            LOGGER.log(Level.DEBUG, "Request made from a search engine [User-Agent={0}]",
                     httpServletRequest.getHeader(Common.USER_AGENT));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
 
@@ -234,7 +233,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         // Gets the session of this request
         final HttpSession session = httpServletRequest.getSession();
-        LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
+        LOGGER.log(Level.TRACE, "Gets a session [id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
                 session.getId(), httpServletRequest.getRemoteAddr(),
                 httpServletRequest.getHeader(Common.USER_AGENT), session.isNew());
 
