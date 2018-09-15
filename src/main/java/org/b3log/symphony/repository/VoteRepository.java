@@ -31,11 +31,22 @@ import java.util.List;
  * Vote repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 10, 2018
+ * @version 1.1.0.0, Sep 15, 2018
  * @since 1.3.0
  */
 @Repository
 public class VoteRepository extends AbstractRepository {
+
+    /**
+     * Removes votes by the specified data id.
+     *
+     * @param dataId the specified data id
+     * @throws RepositoryException repository exception
+     */
+    public void removeByDataId(final String dataId) throws RepositoryException {
+        remove(new Query().setFilter(new PropertyFilter(Vote.DATA_ID, FilterOperator.EQUAL, dataId)).
+                setPageCount(1));
+    }
 
     /**
      * Removes vote if it exists.

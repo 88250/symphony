@@ -32,7 +32,7 @@ import org.b3log.symphony.model.Reward;
 public class RewardRepository extends AbstractRepository {
 
     /**
-     * Removes notifications by the specified data id.
+     * Removes rewards by the specified data id.
      *
      * @param dataId the specified data id
      * @throws RepositoryException repository exception

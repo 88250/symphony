@@ -141,6 +141,12 @@ public class ArticleMgmtService {
     private RewardRepository rewardRepository;
 
     /**
+     * Vote repository.
+     */
+    @Inject
+    private VoteRepository voteRepository;
+
+    /**
      * Tag management service.
      */
     @Inject
@@ -429,6 +435,7 @@ public class ArticleMgmtService {
             tagArticleRepository.removeByArticleId(articleId);
             notificationRepository.removeByDataId(articleId);
             rewardRepository.removeByDataId(articleId);
+            voteRepository.removeByDataId(articleId);
 
             if (Symphonys.getBoolean("algolia.enabled")) {
                 searchMgmtService.removeAlgoliaDocument(article);
