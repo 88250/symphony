@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.2.13, Aug 21, 2018
+ * @version 2.18.3.0, Sep 15, 2018
  * @since 0.2.0
  */
 @Service
@@ -133,6 +133,12 @@ public class ArticleMgmtService {
      */
     @Inject
     private RevisionRepository revisionRepository;
+
+    /**
+     * Reward repository.
+     */
+    @Inject
+    private RewardRepository rewardRepository;
 
     /**
      * Tag management service.
@@ -422,6 +428,7 @@ public class ArticleMgmtService {
 
             tagArticleRepository.removeByArticleId(articleId);
             notificationRepository.removeByDataId(articleId);
+            rewardRepository.removeByDataId(articleId);
 
             if (Symphonys.getBoolean("algolia.enabled")) {
                 searchMgmtService.removeAlgoliaDocument(article);
