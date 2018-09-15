@@ -76,7 +76,7 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.5, Sep 12, 2018
+ * @version 1.27.0.6, Sep 15, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -484,7 +484,6 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        dataModel.put(User.USER, user);
         fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
@@ -579,7 +578,6 @@ public class UserProcessor {
 
         renderer.setTemplateName("/home/home.ftl");
 
-        dataModel.put(User.USER, user);
         fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
