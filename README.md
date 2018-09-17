@@ -54,6 +54,7 @@
 * [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
 * [Sym 安装指南](https://hacpai.com/article/1486188905847)
 * [Sym 配置项说明](https://hacpai.com/article/1524715380797)
+* [Sym 贡献指南](https://github.com/b3log/symphony/blob/master/CONTRIBUTING.md)
 
 ## 授权
 
