@@ -58,7 +58,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.10.15, Sep 15, 2018
+ * @version 3.19.10.16, Sep 20, 2018
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -252,7 +252,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             if (null != isStaticObj && !(Boolean) isStaticObj) {
                 Stopwatchs.end();
 
-                final int threshold = Symphonys.getInt("perfromance.threshold");
+                final int threshold = Symphonys.getInt("performance.threshold");
                 if (0 < threshold) {
                     final long elapsed = Stopwatchs.getElapsed("Request initialized [" + request.getRequestURI() + "]");
                     if (elapsed >= threshold) {
