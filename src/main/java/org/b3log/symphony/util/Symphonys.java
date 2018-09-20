@@ -50,7 +50,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.0, Sep 14, 2018
+ * @version 1.8.0.1, Sep 20, 2018
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -221,15 +221,6 @@ public final class Symphonys {
      */
     public static int getMaxThreadCount() {
         return EXECUTOR_SERVICE.getMaximumPoolSize();
-    }
-
-    /**
-     * Does Symphony runs on development environment?
-     *
-     * @return {@code true} if it runs on development environment, {@code false} otherwise
-     */
-    public static boolean runsOnDevEnv() {
-        return Latkes.RuntimeMode.DEVELOPMENT == Latkes.getRuntimeMode();
     }
 
     /**
