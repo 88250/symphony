@@ -18,6 +18,7 @@
 package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -30,7 +31,6 @@ import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
 import org.patchca.color.GradientColorFactory;
 import org.patchca.color.RandomColorFactory;
-import org.patchca.color.SingleColorFactory;
 import org.patchca.filter.predefined.CurvesRippleFilterFactory;
 import org.patchca.font.RandomFontFactory;
 import org.patchca.service.Captcha;
@@ -53,7 +53,7 @@ import java.util.Set;
  * Captcha processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.0.4, Sep 5, 2018
+ * @version 2.3.0.5, Sep 21, 2018
  * @since 0.2.2
  */
 @RequestProcessor
@@ -178,7 +178,11 @@ public class CaptchaProcessor {
             context.setRenderer(renderer);
 
             final ConfigurableCaptchaService cs = new ConfigurableCaptchaService();
-            cs.setColorFactory(new SingleColorFactory(new Color(26, 52, 96)));
+            if (0.5 < Math.random()) {
+                cs.setColorFactory(new GradientColorFactory());
+            } else {
+                cs.setColorFactory(new RandomColorFactory());
+            }
             cs.setFilterFactory(new CurvesRippleFilterFactory(cs.getColorFactory()));
             final RandomWordFactory randomWordFactory = new RandomWordFactory();
             randomWordFactory.setCharacters(CHARS);
@@ -220,11 +224,19 @@ public class CaptchaProcessor {
             }
         }
 
-        ret.add(Font.DIALOG);
-        ret.add(Font.DIALOG_INPUT);
-        ret.add(Font.SERIF);
-        ret.add(Font.SANS_SERIF);
-        ret.add(Font.MONOSPACED);
+        if (0 < fonts.length) {
+            for (int i = 0; i < 5; i++) {
+                ret.add(fonts[RandomUtils.nextInt(fonts.length)].getFontName());
+            }
+        }
+
+        if (ret.isEmpty()) {
+            ret.add(Font.DIALOG);
+            ret.add(Font.DIALOG_INPUT);
+            ret.add(Font.SERIF);
+            ret.add(Font.SANS_SERIF);
+            ret.add(Font.MONOSPACED);
+        }
 
         return ret;
     }
