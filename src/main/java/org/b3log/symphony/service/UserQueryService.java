@@ -454,17 +454,13 @@ public class UserQueryService {
     public Set<String> getUserNames(final String text) {
         final Set<String> ret = new HashSet<>();
         int idx = text.indexOf('@');
-
         if (-1 == idx) {
             return ret;
         }
 
         String copy = text.trim();
         copy = copy.replaceAll("\\n", " ");
-        //(?=\\pP)匹配标点符号-http://www.cnblogs.com/qixuejia/p/4211428.html
-        copy = copy.replaceAll("(?=\\pP)[^@]", " ");
         String[] uNames = StringUtils.substringsBetween(copy, "@", " ");
-
         String tail = StringUtils.substringAfterLast(copy, "@");
         if (tail.contains(" ")) {
             tail = null;
@@ -481,7 +477,6 @@ public class UserQueryService {
         }
 
         String[] uNames2 = StringUtils.substringsBetween(copy, "@", "<");
-
         final Set<String> maybeUserNameSet;
         if (null == uNames) {
             uNames = uNames2;
