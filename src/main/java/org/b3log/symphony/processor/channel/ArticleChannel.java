@@ -56,6 +56,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ArticleChannel {
 
     /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ArticleChannel.class);
+
+    /**
      * Session set.
      */
     public static final Set<Session> SESSIONS = Collections.newSetFromMap(new ConcurrentHashMap());
@@ -64,11 +69,6 @@ public class ArticleChannel {
      * Article viewing map &lt;articleId, count&gt;.
      */
     public static final Map<String, Integer> ARTICLE_VIEWS = Collections.synchronizedMap(new HashMap<>());
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ArticleChannel.class);
 
     /**
      * Notifies the specified article heat message to browsers.

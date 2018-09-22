@@ -53,6 +53,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class GobangChannel {
 
     /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(GobangChannel.class);
+
+    /**
      * Session set.
      */
     public static final Map<String, Session> SESSIONS = new ConcurrentHashMap<>();
@@ -75,11 +80,6 @@ public class GobangChannel {
      * 等待的棋局队列.
      */
     public static final Queue<ChessGame> chessRandomWait = new ConcurrentLinkedQueue<>();
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(GobangChannel.class);
 
     /**
      * Activity management service.

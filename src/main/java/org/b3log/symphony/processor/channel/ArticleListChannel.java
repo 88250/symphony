@@ -38,14 +38,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ArticleListChannel {
 
     /**
-     * Session articles &lt;session, "articleId1,articleId2"&gt;.
-     */
-    public static final Map<Session, String> SESSIONS = new ConcurrentHashMap<>();
-
-    /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleListChannel.class);
+
+    /**
+     * Session articles &lt;session, "articleId1,articleId2"&gt;.
+     */
+    public static final Map<Session, String> SESSIONS = new ConcurrentHashMap<>();
 
     /**
      * Notifies the specified article heat message to browsers.
