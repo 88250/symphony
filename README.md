@@ -31,6 +31,7 @@
 * [蚂蚁程序猿](http://bbs.itmayiedu.com)
 * [北纬极客](https://begeek.bwae.org)
 * [架构师小秘圈](http://www.3xmq.com)
+* [许昌IT圈](http://www.xcitq.com)
 
 商业版：
 
