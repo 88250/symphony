@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.3.2, Oct 31, 2017
+ * @version 1.7.4.0, Sep 24, 2018
  */
 
 'use strict';
@@ -88,7 +88,7 @@ gulp.task('build', ['sass', 'clean'], function () {
         './src/main/webapp/js/lib/editor/editor.js',
         './src/main/webapp/js/lib/to-markdown.js'];
     gulp.src(jsCodemirror)
-            .pipe(uglify())
+            .pipe(uglify({output: {ascii_only:true}})) // https://github.com/b3log/symphony/issues/765
             .pipe(concat('codemirror.min.js'))
             .pipe(gulp.dest('./src/main/webapp/js/lib/editor/'));
 
