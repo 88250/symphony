@@ -314,7 +314,7 @@ var Comment = {
       }
       return false
     }).bind('keyup', 'm', function assets () {
-      // x m 查看选中回贴的回复
+      // x m 查看选中回贴的回复
       if ($(
         '#comments .list > ul > li.focus .comment-action > .ft-fade > .fn-pointer').length ===
         1 && Util.prevKey === 'x') {
