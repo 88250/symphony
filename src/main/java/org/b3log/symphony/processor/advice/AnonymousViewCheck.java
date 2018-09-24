@@ -178,7 +178,7 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
 
                 if (null == currentUser && !userMgmtService.tryLogInWithCookie(request, context.getResponse())) {
                     if (null != visitsCookie) {
-                        final JSONArray uris = new JSONArray(URLs.decode(visitsCookie.getValue());
+                        final JSONArray uris = new JSONArray(URLs.decode(visitsCookie.getValue()));
                         for (int i = 0; i < uris.length(); i++) {
                             final String uri = uris.getString(i);
                             if (uri.equals(requestURI)) {
