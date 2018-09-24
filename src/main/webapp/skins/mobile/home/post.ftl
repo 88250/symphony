@@ -170,7 +170,7 @@
             </div>
         </div>
         <#include "../footer.ftl"/>
-        <script src="${staticServePath}/js/lib/editor/codemirror.min.js?4.13"></script>
+        <script src="${staticServePath}/js/lib/editor/codemirror.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
         <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
