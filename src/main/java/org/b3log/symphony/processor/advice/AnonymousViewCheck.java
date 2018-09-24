@@ -31,6 +31,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.AntPathMatcher;
+import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
@@ -51,7 +52,7 @@ import java.util.Map;
  * Anonymous view check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.7, Aug 21, 2018
+ * @version 1.3.2.0, Sep 24, 2018
  * @since 1.6.0
  */
 @Named
@@ -177,7 +178,8 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
 
                 if (null == currentUser && !userMgmtService.tryLogInWithCookie(request, context.getResponse())) {
                     if (null != visitsCookie) {
-                        final JSONArray uris = new JSONArray(visitsCookie.getValue());
+                        final String urisVal = URLs.decode(visitsCookie.getValue());
+                        final JSONArray uris = new JSONArray(urisVal);
                         for (int i = 0; i < uris.length(); i++) {
                             final String uri = uris.getString(i);
                             if (uri.equals(requestURI)) {
@@ -196,8 +198,8 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
                     } else {
                         final JSONArray uris = new JSONArray();
                         uris.put(requestURI);
-
-                        addCookie(context.getResponse(), cookieNameVisits, uris.toString());
+                        final String urisVal = URLs.encode(uris.toString());
+                        addCookie(context.getResponse(), cookieNameVisits, urisVal);
 
                         return;
                     }
