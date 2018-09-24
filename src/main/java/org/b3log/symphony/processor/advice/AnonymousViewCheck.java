@@ -178,8 +178,7 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
 
                 if (null == currentUser && !userMgmtService.tryLogInWithCookie(request, context.getResponse())) {
                     if (null != visitsCookie) {
-                        final String urisVal = URLs.decode(visitsCookie.getValue());
-                        final JSONArray uris = new JSONArray(urisVal);
+                        final JSONArray uris = new JSONArray(URLs.decode(visitsCookie.getValue());
                         for (int i = 0; i < uris.length(); i++) {
                             final String uri = uris.getString(i);
                             if (uri.equals(requestURI)) {
@@ -192,14 +191,13 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
                             throw new RequestProcessAdviceException(exception401);
                         }
 
-                        addCookie(context.getResponse(), cookieNameVisits, uris.toString());
+                        addCookie(context.getResponse(), cookieNameVisits, URLs.encode(uris.toString()));
 
                         return;
                     } else {
                         final JSONArray uris = new JSONArray();
                         uris.put(requestURI);
-                        final String urisVal = URLs.encode(uris.toString());
-                        addCookie(context.getResponse(), cookieNameVisits, urisVal);
+                        addCookie(context.getResponse(), cookieNameVisits, URLs.encode(uris.toString()));
 
                         return;
                     }
