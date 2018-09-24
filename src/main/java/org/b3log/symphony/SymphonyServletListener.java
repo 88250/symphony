@@ -58,7 +58,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.10.16, Sep 20, 2018
+ * @version 3.19.10.17, Sep 24, 2018
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -86,6 +86,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Stopwatchs.start("Context Initialized");
+        Latkes.USER_AGENT = Symphonys.USER_AGENT_BOT;
         Latkes.setScanPath("org.b3log.symphony");
         super.contextInitialized(servletContextEvent);
 
@@ -206,8 +207,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
                     && !StringUtils.containsIgnoreCase(userAgentStr, "MetaURI")
                     && !StringUtils.containsIgnoreCase(userAgentStr, "Feed")
                     && !StringUtils.containsIgnoreCase(userAgentStr, "okhttp")
-                    && !StringUtils.containsIgnoreCase(userAgentStr, "BND")
-                    && !StringUtils.containsIgnoreCase(userAgentStr, "B3log")) {
+                    && !StringUtils.containsIgnoreCase(userAgentStr, "Sym")) {
                 LOGGER.log(Level.WARN, "Unknown client [UA=" + userAgentStr + ", remoteAddr="
                         + Requests.getRemoteAddr(httpServletRequest) + ", URI=" + httpServletRequest.getRequestURI() + "]");
             }

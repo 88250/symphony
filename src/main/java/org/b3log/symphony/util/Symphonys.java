@@ -61,9 +61,9 @@ public final class Symphonys {
     public static final ResourceBundle CFG = ResourceBundle.getBundle("symphony");
 
     /**
-     * HacPai bot User-Agent.
+     * User-Agent.
      */
-    public static final String USER_AGENT_BOT = "Mozilla/5.0 (compatible; Sym/" + SymphonyServletListener.VERSION + "; +" + Latkes.getServePath() + ")";
+    public static final String USER_AGENT_BOT = "Sym/" + SymphonyServletListener.VERSION + "; +https://github.com/b3log/symphony";
 
     /**
      * Reserved tags.
