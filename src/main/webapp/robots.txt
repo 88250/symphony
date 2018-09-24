@@ -4,6 +4,7 @@ Disallow: /notifications/
 Disallow: /watch/
 Disallow: /admin/
 Disallow: /city/
+Disallow: /activity/
 Disallow: /search
 Disallow: /cr
 Disallow: /post
