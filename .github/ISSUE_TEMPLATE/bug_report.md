@@ -3,7 +3,7 @@ name: 报告缺陷
 about: 报告缺陷以帮助我们改进
 ---
 
-**请先看[《提问的智慧》](https://hacpai.com/article/1536377163156)**，并尝试到[讨论区](https://hacpai.com/tag/solo)搜寻资料解决问题。
+**请先看[《提问的智慧》](https://hacpai.com/article/1536377163156)**，并尝试到[讨论区](https://hacpai.com/tag/sym)搜寻资料解决问题。
 
 ----
 
