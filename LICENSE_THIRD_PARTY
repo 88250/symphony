@@ -2,7 +2,7 @@
 
 autolink: MIT
 commons*: APL
-druid: APL
+hikaricp: APL
 emoji-java: MIT
 flexmark*: BSD
 marked: MIT
