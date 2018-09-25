@@ -25,7 +25,6 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
@@ -84,7 +83,7 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
     }
 
     @Override
-    public void action(final Event<JSONObject> event) throws EventException {
+    public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
         LOGGER.log(Level.TRACE, "Processing an event [type={0}, data={1}]", event.getType(), data);
 
