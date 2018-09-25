@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.6, Sep 25, 2018
+ * @version 1.1.0.7, Sep 25, 2018
  * @since 1.3.0
  */
 @RequestProcessor
@@ -88,7 +88,7 @@ public class StatusProcessor {
         ret.put(Common.ARTICLE_CHANNEL_CNT, ArticleChannel.SESSIONS.size());
         ret.put(Common.ARTICLE_LIST_CHANNEL_CNT, ArticleListChannel.SESSIONS.size());
         ret.put(Common.THREAD_CNT, Symphonys.getActiveThreadCount() + "/" + Symphonys.getMaxThreadCount());
-        ret.put(Common.DB_CONN_CNT, Connections.getActiveConnectionCount() + "/" + Connections.getMaxConnectionCount());
+        ret.put(Common.DB_CONN_CNT, Connections.getActiveConnectionCount() + "/" + Connections.getTotalConnectionCount() + "/" + Connections.getMaxConnectionCount());
         ret.put(Keys.Runtime.RUNTIME_CACHE, Latkes.getRuntimeCache().name());
         ret.put(Keys.Runtime.RUNTIME_DATABASE, Latkes.getRuntimeDatabase().name());
         ret.put(Keys.Runtime.RUNTIME_MODE, Latkes.getRuntimeMode().name());
