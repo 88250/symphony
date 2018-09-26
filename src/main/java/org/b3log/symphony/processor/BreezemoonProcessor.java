@@ -119,7 +119,7 @@ public class BreezemoonProcessor {
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        final JSONObject user = Sessions.currentUser(request);
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         String currentUserId = null;
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);

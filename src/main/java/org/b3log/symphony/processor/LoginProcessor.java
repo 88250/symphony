@@ -283,8 +283,7 @@ public class LoginProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showLogin(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        if (null != userQueryService.getCurrentUser(request)
-                || userMgmtService.tryLogInWithCookie(request, response)) {
+        if (null != request.getAttribute(User.USER)) {
             response.sendRedirect(Latkes.getServePath());
 
             return;
@@ -448,7 +447,7 @@ public class LoginProcessor {
             context.renderTrueResult();
             LOGGER.info("User [email=" + user.optString(User.USER_EMAIL) + "] reseted password");
 
-            Sessions.login(request, response, user, true);
+            Sessions.login(response, userId, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("resetPwdLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);
@@ -470,8 +469,7 @@ public class LoginProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showRegister(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        if (null != userQueryService.getCurrentUser(request)
-                || userMgmtService.tryLogInWithCookie(request, response)) {
+        if (null != request.getAttribute(User.USER)) {
             response.sendRedirect(Latkes.getServePath());
 
             return;
@@ -634,7 +632,7 @@ public class LoginProcessor {
 
             userMgmtService.addUser(user);
 
-            Sessions.login(request, response, user, false);
+            Sessions.login(response, userId, false);
 
             final String ip = Requests.getRemoteAddr(request);
             userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true, true);
@@ -768,7 +766,7 @@ public class LoginProcessor {
 
             final String userPassword = user.optString(User.USER_PASSWORD);
             if (userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
-                final String token = Sessions.login(request, response, user, requestJSONObject.optBoolean(Common.REMEMBER_LOGIN));
+                final String token = Sessions.login(response, userId, requestJSONObject.optBoolean(Common.REMEMBER_LOGIN));
 
                 final String ip = Requests.getRemoteAddr(request);
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true, true);
@@ -798,17 +796,19 @@ public class LoginProcessor {
      * Logout.
      *
      * @param context the specified context
+     * @param request the specified request
      * @throws IOException io exception
      */
-    @RequestProcessing(value = {"/logout"}, method = HTTPRequestMethod.GET)
-    public void logout(final HTTPRequestContext context) throws IOException {
-        final HttpServletRequest httpServletRequest = context.getRequest();
+    @RequestProcessing(value = "/logout", method = HTTPRequestMethod.GET)
+    public void logout(final HTTPRequestContext context, final HttpServletRequest request) throws IOException {
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        if (null != user) {
+            Sessions.logout(user.optString(Keys.OBJECT_ID), context.getResponse());
+        }
 
-        Sessions.logout(httpServletRequest, context.getResponse());
-
-        String destinationURL = httpServletRequest.getParameter(Common.GOTO);
-        if (!StringUtils.startsWith(destinationURL, Latkes.getServePath())) {
-            destinationURL = "/";
+        String destinationURL = request.getParameter(Common.GOTO);
+        if (StringUtils.isBlank(destinationURL)) {
+            destinationURL = request.getHeader("referer");
         }
 
         context.getResponse().sendRedirect(destinationURL);

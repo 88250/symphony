@@ -22,6 +22,7 @@ import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.symphony.util.JSONs;
+import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -112,6 +113,8 @@ public class UserCache {
     public void putUser(final JSONObject user) {
         ID_CACHE.put(user.optString(Keys.OBJECT_ID), JSONs.clone(user));
         NAME_CACHE.put(user.optString(User.USER_NAME), JSONs.clone(user));
+
+        Sessions.put(user.optString(Keys.OBJECT_ID), user);
     }
 
     /**

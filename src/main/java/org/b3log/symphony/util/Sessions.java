@@ -21,31 +21,42 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.Crypts;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.service.UserMgmtService;
 import org.json.JSONObject;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.3.1, Sep 1, 2018
+ * @version 2.0.3.2, Sep 26, 2018
  */
 public final class Sessions {
 
     /**
+     * Session cache.
+     */
+    private static final Cache SESSION_CACHE = CacheFactory.getCache("sessions");
+
+    /**
      * Cookie name.
      */
-    public static final String COOKIE_NAME = "b3log-latke";
+    public static final String COOKIE_NAME = "sym-ce";
 
     /**
      * Logger.
@@ -53,9 +64,9 @@ public final class Sessions {
     private static final Logger LOGGER = Logger.getLogger(Sessions.class);
 
     /**
-     * Cookie expiry: 30 days.
+     * Cookie expiry: 7 days.
      */
-    private static final int COOKIE_EXPIRY = 60 * 60 * 24 * 30;
+    private static final int COOKIE_EXPIRY = 60 * 60 * 24 * 7;
 
     /**
      * Private constructor.
@@ -70,51 +81,54 @@ public final class Sessions {
      * @return CSRF token, returns {@code ""} if not found
      */
     public static String getCSRFToken(final HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
-
-        if (null == session) {
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        if (null == user) {
             return "";
         }
 
-        final String ret = (String) session.getAttribute(Common.CSRF_TOKEN);
-        if (StringUtils.isBlank(ret)) {
+        final String userId = user.optString(Keys.OBJECT_ID);
+        if (StringUtils.isBlank(userId)) {
             return "";
         }
 
-        return ret;
+        JSONObject csrfTokenValue = SESSION_CACHE.get(userId + Common.CSRF_TOKEN);
+        if (null == csrfTokenValue) {
+            csrfTokenValue = new JSONObject();
+            csrfTokenValue.put(Common.DATA, RandomStringUtils.randomAlphanumeric(12));
+
+            SESSION_CACHE.put(userId + Common.CSRF_TOKEN, csrfTokenValue);
+        }
+
+        return csrfTokenValue.optString(Common.DATA);
     }
 
     /**
      * Logins the specified user from the specified request.
-     * <p>
-     * If no session of the specified request, do nothing.
-     * </p>
      *
-     * @param request       the specified request
      * @param response      the specified response
-     * @param user          the specified user, for example,
-     *                      "oId": "",
-     *                      "userPassword": ""
+     * @param userId        the specified user id, for example,
      * @param rememberLogin remember login or not
      * @return token, returns {@code null} if login failed
      */
-    public static String login(final HttpServletRequest request, final HttpServletResponse response,
-                               final JSONObject user, final boolean rememberLogin) {
-        final HttpSession session = request.getSession(false);
-
-        if (null == session) {
-            LOGGER.warn("The session is null");
-
-            return null;
-        }
-
-        session.setAttribute(User.USER, user);
-        request.setAttribute(Common.IP, Requests.getRemoteAddr(request));
-        session.setAttribute(Common.CSRF_TOKEN, RandomStringUtils.randomAlphanumeric(12));
-
+    public static String login(final HttpServletResponse response,
+                               final String userId, final boolean rememberLogin) {
         try {
-            final JSONObject cookieJSONObject = new JSONObject();
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final UserRepository userRepository = beanManager.getReference(UserRepository.class);
+            final JSONObject user = userRepository.get(userId);
+            if (null == user) {
+                LOGGER.log(Level.WARN, "Login user [id=" + userId + "] failed");
 
+                return null;
+            }
+
+            SESSION_CACHE.put(userId, user);
+
+            final JSONObject csrfToken = new JSONObject();
+            csrfToken.put(Common.DATA, RandomStringUtils.randomAlphanumeric(12));
+            SESSION_CACHE.put(userId + Common.CSRF_TOKEN, csrfToken);
+
+            final JSONObject cookieJSONObject = new JSONObject();
             cookieJSONObject.put(Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
 
             final String random = RandomStringUtils.random(16);
@@ -133,8 +147,7 @@ public final class Sessions {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Can not write cookie [oId=" + user.optString(Keys.OBJECT_ID)
-                    + ", token=" + user.optString(User.USER_PASSWORD) + "]");
+            LOGGER.log(Level.WARN, "Login user [id=" + userId + "] failed", e);
 
             return null;
         }
@@ -143,27 +156,22 @@ public final class Sessions {
     /**
      * Logouts a user with the specified request.
      *
-     * @param request  the specified request
+     * @param userId   the specified user id
      * @param response the specified response
-     * @return {@code true} if succeed, otherwise returns {@code false}
      */
-    public static boolean logout(final HttpServletRequest request, final HttpServletResponse response) {
-        final HttpSession session = request.getSession(false);
-
-        if (null != session) {
+    public static void logout(final String userId, final HttpServletResponse response) {
+        if (null != response) {
             final Cookie cookie = new Cookie(COOKIE_NAME, null);
-
             cookie.setMaxAge(0);
             cookie.setPath("/");
-
             response.addCookie(cookie);
-
-            session.invalidate();
-
-            return true;
         }
 
-        return false;
+        SESSION_CACHE.remove(userId);
+
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
+        userMgmtService.updateOnlineStatus(userId, "", false, true);
     }
 
     /**
@@ -173,12 +181,124 @@ public final class Sessions {
      * @return the current user, returns {@code null} if not logged in
      */
     public static JSONObject currentUser(final HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
+        final Cookie[] cookies = request.getCookies();
+        if (null == cookies || 0 == cookies.length) {
+            return null;
+        }
 
-        if (null != session) {
-            return (JSONObject) session.getAttribute(User.USER);
+        try {
+            for (final Cookie cookie : cookies) {
+                if (!Sessions.COOKIE_NAME.equals(cookie.getName())) {
+                    continue;
+                }
+
+                final String value = Crypts.decryptByAES(cookie.getValue(), Symphonys.get("cookie.secret"));
+                final JSONObject cookieJSONObject = new JSONObject(value);
+
+                final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
+                if (StringUtils.isBlank(userId)) {
+                    return null;
+                }
+
+                JSONObject ret = SESSION_CACHE.get(userId);
+                if (null == ret) {
+                    ret = tryLogInWithCookie(cookieJSONObject, request);
+                }
+                if (null == ret) {
+                    return null;
+                }
+
+                if (UserExt.USER_STATUS_C_INVALID == ret.optInt(UserExt.USER_STATUS)
+                        || UserExt.USER_STATUS_C_INVALID_LOGIN == ret.optInt(UserExt.USER_STATUS)
+                        || UserExt.USER_STATUS_C_DEACTIVATED == ret.optInt(UserExt.USER_STATUS)) {
+                    SESSION_CACHE.remove(userId);
+
+                    return null;
+                }
+
+                final String ip = Requests.getRemoteAddr(request);
+                if (StringUtils.isNotBlank(ip)) {
+                    ret.put(UserExt.USER_LATEST_LOGIN_IP, ip);
+                    SESSION_CACHE.put(userId, ret);
+                }
+
+                return JSONs.clone(ret);
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARN, "Parses cookie failed, clears cookie");
         }
 
         return null;
+    }
+
+    /**
+     * Tries to login with cookie.
+     *
+     * @param cookieJSONObject the specified cookie json object
+     * @param request          the specified request
+     * @return returns user if logged in, returns {@code null} otherwise
+     */
+    private static JSONObject tryLogInWithCookie(final JSONObject cookieJSONObject,
+                                                 final HttpServletRequest request) {
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final UserRepository userRepository = beanManager.getReference(UserRepository.class);
+        final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
+
+        try {
+            final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
+            if (StringUtils.isBlank(userId)) {
+                return null;
+            }
+
+            final JSONObject ret = userRepository.get(userId);
+            if (null == ret) {
+                return null;
+            }
+
+            final String ip = Requests.getRemoteAddr(request);
+            if (StringUtils.isNotBlank(ip)) {
+                ret.put(UserExt.USER_LATEST_LOGIN_IP, ip);
+            }
+
+            final String userPassword = ret.optString(User.USER_PASSWORD);
+            final String token = cookieJSONObject.optString(Keys.TOKEN);
+            final String password = StringUtils.substringBeforeLast(token, ":");
+            if (userPassword.equals(password)) {
+                userMgmtService.updateOnlineStatus(userId, ip, true, true);
+
+                SESSION_CACHE.put(userId, ret);
+
+                return ret;
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARN, "Parses cookie failed, clears cookie");
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets a value from session cache with the specified key.
+     *
+     * @param key the specified key
+     * @return session, returns {@code null} if not found
+     */
+    public static JSONObject get(final String key) {
+        JSONObject ret = SESSION_CACHE.get(key);
+        if (null == ret) {
+            return null;
+        }
+
+        return JSONs.clone(ret);
+    }
+
+    /**
+     * Puts a value into session cache with the specified key and value.
+     *
+     * @param key   the specified key
+     * @param value the specified value
+     */
+    public static void put(final String key, final JSONObject value) {
+        SESSION_CACHE.put(key, value);
     }
 }

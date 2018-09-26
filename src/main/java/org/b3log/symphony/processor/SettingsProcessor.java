@@ -183,7 +183,7 @@ public class SettingsProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         try {
             userMgmtService.deactivateUser(currentUser.optString(Keys.OBJECT_ID));
-            Sessions.logout(request, response);
+            Sessions.logout(currentUser.optString(Keys.OBJECT_ID), response);
 
             context.renderTrueResult();
         } catch (final Exception e) {
@@ -374,7 +374,7 @@ public class SettingsProcessor {
         }
 
         try {
-            final JSONObject user = userQueryService.getCurrentUser(request);
+            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
             user.put(UserExt.USER_LANGUAGE, userLanguage);
             user.put(UserExt.USER_TIMEZONE, userTimezone);
 
@@ -528,7 +528,7 @@ public class SettingsProcessor {
         }
 
         try {
-            final JSONObject user = userQueryService.getCurrentUser(request);
+            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
             user.put(UserExt.USER_GEO_STATUS, geoStatus);
 
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
@@ -577,7 +577,7 @@ public class SettingsProcessor {
         final boolean userJoinPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_POINT_RANK);
         final boolean userJoinUsedPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_USED_POINT_RANK);
 
-        final JSONObject user = userQueryService.getCurrentUser(request);
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         user.put(UserExt.USER_ONLINE_STATUS, onlineStatus
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
@@ -664,8 +664,7 @@ public class SettingsProcessor {
             userListPageSize = Symphonys.getInt("indexArticlesCnt");
         }
 
-        final JSONObject user = userQueryService.getCurrentUser(request);
-
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_LIST_PAGE_SIZE, userListPageSize);
         user.put(UserExt.USER_COMMENT_VIEW_MODE, userCommentViewMode);
         user.put(UserExt.USER_AVATAR_VIEW_MODE, userAvatarViewMode);
@@ -707,8 +706,7 @@ public class SettingsProcessor {
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
         final String userNickname = requestJSONObject.optString(UserExt.USER_NICKNAME);
 
-        final JSONObject user = userQueryService.getCurrentUser(request);
-
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_TAGS, userTags);
         user.put(User.USER_URL, userURL);
         user.put(UserExt.USER_QQ, userQQ);
@@ -742,8 +740,7 @@ public class SettingsProcessor {
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
 
-        final JSONObject user = userQueryService.getCurrentUser(request);
-
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
         user.put(UserExt.USER_UPDATE_TIME, System.currentTimeMillis());
 
@@ -791,8 +788,7 @@ public class SettingsProcessor {
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
         final String newPassword = requestJSONObject.optString(User.USER_NEW_PASSWORD);
 
-        final JSONObject user = userQueryService.getCurrentUser(request);
-
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         if (!password.equals(user.optString(User.USER_PASSWORD))) {
             context.renderMsg(langPropsService.get("invalidOldPwdLabel"));
 
@@ -829,8 +825,7 @@ public class SettingsProcessor {
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final String emotionList = requestJSONObject.optString(Emotion.EMOTIONS);
 
-        final JSONObject user = userQueryService.getCurrentUser(request);
-
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         try {
             emotionMgmtService.setEmotionList(user.optString(Keys.OBJECT_ID), emotionList);
 

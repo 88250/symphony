@@ -81,7 +81,7 @@ public class GeetestLib {
     /**
      * 极验验证API服务状态Session Key
      */
-    public String gtServerStatusSessionKey = "gt_server_status";
+    public static final String gtServerStatusSessionKey = "gt_server_status";
 
     /**
      * 带参数构造函数

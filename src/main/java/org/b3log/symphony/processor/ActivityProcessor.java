@@ -47,6 +47,7 @@ import org.b3log.symphony.processor.advice.validate.Activity1A0001Validation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.GeetestLib;
 import org.b3log.symphony.util.Results;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -292,7 +293,8 @@ public class ActivityProcessor {
             }
 
             final GeetestLib gtSdk = new GeetestLib(Symphonys.get("geetest.id"), Symphonys.get("geetest.key"));
-            final int gt_server_status_code = (Integer) request.getSession().getAttribute(gtSdk.gtServerStatusSessionKey);
+            final JSONObject statusValue = Sessions.get(userId + GeetestLib.gtServerStatusSessionKey);
+            final int gt_server_status_code = statusValue.optInt(Common.DATA);
             int gtResult = 0;
             if (gt_server_status_code == 1) {
                 gtResult = gtSdk.enhencedValidateRequest(challenge, validate, seccode, userId);

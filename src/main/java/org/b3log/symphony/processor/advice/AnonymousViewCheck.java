@@ -25,8 +25,8 @@ import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
@@ -153,13 +153,12 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
                 }
 
                 if (Article.ARTICLE_ANONYMOUS_VIEW_C_NOT_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)
-                        && null == userQueryService.getCurrentUser(request)
-                        && !userMgmtService.tryLogInWithCookie(request, context.getResponse())) {
+                        && null == request.getAttribute(User.USER)) {
                     throw new RequestProcessAdviceException(exception401);
                 } else if (Article.ARTICLE_ANONYMOUS_VIEW_C_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)) {
                     return;
                 }
-            } catch (final RepositoryException | ServiceException e) {
+            } catch (final RepositoryException e) {
                 LOGGER.log(Level.ERROR, "Get article [id=" + articleId + "] failed", e);
 
                 throw new RequestProcessAdviceException(exception404);
@@ -170,13 +169,13 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
             // Check if admin allow to anonymous view
             final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
             if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
-                final JSONObject currentUser = userQueryService.getCurrentUser(request);
+                final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
 
                 // https://github.com/b3log/symphony/issues/373
                 final String cookieNameVisits = "anonymous-visits";
                 final Cookie visitsCookie = getCookie(request, cookieNameVisits);
 
-                if (null == currentUser && !userMgmtService.tryLogInWithCookie(request, context.getResponse())) {
+                if (null == currentUser) {
                     if (null != visitsCookie) {
                         final JSONArray uris = new JSONArray(URLs.decode(visitsCookie.getValue()));
                         for (int i = 0; i < uris.length(); i++) {

@@ -618,7 +618,7 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Pagination.PAGINATION_RECORD_COUNT, recordCount);
 
-        final JSONObject currentUser = Sessions.currentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser) {
             dataModel.put(Common.IS_MY_ARTICLE, false);
         } else {

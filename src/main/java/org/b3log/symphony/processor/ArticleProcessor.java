@@ -642,11 +642,6 @@ public class ArticleProcessor {
             return;
         }
 
-        final HttpSession session = request.getSession(false);
-        if (null != session) {
-            session.setAttribute(Article.ARTICLE_T_ID, articleId);
-        }
-
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
@@ -1278,7 +1273,7 @@ public class ArticleProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void reward(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -1322,7 +1317,7 @@ public class ArticleProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void thank(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -1362,7 +1357,7 @@ public class ArticleProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void stickArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 

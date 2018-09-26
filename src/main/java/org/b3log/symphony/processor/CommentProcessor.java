@@ -376,7 +376,7 @@ public class CommentProcessor {
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         String currentUserId = null;
         if (null != currentUser) {
             avatarViewMode = currentUser.optInt(UserExt.USER_AVATAR_VIEW_MODE);
@@ -414,7 +414,7 @@ public class CommentProcessor {
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         String currentUserId = null;
         if (null != currentUser) {
             avatarViewMode = currentUser.optInt(UserExt.USER_AVATAR_VIEW_MODE);

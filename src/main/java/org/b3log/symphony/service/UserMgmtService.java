@@ -35,24 +35,18 @@ import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.Crypts;
 import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Geos;
 import org.b3log.symphony.util.Gravatars;
-import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -66,7 +60,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.16.0.4, Sep 7, 2018
+ * @version 1.16.0.5, Sep 26, 2018
  * @since 0.2.0
  */
 @Service
@@ -173,77 +167,6 @@ public class UserMgmtService {
             LOGGER.log(Level.ERROR, "Deactivates a user [id=" + userId + "] failed", e);
             throw new ServiceException(e);
         }
-    }
-
-    /**
-     * Tries to login with cookie.
-     *
-     * @param request  the specified request
-     * @param response the specified response
-     * @return returns {@code true} if logged in, returns {@code false} otherwise
-     */
-    public boolean tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
-        final Cookie[] cookies = request.getCookies();
-        if (null == cookies || 0 == cookies.length) {
-            return false;
-        }
-
-        try {
-            for (final Cookie cookie : cookies) {
-                if (!Sessions.COOKIE_NAME.equals(cookie.getName())) {
-                    continue;
-                }
-
-                final String value = Crypts.decryptByAES(cookie.getValue(), Symphonys.get("cookie.secret"));
-                final JSONObject cookieJSONObject = new JSONObject(value);
-
-                final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
-                if (StringUtils.isBlank(userId)) {
-                    break;
-                }
-
-                final JSONObject user = userRepository.get(userId);
-                if (null == user) {
-                    break;
-                }
-
-                final String ip = Requests.getRemoteAddr(request);
-
-                if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)
-                        || UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)
-                        || UserExt.USER_STATUS_C_DEACTIVATED == user.optInt(UserExt.USER_STATUS)) {
-                    Sessions.logout(request, response);
-
-                    updateOnlineStatus(userId, ip, false, true);
-
-                    return false;
-                }
-
-                final String userPassword = user.optString(User.USER_PASSWORD);
-                final String token = cookieJSONObject.optString(Keys.TOKEN);
-                final String password = StringUtils.substringBeforeLast(token, ":");
-
-                if (userPassword.equals(password)) {
-                    Sessions.login(request, response, user, cookieJSONObject.optBoolean(Common.REMEMBER_LOGIN));
-
-                    updateOnlineStatus(userId, ip, true, true);
-
-                    LOGGER.log(Level.TRACE, "Logged in with cookie[userId={0}]", userId);
-
-                    return true;
-                }
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie [name=" + Sessions.COOKIE_NAME + "]");
-
-            final Cookie cookie = new Cookie(Sessions.COOKIE_NAME, null);
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
-
-            response.addCookie(cookie);
-        }
-
-        return false;
     }
 
     /**

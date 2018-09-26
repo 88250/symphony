@@ -40,7 +40,6 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.InitMgmtService;
-import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -49,7 +48,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import java.util.Locale;
 
@@ -161,16 +159,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
     @Override
     public void sessionDestroyed(final HttpSessionEvent httpSessionEvent) {
-        final HttpSession session = httpSessionEvent.getSession();
-
-        final Object userObj = session.getAttribute(User.USER);
-        if (null != userObj) { // User logout
-            final JSONObject user = (JSONObject) userObj;
-
-            final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-            userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false, true);
-        }
-
         super.sessionDestroyed(httpSessionEvent);
     }
 
@@ -230,12 +218,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
         Stopwatchs.start("Request initialized [" + httpServletRequest.getRequestURI() + "]");
 
         httpServletRequest.setAttribute(Common.IS_MOBILE, BrowserType.MOBILE_BROWSER == browserType);
-
-        // Gets the session of this request
-        final HttpSession session = httpServletRequest.getSession();
-        LOGGER.log(Level.TRACE, "Gets a session [id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
-                session.getId(), httpServletRequest.getRemoteAddr(),
-                httpServletRequest.getHeader(Common.USER_AGENT), session.isNew());
 
         resolveSkinDir(httpServletRequest);
     }

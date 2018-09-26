@@ -353,7 +353,7 @@ public class NotificationProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void navigateNotifications(final HTTPRequestContext context, final HttpServletRequest request,
                                       final HttpServletResponse response) throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -437,7 +437,7 @@ public class NotificationProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showPointNotifications(final HTTPRequestContext context, final HttpServletRequest request,
                                        final HttpServletResponse response) throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -540,7 +540,7 @@ public class NotificationProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCommentedNotifications(final HTTPRequestContext context, final HttpServletRequest request,
                                            final HttpServletResponse response) throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -595,7 +595,7 @@ public class NotificationProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showReplyNotifications(final HTTPRequestContext context, final HttpServletRequest request,
                                        final HttpServletResponse response) throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -650,7 +650,7 @@ public class NotificationProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAtNotifications(final HTTPRequestContext context, final HttpServletRequest request,
                                     final HttpServletResponse response) throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -713,7 +713,7 @@ public class NotificationProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showFollowingNotifications(final HTTPRequestContext context, final HttpServletRequest request,
                                            final HttpServletResponse response) throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -769,7 +769,7 @@ public class NotificationProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showBroadcastNotifications(final HTTPRequestContext context, final HttpServletRequest request,
                                            final HttpServletResponse response) throws Exception {
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 

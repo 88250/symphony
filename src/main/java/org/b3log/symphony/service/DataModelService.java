@@ -21,11 +21,9 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
@@ -33,7 +31,6 @@ import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.util.Markdowns;
-import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -159,13 +156,12 @@ public class DataModelService {
      * Fills the latest comments.
      *
      * @param dataModel the specified data model
-     * @throws Exception exception
      */
-    public void fillLatestCmts(final Map<String, Object> dataModel) throws Exception {
+    public void fillLatestCmts(final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills latest comments");
         try {
             // dataModel.put(Common.SIDE_LATEST_CMTS, commentQueryService.getLatestComments(Symphonys.getInt("sizeLatestCmtsCnt")));
-            dataModel.put(Common.SIDE_LATEST_CMTS, (Object) Collections.emptyList());
+            dataModel.put(Common.SIDE_LATEST_CMTS, Collections.emptyList());
         } finally {
             Stopwatchs.end();
         }
@@ -253,10 +249,9 @@ public class DataModelService {
      * @param request   the specified request
      * @param response  the specified response
      * @param dataModel the specified data model
-     * @throws Exception exception
      */
     private void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
-                            final Map<String, Object> dataModel) throws Exception {
+                            final Map<String, Object> dataModel) {
         fillMinified(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put("esEnabled", Symphonys.getBoolean("es.enabled"));
@@ -354,20 +349,13 @@ public class DataModelService {
             dataModel.put(Common.IS_LOGGED_IN, false);
             dataModel.put(Common.IS_ADMIN_LOGGED_IN, false);
 
-            if (null == Sessions.currentUser(request) && !userMgmtService.tryLogInWithCookie(request, response)) {
+            if (null == request.getAttribute(User.USER)) {
                 dataModel.put("loginLabel", langPropsService.get("loginLabel"));
 
                 return;
             }
 
-            JSONObject curUser = null;
-
-            try {
-                curUser = userQueryService.getCurrentUser(request);
-            } catch (final ServiceException e) {
-                LOGGER.log(Level.ERROR, "Gets the current user failed", e);
-            }
-
+            final JSONObject curUser = (JSONObject) request.getAttribute(User.USER);
             if (null == curUser) {
                 dataModel.put("loginLabel", langPropsService.get("loginLabel"));
 
@@ -376,7 +364,6 @@ public class DataModelService {
 
             dataModel.put(Common.IS_LOGGED_IN, true);
             dataModel.put(Common.LOGOUT_URL, userQueryService.getLogoutURL("/"));
-
             dataModel.put("logoutLabel", langPropsService.get("logoutLabel"));
 
             final String userRole = curUser.optString(User.USER_ROLE);
@@ -514,9 +501,8 @@ public class DataModelService {
      * Fills trend tags.
      *
      * @param dataModel the specified data model
-     * @throws Exception exception
      */
-    private void fillTrendTags(final Map<String, Object> dataModel) throws Exception {
+    private void fillTrendTags(final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills trend tags");
         try {
             // dataModel.put(Common.NAV_TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
@@ -540,9 +526,8 @@ public class DataModelService {
      * Fills system info.
      *
      * @param dataModel the specified data model
-     * @throws Exception exception
      */
-    private void fillSysInfo(final Map<String, Object> dataModel) throws Exception {
+    private void fillSysInfo(final Map<String, Object> dataModel) {
         dataModel.put(Common.VERSION, SymphonyServletListener.VERSION);
     }
 }
