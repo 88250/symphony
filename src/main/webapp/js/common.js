@@ -171,7 +171,7 @@ var Util = {
    */
   makeNotificationRead: function (type, it) {
     $.ajax({
-      url: Label.servePath + "/notification/read/" + type,
+      url: Label.servePath + "/notifications/read/" + type,
       type: "GET",
       cache: false,
       success: function (result, textStatus) {
@@ -796,7 +796,7 @@ var Util = {
    */
   setUnreadNotificationCount: function (isSendMsg) {
     $.ajax({
-      url: Label.servePath + "/notification/unread/count",
+      url: Label.servePath + "/notifications/unread/count",
       type: "GET",
       cache: false,
       success: function (result, textStatus) {

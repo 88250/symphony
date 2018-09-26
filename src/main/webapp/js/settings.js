@@ -732,7 +732,7 @@ var Settings = {
    */
   makeAllNotificationsRead: function () {
     $.ajax({
-      url: Label.servePath + "/notification/all-read",
+      url: Label.servePath + "/notifications/all-read",
       type: "GET",
       cache: false,
       success: function (result, textStatus) {
@@ -747,7 +747,7 @@ var Settings = {
    */
   removeNotifications: function (type) {
     $.ajax({
-      url: Label.servePath + '/notification/remove/' + type,
+      url: Label.servePath + '/notifications/remove/' + type,
       type: 'GET',
       cache: false,
       success: function (result) {

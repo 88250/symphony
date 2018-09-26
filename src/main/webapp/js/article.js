@@ -1881,7 +1881,7 @@ var Article = {
     }
 
     $.ajax({
-      url: Label.servePath + '/notification/read',
+      url: Label.servePath + '/notifications/read',
       type: 'POST',
       cache: false,
       data: JSON.stringify(requestJSONObject),

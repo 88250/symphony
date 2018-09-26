@@ -58,12 +58,12 @@ import java.util.*;
  * <li>Shows [point] notifications (/notifications/point), GET </li>
  * <li>Shows [broadcast] notifications (/notifications/broadcast), GET</li>
  * <li>Shows [sysAnnounce] notifications (/notifications/sys-announce), GET</li>
- * <li>Makes article/comment read (/notification/read), GET</li>
- * <li>Gets unread count of notifications (/notification/unread/count), GET</li>
- * <li>Makes all notifications as read (/notification/all-read), GET</li>
- * <li>Makes the specified type notifications as read (/notification/read/{type}), GET</li>
- * <li>Removes a notification (/notification/remove), POST</li>
- * <li>Remove notifications by the specified type (/notification/remove/{type}), GET </li>
+ * <li>Makes article/comment read (/notifications/read), GET</li>
+ * <li>Gets unread count of notifications (/notifications/unread/count), GET</li>
+ * <li>Makes all notifications as read (/notifications/all-read), GET</li>
+ * <li>Makes the specified type notifications as read (/notifications/read/{type}), GET</li>
+ * <li>Removes a notification (/notifications/remove), POST</li>
+ * <li>Remove notifications by the specified type (/notifications/remove/{type}), GET </li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -110,7 +110,7 @@ public class NotificationProcessor {
      * @param request the specified request
      * @param type    the specified type: commented/reply/at/following/point/broadcast
      */
-    @RequestProcessing(value = "/notification/remove/{type}", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/notifications/remove/{type}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void removeNotifications(final HTTPRequestContext context, final HttpServletRequest request, final String type) {
@@ -176,7 +176,7 @@ public class NotificationProcessor {
      * @param request           the specified request
      * @param requestJSONObject the specified request json object
      */
-    @RequestProcessing(value = "/notification/remove", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/notifications/remove", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void removeNotification(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
@@ -255,7 +255,7 @@ public class NotificationProcessor {
      * @param context the specified context
      * @param request the specified request
      */
-    @RequestProcessing(value = "/notification/all-read", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/notifications/all-read", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void makeAllNotificationsRead(final HTTPRequestContext context, final HttpServletRequest request) {
@@ -274,7 +274,7 @@ public class NotificationProcessor {
      * @param request the specified request
      * @param type    the specified type: "commented"/"at"/"following"
      */
-    @RequestProcessing(value = "/notification/read/{type}", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/notifications/read/{type}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void makeNotificationRead(final HTTPRequestContext context, final HttpServletRequest request, final String type) {
@@ -324,7 +324,7 @@ public class NotificationProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/notification/read", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/notifications/read", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void makeNotificationRead(final HTTPRequestContext context, final HttpServletRequest request,
@@ -818,7 +818,7 @@ public class NotificationProcessor {
      * @param context the specified context
      * @param request the specified request
      */
-    @RequestProcessing(value = "/notification/unread/count", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/notifications/unread/count", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
     public void getUnreadNotificationCount(final HTTPRequestContext context, final HttpServletRequest request) {
