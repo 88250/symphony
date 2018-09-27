@@ -145,8 +145,7 @@ public class DataModelService {
         Stopwatchs.start("Fills relevant articles");
         try {
             dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                    articleQueryService.getRelevantArticles(
-                            avatarViewMode, article, Symphonys.getInt("sideRelevantArticlesCnt")));
+                    articleQueryService.getRelevantArticles(avatarViewMode, article, Symphonys.getInt("sideRelevantArticlesCnt")));
         } finally {
             Stopwatchs.end();
         }
