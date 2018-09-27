@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.28.0.4, Sep 3, 2018
+ * @version 2.28.0.5, Sep 27, 2018
  * @since 0.2.0
  */
 @Service
@@ -1626,7 +1626,7 @@ public class ArticleQueryService {
 
         JSONObject result;
         try {
-            Stopwatchs.start("Query recent articles");
+            Stopwatchs.start("Query perfect articles");
 
             result = articleRepository.get(query);
         } catch (final RepositoryException e) {
