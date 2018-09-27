@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.processor.channel;
 
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 
 import javax.servlet.http.HttpSession;
@@ -31,7 +32,7 @@ import java.util.Map;
  * Channel utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.2.2, Feb 28, 2016
+ * @version 2.0.2.3, Sep 27, 2018
  * @since 1.4.0
  */
 public final class Channels {
@@ -45,24 +46,24 @@ public final class Channels {
      * WebSocket configurator.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 1.0.0.0, Feb 28, 2016
+     * @version 1.0.0.1, Sep 27, 2018
      * @since 1.4.0
      */
     public static class WebSocketConfigurator extends ServerEndpointConfig.Configurator {
 
         @Override
-        public void modifyHandshake(final ServerEndpointConfig config,
-                final HandshakeRequest request, final HandshakeResponse response) {
+        public void modifyHandshake(final ServerEndpointConfig config, final HandshakeRequest request, final HandshakeResponse response) {
             final HttpSession httpSession = (HttpSession) request.getHttpSession();
-
             config.getUserProperties().put(HttpSession.class.getName(), httpSession);
+            final String skin = (String) httpSession.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+            config.getUserProperties().put(Keys.TEMAPLTE_DIR_NAME, skin);
         }
     }
 
     /**
      * Gets a parameter of the specified HTTP session by the given session.
      *
-     * @param session the given session
+     * @param session       the given session
      * @param parameterName the specified parameter name
      * @return parameter value, returns {@code null} if the parameter does not exist
      */
@@ -85,7 +86,7 @@ public final class Channels {
     /**
      * Gets an attribute of the specified HTTP session by the given session.
      *
-     * @param session the given session
+     * @param session       the given session
      * @param attributeName the specified attribute name
      * @return attribute, returns {@code null} if not found or occurred exception
      */

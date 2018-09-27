@@ -49,7 +49,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.9.8, Jun 11, 2018
+ * @version 2.3.9.9, Sep 27, 2018
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/article-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -169,15 +169,12 @@ public class ArticleChannel {
                 Keys.fillServer(dataModel);
                 dataModel.put(Comment.COMMENT, message);
 
-                String templateDirName = Symphonys.get("skinDirName");
                 if (isLoggedIn) {
                     dataModel.putAll(langPropsService.getAll(Locales.getLocale(user.optString(UserExt.USER_LANGUAGE))));
                     final String userId = user.optString(Keys.OBJECT_ID);
                     final Map<String, JSONObject> permissions
                             = roleQueryService.getUserPermissionsGrantMap(userId);
                     dataModel.put(Permission.PERMISSIONS, permissions);
-
-                    templateDirName = user.optString(UserExt.USER_SKIN);
                 } else {
                     dataModel.putAll(langPropsService.getAll(Locales.getLocale()));
                     final Map<String, JSONObject> permissions
@@ -185,7 +182,8 @@ public class ArticleChannel {
                     dataModel.put(Permission.PERMISSIONS, permissions);
                 }
 
-                final Template template = Skins.SKIN.getTemplate("common/comment.ftl");
+                final String templateDirName = (String) session.getUserProperties().get(Keys.TEMAPLTE_DIR_NAME);
+                final Template template = Skins.SKIN.getTemplate(templateDirName + "/common/comment.ftl");
                 final StringWriter stringWriter = new StringWriter();
                 template.process(dataModel, stringWriter);
                 stringWriter.close();

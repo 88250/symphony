@@ -48,6 +48,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import java.util.Locale;
 
@@ -255,6 +256,11 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, (Boolean) request.getAttribute(Common.IS_MOBILE)
                 ? "mobile" : "classic");
+        String templateDirName = (Boolean) request.getAttribute(Common.IS_MOBILE) ? "mobile" : "classic";
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, templateDirName);
+
+        final HttpSession httpSession = request.getSession();
+        httpSession.setAttribute(Keys.TEMAPLTE_DIR_NAME, templateDirName);
 
         try {
             final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
@@ -310,8 +316,11 @@ public final class SymphonyServletListener extends AbstractServletListener {
                 }
             }
 
-            request.setAttribute(Keys.TEMAPLTE_DIR_NAME, (Boolean) request.getAttribute(Common.IS_MOBILE)
-                    ? user.optString(UserExt.USER_MOBILE_SKIN) : user.optString(UserExt.USER_SKIN));
+            final String skin = (Boolean) request.getAttribute(Common.IS_MOBILE)
+                    ? user.optString(UserExt.USER_MOBILE_SKIN) : user.optString(UserExt.USER_SKIN);
+
+            request.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
+            httpSession.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
             request.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, user.optInt(UserExt.USER_AVATAR_VIEW_MODE));
 
             request.setAttribute(User.USER, user);
