@@ -56,7 +56,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.10.18, Sep 27, 2018
+ * @version 3.19.10.17, Sep 24, 2018
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -69,7 +69,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     /**
      * Symphony version.
      */
-    public static final String VERSION = "3.4.1";
+    public static final String VERSION = "3.4.0";
 
     /**
      * JSON print indent factor.
