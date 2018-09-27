@@ -31,7 +31,7 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
@@ -43,7 +43,6 @@ import org.b3log.symphony.processor.advice.validate.PointTransferValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Results;
-import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -219,7 +218,7 @@ public class UserProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/breezemoons.ftl");
+        renderer.setTemplateName("home/breezemoons.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -379,7 +378,7 @@ public class UserProcessor {
                                           final HttpServletResponse response, final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/comments.ftl");
+        renderer.setTemplateName("home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
@@ -461,7 +460,7 @@ public class UserProcessor {
                                       final HttpServletResponse response, final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/home.ftl");
+        renderer.setTemplateName("home/home.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
 
@@ -576,7 +575,7 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        renderer.setTemplateName("/home/home.ftl");
+        renderer.setTemplateName("home/home.ftl");
 
         fillHomeUser(dataModel, user, roleQueryService);
 
@@ -646,7 +645,7 @@ public class UserProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/comments.ftl");
+        renderer.setTemplateName("home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -715,7 +714,7 @@ public class UserProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/following-users.ftl");
+        renderer.setTemplateName("home/following-users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -785,7 +784,7 @@ public class UserProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/following-tags.ftl");
+        renderer.setTemplateName("home/following-tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -854,7 +853,7 @@ public class UserProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/following-articles.ftl");
+        renderer.setTemplateName("home/following-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -924,7 +923,7 @@ public class UserProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/watching-articles.ftl");
+        renderer.setTemplateName("home/watching-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -994,7 +993,7 @@ public class UserProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/followers.ftl");
+        renderer.setTemplateName("home/followers.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -1071,7 +1070,7 @@ public class UserProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/points.ftl");
+        renderer.setTemplateName("home/points.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
         final int pageNum = Paginator.getPage(request);

@@ -35,7 +35,7 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.*;
@@ -232,7 +232,7 @@ public class LoginProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/verify/guide.ftl");
+        renderer.setTemplateName("verify/guide.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put(Common.CURRENT_USER, currentUser);
@@ -301,7 +301,7 @@ public class LoginProcessor {
             referer = Latkes.getServePath();
         }
 
-        renderer.setTemplateName("/verify/login.ftl");
+        renderer.setTemplateName("verify/login.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put(Common.GOTO, referer);
@@ -396,7 +396,7 @@ public class LoginProcessor {
         final JSONObject verifycode = verifycodeQueryService.getVerifycode(code);
         if (null == verifycode) {
             dataModel.put(Keys.MSG, langPropsService.get("verifycodeExpiredLabel"));
-            renderer.setTemplateName("/error/custom.ftl");
+            renderer.setTemplateName("error/custom.ftl");
         } else {
             renderer.setTemplateName("verify/reset-pwd.ftl");
 
@@ -504,7 +504,7 @@ public class LoginProcessor {
             final JSONObject verifycode = verifycodeQueryService.getVerifycode(code);
             if (null == verifycode) {
                 dataModel.put(Keys.MSG, langPropsService.get("verifycodeExpiredLabel"));
-                renderer.setTemplateName("/error/custom.ftl");
+                renderer.setTemplateName("error/custom.ftl");
             } else {
                 renderer.setTemplateName("verify/register2.ftl");
 
@@ -515,7 +515,7 @@ public class LoginProcessor {
                 if (UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)
                         || UserExt.NULL_USER_NAME.equals(user.optString(User.USER_NAME))) {
                     dataModel.put(Keys.MSG, langPropsService.get("userExistLabel"));
-                    renderer.setTemplateName("/error/custom.ftl");
+                    renderer.setTemplateName("error/custom.ftl");
                 } else {
                     referral = StringUtils.substringAfter(code, "r=");
                     if (StringUtils.isNotBlank(referral)) {

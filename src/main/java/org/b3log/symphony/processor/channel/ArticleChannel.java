@@ -30,9 +30,9 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Locales;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.SkinRenderer;
 import org.b3log.symphony.service.RoleQueryService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Skins;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -185,8 +185,7 @@ public class ArticleChannel {
                     dataModel.put(Permission.PERMISSIONS, permissions);
                 }
 
-                final Template template = SkinRenderer.getTemplate(templateDirName, "common/comment.ftl",
-                        false, user);
+                final Template template = Skins.SKIN.getTemplate("common/comment.ftl");
                 final StringWriter stringWriter = new StringWriter();
                 template.process(dataModel, stringWriter);
                 stringWriter.close();

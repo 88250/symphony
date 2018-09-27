@@ -36,7 +36,7 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
@@ -56,7 +56,6 @@ import org.json.JSONObject;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -433,7 +432,7 @@ public class ArticleProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
-        renderer.setTemplateName("/home/pre-post.ftl");
+        renderer.setTemplateName("home/pre-post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModel.put(Common.BROADCAST_POINT, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST);
@@ -492,8 +491,7 @@ public class ArticleProcessor {
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-
-        renderer.setTemplateName("/home/post.ftl");
+        renderer.setTemplateName("home/post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         // Qiniu file upload authenticate
@@ -629,8 +627,7 @@ public class ArticleProcessor {
                             final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-
-        renderer.setTemplateName("/article.ftl");
+        renderer.setTemplateName("article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
@@ -1033,8 +1030,7 @@ public class ArticleProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-
-        renderer.setTemplateName("/home/post.ftl");
+        renderer.setTemplateName("home/post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModel.put(Article.ARTICLE, article);

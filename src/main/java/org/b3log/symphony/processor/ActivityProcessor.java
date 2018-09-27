@@ -31,7 +31,7 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
@@ -137,7 +137,7 @@ public class ActivityProcessor {
     public void showCharacter(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/activity/character.ftl");
+        renderer.setTemplateName("activity/character.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -219,7 +219,7 @@ public class ActivityProcessor {
     public void showActivities(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/home/activities.ftl");
+        renderer.setTemplateName("home/activities.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -256,7 +256,7 @@ public class ActivityProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/activity/checkin.ftl");
+        renderer.setTemplateName("activity/checkin.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -343,7 +343,7 @@ public class ActivityProcessor {
     public void show1A0001(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/activity/1A0001.ftl");
+        renderer.setTemplateName("activity/1A0001.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
@@ -483,7 +483,7 @@ public class ActivityProcessor {
     public void showEatingSnake(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/activity/eating-snake.ftl");
+        renderer.setTemplateName("activity/eating-snake.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
@@ -539,7 +539,7 @@ public class ActivityProcessor {
     public void collectEatingSnake(final HTTPRequestContext context, final HttpServletRequest request) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/activity/eating-snake.ftl");
+        renderer.setTemplateName("activity/eating-snake.ftl");
 
         JSONObject requestJSONObject;
         try {
@@ -570,7 +570,7 @@ public class ActivityProcessor {
     public void showGobang(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        renderer.setTemplateName("/activity/gobang.ftl");
+        renderer.setTemplateName("activity/gobang.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);

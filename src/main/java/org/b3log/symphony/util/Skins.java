@@ -20,30 +20,30 @@ package org.b3log.symphony.util;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.AbstractServletListener;
 
 import javax.servlet.ServletContext;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TimeZone;
 
 /**
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, May 14, 2018
+ * @version 1.1.0.2, Sep 27, 2018
  * @since 1.3.0
  */
 public final class Skins {
 
     /**
-     * FreeMarker template configurations holder.
-     * <p>
-     * &lt;skinDirName, Configuration&gt;
-     * </p>
+     * Logger.
      */
-    public static final Map<String, Configuration> TEMPLATE_HOLDER = new HashMap<>();
+    private static final Logger LOGGER = Logger.getLogger(Skins.class);
+
+    /**
+     * FreeMarker template configurations for skins (skins/).
+     */
+    public static final Configuration SKIN;
 
     /**
      * Freemarker version.
@@ -52,20 +52,12 @@ public final class Skins {
 
     static {
         final ServletContext servletContext = AbstractServletListener.getServletContext();
-        final String skinsPath = servletContext.getRealPath("skins");
-        final File skinsDir = new File(skinsPath);
-        final String[] skinNames = skinsDir.list();
-
-        for (final String skinName : skinNames) {
-            final Configuration cfg = new Configuration(FREEMARKER_VER);
-            TEMPLATE_HOLDER.put(skinName, cfg);
-
-            cfg.setDefaultEncoding("UTF-8");
-            cfg.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-            cfg.setServletContextForTemplateLoading(servletContext, "skins/" + skinName);
-            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-            cfg.setLogTemplateExceptions(false);
-        }
+        SKIN = new Configuration(FREEMARKER_VER);
+        SKIN.setDefaultEncoding("UTF-8");
+        SKIN.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        SKIN.setServletContextForTemplateLoading(servletContext, "skins");
+        SKIN.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        SKIN.setLogTemplateExceptions(false);
     }
 
     /**

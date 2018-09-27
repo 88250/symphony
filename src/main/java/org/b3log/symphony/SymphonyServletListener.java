@@ -88,9 +88,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
         Latkes.setScanPath("org.b3log.symphony");
         super.contextInitialized(servletContextEvent);
 
-        final String skinDirName = Symphonys.get("skinDirName");
-        Latkes.loadSkin(skinDirName);
-
         beanManager = Lifecycle.getBeanManager();
 
         final InitMgmtService initMgmtService = beanManager.getReference(InitMgmtService.class);

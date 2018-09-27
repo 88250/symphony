@@ -17,17 +17,16 @@
  */
 package org.b3log.symphony.processor;
 
-import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.util.Skins;
 import org.b3log.symphony.util.Symphonys;
@@ -43,7 +42,7 @@ import java.util.TimeZone;
  * Skin user-switchable FreeMarker Renderer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.4, Jun 22, 2018
+ * @version 1.3.0.5, Sep 27, 2018
  * @since 1.3.0
  */
 public final class SkinRenderer extends AbstractFreeMarkerRenderer {
@@ -68,25 +67,28 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     }
 
     /**
-     * Gets a template with the specified template directory name, template name, search engine bot flag and user.
+     * Gets a template with the specified search engine bot flag and user.
      *
-     * @param templateDirName   the specified template directory name
-     * @param templateName      the specified template name
      * @param isSearchEngineBot the specified search engine bot flag
      * @param user              the specified user
      * @return template
      */
-    public static Template getTemplate(final String templateDirName, final String templateName,
-                                       final boolean isSearchEngineBot, final JSONObject user) {
-        Configuration cfg = Skins.TEMPLATE_HOLDER.get(templateDirName);
+    public Template getTemplate(final boolean isSearchEngineBot, final JSONObject user) {
+        String templateDirName = (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+        final String templateName = getTemplateName();
         try {
-            if (null == cfg) {
-                LOGGER.warn("Can't get template dir [" + templateDirName + "]");
+            Template ret;
+            try {
+                ret = Skins.SKIN.getTemplate(templateDirName + "/" + templateName);
+            } catch (final Exception e) {
+                if (Symphonys.get("skinDirName").equals(templateDirName) ||
+                        Symphonys.get("mobileSkinDirName").equals(templateDirName)) {
+                    throw e;
+                }
 
-                cfg = Skins.TEMPLATE_HOLDER.get(Symphonys.get("skinDirName"));
+                // Try to load default template
+                ret = Skins.SKIN.getTemplate(Symphonys.get("skinDirName") + "/" + templateName);
             }
-
-            final Template ret = cfg.getTemplate(templateName);
 
             if (isSearchEngineBot) {
                 return ret;
@@ -108,19 +110,12 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
         }
     }
 
-    /**
-     * Gets a template with the specified template directory name and template name.
-     *
-     * @param templateDirName the specified template directory name
-     * @param templateName    the specified template name
-     * @return template
-     */
     @Override
-    protected Template getTemplate(final String templateDirName, final String templateName) {
+    protected Template getTemplate() {
         final boolean isSearchEngineBot = (Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
 
-        return getTemplate(templateDirName, templateName, isSearchEngineBot, user);
+        return getTemplate(isSearchEngineBot, user);
     }
 
     /**
@@ -136,16 +131,13 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
             throws Exception {
         final boolean isPJAX = isPJAX(request);
         dataModel.put("pjax", isPJAX);
-
         if (!isPJAX) {
             return super.genHTML(request, dataModel, template);
         }
 
         final StringWriter stringWriter = new StringWriter();
-
         template.setOutputEncoding("UTF-8");
         template.process(dataModel, stringWriter);
-
         final long endTimeMillis = System.currentTimeMillis();
         final String dateString = DateFormatUtils.format(endTimeMillis, "yyyy/MM/dd HH:mm:ss");
         final long startTimeMillis = (Long) request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS);
@@ -177,5 +169,4 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
 
         return pjax && StringUtils.isNotBlank(pjaxContainer);
     }
-
 }
