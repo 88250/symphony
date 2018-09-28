@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.28.0.5, Sep 27, 2018
+ * @version 2.28.0.6, Sep 28, 2018
  * @since 0.2.0
  */
 @Service
@@ -158,6 +158,12 @@ public class ArticleQueryService {
      */
     @Inject
     private RewardQueryService rewardQueryService;
+
+    /**
+     * Tag query service.
+     */
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * Gets the question articles with the specified fetch size.
@@ -1792,24 +1798,7 @@ public class ArticleQueryService {
 
         // builds tag objects
         final String tagsStr = article.optString(Article.ARTICLE_TAGS);
-        final String[] tagTitles = tagsStr.split(",");
-
-        final List<JSONObject> tags = new ArrayList<>();
-        for (final String tagTitle : tagTitles) {
-            final JSONObject tag = new JSONObject();
-            tag.put(Tag.TAG_TITLE, tagTitle);
-
-            final String uri = tagRepository.getURIByTitle(tagTitle);
-            if (null != uri) {
-                tag.put(Tag.TAG_URI, uri);
-            } else {
-                tag.put(Tag.TAG_URI, tagTitle);
-
-                tagRepository.getURIByTitle(tagTitle);
-            }
-
-            tags.add(tag);
-        }
+        final List<JSONObject> tags = tagQueryService.buildTagObjs(tagsStr);
         article.put(Article.ARTICLE_T_TAG_OBJS, (Object) tags);
     }
 

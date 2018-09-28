@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.2, Sep 14, 2018
+ * @version 1.9.0.3, Sep 28, 2018
  * @since 0.2.0
  */
 @Service
@@ -114,6 +114,35 @@ public class TagQueryService {
      */
     @Inject
     private TagCache tagCache;
+
+    /**
+     * Builds tag objects with the specified tags string.
+     *
+     * @param tagsStr the specified tags string
+     * @return tag objects
+     */
+    public List<JSONObject> buildTagObjs(final String tagsStr) {
+        final List<JSONObject> ret = new ArrayList<>();
+
+        final String[] tagTitles = tagsStr.split(",");
+        for (final String tagTitle : tagTitles) {
+            final JSONObject tag = new JSONObject();
+            tag.put(Tag.TAG_TITLE, tagTitle);
+
+            final String uri = tagRepository.getURIByTitle(tagTitle);
+            if (null != uri) {
+                tag.put(Tag.TAG_URI, uri);
+            } else {
+                tag.put(Tag.TAG_URI, tagTitle);
+            }
+
+            Tag.fillDescription(tag);
+
+            ret.add(tag);
+        }
+
+        return ret;
+    }
 
     /**
      * Gets domains of the specified tag belongs to.
@@ -398,9 +427,8 @@ public class TagQueryService {
      * Gets the new (sort by oId descending) tags.
      *
      * @return trend tags, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getNewTags() throws ServiceException {
+    public List<JSONObject> getNewTags() {
         return tagCache.getNewTags();
     }
 
@@ -435,9 +463,8 @@ public class TagQueryService {
      *
      * @param fetchSize the specified fetch size
      * @return tags, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getTags(final int fetchSize) throws ServiceException {
+    public List<JSONObject> getTags(final int fetchSize) {
         return tagCache.getIconTags(fetchSize);
     }
 
@@ -542,7 +569,7 @@ public class TagQueryService {
             query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, userIds));
             result = userRepository.get(query);
 
-            final List<JSONObject> users = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> users = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             for (final JSONObject user : users) {
                 final JSONObject participant = new JSONObject();
 
@@ -688,7 +715,7 @@ public class TagQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> tags = CollectionUtils.<JSONObject>jsonArrayToList(data);
+        final List<JSONObject> tags = CollectionUtils.jsonArrayToList(data);
 
         for (final JSONObject tag : tags) {
             tag.put(Tag.TAG_T_CREATE_TIME, new Date(tag.optLong(Keys.OBJECT_ID)));
