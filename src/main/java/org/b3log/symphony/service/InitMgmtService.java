@@ -43,7 +43,7 @@ import java.util.Set;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.15, Sep 7, 2018
+ * @version 1.2.1.16, Sep 28, 2018
  * @since 1.8.0
  */
 @Service
@@ -220,12 +220,11 @@ public class InitMgmtService {
     public void initSym() {
         try {
             final List<JSONObject> admins = userQueryService.getAdmins();
-
             if (null != admins && !admins.isEmpty()) { // Initialized already
                 return;
             }
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, "Check init error", e);
+            LOGGER.log(Level.ERROR, "Check init failed", e);
 
             System.exit(0);
         }
@@ -689,7 +688,7 @@ public class InitMgmtService {
             tag = tagRepository.get(tagId);
             tag.put(Tag.TAG_URI, "Wide");
             tag.put(Tag.TAG_ICON_PATH, "wide.png");
-            tag.put(Tag.TAG_DESCRIPTION, "[Wide](https://github.com/b3log/wide) 是一个基于 [Web] 的 <a href='/tags/golang'>Go</a> 语言团队 IDE。通过浏览器就可以进行 Go 开发，并有代码自动完成、查看表达式、编译反馈、Lint、实时结果输出等功能。");
+            tag.put(Tag.TAG_DESCRIPTION, "[Wide](https://github.com/b3log/wide) 是一个基于 [Web] 的 <a href=\"/tags/golang\">Go</a> 语言团队 IDE。通过浏览器就可以进行 Go 开发，并有代码自动完成、查看表达式、编译反馈、Lint、实时结果输出等功能。");
             tagMgmtService.updateTag(tagId, tag);
 
             LOGGER.log(Level.INFO, "Initialized tag data");
