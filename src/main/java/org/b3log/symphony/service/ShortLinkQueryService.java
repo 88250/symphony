@@ -44,7 +44,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.2.1, Jul 26, 2018
+ * @version 1.2.3.0, Sep 30, 2018
  * @since 1.3.0
  */
 @Service
@@ -63,8 +63,7 @@ public class ShortLinkQueryService {
     /**
      * Article pattern - full.
      */
-    private static final Pattern ARTICLE_PATTERN_FULL
-            = Pattern.compile("(?:^|[^\"'\\](])(" + Latkes.getServePath() + "/article/\\d{13,15}[?\\w&=#%:]*(\\b|$))");
+    private static final Pattern ARTICLE_PATTERN_FULL = Pattern.compile(Latkes.getServePath() + "/article/\\d{13,15}[?\\w&-_=#%:]*(\\b|$)");
 
     /**
      * Tag title pattern.
@@ -103,6 +102,13 @@ public class ShortLinkQueryService {
             try {
                 while (matcher.find()) {
                     final String url = StringUtils.trim(matcher.group());
+                    if (0 < matcher.start()) {
+                        final char c = content.charAt(matcher.start() - 1); // look back one char
+                        if ('(' == c || ']' == c || '\'' == c || '"' == c) {
+                            continue;
+                        }
+                    }
+
                     if (StringUtils.containsIgnoreCase(codes, url)) {
                         continue;
                     }
@@ -110,10 +116,10 @@ public class ShortLinkQueryService {
                     String queryStr = null;
                     String anchor = null;
                     if (StringUtils.contains(url, "?")) {
-                        linkId = StringUtils.substringBetween(matcher.group(), "/article/", "?");
+                        linkId = StringUtils.substringBetween(url, "/article/", "?");
                         queryStr = StringUtils.substringAfter(url, "?");
                     } else {
-                        linkId = StringUtils.substringAfter(matcher.group(), "/article/");
+                        linkId = StringUtils.substringAfter(url, "/article/");
                     }
                     if (StringUtils.contains(url, "#")) {
                         linkId = StringUtils.substringBefore(linkId, "#");
@@ -161,7 +167,6 @@ public class ShortLinkQueryService {
                     }
 
                     final JSONObject linkArticle = results.optJSONObject(0);
-
                     final String linkTitle = linkArticle.optString(Article.ARTICLE_TITLE);
                     final String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/article/" + linkId + ") ";
 
