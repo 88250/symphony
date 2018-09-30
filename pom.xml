@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.105, Sep 27, 2018
+    Version: 2.16.6.106, Sep 30, 2018
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -22,18 +22,18 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>2.4.17</latke.version>
+        <latke.version>2.4.18</latke.version>
 
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.4.12.v20180830</jetty.version>
-        <slf4j.version>1.7.7</slf4j.version>
+        <slf4j.version>1.7.24</slf4j.version>
         <mysql-connector-java.version>8.0.12</mysql-connector-java.version>
         <jsoup.version>1.10.2</jsoup.version>
         <flexmark.version>0.34.30</flexmark.version>
         <qiniu.version>7.2.11</qiniu.version>
         <jodd.version>5.0.3</jodd.version>
         <emoji-java.version>4.0.0</emoji-java.version>
-        <user-agent-utils.version>1.20</user-agent-utils.version>
+        <user-agent-utils.version>1.21</user-agent-utils.version>
         <commons-codec.version>1.10</commons-codec.version>
         <es.version>2.3.1</es.version>
         <owasp.version>1.2.1</owasp.version>
@@ -41,12 +41,12 @@
         <freemarker.version>2.3.28</freemarker.version>
 
         <!-- Maven Plugin -->
-        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-        <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
-        <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+        <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <license-maven-plugin.version>3.0</license-maven-plugin.version>
         <!-- Unit Test -->
-        <testng.version>6.1.1</testng.version>
+        <testng.version>6.14.3</testng.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
