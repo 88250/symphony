@@ -20,20 +20,17 @@ package org.b3log.symphony.processor.channel;
 import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Locales;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.service.RoleQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Skins;
-import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.websocket.*;
@@ -103,10 +100,10 @@ public class ArticleChannel {
     public static void notifyComment(final JSONObject message) {
         message.put(Common.TYPE, Comment.COMMENT);
 
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final BeanManager beanManager = BeanManager.getInstance();
         final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
         final RoleQueryService roleQueryService = beanManager.getReference(RoleQueryService.class);
-        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
         final JSONObject article = message.optJSONObject(Article.ARTICLE);
 
         for (final Session session : SESSIONS) {

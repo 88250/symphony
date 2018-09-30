@@ -18,9 +18,8 @@
 package org.b3log.symphony.processor.advice;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -34,8 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-;
-
 /**
  * User block check. Gets user from request attribute named "user".
  *
@@ -43,7 +40,6 @@ import java.util.Map;
  * @version 1.1.3.2, Apr 23, 2017
  * @since 0.2.5
  */
-@Named
 @Singleton
 public class UserBlockCheck extends BeforeRequestProcessAdvice {
 

@@ -18,8 +18,7 @@
 package org.b3log.symphony.processor.advice.validate;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
@@ -36,7 +35,6 @@ import java.util.Map;
  * @version 1.0.0.0, Aug 16, 2016
  * @since 1.5.0
  */
-@Named
 @Singleton
 public class UpdateEmotionListValidation extends BeforeRequestProcessAdvice {
 

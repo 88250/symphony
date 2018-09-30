@@ -20,8 +20,7 @@ package org.b3log.symphony.cache;
 import org.b3log.latke.Keys;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.util.JSONs;
 import org.json.JSONObject;
@@ -33,7 +32,6 @@ import org.json.JSONObject;
  * @version 1.0.0.1, Oct 25, 2016
  * @since 1.5.0
  */
-@Named
 @Singleton
 public class OptionCache {
 

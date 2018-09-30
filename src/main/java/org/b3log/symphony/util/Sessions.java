@@ -23,8 +23,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -113,7 +112,7 @@ public final class Sessions {
     public static String login(final HttpServletResponse response,
                                final String userId, final boolean rememberLogin) {
         try {
-            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final BeanManager beanManager = BeanManager.getInstance();
             final UserRepository userRepository = beanManager.getReference(UserRepository.class);
             final JSONObject user = userRepository.get(userId);
             if (null == user) {
@@ -169,7 +168,7 @@ public final class Sessions {
 
         SESSION_CACHE.remove(userId);
 
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final BeanManager beanManager = BeanManager.getInstance();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
         userMgmtService.updateOnlineStatus(userId, "", false, true);
     }
@@ -240,7 +239,7 @@ public final class Sessions {
      */
     private static JSONObject tryLogInWithCookie(final JSONObject cookieJSONObject,
                                                  final HttpServletRequest request) {
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final BeanManager beanManager = BeanManager.getInstance();
         final UserRepository userRepository = beanManager.getReference(UserRepository.class);
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
 

@@ -18,8 +18,7 @@
 package org.b3log.symphony.cache;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Sessions;
@@ -37,7 +36,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @version 1.1.0.1, Jul 30, 2018
  * @since 1.4.0
  */
-@Named
 @Singleton
 public class UserCache {
 

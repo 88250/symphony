@@ -19,8 +19,7 @@ package org.b3log.symphony.processor.channel;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
@@ -78,7 +77,7 @@ public class UserChannel {
 
         SESSIONS.put(userId, userSessions);
 
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final BeanManager beanManager = BeanManager.getInstance();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
         final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
         try {
@@ -113,7 +112,7 @@ public class UserChannel {
         }
 
         final String userId = user.optString(Keys.OBJECT_ID);
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final BeanManager beanManager = BeanManager.getInstance();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
         final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
         try {
@@ -174,7 +173,7 @@ public class UserChannel {
         }
 
         final String userId = user.optString(Keys.OBJECT_ID);
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final BeanManager beanManager = BeanManager.getInstance();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
         final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
 

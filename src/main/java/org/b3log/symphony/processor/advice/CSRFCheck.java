@@ -20,9 +20,8 @@ package org.b3log.symphony.processor.advice;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -42,7 +41,6 @@ import java.util.Map;
  * @version 1.0.1.0, Aug 4, 2018
  * @since 1.3.0
  */
-@Named
 @Singleton
 public class CSRFCheck extends BeforeRequestProcessAdvice {
 

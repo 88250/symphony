@@ -18,9 +18,8 @@
 package org.b3log.symphony.processor.advice.validate;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -42,7 +41,6 @@ import java.util.Map;
  * @version 1.1.1.0, Jul 3, 2016
  * @since 1.3.0
  */
-@Named
 @Singleton
 public class UserRegister2Validation extends BeforeRequestProcessAdvice {
 
@@ -110,8 +108,8 @@ public class UserRegister2Validation extends BeforeRequestProcessAdvice {
     /**
      * Checks field.
      *
-     * @param invalid the specified invalid flag
-     * @param failLabel the specified fail label
+     * @param invalid    the specified invalid flag
+     * @param failLabel  the specified fail label
      * @param fieldLabel the specified field label
      * @throws RequestProcessAdviceException request process advice exception
      */

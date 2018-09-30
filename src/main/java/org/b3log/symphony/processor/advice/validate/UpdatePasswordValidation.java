@@ -19,9 +19,8 @@ package org.b3log.symphony.processor.advice.validate;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -40,7 +39,6 @@ import java.util.Map;
  * @version 1.0.0.1, Oct 29, 2012
  * @since 0.2.0
  */
-@Named
 @Singleton
 public class UpdatePasswordValidation extends BeforeRequestProcessAdvice {
 

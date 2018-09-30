@@ -25,12 +25,11 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
-import org.b3log.latke.service.LangPropsServiceImpl;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Callstacks;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.URLs;
@@ -77,16 +76,6 @@ public final class Markdowns {
     private static final Logger LOGGER = Logger.getLogger(Markdowns.class);
 
     /**
-     * Bean manager.
-     */
-    private static final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-
-    /**
-     * User query service.
-     */
-    private static final UserQueryService userQueryService;
-
-    /**
      * Markdown cache.
      */
     private static final Map<String, JSONObject> MD_CACHE = new ConcurrentHashMap<>();
@@ -123,12 +112,6 @@ public final class Markdowns {
     public static boolean MARKED_AVAILABLE;
 
     static {
-        if (null != beanManager) {
-            userQueryService = beanManager.getReference(UserQueryService.class);
-        } else {
-            userQueryService = null;
-        }
-
         try {
             final URL url = new URL(MARKED_ENGINE_URL);
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -277,8 +260,9 @@ public final class Markdowns {
             return cachedHTML;
         }
 
-        final LangPropsServiceImpl langPropsService = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
-
+        final BeanManager beanManager = BeanManager.getInstance();
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
+        final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
         final ExecutorService pool = Executors.newSingleThreadExecutor();
         final long[] threadId = new long[1];
 

@@ -17,9 +17,8 @@
  */
 package org.b3log.symphony.processor.advice;
 
-import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -42,7 +41,6 @@ import java.util.Map;
  * @version 1.0.3.2, Jan 7, 2017
  * @since 1.8.0
  */
-@Named
 @Singleton
 public class PermissionGrant extends AfterRequestProcessAdvice {
 

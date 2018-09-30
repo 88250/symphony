@@ -19,8 +19,8 @@ package org.b3log.symphony.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.Lifecycle;
-import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -233,7 +233,7 @@ public class FollowQueryService {
         try {
             final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_ARTICLE, currentPageNum, pageSize);
             final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
-            final ArticleQueryService articleQueryService = Lifecycle.getBeanManager().getReference(ArticleQueryService.class);
+            final ArticleQueryService articleQueryService = BeanManager.getInstance().getReference(ArticleQueryService.class);
             for (final JSONObject follow : followings) {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
                 final JSONObject article = articleRepository.get(followingId);
@@ -281,7 +281,7 @@ public class FollowQueryService {
         try {
             final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH, currentPageNum, pageSize);
             final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
-            final ArticleQueryService articleQueryService = Lifecycle.getBeanManager().getReference(ArticleQueryService.class);
+            final ArticleQueryService articleQueryService = BeanManager.getInstance().getReference(ArticleQueryService.class);
             for (final JSONObject follow : followings) {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
                 final JSONObject article = articleRepository.get(followingId);

@@ -18,10 +18,8 @@
 package org.b3log.symphony.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.LangPropsServiceImpl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,8 +51,8 @@ public final class VideoPlayers {
      * @return rendered content
      */
     public static final String render(final String content) {
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+        final BeanManager beanManager = BeanManager.getInstance();
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
 
         final StringBuffer contentBuilder = new StringBuffer();
         final Matcher m = PATTERN.matcher(content);

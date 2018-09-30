@@ -22,8 +22,7 @@ import jodd.http.HttpResponse;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.URLs;
@@ -40,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
  * @version 1.4.0.3, Aug 2, 2018
  * @since 1.4.0
  */
-@Named
 @Singleton
 public class ArticleQQSender extends AbstractEventListener<JSONObject> {
 

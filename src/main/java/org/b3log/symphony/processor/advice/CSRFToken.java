@@ -17,8 +17,7 @@
  */
 package org.b3log.symphony.processor.advice;
 
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.AfterRequestProcessAdvice;
@@ -35,7 +34,6 @@ import java.util.Map;
  * @version 1.0.0.0, Aug 27, 2015
  * @since 1.3.0
  */
-@Named
 @Singleton
 public class CSRFToken extends AfterRequestProcessAdvice {
 

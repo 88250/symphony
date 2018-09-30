@@ -20,13 +20,10 @@ package org.b3log.symphony.processor.advice.validate;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
@@ -52,7 +49,6 @@ import java.util.Map;
  * @version 1.3.5.2, Sep 5, 2018
  * @since 0.2.0
  */
-@Named
 @Singleton
 public class ArticleAddValidation extends BeforeRequestProcessAdvice {
 
@@ -90,8 +86,8 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
      */
     public static void validateArticleFields(final HttpServletRequest request,
                                              final JSONObject requestJSONObject) throws RequestProcessAdviceException {
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+        final BeanManager beanManager = BeanManager.getInstance();
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
         final TagQueryService tagQueryService = beanManager.getReference(TagQueryService.class);
         final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
 

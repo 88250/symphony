@@ -25,8 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Article;
@@ -42,7 +41,6 @@ import org.json.JSONObject;
  * @version 1.1.3.2, Aug 2, 2018
  * @since 1.3.0
  */
-@Named
 @Singleton
 public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
 

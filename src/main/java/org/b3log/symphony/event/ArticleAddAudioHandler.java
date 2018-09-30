@@ -19,9 +19,8 @@ package org.b3log.symphony.event;
 
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Article;
@@ -35,7 +34,6 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Mar 18, 2017
  * @since 2.1.0
  */
-@Named
 @Singleton
 public class ArticleAddAudioHandler extends AbstractEventListener<JSONObject> {
 

@@ -19,12 +19,10 @@ package org.b3log.symphony.util;
 
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
@@ -158,7 +156,7 @@ public final class Symphonys {
 
                 HttpURLConnection httpConn = null;
                 try {
-                    final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                    final BeanManager beanManager = BeanManager.getInstance();
                     final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
 
                     final JSONObject statistic = optionQueryService.getStatistic();
@@ -167,7 +165,7 @@ public final class Symphonys {
                         return;
                     }
 
-                    final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+                    final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
 
                     httpConn = (HttpURLConnection) new URL("https://rhythm.b3log.org/sym").openConnection();
                     httpConn.setConnectTimeout(10000);
