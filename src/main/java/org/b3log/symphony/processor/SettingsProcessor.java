@@ -40,17 +40,16 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.TimeZones;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.CSRFCheck;
-import org.b3log.symphony.processor.advice.CSRFToken;
-import org.b3log.symphony.processor.advice.LoginCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
+import org.b3log.symphony.processor.advice.*;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.advice.validate.PointTransferValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateEmotionListValidation;
 import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Languages;
+import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -69,6 +68,10 @@ import java.util.*;
  * <li>Geo status (/settings/geo/status), POST</li>
  * <li>Privacy (/settings/privacy), POST</li>
  * <li>Function (/settings/function), POST</li>
+ * <li>Transfer point (/point/transfer), POST</li>
+ * <li>Queries invitecode state (/invitecode/state), GET</li>
+ * <li>Point buy invitecode (/point/buy-invitecode), POST</li>
+ * <li>Exports posts(article/comment) to a file (/export/posts), POST</li>
  * <li>Updates emotions (/settings/emotionList), POST</li>
  * <li>Password (/settings/password), POST</li>
  * <li>Updates i18n (/settings/i18n), POST</li>
@@ -79,7 +82,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.2, Sep 12, 2018
+ * @version 1.3.0.3, Oct 1, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -89,6 +92,30 @@ public class SettingsProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(SettingsProcessor.class);
+
+    /**
+     * Post export service.
+     */
+    @Inject
+    private PostExportService postExportService;
+
+    /**
+     * Invitecode query service.
+     */
+    @Inject
+    private InvitecodeQueryService invitecodeQueryService;
+
+    /**
+     * Invitecode management service.
+     */
+    @Inject
+    private InvitecodeMgmtService invitecodeMgmtService;
+
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
 
     /**
      * User management service.
@@ -101,12 +128,6 @@ public class SettingsProcessor {
      */
     @Inject
     private UserQueryService userQueryService;
-
-    /**
-     * Invitecode query service.
-     */
-    @Inject
-    private InvitecodeQueryService invitecodeQueryService;
 
     /**
      * Option query service.
@@ -836,6 +857,164 @@ public class SettingsProcessor {
 
             context.renderMsg(msg);
         }
+    }
+
+    /**
+     * Point transfer.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/point/transfer", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PointTransferValidation.class})
+    public void pointTransfer(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
+        final JSONObject ret = Results.falseResult();
+        context.renderJSON(ret);
+
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+
+        final int amount = requestJSONObject.optInt(Common.AMOUNT);
+        final JSONObject toUser = (JSONObject) request.getAttribute(Common.TO_USER);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+
+        final String fromId = currentUser.optString(Keys.OBJECT_ID);
+        final String toId = toUser.optString(Keys.OBJECT_ID);
+
+        final String transferId = pointtransferMgmtService.transfer(fromId, toId,
+                Pointtransfer.TRANSFER_TYPE_C_ACCOUNT2ACCOUNT, amount, toId, System.currentTimeMillis());
+        final boolean succ = null != transferId;
+        ret.put(Keys.STATUS_CODE, succ);
+        if (!succ) {
+            ret.put(Keys.MSG, langPropsService.get("transferFailLabel"));
+        } else {
+            final JSONObject notification = new JSONObject();
+            notification.put(Notification.NOTIFICATION_USER_ID, toId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, transferId);
+
+            notificationMgmtService.addPointTransferNotification(notification);
+        }
+    }
+
+    /**
+     * Queries invitecode state.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     */
+    @RequestProcessing(value = "/invitecode/state", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
+    public void queryInvitecode(final HTTPRequestContext context, final HttpServletRequest request) {
+        final JSONObject ret = Results.falseResult();
+        context.renderJSON(ret);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        String invitecode = requestJSONObject.optString(Invitecode.INVITECODE);
+        if (StringUtils.isBlank(invitecode)) {
+            ret.put(Keys.STATUS_CODE, -1);
+            ret.put(Keys.MSG, invitecode + " " + langPropsService.get("notFoundInvitecodeLabel"));
+
+            return;
+        }
+
+        invitecode = invitecode.trim();
+
+        final JSONObject result = invitecodeQueryService.getInvitecode(invitecode);
+
+        if (null == result) {
+            ret.put(Keys.STATUS_CODE, -1);
+            ret.put(Keys.MSG, langPropsService.get("notFoundInvitecodeLabel"));
+        } else {
+            final int status = result.optInt(Invitecode.STATUS);
+            ret.put(Keys.STATUS_CODE, status);
+
+            switch (status) {
+                case Invitecode.STATUS_C_USED:
+                    ret.put(Keys.MSG, langPropsService.get("invitecodeUsedLabel"));
+
+                    break;
+                case Invitecode.STATUS_C_UNUSED:
+                    String msg = langPropsService.get("invitecodeOkLabel");
+                    msg = msg.replace("${time}", DateFormatUtils.format(result.optLong(Keys.OBJECT_ID)
+                            + Symphonys.getLong("invitecode.expired"), "yyyy-MM-dd HH:mm"));
+
+                    ret.put(Keys.MSG, msg);
+
+                    break;
+                case Invitecode.STATUS_C_STOPUSE:
+                    ret.put(Keys.MSG, langPropsService.get("invitecodeStopLabel"));
+
+                    break;
+                default:
+                    ret.put(Keys.MSG, langPropsService.get("notFoundInvitecodeLabel"));
+            }
+        }
+    }
+
+    /**
+     * Point buy invitecode.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     */
+    @RequestProcessing(value = "/point/buy-invitecode", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
+    public void pointBuy(final HTTPRequestContext context, final HttpServletRequest request) {
+        final JSONObject ret = Results.falseResult();
+        context.renderJSON(ret);
+
+        final String allowRegister = optionQueryService.getAllowRegister();
+        if (!"2".equals(allowRegister)) {
+            return;
+        }
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final String fromId = currentUser.optString(Keys.OBJECT_ID);
+        final String userName = currentUser.optString(User.USER_NAME);
+
+        // 故意先生成后返回校验，所以即使积分不够也是可以兑换成功的
+        // 这是为了让积分不够的用户可以通过这个后门兑换、分发邀请码以实现积分“自充”
+        // 后期可能会关掉这个【特性】
+        final String invitecode = invitecodeMgmtService.userGenInvitecode(fromId, userName);
+
+        final String transferId = pointtransferMgmtService.transfer(fromId, Pointtransfer.ID_C_SYS,
+                Pointtransfer.TRANSFER_TYPE_C_BUY_INVITECODE, Pointtransfer.TRANSFER_SUM_C_BUY_INVITECODE,
+                invitecode, System.currentTimeMillis());
+        final boolean succ = null != transferId;
+        ret.put(Keys.STATUS_CODE, succ);
+        if (!succ) {
+            ret.put(Keys.MSG, langPropsService.get("exchangeFailedLabel"));
+        } else {
+            String msg = langPropsService.get("expireTipLabel");
+            msg = msg.replace("${time}", DateFormatUtils.format(System.currentTimeMillis()
+                    + Symphonys.getLong("invitecode.expired"), "yyyy-MM-dd HH:mm"));
+            ret.put(Keys.MSG, invitecode + " " + msg);
+        }
+    }
+
+    /**
+     * Exports posts(article/comment) to a file.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     */
+    @RequestProcessing(value = "/export/posts", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class})
+    public void exportPosts(final HTTPRequestContext context, final HttpServletRequest request) {
+        context.renderJSON();
+
+        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+
+        final String downloadURL = postExportService.exportPosts(userId);
+        if ("-1".equals(downloadURL)) {
+            context.renderJSONValue(Keys.MSG, langPropsService.get("insufficientBalanceLabel"));
+
+        } else if (StringUtils.isBlank(downloadURL)) {
+            return;
+        }
+
+        context.renderJSON(true).renderJSONValue("url", downloadURL);
     }
 
     private static final String[][] emojiLists = {{
