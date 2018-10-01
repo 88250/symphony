@@ -364,6 +364,7 @@ public final class Markdowns {
                     src = URLs.encode(src);
                     a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
                     a.attr("target", "_blank");
+                    a.attr("rel", "nofollow");
                 }
             });
             doc.outputSettings().prettyPrint(false);
