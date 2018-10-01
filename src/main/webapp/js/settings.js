@@ -395,7 +395,8 @@ var Settings = {
     })) {
       var requestJSONObject = {
         "userName": $("#pointTransferUserName").val(),
-        "amount": $("#pointTransferAmount").val()
+        "amount": $("#pointTransferAmount").val(),
+        "memo": $("#pointTransferMemo").val()
       };
 
       $.ajax({
@@ -415,6 +416,7 @@ var Settings = {
             $("#pointTransferTip").addClass("succ").removeClass("error").html('<ul><li>' + Label.transferSuccLabel + '</li></ul>');
             $("#pointTransferUserName").val('');
             $("#pointTransferAmount").val('');
+            $("#pointTransferMemo").val('');
           } else {
             $("#pointTransferTip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
           }

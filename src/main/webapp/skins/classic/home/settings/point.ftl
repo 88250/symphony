@@ -28,9 +28,9 @@
         </span>
     </div>
     <div class="module-panel form fn-clear">
-        <input id="pointTransferUserName" type="text" placeholder="${userNameLabel}"/>
-        <br/> <br/>
+        <input id="pointTransferUserName" type="text" placeholder="${userNameLabel}"/><br/> <br/>
         <input id="pointTransferAmount" type="number" placeholder="${amountLabel}"/> <br/><br/>
+        <input id="pointTransferMemo" type="text" placeholder="${memoLabel}"/> <br/><br/>
         <div id="pointTransferTip" class="tip"></div> <br/>
         <button class="red fn-right" onclick="Settings.pointTransfer('${csrfToken}')">${confirmTransferLabel}</button>
     </div>

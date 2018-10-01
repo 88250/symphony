@@ -28,10 +28,13 @@ import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -40,7 +43,7 @@ import java.util.Map;
  * Validates for user point transfer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Jul 28, 2018
+ * @version 1.0.1.4, Oct 1, 2018
  * @since 1.3.0
  */
 @Singleton
@@ -106,5 +109,12 @@ public class PointTransferValidation extends BeforeRequestProcessAdvice {
         if (balance - amount < balanceMinLimit) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("insufficientBalanceLabel")));
         }
+
+        String memo = StringUtils.trim(requestJSONObject.optString(Pointtransfer.MEMO));
+        if (128 < StringUtils.length(memo)) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("memoTooLargeLabel")));
+        }
+        memo = Jsoup.clean(memo, Whitelist.none());
+        request.setAttribute(Pointtransfer.MEMO, memo);
     }
 }
