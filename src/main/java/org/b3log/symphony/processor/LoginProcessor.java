@@ -644,10 +644,10 @@ public class LoginProcessor {
                     // Point
                     pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                             Pointtransfer.TRANSFER_TYPE_C_INVITED_REGISTER,
-                            Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, referralId, System.currentTimeMillis());
+                            Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, referralId, System.currentTimeMillis(), "");
                     pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, referralId,
                             Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER,
-                            Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, userId, System.currentTimeMillis());
+                            Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, userId, System.currentTimeMillis(), "");
 
                     final JSONObject notification = new JSONObject();
                     notification.put(Notification.NOTIFICATION_USER_ID, referralId);
@@ -670,7 +670,7 @@ public class LoginProcessor {
                 if (StringUtils.isNotBlank(icGeneratorId) && !Pointtransfer.ID_C_SYS.equals(icGeneratorId)) {
                     pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, icGeneratorId,
                             Pointtransfer.TRANSFER_TYPE_C_INVITECODE_USED,
-                            Pointtransfer.TRANSFER_SUM_C_INVITECODE_USED, userId, System.currentTimeMillis());
+                            Pointtransfer.TRANSFER_SUM_C_INVITECODE_USED, userId, System.currentTimeMillis(), "");
 
                     final JSONObject notification = new JSONObject();
                     notification.put(Notification.NOTIFICATION_USER_ID, icGeneratorId);

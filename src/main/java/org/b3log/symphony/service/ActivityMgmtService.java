@@ -137,7 +137,7 @@ public class ActivityMgmtService {
 
         final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_EATINGSNAKE,
-                startPoint, "", System.currentTimeMillis());
+                startPoint, "", System.currentTimeMillis(), "");
 
         ret.put(Keys.STATUS_CODE, succ);
 
@@ -170,7 +170,7 @@ public class ActivityMgmtService {
 
         final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_EATINGSNAKE_COLLECT, amout,
-                "", System.currentTimeMillis());
+                "", System.currentTimeMillis(), "");
 
         if (!succ) {
             ret.put(Keys.MSG, "Sorry, transfer point failed, please contact admin");
@@ -270,7 +270,7 @@ public class ActivityMgmtService {
 
             pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                     Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHARACTER, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHARACTER,
-                    characterId, System.currentTimeMillis());
+                    characterId, System.currentTimeMillis(), "");
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("activityCharacterRecognizeSuccLabel"));
@@ -299,7 +299,7 @@ public class ActivityMgmtService {
                 % (Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MAX - Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN + 1)
                 + Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN;
         final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
-                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN, sum, userId, System.currentTimeMillis());
+                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN, sum, userId, System.currentTimeMillis(), "");
         if (!succ) {
             return Integer.MIN_VALUE;
         }
@@ -374,7 +374,7 @@ public class ActivityMgmtService {
                 // Additional Point
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                         Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN_STREAK,
-                        Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK, userId, System.currentTimeMillis());
+                        Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK, userId, System.currentTimeMillis(), "");
             }
 
             livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_ACTIVITY);
@@ -407,7 +407,7 @@ public class ActivityMgmtService {
         final String date = DateFormatUtils.format(new Date(), "yyyyMMdd");
 
         final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
-                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001, amount, date + "-" + smallOrLarge, System.currentTimeMillis());
+                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001, amount, date + "-" + smallOrLarge, System.currentTimeMillis(), "");
 
         ret.put(Keys.STATUS_CODE, succ);
 
@@ -491,7 +491,7 @@ public class ActivityMgmtService {
 
             final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                     Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001_COLLECT, amount,
-                    DateFormatUtils.format(new Date(), "yyyyMMdd") + "-" + smallOrLargeResult, System.currentTimeMillis());
+                    DateFormatUtils.format(new Date(), "yyyyMMdd") + "-" + smallOrLargeResult, System.currentTimeMillis(), "");
 
             if (succ) {
                 String msg = langPropsService.get("activity1A0001CollectSucc1Label");
@@ -530,7 +530,7 @@ public class ActivityMgmtService {
         }
 
         boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
-                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_YESTERDAY_LIVENESS_REWARD, sum, userId, System.currentTimeMillis());
+                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_YESTERDAY_LIVENESS_REWARD, sum, userId, System.currentTimeMillis(), "");
         if (!succ) {
             return;
         }
@@ -552,7 +552,7 @@ public class ActivityMgmtService {
 
         final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_GOBANG,
-                startPoint, "", System.currentTimeMillis());
+                startPoint, "", System.currentTimeMillis(), "");
 
         ret.put(Keys.STATUS_CODE, succ);
 
@@ -576,7 +576,7 @@ public class ActivityMgmtService {
 
         final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_GOBANG_COLLECT, score,
-                "", System.currentTimeMillis());
+                "", System.currentTimeMillis(), "");
 
         if (!succ) {
             ret.put(Keys.MSG, "Sorry, transfer point failed, please contact admin");

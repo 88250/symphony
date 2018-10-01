@@ -240,7 +240,7 @@ public class SettingsProcessor {
 
             pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                     Pointtransfer.TRANSFER_TYPE_C_CHANGE_USERNAME, Pointtransfer.TRANSFER_SUM_C_CHANGE_USERNAME,
-                    oldName + "-" + newName, System.currentTimeMillis());
+                    oldName + "-" + newName, System.currentTimeMillis(), "");
 
             context.renderTrueResult();
         } catch (final ServiceException e) {
@@ -877,12 +877,16 @@ public class SettingsProcessor {
         final int amount = requestJSONObject.optInt(Common.AMOUNT);
         final JSONObject toUser = (JSONObject) request.getAttribute(Common.TO_USER);
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        String memo = (String) request.getAttribute(Pointtransfer.MEMO);
+        if (StringUtils.isBlank(memo)) {
+            memo = "";
+        }
 
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
         final String toId = toUser.optString(Keys.OBJECT_ID);
 
         final String transferId = pointtransferMgmtService.transfer(fromId, toId,
-                Pointtransfer.TRANSFER_TYPE_C_ACCOUNT2ACCOUNT, amount, toId, System.currentTimeMillis());
+                Pointtransfer.TRANSFER_TYPE_C_ACCOUNT2ACCOUNT, amount, toId, System.currentTimeMillis(), memo);
         final boolean succ = null != transferId;
         ret.put(Keys.STATUS_CODE, succ);
         if (!succ) {
@@ -979,7 +983,7 @@ public class SettingsProcessor {
 
         final String transferId = pointtransferMgmtService.transfer(fromId, Pointtransfer.ID_C_SYS,
                 Pointtransfer.TRANSFER_TYPE_C_BUY_INVITECODE, Pointtransfer.TRANSFER_SUM_C_BUY_INVITECODE,
-                invitecode, System.currentTimeMillis());
+                invitecode, System.currentTimeMillis(), "");
         final boolean succ = null != transferId;
         ret.put(Keys.STATUS_CODE, succ);
         if (!succ) {

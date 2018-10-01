@@ -103,7 +103,7 @@ public class ReportMgmtService {
 
             final String reporterId = report.optString(Report.REPORT_USER_ID);
             final String transferId = pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, reporterId,
-                    Pointtransfer.TRANSFER_TYPE_C_REPORT_HANDLED, Pointtransfer.TRANSFER_SUM_C_REPORT_HANDLED, reportId, System.currentTimeMillis());
+                    Pointtransfer.TRANSFER_TYPE_C_REPORT_HANDLED, Pointtransfer.TRANSFER_SUM_C_REPORT_HANDLED, reportId, System.currentTimeMillis(), "");
 
             final JSONObject notification = new JSONObject();
             notification.put(Notification.NOTIFICATION_USER_ID, reporterId);

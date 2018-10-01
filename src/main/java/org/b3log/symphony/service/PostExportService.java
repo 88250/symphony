@@ -182,7 +182,7 @@ public class PostExportService {
 
         final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                 Pointtransfer.TRANSFER_TYPE_C_DATA_EXPORT, Pointtransfer.TRANSFER_SUM_C_DATA_EXPORT,
-                String.valueOf(posts.length()), System.currentTimeMillis());
+                String.valueOf(posts.length()), System.currentTimeMillis(), "");
         if (!succ) {
             return null;
         }

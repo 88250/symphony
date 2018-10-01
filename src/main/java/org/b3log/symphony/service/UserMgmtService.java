@@ -524,7 +524,7 @@ public class UserMgmtService {
             if (UserExt.USER_STATUS_C_VALID == status) {
                 // Point
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, ret,
-                        Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, ret, System.currentTimeMillis());
+                        Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, ret, System.currentTimeMillis(), "");
 
                 // Occupy the username, defeat others
                 final Transaction trans = userRepository.beginTransaction();

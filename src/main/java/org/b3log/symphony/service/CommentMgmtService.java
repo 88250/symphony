@@ -176,7 +176,7 @@ public class CommentMgmtService {
             final int offerPoint = article.optInt(Article.ARTICLE_QNA_OFFER_POINT);
             if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == comment.optInt(Comment.COMMENT_ANONYMOUS)) {
                 final boolean succ = null != pointtransferMgmtService.transfer(articleAuthorId, commentAuthorId,
-                        Pointtransfer.TRANSFER_TYPE_C_QNA_OFFER, offerPoint, rewardId, System.currentTimeMillis());
+                        Pointtransfer.TRANSFER_TYPE_C_QNA_OFFER, offerPoint, rewardId, System.currentTimeMillis(), "");
                 if (!succ) {
                     throw new ServiceException(langPropsService.get("transferFailLabel"));
                 }
@@ -325,7 +325,7 @@ public class CommentMgmtService {
 
             if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == comment.optInt(Comment.COMMENT_ANONYMOUS)) {
                 final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
-                        Pointtransfer.TRANSFER_TYPE_C_COMMENT_REWARD, rewardPoint, rewardId, System.currentTimeMillis());
+                        Pointtransfer.TRANSFER_TYPE_C_COMMENT_REWARD, rewardPoint, rewardId, System.currentTimeMillis(), "");
 
                 if (!succ) {
                     throw new ServiceException(langPropsService.get("transferFailLabel"));
@@ -568,11 +568,11 @@ public class CommentMgmtService {
                 if (articleAuthorId.equals(commentAuthorId)) {
                     pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT,
-                            commentId, System.currentTimeMillis());
+                            commentId, System.currentTimeMillis(), "");
                 } else {
                     pointtransferMgmtService.transfer(commentAuthorId, articleAuthorId,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT,
-                            commentId, System.currentTimeMillis());
+                            commentId, System.currentTimeMillis(), "");
                 }
 
                 livenessMgmtService.incLiveness(commentAuthorId, Liveness.LIVENESS_COMMENT);
@@ -660,7 +660,7 @@ public class CommentMgmtService {
                 if (now - createTime > 1000 * 60 * 5) {
                     pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_UPDATE_COMMENT,
-                            Pointtransfer.TRANSFER_SUM_C_UPDATE_COMMENT, commentId, now);
+                            Pointtransfer.TRANSFER_SUM_C_UPDATE_COMMENT, commentId, now, "");
                 }
             }
 

@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * Pointtransfer management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.5, Jan 29, 2018
+ * @version 1.2.1.6, Oct 1, 2018
  * @since 1.3.0
  */
 @Service
@@ -65,11 +65,14 @@ public class PointtransferMgmtService {
      * @param sum    the specified sum
      * @param dataId the specified data id
      * @param time   the specified time
+     * @param memo   the specified memo
      * @return transfer record id, returns {@code null} if transfer failed
      */
     public synchronized String transfer(final String fromId, final String toId, final int type, final int sum,
-                                        final String dataId, final long time) {
-        if (StringUtils.equals(fromId, toId)) { // for example the commenter is the article author
+                                        final String dataId, final long time, final String memo) {
+        if (StringUtils.equals(fromId, toId)) {
+            LOGGER.log(Level.WARN, "The from id is equal to the to id [" + fromId + "]");
+
             return null;
         }
 
@@ -106,6 +109,7 @@ public class PointtransferMgmtService {
             pointtransfer.put(Pointtransfer.TIME, time);
             pointtransfer.put(Pointtransfer.TYPE, type);
             pointtransfer.put(Pointtransfer.DATA_ID, dataId);
+            pointtransfer.put(Pointtransfer.MEMO, memo);
 
             final String ret = pointtransferRepository.add(pointtransfer);
 
@@ -117,8 +121,8 @@ public class PointtransferMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.ERROR, "Transfer [fromId=" + fromId + ", toId=" + toId + ", sum=" + sum + ", type=" +
-                    type + ", dataId=" + dataId + "] error", e);
+            LOGGER.log(Level.ERROR, "Transfer [fromId=" + fromId + ", toId=" + toId + ", sum=" + sum +
+                    ", type=" + type + ", dataId=" + dataId + ", memo=" + memo + "] error", e);
 
             return null;
         }

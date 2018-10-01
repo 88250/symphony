@@ -790,18 +790,18 @@ public class ArticleMgmtService {
 
                 pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                         Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE,
-                        Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition, articleId, System.currentTimeMillis());
+                        Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition, articleId, System.currentTimeMillis(), "");
 
                 if (rewardPoint > 0) { // Enable reward
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD,
-                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD, articleId, System.currentTimeMillis());
+                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD, articleId, System.currentTimeMillis(), "");
                 }
 
                 if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == articleType) {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_BROADCAST,
-                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST, articleId, System.currentTimeMillis());
+                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST, articleId, System.currentTimeMillis(), "");
                 }
 
                 // Liveness
@@ -1005,13 +1005,13 @@ public class ArticleMgmtService {
                 if (currentTimeMillis - createTime > 1000 * 60 * 5) {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE,
-                            updatePointSum, articleId, System.currentTimeMillis());
+                            updatePointSum, articleId, System.currentTimeMillis(), "");
                 }
 
                 if (enableReward) {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD,
-                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD, articleId, System.currentTimeMillis());
+                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD, articleId, System.currentTimeMillis(), "");
                 }
             }
 
@@ -1101,7 +1101,7 @@ public class ArticleMgmtService {
 
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, authorId,
                         Pointtransfer.TRANSFER_TYPE_C_PERFECT_ARTICLE, Pointtransfer.TRANSFER_SUM_C_PERFECT_ARTICLE,
-                        articleId, System.currentTimeMillis());
+                        articleId, System.currentTimeMillis(), "");
             }
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -1168,7 +1168,7 @@ public class ArticleMgmtService {
 
             if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
                 final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
-                        Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, rewardId, System.currentTimeMillis());
+                        Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, rewardId, System.currentTimeMillis(), "");
 
                 if (!succ) {
                     throw new ServiceException();
@@ -1247,7 +1247,7 @@ public class ArticleMgmtService {
             if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
                 final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
                         Pointtransfer.TRANSFER_TYPE_C_ARTICLE_THANK,
-                        Pointtransfer.TRANSFER_SUM_C_ARTICLE_THANK, thankId, System.currentTimeMillis());
+                        Pointtransfer.TRANSFER_SUM_C_ARTICLE_THANK, thankId, System.currentTimeMillis(), "");
 
                 if (!succ) {
                     throw new ServiceException();
@@ -1320,7 +1320,7 @@ public class ArticleMgmtService {
 
             final boolean succ = null != pointtransferMgmtService.transfer(article.optString(Article.ARTICLE_AUTHOR_ID),
                     Pointtransfer.ID_C_SYS, Pointtransfer.TRANSFER_TYPE_C_STICK_ARTICLE,
-                    Pointtransfer.TRANSFER_SUM_C_STICK_ARTICLE, articleId, System.currentTimeMillis());
+                    Pointtransfer.TRANSFER_SUM_C_STICK_ARTICLE, articleId, System.currentTimeMillis(), "");
             if (!succ) {
                 throw new ServiceException(langPropsService.get("stickFailedLabel"));
             }

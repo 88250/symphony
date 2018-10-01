@@ -24,7 +24,7 @@ import org.b3log.symphony.util.Symphonys;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.0.0, Aug 6, 2018
+ * @version 1.27.0.0, Oct 1, 2018
  * @since 1.3.0
  */
 public final class Pointtransfer {
@@ -78,6 +78,11 @@ public final class Pointtransfer {
      * Key of data id.
      */
     public static final String DATA_ID = "dataId";
+
+    /**
+     * Key of memo.
+     */
+    public static final String MEMO = "memo";
 
     // Id constants
     /**
