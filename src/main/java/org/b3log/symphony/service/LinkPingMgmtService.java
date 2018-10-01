@@ -26,7 +26,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Link;
 import org.b3log.symphony.repository.LinkRepository;
@@ -111,30 +110,6 @@ public class LinkPingMgmtService {
         link.put(Link.LINK_CARD_HTML, "");
 
         addLink(link);
-    }
-
-    /**
-     * Adds the specified link with card HTML.
-     *
-     * @param link the specified link
-     */
-    @Transactional
-    public void addLinkCard(final JSONObject link) {
-        try {
-            final String linkAddr = link.optString(Link.LINK_ADDR);
-            final JSONObject old = linkRepository.getLink(linkAddr);
-            if (null != old) {
-                old.put(Link.LINK_CARD_HTML, link.optString(Link.LINK_CARD_HTML));
-
-                linkRepository.update(link.optString(Keys.OBJECT_ID), old);
-
-                return;
-            }
-
-            linkRepository.add(link);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Adds a link with card failed", e);
-        }
     }
 
     /**
