@@ -20,7 +20,6 @@ package org.b3log.symphony.processor.advice.validate;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
@@ -69,7 +68,7 @@ public class Activity1A0001Validation extends BeforeRequestProcessAdvice {
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int currentLiveness = livenessQueryService.getCurrentLivenessPoint(userId);
         final int livenessMax = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");

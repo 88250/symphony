@@ -80,7 +80,7 @@ public final class Sessions {
      * @return CSRF token, returns {@code ""} if not found
      */
     public static String getCSRFToken(final HttpServletRequest request) {
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null == user) {
             return "";
         }

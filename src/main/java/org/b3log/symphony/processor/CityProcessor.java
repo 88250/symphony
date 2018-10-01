@@ -137,7 +137,7 @@ public class CityProcessor {
         dataModel.put(Article.ARTICLES, articles); // an empty list to avoid null check in template
         dataModel.put(Common.SELECTED, Common.CITY);
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (!UserExt.finshedGuide(user)) {
             response.sendRedirect(Latkes.getServePath() + "/guide");
 
@@ -226,7 +226,7 @@ public class CityProcessor {
         dataModel.put(User.USERS, users);
         dataModel.put(Common.SELECTED, Common.CITY);
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (!UserExt.finshedGuide(user)) {
             response.sendRedirect(Latkes.getServePath() + "/guide");
 

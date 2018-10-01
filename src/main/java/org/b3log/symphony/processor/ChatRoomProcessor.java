@@ -239,7 +239,7 @@ public class ChatRoomProcessor {
         content = Markdowns.toHTML(content);
         content = Markdowns.clean(content, "");
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String userName = currentUser.optString(User.USER_NAME);
 
         final JSONObject msg = new JSONObject();

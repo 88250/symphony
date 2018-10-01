@@ -22,7 +22,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -99,12 +98,10 @@ public class TagProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/tags/query", method = HTTPRequestMethod.GET)
-    public void queryTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        if (null == request.getAttribute(User.USER)) {
+    public void queryTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+        if (null == request.getAttribute(Common.CURRENT_USER)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -180,7 +177,7 @@ public class TagProcessor {
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 

@@ -21,7 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -122,7 +121,7 @@ public class BreezemoonProcessor {
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         String currentUserId = null;
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
@@ -178,7 +177,7 @@ public class BreezemoonProcessor {
         final JSONObject breezemoon = new JSONObject();
         final String breezemoonContent = requestJSONObject.optString(Breezemoon.BREEZEMOON_CONTENT);
         breezemoon.put(Breezemoon.BREEZEMOON_CONTENT, breezemoonContent);
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String authorId = user.optString(Keys.OBJECT_ID);
         breezemoon.put(Breezemoon.BREEZEMOON_AUTHOR_ID, authorId);
         final String ip = Requests.getRemoteAddr(request);
@@ -230,7 +229,7 @@ public class BreezemoonProcessor {
                 throw new ServiceException(langPropsService.get("queryFailedLabel"));
             }
 
-            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+            final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
             if (!old.optString(Breezemoon.BREEZEMOON_AUTHOR_ID).equals(user.optString(Keys.OBJECT_ID))) {
                 throw new ServiceException(langPropsService.get("sc403Label"));
             }
@@ -272,7 +271,7 @@ public class BreezemoonProcessor {
                 throw new ServiceException(langPropsService.get("queryFailedLabel"));
             }
 
-            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+            final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
             if (!breezemoon.optString(Breezemoon.BREEZEMOON_AUTHOR_ID).equals(user.optString(Keys.OBJECT_ID))) {
                 throw new ServiceException(langPropsService.get("sc403Label"));
             }

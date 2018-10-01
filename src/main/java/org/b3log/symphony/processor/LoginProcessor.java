@@ -187,7 +187,7 @@ public class LoginProcessor {
             return;
         }
 
-        JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String userId = user.optString(Keys.OBJECT_ID);
 
         int step = requestJSONObject.optInt(UserExt.USER_GUIDE_STEP);
@@ -222,7 +222,7 @@ public class LoginProcessor {
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showGuide(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final int step = currentUser.optInt(UserExt.USER_GUIDE_STEP);
         if (UserExt.USER_GUIDE_STEP_FIN == step) {
             response.sendRedirect(Latkes.getServePath());
@@ -283,7 +283,7 @@ public class LoginProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showLogin(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        if (null != request.getAttribute(User.USER)) {
+        if (null != request.getAttribute(Common.CURRENT_USER)) {
             response.sendRedirect(Latkes.getServePath());
 
             return;
@@ -469,7 +469,7 @@ public class LoginProcessor {
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showRegister(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        if (null != request.getAttribute(User.USER)) {
+        if (null != request.getAttribute(Common.CURRENT_USER)) {
             response.sendRedirect(Latkes.getServePath());
 
             return;
@@ -801,7 +801,7 @@ public class LoginProcessor {
      */
     @RequestProcessing(value = "/logout", method = HTTPRequestMethod.GET)
     public void logout(final HTTPRequestContext context, final HttpServletRequest request) throws IOException {
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null != user) {
             Sessions.logout(user.optString(Keys.OBJECT_ID), context.getResponse());
         }

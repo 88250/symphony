@@ -31,6 +31,7 @@ import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.servlet.handler.MatchResult;
 import org.b3log.latke.servlet.handler.RequestDispatchHandler;
 import org.b3log.latke.util.Stopwatchs;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.Role;
 import org.b3log.symphony.service.RoleQueryService;
@@ -128,7 +129,7 @@ public class PermissionCheck extends BeforeRequestProcessAdvice {
                 return;
             }
 
-            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+            final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
             final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
             final Set<String> grantPermissions = roleQueryService.getPermissions(roleId);
 

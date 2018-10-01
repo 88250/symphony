@@ -24,7 +24,6 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
@@ -151,7 +150,7 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
                 }
 
                 if (Article.ARTICLE_ANONYMOUS_VIEW_C_NOT_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)
-                        && null == request.getAttribute(User.USER)) {
+                        && null == request.getAttribute(Common.CURRENT_USER)) {
                     throw new RequestProcessAdviceException(exception401);
                 } else if (Article.ARTICLE_ANONYMOUS_VIEW_C_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)) {
                     return;
@@ -167,7 +166,7 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
             // Check if admin allow to anonymous view
             final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
             if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
-                final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+                final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
 
                 // https://github.com/b3log/symphony/issues/373
                 final String cookieNameVisits = "anonymous-visits";

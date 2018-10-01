@@ -28,6 +28,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.service.OptionQueryService;
@@ -145,7 +146,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
                     }
                 }
 
-                final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+                final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
                 if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                     throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("articleTagReservedLabel")

@@ -25,6 +25,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -69,7 +70,7 @@ public class LoginCheck extends BeforeRequestProcessAdvice {
         exception.put(Keys.MSG, HttpServletResponse.SC_UNAUTHORIZED + ", " + request.getRequestURI());
         exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_UNAUTHORIZED);
 
-        JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null == currentUser) {
             throw new RequestProcessAdviceException(exception);
         }

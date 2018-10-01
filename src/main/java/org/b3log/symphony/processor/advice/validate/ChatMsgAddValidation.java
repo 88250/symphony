@@ -80,7 +80,7 @@ public class ChatMsgAddValidation extends BeforeRequestProcessAdvice {
             requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             request.setAttribute(Keys.REQUEST, requestJSONObject);
 
-            final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+            final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
             if (System.currentTimeMillis() - currentUser.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepChatTime")
                     && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
                 throw new Exception(langPropsService.get("tooFrequentCmtLabel"));

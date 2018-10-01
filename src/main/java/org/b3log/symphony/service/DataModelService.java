@@ -348,13 +348,7 @@ public class DataModelService {
             dataModel.put(Common.IS_LOGGED_IN, false);
             dataModel.put(Common.IS_ADMIN_LOGGED_IN, false);
 
-            if (null == request.getAttribute(User.USER)) {
-                dataModel.put("loginLabel", langPropsService.get("loginLabel"));
-
-                return;
-            }
-
-            final JSONObject curUser = (JSONObject) request.getAttribute(User.USER);
+            final JSONObject curUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
             if (null == curUser) {
                 dataModel.put("loginLabel", langPropsService.get("loginLabel"));
 
