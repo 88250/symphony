@@ -17,28 +17,37 @@
  */
 package org.b3log.symphony.util;
 
-import java.io.FileReader;
-import java.net.URL;
-
+import org.apache.commons.io.IOUtils;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.ioc.Discoverer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.testng.Assert;
-import org.apache.commons.io.IOUtils;
-import org.b3log.latke.Latkes;
 import org.testng.annotations.Test;
+
+import java.io.FileReader;
+import java.net.URL;
+import java.util.Collection;
 
 /**
  * Markdown utilities test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.4.1.7, May 2, 2017
+ * @version 2.4.1.8, Oct 1, 2018
  * @since 0.1.6
  */
 public class MarkdownsTestCase {
 
     static {
         Latkes.initRuntimeEnv();
+        try {
+            final Collection<Class<?>> classes = Discoverer.discover("org.b3log.symphony");
+            BeanManager.start(classes);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
