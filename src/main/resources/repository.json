@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.40.0.4, Aug 29, 2018",
+  "version": "4.40.0.5, Oct 1, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -248,6 +248,12 @@
           "type": "String",
           "length": 19,
           "description": "主键"
+        },
+        {
+          "name": "linkAddrHash",
+          "type": "String",
+          "length": 64,
+          "description": "链接地址 Hash https://github.com/b3log/symphony/issues/773"
         },
         {
           "name": "linkAddr",

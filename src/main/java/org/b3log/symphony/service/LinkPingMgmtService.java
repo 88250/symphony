@@ -19,6 +19,7 @@ package org.b3log.symphony.service;
 
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -41,7 +42,7 @@ import java.util.concurrent.TimeUnit;
  * Link ping management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 21, 2018
+ * @version 1.0.0.1, Oct 1, 2018
  * @since 3.2.0
  */
 @Service
@@ -94,7 +95,9 @@ public class LinkPingMgmtService {
         }
 
         link = new JSONObject();
-        link.put(Link.LINK_ADDR, lnk.optString(Link.LINK_ADDR));
+        final String addr = lnk.optString(Link.LINK_ADDR);
+        link.put(Link.LINK_ADDR_HASH, DigestUtils.sha1Hex(addr));
+        link.put(Link.LINK_ADDR, addr);
         link.put(Link.LINK_BAD_CNT, 0);
         link.put(Link.LINK_BAIDU_REF_CNT, 0);
         link.put(Link.LINK_CLICK_CNT, clickCnt);

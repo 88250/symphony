@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all link model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.7, Aug 21, 2018
+ * @version 1.4.0.0, Oct 1, 2018
  * @since 1.6.0
  */
 public final class Link {
@@ -35,6 +35,11 @@ public final class Link {
      * Links.
      */
     public static final String LINKS = "links";
+
+    /**
+     * Key of link address hash.
+     */
+    public static final String LINK_ADDR_HASH = "linkAddrHash";
 
     /**
      * Key of link address.
