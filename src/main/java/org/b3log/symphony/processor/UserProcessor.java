@@ -338,7 +338,7 @@ public class UserProcessor {
             return;
         }
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
         final String userName = currentUser.optString(User.USER_NAME);
 
@@ -537,7 +537,7 @@ public class UserProcessor {
     public void exportPosts(final HTTPRequestContext context, final HttpServletRequest request) {
         context.renderJSON();
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String userId = user.optString(Keys.OBJECT_ID);
 
         final String downloadURL = postExportService.exportPosts(userId);
@@ -617,7 +617,7 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Pagination.PAGINATION_RECORD_COUNT, recordCount);
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null == currentUser) {
             dataModel.put(Common.IS_MY_ARTICLE, false);
         } else {
@@ -1132,7 +1132,7 @@ public class UserProcessor {
 
         final int amount = requestJSONObject.optInt(Common.AMOUNT);
         final JSONObject toUser = (JSONObject) request.getAttribute(Common.TO_USER);
-        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
 
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
         final String toId = toUser.optString(Keys.OBJECT_ID);
@@ -1217,7 +1217,7 @@ public class UserProcessor {
     public void getEmotions(final HTTPRequestContext context, final HttpServletRequest request) {
         context.renderJSON();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null == currentUser) {
             context.renderJSONValue("emotions", "");
 
