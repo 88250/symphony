@@ -106,8 +106,8 @@ public class VoteProcessor {
      * </pre>
      * </p>
      *
-     * @param context  the specified context
-     * @param request  the specified request
+     * @param context the specified context
+     * @param request the specified request
      * @throws Exception exception
      */
     @RequestProcessing(value = "/vote/up/comment", method = HTTPRequestMethod.POST)

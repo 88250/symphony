@@ -58,7 +58,7 @@ public class EmotionMgmtService {
     /**
      * Sets a user's emotions.
      *
-     * @param userId the specified user id
+     * @param userId      the specified user id
      * @param emotionList the specified emotions
      * @throws ServiceException service exception
      */

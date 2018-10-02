@@ -29,7 +29,7 @@ import java.util.HashMap;
 
 /**
  * <a href="https://github.com/GeeTeam/gt-java-sdk">Geetest Java SDK</a>.
- * 
+ *
  * @author unascribed
  * @since 1.4.0
  */
@@ -127,7 +127,6 @@ public class GeetestLib {
 
     /**
      * 预处理成功后的标准串
-     *
      */
     private String getSuccessPreProcessRes(String challenge) {
 
@@ -221,7 +220,7 @@ public class GeetestLib {
         InputStream inStream = null;
         byte[] buf = new byte[1024];
         inStream = connection.getInputStream();
-        for (int n; (n = inStream.read(buf)) != -1;) {
+        for (int n; (n = inStream.read(buf)) != -1; ) {
             sBuffer.append(new String(buf, 0, n, "UTF-8"));
         }
         inStream.close();
@@ -277,7 +276,7 @@ public class GeetestLib {
      * @param challenge
      * @param validate
      * @param seccode
-     * @return 验证结果,1表示验证成功0表示验证失败
+     * @return 验证结果, 1表示验证成功0表示验证失败
      */
     public int enhencedValidateRequest(String challenge, String validate, String seccode) {
 
@@ -330,7 +329,7 @@ public class GeetestLib {
      * @param validate
      * @param seccode
      * @param userid
-     * @return 验证结果,1表示验证成功0表示验证失败
+     * @return 验证结果, 1表示验证成功0表示验证失败
      */
     public int enhencedValidateRequest(String challenge, String validate, String seccode, String userid) {
 
@@ -344,7 +343,7 @@ public class GeetestLib {
      * @param challenge
      * @param validate
      * @param seccode
-     * @return 验证结果,1表示验证成功0表示验证失败
+     * @return 验证结果, 1表示验证成功0表示验证失败
      */
     public int failbackValidateRequest(String challenge, String validate, String seccode) {
 
@@ -377,14 +376,13 @@ public class GeetestLib {
     }
 
     /**
-     *
      * @param ans
      * @param full_bg_index
      * @param img_grp_index
      * @return
      */
     private int validateFailImage(int ans, int full_bg_index,
-            int img_grp_index) {
+                                  int img_grp_index) {
         final int thread = 3;// 容差值
 
         String full_bg_name = md5Encode(full_bg_index + "").substring(0, 9);
@@ -514,7 +512,7 @@ public class GeetestLib {
      * @throws Exception
      */
     protected String postValidate(String host, String path, String data,
-            int port) throws Exception {
+                                  int port) throws Exception {
         String response = "error";
 
         InetAddress addr = InetAddress.getByName(host);
@@ -547,9 +545,9 @@ public class GeetestLib {
     /**
      * md5 加密
      *
-     * @time 2014年7月10日 下午3:30:01
      * @param plainText
      * @return
+     * @time 2014年7月10日 下午3:30:01
      */
     private String md5Encode(String plainText) {
         String re_md5 = "";

@@ -45,7 +45,7 @@ public class LivenessRepository extends AbstractRepository {
      * Gets a liveness by the specified user id and date.
      *
      * @param userId the specified user id
-     * @param date the specified date
+     * @param date   the specified date
      * @return a liveness, {@code null} if not found
      * @throws RepositoryException repository exception
      */

@@ -73,7 +73,7 @@ public class ChatRoomChannel {
     /**
      * Called when the connection closed.
      *
-     * @param session session
+     * @param session     session
      * @param closeReason close reason
      */
     @OnClose
@@ -94,7 +94,7 @@ public class ChatRoomChannel {
      * Called in case of an error.
      *
      * @param session session
-     * @param error error
+     * @param error   error
      */
     @OnError
     public void onError(final Session session, final Throwable error) {
@@ -105,11 +105,11 @@ public class ChatRoomChannel {
      * Notifies the specified chat message to browsers.
      *
      * @param message the specified message, for example      <pre>
-     * {
-     *     "userName": "",
-     *     "content": ""
-     * }
-     * </pre>
+     *                {
+     *                    "userName": "",
+     *                    "content": ""
+     *                }
+     *                </pre>
      */
     public static void notifyChat(final JSONObject message) {
         message.put(Common.TYPE, "msg");

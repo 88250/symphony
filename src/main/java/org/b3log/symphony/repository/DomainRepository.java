@@ -60,7 +60,7 @@ public class DomainRepository extends AbstractRepository {
 
         return array.optJSONObject(0);
     }
-    
+
     /**
      * Gets a domain by the specified domain URI.
      *

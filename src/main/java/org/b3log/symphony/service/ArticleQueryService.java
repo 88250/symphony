@@ -691,10 +691,8 @@ public class ArticleQueryService {
      * @param article        the specified article
      * @param fetchSize      the specified fetch size
      * @return relevant articles, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getRelevantArticles(final int avatarViewMode, final JSONObject article, final int fetchSize)
-            throws ServiceException {
+    public List<JSONObject> getRelevantArticles(final int avatarViewMode, final JSONObject article, final int fetchSize) {
         final String tagsString = article.optString(Article.ARTICLE_TAGS);
         String[] tagTitles = tagsString.split(",");
         final List<String> excludedB3logTitles = new ArrayList<>();
@@ -752,9 +750,10 @@ public class ArticleQueryService {
             organizeArticles(avatarViewMode, ret);
 
             return ret;
-        } catch (final RepositoryException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets relevant articles failed", e);
-            throw new ServiceException(e);
+
+            return Collections.emptyList();
         }
     }
 
@@ -2033,10 +2032,8 @@ public class ArticleQueryService {
      *                ....,
      *                "author": {}
      * @param request the specified request
-     * @throws ServiceException service exception
      */
-    public void processArticleContent(final JSONObject article, final HttpServletRequest request)
-            throws ServiceException {
+    public void processArticleContent(final JSONObject article, final HttpServletRequest request) {
         Stopwatchs.start("Process content");
 
         try {

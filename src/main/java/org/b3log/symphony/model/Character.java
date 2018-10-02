@@ -65,7 +65,7 @@ public final class Character {
     /**
      * Gets a character by the specified character content in the specified characters.
      *
-     * @param content the specified character content
+     * @param content    the specified character content
      * @param characters the specified characters
      * @return character, returns {@code null} if not found
      */

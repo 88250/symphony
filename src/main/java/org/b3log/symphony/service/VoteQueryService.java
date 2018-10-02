@@ -103,8 +103,8 @@ public class VoteQueryService {
     /**
      * Determines whether the specified data dose belong to the specified user.
      *
-     * @param userId the specified user id
-     * @param dataId the specified data id
+     * @param userId   the specified user id
+     * @param dataId   the specified data id
      * @param dataType the specified data type
      * @return {@code true} if it belongs to the user, otherwise returns {@code false}
      */

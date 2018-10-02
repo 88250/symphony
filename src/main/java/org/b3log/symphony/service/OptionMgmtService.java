@@ -94,7 +94,7 @@ public class OptionMgmtService {
      * Updates the specified option by the given option id.
      *
      * @param optionId the given option id
-     * @param option the specified option
+     * @param option   the specified option
      * @throws ServiceException service exception
      */
     public void updateOption(final String optionId, final JSONObject option) throws ServiceException {

@@ -38,7 +38,7 @@ public class ReferralRepository extends AbstractRepository {
      * Gets a referral by the specified data id and IP.
      *
      * @param dataId the specified data id
-     * @param ip the specified IP
+     * @param ip     the specified IP
      * @return referral, returns {@code null} if not found
      * @throws RepositoryException repository exception
      */
