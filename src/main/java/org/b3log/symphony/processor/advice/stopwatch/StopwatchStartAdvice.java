@@ -36,7 +36,7 @@ import java.util.Map;
 public class StopwatchStartAdvice extends BeforeRequestProcessAdvice {
 
     @Override
-    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) {
         final String requestURI = context.getRequest().getRequestURI();
         Stopwatchs.start("Request URI [" + requestURI + ']');
     }

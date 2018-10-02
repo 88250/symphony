@@ -559,13 +559,12 @@ public class UserProcessor {
      * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/following/users", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingUsers(final HTTPRequestContext context, final HttpServletRequest request,
-                                       final HttpServletResponse response, final String userName) throws Exception {
+                                       final HttpServletResponse response, final String userName) {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -629,13 +628,12 @@ public class UserProcessor {
      * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/following/tags", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingTags(final HTTPRequestContext context, final HttpServletRequest request,
-                                      final HttpServletResponse response, final String userName) throws Exception {
+                                      final HttpServletResponse response, final String userName) {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -698,13 +696,12 @@ public class UserProcessor {
      * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/following/articles", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingArticles(final HTTPRequestContext context, final HttpServletRequest request,
-                                          final HttpServletResponse response, final String userName) throws Exception {
+                                          final HttpServletResponse response, final String userName) {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -768,13 +765,12 @@ public class UserProcessor {
      * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/watching/articles", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeWatchingArticles(final HTTPRequestContext context, final HttpServletRequest request,
-                                         final HttpServletResponse response, final String userName) throws Exception {
+                                         final HttpServletResponse response, final String userName) {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -838,13 +834,12 @@ public class UserProcessor {
      * @param request  the specified request
      * @param response the specified response
      * @param userName the specified user name
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/followers", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowers(final HTTPRequestContext context, final HttpServletRequest request,
-                                  final HttpServletResponse response, final String userName) throws Exception {
+                                  final HttpServletResponse response, final String userName) {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);

@@ -81,7 +81,7 @@ public class ArticleListChannel {
      */
     @OnOpen
     public void onConnect(final Session session) {
-        final String articleIds = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_IDS);
+        final String articleIds = Channels.getHttpParameter(session, Article.ARTICLE_T_IDS);
         if (StringUtils.isBlank(articleIds)) {
             return;
         }

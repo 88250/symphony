@@ -205,7 +205,7 @@ public class ArticleChannel {
      */
     @OnOpen
     public void onConnect(final Session session) {
-        final String articleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
+        final String articleId = Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
             return;
         }
@@ -268,7 +268,7 @@ public class ArticleChannel {
     private void removeSession(final Session session) {
         SESSIONS.remove(session);
 
-        final String articleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
+        final String articleId = Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
             return;
         }

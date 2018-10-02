@@ -660,11 +660,8 @@ public final class UserExt {
             }
         }
 
-        if (StringUtils.containsIgnoreCase(userName, UserExt.ANONYMOUS_USER_NAME)) {
-            return true;
-        }
+        return StringUtils.containsIgnoreCase(userName, UserExt.ANONYMOUS_USER_NAME);
 
-        return false;
     }
 
     /**

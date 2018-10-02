@@ -203,11 +203,11 @@ public class MailMgmtService {
                 }
             }
 
-            dataModel.put(Article.ARTICLES, (Object) articles);
+            dataModel.put(Article.ARTICLES, articles);
 
             // select nice users
             final List<JSONObject> users = userQueryService.getNiceUsers(6);
-            dataModel.put(User.USERS, (Object) users);
+            dataModel.put(User.USERS, users);
 
             final String fromName = langPropsService.get("symphonyEnLabel") + " "
                     + langPropsService.get("weeklyEmailFromNameLabel", Latkes.getLocale());

@@ -165,7 +165,7 @@ public class InvitecodeQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> invitecodes = CollectionUtils.<JSONObject>jsonArrayToList(data);
+        final List<JSONObject> invitecodes = CollectionUtils.jsonArrayToList(data);
 
         ret.put(Invitecode.INVITECODES, invitecodes);
 

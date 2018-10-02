@@ -541,7 +541,7 @@ final class MailSender implements java.io.Serializable {
         return pics;
     }
 
-    private static void setTo(String[] to, MimeMessage message) throws MessagingException, AddressException {
+    private static void setTo(String[] to, MimeMessage message) throws MessagingException {
         // 指明邮件的收件人，现在发件人和收件人是一样的，那就是自己给自己发
         if (null != to && to.length > 0) {
             if (to.length == 1) {
@@ -560,7 +560,7 @@ final class MailSender implements java.io.Serializable {
 
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         System.out.println(CHARSET.toLowerCase());
 
@@ -754,7 +754,7 @@ final class MailSender implements java.io.Serializable {
     }
 
     private void saveMessageFile(MimeMessage message, String fileName)
-            throws MessagingException, FileNotFoundException, IOException {
+            throws MessagingException, IOException {
         message.saveChanges();
         // 将创建好的邮件写入到E盘以文件的形式进行保存
         FileOutputStream fos = null;

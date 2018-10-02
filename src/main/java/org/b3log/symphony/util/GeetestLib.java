@@ -22,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -221,7 +222,7 @@ public class GeetestLib {
         byte[] buf = new byte[1024];
         inStream = connection.getInputStream();
         for (int n; (n = inStream.read(buf)) != -1; ) {
-            sBuffer.append(new String(buf, 0, n, "UTF-8"));
+            sBuffer.append(new String(buf, 0, n, StandardCharsets.UTF_8));
         }
         inStream.close();
         connection.disconnect();// 断开连接
@@ -240,11 +241,8 @@ public class GeetestLib {
             return true;
         }
 
-        if (gtObj.toString().trim().length() == 0) {
-            return true;
-        }
+        return gtObj.toString().trim().length() == 0;
 
-        return false;
     }
 
     /**
@@ -263,11 +261,7 @@ public class GeetestLib {
             return false;
         }
 
-        if (objIsEmpty(seccode)) {
-            return false;
-        }
-
-        return true;
+        return !objIsEmpty(seccode);
     }
 
     /**
@@ -401,7 +395,7 @@ public class GeetestLib {
             }
         }
 
-        String x_decode = answer_decode.substring(4, answer_decode.length());
+        String x_decode = answer_decode.substring(4);
 
         int x_int = Integer.valueOf(x_decode, 16);// 16 to 10
 
@@ -518,7 +512,7 @@ public class GeetestLib {
         InetAddress addr = InetAddress.getByName(host);
         Socket socket = new Socket(addr, port);
         BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(
-                socket.getOutputStream(), "UTF8"));
+                socket.getOutputStream(), StandardCharsets.UTF_8));
         wr.write("POST " + path + " HTTP/1.0\r\n");
         wr.write("Host: " + host + "\r\n");
         wr.write("Content-Type: application/x-www-form-urlencoded\r\n");
@@ -531,7 +525,7 @@ public class GeetestLib {
 
         // 读取返回信息
         BufferedReader rd = new BufferedReader(new InputStreamReader(
-                socket.getInputStream(), "UTF-8"));
+                socket.getInputStream(), StandardCharsets.UTF_8));
         String line;
         while ((line = rd.readLine()) != null) {
             response = line;
@@ -556,7 +550,7 @@ public class GeetestLib {
             md.update(plainText.getBytes());
             byte b[] = md.digest();
             int i;
-            StringBuffer buf = new StringBuffer("");
+            StringBuffer buf = new StringBuffer();
             for (int offset = 0; offset < b.length; offset++) {
                 i = b[offset];
                 if (i < 0) {

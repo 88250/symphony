@@ -31,6 +31,8 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * Search management service.
  * <p>
@@ -203,7 +205,7 @@ public class SearchMgmtService {
                     doc.put(Article.ARTICLE_CONTENT, content);
                 }
 
-                final byte[] data = doc.toString().getBytes("UTF-8");
+                final byte[] data = doc.toString().getBytes(StandardCharsets.UTF_8);
                 final HttpResponse response = HttpRequest.put("https://" + host + "/1/indexes/" + index + "/" + id).
                         header("X-Algolia-API-Key", key).
                         header("X-Algolia-Application-Id", appId).body(data, MimeTypes.MIME_APPLICATION_JSON).

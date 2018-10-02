@@ -73,13 +73,12 @@ public class ErrorProcessor {
      * @param request    the specified HTTP servlet request
      * @param response   the specified HTTP servlet response
      * @param statusCode the specified status code
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/error/{statusCode}", method = {HTTPRequestMethod.GET, HTTPRequestMethod.POST})
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
     public void handleErrorPage(final HTTPRequestContext context, final HttpServletRequest request,
-                                final HttpServletResponse response, final String statusCode) throws Exception {
+                                final HttpServletResponse response, final String statusCode) {
         if (StringUtils.equals("GET", request.getMethod())) {
             final String requestURI = request.getRequestURI();
             final String templateName = statusCode + ".ftl";

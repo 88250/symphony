@@ -48,6 +48,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
@@ -196,7 +197,7 @@ public class PostExportService {
         final File localFile = new File(localFilePath);
 
         try {
-            final byte[] data = posts.toString(2).getBytes("UTF-8");
+            final byte[] data = posts.toString(2).getBytes(StandardCharsets.UTF_8);
 
             try (final OutputStream output = new FileOutputStream(localFile)) {
                 IOUtils.write(data, output);
