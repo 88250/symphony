@@ -1191,14 +1191,13 @@ public class ArticleProcessor {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param request the specified http servlet request
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/markdown", method = HTTPRequestMethod.POST)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void markdown2HTML(final HttpServletRequest request, final HTTPRequestContext context) {
         context.renderJSON(true);
         String markdownText = request.getParameter("markdownText");
         if (StringUtils.isBlank(markdownText)) {
