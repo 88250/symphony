@@ -34,7 +34,7 @@ import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
-import org.b3log.symphony.service.LinkPingMgmtService;
+import org.b3log.symphony.service.LinkMgmtService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -62,10 +62,10 @@ public class ForwardProcessor {
     private DataModelService dataModelService;
 
     /**
-     * Ping management service.
+     * Link management service.
      */
     @Inject
-    private LinkPingMgmtService linkPingMgmtService;
+    private LinkMgmtService linkMgmtService;
 
     /**
      * Shows jump page.
@@ -85,7 +85,7 @@ public class ForwardProcessor {
         final String url = to;
         Symphonys.EXECUTOR_SERVICE.submit(() -> {
             try {
-                linkPingMgmtService.addLink(url);
+                linkMgmtService.addLink(url);
             } finally {
                 JdbcRepository.dispose();
             }

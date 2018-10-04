@@ -38,19 +38,19 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Link ping management service.
+ * Link management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Oct 1, 2018
+ * @version 1.0.0.2, Oct 4, 2018
  * @since 3.2.0
  */
 @Service
-public class LinkPingMgmtService {
+public class LinkMgmtService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LinkPingMgmtService.class);
+    private static final Logger LOGGER = Logger.getLogger(LinkMgmtService.class);
 
     /**
      * Link repository.
