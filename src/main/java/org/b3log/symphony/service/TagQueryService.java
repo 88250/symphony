@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.3, Sep 28, 2018
+ * @version 1.9.0.4, Oct 7, 2018
  * @since 0.2.0
  */
 @Service
@@ -238,7 +238,11 @@ public class TagQueryService {
             end++;
         }
 
-        final List<JSONObject> subList = tags.subList(start, end);
+        List<JSONObject> subList = tags.subList(start, end);
+        if (64 <= tags.size()) {
+            // 标签自动完成进行过滤 https://github.com/b3log/symphony/issues/778
+            subList = subList.stream().filter(tag -> tag.optInt(Tag.TAG_REFERENCE_CNT) > 3).collect(Collectors.toList());
+        }
         Collections.sort(subList, (t1, t2) -> t2.optInt(Tag.TAG_REFERENCE_CNT) - t1.optInt(Tag.TAG_REFERENCE_CNT));
 
         return subList.subList(0, subList.size() > fetchSize ? fetchSize : subList.size());
