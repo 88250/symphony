@@ -43,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.3.2, Sep 26, 2018
+ * @version 2.0.3.3, Oct 8, 2018
  */
 public final class Sessions {
 
@@ -130,7 +130,7 @@ public final class Sessions {
             final JSONObject cookieJSONObject = new JSONObject();
             cookieJSONObject.put(Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
 
-            final String random = RandomStringUtils.random(16);
+            final String random = RandomStringUtils.randomAlphanumeric(16);
             cookieJSONObject.put(Keys.TOKEN, user.optString(User.USER_PASSWORD) + ":" + random);
             cookieJSONObject.put(Common.REMEMBER_LOGIN, rememberLogin);
 
