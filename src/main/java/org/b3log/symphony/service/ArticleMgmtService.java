@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.3.0, Sep 15, 2018
+ * @version 2.18.4.0, Oct 8, 2018
  * @since 0.2.0
  */
 @Service
@@ -508,7 +508,7 @@ public class ArticleMgmtService {
      *                          "articleTitle": "",
      *                          "articleTags": "",
      *                          "articleContent": "",
-     *                          "articleEditorType": "",
+     *                          "articleEditorType": int, // optional, default to 0: markdown
      *                          "articleAuthorId": "",
      *                          "articleCommentable": boolean, // optional, default to true
      *                          "articleType": int, // optional, default to 0
@@ -646,7 +646,7 @@ public class ArticleMgmtService {
             rewardContent = Emotions.toAliases(rewardContent);
             article.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
 
-            article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
+            article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optInt(Article.ARTICLE_EDITOR_TYPE));
             article.put(Article.ARTICLE_AUTHOR_ID, authorId);
             article.put(Article.ARTICLE_COMMENT_CNT, 0);
             article.put(Article.ARTICLE_VIEW_CNT, 0);
