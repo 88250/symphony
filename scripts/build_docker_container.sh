@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# https://github.com/b3log/symphony/pull/779
 echo package...
 docker run --rm -it -v $(pwd)/..:/project -w /project maven mvn package
 echo starting mysql...
