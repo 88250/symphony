@@ -82,7 +82,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, Oct 1, 2018
+ * @version 1.3.1.0, Oct 13, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -742,16 +742,20 @@ public class SettingsProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/avatar", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdateProfilesValidation.class})
-    public void updateAvatar(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void updateAvatar(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
         context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+        user = userQueryService.getUser(userId);
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
         user.put(UserExt.USER_UPDATE_TIME, System.currentTimeMillis());
 
