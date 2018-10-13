@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.4.0, Oct 8, 2018
+ * @version 2.18.4.1, Oct 13, 2018
  * @since 0.2.0
  */
 @Service
@@ -1862,19 +1862,7 @@ public class ArticleMgmtService {
             // Updates user article count (and new tag count), latest article time
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
-            final String articleId = articleRepository.add(article);
-
-            // Revision
-            final JSONObject revision = new JSONObject();
-            revision.put(Revision.REVISION_AUTHOR_ID, author.optString(Keys.OBJECT_ID));
-            final JSONObject revisionData = new JSONObject();
-            revisionData.put(Article.ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
-            revisionData.put(Article.ARTICLE_CONTENT, article.optString(Article.ARTICLE_CONTENT));
-            revision.put(Revision.REVISION_DATA, revisionData.toString());
-            revision.put(Revision.REVISION_DATA_ID, articleId);
-            revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_ARTICLE);
-
-            revisionRepository.add(revision);
+            articleRepository.add(article);
 
             transaction.commit();
 
