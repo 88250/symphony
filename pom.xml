@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.106, Sep 30, 2018
+    Version: 2.16.6.107, Oct 13, 2018
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -36,7 +36,7 @@
         <user-agent-utils.version>1.21</user-agent-utils.version>
         <commons-codec.version>1.10</commons-codec.version>
         <es.version>2.3.1</es.version>
-        <owasp.version>1.2.1</owasp.version>
+        <owasp.version>1.2.2</owasp.version>
         <snakeyaml.version>1.18</snakeyaml.version>
         <freemarker.version>2.3.28</freemarker.version>
 
