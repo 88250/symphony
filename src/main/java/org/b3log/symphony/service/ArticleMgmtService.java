@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.4.1, Oct 13, 2018
+ * @version 2.18.4.2, Oct 14, 2018
  * @since 0.2.0
  */
 @Service
@@ -1896,7 +1896,8 @@ public class ArticleMgmtService {
      */
     public void saveMarkdown(final JSONObject article) {
         if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)
-                || Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)) {
+                || Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+                || StringUtils.containsIgnoreCase(article.optString(Article.ARTICLE_TAGS), Tag.TAG_TITLE_C_SANDBOX)) {
             return;
         }
 
