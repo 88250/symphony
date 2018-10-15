@@ -102,7 +102,7 @@ public final class Sessions {
     }
 
     /**
-     * Logins the specified user from the specified request.
+     * Logins the specified user.
      *
      * @param response      the specified response
      * @param userId        the specified user id, for example,
@@ -153,7 +153,7 @@ public final class Sessions {
     }
 
     /**
-     * Logouts a user with the specified request.
+     * Logouts the specified user.
      *
      * @param userId   the specified user id
      * @param response the specified response
