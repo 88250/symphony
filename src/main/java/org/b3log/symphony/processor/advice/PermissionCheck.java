@@ -47,7 +47,7 @@ import java.util.*;
  * Permission check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, May 1, 2018
+ * @version 1.0.1.1, Oct 16, 2018
  * @since 1.8.0
  */
 @Singleton
@@ -70,10 +70,10 @@ public class PermissionCheck extends BeforeRequestProcessAdvice {
         // Loads permission URL rules
         final String prefix = "permission.rule.url.";
 
-        final Set<String> keys = Symphonys.CFG.keySet();
+        final Set<String> keys = Symphonys.CFG.stringPropertyNames();
         for (final String key : keys) {
             if (key.startsWith(prefix)) {
-                final String value = Symphonys.CFG.getString(key);
+                final String value = Symphonys.CFG.getProperty(key);
                 final Set<String> permissions = new HashSet<>(Arrays.asList(value.split(",")));
 
                 URL_PERMISSION_RULES.put(key, permissions);
