@@ -56,7 +56,7 @@
                         <a href="${servePath}/member/${user.userName}/points">
                             ${user.userPoint?c}
                         </a>
-                        ~ ${yuanLabel}${user.money}
+                        ~ ${yuanLabel}${user.money?c}
                     </div>
                 </div>
             </div>

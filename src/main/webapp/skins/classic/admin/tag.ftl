@@ -32,13 +32,13 @@
             <label>
                 <div>${refCountLabel}</div>
                 <input onfocus="this.select()" type="text" id="tagReferenceCount" name="tagReferenceCount"
-                       value="${tag.tagReferenceCount}"
+                       value="${tag.tagReferenceCount?c}"
                        readonly="readonly"/>
             </label>
             <label>
                 <div>${commentCountLabel}</div>
                 <input onfocus="this.select()" type="text" id="tagCommentCount" name="tagCommentCount"
-                       value="${tag.tagCommentCount}"
+                       value="${tag.tagCommentCount?c}"
                        readonly="readonly"/>
             </label>
             <label>
