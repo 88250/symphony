@@ -65,7 +65,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.5, Sep 12, 2018
+ * @version 1.11.21.6, Oct 19, 2018
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -198,8 +198,6 @@ public final class Markdowns {
             if (StringUtils.startsWithIgnoreCase(data, "data:")
                     || StringUtils.startsWithIgnoreCase(data, "javascript")) {
                 embed.remove();
-
-                continue;
             }
         }
 
