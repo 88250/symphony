@@ -50,7 +50,7 @@ import java.util.Map;
  * Anonymous view check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.0, Sep 24, 2018
+ * @version 1.3.2.1, Oct 21, 2018
  * @since 1.6.0
  */
 @Singleton
@@ -114,15 +114,6 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
-
-        if ((Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
-            return;
-        }
-
-        if ((Boolean) request.getAttribute(Common.IS_MOBILE)) { // Allow anonymous view for mobile users
-            return;
-        }
-
         final String requestURI = request.getRequestURI();
 
         final String[] skips = Symphonys.get("anonymousViewSkips").split(",");
