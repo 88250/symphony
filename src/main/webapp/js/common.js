@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.44.3.3, Jul 31, 2018
+ * @version 1.45.0.0, Oct 20, 2018
  */
 
 /**
@@ -30,12 +30,13 @@
  */
 var Util = {
   /**
-   * 按需加载 MathJax 及 flow
+   * 按需加载 MathJax 及 flow、live photo
    * @returns {undefined}
    */
   parseMarkdown: function () {
     var hasMathJax = false;
     var hasFlow = false;
+    var hasLivePhoto = false;
     $('.content-reset').each(function () {
       $(this).find('p').each(function () {
         if ($(this).text().split('$').length > 2 ||
@@ -47,6 +48,13 @@ var Util = {
       if ($(this).find('code.lang-flow, code.language-flow').length > 0) {
         hasFlow = true
       }
+
+      $(this).find('a').each(function () {
+        var href = $(this).attr('href')
+        if (href && href.substr(href.length - 4).toLowerCase() === '.mov') {
+          hasLivePhoto = true
+        }
+      })
     });
 
     if (hasMathJax) {
@@ -100,6 +108,36 @@ var Util = {
         }).done(function () {
           initFlow()
         });
+      }
+    }
+    if (hasLivePhoto) {
+      var initLivePhoto = function () {
+        $('.content-reset').each(function () {
+          $(this).find('a').each(function () {
+            var $it = $(this)
+            var href = $(this).attr('href')
+            if (href && href.substr(href.length - 4).toLowerCase() === '.mov') {
+              this.style.height = '360px'
+              this.style.width = '270px'
+              $it.removeAttr('href')
+              var player = LivePhotosKit.Player(this);
+              player.photoSrc =  Label.staticServePath + '/images/livephoto.png';
+              player.videoSrc = href;
+            }
+          })
+        })
+      }
+      if (typeof (LivePhotosKit) !== 'undefined') {
+        initLivePhoto()
+      } else {
+        $.ajax({
+          method: 'GET',
+          url: Label.staticServePath + '/js/lib/livephotoskit.js',
+          dataType: 'script',
+          cache: true,
+        }).done(function () {
+          initLivePhoto()
+        })
       }
     }
   },
