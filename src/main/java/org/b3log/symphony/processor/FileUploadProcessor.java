@@ -117,9 +117,10 @@ public class FileUploadProcessor {
         final String ifNoneMatch = req.getHeader("If-None-Match");
         final String etag = "\"" + DigestUtils.md5Hex(new String(data)) + "\"";
 
-        resp.addHeader("Cache-Control", "public, max-age=31536000");
-        resp.addHeader("ETag", etag);
-        resp.setHeader("Server", "Latke Static Server (v" + SymphonyServletListener.VERSION + ")");
+        resp.setHeader("Cache-Control", "public, max-age=31536000");
+        resp.setHeader("ETag", etag);
+        resp.setHeader("Server", "Sym File Server (v" + SymphonyServletListener.VERSION + ")");
+        resp.setHeader("Access-Control-Allow-Origin", "*");
         final String ext = StringUtils.substringAfterLast(path, ".");
         final String mimeType = MimeTypes.getMimeType(ext);
         resp.addHeader("Content-Type", mimeType);
