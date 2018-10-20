@@ -45,7 +45,7 @@ import java.util.UUID;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.0.0.2, Apr 28, 2018
+ * @version 2.0.0.3, Oct 20, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -73,13 +73,13 @@ public class FileUploadProcessor {
                 try {
                     FileUtil.mkdirs(UPLOAD_DIR);
                 } catch (IOException ex) {
-                    LOGGER.log(Level.ERROR, "Init upload dir error", ex);
+                    LOGGER.log(Level.ERROR, "Init upload dir failed", ex);
 
                     System.exit(-1);
                 }
             }
 
-            LOGGER.info("Uses dir [" + file.getAbsolutePath() + "] for saving files uploaded");
+            LOGGER.info("Uses dir [" + file.getAbsolutePath() + "] for file uploading");
         }
     }
 
