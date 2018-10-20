@@ -18,11 +18,14 @@
 package org.b3log.symphony.processor;
 
 import jodd.io.FileUtil;
-import jodd.io.upload.MultipartRequestInputStream;
+import jodd.io.upload.FileUpload;
+import jodd.io.upload.MultipartStreamParser;
+import jodd.io.upload.impl.MemoryFileUploadFactory;
 import jodd.net.MimeTypes;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -38,6 +41,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 /**
@@ -140,68 +145,78 @@ public class FileUploadProcessor {
     /**
      * Uploads file.
      *
-     * @param req  the specified reuqest
-     * @param resp the specified response
+     * @param request  the specified request
+     * @param response the specified response
      * @throws IOException io exception
      */
     @RequestProcessing(value = "/upload", method = HTTPRequestMethod.POST)
-    public void uploadFile(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
+    public void uploadFile(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
         if (QN_ENABLED) {
             return;
         }
 
-        String fileName;
-        try (final MultipartRequestInputStream multipartRequestInputStream = new MultipartRequestInputStream(req.getInputStream())) {
-            multipartRequestInputStream.readBoundary();
-            multipartRequestInputStream.readDataHeader("UTF-8");
+        final int maxSize = Symphonys.getInt("upload.file.maxSize");
+        final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
+        parser.parseRequestStream(request.getInputStream(), "UTF-8");
+        final FileUpload file = parser.getFiles("file")[0];
+        String fileName = file.getHeader().getFileName();
+        final String suffix = getSuffix(file);
 
-            fileName = multipartRequestInputStream.getLastHeader().getFileName();
-            String suffix = StringUtils.substringAfterLast(fileName, ".");
-            if (StringUtils.isBlank(suffix)) {
-                final String mimeType = multipartRequestInputStream.getLastHeader().getContentType();
-                String[] exts = MimeTypes.findExtensionsByMimeTypes(mimeType, false);
-
-                if (null != exts && 0 < exts.length) {
-                    suffix = exts[0];
-                } else {
-                    suffix = StringUtils.substringAfter(mimeType, "/");
-                }
+        final String[] allowedSuffixArray = Symphonys.get("upload.suffix").split(",");
+        if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
+            final JSONObject data = new JSONObject();
+            data.put("code", 1);
+            data.put("msg", "Invalid suffix [" + suffix + "], please compress this file and try again");
+            data.put("key", Latkes.getServePath() + "/upload/" + fileName);
+            data.put("name", fileName);
+            response.setContentType("application/json");
+            try (final PrintWriter writer = response.getWriter()) {
+                writer.append(data.toString());
+                writer.flush();
             }
 
-            final String[] allowedSuffixArray = Symphonys.get("upload.suffix").split(",");
-            if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
-                final JSONObject data = new JSONObject();
-                data.put("code", 1);
-                data.put("msg", "Invalid suffix [" + suffix + "], please compress this file and try again");
-                data.put("key", Latkes.getServePath() + "/upload/" + fileName);
-                data.put("name", fileName);
-                resp.setContentType("application/json");
-                try (final PrintWriter writer = resp.getWriter()) {
-                    writer.append(data.toString());
-                    writer.flush();
-                }
+            return;
+        }
 
-                return;
-            }
-
-            final String name = StringUtils.substringBeforeLast(fileName, ".");
-            final String processName = name.replaceAll("\\W", "");
-            final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-            fileName = uuid + '_' + processName + "." + suffix;
-
-            try (final OutputStream output = new FileOutputStream(UPLOAD_DIR + fileName)) {
-                IOUtils.copy(multipartRequestInputStream, output);
-            }
+        final String name = StringUtils.substringBeforeLast(fileName, ".");
+        final String processName = name.replaceAll("\\W", "");
+        final String uuid = StringUtils.substring(UUID.randomUUID().toString().replaceAll("-", ""), 0, 8);
+        fileName = processName + '-' + uuid + "." + suffix;
+        final String date = DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM");
+        fileName = date + "/" + fileName;
+        final Path path = Paths.get(UPLOAD_DIR, fileName);
+        path.getParent().toFile().mkdirs();
+        try (final OutputStream output = new FileOutputStream(path.toFile());
+             final InputStream input = file.getFileInputStream()) {
+            IOUtils.copy(input, output);
         }
 
         final JSONObject data = new JSONObject();
         data.put("code", 0);
         data.put("key", Latkes.getServePath() + "/upload/" + fileName);
         data.put("name", fileName);
-        resp.setContentType("application/json");
-        try (final PrintWriter writer = resp.getWriter()) {
+        response.setContentType("application/json");
+        try (final PrintWriter writer = response.getWriter()) {
             writer.append(data.toString());
             writer.flush();
         }
+    }
+
+    private static String getSuffix(final FileUpload file) {
+        final String fileName = file.getHeader().getFileName();
+        String ret = StringUtils.substringAfterLast(fileName, ".");
+        if (StringUtils.isNotBlank(ret)) {
+            return ret;
+        }
+
+        final String contentType = file.getHeader().getContentType();
+        final String[] exts = MimeTypes.findExtensionsByMimeTypes(contentType, false);
+        if (null != exts && 0 < exts.length) {
+            ret = exts[0];
+        } else {
+            ret = StringUtils.substringAfter(contentType, "/");
+        }
+
+        return ret;
     }
 }
