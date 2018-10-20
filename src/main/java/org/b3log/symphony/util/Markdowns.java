@@ -65,7 +65,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.6, Oct 19, 2018
+ * @version 1.11.21.7, Oct 20, 2018
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -358,12 +358,15 @@ public final class Markdowns {
                     return;
                 }
 
-                if (!StringUtils.startsWithAny(src, new String[]{Latkes.getServePath(), Symphonys.get("qiniu.domain")})) {
-                    src = URLs.encode(src);
-                    a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
-                    a.attr("target", "_blank");
-                    a.attr("rel", "nofollow");
+                if (StringUtils.startsWithAny(src, new String[]{Latkes.getServePath(), Symphonys.get("qiniu.domain")})
+                        || StringUtils.endsWithIgnoreCase(src, ".mov")) {
+                    return;
                 }
+
+                src = URLs.encode(src);
+                a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
+                a.attr("target", "_blank");
+                a.attr("rel", "nofollow");
             });
             doc.outputSettings().prettyPrint(false);
 
