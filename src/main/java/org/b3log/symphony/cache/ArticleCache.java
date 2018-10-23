@@ -47,7 +47,7 @@ import java.util.List;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.0, Sep 6, 2018
+ * @version 1.3.1.1, Oct 23, 2018
  * @since 1.4.0
  */
 @Singleton
@@ -147,6 +147,14 @@ public class ArticleCache {
      */
     public List<JSONObject> getSideRandomArticles() {
         int size = Symphonys.getInt("sideRandomArticlesCnt");
+        if (1 > size) {
+            return Collections.emptyList();
+        }
+
+        if (SIDE_RANDOM_ARTICLES.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         size = size > SIDE_RANDOM_ARTICLES.size() ? SIDE_RANDOM_ARTICLES.size() : size;
         Collections.shuffle(SIDE_RANDOM_ARTICLES);
 
@@ -157,13 +165,18 @@ public class ArticleCache {
      * Loads side random articles.
      */
     public void loadSideRandomArticles() {
+        final int size = Symphonys.getInt("sideRandomArticlesCnt");
+        if (1 > size) {
+            return;
+        }
+
         final BeanManager beanManager = BeanManager.getInstance();
         final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
         final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
 
         Stopwatchs.start("Load side random articles");
         try {
-            final List<JSONObject> articles = articleRepository.getRandomly(Symphonys.getInt("sideRandomArticlesCnt") * 5);
+            final List<JSONObject> articles = articleRepository.getRandomly(size * 5);
             articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
 
             SIDE_RANDOM_ARTICLES.clear();
