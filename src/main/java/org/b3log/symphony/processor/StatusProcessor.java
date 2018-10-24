@@ -26,7 +26,6 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
@@ -101,7 +100,7 @@ public class StatusProcessor {
         memory.put("used", (runtime.totalMemory() - runtime.freeMemory()) / mb);
         memory.put("max", runtime.maxMemory() / mb);
 
-        LOGGER.info(ret.toString(SymphonyServletListener.JSON_PRINT_INDENT_FACTOR));
+        LOGGER.info(ret.toString(4));
         ret.put(Keys.STATUS_CODE, true);
     }
 }
