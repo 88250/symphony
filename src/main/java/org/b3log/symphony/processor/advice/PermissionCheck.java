@@ -108,8 +108,7 @@ public class PermissionCheck extends BeforeRequestProcessAdvice {
             final String method = request.getMethod();
             String rule = prefix;
 
-            final RequestDispatchHandler requestDispatchHandler
-                    = (RequestDispatchHandler) DispatcherServlet.SYS_HANDLER.get(2 /* DispatcherServlet#L69 */);
+            final RequestDispatchHandler requestDispatchHandler = (RequestDispatchHandler) DispatcherServlet.HANDLERS.get(2);
 
             try {
                 final Method doMatch = RequestDispatchHandler.class.getDeclaredMethod("doMatch",
