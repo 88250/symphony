@@ -50,7 +50,7 @@ import java.util.UUID;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.0.0.3, Oct 20, 2018
+ * @version 2.0.1.4, Oct 28, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -131,9 +131,10 @@ public class FileUploadProcessor {
         resp.addHeader("Content-Type", mimeType);
 
         if (etag.equals(ifNoneMatch)) {
+            resp.addHeader("If-None-Match", "false");
             resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-
-            return;
+        } else {
+            resp.addHeader("If-None-Match", "true");
         }
 
         try (final OutputStream output = resp.getOutputStream()) {
