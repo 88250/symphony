@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -42,7 +43,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.35, Aug 20, 2018
+ * @version 1.12.2.36, Oct 29, 2018
  * @since 0.2.0
  */
 @Service
@@ -324,7 +325,8 @@ public class DataModelService {
             Stopwatchs.end();
         }
 
-        dataModel.put(Common.WEBSOCKET_SCHEME, Symphonys.get("websocket.scheme"));
+        final String serverScheme = Latkes.getServerScheme();
+        dataModel.put(Common.WEBSOCKET_SCHEME, StringUtils.containsIgnoreCase(serverScheme, "https") ? "wss" : "ws");
         dataModel.put(Common.MARKED_AVAILABLE, Markdowns.MARKED_AVAILABLE);
     }
 
