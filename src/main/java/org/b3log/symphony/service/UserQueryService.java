@@ -284,7 +284,7 @@ public class UserQueryService {
                 addProjection(User.USER_NAME, String.class).
                 addProjection(UserExt.USER_AVATAR_URL, String.class);
         try {
-            final JSONObject result = userRepository.get(query); // XXX: Performance Issue
+            final JSONObject result = userRepository.get(query);
             final JSONArray array = result.optJSONArray(Keys.RESULTS);
             for (int i = 0; i < array.length(); i++) {
                 final JSONObject user = array.optJSONObject(i);

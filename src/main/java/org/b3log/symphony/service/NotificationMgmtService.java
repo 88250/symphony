@@ -776,7 +776,6 @@ public class NotificationMgmtService {
      *                          "dataId": ""
      * @throws ServiceException service exception
      */
-    // XXX: Unused
     @Transactional
     public void addCommentNotification(final JSONObject requestJSONObject) throws ServiceException {
         try {
@@ -821,7 +820,6 @@ public class NotificationMgmtService {
      *                          "dataId": ""
      * @throws ServiceException service exception
      */
-    // XXX: Unused
     @Transactional
     public void addArticleNotification(final JSONObject requestJSONObject) throws ServiceException {
         try {
