@@ -31,7 +31,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Transactional;
-import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
@@ -359,8 +358,6 @@ public class ArticleMgmtService {
                 }
 
                 LOGGER.log(Level.ERROR, "Updates article's audio URL failed", e);
-            } finally {
-                JdbcRepository.dispose();
             }
         }).start();
     }
@@ -465,8 +462,6 @@ public class ArticleMgmtService {
                 }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Gets visit count mode failed", e);
-            } finally {
-                JdbcRepository.dispose();
             }
 
             if (visitedB4) {

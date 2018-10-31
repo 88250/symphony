@@ -26,7 +26,6 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.*;
 import org.b3log.symphony.cache.DomainCache;
@@ -126,8 +125,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         final DomainCache domainCache = beanManager.getReference(DomainCache.class);
         domainCache.loadDomains();
-
-        JdbcRepository.dispose();
 
         LOGGER.info("Initialized the context");
 

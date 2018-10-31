@@ -23,7 +23,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
@@ -220,8 +219,6 @@ public final class Symphonys {
                             // ignore
                         }
                     }
-
-                    JdbcRepository.dispose();
                 }
             }
         }, 1000 * 60 * 60 * 2, 1000 * 60 * 60 * 12);

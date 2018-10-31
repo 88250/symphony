@@ -28,7 +28,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -2777,8 +2776,6 @@ public class AdminProcessor {
                 LOGGER.info("Index finished");
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Search index failed", e);
-            } finally {
-                JdbcRepository.dispose();
             }
         }).start();
     }

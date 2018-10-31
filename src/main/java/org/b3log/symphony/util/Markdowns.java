@@ -28,7 +28,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Callstacks;
 import org.b3log.latke.util.Stopwatchs;
@@ -316,16 +315,12 @@ public final class Markdowns {
                                 }
 
                                 if (null != userQueryService) {
-                                    try {
-                                        final Set<String> userNames = userQueryService.getUserNames(text);
-                                        for (final String userName : userNames) {
-                                            text = text.replace('@' + userName + (nextIsBr ? "" : " "), "@" + UserExt.getUserLink(userName));
-                                        }
-                                        text = text.replace("@participants ",
-                                                "@<a href='https://hacpai.com/article/1458053458339' target='_blank' class='ft-red'>participants</a> ");
-                                    } finally {
-                                        JdbcRepository.dispose();
+                                    final Set<String> userNames = userQueryService.getUserNames(text);
+                                    for (final String userName : userNames) {
+                                        text = text.replace('@' + userName + (nextIsBr ? "" : " "), "@" + UserExt.getUserLink(userName));
                                     }
+                                    text = text.replace("@participants ",
+                                            "@<a href='https://hacpai.com/article/1458053458339' target='_blank' class='ft-red'>participants</a> ");
                                 }
 
                                 if (text.contains("@<a href=")) {

@@ -20,7 +20,6 @@ package org.b3log.symphony.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -84,11 +83,7 @@ public class ForwardProcessor {
 
         final String url = to;
         Symphonys.EXECUTOR_SERVICE.submit(() -> {
-            try {
-                linkMgmtService.addLink(url);
-            } finally {
-                JdbcRepository.dispose();
-            }
+            linkMgmtService.addLink(url);
         });
 
         final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
