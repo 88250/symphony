@@ -51,7 +51,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.2, Oct 16, 2018
+ * @version 1.9.0.0, Nov 1, 2018
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -222,6 +222,17 @@ public final class Symphonys {
                 }
             }
         }, 1000 * 60 * 60 * 2, 1000 * 60 * 60 * 12);
+    }
+
+    /**
+     * Gets the current process's id.
+     *
+     * @return the current process's id
+     */
+    public static long currentPID() {
+        final String processName = java.lang.management.ManagementFactory.getRuntimeMXBean().getName();
+
+        return Long.parseLong(processName.split("@")[0]);
     }
 
     /**
