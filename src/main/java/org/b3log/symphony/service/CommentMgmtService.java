@@ -20,7 +20,6 @@ package org.b3log.symphony.service;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -583,12 +582,7 @@ public class CommentMgmtService {
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Article.ARTICLE, article);
             eventData.put(UserExt.USER_COMMENT_VIEW_MODE, commentViewMode);
-
-            try {
-                eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
-            } catch (final EventException e) {
-                LOGGER.log(Level.ERROR, e.getMessage(), e);
-            }
+            eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
 
             return ret;
         } catch (final RepositoryException e) {
@@ -668,11 +662,7 @@ public class CommentMgmtService {
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, article);
             eventData.put(Comment.COMMENT, comment);
-            try {
-                eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_COMMENT, eventData));
-            } catch (final EventException e) {
-                LOGGER.log(Level.ERROR, e.getMessage(), e);
-            }
+            eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_COMMENT, eventData));
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();

@@ -23,7 +23,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -806,11 +805,7 @@ public class ArticleMgmtService {
             // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, article);
-            try {
-                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
-            } catch (final EventException e) {
-                LOGGER.log(Level.ERROR, e.getMessage(), e);
-            }
+            eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
 
             return ret;
         } catch (final RepositoryException e) {
@@ -1013,11 +1008,7 @@ public class ArticleMgmtService {
             // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, oldArticle);
-            try {
-                eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
-            } catch (final EventException e) {
-                LOGGER.log(Level.ERROR, e.getMessage(), e);
-            }
+            eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -1867,11 +1858,7 @@ public class ArticleMgmtService {
             // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, article);
-            try {
-                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
-            } catch (final EventException e) {
-                LOGGER.log(Level.ERROR, e.getMessage(), e);
-            }
+            eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
 
             return ret;
         } catch (final RepositoryException e) {
