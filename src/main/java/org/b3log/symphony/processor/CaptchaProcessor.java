@@ -213,7 +213,7 @@ public class CaptchaProcessor {
         }
     }
 
-    private static java.util.List<String> getAvaialbeFonts() {
+    private static List<String> getAvaialbeFonts() {
         final List<String> ret = new ArrayList<>();
 
         final GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
