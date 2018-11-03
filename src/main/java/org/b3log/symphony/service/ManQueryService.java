@@ -25,6 +25,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.util.Markdowns;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -42,7 +43,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Apr 5, 2018
+ * @version 1.0.1.5, Nov 3, 2018
  * @since 1.8.0
  */
 @Service
@@ -64,7 +65,7 @@ public class ManQueryService {
     public static boolean TLDR_ENABLED;
 
     static {
-        new Thread(ManQueryService::init).start();
+        Symphonys.EXECUTOR_SERVICE.submit(ManQueryService::init);
     }
 
     /**

@@ -118,7 +118,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.29.0.8, Aug 31, 2018
+ * @version 2.29.0.9, Nov 3, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -2751,7 +2751,7 @@ public class AdminProcessor {
             searchMgmtService.rebuildAlgoliaIndex();
         }
 
-        new Thread(() -> {
+        Symphonys.EXECUTOR_SERVICE.submit(() -> {
             try {
                 final JSONObject stat = optionQueryService.getStatistic();
                 final int articleCount = stat.optInt(Option.ID_C_STATISTIC_ARTICLE_COUNT);
@@ -2777,7 +2777,7 @@ public class AdminProcessor {
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Search index failed", e);
             }
-        }).start();
+        });
     }
 
     /**
