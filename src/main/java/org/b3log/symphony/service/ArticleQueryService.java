@@ -863,36 +863,6 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets news (perfect articles).
-     *
-     * @param currentPageNum the specified page number
-     * @param pageSize       the specified page size
-     * @return articles, return an empty list if not found
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getNews(final int currentPageNum, final int pageSize) throws ServiceException {
-        try {
-            final Query query = new Query().
-                    setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT)).
-                    addProjection(Article.ARTICLE_TITLE, String.class).
-                    addProjection(Article.ARTICLE_PERMALINK, String.class).
-                    addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                    addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING);
-            final JSONObject result = articleRepository.get(query);
-
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            for (final JSONObject article : ret) {
-                article.put(Article.ARTICLE_PERMALINK, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
-            }
-
-            return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets news failed", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
      * Gets articles by the specified tags (order by article create date desc).
      *
      * @param avatarViewMode the specified avatar view mode
