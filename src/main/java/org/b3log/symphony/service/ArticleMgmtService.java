@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.4.2, Oct 14, 2018
+ * @version 2.18.4.3, Nov 3, 2018
  * @since 0.2.0
  */
 @Service
@@ -301,9 +301,8 @@ public class ArticleMgmtService {
      * Generates article's audio.
      *
      * @param article the specified article
-     * @param userId  the specified user id
      */
-    public void genArticleAudio(final JSONObject article, final String userId) {
+    public void genArticleAudio(final JSONObject article) {
         if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)
                 || Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)) {
             return;
@@ -325,6 +324,7 @@ public class ArticleMgmtService {
         previewContent = Emotions.clear(doc.text());
         previewContent = StringUtils.substring(previewContent, 0, 512);
         final String contentToTTS = previewContent;
+        final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
         new Thread(() -> {
             final Transaction transaction = articleRepository.beginTransaction();
@@ -334,7 +334,7 @@ public class ArticleMgmtService {
                 if (StringUtils.length(contentToTTS) < 96 || Runes.getChinesePercent(contentToTTS) < 40) {
                     LOGGER.trace("Content is too short to TTS [contentToTTS=" + contentToTTS + "]");
                 } else {
-                    audioURL = audioMgmtService.tts(contentToTTS, Article.ARTICLE, articleId, userId);
+                    audioURL = audioMgmtService.tts(contentToTTS, Article.ARTICLE, articleId, authorId);
                 }
                 if (StringUtils.isBlank(audioURL)) {
                     return;
@@ -344,13 +344,9 @@ public class ArticleMgmtService {
 
                 final JSONObject toUpdate = articleRepository.get(articleId);
                 toUpdate.put(Article.ARTICLE_AUDIO_URL, audioURL);
-
                 articleRepository.update(articleId, toUpdate);
                 transaction.commit();
-
-                if (StringUtils.isNotBlank(audioURL)) {
-                    LOGGER.debug("Generated article [id=" + articleId + "] audio");
-                }
+                LOGGER.debug("Generated article [id=" + articleId + "] audio");
             } catch (final Exception e) {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -964,6 +960,7 @@ public class ArticleMgmtService {
                 ua = StringUtils.substring(ua, 0, Common.MAX_LENGTH_UA);
             }
             oldArticle.put(Article.ARTICLE_UA, ua);
+            oldArticle.put(Article.ARTICLE_AUDIO_URL, ""); // 小薇语音预览更新 https://github.com/b3log/symphony/issues/791
 
             articleRepository.update(articleId, oldArticle);
 

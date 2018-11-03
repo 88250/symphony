@@ -88,7 +88,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.2.5, Aug 10, 2018
+ * @version 1.27.2.6, Nov 3, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -888,9 +888,7 @@ public class ArticleProcessor {
         }
 
         if (StringUtils.isBlank(article.optString(Article.ARTICLE_AUDIO_URL))) {
-            final String uid = StringUtils.isBlank(currentUserId) ? "visitor" : currentUserId;
-
-            articleMgmtService.genArticleAudio(article, uid);
+            articleMgmtService.genArticleAudio(article);
         }
 
         if (StringUtils.isNotBlank(Symphonys.get("ipfs.dir"))) {
