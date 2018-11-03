@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.28.0.6, Sep 28, 2018
+ * @version 2.28.0.7, Nov 3, 2018
  * @since 0.2.0
  */
 @Service
@@ -1493,49 +1493,42 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets the index recent (sort by create time) articles.
+     * Gets the index recent articles.
      *
      * @param avatarViewMode the specified avatar view mode
      * @return recent articles, returns an empty list if not found
      * @throws ServiceException service exception
      */
     public List<JSONObject> getIndexRecentArticles(final int avatarViewMode) throws ServiceException {
+        List<JSONObject> ret;
         try {
-            List<JSONObject> ret;
             Stopwatchs.start("Query index recent articles");
             try {
-                ret = articleRepository.select("SELECT\n"
-                        + "	oId,\n"
-                        + "	articleStick,\n"
-                        + "	articleCreateTime,\n"
-                        + "	articleUpdateTime,\n"
-                        + "	articleLatestCmtTime,\n"
-                        + "	articleAuthorId,\n"
-                        + "	articleTitle,\n"
-                        + "	articleStatus,\n"
-                        + "	articleViewCount,\n"
-                        + "	articleType,\n"
-                        + "	articlePermalink,\n"
-                        + "	articleTags,\n"
-                        + "	articleLatestCmterName,\n"
-                        + "	articleCommentCount,\n"
-                        + "	articleAnonymous,\n"
-                        + "	articlePerfect,\n"
-                        + "	articleContent,\n"
-                        + " articleQnAOfferPoint,\n"
-                        + "	CASE\n"
-                        + "WHEN articleLatestCmtTime = 0 THEN\n"
-                        + "	oId\n"
-                        + "ELSE\n"
-                        + "	articleLatestCmtTime\n"
-                        + "END AS flag\n"
-                        + "FROM\n"
-                        + "	`" + articleRepository.getName() + "`\n"
-                        + " WHERE `articleType` != 1 AND `articleStatus` = 0 AND `articleTags` != '" + Tag.TAG_TITLE_C_SANDBOX + "'\n"
-                        + " ORDER BY\n"
-                        + "	articleStick DESC,\n"
-                        + "	flag DESC\n"
-                        + "LIMIT ?", Symphonys.getInt("indexListCnt"));
+                final int fetchSize = Symphonys.getInt("indexListCnt");
+                Query query = new Query().
+                        setFilter(CompositeFilterOperator.and(
+                                new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION),
+                                new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID))).
+                        setPageCount(1).setPageSize(fetchSize).
+                        addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING);
+                ret = articleRepository.getList(query);
+
+                final List<JSONObject> stickArticles = getStickArticles();
+                if (!stickArticles.isEmpty()) {
+                    final Iterator<JSONObject> i = ret.iterator();
+                    while (i.hasNext()) {
+                        final JSONObject article = i.next();
+                        for (final JSONObject stickArticle : stickArticles) {
+                            if (article.optString(Keys.OBJECT_ID).equals(stickArticle.optString(Keys.OBJECT_ID))) {
+                                i.remove();
+                            }
+                        }
+                    }
+
+                    ret.addAll(0, stickArticles);
+                    final int size = ret.size() < fetchSize ? ret.size() : fetchSize;
+                    ret = ret.subList(0, size);
+                }
             } finally {
                 Stopwatchs.end();
             }
@@ -1545,6 +1538,7 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets index recent articles failed", e);
+
             throw new ServiceException(e);
         }
     }
@@ -2446,5 +2440,22 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_UA, String.class).
                 addProjection(Article.ARTICLE_CONTENT, String.class).
                 addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
+    }
+
+    private List<JSONObject> getStickArticles() {
+        final Query query = new Query().
+                setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Article.ARTICLE_STICK, FilterOperator.NOT_EQUAL, 0L),
+                        new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION),
+                        new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID))).
+                setPageCount(1).setPageSize(2).
+                addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING);
+        try {
+            return articleRepository.getList(query);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Get stick articles failed", e);
+
+            return Collections.emptyList();
+        }
     }
 }

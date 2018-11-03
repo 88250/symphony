@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Comment repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, May 7, 2018
+ * @version 1.1.1.1, Nov 3, 2018
  * @since 0.2.0
  */
 @Repository
@@ -113,7 +113,7 @@ public class CommentRepository extends AbstractRepository {
             final JSONObject latestCmtAuthor = userRepository.get(latestCmt.optString(Comment.COMMENT_AUTHOR_ID));
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, latestCmtAuthor.optString(User.USER_NAME));
         } else {
-            article.put(Article.ARTICLE_LATEST_CMT_TIME, 0);
+            article.put(Article.ARTICLE_LATEST_CMT_TIME, articleId);
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, "");
         }
         articleRepository.update(articleId, article);

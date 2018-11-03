@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.4.3, Nov 3, 2018
+ * @version 2.18.4.4, Nov 3, 2018
  * @since 0.2.0
  */
 @Service
@@ -647,7 +647,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
             article.put(Article.ARTICLE_CREATE_TIME, currentTimeMillis);
             article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
-            article.put(Article.ARTICLE_LATEST_CMT_TIME, 0);
+            article.put(Article.ARTICLE_LATEST_CMT_TIME, ret);
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, "");
             article.put(Article.ARTICLE_PERMALINK, "/article/" + ret);
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
@@ -1779,7 +1779,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_COMMENTABLE, true);
             article.put(Article.ARTICLE_CREATE_TIME, time);
             article.put(Article.ARTICLE_UPDATE_TIME, time);
-            article.put(Article.ARTICLE_LATEST_CMT_TIME, 0);
+            article.put(Article.ARTICLE_LATEST_CMT_TIME, ret);
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, "");
             article.put(Article.ARTICLE_PERMALINK, "/article/" + ret);
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
