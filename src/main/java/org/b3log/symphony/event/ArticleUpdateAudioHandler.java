@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * Article update audio handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 18, 2017
+ * @version 1.0.0.1, Nov 3, 2018
  * @since 2.1.0
  */
 @Singleton
@@ -64,8 +64,6 @@ public class ArticleUpdateAudioHandler extends AbstractEventListener<JSONObject>
         LOGGER.log(Level.TRACE, "Processing an event [type={0}, data={1}]", event.getType(), data);
 
         final JSONObject originalArticle = data.optJSONObject(Article.ARTICLE);
-        final String authorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
-
-        articleMgmtService.genArticleAudio(originalArticle, authorId);
+        articleMgmtService.genArticleAudio(originalArticle);
     }
 }

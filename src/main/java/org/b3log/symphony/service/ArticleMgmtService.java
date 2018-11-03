@@ -326,7 +326,7 @@ public class ArticleMgmtService {
         final String contentToTTS = previewContent;
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
-        new Thread(() -> {
+        Symphonys.EXECUTOR_SERVICE.submit(() -> {
             final Transaction transaction = articleRepository.beginTransaction();
 
             try {
@@ -354,7 +354,7 @@ public class ArticleMgmtService {
 
                 LOGGER.log(Level.ERROR, "Updates article's audio URL failed", e);
             }
-        }).start();
+        });
     }
 
     /**
@@ -1068,6 +1068,8 @@ public class ArticleMgmtService {
                     tagArticleRepository.update(tagArticleRel.optString(Keys.OBJECT_ID), tagArticleRel);
                 }
             }
+
+            article.put(Article.ARTICLE_AUDIO_URL, ""); // 小薇语音预览更新 https://github.com/b3log/symphony/issues/791
 
             userRepository.update(authorId, author);
             articleRepository.update(articleId, article);
