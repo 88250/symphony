@@ -24,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
  * Image utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 27, 2018
+ * @version 1.0.0.1, Nov 4, 2018
  * @since 3.2.0
  */
 public final class Images {
@@ -52,7 +52,8 @@ public final class Images {
         }
 
         for (final String imgSrc : imgSrcs) {
-            if (!StringUtils.startsWith(imgSrc, qiniuDomain) || StringUtils.contains(imgSrc, ".gif")) {
+            if (!StringUtils.startsWith(imgSrc, qiniuDomain) || StringUtils.contains(imgSrc, ".gif")
+                    || StringUtils.containsIgnoreCase(imgSrc, "?imageView2")) {
                 continue;
             }
 
