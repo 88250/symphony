@@ -53,13 +53,15 @@ import org.owasp.encoder.Encode;
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.28.0.7, Nov 3, 2018
+ * @version 2.28.0.8, Nov 4, 2018
  * @since 0.2.0
  */
 @Service
@@ -266,19 +268,11 @@ public class ArticleQueryService {
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
         final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
-
-        try {
-            organizeArticles(avatarViewMode, articles);
-
-            for (final JSONObject article : articles) {
-                final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-                final String articleId = article.optString(Keys.OBJECT_ID);
-                article.put(Common.OFFERED, rewardQueryService.isRewarded(articleAuthorId, articleId, Reward.TYPE_C_ACCEPT_COMMENT));
-            }
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Organizes articles failed", e);
-
-            throw new ServiceException(e);
+        organizeArticles(avatarViewMode, articles);
+        for (final JSONObject article : articles) {
+            final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            final String articleId = article.optString(Keys.OBJECT_ID);
+            article.put(Common.OFFERED, rewardQueryService.isRewarded(articleAuthorId, articleId, Reward.TYPE_C_ACCEPT_COMMENT));
         }
 
         //final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
@@ -337,14 +331,7 @@ public class ArticleQueryService {
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
         final List<JSONObject> ret = CollectionUtils.jsonArrayToList(data);
-
-        try {
-            organizeArticles(avatarViewMode, ret);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Organizes articles failed", e);
-
-            throw new ServiceException(e);
-        }
+        organizeArticles(avatarViewMode, ret);
 
         return ret;
     }
@@ -657,16 +644,8 @@ public class ArticleQueryService {
                     new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID))).
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
-            final List<JSONObject> articles
-                    = CollectionUtils.jsonArrayToList(articleRepository.get(query).optJSONArray(Keys.RESULTS));
-
-            try {
-                organizeArticles(avatarViewMode, articles);
-            } catch (final RepositoryException e) {
-                LOGGER.log(Level.ERROR, "Organizes articles failed", e);
-
-                throw new ServiceException(e);
-            }
+            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articleRepository.get(query).optJSONArray(Keys.RESULTS));
+            organizeArticles(avatarViewMode, articles);
 
             final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
             genParticipants(avatarViewMode, articles, participantsCnt);
@@ -674,7 +653,7 @@ public class ArticleQueryService {
             ret.put(Article.ARTICLES, (Object) articles);
 
             return ret;
-        } catch (final RepositoryException | ServiceException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets domain articles error", e);
 
             throw new ServiceException(e);
@@ -1446,14 +1425,7 @@ public class ArticleQueryService {
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
         final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
-
-        try {
-            organizeArticles(avatarViewMode, articles);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Organizes articles failed", e);
-
-            throw new ServiceException(e);
-        }
+        organizeArticles(avatarViewMode, articles);
 
         //final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
         //genParticipants(articles, participantsCnt);
@@ -1619,14 +1591,7 @@ public class ArticleQueryService {
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
         final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
-
-        try {
-            organizeArticles(avatarViewMode, articles);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Organizes articles failed", e);
-
-            throw new ServiceException(e);
-        }
+        organizeArticles(avatarViewMode, articles);
 
         //final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
         //genParticipants(articles, participantsCnt);
@@ -1649,15 +1614,23 @@ public class ArticleQueryService {
      *
      * @param avatarViewMode the specified avatarViewMode
      * @param articles       the specified articles
-     * @throws RepositoryException repository exception
      * @see #organizeArticle(int, org.json.JSONObject)
      */
-    public void organizeArticles(final int avatarViewMode, final List<JSONObject> articles) throws RepositoryException {
+    public void organizeArticles(final int avatarViewMode, final List<JSONObject> articles) {
         Stopwatchs.start("Organize articles");
         try {
-            for (final JSONObject article : articles) {
-                organizeArticle(avatarViewMode, article);
-            }
+            final ForkJoinPool pool = new ForkJoinPool(Symphonys.PROCESSORS);
+            pool.submit(() -> articles.parallelStream().forEach(article -> {
+                try {
+                    organizeArticle(avatarViewMode, article);
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Organizes article [" + article.optString(Keys.OBJECT_ID) + "] failed", e);
+                }
+            }));
+            pool.shutdown();
+            pool.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Organizes articles failed", e);
         } finally {
             Stopwatchs.end();
         }
@@ -1747,16 +1720,6 @@ public class ArticleQueryService {
                 && UserRegisterValidation.invalidUserName(articleLatestCmterName)) {
             articleLatestCmterName = UserExt.ANONYMOUS_USER_NAME;
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, articleLatestCmterName);
-        }
-
-        final Query query = new Query()
-                .setPageCount(1).setCurrentPageNum(1).setPageSize(1)
-                .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).
-                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-        final JSONArray cmts = commentRepository.get(query).optJSONArray(Keys.RESULTS);
-        if (cmts.length() > 0) {
-            final JSONObject latestCmt = cmts.optJSONObject(0);
-            article.put(Article.ARTICLE_T_LATEST_CMT, latestCmt);
         }
 
         // builds tag objects
@@ -2152,14 +2115,7 @@ public class ArticleQueryService {
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
         final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
-
-        try {
-            organizeArticles(avatarViewMode, articles);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Organizes articles failed", e);
-
-            throw new ServiceException(e);
-        }
+        organizeArticles(avatarViewMode, articles);
 
         ret.put(Article.ARTICLES, articles);
 

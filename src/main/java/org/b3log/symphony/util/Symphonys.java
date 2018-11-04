@@ -51,10 +51,15 @@ import java.util.concurrent.ThreadPoolExecutor;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.0, Nov 1, 2018
+ * @version 1.9.0.1, Nov 4, 2018
  * @since 0.1.0
  */
 public final class Symphonys {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Symphonys.class);
 
     /**
      * Configurations.
@@ -87,9 +92,9 @@ public final class Symphonys {
     public static final ThreadPoolExecutor EXECUTOR_SERVICE = (ThreadPoolExecutor) Executors.newFixedThreadPool(50);
 
     /**
-     * Logger.
+     * Available processors.
      */
-    private static final Logger LOGGER = Logger.getLogger(Symphonys.class);
+    public static final int PROCESSORS = Runtime.getRuntime().availableProcessors();
 
     static {
         try {
