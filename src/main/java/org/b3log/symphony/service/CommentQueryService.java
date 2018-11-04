@@ -43,12 +43,14 @@ import org.jsoup.safety.Whitelist;
 import org.owasp.encoder.Encode;
 
 import java.util.*;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.2.1, Aug 21, 2018
+ * @version 2.12.2.2, Nov 4, 2018
  * @since 0.2.0
  */
 @Service
@@ -854,16 +856,27 @@ public class CommentQueryService {
      *
      * @param avatarViewMode the specified avatar view mode
      * @param comments       the specified comments
-     * @throws RepositoryException repository exception
      * @see #organizeComment(int, JSONObject)
      */
-    private void organizeComments(final int avatarViewMode, final List<JSONObject> comments) throws RepositoryException {
-        Stopwatchs.start("Organizes comments");
+    private void organizeComments(final int avatarViewMode, final List<JSONObject> comments) {
+        if (comments.isEmpty()) {
+            return;
+        }
 
+        Stopwatchs.start("Organizes comments");
         try {
-            for (final JSONObject comment : comments) {
-                organizeComment(avatarViewMode, comment);
-            }
+            final ForkJoinPool pool = new ForkJoinPool(Symphonys.PROCESSORS);
+            pool.submit(() -> comments.parallelStream().forEach(comment -> {
+                try {
+                    organizeComment(avatarViewMode, comment);
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Organizes comment [" + comment.optString(Keys.OBJECT_ID) + "] failed", e);
+                }
+            }));
+            pool.shutdown();
+            pool.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Organizes comments failed", e);
         } finally {
             Stopwatchs.end();
         }
