@@ -1355,7 +1355,6 @@ public class ArticleQueryService {
                 query = new Query().
                         addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
                         setFilter(makeRecentArticleShowingFilter());
 
                 break;
@@ -1364,8 +1363,7 @@ public class ArticleQueryService {
                 query = new Query().
                         addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
                         addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
-                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
                 final CompositeFilter compositeFilter = makeRecentArticleShowingFilter();
                 final List<Filter> filters = new ArrayList<>();
                 filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
@@ -1378,7 +1376,6 @@ public class ArticleQueryService {
                         addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
                         addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING).
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
                         setFilter(makeRecentArticleShowingFilter());
 
                 break;
@@ -1387,7 +1384,6 @@ public class ArticleQueryService {
                         addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
                         addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING).
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
                         setFilter(makeRecentArticleShowingFilter());
 
                 break;
@@ -1395,9 +1391,10 @@ public class ArticleQueryService {
                 query = new Query().
                         addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
                         setFilter(makeRecentArticleShowingFilter());
         }
+        query.setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+        addListProjections(query);
 
         JSONObject result;
         try {
