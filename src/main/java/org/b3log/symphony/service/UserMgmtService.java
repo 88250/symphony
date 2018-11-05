@@ -432,6 +432,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_KEYBOARD_SHORTCUTS_STATUS, UserExt.USER_XXX_STATUS_C_DISABLED);
             user.put(UserExt.USER_REPLY_WATCH_ARTICLE_STATUS, UserExt.USER_SUB_MAIL_STATUS_DISABLED);
             user.put(UserExt.USER_FORWARD_PAGE_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_INDEX_REDIRECT_URL, "");
 
             final JSONObject optionLanguage = optionRepository.get(Option.ID_C_MISC_LANGUAGE);
             final String adminSpecifiedLang = optionLanguage.optString(Option.OPTION_VALUE);

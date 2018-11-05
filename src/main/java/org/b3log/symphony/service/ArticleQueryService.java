@@ -1342,11 +1342,8 @@ public class ArticleQueryService {
      *      }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getRecentArticles(final int avatarViewMode, final int sortMode,
-                                        final int currentPageNum, final int fetchSize)
-            throws ServiceException {
+    public JSONObject getRecentArticles(final int avatarViewMode, final int sortMode, final int currentPageNum, final int fetchSize) {
         final JSONObject ret = new JSONObject();
 
         Query query;
@@ -1396,15 +1393,13 @@ public class ArticleQueryService {
         query.setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
         addListProjections(query);
 
-        JSONObject result;
+        JSONObject result = null;
         try {
             Stopwatchs.start("Query recent articles");
 
             result = articleRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles failed", e);
-
-            throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
         }
@@ -1436,9 +1431,8 @@ public class ArticleQueryService {
      *
      * @param avatarViewMode the specified avatar view mode
      * @return recent articles, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getIndexRecentArticles(final int avatarViewMode) throws ServiceException {
+    public List<JSONObject> getIndexRecentArticles(final int avatarViewMode) {
         List<JSONObject> ret;
         try {
             Stopwatchs.start("Query index recent articles");
@@ -1478,7 +1472,7 @@ public class ArticleQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets index recent articles failed", e);
 
-            throw new ServiceException(e);
+            return Collections.emptyList();
         }
     }
 

@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -82,7 +83,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.0, Oct 13, 2018
+ * @version 1.3.1.1, Nov 5, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -663,17 +664,24 @@ public class SettingsProcessor {
         final boolean keyboardShortcutsStatus = requestJSONObject.optBoolean(UserExt.USER_KEYBOARD_SHORTCUTS_STATUS);
         final boolean userReplyWatchArticleStatus = requestJSONObject.optBoolean(UserExt.USER_REPLY_WATCH_ARTICLE_STATUS);
         final boolean forwardStatus = requestJSONObject.optBoolean(UserExt.USER_FORWARD_PAGE_STATUS);
+        String indexRedirectURL = requestJSONObject.optString(UserExt.USER_INDEX_REDIRECT_URL);
+        if (StringUtils.isNotBlank(indexRedirectURL) && !StringUtils.startsWith(indexRedirectURL, Latkes.getServePath()) && !Strings.isURL(indexRedirectURL)) {
+            indexRedirectURL = "";
+        }
+        if (StringUtils.isNotBlank(indexRedirectURL)) {
+            if (StringUtils.equalsIgnoreCase(StringUtils.substringBefore(indexRedirectURL, "?"), Latkes.getServePath())) {
+                indexRedirectURL = "";
+            }
+        }
 
         int userListPageSize;
         try {
             userListPageSize = Integer.valueOf(userListPageSizeStr);
-
             if (10 > userListPageSize) {
                 userListPageSize = 10;
             }
-
-            if (userListPageSize > 60) {
-                userListPageSize = 60;
+            if (userListPageSize > 96) {
+                userListPageSize = 96;
             }
         } catch (final Exception e) {
             userListPageSize = Symphonys.getInt("indexArticlesCnt");
@@ -689,6 +697,7 @@ public class SettingsProcessor {
         user.put(UserExt.USER_KEYBOARD_SHORTCUTS_STATUS, keyboardShortcutsStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
         user.put(UserExt.USER_REPLY_WATCH_ARTICLE_STATUS, userReplyWatchArticleStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
         user.put(UserExt.USER_FORWARD_PAGE_STATUS, forwardStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_INDEX_REDIRECT_URL, indexRedirectURL);
 
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);

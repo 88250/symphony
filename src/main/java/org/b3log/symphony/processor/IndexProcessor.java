@@ -292,13 +292,26 @@ public class IndexProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @throws Exception exception
      */
     @RequestProcessing(value = {"", "/"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        if (null != currentUser) {
+            // 自定义首页跳转 https://github.com/b3log/symphony/issues/774
+            final String indexRedirectURL = currentUser.optString(UserExt.USER_INDEX_REDIRECT_URL);
+            if (StringUtils.isNotBlank(indexRedirectURL)) {
+                try {
+                    response.sendRedirect(indexRedirectURL);
+
+                    return;
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Sends index redirect for user [id=" + currentUser.optString(Keys.OBJECT_ID) + "] failed", e);
+                }
+            }
+        }
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("index.ftl");

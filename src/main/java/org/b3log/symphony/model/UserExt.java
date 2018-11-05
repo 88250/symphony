@@ -28,11 +28,16 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.15.0.0, Aug 29, 2018
+ * @version 2.16.0.0, Nov 5, 2018
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
 public final class UserExt {
+
+    /**
+     * Key of index redirect URL.
+     */
+    public static final String USER_INDEX_REDIRECT_URL = "userIndexRedirectURL";
 
     /**
      * Key of status of using forward page.

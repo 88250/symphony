@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.40.0.5, Oct 1, 2018",
+  "version": "4.40.0.6, Nov 5, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -1584,6 +1584,12 @@
           "name": "userForwardPageStatus",
           "type": "int",
           "description": "0：使用重定向页面，1：禁用重定向页面"
+        },
+        {
+          "name": "userIndexRedirectURL",
+          "type": "String",
+          "length": 255,
+          "description": "自定义首页跳转 https://github.com/b3log/symphony/issues/774"
         }
       ]
     },
