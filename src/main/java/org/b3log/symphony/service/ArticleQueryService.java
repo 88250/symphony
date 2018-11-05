@@ -1616,6 +1616,9 @@ public class ArticleQueryService {
                     organizeArticle(avatarViewMode, article);
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Organizes article [" + article.optString(Keys.OBJECT_ID) + "] failed", e);
+                } finally {
+                    LOGGER.log(Level.INFO, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
+                    Stopwatchs.release();
                 }
             }));
             pool.shutdown();
