@@ -396,7 +396,10 @@ public class SettingsProcessor {
         }
 
         try {
-            final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            final String userId = user.optString(Keys.OBJECT_ID);
+            user = userQueryService.getUser(userId);
+
             user.put(UserExt.USER_LANGUAGE, userLanguage);
             user.put(UserExt.USER_TIMEZONE, userTimezone);
 
@@ -548,7 +551,9 @@ public class SettingsProcessor {
         }
 
         try {
-            final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            final String userId = user.optString(Keys.OBJECT_ID);
+            user = userQueryService.getUser(userId);
             user.put(UserExt.USER_GEO_STATUS, geoStatus);
 
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
@@ -565,10 +570,12 @@ public class SettingsProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/privacy", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
-    public void updatePrivacy(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void updatePrivacy(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
         context.renderJSON();
 
         JSONObject requestJSONObject;
@@ -595,7 +602,9 @@ public class SettingsProcessor {
         final boolean userJoinPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_POINT_RANK);
         final boolean userJoinUsedPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_USED_POINT_RANK);
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+        user = userQueryService.getUser(userId);
 
         user.put(UserExt.USER_ONLINE_STATUS, onlineStatus
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
@@ -639,10 +648,12 @@ public class SettingsProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/function", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
-    public void updateFunction(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void updateFunction(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
         context.renderJSON();
 
         JSONObject requestJSONObject;
@@ -696,7 +707,10 @@ public class SettingsProcessor {
             userListPageSize = Symphonys.getInt("indexArticlesCnt");
         }
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+        user = userQueryService.getUser(userId);
+
         user.put(UserExt.USER_LIST_PAGE_SIZE, userListPageSize);
         user.put(UserExt.USER_COMMENT_VIEW_MODE, userCommentViewMode);
         user.put(UserExt.USER_AVATAR_VIEW_MODE, userAvatarViewMode);
