@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.26.0.5, Aug 29, 2018
+ * @version 1.27.0.0, Nov 5, 2018
  */
 
 /**
@@ -538,6 +538,7 @@ var Settings = {
       case "function":
         requestJSONObject = {
           userListPageSize: $("#userListPageSize").val(),
+          userIndexRedirectURL: $("#userIndexRedirectURL").val(),
           userCommentViewMode: $("#userCommentViewMode").val(),
           userAvatarViewMode: $("#userAvatarViewMode").val(),
           userListViewMode: $("#userListViewMode").val(),
