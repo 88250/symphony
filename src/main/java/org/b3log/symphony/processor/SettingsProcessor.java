@@ -669,7 +669,11 @@ public class SettingsProcessor {
             indexRedirectURL = "";
         }
         if (StringUtils.isNotBlank(indexRedirectURL)) {
-            if (StringUtils.equalsIgnoreCase(StringUtils.substringBefore(indexRedirectURL, "?"), Latkes.getServePath())) {
+            String tmp = StringUtils.substringBefore(indexRedirectURL, "?");
+            if (StringUtils.endsWith(tmp, "/")) {
+                tmp = StringUtils.substringBeforeLast(tmp, "/");
+            }
+            if (StringUtils.equalsIgnoreCase(tmp, Latkes.getServePath())) {
                 indexRedirectURL = "";
             }
         }
