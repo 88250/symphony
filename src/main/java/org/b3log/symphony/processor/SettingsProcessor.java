@@ -665,8 +665,13 @@ public class SettingsProcessor {
         final boolean userReplyWatchArticleStatus = requestJSONObject.optBoolean(UserExt.USER_REPLY_WATCH_ARTICLE_STATUS);
         final boolean forwardStatus = requestJSONObject.optBoolean(UserExt.USER_FORWARD_PAGE_STATUS);
         String indexRedirectURL = requestJSONObject.optString(UserExt.USER_INDEX_REDIRECT_URL);
-        if (StringUtils.isNotBlank(indexRedirectURL) && !StringUtils.startsWith(indexRedirectURL, Latkes.getServePath()) && !Strings.isURL(indexRedirectURL)) {
+        if (!Strings.isURL(indexRedirectURL)) {
             indexRedirectURL = "";
+        }
+        if (StringUtils.isNotBlank(indexRedirectURL) && !StringUtils.startsWith(indexRedirectURL, Latkes.getServePath())) {
+            context.renderMsg(langPropsService.get("onlyInternalURLLabel"));
+
+            return;
         }
         if (StringUtils.isNotBlank(indexRedirectURL)) {
             String tmp = StringUtils.substringBefore(indexRedirectURL, "?");
