@@ -38,8 +38,6 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import org.owasp.encoder.Encode;
 
 import java.util.*;
@@ -50,7 +48,7 @@ import java.util.concurrent.TimeUnit;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.2.2, Nov 4, 2018
+ * @version 2.12.2.3, Nov 5, 2018
  * @since 0.2.0
  */
 @Service
@@ -492,70 +490,6 @@ public class CommentQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a comment [commentId=" + commentId + "] failed", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * Gets the latest comments with the specified fetch size.
-     * <p>
-     * <p>
-     * The returned comments content is plain text.
-     * </p>
-     *
-     * @param avatarViewMode the specified avatar view mode
-     * @param fetchSize      the specified fetch size
-     * @return the latest comments, returns an empty list if not found
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getLatestComments(final int avatarViewMode, final int fetchSize) throws ServiceException {
-        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
-                .setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
-        try {
-            final JSONObject result = commentRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-
-            for (final JSONObject comment : ret) {
-                comment.put(Comment.COMMENT_CREATE_TIME, comment.optLong(Comment.COMMENT_CREATE_TIME));
-                final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
-                final JSONObject article = articleRepository.get(articleId);
-                comment.put(Comment.COMMENT_T_ARTICLE_TITLE, Emotions.clear(article.optString(Article.ARTICLE_TITLE)));
-                comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
-
-                final String commenterId = comment.optString(Comment.COMMENT_AUTHOR_ID);
-                final JSONObject commenter = userRepository.get(commenterId);
-
-                if (UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)
-                        || Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)) {
-                    comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
-                }
-
-                if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)) {
-                    comment.put(Comment.COMMENT_CONTENT, "....");
-                }
-
-                String content = comment.optString(Comment.COMMENT_CONTENT);
-                content = Emotions.clear(content);
-                content = Jsoup.clean(content, Whitelist.none());
-                if (StringUtils.isBlank(content)) {
-                    comment.put(Comment.COMMENT_CONTENT, "....");
-                } else {
-                    comment.put(Comment.COMMENT_CONTENT, content);
-                }
-
-                final String commenterEmail = commenter.optString(User.USER_EMAIL);
-                String avatarURL = AvatarQueryService.DEFAULT_AVATAR_URL;
-                if (!UserExt.COM_BOT_EMAIL.equals(commenterEmail)) {
-                    avatarURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, commenter, "20");
-                }
-                commenter.put(UserExt.USER_AVATAR_URL, avatarURL);
-
-                comment.put(Comment.COMMENT_T_COMMENTER, commenter);
-            }
-
-            return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets user comments failed", e);
             throw new ServiceException(e);
         }
     }
