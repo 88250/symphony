@@ -39,6 +39,8 @@
             <option value="0"<#if 0 == currentUser.userListViewMode> selected</#if>>${onlyTitleLabel}</option>
             <option value="1"<#if 1 == currentUser.userListViewMode> selected</#if>>${titleAndAbstract}</option>
         </select>
+        <label>${indexRedirectLabel}</label>
+        <input id="userIndexRedirectURL" type="text" value="${currentUser.userIndexRedirectURL}"/>
         <div class="fn-clear">
             <label>${useNotifyLabel} 
                 <input id="userNotifyStatus" <#if 0 == currentUser.userNotifyStatus> checked="checked"</#if> type="checkbox" /> 
