@@ -44,7 +44,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.3.0, Sep 30, 2018
+ * @version 1.2.3.1, Nov 5, 2018
  * @since 1.3.0
  */
 @Service
@@ -158,15 +158,11 @@ public class ShortLinkQueryService {
             try {
                 while (matcher.find()) {
                     final String linkId = StringUtils.substringBetween(matcher.group(), "[", "]");
-
-                    final Query query = new Query().addProjection(Article.ARTICLE_TITLE, String.class)
-                            .setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, linkId));
-                    final JSONArray results = articleRepository.get(query).optJSONArray(Keys.RESULTS);
-                    if (0 == results.length()) {
+                    final JSONObject linkArticle = articleRepository.get(linkId);
+                    if (null == linkArticle) {
                         continue;
                     }
 
-                    final JSONObject linkArticle = results.optJSONObject(0);
                     final String linkTitle = linkArticle.optString(Article.ARTICLE_TITLE);
                     final String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/article/" + linkId + ") ";
 
@@ -200,20 +196,13 @@ public class ShortLinkQueryService {
             try {
                 while (matcher.find()) {
                     final String linkTagTitle = StringUtils.substringBetween(matcher.group(), "[", "]");
-
                     if (StringUtils.equals(linkTagTitle, "x")) { // [x] => <input checked>
                         continue;
                     }
-
-                    final Query query = new Query().addProjection(Tag.TAG_TITLE, String.class)
-                            .addProjection(Tag.TAG_URI, String.class)
-                            .setFilter(new PropertyFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, linkTagTitle));
-                    final JSONArray results = tagRepository.get(query).optJSONArray(Keys.RESULTS);
-                    if (0 == results.length()) {
+                    final JSONObject linkTag = tagRepository.getByTitle(linkTagTitle);
+                    if (linkTag == null) {
                         continue;
                     }
-
-                    final JSONObject linkTag = results.optJSONObject(0);
 
                     final String linkTitle = linkTag.optString(Tag.TAG_TITLE);
                     final String linkURI = linkTag.optString(Tag.TAG_URI);
