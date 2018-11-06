@@ -26,7 +26,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.symphony.model.*;
@@ -43,7 +42,7 @@ import java.util.Set;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.16, Sep 28, 2018
+ * @version 1.2.2.0, Nov 6, 2018
  * @since 1.8.0
  */
 @Service
@@ -220,10 +219,10 @@ public class InitMgmtService {
     public void initSym() {
         try {
             final List<JSONObject> admins = userQueryService.getAdmins();
-            if (null != admins && !admins.isEmpty()) { // Initialized already
+            if (null != admins && !admins.isEmpty() && 0 < optionRepository.count()) { // Initialized already
                 return;
             }
-        } catch (final ServiceException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Check init failed", e);
 
             System.exit(0);

@@ -49,7 +49,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.8.7.1, Jal 28, 2018
+ * @version 1.8.7.2, Nov 6, 2018
  * @since 0.2.0
  */
 @Service
@@ -390,14 +390,14 @@ public class UserQueryService {
      * Gets the administrators.
      *
      * @return administrators, returns an empty list if not found or error
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getAdmins() throws ServiceException {
+    public List<JSONObject> getAdmins() {
         try {
             return userRepository.getAdmins();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets admins failed", e);
-            throw new ServiceException(e);
+            LOGGER.log(Level.ERROR, "Gets admins failed: " + e.getMessage());
+
+            return Collections.emptyList();
         }
     }
 
