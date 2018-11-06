@@ -42,7 +42,7 @@ import java.util.List;
  * Follow query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.7, May 23, 2018
+ * @version 1.4.0.8, Nov 6, 2018
  * @since 0.2.5
  */
 @Service
@@ -96,7 +96,7 @@ public class FollowQueryService {
         try {
             return followRepository.exists(followerId, followingId, followingType);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Determines following failed[followerId=" + followerId + ", followingId="
+            LOGGER.log(Level.ERROR, "Determines following failed [followerId=" + followerId + ", followingId="
                     + followingId + ']', e);
 
             return false;
@@ -138,7 +138,7 @@ public class FollowQueryService {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
                 final JSONObject user = userRepository.get(followingId);
                 if (null == user) {
-                    LOGGER.log(Level.WARN, "Not found user[id=" + followingId + ']');
+                    LOGGER.log(Level.WARN, "Not found user [id=" + followingId + ']');
 
                     continue;
                 }
@@ -150,7 +150,7 @@ public class FollowQueryService {
 
             ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets following users of follower[id=" + followerId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets following users of follower [id=" + followerId + "] failed", e);
         }
 
         return ret;
@@ -202,7 +202,7 @@ public class FollowQueryService {
 
             ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets following tags of follower[id=" + followerId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets following tags of follower [id=" + followerId + "] failed", e);
         }
 
         return ret;
@@ -333,7 +333,7 @@ public class FollowQueryService {
                 final String followerId = follow.optString(Follow.FOLLOWER_ID);
                 final JSONObject user = userRepository.get(followerId);
                 if (null == user) {
-                    LOGGER.log(Level.WARN, "Not found user[id=" + followerId + ']');
+                    LOGGER.log(Level.WARN, "Not found user [id=" + followerId + ']');
 
                     continue;
                 }
@@ -380,7 +380,7 @@ public class FollowQueryService {
                 final String followerId = follow.optString(Follow.FOLLOWER_ID);
                 final JSONObject user = userRepository.get(followerId);
                 if (null == user) {
-                    LOGGER.log(Level.WARN, "Not found user[id=" + followerId + ']');
+                    LOGGER.log(Level.WARN, "Not found user [id=" + followerId + ']');
 
                     continue;
                 }
@@ -392,7 +392,7 @@ public class FollowQueryService {
 
             ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets follower users of following user[id=" + followingUserId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets follower users of following user [id=" + followingUserId + "] failed", e);
         }
 
         return ret;
