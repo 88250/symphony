@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.18.0.0, Aug 30, 2018
+ * @version 1.18.0.1, Nov 6, 2018
  * @since 0.2.0
  */
 public final class Tag {
@@ -502,6 +502,10 @@ public final class Tag {
      * @param tag the specified tag
      */
     public static void fillDescription(final JSONObject tag) {
+        if (null == tag) {
+            return;
+        }
+
         String description = tag.optString(Tag.TAG_DESCRIPTION);
         String descriptionText = tag.optString(Tag.TAG_TITLE);
         if (StringUtils.isNotBlank(description)) {
