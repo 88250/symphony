@@ -1601,7 +1601,7 @@ public class ArticleMgmtService {
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 final String tagURI = URLs.encode(tagTitle);
-                tag.put(Tag.TAG_URI, tagURI);
+                tag.put(Tag.TAG_URI, StringUtils.lowerCase(tagURI));
                 tag.put(Tag.TAG_CSS, "");
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);
                 tag.put(Tag.TAG_COMMENT_CNT, articleCmtCnt);

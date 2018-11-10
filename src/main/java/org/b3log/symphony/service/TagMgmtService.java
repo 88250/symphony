@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -180,9 +181,8 @@ public class TagMgmtService {
 
             JSONObject tag = new JSONObject();
             tag.put(Tag.TAG_TITLE, tagTitle);
-            String tagURI = tagTitle;
-            tagURI = URLs.encode(tagTitle);
-            tag.put(Tag.TAG_URI, tagURI);
+            final String tagURI = URLs.encode(tagTitle);
+            tag.put(Tag.TAG_URI, StringUtils.lowerCase(tagURI));
             tag.put(Tag.TAG_CSS, "");
             tag.put(Tag.TAG_REFERENCE_CNT, 0);
             tag.put(Tag.TAG_COMMENT_CNT, 0);

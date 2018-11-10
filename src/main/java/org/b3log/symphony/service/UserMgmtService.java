@@ -787,9 +787,8 @@ public class UserMgmtService {
                         tagTitle, user.optString(User.USER_NAME));
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
-                String tagURI = tagTitle;
-                tagURI = URLs.encode(tagTitle);
-                tag.put(Tag.TAG_URI, tagURI);
+                final String tagURI = URLs.encode(tagTitle);
+                tag.put(Tag.TAG_URI, StringUtils.lowerCase(tagURI));
                 tag.put(Tag.TAG_CSS, "");
                 tag.put(Tag.TAG_REFERENCE_CNT, 0);
                 tag.put(Tag.TAG_COMMENT_CNT, 0);
