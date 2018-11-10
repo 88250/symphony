@@ -1075,18 +1075,18 @@ public class ArticleProcessor {
      * </pre>
      * </p>
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param id       the specified article id
+     * @param context           the specified context
+     * @param request           the specified request
+     * @param response          the specified response
+     * @param id                the specified article id
+     * @param requestJSONObject the specified request JSON object
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{id}", method = HTTPRequestMethod.PUT)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleUpdateValidation.class,
-            PermissionCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleUpdateValidation.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final String id) throws Exception {
+                              final String id, final JSONObject requestJSONObject) throws Exception {
         if (StringUtils.isBlank(id)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -1110,8 +1110,6 @@ public class ArticleProcessor {
 
             return;
         }
-
-        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
