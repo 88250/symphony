@@ -335,7 +335,6 @@ public class BreezemoonQueryService {
             bm.put(Breezemoon.BREEZEMOON_T_CREATE_TIME, new Date(time));
             String content = bm.optString(Breezemoon.BREEZEMOON_CONTENT);
             content = shortLinkQueryService.linkArticle(content);
-            content = shortLinkQueryService.linkTag(content);
             content = Emotions.convert(content);
             content = Markdowns.toHTML(content);
             content = Markdowns.clean(content, "");

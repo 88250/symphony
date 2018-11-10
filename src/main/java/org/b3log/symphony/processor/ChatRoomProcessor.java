@@ -234,7 +234,6 @@ public class ChatRoomProcessor {
         String content = requestJSONObject.optString(Common.CONTENT);
 
         content = shortLinkQueryService.linkArticle(content);
-        content = shortLinkQueryService.linkTag(content);
         content = Emotions.convert(content);
         content = Markdowns.toHTML(content);
         content = Markdowns.clean(content, "");

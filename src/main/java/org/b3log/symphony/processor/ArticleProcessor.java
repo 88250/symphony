@@ -1205,7 +1205,6 @@ public class ArticleProcessor {
         }
 
         markdownText = shortLinkQueryService.linkArticle(markdownText);
-        markdownText = shortLinkQueryService.linkTag(markdownText);
         markdownText = Emotions.toAliases(markdownText);
         markdownText = Emotions.convert(markdownText);
         markdownText = Markdowns.toHTML(markdownText);

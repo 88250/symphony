@@ -198,7 +198,6 @@ public class FeedProcessor {
         ret.setTitle(title);
         String description = article.getString(Article.ARTICLE_CONTENT);
         description = shortLinkQueryService.linkArticle(description);
-        description = shortLinkQueryService.linkTag(description);
         description = Emotions.toAliases(description);
         description = Emotions.convert(description);
         description = Markdowns.toHTML(description);

@@ -187,7 +187,6 @@ public class DomainQueryService {
             String description = ret.optString(Domain.DOMAIN_DESCRIPTION);
             String descriptionText = ret.optString(Domain.DOMAIN_TITLE);
             if (StringUtils.isNotBlank(description)) {
-                description = shortLinkQueryService.linkTag(description);
                 description = Markdowns.toHTML(description);
 
                 ret.put(Domain.DOMAIN_DESCRIPTION, description);
@@ -237,7 +236,6 @@ public class DomainQueryService {
             String description = ret.optString(Domain.DOMAIN_DESCRIPTION);
             String descriptionText = ret.optString(Domain.DOMAIN_TITLE);
             if (StringUtils.isNotBlank(description)) {
-                description = shortLinkQueryService.linkTag(description);
                 description = Markdowns.toHTML(description);
 
                 ret.put(Domain.DOMAIN_DESCRIPTION, description);

@@ -2016,7 +2016,6 @@ public class ArticleQueryService {
 
             if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
                 articleContent = shortLinkQueryService.linkArticle(articleContent);
-                articleContent = shortLinkQueryService.linkTag(articleContent);
                 articleContent = Emotions.convert(articleContent);
                 article.put(Article.ARTICLE_CONTENT, articleContent);
             }
@@ -2024,7 +2023,6 @@ public class ArticleQueryService {
             if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {
                 String rewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
                 rewardContent = shortLinkQueryService.linkArticle(rewardContent);
-                rewardContent = shortLinkQueryService.linkTag(rewardContent);
                 rewardContent = Emotions.convert(rewardContent);
                 article.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
             }

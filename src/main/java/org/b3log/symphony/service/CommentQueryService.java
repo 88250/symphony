@@ -897,7 +897,6 @@ public class CommentQueryService {
         String commentContent = comment.optString(Comment.COMMENT_CONTENT);
 
         commentContent = shortLinkQueryService.linkArticle(commentContent);
-        commentContent = shortLinkQueryService.linkTag(commentContent);
         commentContent = Emotions.convert(commentContent);
         commentContent = Markdowns.toHTML(commentContent);
         commentContent = Markdowns.clean(commentContent, "");

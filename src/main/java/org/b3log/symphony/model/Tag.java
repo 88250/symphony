@@ -509,10 +509,6 @@ public final class Tag {
         String description = tag.optString(Tag.TAG_DESCRIPTION);
         String descriptionText = tag.optString(Tag.TAG_TITLE);
         if (StringUtils.isNotBlank(description)) {
-            final BeanManager beanManager = BeanManager.getInstance();
-            final ShortLinkQueryService shortLinkQueryService = beanManager.getReference(ShortLinkQueryService.class);
-
-            description = shortLinkQueryService.linkTag(description);
             description = Emotions.convert(description);
             description = Markdowns.toHTML(description);
 

@@ -348,7 +348,6 @@ public class CommentProcessor {
 
             commentContent = comment.optString(Comment.COMMENT_CONTENT);
             commentContent = shortLinkQueryService.linkArticle(commentContent);
-            commentContent = shortLinkQueryService.linkTag(commentContent);
             commentContent = Emotions.toAliases(commentContent);
             commentContent = Emotions.convert(commentContent);
             commentContent = Markdowns.toHTML(commentContent);

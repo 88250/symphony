@@ -214,7 +214,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                     .replace("{user}", commenterName);
             chData.put(Comment.COMMENT_T_THANK_LABEL, thankTemplate);
             String cc = shortLinkQueryService.linkArticle(commentContent);
-            cc = shortLinkQueryService.linkTag(cc);
             cc = Emotions.toAliases(cc);
             cc = Emotions.convert(cc);
             cc = Markdowns.toHTML(cc);
