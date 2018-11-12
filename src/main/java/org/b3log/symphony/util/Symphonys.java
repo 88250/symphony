@@ -51,7 +51,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.1, Nov 4, 2018
+ * @version 1.9.0.2, Nov 12, 2018
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -89,7 +89,7 @@ public final class Symphonys {
     /**
      * Thread pool.
      */
-    public static final ThreadPoolExecutor EXECUTOR_SERVICE = (ThreadPoolExecutor) Executors.newFixedThreadPool(50);
+    public static final ThreadPoolExecutor EXECUTOR_SERVICE = (ThreadPoolExecutor) Executors.newFixedThreadPool(64);
 
     /**
      * Available processors.
