@@ -159,7 +159,6 @@ public class NotificationQueryService {
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_FOLLOWING_USER));
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
         try {
             final JSONObject result = notificationRepository.get(query);
 
@@ -187,7 +186,6 @@ public class NotificationQueryService {
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_SYS_ANNOUNCE_ROLE_CHANGED));
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
         try {
             final JSONObject result = notificationRepository.get(query);
 
@@ -235,13 +233,10 @@ public class NotificationQueryService {
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                 addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
         try {
             final JSONObject queryResult = notificationRepository.get(query);
             final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
-            ret.put(Pagination.PAGINATION_RECORD_COUNT,
-                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-
+            ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
             for (int i = 0; i < results.length(); i++) {
                 final JSONObject notification = results.optJSONObject(i);
                 final String dataId = notification.optString(Notification.NOTIFICATION_DATA_ID);
@@ -432,10 +427,7 @@ public class NotificationQueryService {
         try {
             final JSONObject queryResult = notificationRepository.get(query);
             final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
-
-            ret.put(Pagination.PAGINATION_RECORD_COUNT,
-                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-
+            ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
             for (int i = 0; i < results.length(); i++) {
                 final JSONObject notification = results.optJSONObject(i);
                 final String dataId = notification.optString(Notification.NOTIFICATION_DATA_ID);
@@ -682,10 +674,7 @@ public class NotificationQueryService {
 
             final JSONObject queryResult = notificationRepository.get(query);
             final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
-
-            ret.put(Pagination.PAGINATION_RECORD_COUNT,
-                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-
+            ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
             for (int i = 0; i < results.length(); i++) {
                 final JSONObject notification = results.optJSONObject(i);
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
@@ -764,12 +753,10 @@ public class NotificationQueryService {
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                 addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
         try {
             final JSONObject queryResult = notificationRepository.get(query);
             final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
-            ret.put(Pagination.PAGINATION_RECORD_COUNT,
-                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
+            ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
             for (int i = 0; i < results.length(); i++) {
                 final JSONObject notification = results.optJSONObject(i);
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
@@ -862,12 +849,10 @@ public class NotificationQueryService {
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                 addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
         try {
             final JSONObject queryResult = notificationRepository.get(query);
             final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
-            ret.put(Pagination.PAGINATION_RECORD_COUNT,
-                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
+            ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
             for (int i = 0; i < results.length(); i++) {
                 final JSONObject notification = results.optJSONObject(i);
                 final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
@@ -1125,7 +1110,6 @@ public class NotificationQueryService {
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                 addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
         try {
             final JSONObject queryResult = notificationRepository.get(query);
             final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
@@ -1250,13 +1234,10 @@ public class NotificationQueryService {
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                 addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
         try {
             final JSONObject queryResult = notificationRepository.get(query);
             final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
-            ret.put(Pagination.PAGINATION_RECORD_COUNT,
-                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-
+            ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
             for (int i = 0; i < results.length(); i++) {
                 final JSONObject notification = results.optJSONObject(i);
                 final String articleId = notification.optString(Notification.NOTIFICATION_DATA_ID);
