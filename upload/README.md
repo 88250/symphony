@@ -1,3 +1,1 @@
-File upload dir, update `upload.dir=./upload/` to change it.
-
-上传目录，可以通过 `upload.dir=./upload/` 进行修改。
+上传目录，可以通过 symphony.props 中的 `upload.dir=./upload/` 进行指定。
