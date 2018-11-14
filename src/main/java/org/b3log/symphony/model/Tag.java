@@ -21,7 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.TagCache;
-import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
@@ -37,7 +36,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.18.0.1, Nov 6, 2018
+ * @version 1.18.0.2, Nov 14, 2018
  * @since 0.2.0
  */
 public final class Tag {
@@ -473,13 +472,9 @@ public final class Tag {
         });
 
         for (final JSONObject tag : allTags) {
-            final String tagURI = tag.optString(Tag.TAG_URI);
             final String tagTitle = tag.optString(Tag.TAG_TITLE);
-            if (tagURI.equals(tagTitle)) {
-                continue;
-            }
-
-            if (StringUtils.equals(title, tagURI)) {
+            final String tagURI = tag.optString(Tag.TAG_URI);
+            if (StringUtils.equalsIgnoreCase(title, tagURI) || StringUtils.equalsIgnoreCase(title, tagTitle)) {
                 return tag.optString(Tag.TAG_TITLE);
             }
         }
