@@ -1079,7 +1079,7 @@ public class ArticleProcessor {
      * @param request           the specified request
      * @param response          the specified response
      * @param id                the specified article id
-     * @param requestJSONObject the specified request JSON object
+     * @param requestJSONObject the specified request json object
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{id}", method = HTTPRequestMethod.PUT)
