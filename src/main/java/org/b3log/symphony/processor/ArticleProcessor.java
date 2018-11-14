@@ -88,7 +88,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.2.6, Nov 3, 2018
+ * @version 1.27.2.7, Nov 14, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -979,7 +979,7 @@ public class ArticleProcessor {
             context.renderJSONValue(Article.ARTICLE_T_ID, articleId);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
-            LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed: {0}", e.getMessage());
+            LOGGER.log(Level.ERROR, "Adds article [title=" + articleTitle + "] failed: {0}", e.getMessage());
 
             context.renderMsg(msg);
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
@@ -1169,7 +1169,7 @@ public class ArticleProcessor {
             context.renderJSONValue(Article.ARTICLE_T_ID, id);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
-            LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed: {0}", e.getMessage());
+            LOGGER.log(Level.ERROR, "Adds article [title=" + articleTitle + "] failed: {0}", e.getMessage());
 
             context.renderMsg(msg);
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
