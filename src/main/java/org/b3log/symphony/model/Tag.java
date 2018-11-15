@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.18.0.2, Nov 14, 2018
+ * @version 1.18.0.3, Nov 15, 2018
  * @since 0.2.0
  */
 public final class Tag {
@@ -471,20 +471,20 @@ public final class Tag {
             return u2Title.length() - u1Title.length();
         });
 
-        for (final JSONObject tag : allTags) {
-            final String tagTitle = tag.optString(Tag.TAG_TITLE);
-            final String tagURI = tag.optString(Tag.TAG_URI);
-            if (StringUtils.equalsIgnoreCase(title, tagURI) || StringUtils.equalsIgnoreCase(title, tagTitle)) {
-                return tag.optString(Tag.TAG_TITLE);
-            }
-        }
-
         for (final Map.Entry<String, Set<String>> entry : NORMALIZE_MAPPINGS.entrySet()) {
             final Set<String> oddTitles = entry.getValue();
             for (final String oddTitle : oddTitles) {
                 if (StringUtils.equalsIgnoreCase(title, oddTitle)) {
                     return entry.getKey();
                 }
+            }
+        }
+
+        for (final JSONObject tag : allTags) {
+            final String tagTitle = tag.optString(Tag.TAG_TITLE);
+            final String tagURI = tag.optString(Tag.TAG_URI);
+            if (StringUtils.equalsIgnoreCase(title, tagURI) || StringUtils.equalsIgnoreCase(title, tagTitle)) {
+                return tag.optString(Tag.TAG_TITLE);
             }
         }
 
