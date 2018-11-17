@@ -325,27 +325,27 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final Set<String> atIds = new HashSet<>();
             if (hasAtUserPerm) {
                 // 4. 'At' Notification
-                for (final String userName : atUserNames) {
-                    if (isDiscussion && !articleContentAtUserNames.contains(userName)) {
+                for (final String atUserName : atUserNames) {
+                    if (isDiscussion && !articleContentAtUserNames.contains(atUserName)) {
                         continue;
                     }
 
-                    final JSONObject user = userQueryService.getUserByName(userName);
-                    if (user.optString(Keys.OBJECT_ID).equals(articleAuthorId)) {
+                    final JSONObject atUser = userQueryService.getUserByName(atUserName);
+                    if (atUser.optString(Keys.OBJECT_ID).equals(articleAuthorId)) {
                         continue; // Has notified in step 2
                     }
 
-                    final String userId = user.optString(Keys.OBJECT_ID);
-                    if (repliedIds.contains(userId)) {
+                    final String atUserId = atUser.optString(Keys.OBJECT_ID);
+                    if (repliedIds.contains(atUserId)) {
                         continue;
                     }
 
                     final JSONObject requestJSONObject = new JSONObject();
-                    requestJSONObject.put(Notification.NOTIFICATION_USER_ID, userId);
+                    requestJSONObject.put(Notification.NOTIFICATION_USER_ID, atUserId);
                     requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
                     notificationMgmtService.addAtNotification(requestJSONObject);
 
-                    atIds.add(userId);
+                    atIds.add(atUserId);
                 }
             }
 
