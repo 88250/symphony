@@ -281,14 +281,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             atUserNames.remove(commenterName);
 
             final Set<String> watcherIds = new HashSet<>();
-            final JSONObject followerUsersResult =
-                    followQueryService.getArticleWatchers(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL,
-                            articleId, 1, Integer.MAX_VALUE);
+            final JSONObject followerUsersResult = followQueryService.getArticleWatchers(
+                    UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleId, 1, Integer.MAX_VALUE);
 
             final List<JSONObject> watcherUsers = (List<JSONObject>) followerUsersResult.opt(Keys.RESULTS);
             for (final JSONObject watcherUser : watcherUsers) {
                 final String watcherUserId = watcherUser.optString(Keys.OBJECT_ID);
-
                 watcherIds.add(watcherUserId);
             }
             watcherIds.remove(articleAuthorId);
@@ -324,7 +322,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final Set<String> requisiteAtUserPermissions = new HashSet<>();
             requisiteAtUserPermissions.add(Permission.PERMISSION_ID_C_COMMON_AT_USER);
             final boolean hasAtUserPerm = roleQueryService.userHasPermissions(commenterId, requisiteAtUserPermissions);
-
             final Set<String> atIds = new HashSet<>();
             if (hasAtUserPerm) {
                 // 4. 'At' Notification
@@ -334,12 +331,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                     }
 
                     final JSONObject user = userQueryService.getUserByName(userName);
-                    if (null == user) {
-                        LOGGER.log(Level.WARN, "Not found user by name [{0}]", userName);
-
-                        continue;
-                    }
-
                     if (user.optString(Keys.OBJECT_ID).equals(articleAuthorId)) {
                         continue; // Has notified in step 2
                     }
