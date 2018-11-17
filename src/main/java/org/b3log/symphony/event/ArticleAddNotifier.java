@@ -48,7 +48,7 @@ import java.util.Set;
  * Sends article add related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.16, Aug 6, 2018
+ * @version 1.3.4.17, Nov 17, 2018
  * @since 0.2.0
  */
 @Singleton
@@ -100,32 +100,21 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
             final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
-
             final Set<String> requisiteAtUserPermissions = new HashSet<>();
             requisiteAtUserPermissions.add(Permission.PERMISSION_ID_C_COMMON_AT_USER);
             final boolean hasAtUserPerm = roleQueryService.userHasPermissions(articleAuthorId, requisiteAtUserPermissions);
             final Set<String> atedUserIds = new HashSet<>();
-
             if (hasAtUserPerm) {
                 // 'At' Notification
                 final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
                 final Set<String> atUserNames = userQueryService.getUserNames(articleContent);
                 atUserNames.remove(articleAuthorName); // Do not notify the author itself
-
                 for (final String userName : atUserNames) {
                     final JSONObject user = userQueryService.getUserByName(userName);
-
-                    if (null == user) {
-                        LOGGER.log(Level.WARN, "Not found user by name [{0}]", userName);
-
-                        continue;
-                    }
-
                     final JSONObject requestJSONObject = new JSONObject();
                     final String atedUserId = user.optString(Keys.OBJECT_ID);
                     requestJSONObject.put(Notification.NOTIFICATION_USER_ID, atedUserId);
                     requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
-
                     notificationMgmtService.addAtNotification(requestJSONObject);
 
                     atedUserIds.add(atedUserId);
@@ -141,19 +130,16 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
                     && !StringUtils.containsIgnoreCase(tags, Symphonys.get("systemAnnounce"))) {
                 final JSONObject followerUsersResult = followQueryService.getFollowerUsers(
                         UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleAuthorId, 1, Integer.MAX_VALUE);
-
                 final List<JSONObject> followerUsers = (List<JSONObject>) followerUsersResult.opt(Keys.RESULTS);
                 for (final JSONObject followerUser : followerUsers) {
                     final JSONObject requestJSONObject = new JSONObject();
                     final String followerUserId = followerUser.optString(Keys.OBJECT_ID);
-
                     if (atedUserIds.contains(followerUserId)) {
                         continue;
                     }
 
                     requestJSONObject.put(Notification.NOTIFICATION_USER_ID, followerUserId);
                     requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
-
                     notificationMgmtService.addFollowingUserNotification(requestJSONObject);
                 }
             }
@@ -164,23 +150,18 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
             if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == originalArticle.optInt(Article.ARTICLE_TYPE)
                     && Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)) {
                 final String city = originalArticle.optString(Article.ARTICLE_CITY);
-
                 if (StringUtils.isNotBlank(city)) {
                     final JSONObject requestJSONObject = new JSONObject();
                     requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
                     requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, Integer.MAX_VALUE);
                     requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, Integer.MAX_VALUE);
-
                     final long latestLoginTime = DateUtils.addDays(new Date(), -15).getTime();
                     requestJSONObject.put(UserExt.USER_LATEST_LOGIN_TIME, latestLoginTime);
                     requestJSONObject.put(UserExt.USER_CITY, city);
-
                     final JSONObject result = userQueryService.getUsersByCity(requestJSONObject);
                     final JSONArray users = result.optJSONArray(User.USERS);
-
                     for (int i = 0; i < users.length(); i++) {
                         final String userId = users.optJSONObject(i).optString(Keys.OBJECT_ID);
-
                         if (userId.equals(articleAuthorId)) {
                             continue;
                         }
@@ -188,7 +169,6 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
                         final JSONObject notification = new JSONObject();
                         notification.put(Notification.NOTIFICATION_USER_ID, userId);
                         notification.put(Notification.NOTIFICATION_DATA_ID, articleId);
-
                         notificationMgmtService.addBroadcastNotification(notification);
                     }
 
@@ -203,14 +183,11 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
                 final JSONObject result = userQueryService.getLatestLoggedInUsers(
                         latestLoginTime, 1, Integer.MAX_VALUE, Integer.MAX_VALUE);
                 final JSONArray users = result.optJSONArray(User.USERS);
-
                 for (int i = 0; i < users.length(); i++) {
                     final String userId = users.optJSONObject(i).optString(Keys.OBJECT_ID);
-
                     final JSONObject notification = new JSONObject();
                     notification.put(Notification.NOTIFICATION_USER_ID, userId);
                     notification.put(Notification.NOTIFICATION_DATA_ID, articleId);
-
                     notificationMgmtService.addSysAnnounceArticleNotification(notification);
                 }
 
