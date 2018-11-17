@@ -28,12 +28,16 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
+import org.b3log.symphony.service.RoleQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -41,7 +45,7 @@ import java.util.Set;
  * Sends article update related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Jan 30, 2018
+ * @version 1.0.0.4, Nov 17, 2018
  * @since 2.0.0
  */
 @Singleton
@@ -51,6 +55,12 @@ public class ArticleUpdateNotifier extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleUpdateNotifier.class);
+
+    /**
+     * Notification repository.
+     */
+    @Inject
+    private NotificationRepository notificationRepository;
 
     /**
      * Notification management service.
@@ -76,6 +86,12 @@ public class ArticleUpdateNotifier extends AbstractEventListener<JSONObject> {
     @Inject
     private LangPropsService langPropsService;
 
+    /**
+     * Role query service.
+     */
+    @Inject
+    private RoleQueryService roleQueryService;
+
     @Override
     public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
@@ -94,7 +110,25 @@ public class ArticleUpdateNotifier extends AbstractEventListener<JSONObject> {
             final Set<String> atUserNames = userQueryService.getUserNames(articleContent);
             atUserNames.remove(articleAuthorName); // Do not notify the author itself
 
-            final String tags = originalArticle.optString(Article.ARTICLE_TAGS);
+            final Set<String> requisiteAtUserPermissions = new HashSet<>();
+            requisiteAtUserPermissions.add(Permission.PERMISSION_ID_C_COMMON_AT_USER);
+            final boolean hasAtUserPerm = roleQueryService.userHasPermissions(articleAuthorId, requisiteAtUserPermissions);
+            final Set<String> atedUserIds = new HashSet<>();
+            if (hasAtUserPerm) {
+                // 'At' Notification
+                for (final String userName : atUserNames) {
+                    final JSONObject user = userQueryService.getUserByName(userName);
+                    final JSONObject requestJSONObject = new JSONObject();
+                    final String atedUserId = user.optString(Keys.OBJECT_ID);
+                    if (!notificationRepository.hasSentByDataIdAndType(atedUserId, articleId, Notification.DATA_TYPE_C_AT)) {
+                        requestJSONObject.put(Notification.NOTIFICATION_USER_ID, atedUserId);
+                        requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
+                        notificationMgmtService.addAtNotification(requestJSONObject);
+                    }
+
+                    atedUserIds.add(atedUserId);
+                }
+            }
 
             // 'following - article update' Notification
             final JSONObject followerUsersResult =
