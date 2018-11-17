@@ -47,7 +47,7 @@ import java.util.Set;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.12.4, Jul 31, 2018
+ * @version 1.7.12.5, Nov 17, 2018
  * @since 0.2.0
  */
 @Singleton
@@ -264,7 +264,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                         final JSONObject requestJSONObject = new JSONObject();
                         requestJSONObject.put(Notification.NOTIFICATION_USER_ID, participantId);
                         requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
-
                         notificationMgmtService.addAtNotification(requestJSONObject);
                     }
 
@@ -303,7 +302,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 final JSONObject requestJSONObject = new JSONObject();
                 requestJSONObject.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
                 requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
-
                 notificationMgmtService.addCommentedNotification(requestJSONObject);
             }
 
@@ -314,7 +312,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                     final JSONObject requestJSONObject = new JSONObject();
                     requestJSONObject.put(Notification.NOTIFICATION_USER_ID, originalCmtAuthorId);
                     requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
-
                     notificationMgmtService.addReplyNotification(requestJSONObject);
 
                     repliedIds.add(originalCmtAuthorId);
@@ -337,7 +334,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                     }
 
                     final JSONObject user = userQueryService.getUserByName(userName);
-
                     if (null == user) {
                         LOGGER.log(Level.WARN, "Not found user by name [{0}]", userName);
 
@@ -356,28 +352,28 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                     final JSONObject requestJSONObject = new JSONObject();
                     requestJSONObject.put(Notification.NOTIFICATION_USER_ID, userId);
                     requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
-
                     notificationMgmtService.addAtNotification(requestJSONObject);
 
                     atIds.add(userId);
                 }
             }
 
-            // 5. 'following - article comment' Notification
-            for (final String userId : watcherIds) {
-                final JSONObject watcher = userRepository.get(userId);
-                final String watcherName = watcher.optString(User.USER_NAME);
+            if (64 <= StringUtils.length(commentContent)) {
+                // 5. 'following - article comment' Notification
+                for (final String userId : watcherIds) {
+                    final JSONObject watcher = userRepository.get(userId);
+                    final String watcherName = watcher.optString(User.USER_NAME);
+                    if ((isDiscussion && !articleContentAtUserNames.contains(watcherName)) || commenterName.equals(watcherName)
+                            || repliedIds.contains(userId) || atIds.contains(userId)) {
+                        continue;
+                    }
 
-                if ((isDiscussion && !articleContentAtUserNames.contains(watcherName)) || commenterName.equals(watcherName)
-                        || repliedIds.contains(userId) || atIds.contains(userId)) {
-                    continue;
+                    final JSONObject requestJSONObject = new JSONObject();
+                    requestJSONObject.put(Notification.NOTIFICATION_USER_ID, userId);
+                    requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
+
+                    notificationMgmtService.addFollowingArticleCommentNotification(requestJSONObject);
                 }
-
-                final JSONObject requestJSONObject = new JSONObject();
-                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, userId);
-                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
-
-                notificationMgmtService.addFollowingArticleCommentNotification(requestJSONObject);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the comment notification failed", e);
