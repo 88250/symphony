@@ -17,22 +17,32 @@
  */
 package org.b3log.symphony.event;
 
+import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.service.LangPropsService;
-import org.b3log.symphony.service.ShortLinkQueryService;
+import org.b3log.latke.model.User;
+import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.Permission;
+import org.b3log.symphony.repository.NotificationRepository;
+import org.b3log.symphony.service.NotificationMgmtService;
+import org.b3log.symphony.service.RoleQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Sends comment update related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 30, 2018
+ * @version 1.0.0.2, Nov 17, 2018
  * @since 2.1.0
  */
 @Singleton
@@ -44,10 +54,16 @@ public class CommentUpdateNotifier extends AbstractEventListener<JSONObject> {
     private static final Logger LOGGER = Logger.getLogger(CommentUpdateNotifier.class);
 
     /**
-     * Language service.
+     * Notification repository.
      */
     @Inject
-    private LangPropsService langPropsService;
+    private NotificationRepository notificationRepository;
+
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
 
     /**
      * User query service.
@@ -56,15 +72,60 @@ public class CommentUpdateNotifier extends AbstractEventListener<JSONObject> {
     private UserQueryService userQueryService;
 
     /**
-     * Short link query service.
+     * Role query service.
      */
     @Inject
-    private ShortLinkQueryService shortLinkQueryService;
+    private RoleQueryService roleQueryService;
 
     @Override
     public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
         LOGGER.log(Level.TRACE, "Processing an event [type={0}, data={1}]", event.getType(), data);
+
+        try {
+            final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
+            final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
+            final String commentId = originalComment.optString(Keys.OBJECT_ID);
+            final String commenterId = originalComment.optString(Comment.COMMENT_AUTHOR_ID);
+            final String commentContent = originalComment.optString(Comment.COMMENT_CONTENT);
+            final JSONObject commenter = userQueryService.getUser(commenterId);
+            final String commenterName = commenter.optString(User.USER_NAME);
+            final Set<String> atUserNames = userQueryService.getUserNames(commentContent);
+            atUserNames.remove(commenterName);
+            final boolean isDiscussion = originalArticle.optInt(Article.ARTICLE_TYPE) == Article.ARTICLE_TYPE_C_DISCUSSION;
+            final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
+            final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
+            final Set<String> articleContentAtUserNames = userQueryService.getUserNames(articleContent);
+            final Set<String> requisiteAtUserPermissions = new HashSet<>();
+            requisiteAtUserPermissions.add(Permission.PERMISSION_ID_C_COMMON_AT_USER);
+            final boolean hasAtUserPerm = roleQueryService.userHasPermissions(commenterId, requisiteAtUserPermissions);
+            final Set<String> atIds = new HashSet<>();
+            if (hasAtUserPerm) {
+                // 'At' Notification
+                for (final String userName : atUserNames) {
+                    if (isDiscussion && !articleContentAtUserNames.contains(userName)) {
+                        continue;
+                    }
+
+                    final JSONObject atUser = userQueryService.getUserByName(userName);
+                    if (atUser.optString(Keys.OBJECT_ID).equals(articleAuthorId)) {
+                        continue; // Has notified in step 2
+                    }
+
+                    final String atUserId = atUser.optString(Keys.OBJECT_ID);
+                    if (!notificationRepository.hasSentByDataIdAndType(atUserId, commentId, Notification.DATA_TYPE_C_AT)) {
+                        final JSONObject requestJSONObject = new JSONObject();
+                        requestJSONObject.put(Notification.NOTIFICATION_USER_ID, atUserId);
+                        requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
+                        notificationMgmtService.addAtNotification(requestJSONObject);
+                    }
+
+                    atIds.add(atUserId);
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Sends the comment update notification failed", e);
+        }
     }
 
     /**
