@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.73.0.1, Sep 14, 2018
+ * @version 1.73.0.2, Nov 18, 2018
  * @since 0.2.0
  */
 public final class Common {
@@ -67,11 +67,6 @@ public final class Common {
     public static final String DATA = "data";
 
     /**
-     * Key of ISBN.
-     */
-    public static final String ISBN = "ISBN";
-
-    /**
      * Key of mans.
      */
     public static final String MANS = "mans";
@@ -95,16 +90,6 @@ public final class Common {
      * Key of requisite message.
      */
     public static final String REQUISITE_MSG = "requisiteMsg";
-
-    /**
-     * Key of following user articles.
-     */
-    public static final String FOLLOWING_USER_ARTICLES = "followingUserArticles";
-
-    /**
-     * Key of following tag articles.
-     */
-    public static final String FOLLOWING_TAG_ARTICLES = "followingTagArticles";
 
     /**
      * Key of command.
@@ -142,19 +127,9 @@ public final class Common {
     public static final String NAME = "name";
 
     /**
-     * Key of language.
-     */
-    public static final String LANGUAGE = "language";
-
-    /**
      * Key of languages.
      */
     public static final String LANGUAGES = "languages";
-
-    /**
-     * Key of timezone.
-     */
-    public static final String TIMEZONE = "timezone";
 
     /**
      * Key of timezones.
@@ -165,11 +140,6 @@ public final class Common {
      * Key of selected.
      */
     public static final String SELECTED = "selected";
-
-    /**
-     * Key of last modified.
-     */
-    public static final String LAST_MOD = "lastModified";
 
     /**
      * Key of invited user count.
@@ -312,11 +282,6 @@ public final class Common {
     public static final String PROVINCE = "province";
 
     /**
-     * Key of new user.
-     */
-    public static final String NEW_USER = "newUser";
-
-    /**
      * Key of is reserved.
      */
     public static final String IS_RESERVED = "isReserved";
@@ -325,16 +290,6 @@ public final class Common {
      * Key of data id.
      */
     public static final String DATA_ID = "dataId";
-
-    /**
-     * Key of data title.
-     */
-    public static final String DATA_TITLE = "dataTitle";
-
-    /**
-     * Key of data link.
-     */
-    public static final String DATA_LINK = "dataLink";
 
     /**
      * Key of memo.
