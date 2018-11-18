@@ -49,14 +49,14 @@ import java.util.Map;
 /**
  * Tag processor.
  * <ul>
- * <li>Shows tags wall (/tags), GET</li>
- * <li>Shows tag articles (/tag/{tagTitle}), GET</li>
+ * <li>Shows the tags wall (/tags), GET</li>
+ * <li>Show tag articles (/tag/{tagURI}), GET</li>
  * <li>Query tags (/tags/query), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.13, Jun 6, 2018
+ * @version 1.7.0.14, Nov 18, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -155,7 +155,7 @@ public class TagProcessor {
     }
 
     /**
-     * Shows tag articles.
+     * Show tag articles.
      *
      * @param context  the specified context
      * @param request  the specified request
@@ -194,13 +194,9 @@ public class TagProcessor {
 
             return;
         }
-
         tag.put(Common.IS_RESERVED, tagQueryService.isReservedTag(tag.optString(Tag.TAG_TITLE)));
-
         dataModel.put(Tag.TAG, tag);
-
         final String tagId = tag.optString(Keys.OBJECT_ID);
-
         final List<JSONObject> relatedTags = tagQueryService.getRelatedTags(tagId, Symphonys.getInt("tagRelatedTagsCnt"));
         tag.put(Tag.TAG_T_RELATED_TAGS, (Object) relatedTags);
 
@@ -214,7 +210,6 @@ public class TagProcessor {
         }
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
         String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/tag/" + tagURI);
         int sortMode;
         switch (sortModeStr) {
@@ -242,16 +237,12 @@ public class TagProcessor {
                 sortMode = 0;
         }
 
-        final List<JSONObject> articles = articleQueryService.getArticlesByTag(avatarViewMode, sortMode, tag,
-                pageNum, pageSize);
+        final List<JSONObject> articles = articleQueryService.getArticlesByTag(avatarViewMode, sortMode, tag, pageNum, pageSize);
         dataModel.put(Article.ARTICLES, articles);
-
         final JSONObject tagCreator = tagQueryService.getCreator(avatarViewMode, tagId);
-
         tag.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, tagCreator.optString(Tag.TAG_T_CREATOR_THUMBNAIL_URL));
         tag.put(Tag.TAG_T_CREATOR_NAME, tagCreator.optString(Tag.TAG_T_CREATOR_NAME));
-        tag.put(Tag.TAG_T_PARTICIPANTS, (Object) tagQueryService.getParticipants(
-                avatarViewMode, tagId, Symphonys.getInt("tagParticipantsCnt")));
+        tag.put(Tag.TAG_T_PARTICIPANTS, (Object) tagQueryService.getParticipants(avatarViewMode, tagId, Symphonys.getInt("tagParticipantsCnt")));
 
         final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_CNT);
         final int pageCount = (int) Math.ceil(tagRefCnt / (double) pageSize);
