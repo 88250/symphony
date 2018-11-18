@@ -472,11 +472,6 @@ public final class Common {
     public static final String TYPE = "type";
 
     /**
-     * Key of activity.
-     */
-    public static final String ACTIVITY = "activity";
-
-    /**
      * Key of recent articles.
      */
     public static final String RECENT_ARTICLES = "recentArticles";
@@ -505,11 +500,6 @@ public final class Common {
      * Key of watching breezemoons.
      */
     public static final String WATCHING_BREEZEMOONS = "watchingBreezemoons";
-
-    /**
-     * Key of hot articles.
-     */
-    public static final String HOT_ARTICLES = "hotArticles";
 
     /**
      * Key of hot.
@@ -712,21 +702,6 @@ public final class Common {
     public static final String AUTHOR_NAME = "authorName";
 
     /**
-     * Key of author email.
-     */
-    public static final String AUTHOR_EMAIL = "authorEmail";
-
-    /**
-     * Key of author URL.
-     */
-    public static final String AUTHOR_URL = "authorURL";
-
-    /**
-     * Key of author avatar URL.
-     */
-    public static final String AUTHOR_AVATAR_URL = "authorAvatarURL";
-
-    /**
      * Key of UA.
      */
     public static final String UA = "ua";
@@ -735,16 +710,6 @@ public final class Common {
      * Key of IP.
      */
     public static final String IP = "ip";
-
-    /**
-     * Key of content HTML.
-     */
-    public static final String CONTENT_HTML = "contentHTML";
-
-    /**
-     * Key of is article author.
-     */
-    public static final String IS_ARTICLE_AUTHOR = "isArticleAuthor";
 
     /**
      * Key of content.
@@ -842,11 +807,6 @@ public final class Common {
     public static final String DB_CONN_CNT = "dbConnCnt";
 
     /**
-     * Key of symphony key.
-     */
-    public static final String SYMPHONY_KEY = "symphonyKey";
-
-    /**
      * Key of article comments page size.
      */
     public static final String ARTICLE_COMMENTS_PAGE_SIZE = "articleCommentsPageSize";
@@ -895,11 +855,6 @@ public final class Common {
      * Key of balance.
      */
     public static final String BALANCE = "balance";
-
-    /**
-     * Key of plus.
-     */
-    public static final String PLAUS = "plus";
 
     /**
      * Key of referral.
