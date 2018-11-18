@@ -28,7 +28,7 @@ import java.io.IOException;
  * Tesseract-OCR utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 8, 2016
+ * @version 1.0.0.1, Nov 18, 2018
  * @since 1.4.0
  */
 public final class Tesseracts {
@@ -45,7 +45,7 @@ public final class Tesseracts {
         try {
             return StringUtils.trim(IOUtils.toString(new FileInputStream(imagePath + ".txt"), "UTF-8"));
         } catch (final IOException e) {
-            return null;
+            return "";
         }
     }
 
