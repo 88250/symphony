@@ -692,11 +692,6 @@ public final class Common {
     public static final String UNREAD_FOLLOWING_NOTIFICATION_CNT = "unreadFollowingNotificationCnt";
 
     /**
-     * Key of follower user count.
-     */
-    public static final String FOLLOWER_USER_CNT = "followerUserCnt";
-
-    /**
      * Key of following user count.
      */
     public static final String FOLLOWING_USER_CNT = "followingUserCnt";
