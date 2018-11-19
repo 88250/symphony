@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.40.0.6, Nov 5, 2018",
+  "version": "4.40.0.7, Nov 19, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -158,7 +158,7 @@
         {
           "name": "breezemoonUA",
           "type": "String",
-          "length": "255",
+          "length": 255,
           "description": "User-Agent"
         },
         {
@@ -985,7 +985,7 @@
         {
           "name": "commentAudioURL",
           "type": "String",
-          "length": 256,
+          "length": 255,
           "description": "回帖语音文件 URL"
         },
         {
@@ -1766,7 +1766,7 @@
         {
           "name": "articleAudioURL",
           "type": "String",
-          "length": 256,
+          "length": 255,
           "description": "帖子语音文件 URL"
         },
         {
