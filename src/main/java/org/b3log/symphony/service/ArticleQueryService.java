@@ -48,7 +48,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
-import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
@@ -411,7 +410,7 @@ public class ArticleQueryService {
                 return null;
             }
 
-            final String title = Encode.forHtml(ret.optString(Article.ARTICLE_TITLE));
+            final String title = Escapes.escapeHTML(ret.optString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
             ret.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, EmojiParser.parseToUnicode(title));
 
@@ -459,7 +458,7 @@ public class ArticleQueryService {
                 return null;
             }
 
-            final String title = Encode.forHtml(ret.optString(Article.ARTICLE_TITLE));
+            final String title = Escapes.escapeHTML(ret.optString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
             ret.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, EmojiParser.parseToUnicode(title));
 
@@ -1670,7 +1669,7 @@ public class ArticleQueryService {
             article.put(Article.ARTICLE_CONTENT, content);
         }
 
-        final String title = Encode.forHtml(article.optString(Article.ARTICLE_TITLE));
+        final String title = Escapes.escapeHTML(article.optString(Article.ARTICLE_TITLE));
         article.put(Article.ARTICLE_TITLE, title);
 
         article.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));

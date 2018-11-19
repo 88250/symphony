@@ -38,7 +38,6 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.owasp.encoder.Encode;
 
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
@@ -128,7 +127,7 @@ public class CommentQueryService {
             if (null == article) {
                 return null;
             }
-            String title = Encode.forHtml(article.optString(Article.ARTICLE_TITLE));
+            String title = Escapes.escapeHTML(article.optString(Article.ARTICLE_TITLE));
             title = Emotions.convert(title);
             final int commentPage = getCommentPage(articleId, commentId, sortMode, pageSize);
 

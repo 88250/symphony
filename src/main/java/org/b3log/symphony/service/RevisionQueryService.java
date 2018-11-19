@@ -29,10 +29,10 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Revision;
 import org.b3log.symphony.repository.RevisionRepository;
+import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Markdowns;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.owasp.encoder.Encode;
 
 import java.util.Collections;
 import java.util.List;
@@ -107,7 +107,7 @@ public class RevisionQueryService {
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(revisionRepository.get(query).optJSONArray(Keys.RESULTS));
             for (final JSONObject rev : ret) {
                 final JSONObject data = new JSONObject(rev.optString(Revision.REVISION_DATA));
-                final String articleTitle = Encode.forHtml(data.optString(Article.ARTICLE_TITLE));
+                final String articleTitle = Escapes.escapeHTML(data.optString(Article.ARTICLE_TITLE));
                 data.put(Article.ARTICLE_TITLE, articleTitle);
 
                 String articleContent = data.optString(Article.ARTICLE_CONTENT);

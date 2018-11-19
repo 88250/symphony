@@ -32,7 +32,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Report;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
@@ -40,11 +39,11 @@ import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.ReportRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.owasp.encoder.Encode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -180,7 +179,7 @@ public class ReportQueryService {
                         report.put(Report.REPORT_T_DATA_TYPE_STR, langPropsService.get("articleLabel"));
                         final JSONObject article = articleRepository.get(dataId);
                         if (null != article) {
-                            final String title = Encode.forHtml(article.optString(Article.ARTICLE_TITLE));
+                            final String title = Escapes.escapeHTML(article.optString(Article.ARTICLE_TITLE));
                             reportData = "<a href=\"" + Latkes.getServePath() + "/article/" + article.optString(Keys.OBJECT_ID) +
                                     "\" target=\"_blank\">" + Emotions.convert(title) + "</a>";
                         }
@@ -190,9 +189,6 @@ public class ReportQueryService {
                         report.put(Report.REPORT_T_DATA_TYPE_STR, langPropsService.get("cmtLabel"));
                         final JSONObject comment = commentRepository.get(dataId);
                         if (null != comment) {
-                            final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
-                            final JSONObject cmtArticle = articleRepository.get(articleId);
-                            final String title = Encode.forHtml(cmtArticle.optString(Article.ARTICLE_TITLE));
                             final String commentId = comment.optString(Keys.OBJECT_ID);
                             final int cmtViewMode = UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME;
                             reportData = commentQueryService.getCommentURL(commentId, cmtViewMode, Symphonys.getInt("articleCommentsPageSize"));
