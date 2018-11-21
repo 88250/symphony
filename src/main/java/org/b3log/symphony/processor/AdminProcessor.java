@@ -353,6 +353,7 @@ public class AdminProcessor {
     /**
      * Makes a report as ignored .
      *
+     * @param request  the specified request
      * @param response the specified response
      * @param reportId the specified report id
      * @throws Exception exception
@@ -360,8 +361,9 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/report/ignore/{reportId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void makeReportIgnored(final HttpServletResponse response, final String reportId) throws Exception {
+    public void makeReportIgnored(final HttpServletRequest request, final HttpServletResponse response, final String reportId) throws Exception {
         reportMgmtService.makeReportIgnored(reportId);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_MAKE_REPORT_IGNORED, reportId));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/reports");
     }
@@ -369,6 +371,7 @@ public class AdminProcessor {
     /**
      * Makes a report as handled .
      *
+     * @param request  the specified request
      * @param response the specified response
      * @param reportId the specified report id
      * @throws Exception exception
@@ -376,8 +379,9 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/report/{reportId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void makeReportHandled(final HttpServletResponse response, final String reportId) throws Exception {
+    public void makeReportHandled(final HttpServletRequest request, final HttpServletResponse response, final String reportId) throws Exception {
         reportMgmtService.makeReportHandled(reportId);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_MAKE_REPORT_HANDLED, reportId));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/reports");
     }
@@ -449,7 +453,10 @@ public class AdminProcessor {
             return;
         }
 
+        final JSONObject role = roleQueryService.getRole(roleId);
+        final String roleName = role.optString(Role.ROLE_NAME);
         roleMgmtService.removeRole(roleId);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_ROLE, roleName));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/roles");
     }
@@ -563,6 +570,7 @@ public class AdminProcessor {
         }
 
         breezemoonMgmtService.updateBreezemoon(breezemoon);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_BREEZEMOON, breezemoonId));
 
         breezemoon = breezemoonQueryService.getBreezemoon(breezemoonId);
         dataModel.put(Breezemoon.BREEZEMOON, breezemoon);
@@ -583,6 +591,7 @@ public class AdminProcessor {
     public void removeBreezemoon(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String id = request.getParameter(Common.ID);
         breezemoonMgmtService.removeBreezemoon(id);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_BREEZEMOON, id));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/breezemoons");
     }
@@ -599,6 +608,7 @@ public class AdminProcessor {
         context.renderJSON(true);
 
         tagMgmtService.removeUnusedTags();
+        operationMgmtService.addOperation(Operation.newOperation(context.getRequest(), Operation.OPERATION_CODE_C_REMOVE_UNUSED_TAGS, ""));
     }
 
     /**
@@ -626,6 +636,7 @@ public class AdminProcessor {
         role.put(Role.ROLE_DESCRIPTION, roleDesc);
 
         roleMgmtService.addRole(role);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERAIONT_CODE_C_ADD_ROLE, roleName));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/roles");
     }
@@ -648,6 +659,9 @@ public class AdminProcessor {
         final Set<String> permissionIds = parameterMap.keySet();
 
         roleMgmtService.updateRolePermissions(roleId, permissionIds);
+        final JSONObject role = roleQueryService.getRole(roleId);
+        final String roleName = role.optString(Role.ROLE_NAME);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_ROLE_PERMS, roleName));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/role/" + roleId + "/permissions");
     }
@@ -739,12 +753,12 @@ public class AdminProcessor {
             adOption.put(Keys.OBJECT_ID, Option.ID_C_SIDE_FULL_AD);
             adOption.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_AD);
             adOption.put(Option.OPTION_VALUE, sideFullAd);
-
             optionMgmtService.addOption(adOption);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_ADD_AD_POS, Option.ID_C_SIDE_FULL_AD));
         } else {
             adOption.put(Option.OPTION_VALUE, sideFullAd);
-
             optionMgmtService.updateOption(Option.ID_C_SIDE_FULL_AD, adOption);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_AD_POS, Option.ID_C_SIDE_FULL_AD));
         }
 
         response.sendRedirect(Latkes.getServePath() + "/admin/ad");
@@ -771,12 +785,12 @@ public class AdminProcessor {
             adOption.put(Keys.OBJECT_ID, Option.ID_C_HEADER_BANNER);
             adOption.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_AD);
             adOption.put(Option.OPTION_VALUE, headerBanner);
-
             optionMgmtService.addOption(adOption);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_ADD_AD_POS, Option.ID_C_HEADER_BANNER));
         } else {
             adOption.put(Option.OPTION_VALUE, headerBanner);
-
             optionMgmtService.updateOption(Option.ID_C_HEADER_BANNER, adOption);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_AD_POS, Option.ID_C_HEADER_BANNER));
         }
 
         response.sendRedirect(Latkes.getServePath() + "/admin/ad");
@@ -882,6 +896,7 @@ public class AdminProcessor {
         String tagId;
         try {
             tagId = tagMgmtService.addTag(userId, title);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_ADD_TAG, title));
         } catch (final ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
             context.setRenderer(renderer);
@@ -911,7 +926,7 @@ public class AdminProcessor {
             throws Exception {
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
         articleMgmtService.adminStick(articleId);
-
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_STICK_ARTICLE, articleId));
         response.sendRedirect(Latkes.getServePath() + "/admin/articles");
     }
 
@@ -929,7 +944,7 @@ public class AdminProcessor {
             throws Exception {
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
         articleMgmtService.adminCancelStick(articleId);
-
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_CANCEL_STICK_ARTICLE, articleId));
         response.sendRedirect(Latkes.getServePath() + "/admin/articles");
     }
 
@@ -958,6 +973,7 @@ public class AdminProcessor {
         }
 
         invitecodeMgmtService.adminGenInvitecodes(quantity, memo);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_GENERATE_INVITECODES, quantity + " " + memo));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/invitecodes");
     }
@@ -1058,6 +1074,7 @@ public class AdminProcessor {
         }
 
         invitecodeMgmtService.updateInvitecode(invitecodeId, invitecode);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_INVITECODE, invitecodeId));
 
         invitecode = invitecodeQueryService.getInvitecodeById(invitecodeId);
         dataModel.put(Invitecode.INVITECODE, invitecode);
@@ -1140,7 +1157,8 @@ public class AdminProcessor {
         article.put(Common.TIME, time);
 
         try {
-            articleMgmtService.addArticleByAdmin(article);
+            final String articleId = articleMgmtService.addArticleByAdmin(article);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_ADD_ARTICLE, articleId));
         } catch (final ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
             context.setRenderer(renderer);
@@ -1195,6 +1213,7 @@ public class AdminProcessor {
             reservedWord.put(Option.OPTION_VALUE, word);
 
             optionMgmtService.addOption(reservedWord);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_ADD_RESERVED_WORD, word));
         } catch (final Exception e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
             context.setRenderer(renderer);
@@ -1260,6 +1279,7 @@ public class AdminProcessor {
         }
 
         optionMgmtService.updateOption(id, word);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_RESERVED_WORD, word.optString(Option.OPTION_VALUE)));
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
@@ -1326,6 +1346,9 @@ public class AdminProcessor {
             throws Exception {
         final String id = request.getParameter("id");
         optionMgmtService.removeOption(id);
+        final JSONObject option = optionQueryService.getOption(id);
+        final String word = option.optString(Option.OPTION_VALUE);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_RESERVED_WORD, word));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
     }
@@ -1345,6 +1368,7 @@ public class AdminProcessor {
             throws Exception {
         final String commentId = request.getParameter(Comment.COMMENT_T_ID);
         commentMgmtService.removeCommentByAdmin(commentId);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_COMMENT, commentId));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/comments");
     }
@@ -1364,6 +1388,7 @@ public class AdminProcessor {
             throws Exception {
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
         articleMgmtService.removeArticleByAdmin(articleId);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_ARTICLE, articleId));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/articles");
     }
@@ -1393,7 +1418,6 @@ public class AdminProcessor {
 
         final JSONObject statistic = optionQueryService.getStatistic();
         dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
-
     }
 
     /**
@@ -1544,6 +1568,7 @@ public class AdminProcessor {
             user.put(UserExt.USER_LANGUAGE, admin.optString(UserExt.USER_LANGUAGE));
 
             userId = userMgmtService.addUser(user);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_ADD_USER, userId));
         } catch (final ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
             context.setRenderer(renderer);
@@ -1641,6 +1666,7 @@ public class AdminProcessor {
         }
 
         userMgmtService.updateUser(userId, user);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_USER, userId));
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
@@ -1673,6 +1699,7 @@ public class AdminProcessor {
 
         try {
             userMgmtService.updateUserEmail(userId, user);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_USER_EMAIL, userId));
         } catch (final ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
             context.setRenderer(renderer);
@@ -1716,6 +1743,7 @@ public class AdminProcessor {
 
         try {
             userMgmtService.updateUserName(userId, user);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_USER_NAME, userId));
         } catch (final ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
             context.setRenderer(renderer);
@@ -1761,11 +1789,11 @@ public class AdminProcessor {
 
             final String transferId = pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                     Pointtransfer.TRANSFER_TYPE_C_CHARGE, point, memo, System.currentTimeMillis(), "");
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_CHARGE_POINT, transferId));
 
             final JSONObject notification = new JSONObject();
             notification.put(Notification.NOTIFICATION_USER_ID, userId);
             notification.put(Notification.NOTIFICATION_DATA_ID, transferId);
-
             notificationMgmtService.addPointChargeNotification(notification);
         } catch (final NumberFormatException | ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1820,11 +1848,11 @@ public class AdminProcessor {
 
             final String transferId = pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                     Pointtransfer.TRANSFER_TYPE_C_ABUSE_DEDUCT, point, memo, System.currentTimeMillis(), "");
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_DEDUCT_POINT, transferId));
 
             final JSONObject notification = new JSONObject();
             notification.put(Notification.NOTIFICATION_USER_ID, userId);
             notification.put(Notification.NOTIFICATION_DATA_ID, transferId);
-
             notificationMgmtService.addAbusePointDeductNotification(notification);
         } catch (final Exception e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1868,8 +1896,9 @@ public class AdminProcessor {
             final List<JSONObject> records
                     = pointtransferQueryService.getLatestPointtransfers(userId, Pointtransfer.TRANSFER_TYPE_C_INIT, 1);
             if (records.isEmpty()) {
-                pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId, Pointtransfer.TRANSFER_TYPE_C_INIT,
+                final String transferId = pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId, Pointtransfer.TRANSFER_TYPE_C_INIT,
                         Pointtransfer.TRANSFER_SUM_C_INIT, userId, Long.valueOf(userId), "");
+                operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_INIT_POINT, transferId));
             }
         } catch (final IOException | NumberFormatException | ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1924,11 +1953,11 @@ public class AdminProcessor {
 
             final String transferId = pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                     Pointtransfer.TRANSFER_TYPE_C_EXCHANGE, point, memo, System.currentTimeMillis(), "");
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_EXCHANGE_POINT, transferId));
 
             final JSONObject notification = new JSONObject();
             notification.put(Notification.NOTIFICATION_USER_ID, userId);
             notification.put(Notification.NOTIFICATION_DATA_ID, transferId);
-
             notificationMgmtService.addPointExchangeNotification(notification);
         } catch (final Exception e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -2076,6 +2105,7 @@ public class AdminProcessor {
         article.put(Article.ARTICLE_TAGS, articleTags);
 
         articleMgmtService.updateArticleByAdmin(articleId, article);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_ARTICLE, articleId));
 
         article = articleQueryService.getArticle(articleId);
         dataModel.put(Article.ARTICLE, article);
@@ -2199,6 +2229,7 @@ public class AdminProcessor {
         }
 
         commentMgmtService.updateCommentByAdmin(commentId, comment);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_COMMENT, commentId));
 
         comment = commentQueryService.getComment(commentId);
         dataModel.put(Comment.COMMENT, comment);
@@ -2266,6 +2297,7 @@ public class AdminProcessor {
         for (final JSONObject option : misc) {
             optionMgmtService.updateOption(option.getString(Keys.OBJECT_ID), option);
         }
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_MISC, ""));
 
         misc = optionQueryService.getMisc();
         dataModel.put(Option.OPTIONS, misc);
@@ -2414,6 +2446,7 @@ public class AdminProcessor {
 
         if (oldTitle.equalsIgnoreCase(newTitle)) {
             tagMgmtService.updateTag(tagId, tag);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_TAG, tagId));
         }
 
         tag = tagQueryService.getTag(tagId);
@@ -2542,6 +2575,7 @@ public class AdminProcessor {
 
         if (oldTitle.equalsIgnoreCase(newTitle)) {
             domainMgmtService.updateDomain(domainId, domain);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_DOMAIN, domainId));
         }
 
         domain = domainQueryService.getDomain(domainId);
@@ -2619,6 +2653,7 @@ public class AdminProcessor {
             domain.put(Domain.DOMAIN_STATUS, Domain.DOMAIN_STATUS_C_VALID);
 
             domainId = domainMgmtService.addDomain(domain);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_ADD_DOMAIN, domainId));
         } catch (final ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
             context.setRenderer(renderer);
@@ -2649,6 +2684,7 @@ public class AdminProcessor {
             throws Exception {
         final String domainId = request.getParameter(Domain.DOMAIN_T_ID);
         domainMgmtService.removeDomain(domainId);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_DOMAIN, domainId));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/domains");
     }
@@ -2743,6 +2779,7 @@ public class AdminProcessor {
         domainTag.put(Tag.TAG + "_" + Keys.OBJECT_ID, tagId);
 
         domainMgmtService.addDomainTag(domainTag);
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_ADD_DOMAIN_TAG, domainId));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/domain/" + domainId);
     }
@@ -2783,6 +2820,7 @@ public class AdminProcessor {
         domainTag.put(Tag.TAG + "_" + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
 
         domainMgmtService.removeDomainTag(domainId, tag.optString(Keys.OBJECT_ID));
+        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_DOMAIN_TAG, domainId));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/domain/" + domainId);
     }
@@ -2833,6 +2871,8 @@ public class AdminProcessor {
                 LOGGER.log(Level.ERROR, "Search index failed", e);
             }
         });
+
+        operationMgmtService.addOperation(Operation.newOperation(context.getRequest(), Operation.OPERATION_CODE_C_REBUILD_ARTICLES_SEARCH, ""));
     }
 
     /**
@@ -2849,6 +2889,7 @@ public class AdminProcessor {
         final JSONObject article = articleQueryService.getArticle(articleId);
 
         updateArticleSearchIndex(article);
+        operationMgmtService.addOperation(Operation.newOperation(context.getRequest(), Operation.OPERATION_CODE_C_REBUILD_ARTICLE_SEARCH, articleId));
 
         context.getResponse().sendRedirect(Latkes.getServePath() + "/admin/articles");
     }
