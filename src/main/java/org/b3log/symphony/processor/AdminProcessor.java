@@ -113,12 +113,13 @@ import java.util.*;
  * <li>Adds an role (/admin/role), POST</li>
  * <li>Show reports (/admin/reports), GET</li>
  * <li>Makes a report as handled (/admin/report/{reportId}), GET</li>
+ * <li>Shows audit log (/admin/auditlog), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.29.0.9, Nov 3, 2018
+ * @version 2.30.0.0, Nov 21, 2018
  * @since 1.1.0
  */
 @RequestProcessor
@@ -294,6 +295,60 @@ public class AdminProcessor {
      */
     @Inject
     private ReportQueryService reportQueryService;
+
+    /**
+     * Operation management service.
+     */
+    @Inject
+    private OperationMgmtService operationMgmtService;
+
+    /**
+     * Operation query service.
+     */
+    @Inject
+    private OperationQueryService operationQueryService;
+
+    /**
+     * Shows audit log.
+     *
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/auditlog", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
+    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showAuditlog(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/auditlog.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final int pageNum = Paginator.getPage(request);
+        final int pageSize = PAGE_SIZE;
+        final int windowSize = WINDOW_SIZE;
+
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
+        requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
+
+        final JSONObject result = operationQueryService.getAuditlogs(requestJSONObject);
+        dataModel.put(Operation.OPERATIONS, CollectionUtils.jsonArrayToList(result.optJSONArray(Operation.OPERATIONS)));
+
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
+        final JSONArray pageNums = pagination.optJSONArray(Pagination.PAGINATION_PAGE_NUMS);
+        dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.opt(0));
+        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.opt(pageNums.length() - 1));
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
+
+        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+    }
 
     /**
      * Makes a report as ignored .
