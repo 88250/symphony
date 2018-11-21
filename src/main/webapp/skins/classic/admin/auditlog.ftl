@@ -25,14 +25,11 @@
         <ul class="notification">
             <#list operations as item>
                 <li>
-                    <div class="fn-flex">
-                        <div class="fn-flex-1">
-                            ${item.operationUserName}
-                            ${item.operationContent}
-                            <div class="ft-smaller ft-gray">
-                                ${item.operationTime} • ${item.operationIP} • ${item.operationUA}
-                            </div>
-                        </div>
+                    ${item.operationContent}
+                    <span class="auditlogUA ft-smaller ft-fade" data-ua="${item.operationUA}"></span>
+                    <div class="ft-smaller ft-gray">
+                        ${item.operationUserName}
+                        ${item.operationTime} • ${item.operationIP}
                     </div>
                 </li>
             </#list>

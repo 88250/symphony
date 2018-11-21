@@ -177,6 +177,16 @@
                 });
             }
         </script>
+        <#elseif type == 'auditlog'>
+        <script>
+            $('.auditlogUA').each(function () {
+                var ua = $(this).data('ua'),
+                        name = Util.getDeviceByUa(ua)
+                if (name !== '') {
+                    $(this).html('via ' + name)
+                }
+            })
+        </script>
         </#if>
     </body>
 </html>
