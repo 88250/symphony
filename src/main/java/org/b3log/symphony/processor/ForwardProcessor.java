@@ -34,6 +34,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.LinkMgmtService;
+import org.b3log.symphony.util.Headers;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -48,7 +49,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Aug 29, 2018
+ * @version 1.0.0.3, Nov 21, 2018
  * @since 2.3.0
  */
 @RequestProcessor
@@ -79,6 +80,13 @@ public class ForwardProcessor {
         String to = request.getParameter(Common.GOTO);
         if (StringUtils.isBlank(to)) {
             to = Latkes.getServePath();
+        }
+
+        final String referer = Headers.getHeader(request, "referer", "");
+        if (!StringUtils.startsWith(referer, Latkes.getServePath())) {
+            response.sendRedirect(Latkes.getServePath());
+
+            return;
         }
 
         final String url = to;
