@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.40.0.7, Nov 19, 2018",
+  "version": "4.41.0.0, Nov 19, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -8,6 +8,52 @@
   ],
   "since": "0.2.0",
   "repositories": [
+    {
+      "name": "operation",
+      "description": "关键操作记录表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "operationUserId",
+          "type": "String",
+          "length": 19,
+          "description": "操作用户 id"
+        },
+        {
+          "name": "operationCode",
+          "type": "int",
+          "description": "具体操作码，具体参考 Operation 模型中的操作码常量定义"
+        },
+        {
+          "name": "operationDataId",
+          "type": "String",
+          "length": 255,
+          "description": "操作数据 id"
+        },
+        {
+          "name": "operationCreated",
+          "type": "long",
+          "description": "操作时间"
+        },
+        {
+          "name": "operationIP",
+          "type": "String",
+          "length": 128,
+          "description": "操作 IP"
+        },
+        {
+          "name": "operationUA",
+          "type": "String",
+          "length": 255,
+          "description": "User-Agent"
+        }
+      ]
+    },
     {
       "name": "visit",
       "description": "浏览表 https://github.com/b3log/symphony/issues/687",
