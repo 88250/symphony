@@ -62,7 +62,7 @@
 <script>
     function removeUnusedTags() {
         $.ajax({
-            url: "/admin/tags/remove-unused",
+            url: "${servePath}/admin/tags/remove-unused",
             type: "POST",
             cache: false,
             success: function (result, textStatus) {
