@@ -78,6 +78,9 @@
         <#if type == "reports">
             <@head title="${reportsAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "auditlog">
+            <@head title="${auditlogLabel} - ${symphonyLabel}"></@head>
+        </#if>
         <link rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
     </head>
     <body>
@@ -127,6 +130,9 @@
                                 </#if>
                                 <#if permissions["menuAdminMisc"].permissionGrant>
                                 <a href="${servePath}/admin/misc"<#if type == "misc"> class="current"</#if>>${miscAdminLabel}</a>
+                                </#if>
+                                <#if permissions["menuAdmin"].permissionGrant>
+                                <a href="${servePath}/admin/auditlog"<#if type == "auditlog"> class="current"</#if>>${auditlogLabel}</a>
                                 </#if>
                             </nav>
                         </div>

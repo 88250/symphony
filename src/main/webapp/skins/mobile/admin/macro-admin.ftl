@@ -76,6 +76,9 @@
         <#if type == "reports">
             <@head title="${reportsAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "auditlog">
+            <@head title="${auditlogLabel} - ${symphonyLabel}"></@head>
+        </#if>
     </head>
     <body>
         <#include "../header.ftl">
@@ -122,6 +125,9 @@
                     <#if type == "misc"  && permissions["menuAdminMisc"].permissionGrant>
                     ${miscAdminLabel}
                     </#if>
+                    <#if type == "auditlog"  && permissions["menuAdmin"].permissionGrant>
+                        ${auditlogLabel}
+                    </#if>
                     <svg class="fn-right"><use xlink:href="#chevron-down"></use></svg>
                 </div>
                 <div class="fn-hr5"></div>
@@ -164,6 +170,9 @@
                     </#if>
                     <#if permissions["menuAdminMisc"].permissionGrant>
                     <li<#if type == "misc"> class="fn-none"</#if>><a href="${servePath}/admin/misc">${miscAdminLabel}</a></li>
+                    </#if>
+                    <#if permissions["menuAdmin"].permissionGrant>
+                    <li<#if type == "auditlog"> class="fn-none"</#if>><a href="${servePath}/admin/auditlog">${auditlogLabel}</a></li>
                     </#if>
                 </ul>
             </div>
