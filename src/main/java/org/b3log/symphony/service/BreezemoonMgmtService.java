@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -26,6 +27,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Breezemoon;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.repository.BreezemoonRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONObject;
@@ -34,7 +36,7 @@ import org.json.JSONObject;
  * Breezemoon management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Aug 31, 2018
+ * @version 1.0.0.3, Nov 22, 2018
  * @since 2.8.0
  */
 @Service
@@ -90,7 +92,11 @@ public class BreezemoonMgmtService {
         bm.put(Breezemoon.BREEZEMOON_CONTENT, content);
         bm.put(Breezemoon.BREEZEMOON_AUTHOR_ID, requestJSONObject.optString(Breezemoon.BREEZEMOON_AUTHOR_ID));
         bm.put(Breezemoon.BREEZEMOON_IP, requestJSONObject.optString(Breezemoon.BREEZEMOON_IP));
-        bm.put(Breezemoon.BREEZEMOON_UA, requestJSONObject.optString(Breezemoon.BREEZEMOON_UA));
+        String ua = requestJSONObject.optString(Breezemoon.BREEZEMOON_UA);
+        if (StringUtils.length(ua) > Common.MAX_LENGTH_UA) {
+            ua = StringUtils.substring(ua, 0, Common.MAX_LENGTH_UA);
+        }
+        bm.put(Breezemoon.BREEZEMOON_UA, ua);
         final long now = System.currentTimeMillis();
         bm.put(Breezemoon.BREEZEMOON_CREATED, now);
         bm.put(Breezemoon.BREEZEMOON_UPDATED, now);
@@ -142,7 +148,11 @@ public class BreezemoonMgmtService {
         old.put(Breezemoon.BREEZEMOON_CONTENT, content);
         old.put(Breezemoon.BREEZEMOON_AUTHOR_ID, requestJSONObject.optString(Breezemoon.BREEZEMOON_AUTHOR_ID, old.optString(Breezemoon.BREEZEMOON_AUTHOR_ID)));
         old.put(Breezemoon.BREEZEMOON_IP, requestJSONObject.optString(Breezemoon.BREEZEMOON_IP));
-        old.put(Breezemoon.BREEZEMOON_UA, requestJSONObject.optString(Breezemoon.BREEZEMOON_UA));
+        String ua = requestJSONObject.optString(Breezemoon.BREEZEMOON_UA);
+        if (StringUtils.length(ua) > Common.MAX_LENGTH_UA) {
+            ua = StringUtils.substring(ua, 0, Common.MAX_LENGTH_UA);
+        }
+        old.put(Breezemoon.BREEZEMOON_UA, ua);
         old.put(Breezemoon.BREEZEMOON_STATUS, requestJSONObject.optInt(Breezemoon.BREEZEMOON_STATUS, Breezemoon.BREEZEMOON_STATUS_C_VALID));
         final long now = System.currentTimeMillis();
         old.put(Breezemoon.BREEZEMOON_UPDATED, now);
