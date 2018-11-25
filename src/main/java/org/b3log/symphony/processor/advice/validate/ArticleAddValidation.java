@@ -47,7 +47,7 @@ import java.util.Map;
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.2, Sep 5, 2018
+ * @version 1.3.5.3, Nov 25, 2018
  * @since 0.2.0
  */
 @Singleton
@@ -113,6 +113,11 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
 
         String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
         articleTags = Tag.formatTags(articleTags);
+
+        if (StringUtils.isBlank(articleTags)) {
+            // 发帖时标签改为非必填 https://github.com/b3log/symphony/issues/811
+            articleTags = "待分类";
+        }
 
         if (StringUtils.isBlank(articleTags)) {
             throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("tagsEmptyErrorLabel")));
