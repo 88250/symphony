@@ -48,7 +48,7 @@ import java.util.List;
  * Tag management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.6, Apr 16, 2017
+ * @version 1.3.1.7, Nov 26, 2018
  * @since 1.1.0
  */
 @Service
@@ -132,15 +132,18 @@ public class TagMgmtService {
                         && 0 == domainTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
                         .optJSONArray(Keys.RESULTS).length() // domainTagRefCnt
                 ) {
-                    final JSONArray userTagRels = userTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE)
-                            .optJSONArray(Keys.RESULTS);
-                    if (1 == userTagRels.length()
-                            && Tag.TAG_TYPE_C_CREATOR == userTagRels.optJSONObject(0).optInt(Common.TYPE)) {
-                        // Just the tag's creator but not use it now
-                        tagRepository.remove(tagId);
-                        removedCnt++;
+                    final JSONArray userTagRels = userTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE).optJSONArray(Keys.RESULTS);
+                    if (1 == userTagRels.length() && Tag.TAG_TYPE_C_CREATOR == userTagRels.optJSONObject(0).optInt(Common.TYPE)) {
+                        final String tagTitle = tag.optString(Tag.TAG_TITLE);
 
-                        LOGGER.info("Removed a unused tag [title=" + tag.optString(Tag.TAG_TITLE) + "]");
+                        if (StringUtils.isBlank(tag.optString(Tag.TAG_ICON_PATH)) && StringUtils.isBlank(tag.optString(Tag.TAG_DESCRIPTION))) {
+                            tagRepository.remove(tagId);
+                            removedCnt++;
+
+                            LOGGER.info("Removed a unused tag [title=" + tagTitle + "]");
+                        } else {
+                            LOGGER.info("Found a unused tag [title=" + tagTitle + "], but it has description or icon so do not remove it");
+                        }
                     }
                 }
             }
