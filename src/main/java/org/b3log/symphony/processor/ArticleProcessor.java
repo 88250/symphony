@@ -88,7 +88,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.2.7, Nov 14, 2018
+ * @version 1.27.2.8, Nov 27, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -771,13 +771,22 @@ public class ArticleProcessor {
         stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));
         dataModel.put("stickConfirmLabel", stickConfirmLabel);
         dataModel.put("pointThankArticle", Symphonys.get("pointThankArticle"));
-        final int pageNum = Paginator.getPage(request);
+
+        int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("articleCommentsPageSize");
         final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
-
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_CNT);
         final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
-
+        // 回帖分页 SEO https://github.com/b3log/symphony/issues/813
+        if (UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL == cmtViewMode) {
+            if (pageNum > pageCount) {
+                pageNum = pageCount;
+            }
+        } else {
+            if (pageNum > pageCount) {
+                pageNum = 1;
+            }
+        }
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
