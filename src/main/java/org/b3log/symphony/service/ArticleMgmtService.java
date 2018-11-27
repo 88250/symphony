@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.4.4, Nov 3, 2018
+ * @version 2.18.5.0, Nov 27, 2018
  * @since 0.2.0
  */
 @Service
@@ -327,11 +327,9 @@ public class ArticleMgmtService {
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
         Symphonys.EXECUTOR_SERVICE.submit(() -> {
-            final Transaction transaction = articleRepository.beginTransaction();
-
             try {
                 String audioURL = "";
-                if (StringUtils.length(contentToTTS) < 96 || Runes.getChinesePercent(contentToTTS) < 40) {
+                if (StringUtils.length(contentToTTS) < 128 || Runes.getChinesePercent(contentToTTS) < 40) {
                     LOGGER.trace("Content is too short to TTS [contentToTTS=" + contentToTTS + "]");
                 } else {
                     audioURL = audioMgmtService.tts(contentToTTS, Article.ARTICLE, articleId, authorId);
@@ -344,14 +342,11 @@ public class ArticleMgmtService {
 
                 final JSONObject toUpdate = articleRepository.get(articleId);
                 toUpdate.put(Article.ARTICLE_AUDIO_URL, audioURL);
+                final Transaction transaction = articleRepository.beginTransaction();
                 articleRepository.update(articleId, toUpdate);
                 transaction.commit();
                 LOGGER.debug("Generated article [id=" + articleId + "] audio");
             } catch (final Exception e) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
                 LOGGER.log(Level.ERROR, "Updates article's audio URL failed", e);
             }
         });
