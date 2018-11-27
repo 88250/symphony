@@ -779,7 +779,7 @@ public class ArticleProcessor {
         final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
         // 回帖分页 SEO https://github.com/b3log/symphony/issues/813
         if (UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL == cmtViewMode) {
-            if (pageNum > pageCount) {
+            if (0 < pageCount && pageNum > pageCount) {
                 pageNum = pageCount;
             }
         } else {
