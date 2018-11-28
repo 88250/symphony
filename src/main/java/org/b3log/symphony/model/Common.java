@@ -21,10 +21,15 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.73.0.2, Nov 18, 2018
+ * @version 1.73.0.3, Nov 28, 2018
  * @since 0.2.0
  */
 public final class Common {
+
+    /**
+     * Key of is single breezemoon page URL.
+     */
+    public static final String IS_SINGLE_BREEZEMOON_URL = "isSingleBreezemoonURL";
 
     /**
      * Key of offered.

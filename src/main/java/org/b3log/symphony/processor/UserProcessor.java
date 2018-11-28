@@ -47,10 +47,7 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User processor.
@@ -70,7 +67,7 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.6, Sep 15, 2018
+ * @version 1.27.0.7, Nov 28, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -180,17 +177,18 @@ public class UserProcessor {
     /**
      * Shows user home breezemoons page.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param userName the specified user name
+     * @param context      the specified context
+     * @param request      the specified request
+     * @param response     the specified response
+     * @param userName     the specified user name
+     * @param breezemoonId the specified breezemoon id, may be {@code null}
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/member/{userName}/breezemoons", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/member/{userName}/breezemoons", "/member/{userName}/breezemoons/{breezemoonId}"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeBreezemoons(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                    final String userName) throws Exception {
+                                    final String userName, final String breezemoonId) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -222,25 +220,33 @@ public class UserProcessor {
         }
 
         final JSONObject result = breezemoonQueryService.getBreezemoons(avatarViewMode, currentUserId, followingId, pageNum, pageSize, windowSize);
-        final List<JSONObject> bms = (List<JSONObject>) result.opt(Breezemoon.BREEZEMOONS);
+        List<JSONObject> bms = (List<JSONObject>) result.opt(Breezemoon.BREEZEMOONS);
         dataModel.put(Common.USER_HOME_BREEZEMOONS, bms);
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int recordCount = pagination.optInt(Pagination.PAGINATION_RECORD_COUNT);
         final int pageCount = (int) Math.ceil(recordCount / (double) pageSize);
-
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
             dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
         }
-
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Pagination.PAGINATION_RECORD_COUNT, recordCount);
 
         dataModel.put(Common.TYPE, Breezemoon.BREEZEMOONS);
+
+        if (StringUtils.isNotBlank(breezemoonId)) {
+            dataModel.put(Common.IS_SINGLE_BREEZEMOON_URL, true);
+            final JSONObject breezemoon = breezemoonQueryService.getBreezemoon(breezemoonId);
+            bms = Arrays.asList(breezemoon);
+            breezemoonQueryService.organizeBreezemoons(avatarViewMode, "admin", bms);
+            dataModel.put(Common.USER_HOME_BREEZEMOONS, bms);
+        } else {
+            dataModel.put(Common.IS_SINGLE_BREEZEMOON_URL, false);
+        }
     }
 
     /**

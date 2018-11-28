@@ -45,7 +45,7 @@ import java.util.*;
  * Breezemoon query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Sep 7, 2018
+ * @version 1.0.0.7, Nov 28, 2018
  * @since 2.8.0
  */
 @Service
@@ -315,7 +315,15 @@ public class BreezemoonQueryService {
         }
     }
 
-    private void organizeBreezemoons(final int avatarViewMode, final String currentUserId, final List<JSONObject> breezemoons) throws Exception {
+    /**
+     * Organizes the specified breezemoons with the specified avatar view mode and current user id.
+     *
+     * @param avatarViewMode the specified avatar view mode
+     * @param currentUserId  the specified current user id
+     * @param breezemoons    the specified breezemoons
+     * @throws Exception exception
+     */
+    public void organizeBreezemoons(final int avatarViewMode, final String currentUserId, final List<JSONObject> breezemoons) throws Exception {
         final Iterator<JSONObject> iterator = breezemoons.iterator();
         while (iterator.hasNext()) {
             final JSONObject bm = iterator.next();
