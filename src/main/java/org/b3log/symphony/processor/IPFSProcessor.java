@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  * IPFS(https://ipfs.io) processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Oct 1, 2018
+ * @version 1.0.0.4, Nov 28, 2018
  * @since 2.3.0
  */
 @RequestProcessor
@@ -79,7 +79,7 @@ public class IPFSProcessor {
 
         final long started = System.currentTimeMillis();
         LOGGER.log(Level.INFO, "Adding articles to IPFS");
-        String output = Execs.exec(bin + " add -r " + dir);
+        String output = Execs.exec(bin + " add -r " + dir, 1000 * 60 * 30);
         if (StringUtils.isBlank(output) || !StringUtils.containsIgnoreCase(output, "added")) {
             LOGGER.log(Level.ERROR, "Executes [ipfs add] failed: " + output);
 
@@ -89,7 +89,7 @@ public class IPFSProcessor {
         final String[] lines = output.split("\n");
         final String lastLine = lines[lines.length - 1];
         final String hash = lastLine.split(" ")[1];
-        output = Execs.exec(bin + " name publish " + hash);
+        output = Execs.exec(bin + " name publish " + hash, 1000 * 60 * 30);
         if (StringUtils.isBlank(output) || !StringUtils.containsIgnoreCase(output, "published")) {
             LOGGER.log(Level.ERROR, "Executes [ipfs name publish] failed: " + output);
 
