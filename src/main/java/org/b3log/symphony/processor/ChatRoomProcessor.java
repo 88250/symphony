@@ -67,7 +67,7 @@ import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.16, Oct 21, 2018
+ * @version 1.3.5.17, Nov 28, 2018
  * @since 1.4.0
  */
 @RequestProcessor
@@ -280,11 +280,11 @@ public class ChatRoomProcessor {
 
         context.renderTrueResult();
 
-        currentUser.put(UserExt.USER_LATEST_CMT_TIME, System.currentTimeMillis());
-        currentUser.remove(UserExt.USER_T_POINT_CC);
-        currentUser.remove(UserExt.USER_T_POINT_HEX);
         try {
-            userMgmtService.updateUser(currentUser.optString(Keys.OBJECT_ID), currentUser);
+            final String userId = currentUser.optString(Keys.OBJECT_ID);
+            final JSONObject user = userQueryService.getUser(userId);
+            user.put(UserExt.USER_LATEST_CMT_TIME, System.currentTimeMillis());
+            userMgmtService.updateUser(userId, user);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Update user latest comment time failed", e);
         }
