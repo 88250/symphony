@@ -177,9 +177,8 @@ public class UserMgmtService {
      * @param onlineFlag the specified online flag
      * @param force      the specified force flag to update
      */
+    @Transactional
     public void updateOnlineStatus(final String userId, final String ip, final boolean onlineFlag, final boolean force) {
-        Transaction transaction = null;
-
         try {
             final JSONObject user = userRepository.get(userId);
             if (null == user) {
@@ -206,21 +205,12 @@ public class UserMgmtService {
                 user.put(UserExt.USER_LATEST_LOGIN_IP, ip);
             }
 
-            transaction = userRepository.beginTransaction();
-
             user.put(UserExt.USER_ONLINE_FLAG, onlineFlag);
             user.put(UserExt.USER_LATEST_LOGIN_TIME, now);
             user.put(UserExt.USER_UPDATE_TIME, now);
-
             userRepository.update(userId, user);
-
-            transaction.commit();
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Updates user online status failed [id=" + userId + ", ip=" + ip + ", flag=" + onlineFlag + "]", e);
-
-            if (null != transaction && transaction.isActive()) {
-                transaction.rollback();
-            }
         }
     }
 
