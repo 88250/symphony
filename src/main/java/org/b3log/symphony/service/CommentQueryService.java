@@ -47,7 +47,7 @@ import java.util.concurrent.TimeUnit;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.2.3, Nov 5, 2018
+ * @version 2.12.2.4, Nov 30, 2018
  * @since 0.2.0
  */
 @Service
@@ -663,8 +663,11 @@ public class CommentQueryService {
                     final String commentId = comment.optString(Keys.OBJECT_ID);
 
                     // Fill revision count
-                    comment.put(Comment.COMMENT_REVISION_COUNT,
-                            revisionQueryService.count(commentId, Revision.DATA_TYPE_C_COMMENT));
+                    comment.put(Comment.COMMENT_REVISION_COUNT, 0);
+                    if (Comment.COMMENT_STATUS_C_VALID == comment.optInt(Comment.COMMENT_STATUS)) {
+                        comment.put(Comment.COMMENT_REVISION_COUNT,
+                                revisionQueryService.count(commentId, Revision.DATA_TYPE_C_COMMENT));
+                    }
 
                     final String originalCmtId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
                     if (StringUtils.isBlank(originalCmtId)) {
