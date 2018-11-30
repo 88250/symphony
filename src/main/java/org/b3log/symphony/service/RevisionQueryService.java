@@ -28,10 +28,10 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Revision;
+import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.RevisionRepository;
 import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Markdowns;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Collections;
@@ -41,7 +41,7 @@ import java.util.List;
  * Revision query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Nov 14, 2017
+ * @version 1.0.1.1, Nov 30, 2018
  * @since 2.1.0
  */
 @Service
@@ -59,18 +59,29 @@ public class RevisionQueryService {
     private RevisionRepository revisionRepository;
 
     /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
+
+    /**
      * Gets a comment's revisions.
      *
      * @param commentId the specified comment id
      * @return comment revisions, returns an empty list if not found
      */
     public List<JSONObject> getCommentRevisions(final String commentId) {
-        final Query query = new Query().setFilter(CompositeFilterOperator.and(
-                new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, commentId),
-                new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_COMMENT)
-        )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
-
         try {
+            final JSONObject comment = commentRepository.get(commentId);
+            if (null == comment || Comment.COMMENT_STATUS_C_VALID != comment.optInt(Comment.COMMENT_STATUS)) {
+                return Collections.emptyList();
+            }
+
+            final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, commentId),
+                    new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_COMMENT)
+            )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
+
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(revisionRepository.get(query).optJSONArray(Keys.RESULTS));
             for (final JSONObject rev : ret) {
                 final JSONObject data = new JSONObject(rev.optString(Revision.REVISION_DATA));
@@ -84,7 +95,7 @@ public class RevisionQueryService {
             }
 
             return ret;
-        } catch (final RepositoryException | JSONException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets comment revisions failed", e);
 
             return Collections.emptyList();
@@ -121,7 +132,7 @@ public class RevisionQueryService {
             }
 
             return ret;
-        } catch (final RepositoryException | JSONException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets article revisions failed", e);
 
             return Collections.emptyList();
