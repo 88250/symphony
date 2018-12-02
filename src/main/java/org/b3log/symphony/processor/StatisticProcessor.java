@@ -21,6 +21,8 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -36,7 +38,6 @@ import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,11 +55,16 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.1.1, Jul 27, 2018
+ * @version 1.2.1.2, Dec 2, 2018
  * @since 1.4.0
  */
 @RequestProcessor
 public class StatisticProcessor {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(StatisticProcessor.class);
 
     /**
      * Month days.
@@ -138,79 +144,65 @@ public class StatisticProcessor {
 
     /**
      * Loads statistic data.
-     *
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @param context  the specified HTTP request context
-     * @throws Exception exception
      */
-    @RequestProcessing(value = "/cron/stat", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = StopwatchEndAdvice.class)
-    public void loadStatData(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        final String key = Symphonys.get("keyOfSymphony");
-        if (!key.equals(request.getParameter("key"))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+    public void loadStatData() {
+        try {
+            final Date end = new Date();
+            final Date dayStart = DateUtils.addDays(end, -30);
 
-            return;
-        }
+            monthDays.clear();
+            userCnts.clear();
+            articleCnts.clear();
+            commentCnts.clear();
+            months.clear();
+            historyArticleCnts.clear();
+            historyCommentCnts.clear();
+            historyUserCnts.clear();
 
-        final Date end = new Date();
-        final Date dayStart = DateUtils.addDays(end, -30);
+            for (int i = 0; i < 31; i++) {
+                final Date day = DateUtils.addDays(dayStart, i);
+                monthDays.add(DateFormatUtils.format(day, "yyyy-MM-dd"));
 
-        monthDays.clear();
-        userCnts.clear();
-        articleCnts.clear();
-        commentCnts.clear();
-        months.clear();
-        historyArticleCnts.clear();
-        historyCommentCnts.clear();
-        historyUserCnts.clear();
+                final int userCnt = userQueryService.getUserCntInDay(day);
+                userCnts.add(userCnt);
 
-        for (int i = 0; i < 31; i++) {
-            final Date day = DateUtils.addDays(dayStart, i);
-            monthDays.add(DateFormatUtils.format(day, "yyyy-MM-dd"));
+                final int articleCnt = articleQueryService.getArticleCntInDay(day);
+                articleCnts.add(articleCnt);
 
-            final int userCnt = userQueryService.getUserCntInDay(day);
-            userCnts.add(userCnt);
-
-            final int articleCnt = articleQueryService.getArticleCntInDay(day);
-            articleCnts.add(articleCnt);
-
-            final int commentCnt = commentQueryService.getCommentCntInDay(day);
-            commentCnts.add(commentCnt);
-        }
-
-        final JSONObject firstAdmin = userQueryService.getAdmins().get(0);
-        final long monthStartTime = Times.getMonthStartTime(firstAdmin.optLong(Keys.OBJECT_ID));
-        final Date monthStart = new Date(monthStartTime);
-
-        int i = 1;
-        while (true) {
-            final Date month = DateUtils.addMonths(monthStart, i);
-
-            if (month.after(end)) {
-                break;
+                final int commentCnt = commentQueryService.getCommentCntInDay(day);
+                commentCnts.add(commentCnt);
             }
 
-            i++;
+            final JSONObject firstAdmin = userQueryService.getAdmins().get(0);
+            final long monthStartTime = Times.getMonthStartTime(firstAdmin.optLong(Keys.OBJECT_ID));
+            final Date monthStart = new Date(monthStartTime);
 
-            months.add(DateFormatUtils.format(month, "yyyy-MM"));
+            int i = 1;
+            while (true) {
+                final Date month = DateUtils.addMonths(monthStart, i);
 
-            final int userCnt = userQueryService.getUserCntInMonth(month);
-            historyUserCnts.add(userCnt);
+                if (month.after(end)) {
+                    break;
+                }
 
-            final int articleCnt = articleQueryService.getArticleCntInMonth(month);
-            historyArticleCnts.add(articleCnt);
+                i++;
 
-            final int commentCnt = commentQueryService.getCommentCntInMonth(month);
-            historyCommentCnts.add(commentCnt);
+                months.add(DateFormatUtils.format(month, "yyyy-MM"));
+
+                final int userCnt = userQueryService.getUserCntInMonth(month);
+                historyUserCnts.add(userCnt);
+
+                final int articleCnt = articleQueryService.getArticleCntInMonth(month);
+                historyArticleCnts.add(articleCnt);
+
+                final int commentCnt = commentQueryService.getCommentCntInMonth(month);
+                historyCommentCnts.add(commentCnt);
+            }
+
+            visitMgmtService.expire();
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Loads stat data failed", e);
         }
-
-        visitMgmtService.expire();
-
-        context.renderJSON().renderTrueResult();
     }
 
     /**

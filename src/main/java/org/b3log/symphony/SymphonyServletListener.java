@@ -36,6 +36,7 @@ import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.service.CronMgmtService;
 import org.b3log.symphony.service.InitMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Sessions;
@@ -55,7 +56,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.10.23, Nov 22, 2018
+ * @version 3.19.10.24, Dec 2, 2018
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -127,6 +128,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final DomainCache domainCache = beanManager.getReference(DomainCache.class);
         domainCache.loadDomains();
 
+        final CronMgmtService cronMgmtService = beanManager.getReference(CronMgmtService.class);
+        cronMgmtService.start();
+
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
@@ -138,6 +142,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     public void contextDestroyed(final ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
 
+        Symphonys.SCHEDULED_EXECUTOR_SERVICE.shutdown();
         Symphonys.EXECUTOR_SERVICE.shutdown();
 
         LOGGER.info("Destroyed the context");

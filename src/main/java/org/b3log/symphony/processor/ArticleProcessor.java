@@ -1390,29 +1390,4 @@ public class ArticleProcessor {
 
         context.renderTrueResult().renderMsg(langPropsService.get("stickSuccLabel"));
     }
-
-    /**
-     * Expires a sticked article.
-     *
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @param context  the specified HTTP request context
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/cron/article/stick-expire", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = StopwatchEndAdvice.class)
-    public void expireStickArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        final String key = Symphonys.get("keyOfSymphony");
-        if (!key.equals(request.getParameter("key"))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
-        articleMgmtService.expireStick();
-
-        context.renderJSON().renderTrueResult();
-    }
 }

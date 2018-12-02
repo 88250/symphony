@@ -973,28 +973,6 @@ public class UserProcessor {
     }
 
     /**
-     * Resets unverified users.
-     *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/cron/users/reset-unverified", method = HTTPRequestMethod.GET)
-    public void resetUnverifiedUsers(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final String key = Symphonys.get("keyOfSymphony");
-        if (!key.equals(request.getParameter("key"))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
-        userMgmtService.resetUnverifiedUsers();
-
-        context.renderJSON().renderTrueResult();
-    }
-
-    /**
      * Lists usernames.
      *
      * @param context the specified context
@@ -1048,28 +1026,6 @@ public class UserProcessor {
         final String emotions = emotionQueryService.getEmojis(userId);
 
         context.renderJSONValue("emotions", emotions);
-    }
-
-    /**
-     * Loads usernames.
-     *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/cron/users/load-names", method = HTTPRequestMethod.GET)
-    public void loadUserNames(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final String key = Symphonys.get("keyOfSymphony");
-        if (!key.equals(request.getParameter("key"))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
-        userQueryService.loadUserNames();
-
-        context.renderJSON().renderTrueResult();
     }
 
     /**

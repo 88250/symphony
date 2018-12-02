@@ -45,13 +45,14 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.2, Nov 12, 2018
+ * @version 1.9.0.3, Dec 2, 2018
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -90,6 +91,11 @@ public final class Symphonys {
      * Thread pool.
      */
     public static final ThreadPoolExecutor EXECUTOR_SERVICE = (ThreadPoolExecutor) Executors.newFixedThreadPool(128);
+
+    /**
+     * Cron thread pool.
+     */
+    public static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newScheduledThreadPool(4);
 
     /**
      * Available processors.

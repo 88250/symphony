@@ -33,7 +33,8 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Times;
-import org.b3log.symphony.model.*;
+import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
@@ -47,7 +48,6 @@ import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -142,74 +142,6 @@ public class ChatRoomProcessor {
      */
     @Inject
     private ArticleQueryService articleQueryService;
-
-    /**
-     * XiaoV replies Stm.
-     *
-     * @param context the specified context
-     * @param request the specified request
-     */
-    @RequestProcessing(value = "/cron/xiaov", method = HTTPRequestMethod.GET)
-    public void xiaoVReply(final HTTPRequestContext context, final HttpServletRequest request) {
-        context.renderJSON();
-
-        try {
-            final JSONObject xiaoV = userQueryService.getUserByName(TuringQueryService.ROBOT_NAME);
-            if (null == xiaoV) {
-                return;
-            }
-
-            final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-            final String xiaoVUserId = xiaoV.optString(Keys.OBJECT_ID);
-            final JSONObject atResult = notificationQueryService.getAtNotifications(
-                    avatarViewMode, xiaoVUserId, 1, 1); // Just get the latest one
-            final List<JSONObject> notifications = (List<JSONObject>) atResult.get(Keys.RESULTS);
-            final JSONObject replyResult = notificationQueryService.getReplyNotifications(
-                    avatarViewMode, xiaoVUserId, 1, 1); // Just get the latest one
-            notifications.addAll((List<JSONObject>) replyResult.get(Keys.RESULTS));
-            for (final JSONObject notification : notifications) {
-                if (notification.optBoolean(Notification.NOTIFICATION_HAS_READ)) {
-                    continue;
-                }
-
-                notificationMgmtService.makeRead(notification);
-
-                String articleId = notification.optString(Article.ARTICLE_T_ID);
-                String q = null;
-                final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
-                switch (dataType) {
-                    case Notification.DATA_TYPE_C_AT:
-                        q = notification.optString(Common.CONTENT);
-                        break;
-                    case Notification.DATA_TYPE_C_REPLY:
-                        q = notification.optString(Comment.COMMENT_CONTENT);
-                        break;
-                    default:
-                        LOGGER.warn("Unknown notificat data type [" + dataType + "] for XiaoV reply");
-                }
-
-                String xiaoVSaid;
-                final JSONObject comment = new JSONObject();
-                if (StringUtils.isNotBlank(q)) {
-                    q = Jsoup.parse(q).text();
-                    q = StringUtils.replace(q, "@" + TuringQueryService.ROBOT_NAME + " ", "");
-
-                    xiaoVSaid = turingQueryService.chat(articleId, q);
-
-                    comment.put(Comment.COMMENT_CONTENT, xiaoVSaid);
-                    comment.put(Comment.COMMENT_AUTHOR_ID, xiaoVUserId);
-                    comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
-                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, notification.optString(Comment.COMMENT_T_ID));
-
-                    commentMgmtService.addComment(comment);
-                }
-            }
-
-            context.renderTrueResult();
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Update user latest comment time failed", e);
-        }
-    }
 
     /**
      * Adds a chat message.
