@@ -117,16 +117,15 @@ public class IndexProcessor {
     /**
      * Shows question articles.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = {"/qna", "/qna/unanswered", "/qna/reward", "/qna/hot"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showQnA(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showQnA(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("qna.ftl");
@@ -139,7 +138,7 @@ public class IndexProcessor {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 
             if (!UserExt.finshedGuide(user)) {
-                response.sendRedirect(Latkes.getServePath() + "/guide");
+                context.sendRedirect(Latkes.getServePath() + "/guide");
 
                 return;
             }
@@ -199,16 +198,15 @@ public class IndexProcessor {
     /**
      * Shows watch articles or users.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = {"/watch", "/watch/users"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showWatch(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showWatch(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("watch.ftl");
@@ -221,7 +219,7 @@ public class IndexProcessor {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 
             if (!UserExt.finshedGuide(user)) {
-                response.sendRedirect(Latkes.getServePath() + "/guide");
+                context.sendRedirect(Latkes.getServePath() + "/guide");
 
                 return;
             }
@@ -261,12 +259,15 @@ public class IndexProcessor {
     /**
      * Shows md guide.
      *
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/guide/markdown", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showMDGuide(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showMDGuide(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("other/md-guide.ftl");
@@ -289,14 +290,14 @@ public class IndexProcessor {
     /**
      * Shows index.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = {"", "/"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showIndex(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null != currentUser) {
             // 自定义首页跳转 https://github.com/b3log/symphony/issues/774
@@ -333,16 +334,15 @@ public class IndexProcessor {
     /**
      * Shows recent articles.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = {"/recent", "/recent/hot", "/recent/good", "/recent/reply"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showRecent(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showRecent(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("recent.ftl");
@@ -354,7 +354,7 @@ public class IndexProcessor {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 
             if (!UserExt.finshedGuide(user)) {
-                response.sendRedirect(Latkes.getServePath() + "/guide");
+                context.sendRedirect(Latkes.getServePath() + "/guide");
 
                 return;
             }
@@ -427,16 +427,15 @@ public class IndexProcessor {
     /**
      * Shows hot articles.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/hot", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHotArticles(final HTTPRequestContext context,
-                                final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void showHotArticles(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("hot.ftl");
@@ -470,16 +469,15 @@ public class IndexProcessor {
     /**
      * Shows perfect articles.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/perfect", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showPerfectArticles(final HTTPRequestContext context,
-                                    final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void showPerfectArticles(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("perfect.ftl");
@@ -490,7 +488,7 @@ public class IndexProcessor {
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
             if (!UserExt.finshedGuide(user)) {
-                response.sendRedirect(Latkes.getServePath() + "/guide");
+                context.sendRedirect(Latkes.getServePath() + "/guide");
 
                 return;
             }
@@ -523,30 +521,31 @@ public class IndexProcessor {
     /**
      * Shows about.
      *
-     * @param response the specified response
+     * @param context the specified context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/about", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void showAbout(final HttpServletResponse response) throws Exception {
-        response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-        response.setHeader("Location", "https://hacpai.com/article/1440573175609");
+    public void showAbout(final HTTPRequestContext context) throws Exception {
+        context.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+        context.setHeader("Location", "https://hacpai.com/article/1440573175609");
+        final HttpServletResponse response = context.getResponse();
         response.flushBuffer();
     }
 
     /**
      * Shows b3log.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/b3log", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showB3log(final HTTPRequestContext context,
-                          final HttpServletRequest request, final HttpServletResponse response) {
+    public void showB3log(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("other/b3log.ftl");
@@ -562,14 +561,14 @@ public class IndexProcessor {
     /**
      * Shows kill browser page with the specified context.
      *
-     * @param context  the specified context
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showKillBrowser(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         renderer.setTemplateName("other/kill-browser.ftl");
         context.setRenderer(renderer);

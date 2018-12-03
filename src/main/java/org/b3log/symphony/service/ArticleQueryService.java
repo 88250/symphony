@@ -40,7 +40,6 @@ import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -187,10 +186,8 @@ public class ArticleQueryService {
      *      }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getQuestionArticles(final int avatarViewMode, final int sortMode, final int currentPageNum, final int fetchSize)
-            throws ServiceException {
+    public JSONObject getQuestionArticles(final int avatarViewMode, final int sortMode, final int currentPageNum, final int fetchSize) {
         final JSONObject ret = new JSONObject();
 
         Query query;
@@ -249,7 +246,7 @@ public class ArticleQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles failed", e);
 
-            throw new ServiceException(e);
+            return null;
         } finally {
             Stopwatchs.end();
         }
@@ -289,10 +286,9 @@ public class ArticleQueryService {
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
      * @return following tag articles, returns an empty list if not found
-     * @throws ServiceException service exception
      */
     public List<JSONObject> getFollowingUserArticles(final int avatarViewMode, final String userId,
-                                                     final int currentPageNum, final int pageSize) throws ServiceException {
+                                                     final int currentPageNum, final int pageSize) {
         final List<JSONObject> users = (List<JSONObject>) followQueryService.getFollowingUsers(
                 avatarViewMode, userId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
         if (users.isEmpty()) {
@@ -323,7 +319,7 @@ public class ArticleQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets following user articles failed", e);
 
-            throw new ServiceException(e);
+            return Collections.emptyList();
         } finally {
             Stopwatchs.end();
         }
@@ -343,10 +339,9 @@ public class ArticleQueryService {
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
      * @return following tag articles, returns an empty list if not found
-     * @throws ServiceException service exception
      */
     public List<JSONObject> getFollowingTagArticles(final int avatarViewMode, final String userId,
-                                                    final int currentPageNum, final int pageSize) throws ServiceException {
+                                                    final int currentPageNum, final int pageSize) {
         final List<JSONObject> tags = (List<JSONObject>) followQueryService.getFollowingTags(
                 userId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
         if (tags.isEmpty()) {
@@ -833,7 +828,7 @@ public class ArticleQueryService {
             }
 
             return ret;
-        } catch (final RepositoryException | ServiceException | JSONException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets interests failed", e);
             throw new ServiceException(e);
         }
@@ -848,10 +843,9 @@ public class ArticleQueryService {
      * @param articleFields  the specified article fields to return
      * @param pageSize       the specified page size
      * @return articles, return an empty list if not found
-     * @throws ServiceException service exception
      */
     public List<JSONObject> getArticlesByTags(final int avatarViewMode, final int currentPageNum, final int pageSize,
-                                              final Map<String, Class<?>> articleFields, final JSONObject... tags) throws ServiceException {
+                                              final Map<String, Class<?>> articleFields, final JSONObject... tags) {
         try {
             final List<Filter> filters = new ArrayList<>();
             for (final JSONObject tag : tags) {
@@ -891,7 +885,8 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles by tags [tagLength=" + tags.length + "] failed", e);
-            throw new ServiceException(e);
+
+            return Collections.emptyList();
         }
     }
 
@@ -1478,9 +1473,8 @@ public class ArticleQueryService {
      * @param avatarViewMode the specified avatar view mode
      * @param fetchSize      the specified fetch size
      * @return hot articles, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getHotArticles(final int avatarViewMode, final int fetchSize) throws ServiceException {
+    public List<JSONObject> getHotArticles(final int avatarViewMode, final int fetchSize) {
         final Query query = makeTopQuery(1, fetchSize);
 
         try {
@@ -1517,7 +1511,8 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets index articles failed", e);
-            throw new ServiceException(e);
+
+            return Collections.emptyList();
         }
     }
 
@@ -1541,10 +1536,8 @@ public class ArticleQueryService {
      *      }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getPerfectArticles(final int avatarViewMode, final int currentPageNum, final int fetchSize)
-            throws ServiceException {
+    public JSONObject getPerfectArticles(final int avatarViewMode, final int currentPageNum, final int fetchSize) {
         final Query query = new Query()
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setCurrentPageNum(currentPageNum).setPageSize(fetchSize);
@@ -1560,7 +1553,7 @@ public class ArticleQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles failed", e);
 
-            throw new ServiceException(e);
+            return null;
         } finally {
             Stopwatchs.end();
         }
