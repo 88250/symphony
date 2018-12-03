@@ -636,10 +636,9 @@ public class UserQueryService {
      *      }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getUsersByCity(final JSONObject requestJSONObject) throws ServiceException {
+    public JSONObject getUsersByCity(final JSONObject requestJSONObject)  {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -662,7 +661,7 @@ public class UserQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets users by city error", e);
 
-            throw new ServiceException(e);
+            return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);

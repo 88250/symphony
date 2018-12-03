@@ -904,10 +904,9 @@ public class ArticleQueryService {
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
      * @return articles, return an empty list if not found
-     * @throws ServiceException service exception
      */
     public List<JSONObject> getArticlesByCity(final int avatarViewMode, final String city,
-                                              final int currentPageNum, final int pageSize) throws ServiceException {
+                                              final int currentPageNum, final int pageSize) {
         try {
             final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                     setFilter(new PropertyFilter(Article.ARTICLE_CITY, FilterOperator.EQUAL, city))
@@ -925,7 +924,7 @@ public class ArticleQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles by city [" + city + "] failed", e);
 
-            throw new ServiceException(e);
+            return Collections.emptyList();
         }
     }
 
@@ -1140,7 +1139,7 @@ public class ArticleQueryService {
      * @param request   the specified request
      * @return preview content
      */
-    public String getArticlePreviewContent(final String articleId, final HttpServletRequest request)  {
+    public String getArticlePreviewContent(final String articleId, final HttpServletRequest request) {
         final JSONObject article = getArticle(articleId);
         if (null == article) {
             return null;
@@ -1831,10 +1830,8 @@ public class ArticleQueryService {
      * @param avatarViewMode  the specified avatar view mode
      * @param articles        the specified articles
      * @param participantsCnt the specified generate size
-     * @throws ServiceException service exception
      */
-    public void genParticipants(final int avatarViewMode,
-                                final List<JSONObject> articles, final Integer participantsCnt) throws ServiceException {
+    public void genParticipants(final int avatarViewMode, final List<JSONObject> articles, final Integer participantsCnt) {
         Stopwatchs.start("Generates participants");
         try {
             for (final JSONObject article : articles) {
@@ -1870,10 +1867,8 @@ public class ArticleQueryService {
      *     }, ....
      * ]
      * </pre>, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getArticleLatestParticipants(final int avatarViewMode,
-                                                         final String articleId, final int fetchSize) throws ServiceException {
+    public List<JSONObject> getArticleLatestParticipants(final int avatarViewMode, final String articleId, final int fetchSize) {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId))
                 .addProjection(Keys.OBJECT_ID, String.class)
@@ -1929,7 +1924,8 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets article [" + articleId + "] participants failed", e);
-            throw new ServiceException(e);
+
+            return Collections.emptyList();
         }
     }
 

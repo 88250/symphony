@@ -106,10 +106,9 @@ public class BreezemoonQueryService {
      *      }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
     public JSONObject getFollowingUserBreezemoons(final int avatarViewMode, final String userId,
-                                                  final int page, final int pageSize, final int windowSize) throws ServiceException {
+                                                  final int page, final int pageSize, final int windowSize) {
         final JSONObject ret = new JSONObject();
 
         final List<JSONObject> users = (List<JSONObject>) followQueryService.getFollowingUsers(
@@ -146,7 +145,7 @@ public class BreezemoonQueryService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets following user breezemoons failed", e);
 
-            throw new ServiceException(e);
+            return null;
         } finally {
             Stopwatchs.end();
         }
@@ -181,11 +180,10 @@ public class BreezemoonQueryService {
      *      }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      * @see Pagination
      */
     public JSONObject getBreezemoons(final int avatarViewMode, final String currentUserId, final String authorId,
-                                     final int page, final int pageSize, final int windowSize) throws ServiceException {
+                                     final int page, final int pageSize, final int windowSize) {
         final JSONObject ret = new JSONObject();
         CompositeFilter filter;
         final Filter statusFilter = new PropertyFilter(Breezemoon.BREEZEMOON_STATUS, FilterOperator.EQUAL, Breezemoon.BREEZEMOON_STATUS_C_VALID);
@@ -201,7 +199,7 @@ public class BreezemoonQueryService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get breezemoons failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
@@ -217,7 +215,7 @@ public class BreezemoonQueryService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get breezemoons failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
 
         ret.put(Breezemoon.BREEZEMOONS, (Object) bms);

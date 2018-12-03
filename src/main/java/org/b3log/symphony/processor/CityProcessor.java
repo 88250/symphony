@@ -106,17 +106,16 @@ public class CityProcessor {
     /**
      * Shows city articles.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param city     the specified city
-     * @throws Exception exception
+     * @param context the specified context
+     * @param city    the specified city
      */
     @RequestProcessing(value = {"/city/{city}", "/city/{city}/articles"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showCityArticles(final HTTPRequestContext context,
-                                 final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
+    public void showCityArticles(final HTTPRequestContext context, final String city) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
@@ -139,7 +138,7 @@ public class CityProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (!UserExt.finshedGuide(user)) {
-            response.sendRedirect(Latkes.getServePath() + "/guide");
+            context.sendRedirect(Latkes.getServePath() + "/guide");
 
             return;
         }
@@ -198,16 +197,15 @@ public class CityProcessor {
      * Shows city users.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param city     the specified city
-     * @throws Exception exception
      */
     @RequestProcessing(value = {"/city/{city}/users"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showCityUsers(final HTTPRequestContext context,
-                              final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
+    public void showCityUsers(final HTTPRequestContext context, final String city)  {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
@@ -228,7 +226,7 @@ public class CityProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (!UserExt.finshedGuide(user)) {
-            response.sendRedirect(Latkes.getServePath() + "/guide");
+            context.sendRedirect(Latkes.getServePath() + "/guide");
 
             return;
         }

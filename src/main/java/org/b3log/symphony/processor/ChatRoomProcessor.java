@@ -155,13 +155,13 @@ public class ChatRoomProcessor {
      * </p>
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/chat-room/send", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, ChatMsgAddValidation.class})
-    public synchronized void addChatRoomMsg(final HTTPRequestContext context, final HttpServletRequest request) {
+    public synchronized void addChatRoomMsg(final HTTPRequestContext context) {
         context.renderJSON();
 
+        final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         String content = requestJSONObject.optString(Common.CONTENT);
 
@@ -225,14 +225,15 @@ public class ChatRoomProcessor {
     /**
      * Shows chat room.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/cr", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showChatRoom(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showChatRoom(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("chat-room.ftl");
@@ -264,25 +265,25 @@ public class ChatRoomProcessor {
     /**
      * XiaoV push API.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/community/push", method = HTTPRequestMethod.POST)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public synchronized void receiveXiaoV(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public synchronized void receiveXiaoV(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String key = Symphonys.get("xiaov.key");
         if (!key.equals(request.getParameter("key"))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
 
         final String msg = request.getParameter("msg");
         if (StringUtils.isBlank(msg)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            context.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
             return;
         }

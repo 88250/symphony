@@ -63,14 +63,14 @@ public class ChargeProcessor {
     /**
      * Shows charge point.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/charge/point", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showChargePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showChargePoint(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("charge-point.ftl");

@@ -104,16 +104,15 @@ public class BreezemoonProcessor {
     /**
      * Shows breezemoon page.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/watch/breezemoons", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showWatchBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showWatchBreezemoon(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("breezemoon.ftl");
@@ -127,7 +126,7 @@ public class BreezemoonProcessor {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 
             if (!UserExt.finshedGuide(user)) {
-                response.sendRedirect(Latkes.getServePath() + "/guide");
+                context.sendRedirect(Latkes.getServePath() + "/guide");
 
                 return;
             }
@@ -162,14 +161,15 @@ public class BreezemoonProcessor {
      * </p>
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/breezemoon", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void addBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
+    public void addBreezemoon(final HTTPRequestContext context) {
         context.renderJSON();
 
+        final HttpServletRequest request = context.getRequest();
+        final JSONObject requestJSONObject = context.requestJSON();
         if (isInvalid(context, requestJSONObject)) {
             return;
         }
@@ -211,14 +211,14 @@ public class BreezemoonProcessor {
      * </p>
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/breezemoon/{id}", method = HTTPRequestMethod.PUT)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void updateBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject,
-                                 final String id) {
+    public void updateBreezemoon(final HTTPRequestContext context, final String id) {
         context.renderJSON();
+        final HttpServletRequest request = context.getRequest();
+        final JSONObject requestJSONObject = context.requestJSON();
         if (isInvalid(context, requestJSONObject)) {
             return;
         }
@@ -256,15 +256,14 @@ public class BreezemoonProcessor {
      * Removes a breezemoon.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/breezemoon/{id}", method = HTTPRequestMethod.DELETE)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void removeBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject,
-                                 final String id) {
+    public void removeBreezemoon(final HTTPRequestContext context, final String id) {
         context.renderJSON();
 
+        final HttpServletRequest request = context.getRequest();
         try {
             final JSONObject breezemoon = breezemoonQueryService.getBreezemoon(id);
             if (null == breezemoon) {
