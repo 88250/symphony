@@ -26,7 +26,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionCheck;
@@ -34,7 +33,6 @@ import org.b3log.symphony.service.*;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -107,15 +105,14 @@ public class VoteProcessor {
      * </p>
      *
      * @param context the specified context
-     * @param request the specified request
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/vote/up/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void voteUpComment(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
+    public void voteUpComment(final HTTPRequestContext context) throws Exception {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final HttpServletRequest request = context.getRequest();
+        final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
@@ -162,18 +159,15 @@ public class VoteProcessor {
      * </pre>
      * </p>
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/vote/down/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void voteDownComment(final HTTPRequestContext context, final HttpServletRequest request,
-                                final HttpServletResponse response) throws Exception {
+    public void voteDownComment(final HTTPRequestContext context) {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final HttpServletRequest request = context.getRequest();
+        final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
@@ -221,18 +215,15 @@ public class VoteProcessor {
      * </pre>
      * </p>
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/vote/up/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void voteUpArticle(final HTTPRequestContext context, final HttpServletRequest request,
-                              final HttpServletResponse response) throws Exception {
+    public void voteUpArticle(final HTTPRequestContext context) {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final HttpServletRequest request = context.getRequest();
+        final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
@@ -279,18 +270,15 @@ public class VoteProcessor {
      * </pre>
      * </p>
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/vote/down/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void voteDownArticle(final HTTPRequestContext context, final HttpServletRequest request,
-                                final HttpServletResponse response) throws Exception {
+    public void voteDownArticle(final HTTPRequestContext context) {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final HttpServletRequest request = context.getRequest();
+        final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);

@@ -25,7 +25,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
@@ -105,7 +104,7 @@ public class FollowProcessor {
     public void followUser(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = context.requestJSON();
         final String followingUserId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
@@ -145,7 +144,7 @@ public class FollowProcessor {
     public void unfollowUser(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = context.requestJSON();
         final String followingUserId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
@@ -175,7 +174,7 @@ public class FollowProcessor {
     public void followTag(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = context.requestJSON();
         final String followingTagId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
@@ -205,7 +204,7 @@ public class FollowProcessor {
     public void unfollowTag(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = context.requestJSON();
         final String followingTagId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
@@ -235,7 +234,7 @@ public class FollowProcessor {
     public void followArticle(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = context.requestJSON();
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
@@ -279,7 +278,7 @@ public class FollowProcessor {
     public void unfollowArticle(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = context.requestJSON();
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
@@ -309,7 +308,7 @@ public class FollowProcessor {
     public void watchArticle(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = context.requestJSON();
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
@@ -353,7 +352,7 @@ public class FollowProcessor {
     public void unwatchArticle(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = context.requestJSON();
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);

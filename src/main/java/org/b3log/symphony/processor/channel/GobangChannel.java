@@ -22,7 +22,6 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -205,11 +204,7 @@ public class GobangChannel {
                 LOGGER.debug(jsonObject.optString("message"));
                 final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
                 sendText.put("type", 1);
-                try {
-                    sendText.put("player", userQueryService.getUser(player).optString(User.USER_NAME));
-                } catch (ServiceException e) {
-                    LOGGER.error("service not avaliable");
-                }
+                sendText.put("player", userQueryService.getUser(player).optString(User.USER_NAME));
                 sendText.put("message", jsonObject.optString("message"));
                 SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
                 break;

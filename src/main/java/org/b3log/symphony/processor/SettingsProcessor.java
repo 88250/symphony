@@ -37,7 +37,6 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
-import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.TimeZones;
 import org.b3log.symphony.model.*;
@@ -377,7 +376,7 @@ public class SettingsProcessor {
 
         JSONObject requestJSONObject;
         try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            requestJSONObject = context.requestJSON();
             request.setAttribute(Keys.REQUEST, requestJSONObject);
         } catch (final Exception e) {
             LOGGER.warn(e.getMessage());
@@ -537,7 +536,7 @@ public class SettingsProcessor {
 
         JSONObject requestJSONObject;
         try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            requestJSONObject = context.requestJSON();
             request.setAttribute(Keys.REQUEST, requestJSONObject);
         } catch (final Exception e) {
             LOGGER.warn(e.getMessage());
@@ -580,7 +579,7 @@ public class SettingsProcessor {
 
         JSONObject requestJSONObject;
         try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            requestJSONObject = context.requestJSON();
             request.setAttribute(Keys.REQUEST, requestJSONObject);
         } catch (final Exception e) {
             LOGGER.warn(e.getMessage());
@@ -658,7 +657,7 @@ public class SettingsProcessor {
 
         JSONObject requestJSONObject;
         try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            requestJSONObject = context.requestJSON();
             request.setAttribute(Keys.REQUEST, requestJSONObject);
         } catch (final Exception e) {
             LOGGER.warn(e.getMessage());
@@ -934,7 +933,7 @@ public class SettingsProcessor {
         final JSONObject ret = Results.falseResult();
         context.renderJSON(ret);
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = context.requestJSON();
         String invitecode = requestJSONObject.optString(Invitecode.INVITECODE);
         if (StringUtils.isBlank(invitecode)) {
             ret.put(Keys.STATUS_CODE, -1);

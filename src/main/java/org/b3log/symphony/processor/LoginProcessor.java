@@ -180,7 +180,7 @@ public class LoginProcessor {
 
         JSONObject requestJSONObject;
         try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            requestJSONObject = context.requestJSON();
         } catch (final Exception e) {
             LOGGER.warn(e.getMessage());
 
@@ -418,7 +418,7 @@ public class LoginProcessor {
     public void resetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        final JSONObject requestJSONObject = context.requestJSON();
         final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
         final String userId = requestJSONObject.optString(UserExt.USER_T_ID);
         final String code = requestJSONObject.optString(Common.CODE);
@@ -702,7 +702,7 @@ public class LoginProcessor {
 
         JSONObject requestJSONObject;
         try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            requestJSONObject = context.requestJSON();
         } catch (final Exception e) {
             context.renderMsg(langPropsService.get("paramsParseFailedLabel"));
 

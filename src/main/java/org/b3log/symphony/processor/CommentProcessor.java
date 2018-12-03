@@ -43,7 +43,6 @@ import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -264,27 +263,23 @@ public class CommentProcessor {
                                   final String id) throws IOException {
         context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
 
-        try {
-            final JSONObject comment = commentQueryService.getComment(id);
-            if (null == comment) {
-                LOGGER.warn("Not found comment [id=" + id + "] to update");
+        final JSONObject comment = commentQueryService.getComment(id);
+        if (null == comment) {
+            LOGGER.warn("Not found comment [id=" + id + "] to update");
 
-                return;
-            }
-
-            final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
-            if (!currentUser.optString(Keys.OBJECT_ID).equals(comment.optString(Comment.COMMENT_AUTHOR_ID))) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-                return;
-            }
-
-            context.renderJSONValue(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
-            context.renderJSONValue(Comment.COMMENT_VISIBLE, comment.optInt(Comment.COMMENT_VISIBLE));
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
-        } catch (final ServiceException e) {
-            context.renderMsg(e.getMessage());
+            return;
         }
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        if (!currentUser.optString(Keys.OBJECT_ID).equals(comment.optString(Comment.COMMENT_AUTHOR_ID))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        context.renderJSONValue(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
+        context.renderJSONValue(Comment.COMMENT_VISIBLE, comment.optInt(Comment.COMMENT_VISIBLE));
+        context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
     }
 
     /**
@@ -370,7 +365,7 @@ public class CommentProcessor {
      */
     @RequestProcessing(value = "/comment/original", method = HTTPRequestMethod.POST)
     public void getOriginalComment(final HTTPRequestContext context, final HttpServletRequest request) {
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = context.requestJSON();
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
@@ -407,7 +402,7 @@ public class CommentProcessor {
     @RequestProcessing(value = "/comment/replies", method = HTTPRequestMethod.POST)
     public void getReplies(final HTTPRequestContext context,
                            final HttpServletRequest request, final HttpServletResponse response) {
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = context.requestJSON();
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
@@ -461,7 +456,7 @@ public class CommentProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @throws IOException      io exception
+     * @throws IOException io exception
      */
     @RequestProcessing(value = "/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {CSRFCheck.class, LoginCheck.class, CommentAddValidation.class, PermissionCheck.class})

@@ -263,7 +263,7 @@ public class ArticleProcessor {
     public void checkArticleTitle(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = context.requestJSON();
         String title = requestJSONObject.optString(Article.ARTICLE_TITLE);
         title = StringUtils.trim(title);
         String id = requestJSONObject.optString(Article.ARTICLE_T_ID);
