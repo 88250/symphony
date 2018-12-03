@@ -590,10 +590,9 @@ public class ArticleQueryService {
      * @param currentPageNum the specified current page number
      * @param pageSize       the specified page size
      * @return result
-     * @throws ServiceException service exception
      */
     public JSONObject getDomainArticles(final int avatarViewMode, final String domainId,
-                                        final int currentPageNum, final int pageSize) throws ServiceException {
+                                        final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         ret.put(Article.ARTICLES, (Object) Collections.emptyList());
 
@@ -655,7 +654,7 @@ public class ArticleQueryService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets domain articles error", e);
 
-            throw new ServiceException(e);
+            return null;
         }
     }
 

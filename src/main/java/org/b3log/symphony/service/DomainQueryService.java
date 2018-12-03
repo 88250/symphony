@@ -171,9 +171,8 @@ public class DomainQueryService {
      *
      * @param domainURI the specified domain URI
      * @return domain, returns {@code null} if not null
-     * @throws ServiceException service exception
      */
-    public JSONObject getByURI(final String domainURI) throws ServiceException {
+    public JSONObject getByURI(final String domainURI)  {
         try {
             final JSONObject ret = domainRepository.getByURI(domainURI);
             if (null == ret) {
@@ -211,7 +210,7 @@ public class DomainQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets domain [URI=" + domainURI + "] failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
     }
 

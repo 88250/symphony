@@ -70,20 +70,19 @@ public class ErrorProcessor {
      * Handles the error.
      *
      * @param context    the specified context
-     * @param request    the specified HTTP servlet request
-     * @param response   the specified HTTP servlet response
      * @param statusCode the specified status code
      */
     @RequestProcessing(value = "/error/{statusCode}", method = {HTTPRequestMethod.GET, HTTPRequestMethod.POST})
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void handleErrorPage(final HTTPRequestContext context, final HttpServletRequest request,
-                                final HttpServletResponse response, final String statusCode) {
-        if (StringUtils.equals("GET", request.getMethod())) {
-            final String requestURI = request.getRequestURI();
+    public void handleErrorPage(final HTTPRequestContext context, final String statusCode) {
+        if (StringUtils.equals("GET", context.method())) {
+            final String requestURI = context.requestURI();
             final String templateName = statusCode + ".ftl";
             LOGGER.log(Level.TRACE, "Shows error page[requestURI={0}, templateName={1}]", requestURI, templateName);
 
+            final HttpServletRequest request = context.getRequest();
+            final HttpServletResponse response = context.getResponse();
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
             renderer.setTemplateName("error/" + templateName);
             context.setRenderer(renderer);

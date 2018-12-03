@@ -91,17 +91,15 @@ public class DomainProcessor {
      * Shows domain articles.
      *
      * @param context   the specified context
-     * @param request   the specified request
-     * @param response  the specified response
      * @param domainURI the specified domain URI
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/domain/{domainURI}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showDomainArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                   final String domainURI)
-            throws Exception {
+    public void showDomainArticles(final HTTPRequestContext context, final String domainURI) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("domain-articles.ftl");
@@ -114,7 +112,7 @@ public class DomainProcessor {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 
             if (!UserExt.finshedGuide(user)) {
-                response.sendRedirect(Latkes.getServePath() + "/guide");
+                context.sendRedirect(Latkes.getServePath() + "/guide");
 
                 return;
             }
@@ -122,7 +120,7 @@ public class DomainProcessor {
 
         final JSONObject domain = domainQueryService.getByURI(domainURI);
         if (null == domain) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
@@ -164,19 +162,17 @@ public class DomainProcessor {
     /**
      * Shows domains.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/domains", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showDomains(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showDomains(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-
         renderer.setTemplateName("domains.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
