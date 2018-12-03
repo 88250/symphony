@@ -30,7 +30,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
@@ -318,16 +317,14 @@ public class NotificationProcessor {
     /**
      * Makes article/comment read.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/read", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void makeNotificationRead(final HTTPRequestContext context, final HttpServletRequest request,
-                                     final HttpServletResponse response) {
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+    public void makeNotificationRead(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final JSONObject requestJSONObject = context.requestJSON();
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);

@@ -26,7 +26,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
-import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
@@ -106,7 +105,7 @@ public class CommentUpdateValidation extends BeforeRequestProcessAdvice {
 
         JSONObject requestJSONObject;
         try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+            requestJSONObject = context.requestJSON();
             request.setAttribute(Keys.REQUEST, requestJSONObject);
         } catch (final Exception e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()).
