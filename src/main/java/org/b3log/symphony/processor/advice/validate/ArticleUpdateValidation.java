@@ -39,7 +39,7 @@ public class ArticleUpdateValidation extends BeforeRequestProcessAdvice {
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
-        final JSONObject requestJSONObject = (JSONObject) args.get("requestJSONObject");
+        final JSONObject requestJSONObject = context.requestJSON();
         ArticleAddValidation.validateArticleFields(request, requestJSONObject);
     }
 }
