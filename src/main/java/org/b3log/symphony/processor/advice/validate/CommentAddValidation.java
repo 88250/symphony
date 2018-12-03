@@ -23,7 +23,6 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
@@ -99,30 +98,26 @@ public class CommentAddValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
         }
 
-        try {
-            final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
-            if (StringUtils.isBlank(articleId)) {
+        final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
+        if (StringUtils.isBlank(articleId)) {
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
+        }
+
+        final JSONObject article = articleQueryService.getArticleById(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleId);
+        if (null == article) {
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
+        }
+
+        if (!article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
+            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("notAllowCmtLabel")));
+        }
+
+        final String originalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+        if (StringUtils.isNotBlank(originalCommentId)) {
+            final JSONObject originalCmt = commentQueryService.getComment(originalCommentId);
+            if (null == originalCmt) {
                 throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
             }
-
-            final JSONObject article = articleQueryService.getArticleById(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleId);
-            if (null == article) {
-                throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
-            }
-
-            if (!article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
-                throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("notAllowCmtLabel")));
-            }
-
-            final String originalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
-            if (StringUtils.isNotBlank(originalCommentId)) {
-                final JSONObject originalCmt = commentQueryService.getComment(originalCommentId);
-                if (null == originalCmt) {
-                    throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
-                }
-            }
-        } catch (final ServiceException e) {
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, "Unknown Error"));
         }
     }
 

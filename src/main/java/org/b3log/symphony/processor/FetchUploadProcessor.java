@@ -79,18 +79,15 @@ public class FetchUploadProcessor {
     /**
      * Fetches the remote file and upload it.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/fetch-upload", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void fetchUpload(final HTTPRequestContext context,
-                            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void fetchUpload(final HTTPRequestContext context) {
         context.renderJSON();
 
+        final HttpServletRequest request = context.getRequest();
         JSONObject requestJSONObject;
         try {
             requestJSONObject = context.requestJSON();
@@ -144,14 +141,20 @@ public class FetchUploadProcessor {
             final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
             final UploadManager uploadManager = new UploadManager(new Configuration());
 
-            uploadManager.put(data, "e/" + fileName, auth.uploadToken(Symphonys.get("qiniu.bucket")),
-                    null, contentType, false);
+            try {
+                uploadManager.put(data, "e/" + fileName, auth.uploadToken(Symphonys.get("qiniu.bucket")),
+                        null, contentType, false);
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Uploads to qiniu failed", e);
+            }
 
             context.renderJSONValue(Common.URL, Symphonys.get("qiniu.domain") + "/e/" + fileName);
             context.renderJSONValue("originalURL", originalURL);
         } else {
             try (final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName)) {
                 IOUtils.write(data, output);
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Writes output stream failed", e);
             }
 
             context.renderJSONValue(Common.URL, Latkes.getServePath() + "/upload/" + fileName);

@@ -227,10 +227,9 @@ public class NotificationMgmtService {
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId": "",
      *                          "dataId": "" // article id-follower user id
-     * @throws ServiceException service exception
      */
     @Transactional
-    public void addArticleNewWatcherNotification(final JSONObject requestJSONObject) throws ServiceException {
+    public void addArticleNewWatcherNotification(final JSONObject requestJSONObject) {
         try {
             requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER);
 
@@ -238,8 +237,6 @@ public class NotificationMgmtService {
         } catch (final RepositoryException e) {
             final String msg = "Adds a notification [type=article_new_watcher] failed";
             LOGGER.log(Level.ERROR, msg, e);
-
-            throw new ServiceException(msg);
         }
     }
 
@@ -249,10 +246,9 @@ public class NotificationMgmtService {
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId": "",
      *                          "dataId": "" // article id-follower user id
-     * @throws ServiceException service exception
      */
     @Transactional
-    public void addArticleNewFollowerNotification(final JSONObject requestJSONObject) throws ServiceException {
+    public void addArticleNewFollowerNotification(final JSONObject requestJSONObject) {
         try {
             requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_ARTICLE_NEW_FOLLOWER);
 
@@ -260,8 +256,6 @@ public class NotificationMgmtService {
         } catch (final RepositoryException e) {
             final String msg = "Adds a notification [type=article_new_follower] failed";
             LOGGER.log(Level.ERROR, msg, e);
-
-            throw new ServiceException(msg);
         }
     }
 
@@ -381,10 +375,9 @@ public class NotificationMgmtService {
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId": "",
      *                          "dataId": "" // new follower id
-     * @throws ServiceException service exception
      */
     @Transactional
-    public void addNewFollowerNotification(final JSONObject requestJSONObject) throws ServiceException {
+    public void addNewFollowerNotification(final JSONObject requestJSONObject) {
         try {
             requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_NEW_FOLLOWER);
 
@@ -392,8 +385,6 @@ public class NotificationMgmtService {
         } catch (final RepositoryException e) {
             final String msg = "Adds a notification [type=new_follower] failed";
             LOGGER.log(Level.ERROR, msg, e);
-
-            throw new ServiceException(msg);
         }
     }
 
