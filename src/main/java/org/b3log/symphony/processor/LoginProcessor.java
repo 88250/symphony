@@ -54,7 +54,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -169,13 +168,11 @@ public class LoginProcessor {
     /**
      * Next guide step.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/guide/next", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class})
-    public void nextGuideStep(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void nextGuideStep(final HTTPRequestContext context) {
         context.renderJSON();
 
         JSONObject requestJSONObject;
@@ -187,6 +184,7 @@ public class LoginProcessor {
             return;
         }
 
+        final HttpServletRequest request = context.getRequest();
         JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String userId = user.optString(Keys.OBJECT_ID);
 
@@ -212,20 +210,19 @@ public class LoginProcessor {
     /**
      * Shows guide page.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/guide", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showGuide(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showGuide(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final int step = currentUser.optInt(UserExt.USER_GUIDE_STEP);
         if (UserExt.USER_GUIDE_STEP_FIN == step) {
-            response.sendRedirect(Latkes.getServePath());
+            context.sendRedirect(Latkes.getServePath());
 
             return;
         }
@@ -273,18 +270,17 @@ public class LoginProcessor {
     /**
      * Shows login page.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/login", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showLogin(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showLogin(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         if (null != request.getAttribute(Common.CURRENT_USER)) {
-            response.sendRedirect(Latkes.getServePath());
+            context.sendRedirect(Latkes.getServePath());
 
             return;
         }
@@ -312,18 +308,18 @@ public class LoginProcessor {
     /**
      * Shows forget password page.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/forget-pwd", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showForgetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showForgetPwd(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         renderer.setTemplateName("verify/forget-pwd.ftl");
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -333,13 +329,13 @@ public class LoginProcessor {
      * Forget password.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/forget-pwd", method = HTTPRequestMethod.POST)
     @Before(adviceClass = UserForgetPwdValidation.class)
-    public void forgetPwd(final HTTPRequestContext context, final HttpServletRequest request) {
+    public void forgetPwd(final HTTPRequestContext context) {
         context.renderJSON();
 
+        final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
 
@@ -376,16 +372,15 @@ public class LoginProcessor {
     /**
      * Shows reset password page.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/reset-pwd", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showResetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showResetPwd(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -410,14 +405,13 @@ public class LoginProcessor {
     /**
      * Resets password.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/reset-pwd", method = HTTPRequestMethod.POST)
-    public void resetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void resetPwd(final HTTPRequestContext context) {
         context.renderJSON();
 
+        final HttpServletResponse response = context.getResponse();
         final JSONObject requestJSONObject = context.requestJSON();
         final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
         final String userId = requestJSONObject.optString(UserExt.USER_T_ID);
@@ -457,18 +451,17 @@ public class LoginProcessor {
     /**
      * Shows registration page.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/register", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showRegister(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showRegister(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         if (null != request.getAttribute(Common.CURRENT_USER)) {
-            response.sendRedirect(Latkes.getServePath());
+            context.sendRedirect(Latkes.getServePath());
 
             return;
         }
@@ -536,13 +529,12 @@ public class LoginProcessor {
      * Register Step 1.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/register", method = HTTPRequestMethod.POST)
     @Before(adviceClass = UserRegisterValidation.class)
-    public void register(final HTTPRequestContext context, final HttpServletRequest request) {
+    public void register(final HTTPRequestContext context) {
         context.renderJSON();
-
+        final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
@@ -595,15 +587,15 @@ public class LoginProcessor {
     /**
      * Register Step 2.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/register2", method = HTTPRequestMethod.POST)
     @Before(adviceClass = UserRegister2Validation.class)
-    public void register2(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void register2(final HTTPRequestContext context) {
         context.renderJSON();
 
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
@@ -692,12 +684,13 @@ public class LoginProcessor {
     /**
      * Logins user.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/login", method = HTTPRequestMethod.POST)
-    public void login(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void login(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         context.renderJSON().renderMsg(langPropsService.get("loginFailLabel"));
 
         JSONObject requestJSONObject;
@@ -794,11 +787,11 @@ public class LoginProcessor {
      * Logout.
      *
      * @param context the specified context
-     * @param request the specified request
-     * @throws IOException io exception
      */
     @RequestProcessing(value = "/logout", method = HTTPRequestMethod.GET)
-    public void logout(final HTTPRequestContext context, final HttpServletRequest request) throws IOException {
+    public void logout(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+
         final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null != user) {
             Sessions.logout(user.optString(Keys.OBJECT_ID), context.getResponse());
@@ -809,6 +802,6 @@ public class LoginProcessor {
             destinationURL = request.getHeader("referer");
         }
 
-        context.getResponse().sendRedirect(destinationURL);
+        context.sendRedirect(destinationURL);
     }
 }
