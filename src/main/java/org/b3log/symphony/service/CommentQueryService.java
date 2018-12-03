@@ -627,11 +627,9 @@ public class CommentQueryService {
      * @param pageSize       the specified page size
      * @param sortMode       the specified sort mode (traditional: 0, real time: 1)
      * @return comments, return an empty list if not found
-     * @throws ServiceException service exception
      */
     public List<JSONObject> getArticleComments(final int avatarViewMode,
-                                               final String articleId, final int currentPageNum, final int pageSize, final int sortMode)
-            throws ServiceException {
+                                               final String articleId, final int currentPageNum, final int pageSize, final int sortMode) {
         Stopwatchs.start("Get comments");
 
         final Query query = new Query()
@@ -694,7 +692,8 @@ public class CommentQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets article [" + articleId + "] comments failed", e);
-            throw new ServiceException(e);
+
+            return Collections.emptyList();
         } finally {
             Stopwatchs.end();
         }

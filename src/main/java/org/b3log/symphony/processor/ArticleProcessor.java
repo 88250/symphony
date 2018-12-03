@@ -204,18 +204,17 @@ public class ArticleProcessor {
     /**
      * Removes an article.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/article/{id}/remove", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final String id) throws Exception {
+    public void removeArticle(final HTTPRequestContext context, final String id) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         if (StringUtils.isBlank(id)) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
@@ -224,14 +223,14 @@ public class ArticleProcessor {
         final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
         final JSONObject article = articleQueryService.getArticle(id);
         if (null == article) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
 
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
         if (!authorId.equals(currentUserId)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
@@ -254,13 +253,13 @@ public class ArticleProcessor {
      * Checks article title.
      *
      * @param context the specified context
-     * @param request the specified request
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/article/check-title", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void checkArticleTitle(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
+    public void checkArticleTitle(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
         final JSONObject requestJSONObject = context.requestJSON();
@@ -336,12 +335,11 @@ public class ArticleProcessor {
      *
      * @param context   the specified context
      * @param articleId the specified article id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{articleId}/image", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void getArticleImage(final HTTPRequestContext context, final String articleId) throws Exception {
+    public void getArticleImage(final HTTPRequestContext context, final String articleId) {
         final JSONObject article = articleQueryService.getArticle(articleId);
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
@@ -360,15 +358,20 @@ public class ArticleProcessor {
 
             final String imgData = chRecord.optString(org.b3log.symphony.model.Character.CHARACTER_IMG);
             final byte[] data = Base64.decode(imgData.getBytes());
-            final BufferedImage img = ImageIO.read(new ByteArrayInputStream(data));
-            final BufferedImage newImage = new BufferedImage(50, 50, img.getType());
-            final Graphics g = newImage.getGraphics();
-            g.setClip(0, 0, 50, 50);
-            g.fillRect(0, 0, 50, 50);
-            g.drawImage(img, 0, 0, 50, 50, null);
-            g.dispose();
+            BufferedImage img;
+            try {
+                img = ImageIO.read(new ByteArrayInputStream(data));
+                final BufferedImage newImage = new BufferedImage(50, 50, img.getType());
+                final Graphics g = newImage.getGraphics();
+                g.setClip(0, 0, 50, 50);
+                g.fillRect(0, 0, 50, 50);
+                g.drawImage(img, 0, 0, 50, 50, null);
+                g.dispose();
 
-            images.add(newImage);
+                images.add(newImage);
+            } catch (final Exception e) {
+                // ignored
+            }
         }
 
         final int rowCharacterCount = 30;
@@ -387,7 +390,11 @@ public class ArticleProcessor {
             }
         }
 
-        ImageIO.write(combined, "PNG", new File("./hp.png"));
+        try {
+            ImageIO.write(combined, "PNG", new File("./hp.png"));
+        } catch (final Exception e) {
+            // ignored
+        }
 
         String url = "";
 
@@ -419,14 +426,14 @@ public class ArticleProcessor {
     /**
      * Shows pre-add article.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/pre-post", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showPreAddArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showPreAddArticle(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
@@ -477,14 +484,14 @@ public class ArticleProcessor {
     /**
      * Shows add article.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/post", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showAddArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showAddArticle(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/post.ftl");
@@ -611,16 +618,15 @@ public class ArticleProcessor {
      * Shows article with the specified article id.
      *
      * @param context   the specified context
-     * @param request   the specified request
-     * @param response  the specified response
      * @param articleId the specified article id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{articleId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                            final String articleId) throws Exception {
+    public void showArticle(final HTTPRequestContext context, final String articleId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("article.ftl");
@@ -630,7 +636,7 @@ public class ArticleProcessor {
 
         final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
         if (null == article) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
@@ -925,14 +931,15 @@ public class ArticleProcessor {
      * </p>
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleAddValidation.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
+    public void addArticle(final HTTPRequestContext context) {
         context.renderJSON();
 
+        final HttpServletRequest request = context.getRequest();
+        final JSONObject requestJSONObject = context.requestJSON();
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
@@ -998,26 +1005,25 @@ public class ArticleProcessor {
     /**
      * Shows update article.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/update", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showUpdateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showUpdateArticle(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String articleId = request.getParameter("id");
         if (StringUtils.isBlank(articleId)) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
 
         final JSONObject article = articleQueryService.getArticle(articleId);
         if (null == article) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
@@ -1025,7 +1031,7 @@ public class ArticleProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null == currentUser
                 || !currentUser.optString(Keys.OBJECT_ID).equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
@@ -1084,20 +1090,18 @@ public class ArticleProcessor {
      * </pre>
      * </p>
      *
-     * @param context           the specified context
-     * @param request           the specified request
-     * @param response          the specified response
-     * @param id                the specified article id
-     * @param requestJSONObject the specified request json object
-     * @throws Exception exception
+     * @param context the specified context
+     * @param id      the specified article id
      */
     @RequestProcessing(value = "/article/{id}", method = HTTPRequestMethod.PUT)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleUpdateValidation.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final String id, final JSONObject requestJSONObject) throws Exception {
+    public void updateArticle(final HTTPRequestContext context, final String id) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         if (StringUtils.isBlank(id)) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
@@ -1106,7 +1110,7 @@ public class ArticleProcessor {
 
         final JSONObject oldArticle = articleQueryService.getArticleById(avatarViewMode, id);
         if (null == oldArticle) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
@@ -1120,6 +1124,7 @@ public class ArticleProcessor {
             return;
         }
 
+        final JSONObject requestJSONObject = context.requestJSON();
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
@@ -1150,7 +1155,7 @@ public class ArticleProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null == currentUser
                 || !currentUser.optString(Keys.OBJECT_ID).equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
@@ -1196,13 +1201,14 @@ public class ArticleProcessor {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/markdown", method = HTTPRequestMethod.POST)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void markdown2HTML(final HttpServletRequest request, final HTTPRequestContext context) {
+    public void markdown2HTML(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+
         context.renderJSON(true);
         String markdownText = request.getParameter("markdownText");
         if (StringUtils.isBlank(markdownText)) {
@@ -1233,17 +1239,16 @@ public class ArticleProcessor {
      * </pre>
      * </p>
      *
-     * @param request   the specified http servlet request
-     * @param response  the specified http servlet response
      * @param context   the specified http request context
      * @param articleId the specified article id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{articleId}/preview", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void getArticlePreviewContent(final HttpServletRequest request, final HttpServletResponse response,
-                                         final HTTPRequestContext context, final String articleId) throws Exception {
+    public void getArticlePreviewContent(final HTTPRequestContext context, final String articleId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String content = articleQueryService.getArticlePreviewContent(articleId, request);
         if (StringUtils.isBlank(content)) {
             context.renderJSON().renderFalseResult();
@@ -1257,26 +1262,25 @@ public class ArticleProcessor {
     /**
      * Article rewards.
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/article/reward", method = HTTPRequestMethod.POST)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void reward(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void reward(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null == currentUser) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
 
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            context.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
             return;
         }
@@ -1301,26 +1305,25 @@ public class ArticleProcessor {
     /**
      * Article thanks.
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/article/thank", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void thank(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void thank(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null == currentUser) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
 
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            context.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
             return;
         }
@@ -1341,39 +1344,38 @@ public class ArticleProcessor {
     /**
      * Sticks an article.
      *
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @param context  the specified HTTP request context
-     * @throws Exception exception
+     * @param context the specified HTTP request context
      */
     @RequestProcessing(value = "/article/stick", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void stickArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void stickArticle(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null == currentUser) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
 
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            context.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
             return;
         }
 
         final JSONObject article = articleQueryService.getArticle(articleId);
         if (null == article) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
 
         if (!currentUser.optString(Keys.OBJECT_ID).equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }

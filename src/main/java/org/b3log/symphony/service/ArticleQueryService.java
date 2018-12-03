@@ -1076,9 +1076,8 @@ public class ArticleQueryService {
      * @param avatarViewMode the specified avatar view mode
      * @param articleId      the specified id
      * @return article, return {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getArticleById(final int avatarViewMode, final String articleId) throws ServiceException {
+    public JSONObject getArticleById(final int avatarViewMode, final String articleId) {
         Stopwatchs.start("Get article by id");
         try {
             final JSONObject ret = articleRepository.get(articleId);
@@ -1106,7 +1105,8 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets an article [articleId=" + articleId + "] failed", e);
-            throw new ServiceException(e);
+
+            return null;
         } finally {
             Stopwatchs.end();
         }
@@ -1139,9 +1139,8 @@ public class ArticleQueryService {
      * @param articleId the given article id
      * @param request   the specified request
      * @return preview content
-     * @throws ServiceException service exception
      */
-    public String getArticlePreviewContent(final String articleId, final HttpServletRequest request) throws ServiceException {
+    public String getArticlePreviewContent(final String articleId, final HttpServletRequest request)  {
         final JSONObject article = getArticle(articleId);
         if (null == article) {
             return null;
