@@ -1117,9 +1117,8 @@ public class ArticleQueryService {
      *
      * @param articleId the specified id
      * @return article, return {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getArticle(final String articleId) throws ServiceException {
+    public JSONObject getArticle(final String articleId) {
         try {
             final JSONObject ret = articleRepository.get(articleId);
             if (null == ret) {
@@ -1129,7 +1128,8 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets an article [articleId=" + articleId + "] failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 
@@ -2066,11 +2066,9 @@ public class ArticleQueryService {
      *      }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getArticles(final int avatarViewMode,
-                                  final JSONObject requestJSONObject, final Map<String, Class<?>> articleFields) throws ServiceException {
+    public JSONObject getArticles(final int avatarViewMode, final JSONObject requestJSONObject, final Map<String, Class<?>> articleFields) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -2093,7 +2091,7 @@ public class ArticleQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);

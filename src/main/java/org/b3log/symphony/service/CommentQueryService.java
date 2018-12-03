@@ -476,12 +476,10 @@ public class CommentQueryService {
      *
      * @param commentId the specified id
      * @return comment, return {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getComment(final String commentId) throws ServiceException {
+    public JSONObject getComment(final String commentId) {
         try {
             final JSONObject ret = commentRepository.get(commentId);
-
             if (null == ret) {
                 return null;
             }
@@ -489,7 +487,8 @@ public class CommentQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a comment [commentId=" + commentId + "] failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 
@@ -725,12 +724,10 @@ public class CommentQueryService {
      *      }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      * @see Pagination
      */
 
-    public JSONObject getComments(final int avatarViewMode,
-                                  final JSONObject requestJSONObject, final Map<String, Class<?>> commentFields) throws ServiceException {
+    public JSONObject getComments(final int avatarViewMode, final JSONObject requestJSONObject, final Map<String, Class<?>> commentFields) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -742,14 +739,13 @@ public class CommentQueryService {
             query.addProjection(commentField.getKey(), commentField.getValue());
         }
 
-        JSONObject result = null;
-
+        JSONObject result;
         try {
             result = commentRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets comments failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -779,7 +775,7 @@ public class CommentQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Organizes comments failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
 
         ret.put(Comment.COMMENTS, comments);

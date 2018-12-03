@@ -37,6 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.websocket.Session;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -122,9 +123,8 @@ public class OptionQueryService {
      * Gets the statistic.
      *
      * @return statistic
-     * @throws ServiceException service exception
      */
-    public JSONObject getStatistic() throws ServiceException {
+    public JSONObject getStatistic() {
         final JSONObject ret = new JSONObject();
 
         final Query query = new Query().
@@ -142,7 +142,8 @@ public class OptionQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets statistic failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 
@@ -176,9 +177,8 @@ public class OptionQueryService {
      * Gets the reserved words.
      *
      * @return reserved words
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getReservedWords() throws ServiceException {
+    public List<JSONObject> getReservedWords() {
         final Query query = new Query().
                 setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_RESERVED_WORDS));
         try {
@@ -189,7 +189,7 @@ public class OptionQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets reserved words failed", e);
 
-            throw new ServiceException(e);
+            return Collections.emptyList();
         }
     }
 
@@ -235,9 +235,8 @@ public class OptionQueryService {
      * Gets the miscellaneous.
      *
      * @return misc
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getMisc() throws ServiceException {
+    public List<JSONObject> getMisc()  {
         final Query query = new Query().
                 setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_MISC));
         try {
@@ -253,7 +252,8 @@ public class OptionQueryService {
             return CollectionUtils.jsonArrayToList(options);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets misc failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 

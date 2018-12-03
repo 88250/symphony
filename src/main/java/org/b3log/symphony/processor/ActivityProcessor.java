@@ -32,7 +32,6 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
-import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
@@ -126,14 +125,14 @@ public class ActivityProcessor {
     /**
      * Shows 1A0001.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/activity/character", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showCharacter(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showCharacter(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("activity/character.ftl");
@@ -174,17 +173,17 @@ public class ActivityProcessor {
      * Submits character.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/activity/character/submit", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void submitCharacter(final HTTPRequestContext context, final HttpServletRequest request) {
+    public void submitCharacter(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
         context.renderJSON().renderFalseResult();
 
         JSONObject requestJSONObject;
         try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+            requestJSONObject = context.requestJSON();
             request.setAttribute(Keys.REQUEST, requestJSONObject);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Submits character failed", e);
@@ -207,14 +206,14 @@ public class ActivityProcessor {
     /**
      * Shows activity page.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/activities", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showActivities(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showActivities(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/activities.ftl");
@@ -235,19 +234,18 @@ public class ActivityProcessor {
     /**
      * Shows daily checkin page.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/activity/checkin", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showDailyCheckin(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void showDailyCheckin(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String userId = user.optString(Keys.OBJECT_ID);
         if (activityQueryService.isCheckedinToday(userId)) {
-            response.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
+            context.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
 
             return;
         }
@@ -267,14 +265,13 @@ public class ActivityProcessor {
     /**
      * Daily checkin.
      *
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/activity/daily-checkin", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void dailyCheckin(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void dailyCheckin(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
         final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String userId = user.optString(Keys.OBJECT_ID);
 
@@ -285,7 +282,7 @@ public class ActivityProcessor {
             final String validate = request.getParameter(GeetestLib.fn_geetest_validate);
             final String seccode = request.getParameter(GeetestLib.fn_geetest_seccode);
             if (StringUtils.isBlank(challenge) || StringUtils.isBlank(validate) || StringUtils.isBlank(seccode)) {
-                response.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
+                context.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
 
                 return;
             }
@@ -305,39 +302,39 @@ public class ActivityProcessor {
             }
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
+        context.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
     }
 
     /**
      * Yesterday liveness reward.
      *
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/activity/yesterday-liveness-reward", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void yesterdayLivenessReward(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void yesterdayLivenessReward(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
         final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String userId = user.optString(Keys.OBJECT_ID);
 
         activityMgmtService.yesterdayLivenessReward(userId);
 
-        response.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
+        context.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
     }
 
     /**
      * Shows 1A0001.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/activity/1A0001", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void show1A0001(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void show1A0001(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("activity/1A0001.ftl");
@@ -420,14 +417,14 @@ public class ActivityProcessor {
      * Bets 1A0001.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/activity/1A0001/bet", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, Activity1A0001Validation.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void bet1A0001(final HTTPRequestContext context, final HttpServletRequest request) {
+    public void bet1A0001(final HTTPRequestContext context) {
         context.renderJSON().renderFalseResult();
 
+        final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final int amount = requestJSONObject.optInt(Common.AMOUNT);
@@ -452,12 +449,12 @@ public class ActivityProcessor {
      * Collects 1A0001.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/activity/1A0001/collect", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, Activity1A0001CollectValidation.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void collect1A0001(final HTTPRequestContext context, final HttpServletRequest request) {
+    public void collect1A0001(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
@@ -469,14 +466,14 @@ public class ActivityProcessor {
     /**
      * Shows eating snake.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/activity/eating-snake", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showEatingSnake(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showEatingSnake(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("activity/eating-snake.ftl");
@@ -509,12 +506,12 @@ public class ActivityProcessor {
      * Starts eating snake.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/activity/eating-snake/start", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void startEatingSnake(final HTTPRequestContext context, final HttpServletRequest request) {
+    public void startEatingSnake(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
 
@@ -527,19 +524,19 @@ public class ActivityProcessor {
      * Collects eating snake.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/activity/eating-snake/collect", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
-    public void collectEatingSnake(final HTTPRequestContext context, final HttpServletRequest request) {
+    public void collectEatingSnake(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("activity/eating-snake.ftl");
 
         JSONObject requestJSONObject;
         try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+            requestJSONObject = context.requestJSON();
             final int score = requestJSONObject.optInt("score");
             final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
             final JSONObject ret = activityMgmtService.collectEatingSnake(user.optString(Keys.OBJECT_ID), score);
@@ -555,14 +552,14 @@ public class ActivityProcessor {
     /**
      * Shows gobang.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/activity/gobang", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showGobang(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showGobang(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("activity/gobang.ftl");
@@ -582,12 +579,12 @@ public class ActivityProcessor {
      * Starts gobang.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/activity/gobang/start", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void startGobang(final HTTPRequestContext context, final HttpServletRequest request) {
+    public void startGobang(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final JSONObject ret = Results.falseResult();
 

@@ -95,9 +95,8 @@ public class OptionMgmtService {
      *
      * @param optionId the given option id
      * @param option   the specified option
-     * @throws ServiceException service exception
      */
-    public void updateOption(final String optionId, final JSONObject option) throws ServiceException {
+    public void updateOption(final String optionId, final JSONObject option)  {
         final Transaction transaction = optionRepository.beginTransaction();
 
         try {
@@ -110,7 +109,6 @@ public class OptionMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Updates an option[id=" + optionId + "] failed", e);
-            throw new ServiceException(e);
         }
     }
 }

@@ -1019,9 +1019,8 @@ public class ArticleMgmtService {
      *
      * @param articleId the given article id
      * @param article   the specified article
-     * @throws ServiceException service exception
      */
-    public void updateArticleByAdmin(final String articleId, final JSONObject article) throws ServiceException {
+    public void updateArticleByAdmin(final String articleId, final JSONObject article)  {
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {
@@ -1089,7 +1088,6 @@ public class ArticleMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Updates an article[id=" + articleId + "] failed", e);
-            throw new ServiceException(e);
         }
     }
 
@@ -1319,10 +1317,9 @@ public class ArticleMgmtService {
      * Admin sticks an article specified by the given article id.
      *
      * @param articleId the given article id
-     * @throws ServiceException service exception
      */
     @Transactional
-    public synchronized void adminStick(final String articleId) throws ServiceException {
+    public synchronized void adminStick(final String articleId) {
         try {
             final JSONObject article = articleRepository.get(articleId);
             if (null == article) {
@@ -1334,8 +1331,6 @@ public class ArticleMgmtService {
             articleRepository.update(articleId, article);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Admin sticks an article[id=" + articleId + "] failed", e);
-
-            throw new ServiceException(langPropsService.get("stickFailedLabel"));
         }
     }
 
@@ -1343,10 +1338,9 @@ public class ArticleMgmtService {
      * Admin cancels stick an article specified by the given article id.
      *
      * @param articleId the given article id
-     * @throws ServiceException service exception
      */
     @Transactional
-    public synchronized void adminCancelStick(final String articleId) throws ServiceException {
+    public synchronized void adminCancelStick(final String articleId) {
         try {
             final JSONObject article = articleRepository.get(articleId);
             if (null == article) {
@@ -1358,8 +1352,6 @@ public class ArticleMgmtService {
             articleRepository.update(articleId, article);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Admin cancel sticks an article[id=" + articleId + "] failed", e);
-
-            throw new ServiceException(langPropsService.get("operationFailedLabel"));
         }
     }
 

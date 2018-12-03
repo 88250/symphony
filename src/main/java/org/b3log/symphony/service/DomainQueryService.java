@@ -220,9 +220,8 @@ public class DomainQueryService {
      *
      * @param domainTitle the specified domain title
      * @return domain, returns {@code null} if not null
-     * @throws ServiceException service exception
      */
-    public JSONObject getByTitle(final String domainTitle) throws ServiceException {
+    public JSONObject getByTitle(final String domainTitle) {
         try {
             final JSONObject ret = domainRepository.getByTitle(domainTitle);
             if (null == ret) {
@@ -258,7 +257,7 @@ public class DomainQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets domain [title=" + domainTitle + "] failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
     }
 
@@ -287,10 +286,9 @@ public class DomainQueryService {
      *      }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getDomains(final JSONObject requestJSONObject, final Map<String, Class<?>> domainFields) throws ServiceException {
+    public JSONObject getDomains(final JSONObject requestJSONObject, final Map<String, Class<?>> domainFields) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -314,7 +312,7 @@ public class DomainQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets domains failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -338,9 +336,8 @@ public class DomainQueryService {
      *
      * @param domainId the specified id
      * @return a domain, return {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getDomain(final String domainId) throws ServiceException {
+    public JSONObject getDomain(final String domainId) {
         try {
             final JSONObject ret = domainRepository.get(domainId);
             final List<JSONObject> tags = getTags(domainId);
@@ -350,7 +347,7 @@ public class DomainQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a domain [domainId=" + domainId + "] failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
     }
 

@@ -681,16 +681,15 @@ public class CommentMgmtService {
      *
      * @param commentId the given comment id
      * @param comment   the specified comment
-     * @throws ServiceException service exception
      */
-    public void updateCommentByAdmin(final String commentId, final JSONObject comment) throws ServiceException {
+    public void updateCommentByAdmin(final String commentId, final JSONObject comment) {
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
             final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
             final JSONObject author = userRepository.get(commentAuthorId);
             if (UserExt.USER_STATUS_C_VALID != author.optInt(UserExt.USER_STATUS)) {
-                throw new ServiceException(langPropsService.get("userStatusInvalidLabel"));
+                return;
             }
 
             final JSONObject oldComment = commentRepository.get(commentId);
@@ -713,7 +712,6 @@ public class CommentMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Updates a comment [id=" + commentId + "] failed", e);
-            throw new ServiceException(e);
         }
     }
 }

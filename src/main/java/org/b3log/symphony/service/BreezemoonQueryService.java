@@ -253,8 +253,7 @@ public class BreezemoonQueryService {
      * @see Pagination
      */
 
-    public JSONObject getBreezemoons(final int avatarViewMode,
-                                     final JSONObject requestJSONObject, final Map<String, Class<?>> fields) throws ServiceException {
+    public JSONObject getBreezemoons(final int avatarViewMode, final JSONObject requestJSONObject, final Map<String, Class<?>> fields) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -272,7 +271,7 @@ public class BreezemoonQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Get breezemoons failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -290,7 +289,7 @@ public class BreezemoonQueryService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Organize breezemoons failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
 
         ret.put(Breezemoon.BREEZEMOONS, breezemoons);
@@ -303,15 +302,14 @@ public class BreezemoonQueryService {
      *
      * @param breezemoonId the specified id
      * @return breezemoon, return {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getBreezemoon(final String breezemoonId) throws ServiceException {
+    public JSONObject getBreezemoon(final String breezemoonId) {
         try {
             return breezemoonRepository.get(breezemoonId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a breezemoon [id=" + breezemoonId + "] failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
     }
 
@@ -321,33 +319,36 @@ public class BreezemoonQueryService {
      * @param avatarViewMode the specified avatar view mode
      * @param currentUserId  the specified current user id
      * @param breezemoons    the specified breezemoons
-     * @throws Exception exception
      */
-    public void organizeBreezemoons(final int avatarViewMode, final String currentUserId, final List<JSONObject> breezemoons) throws Exception {
-        final Iterator<JSONObject> iterator = breezemoons.iterator();
-        while (iterator.hasNext()) {
-            final JSONObject bm = iterator.next();
+    public void organizeBreezemoons(final int avatarViewMode, final String currentUserId, final List<JSONObject> breezemoons) {
+        try {
+            final Iterator<JSONObject> iterator = breezemoons.iterator();
+            while (iterator.hasNext()) {
+                final JSONObject bm = iterator.next();
 
-            final String authorId = bm.optString(Breezemoon.BREEZEMOON_AUTHOR_ID);
-            final JSONObject author = userRepository.get(authorId);
-            if (UserExt.USER_XXX_STATUS_C_PRIVATE == author.optInt(UserExt.USER_BREEZEMOON_STATUS)
-                    && !StringUtils.equals(currentUserId, authorId) && !"admin".equals(currentUserId)) {
-                iterator.remove();
+                final String authorId = bm.optString(Breezemoon.BREEZEMOON_AUTHOR_ID);
+                final JSONObject author = userRepository.get(authorId);
+                if (UserExt.USER_XXX_STATUS_C_PRIVATE == author.optInt(UserExt.USER_BREEZEMOON_STATUS)
+                        && !StringUtils.equals(currentUserId, authorId) && !"admin".equals(currentUserId)) {
+                    iterator.remove();
 
-                continue;
+                    continue;
+                }
+                bm.put(Breezemoon.BREEZEMOON_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+                bm.put(Breezemoon.BREEZEMOON_T_AUTHOR_THUMBNAIL_URL + "48", avatarQueryService.getAvatarURLByUser(avatarViewMode, author, "48"));
+                final long time = bm.optLong(Breezemoon.BREEZEMOON_CREATED);
+                bm.put(Common.TIME_AGO, Times.getTimeAgo(time, Locales.getLocale()));
+                bm.put(Breezemoon.BREEZEMOON_T_CREATE_TIME, new Date(time));
+                String content = bm.optString(Breezemoon.BREEZEMOON_CONTENT);
+                content = shortLinkQueryService.linkArticle(content);
+                content = Emotions.convert(content);
+                content = Markdowns.toHTML(content);
+                content = Markdowns.clean(content, "");
+                content = Images.qiniuImgProcessing(content);
+                bm.put(Breezemoon.BREEZEMOON_CONTENT, content);
             }
-            bm.put(Breezemoon.BREEZEMOON_T_AUTHOR_NAME, author.optString(User.USER_NAME));
-            bm.put(Breezemoon.BREEZEMOON_T_AUTHOR_THUMBNAIL_URL + "48", avatarQueryService.getAvatarURLByUser(avatarViewMode, author, "48"));
-            final long time = bm.optLong(Breezemoon.BREEZEMOON_CREATED);
-            bm.put(Common.TIME_AGO, Times.getTimeAgo(time, Locales.getLocale()));
-            bm.put(Breezemoon.BREEZEMOON_T_CREATE_TIME, new Date(time));
-            String content = bm.optString(Breezemoon.BREEZEMOON_CONTENT);
-            content = shortLinkQueryService.linkArticle(content);
-            content = Emotions.convert(content);
-            content = Markdowns.toHTML(content);
-            content = Markdowns.clean(content, "");
-            content = Images.qiniuImgProcessing(content);
-            bm.put(Breezemoon.BREEZEMOON_CONTENT, content);
+        } catch (final Exception e) {
+            // ignored
         }
     }
 }

@@ -79,10 +79,9 @@ public class DomainMgmtService {
      *
      * @param domainId the specified domain id
      * @param tagId    the specified tag id
-     * @throws ServiceException service exception
      */
     @Transactional
-    public void removeDomainTag(final String domainId, final String tagId) throws ServiceException {
+    public void removeDomainTag(final String domainId, final String tagId)  {
         try {
             final JSONObject domain = domainRepository.get(domainId);
             domain.put(Domain.DOMAIN_TAG_COUNT, domain.optInt(Domain.DOMAIN_TAG_COUNT) - 1);
@@ -106,8 +105,6 @@ public class DomainMgmtService {
             domainCache.loadDomains();
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds a domain-tag relation failed", e);
-
-            throw new ServiceException(e);
         }
     }
 
@@ -115,10 +112,9 @@ public class DomainMgmtService {
      * Adds a domain-tag relation.
      *
      * @param domainTag the specified domain-tag relation
-     * @throws ServiceException service exception
      */
     @Transactional
-    public void addDomainTag(final JSONObject domainTag) throws ServiceException {
+    public void addDomainTag(final JSONObject domainTag) {
         try {
             final String domainId = domainTag.optString(Domain.DOMAIN + "_" + Keys.OBJECT_ID);
             final JSONObject domain = domainRepository.get(domainId);
@@ -131,8 +127,6 @@ public class DomainMgmtService {
             domainCache.loadDomains();
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds a domain-tag relation failed", e);
-
-            throw new ServiceException(e);
         }
     }
 
@@ -184,10 +178,9 @@ public class DomainMgmtService {
      *
      * @param domainId the given domain id
      * @param domain   the specified domain
-     * @throws ServiceException service exception
      */
     @Transactional
-    public void updateDomain(final String domainId, final JSONObject domain) throws ServiceException {
+    public void updateDomain(final String domainId, final JSONObject domain) {
         try {
             domainRepository.update(domainId, domain);
 
@@ -195,8 +188,6 @@ public class DomainMgmtService {
             domainCache.loadDomains();
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Updates a domain [id=" + domainId + "] failed", e);
-
-            throw new ServiceException(e);
         }
     }
 
@@ -204,10 +195,9 @@ public class DomainMgmtService {
      * Removes the specified domain by the given domain id.
      *
      * @param domainId the given domain id
-     * @throws ServiceException service exception
      */
     @Transactional
-    public void removeDomain(final String domainId) throws ServiceException {
+    public void removeDomain(final String domainId) {
         try {
             domainTagRepository.removeByDomainId(domainId);
             domainRepository.remove(domainId);
@@ -221,8 +211,6 @@ public class DomainMgmtService {
             domainCache.loadDomains();
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Updates a domain [id=" + domainId + "] failed", e);
-
-            throw new ServiceException(e);
         }
     }
 }

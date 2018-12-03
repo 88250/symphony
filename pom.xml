@@ -16,7 +16,7 @@
     <name>Symphony</name>
     <url>https://sym.b3log.org</url>
     <description>
-        一个用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）平台。
+        一款用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）平台。
         A modern community (forum/BBS/SNS/blog) platform written in Java.
     </description>
     <inceptionYear>2012</inceptionYear>

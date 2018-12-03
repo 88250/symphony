@@ -56,7 +56,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
 
@@ -311,16 +310,14 @@ public class AdminProcessor {
     /**
      * Shows audit log.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/auditlog", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showAuditlog(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showAuditlog(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/auditlog.ftl");
@@ -353,52 +350,49 @@ public class AdminProcessor {
     /**
      * Makes a report as ignored .
      *
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context  the specified context
      * @param reportId the specified report id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/report/ignore/{reportId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void makeReportIgnored(final HttpServletRequest request, final HttpServletResponse response, final String reportId) throws Exception {
+    public void makeReportIgnored(final HTTPRequestContext context, final String reportId) {
+        final HttpServletRequest request = context.getRequest();
         reportMgmtService.makeReportIgnored(reportId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_MAKE_REPORT_IGNORED, reportId));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/reports");
+        context.sendRedirect(Latkes.getServePath() + "/admin/reports");
     }
 
     /**
      * Makes a report as handled .
      *
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context  the specified context
      * @param reportId the specified report id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/report/{reportId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void makeReportHandled(final HttpServletRequest request, final HttpServletResponse response, final String reportId) throws Exception {
+    public void makeReportHandled(final HTTPRequestContext context, final String reportId) {
+        final HttpServletRequest request = context.getRequest();
         reportMgmtService.makeReportHandled(reportId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_MAKE_REPORT_HANDLED, reportId));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/reports");
+        context.sendRedirect(Latkes.getServePath() + "/admin/reports");
     }
 
     /**
      * Shows reports.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/reports", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showReports(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showReports(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/reports.ftl");
@@ -431,15 +425,15 @@ public class AdminProcessor {
     /**
      * Removes an role.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/role/{roleId}/remove", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void removeRole(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response, final String roleId) throws Exception {
+    public void removeRole(final HTTPRequestContext context, final String roleId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final int count = roleQueryService.countUser(roleId);
         if (0 < count) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -458,22 +452,21 @@ public class AdminProcessor {
         roleMgmtService.removeRole(roleId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_ROLE, roleName));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/roles");
+        context.sendRedirect(Latkes.getServePath() + "/admin/roles");
     }
 
     /**
      * Show admin breezemoons.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/breezemoons", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showBreezemoons(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showBreezemoons(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/breezemoons.ftl");
@@ -514,16 +507,15 @@ public class AdminProcessor {
      * Shows a breezemoon.
      *
      * @param context      the specified context
-     * @param request      the specified request
-     * @param response     the specified response
      * @param breezemoonId the specified breezemoon id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/breezemoon/{breezemoonId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                               final String breezemoonId) throws Exception {
+    public void showBreezemoon(final HTTPRequestContext context, final String breezemoonId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/breezemoon.ftl");
@@ -540,16 +532,15 @@ public class AdminProcessor {
      * Updates a breezemoon.
      *
      * @param context      the specified context
-     * @param request      the specified request
-     * @param response     the specified response
      * @param breezemoonId the specified breezemoon id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/breezemoon/{breezemoonId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateBreezemoon(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                 final String breezemoonId) throws Exception {
+    public void updateBreezemoon(final HTTPRequestContext context, final String breezemoonId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/breezemoon.ftl");
@@ -569,8 +560,12 @@ public class AdminProcessor {
             }
         }
 
-        breezemoonMgmtService.updateBreezemoon(breezemoon);
-        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_BREEZEMOON, breezemoonId));
+        try {
+            breezemoonMgmtService.updateBreezemoon(breezemoon);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_BREEZEMOON, breezemoonId));
+        } catch (final Exception e) {
+            // ignored
+        }
 
         breezemoon = breezemoonQueryService.getBreezemoon(breezemoonId);
         dataModel.put(Breezemoon.BREEZEMOON, breezemoon);
@@ -581,19 +576,23 @@ public class AdminProcessor {
     /**
      * Removes a breezemoon.
      *
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/remove-breezemoon", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void removeBreezemoon(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void removeBreezemoon(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
         final String id = request.getParameter(Common.ID);
-        breezemoonMgmtService.removeBreezemoon(id);
-        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_BREEZEMOON, id));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/breezemoons");
+        try {
+            breezemoonMgmtService.removeBreezemoon(id);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_BREEZEMOON, id));
+        } catch (final Exception e) {
+            // ignored
+        }
+
+        context.sendRedirect(Latkes.getServePath() + "/admin/breezemoons");
     }
 
     /**
@@ -614,17 +613,17 @@ public class AdminProcessor {
     /**
      * Adds an role.
      *
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/role", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void addRole(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void addRole(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final String roleName = request.getParameter(Role.ROLE_NAME);
         if (StringUtils.isBlank(roleName)) {
-            response.sendRedirect(Latkes.getServePath() + "/admin/roles");
+            context.sendRedirect(Latkes.getServePath() + "/admin/roles");
 
             return;
         }
@@ -638,23 +637,20 @@ public class AdminProcessor {
         roleMgmtService.addRole(role);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERAIONT_CODE_C_ADD_ROLE, roleName));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/roles");
+        context.sendRedirect(Latkes.getServePath() + "/admin/roles");
     }
 
     /**
      * Updates role permissions.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/role/{roleId}/permissions", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void updateRolePermissions(final HTTPRequestContext context,
-                                      final HttpServletRequest request, final HttpServletResponse response,
-                                      final String roleId) throws Exception {
+    public void updateRolePermissions(final HTTPRequestContext context, final String roleId) {
+        final HttpServletRequest request = context.getRequest();
+
         final Map<String, String[]> parameterMap = request.getParameterMap();
         final Set<String> permissionIds = parameterMap.keySet();
 
@@ -663,22 +659,22 @@ public class AdminProcessor {
         final String roleName = role.optString(Role.ROLE_NAME);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_ROLE_PERMS, roleName));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/role/" + roleId + "/permissions");
+        context.sendRedirect(Latkes.getServePath() + "/admin/role/" + roleId + "/permissions");
     }
 
     /**
      * Shows role permissions.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param roleId   the specified role id
+     * @param context the specified context
+     * @param roleId  the specified role id
      */
     @RequestProcessing(value = "/admin/role/{roleId}/permissions", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showRolePermissions(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                    final String roleId) {
+    public void showRolePermissions(final HTTPRequestContext context, final String roleId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/role-permissions.ftl");
@@ -709,16 +705,15 @@ public class AdminProcessor {
     /**
      * Shows roles.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/roles", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showRoles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showRoles(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/roles.ftl");
@@ -735,16 +730,14 @@ public class AdminProcessor {
     /**
      * Updates side ad.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/ad/side", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateSideAd(final HTTPRequestContext context,
-                             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void updateSideAd(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final String sideFullAd = request.getParameter("sideFullAd");
 
         JSONObject adOption = optionQueryService.getOption(Option.ID_C_SIDE_FULL_AD);
@@ -761,22 +754,19 @@ public class AdminProcessor {
             operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_AD_POS, Option.ID_C_SIDE_FULL_AD));
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/ad");
+        context.sendRedirect(Latkes.getServePath() + "/admin/ad");
     }
 
     /**
      * Updates banner.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/ad/banner", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateBanner(final HTTPRequestContext context,
-                             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void updateBanner(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
         final String headerBanner = request.getParameter("headerBanner");
 
         JSONObject adOption = optionQueryService.getOption(Option.ID_C_HEADER_BANNER);
@@ -793,20 +783,21 @@ public class AdminProcessor {
             operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_AD_POS, Option.ID_C_HEADER_BANNER));
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/ad");
+        context.sendRedirect(Latkes.getServePath() + "/admin/ad");
     }
 
     /**
      * Shows ad.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/ad", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showAd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showAd(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/ad.ftl");
@@ -831,14 +822,15 @@ public class AdminProcessor {
     /**
      * Shows add tag.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-tag", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showAddTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showAddTag(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/add-tag.ftl");
@@ -850,16 +842,15 @@ public class AdminProcessor {
     /**
      * Adds a tag.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void addTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void addTag(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         String title = StringUtils.trim(request.getParameter(Tag.TAG_TITLE));
         try {
             if (StringUtils.isBlank(title)) {
@@ -909,56 +900,55 @@ public class AdminProcessor {
             return;
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/tag/" + tagId);
+        context.sendRedirect(Latkes.getServePath() + "/admin/tag/" + tagId);
     }
 
     /**
      * Sticks an article.
      *
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/stick-article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void stickArticle(final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void stickArticle(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
         articleMgmtService.adminStick(articleId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_STICK_ARTICLE, articleId));
-        response.sendRedirect(Latkes.getServePath() + "/admin/articles");
+        context.sendRedirect(Latkes.getServePath() + "/admin/articles");
     }
 
     /**
      * Cancels stick an article.
      *
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/cancel-stick-article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void stickCancelArticle(final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void stickCancelArticle(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
         articleMgmtService.adminCancelStick(articleId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_CANCEL_STICK_ARTICLE, articleId));
-        response.sendRedirect(Latkes.getServePath() + "/admin/articles");
+        context.sendRedirect(Latkes.getServePath() + "/admin/articles");
     }
 
     /**
      * Generates invitecodes.
      *
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/invitecodes/generate", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void generateInvitecodes(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void generateInvitecodes(final HTTPRequestContext context) throws Exception {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String quantityStr = request.getParameter("quantity");
         int quantity = 20;
         try {
@@ -981,16 +971,15 @@ public class AdminProcessor {
     /**
      * Shows admin invitecodes.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/invitecodes", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showInvitecodes(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showInvitecodes(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/invitecodes.ftl");
@@ -1023,16 +1012,15 @@ public class AdminProcessor {
      * Shows an invitecode.
      *
      * @param context      the specified context
-     * @param request      the specified request
-     * @param response     the specified response
      * @param invitecodeId the specified invitecode id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/invitecode/{invitecodeId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showInvitecode(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                               final String invitecodeId) throws Exception {
+    public void showInvitecode(final HTTPRequestContext context, final String invitecodeId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/invitecode.ftl");
@@ -1048,16 +1036,15 @@ public class AdminProcessor {
      * Updates an invitecode.
      *
      * @param context      the specified context
-     * @param request      the specified request
-     * @param response     the specified response
      * @param invitecodeId the specified invitecode id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/invitecode/{invitecodeId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateInvitecode(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                 final String invitecodeId) throws Exception {
+    public void updateInvitecode(final HTTPRequestContext context, final String invitecodeId) throws Exception {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/invitecode.ftl");
@@ -1085,14 +1072,15 @@ public class AdminProcessor {
     /**
      * Shows add article.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-article", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showAddArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showAddArticle(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/add-article.ftl");
@@ -1104,16 +1092,15 @@ public class AdminProcessor {
     /**
      * Adds an article.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void addArticle(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String userName = request.getParameter(User.USER_NAME);
         final JSONObject author = userQueryService.getUserByName(userName);
         if (null == author) {
@@ -1171,22 +1158,21 @@ public class AdminProcessor {
             return;
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/articles");
+        context.sendRedirect(Latkes.getServePath() + "/admin/articles");
     }
 
     /**
      * Adds a reserved word.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-reserved-word", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void addReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void addReservedWord(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         String word = request.getParameter(Common.WORD);
         word = StringUtils.trim(word);
         if (StringUtils.isBlank(word)) {
@@ -1202,7 +1188,7 @@ public class AdminProcessor {
         }
 
         if (optionQueryService.isReservedWord(word)) {
-            response.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
+            context.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
 
             return;
         }
@@ -1226,20 +1212,20 @@ public class AdminProcessor {
             return;
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
+        context.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
     }
 
     /**
      * Shows add reserved word.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-reserved-word", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showAddReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showAddReservedWord(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/add-reserved-word.ftl");
@@ -1251,17 +1237,16 @@ public class AdminProcessor {
     /**
      * Updates a reserved word.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param id       the specified reserved wordid
-     * @throws Exception exception
+     * @param context the specified context
+     * @param id      the specified reserved wordid
      */
     @RequestProcessing(value = "/admin/reserved-word/{id}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                   final String id) throws Exception {
+    public void updateReservedWord(final HTTPRequestContext context, final String id) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/reserved-word.ftl");
@@ -1287,16 +1272,15 @@ public class AdminProcessor {
     /**
      * Shows reserved words.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/reserved-words", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showReservedWords(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showReservedWords(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/reserved-words.ftl");
@@ -1310,16 +1294,15 @@ public class AdminProcessor {
     /**
      * Shows a reserved word.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param id       the specified reserved word id
+     * @param context the specified context
+     * @param id      the specified reserved word id
      */
     @RequestProcessing(value = "/admin/reserved-word/{id}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                 final String id) {
+    public void showReservedWord(final HTTPRequestContext context, final String id) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/reserved-word.ftl");
@@ -1334,78 +1317,74 @@ public class AdminProcessor {
     /**
      * Removes a reserved word.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/remove-reserved-word", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void removeReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void removeReservedWord(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String id = request.getParameter("id");
         optionMgmtService.removeOption(id);
         final JSONObject option = optionQueryService.getOption(id);
         final String word = option.optString(Option.OPTION_VALUE);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_RESERVED_WORD, word));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
+        context.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
     }
 
     /**
      * Removes a comment.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/remove-comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void removeComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void removeComment(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String commentId = request.getParameter(Comment.COMMENT_T_ID);
         commentMgmtService.removeCommentByAdmin(commentId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_COMMENT, commentId));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/comments");
+        context.sendRedirect(Latkes.getServePath() + "/admin/comments");
     }
 
     /**
      * Removes an article.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/remove-article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void removeArticle(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
         articleMgmtService.removeArticleByAdmin(articleId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_ARTICLE, articleId));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/articles");
+        context.sendRedirect(Latkes.getServePath() + "/admin/articles");
     }
 
     /**
      * Shows admin index.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showAdminIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showAdminIndex(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/index.ftl");
@@ -1423,16 +1402,15 @@ public class AdminProcessor {
     /**
      * Shows admin users.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/users", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showUsers(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showUsers(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/users.ftl");
@@ -1468,17 +1446,15 @@ public class AdminProcessor {
     /**
      * Shows a user.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param userId   the specified user id
-     * @throws Exception exception
+     * @param context the specified context
+     * @param userId  the specified user id
      */
     @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                         final String userId) throws Exception {
+    public void showUser(final HTTPRequestContext context, final String userId) throws Exception {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/user.ftl");
@@ -1498,14 +1474,15 @@ public class AdminProcessor {
     /**
      * Shows add user.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-user", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showAddUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showAddUser(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/add-user.ftl");
@@ -1517,16 +1494,15 @@ public class AdminProcessor {
     /**
      * Adds a user.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-user", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void addUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void addUser(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String userName = request.getParameter(User.USER_NAME);
         final String email = request.getParameter(User.USER_EMAIL);
         final String password = request.getParameter(User.USER_PASSWORD);
@@ -1581,23 +1557,22 @@ public class AdminProcessor {
             return;
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+        context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
     }
 
     /**
      * Updates a user.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param userId   the specified user id
-     * @throws Exception exception
+     * @param context the specified context
+     * @param userId  the specified user id
      */
     @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                           final String userId) throws Exception {
+    public void updateUser(final HTTPRequestContext context, final String userId) throws Exception {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/user.ftl");
@@ -1674,23 +1649,22 @@ public class AdminProcessor {
     /**
      * Updates a user's email.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param userId   the specified user id
-     * @throws Exception exception
+     * @param context the specified context
+     * @param userId  the specified user id
      */
     @RequestProcessing(value = "/admin/user/{userId}/email", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateUserEmail(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                final String userId) throws Exception {
+    public void updateUserEmail(final HTTPRequestContext context, final String userId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject user = userQueryService.getUser(userId);
         final String oldEmail = user.optString(User.USER_EMAIL);
         final String newEmail = request.getParameter(User.USER_EMAIL);
 
         if (oldEmail.equals(newEmail)) {
-            response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+            context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
 
             return;
         }
@@ -1712,29 +1686,28 @@ public class AdminProcessor {
             return;
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+        context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
     }
 
     /**
      * Updates a user's username.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param userId   the specified user id
-     * @throws Exception exception
+     * @param context the specified context
+     * @param userId  the specified user id
      */
     @RequestProcessing(value = "/admin/user/{userId}/username", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateUserName(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                               final String userId) throws Exception {
+    public void updateUserName(final HTTPRequestContext context, final String userId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject user = userQueryService.getUser(userId);
         final String oldUserName = user.optString(User.USER_NAME);
         final String newUserName = request.getParameter(User.USER_NAME);
 
         if (oldUserName.equals(newUserName)) {
-            response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+            context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
 
             return;
         }
@@ -1756,30 +1729,29 @@ public class AdminProcessor {
             return;
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+        context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
     }
 
     /**
      * Charges a user's point.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param userId   the specified user id
-     * @throws Exception exception
+     * @param context the specified context
+     * @param userId  the specified user id
      */
     @RequestProcessing(value = "/admin/user/{userId}/charge-point", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void chargePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                            final String userId) throws Exception {
+    public void chargePoint(final HTTPRequestContext context, final String userId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String pointStr = request.getParameter(Common.POINT);
         final String memo = request.getParameter("memo");
 
         if (StringUtils.isBlank(pointStr) || StringUtils.isBlank(memo) || !Strings.isNumeric(memo.split("-")[0])) {
             LOGGER.warn("Charge point memo format error");
 
-            response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+            context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
 
             return;
         }
@@ -1807,23 +1779,22 @@ public class AdminProcessor {
             return;
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+        context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
     }
 
     /**
      * Deducts a user's abuse point.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param userId   the specified user id
-     * @throws Exception exception
+     * @param context the specified context
+     * @param userId  the specified user id
      */
     @RequestProcessing(value = "/admin/user/{userId}/abuse-point", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void abusePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                           final String userId) throws Exception {
+    public void abusePoint(final HTTPRequestContext context, final String userId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String pointStr = request.getParameter(Common.POINT);
 
         try {
@@ -1866,23 +1837,22 @@ public class AdminProcessor {
             return;
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+        context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
     }
 
     /**
      * Compensates a user's initial point.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param userId   the specified user id
-     * @throws Exception exception
+     * @param context the specified context
+     * @param userId  the specified user id
      */
     @RequestProcessing(value = "/admin/user/{userId}/init-point", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void initPoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                          final String userId) throws Exception {
+    public void initPoint(final HTTPRequestContext context, final String userId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         try {
             final JSONObject user = userQueryService.getUser(userId);
             if (null == user
@@ -1900,7 +1870,7 @@ public class AdminProcessor {
                         Pointtransfer.TRANSFER_SUM_C_INIT, userId, Long.valueOf(userId), "");
                 operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_INIT_POINT, transferId));
             }
-        } catch (final IOException | NumberFormatException | ServiceException e) {
+        } catch (final Exception e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
             context.setRenderer(renderer);
             renderer.setTemplateName("admin/error.ftl");
@@ -1912,23 +1882,21 @@ public class AdminProcessor {
             return;
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+        context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
     }
 
     /**
      * Exchanges a user's point.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param userId   the specified user id
-     * @throws Exception exception
+     * @param context the specified context
+     * @param userId  the specified user id
      */
     @RequestProcessing(value = "/admin/user/{userId}/exchange-point", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void exchangePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final String userId) throws Exception {
+    public void exchangePoint(final HTTPRequestContext context, final String userId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final String pointStr = request.getParameter(Common.POINT);
 
         try {
@@ -1971,22 +1939,21 @@ public class AdminProcessor {
             return;
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+        context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
     }
 
     /**
      * Shows admin articles.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/articles", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showArticles(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/articles.ftl");
@@ -2038,16 +2005,15 @@ public class AdminProcessor {
      * Shows an article.
      *
      * @param context   the specified context
-     * @param request   the specified request
-     * @param response  the specified response
      * @param articleId the specified article id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/article/{articleId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                            final String articleId) throws Exception {
+    public void showArticle(final HTTPRequestContext context, final String articleId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/article.ftl");
@@ -2064,16 +2030,15 @@ public class AdminProcessor {
      * Updates an article.
      *
      * @param context   the specified context
-     * @param request   the specified request
-     * @param response  the specified response
      * @param articleId the specified article id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/article/{articleId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final String articleId) throws Exception {
+    public void updateArticle(final HTTPRequestContext context, final String articleId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/article.ftl");
@@ -2118,16 +2083,15 @@ public class AdminProcessor {
     /**
      * Shows admin comments.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/comments", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showComments(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/comments.ftl");
@@ -2171,16 +2135,15 @@ public class AdminProcessor {
      * Shows a comment.
      *
      * @param context   the specified context
-     * @param request   the specified request
-     * @param response  the specified response
      * @param commentId the specified comment id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/comment/{commentId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                            final String commentId) throws Exception {
+    public void showComment(final HTTPRequestContext context, final String commentId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/comment.ftl");
@@ -2197,16 +2160,15 @@ public class AdminProcessor {
      * Updates a comment.
      *
      * @param context   the specified context
-     * @param request   the specified request
-     * @param response  the specified response
      * @param commentId the specified comment id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/comment/{commentId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final String commentId) throws Exception {
+    public void updateComment(final HTTPRequestContext context, final String commentId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/comment.ftl");
@@ -2240,16 +2202,15 @@ public class AdminProcessor {
     /**
      * Shows admin miscellaneous.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/misc", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showMisc(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/misc.ftl");
@@ -2264,16 +2225,15 @@ public class AdminProcessor {
     /**
      * Updates admin miscellaneous.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/misc", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void updateMisc(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/misc.ftl");
@@ -2308,16 +2268,15 @@ public class AdminProcessor {
     /**
      * Shows admin tags.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/tags", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showTags(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/tags.ftl");
@@ -2368,17 +2327,16 @@ public class AdminProcessor {
     /**
      * Shows a tag.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param tagId    the specified tag id
-     * @throws Exception exception
+     * @param context the specified context
+     * @param tagId   the specified tag id
      */
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                        final String tagId) throws Exception {
+    public void showTag(final HTTPRequestContext context, final String tagId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/tag.ftl");
@@ -2403,17 +2361,16 @@ public class AdminProcessor {
     /**
      * Updates a tag.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @param tagId    the specified tag id
-     * @throws Exception exception
+     * @param context the specified context
+     * @param tagId   the specified tag id
      */
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                          final String tagId) throws Exception {
+    public void updateTag(final HTTPRequestContext context, final String tagId) throws Exception {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/tag.ftl");
@@ -2458,16 +2415,15 @@ public class AdminProcessor {
     /**
      * Shows admin domains.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/domains", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showDomains(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void showDomains(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/domains.ftl");
@@ -2513,16 +2469,15 @@ public class AdminProcessor {
      * Shows a domain.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param domainId the specified domain id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/domain/{domainId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                           final String domainId) throws Exception {
+    public void showDomain(final HTTPRequestContext context, final String domainId) throws Exception {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/domain.ftl");
@@ -2539,16 +2494,15 @@ public class AdminProcessor {
      * Updates a domain.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param domainId the specified domain id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/domain/{domainId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                             final String domainId) throws Exception {
+    public void updateDomain(final HTTPRequestContext context, final String domainId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/domain.ftl");
@@ -2587,14 +2541,15 @@ public class AdminProcessor {
     /**
      * Shows add domain.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-domain", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showAddDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showAddDomain(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/add-domain.ftl");
@@ -2606,16 +2561,15 @@ public class AdminProcessor {
     /**
      * Adds a domain.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-domain", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void addDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void addDomain(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String domainTitle = request.getParameter(Domain.DOMAIN_TITLE);
 
         if (StringUtils.isBlank(domainTitle)) {
@@ -2666,44 +2620,41 @@ public class AdminProcessor {
             return;
         }
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/domain/" + domainId);
+        context.sendRedirect(Latkes.getServePath() + "/admin/domain/" + domainId);
     }
 
     /**
      * Removes a domain.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/admin/remove-domain", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void removeDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void removeDomain(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String domainId = request.getParameter(Domain.DOMAIN_T_ID);
         domainMgmtService.removeDomain(domainId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_DOMAIN, domainId));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/domains");
+        context.sendRedirect(Latkes.getServePath() + "/admin/domains");
     }
 
     /**
      * Adds a tag into a domain.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param domainId the specified domain id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/domain/{domainId}/add-tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void addDomainTag(final HTTPRequestContext context,
-                             final HttpServletRequest request, final HttpServletResponse response, final String domainId)
-            throws Exception {
+    public void addDomainTag(final HTTPRequestContext context, final String domainId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         String tagTitle = request.getParameter(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
 
@@ -2781,24 +2732,22 @@ public class AdminProcessor {
         domainMgmtService.addDomainTag(domainTag);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_ADD_DOMAIN_TAG, domainId));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/domain/" + domainId);
+        context.sendRedirect(Latkes.getServePath() + "/admin/domain/" + domainId);
     }
 
     /**
      * Removes a tag from a domain.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param domainId the specified domain id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/domain/{domainId}/remove-tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void removeDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                             final String domainId)
-            throws Exception {
+    public void removeDomain(final HTTPRequestContext context, final String domainId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final String tagTitle = request.getParameter(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
 
@@ -2822,7 +2771,7 @@ public class AdminProcessor {
         domainMgmtService.removeDomainTag(domainId, tag.optString(Keys.OBJECT_ID));
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_DOMAIN_TAG, domainId));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/domain/" + domainId);
+        context.sendRedirect(Latkes.getServePath() + "/admin/domain/" + domainId);
     }
 
     /**
@@ -2879,19 +2828,18 @@ public class AdminProcessor {
      * Rebuilds one article search index.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/search-index-article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void rebuildOneArticleSearchIndex(final HTTPRequestContext context) throws Exception {
+    public void rebuildOneArticleSearchIndex(final HTTPRequestContext context) {
         final String articleId = context.getRequest().getParameter(Article.ARTICLE_T_ID);
         final JSONObject article = articleQueryService.getArticle(articleId);
 
         updateArticleSearchIndex(article);
         operationMgmtService.addOperation(Operation.newOperation(context.getRequest(), Operation.OPERATION_CODE_C_REBUILD_ARTICLE_SEARCH, articleId));
 
-        context.getResponse().sendRedirect(Latkes.getServePath() + "/admin/articles");
+        context.sendRedirect(Latkes.getServePath() + "/admin/articles");
     }
 
     private void updateArticleSearchIndex(final JSONObject article) {

@@ -364,9 +364,8 @@ public class TagQueryService {
      *
      * @param tagTitle the specified tag title
      * @return tag, returns {@code null} if not null
-     * @throws ServiceException service exception
      */
-    public JSONObject getTagByTitle(final String tagTitle) throws ServiceException {
+    public JSONObject getTagByTitle(final String tagTitle) {
         try {
             final JSONObject ret = tagRepository.getByTitle(tagTitle);
             if (null == ret) {
@@ -397,7 +396,8 @@ public class TagQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tag [title=" + tagTitle + "] failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 
@@ -681,10 +681,9 @@ public class TagQueryService {
      *      }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getTags(final JSONObject requestJSONObject, final Map<String, Class<?>> tagFields) throws ServiceException {
+    public JSONObject getTags(final JSONObject requestJSONObject, final Map<String, Class<?>> tagFields) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -700,14 +699,13 @@ public class TagQueryService {
             query.setFilter(new PropertyFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, requestJSONObject.optString(Tag.TAG_TITLE)));
         }
 
-        JSONObject result = null;
-
+        JSONObject result;
         try {
             result = tagRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tags failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -735,14 +733,14 @@ public class TagQueryService {
      *
      * @param tagId the specified id
      * @return tag, return {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getTag(final String tagId) throws ServiceException {
+    public JSONObject getTag(final String tagId) {
         try {
             return tagRepository.get(tagId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a tag [tagId=" + tagId + "] failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 }

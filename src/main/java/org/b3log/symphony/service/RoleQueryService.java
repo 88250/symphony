@@ -25,7 +25,6 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
@@ -333,24 +332,21 @@ public class RoleQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getRoles(final int currentPage, final int pageSize, final int windowSize)
-            throws ServiceException {
+    public JSONObject getRoles(final int currentPage, final int pageSize, final int windowSize) {
         final JSONObject ret = new JSONObject();
 
         final Query query = new Query().setCurrentPageNum(currentPage).setPageSize(pageSize).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
-        JSONObject result = null;
-
+        JSONObject result;
         try {
             result = roleRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets roles failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -408,7 +404,7 @@ public class RoleQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets role permissions failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
 
         Collections.sort(roles, (o1, o2) -> ((List) o2.opt(Permission.PERMISSIONS)).size()
