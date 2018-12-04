@@ -205,10 +205,9 @@ public class NotificationMgmtService {
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId": "",
      *                          "dataId": "" // comment id-vote user id
-     * @throws ServiceException service exception
      */
     @Transactional
-    public void addCommentVoteUpNotification(final JSONObject requestJSONObject) throws ServiceException {
+    public void addCommentVoteUpNotification(final JSONObject requestJSONObject)  {
         try {
             requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_COMMENT_VOTE_UP);
 
@@ -216,8 +215,6 @@ public class NotificationMgmtService {
         } catch (final RepositoryException e) {
             final String msg = "Adds a notification [type=comment_vote_up] failed";
             LOGGER.log(Level.ERROR, msg, e);
-
-            throw new ServiceException(msg);
         }
     }
 

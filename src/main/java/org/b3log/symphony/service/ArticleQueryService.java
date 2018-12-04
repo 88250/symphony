@@ -1202,10 +1202,9 @@ public class ArticleQueryService {
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
      * @return user articles, return an empty list if not found
-     * @throws ServiceException service exception
      */
     public List<JSONObject> getUserArticles(final int avatarViewMode, final String userId, final int anonymous,
-                                            final int currentPageNum, final int pageSize) throws ServiceException {
+                                            final int currentPageNum, final int pageSize) {
         final Query query = new Query().addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING)
                 .setCurrentPageNum(currentPageNum).setPageSize(pageSize).
                         setFilter(CompositeFilterOperator.and(
@@ -1232,7 +1231,8 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets user articles failed", e);
-            throw new ServiceException(e);
+
+            return Collections.emptyList();
         }
     }
 

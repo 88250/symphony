@@ -207,7 +207,7 @@ public class TopProcessor {
     public void showCheckin(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("top/checkin.ftl");

@@ -28,7 +28,6 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.*;
 import org.b3log.symphony.model.*;
@@ -501,10 +500,9 @@ public class CommentQueryService {
      * @param pageSize       the specified page size
      * @param viewer         the specified viewer, may be {@code null}
      * @return user comments, return an empty list if not found
-     * @throws ServiceException service exception
      */
     public List<JSONObject> getUserComments(final int avatarViewMode, final String userId, final int anonymous,
-                                            final int currentPageNum, final int pageSize, final JSONObject viewer) throws ServiceException {
+                                            final int currentPageNum, final int pageSize, final JSONObject viewer) {
         final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
                 .setCurrentPageNum(currentPageNum).setPageSize(pageSize).
                         setFilter(CompositeFilterOperator.and(
@@ -613,7 +611,8 @@ public class CommentQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets user comments failed", e);
-            throw new ServiceException(e);
+
+            return Collections.emptyList();
         }
     }
 

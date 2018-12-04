@@ -108,7 +108,7 @@ public class VoteProcessor {
      */
     @RequestProcessing(value = "/vote/up/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void voteUpComment(final HTTPRequestContext context) throws Exception {
+    public void voteUpComment(final HTTPRequestContext context)  {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();

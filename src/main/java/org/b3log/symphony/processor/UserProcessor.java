@@ -178,17 +178,16 @@ public class UserProcessor {
      * Shows user home breezemoons page.
      *
      * @param context      the specified context
-     * @param request      the specified request
-     * @param response     the specified response
      * @param userName     the specified user name
      * @param breezemoonId the specified breezemoon id, may be {@code null}
-     * @throws Exception exception
      */
     @RequestProcessing(value = {"/member/{userName}/breezemoons", "/member/{userName}/breezemoons/{breezemoonId}"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHomeBreezemoons(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                    final String userName, final String breezemoonId) throws Exception {
+    public void showHomeBreezemoons(final HTTPRequestContext context, final String userName, final String breezemoonId) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -253,16 +252,15 @@ public class UserProcessor {
      * Shows user home anonymous comments page.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param userName the specified user name
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/comments/anonymous", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHomeAnonymousComments(final HTTPRequestContext context, final HttpServletRequest request,
-                                          final HttpServletResponse response, final String userName) throws Exception {
+    public void showHomeAnonymousComments(final HTTPRequestContext context, final String userName) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/comments.ftl");
@@ -279,7 +277,7 @@ public class UserProcessor {
 
         if (null == currentUser || (!currentUser.optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID)))
                 && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
@@ -335,16 +333,15 @@ public class UserProcessor {
      * Shows user home anonymous articles page.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param userName the specified user name
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/articles/anonymous", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showAnonymousArticles(final HTTPRequestContext context, final HttpServletRequest request,
-                                      final HttpServletResponse response, final String userName) throws Exception {
+    public void showAnonymousArticles(final HTTPRequestContext context, final String userName) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/home.ftl");
@@ -361,7 +358,7 @@ public class UserProcessor {
 
         if (null == currentUser || (!currentUser.optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID)))
                 && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
@@ -417,16 +414,15 @@ public class UserProcessor {
      * Shows user home page.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param userName the specified user name
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                         final String userName) throws Exception {
+    public void showHome(final HTTPRequestContext context, final String userName) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         final int pageNum = Paginator.getPage(request);
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -493,16 +489,15 @@ public class UserProcessor {
      * Shows user home comments page.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param userName the specified user name
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/comments", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                 final String userName) throws Exception {
+    public void showHomeComments(final HTTPRequestContext context, final String userName) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -562,15 +557,15 @@ public class UserProcessor {
      * Shows user home following users page.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param userName the specified user name
      */
     @RequestProcessing(value = "/member/{userName}/following/users", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHomeFollowingUsers(final HTTPRequestContext context, final HttpServletRequest request,
-                                       final HttpServletResponse response, final String userName) {
+    public void showHomeFollowingUsers(final HTTPRequestContext context, final String userName) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -631,15 +626,15 @@ public class UserProcessor {
      * Shows user home following tags page.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param userName the specified user name
      */
     @RequestProcessing(value = "/member/{userName}/following/tags", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHomeFollowingTags(final HTTPRequestContext context, final HttpServletRequest request,
-                                      final HttpServletResponse response, final String userName) {
+    public void showHomeFollowingTags(final HTTPRequestContext context, final String userName) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -699,15 +694,15 @@ public class UserProcessor {
      * Shows user home following articles page.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param userName the specified user name
      */
     @RequestProcessing(value = "/member/{userName}/following/articles", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHomeFollowingArticles(final HTTPRequestContext context, final HttpServletRequest request,
-                                          final HttpServletResponse response, final String userName) {
+    public void showHomeFollowingArticles(final HTTPRequestContext context, final String userName) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -768,15 +763,15 @@ public class UserProcessor {
      * Shows user home watching articles page.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param userName the specified user name
      */
     @RequestProcessing(value = "/member/{userName}/watching/articles", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHomeWatchingArticles(final HTTPRequestContext context, final HttpServletRequest request,
-                                         final HttpServletResponse response, final String userName) {
+    public void showHomeWatchingArticles(final HTTPRequestContext context, final String userName) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -837,15 +832,15 @@ public class UserProcessor {
      * Shows user home follower users page.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param userName the specified user name
      */
     @RequestProcessing(value = "/member/{userName}/followers", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHomeFollowers(final HTTPRequestContext context, final HttpServletRequest request,
-                                  final HttpServletResponse response, final String userName) {
+    public void showHomeFollowers(final HTTPRequestContext context, final String userName) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -913,16 +908,15 @@ public class UserProcessor {
      * Shows user home points page.
      *
      * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
      * @param userName the specified user name
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/points", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHomePoints(final HTTPRequestContext context, final HttpServletRequest request,
-                               final HttpServletResponse response, final String userName) throws Exception {
+    public void showHomePoints(final HTTPRequestContext context, final String userName) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -976,11 +970,11 @@ public class UserProcessor {
      * Lists usernames.
      *
      * @param context the specified context
-     * @param request the specified request
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/users/names", method = HTTPRequestMethod.GET)
-    public void listNames(final HTTPRequestContext context, final HttpServletRequest request) throws Exception {
+    public void listNames(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+
         context.renderJSON().renderTrueResult();
 
         final String namePrefix = request.getParameter("name");
@@ -1009,12 +1003,12 @@ public class UserProcessor {
      * Lists emotions.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/users/emotions", method = HTTPRequestMethod.GET)
-    public void getEmotions(final HTTPRequestContext context, final HttpServletRequest request) {
+    public void getEmotions(final HTTPRequestContext context) {
         context.renderJSON();
 
+        final HttpServletRequest request = context.getRequest();
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         if (null == currentUser) {
             context.renderJSONValue("emotions", "");

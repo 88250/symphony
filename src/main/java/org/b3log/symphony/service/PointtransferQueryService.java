@@ -25,7 +25,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.*;
@@ -224,9 +223,8 @@ public class PointtransferQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getUserPoints(final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getUserPoints(final String userId, final int currentPageNum, final int pageSize) {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setCurrentPageNum(currentPageNum).setPageSize(pageSize);
         final List<Filter> filters = new ArrayList<>();
@@ -612,7 +610,8 @@ public class PointtransferQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets user points failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 }
