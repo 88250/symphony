@@ -451,9 +451,8 @@ public class CommentQueryService {
      * @param avatarViewMode the specified avatar view mode
      * @param commentId      the specified comment id
      * @return comment, returns {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getCommentById(final int avatarViewMode, final String commentId) throws ServiceException {
+    public JSONObject getCommentById(final int avatarViewMode, final String commentId) {
 
         try {
             final JSONObject ret = commentRepository.get(commentId);
@@ -467,7 +466,7 @@ public class CommentQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            throw new ServiceException("Gets comment[id=" + commentId + "] failed");
+            return null;
         }
     }
 

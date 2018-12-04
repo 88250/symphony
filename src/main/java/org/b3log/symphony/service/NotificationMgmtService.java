@@ -539,10 +539,9 @@ public class NotificationMgmtService {
      * Makes the specified notifications have been read.
      *
      * @param notifications the specified notifications
-     * @throws ServiceException service exception
      */
     @Transactional
-    public void makeRead(final Collection<JSONObject> notifications) throws ServiceException {
+    public void makeRead(final Collection<JSONObject> notifications) {
         for (final JSONObject notification : notifications) {
             makeRead(notification);
         }
@@ -553,10 +552,9 @@ public class NotificationMgmtService {
      *
      * @param notification the specified notification, return directly if this notification has been read
      *                     (notification.hasRead equals to {@code true})
-     * @throws ServiceException service exception
      */
     @Transactional
-    public void makeRead(final JSONObject notification) throws ServiceException {
+    public void makeRead(final JSONObject notification) {
         if (notification.optBoolean(Notification.NOTIFICATION_HAS_READ)) {
             return;
         }
@@ -575,8 +573,6 @@ public class NotificationMgmtService {
         } catch (final RepositoryException e) {
             final String msg = "Makes notification as read failed";
             LOGGER.log(Level.ERROR, msg, e);
-
-            throw new ServiceException(msg);
         }
     }
 
@@ -674,10 +670,9 @@ public class NotificationMgmtService {
      * @param requestJSONObject the specified request json object, for example,
      *                          "userId"; "",
      *                          "dataId": "" // transfer record id
-     * @throws ServiceException service exception
      */
     @Transactional
-    public void addPointTransferNotification(final JSONObject requestJSONObject) throws ServiceException {
+    public void addPointTransferNotification(final JSONObject requestJSONObject)  {
         try {
             requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_POINT_TRANSFER);
 
@@ -685,8 +680,6 @@ public class NotificationMgmtService {
         } catch (final RepositoryException e) {
             final String msg = "Adds a notification [type=point_transfer] failed";
             LOGGER.log(Level.ERROR, msg, e);
-
-            throw new ServiceException(msg);
         }
     }
 

@@ -27,7 +27,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
@@ -66,18 +65,16 @@ public class ManProcessor {
     /**
      * Shows man.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/man", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showMan(final HTTPRequestContext context,
-                        final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void showMan(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         if (!ManQueryService.TLDR_ENABLED) {
-            response.sendRedirect("https://hacpai.com/man");
+            context.sendRedirect("https://hacpai.com/man");
 
             return;
         }
@@ -88,9 +85,6 @@ public class ManProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
-
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -113,14 +107,12 @@ public class ManProcessor {
     /**
      * Lists mans.
      *
-     * @param context  the specified context
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified context
      */
     @RequestProcessing(value = "/man/cmd", method = HTTPRequestMethod.GET)
-    public void listMans(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void listMans(final HTTPRequestContext context) {
         context.renderJSON().renderTrueResult();
-
+        final HttpServletRequest request = context.getRequest();
         final String cmdPrefix = request.getParameter(Common.NAME);
         if (StringUtils.isBlank(cmdPrefix)) {
             return;

@@ -75,13 +75,15 @@ public class ReportProcessor {
      * Reports content or users.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/report", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void report(final HTTPRequestContext context, final HttpServletRequest request, final JSONObject requestJSONObject) {
+    public void report(final HTTPRequestContext context) {
         context.renderJSON();
+
+        final HttpServletRequest request = context.getRequest();
+        final JSONObject requestJSONObject = context.requestJSON();
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);

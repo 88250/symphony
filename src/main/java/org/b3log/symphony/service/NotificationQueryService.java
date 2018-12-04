@@ -214,10 +214,8 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getSysAnnounceNotifications(final int avatarViewMode,
-                                                  final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getSysAnnounceNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);
@@ -290,7 +288,7 @@ public class NotificationQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets [sys_announce] notifications failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
     }
 
@@ -397,9 +395,8 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getPointNotifications(final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getPointNotifications(final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);
@@ -627,7 +624,7 @@ public class NotificationQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets [point] notifications failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
     }
 
@@ -654,9 +651,8 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getCommentedNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getCommentedNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);
@@ -712,7 +708,8 @@ public class NotificationQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets [commented] notifications", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 
@@ -739,9 +736,8 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getReplyNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getReplyNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);
@@ -795,7 +791,8 @@ public class NotificationQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets [reply] notifications", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 
@@ -827,9 +824,8 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getAtNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getAtNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);
@@ -1061,7 +1057,7 @@ public class NotificationQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets [at] notifications", e);
 
-            throw new ServiceException(e);
+            return null;
         }
     }
 
@@ -1220,9 +1216,8 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getBroadcastNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getBroadcastNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);
@@ -1293,7 +1288,7 @@ public class NotificationQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Get [broadcast] notifications", e);
 
-            throw new ServiceException(e);
+            return null;
         }
     }
 }

@@ -28,7 +28,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
@@ -321,9 +320,8 @@ public class TagQueryService {
      *
      * @param tagURI the specified tag URI
      * @return tag, returns {@code null} if not null
-     * @throws ServiceException service exception
      */
-    public JSONObject getTagByURI(final String tagURI) throws ServiceException {
+    public JSONObject getTagByURI(final String tagURI) {
         try {
             final JSONObject ret = tagRepository.getByURI(tagURI);
             if (null == ret) {
@@ -355,7 +353,8 @@ public class TagQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tag [uri=" + tagURI + "] failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 
@@ -406,9 +405,8 @@ public class TagQueryService {
      *
      * @param fetchSize the specified fetch size
      * @return trend tags, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getTrendTags(final int fetchSize) throws ServiceException {
+    public List<JSONObject> getTrendTags(final int fetchSize) {
         final Query query = new Query().addSort(Tag.TAG_REFERENCE_CNT, SortDirection.DESCENDING).
                 setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
 
@@ -423,7 +421,8 @@ public class TagQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets trend tags failed");
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 
@@ -441,9 +440,8 @@ public class TagQueryService {
      *
      * @param fetchSize the specified fetch size
      * @return trend tags, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getColdTags(final int fetchSize) throws ServiceException {
+    public List<JSONObject> getColdTags(final int fetchSize) {
         final Query query = new Query().addSort(Tag.TAG_REFERENCE_CNT, SortDirection.ASCENDING).
                 setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
 
@@ -458,7 +456,8 @@ public class TagQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets cold tags failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 
@@ -484,9 +483,8 @@ public class TagQueryService {
      *     "tagCreatorName": ""
      * }
      * </pre>, returns {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getCreator(final int avatarViewMode, final String tagId) throws ServiceException {
+    public JSONObject getCreator(final int avatarViewMode, final String tagId) {
         final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
 
@@ -529,7 +527,8 @@ public class TagQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tag creator failed [tagId=" + tagId + "]", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 
@@ -548,10 +547,9 @@ public class TagQueryService {
      *     }, ....
      * ]
      * </pre>, returns an empty list if not found
-     * @throws ServiceException service exception
      */
     public List<JSONObject> getParticipants(final int avatarViewMode,
-                                            final String tagId, final int fetchSize) throws ServiceException {
+                                            final String tagId, final int fetchSize) {
         final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
         filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, 1));
@@ -589,7 +587,8 @@ public class TagQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tag participants failed", e);
-            throw new ServiceException(e);
+
+            return Collections.emptyList();
         }
     }
 
@@ -606,9 +605,8 @@ public class TagQueryService {
      *     ....
      * }, ....]
      * </pre>, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getRelatedTags(final String tagId, final int fetchSize) throws ServiceException {
+    public List<JSONObject> getRelatedTags(final String tagId, final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<>();
 
         final Set<String> tagIds = new HashSet<>();
@@ -653,7 +651,8 @@ public class TagQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets related tags failed", e);
-            throw new ServiceException(e);
+
+            return Collections.emptyList();
         }
     }
 

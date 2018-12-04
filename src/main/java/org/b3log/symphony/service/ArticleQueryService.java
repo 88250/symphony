@@ -931,10 +931,9 @@ public class ArticleQueryService {
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
      * @return articles, return an empty list if not found
-     * @throws ServiceException service exception
      */
     public List<JSONObject> getArticlesByTag(final int avatarViewMode, final int sortMode, final JSONObject tag,
-                                             final int currentPageNum, final int pageSize) throws ServiceException {
+                                             final int currentPageNum, final int pageSize) {
         try {
             Query query = new Query();
             switch (sortMode) {
@@ -1056,7 +1055,8 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles by tag [tagTitle=" + tag.optString(Tag.TAG_TITLE) + "] failed", e);
-            throw new ServiceException(e);
+
+            return Collections.emptyList();
         }
     }
 
