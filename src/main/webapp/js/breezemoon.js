@@ -19,7 +19,7 @@
  * @fileoverview Breezemoon.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.0.0, May 21, 2018
+ * @version 0.1.0.1, Dec 5, 2018
  */
 
 /**
@@ -46,10 +46,6 @@ var Breezemoon = {
     $breezemoonList.on('click', '.edit', function () {
       var $it = $(this)
       Breezemoon.toggleUpdate($it, $it.closest('li').attr('id'))
-    })
-    $breezemoonList.find('.copy').each(function () {
-      var $it = $(this)
-      Util.clipboard($it, $it.next())
     })
 
     $breezemoonList.find('.ua').each(function () {

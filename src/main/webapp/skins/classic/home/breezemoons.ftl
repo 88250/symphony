@@ -90,18 +90,20 @@
                                 </span>
                                 &nbsp;&nbsp;
                                  </#if>
-                            <#--
-                            <span class="tooltipped tooltipped-n ft-a-title copy" aria-label="${copyLabel}">
-                                <svg><use xlink:href="#articles"></use></svg>
-                            </span>
-                            -->
-                                <textarea
-                                        style="position: fixed;left: -10000px;">${servePath}/member/${user.userName}/breezemoons#${item.oId}</textarea>
+                                <a class="ft-a-title"
+                                   href="${servePath}/member/${item.breezemoonAuthorName}/breezemoons/${item.oId}">
+                                    <svg><use xlink:href="#link"></use></svg>
+                                </a>
                             </div>
                         </div>
                         <div class="content-reset">${item.breezemoonContent}</div>
                     </div>
                 </li>
+                <#if isSingleBreezemoonURL>
+                 <li class="ft-center">
+                     <a href="${servePath}/member/${user.userName}/breezemoons">${moreLabel}</a>
+                 </li>
+                </#if>
             </#list>
         </ul>
     </div>

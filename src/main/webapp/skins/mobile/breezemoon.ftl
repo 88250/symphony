@@ -68,11 +68,10 @@
                                     </span>
                                     &nbsp;&nbsp;
                                     </#if>
-                                    <span class="tooltipped tooltipped-n ft-a-title copy"
-                                          aria-label="${copyLabel}">
-                                        <svg><use xlink:href="#articles"></use></svg>
-                                    </span>
-                                    <textarea style="position: fixed;left: -10000px;">${servePath}/watch/breezemoons#${item.oId}</textarea>
+                                    <a class="ft-a-title"
+                                       href="${servePath}/member/${item.breezemoonAuthorName}/breezemoons/${item.oId}">
+                                        <svg><use xlink:href="#link"></use></svg>
+                                    </a>
                                 </div>
                             </div>
                             <div class="content-reset">${item.breezemoonContent}</div>

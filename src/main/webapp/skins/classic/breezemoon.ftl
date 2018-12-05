@@ -82,6 +82,11 @@
                                             </span>
                                             &nbsp;&nbsp;
                                             </#if>
+                                            <a class="tooltipped tooltipped-n ft-a-title"
+                                               href="${servePath}/member/${item.breezemoonAuthorName}/breezemoons/${item.oId}"
+                                               aria-label="${linkLabel}">
+                                                <svg><use xlink:href="#link"></use></svg>
+                                            </a>
                                             <#--
                                             <span class="tooltipped tooltipped-n ft-a-title copy"
                                                   aria-label="${copyLabel}">
