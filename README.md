@@ -2,7 +2,7 @@
 
 ## 简介
 
-[Symphony](https://github.com/b3log/symphony)（[ˈsɪmfəni]，n.交响乐）是一个现代化的社区平台，因为它：
+[Symphony](https://sym.b3log.org)（[ˈsɪmfəni]，n.交响乐）是一个现代化的社区平台，因为它：
 
 * 实现了面向内容讨论的论坛
 * 实现了面向知识问答的社区
@@ -20,24 +20,36 @@
 * 缺乏考虑实际运营需求，管理功能过于单一
 * 细节不够精致、缺乏长期维护 
 
-## 案例
+## 客户案例
 
 社区版：
 
 * [AIQ-机器学习](http://www.6aiq.com)
 * [宽客网](http://www.cnq.net)
-* [贵州IT](http://www.gzit.info)
-* [超级产品经理](https://imspm.com)
 * [许昌IT圈](http://www.xcitq.com)
+* [PRA](http://support.i-search.com.cn/)
+* [凤凰匯](https://www.fengd.com/)
+* [猪玩派 | 喜欢游玩  热爱生活  乐于分享！](http://pigplay.net/)
+* [俩猴网](http://www.xfx77.cn/)
+* [听雨轩](http://nucode.cn/)
+* ......
 
 商业版：
 
 * [黑客派](https://hacpai.com)
-* [汇桔网](https://bbs.wtoip.com)
 * [IT遇岛](https://www.ityudao.com)
-* [四方环视](http://bbs.ivrpano.com)
+* [汇桔网](https://bbs.wtoip.com)
 * [TapDealing](http://www.tapdealing.com)
+* 杭州橙子信息科技有限公司
+* [艺术家与艺术爱好者](http://www.dizmix.com/)
 * [乾学院](http://c.raqsoft.com.cn)
+* 深圳市优服网技术服务有限公司 
+* 平安科技（深圳）有限公司
+* 越亮传奇科技股份有限公司
+* [GeeCall极客社区](http://geecall.com/)
+* 金蝶蝶金云计算有限公司
+* 北京和气聚力教育科技有限公司
+* ......
 
 ## 功能
 
