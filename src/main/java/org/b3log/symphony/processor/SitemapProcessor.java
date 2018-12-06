@@ -24,7 +24,7 @@ import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.TextXMLRenderer;
+import org.b3log.latke.servlet.renderer.TextXmlRenderer;
 import org.b3log.symphony.model.sitemap.Sitemap;
 import org.b3log.symphony.service.SitemapQueryService;
 
@@ -59,7 +59,7 @@ public class SitemapProcessor {
      */
     @RequestProcessing(value = "/sitemap.xml", method = HttpMethod.GET)
     public void sitemap(final RequestContext context) {
-        final TextXMLRenderer renderer = new TextXMLRenderer();
+        final TextXmlRenderer renderer = new TextXmlRenderer();
 
         context.setRenderer(renderer);
 

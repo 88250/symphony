@@ -24,7 +24,7 @@ import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.PNGRenderer;
+import org.b3log.latke.servlet.renderer.PngRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
@@ -110,7 +110,7 @@ public class CaptchaProcessor {
      */
     @RequestProcessing(value = "/captcha", method = HttpMethod.GET)
     public void get(final RequestContext context) {
-        final PNGRenderer renderer = new PNGRenderer();
+        final PngRenderer renderer = new PngRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -174,7 +174,7 @@ public class CaptchaProcessor {
                 return;
             }
 
-            final PNGRenderer renderer = new PNGRenderer();
+            final PngRenderer renderer = new PngRenderer();
             context.setRenderer(renderer);
 
             final ConfigurableCaptchaService cs = new ConfigurableCaptchaService();
@@ -205,7 +205,7 @@ public class CaptchaProcessor {
         }
     }
 
-    private void renderImg(final PNGRenderer renderer, final BufferedImage bufferedImage) throws IOException {
+    private void renderImg(final PngRenderer renderer, final BufferedImage bufferedImage) throws IOException {
         try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             ImageIO.write(bufferedImage, "png", baos);
             final byte[] data = baos.toByteArray();

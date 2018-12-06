@@ -24,12 +24,11 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.DispatcherServlet;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.servlet.handler.MatchResult;
-import org.b3log.latke.servlet.handler.RequestDispatchHandler;
+import org.b3log.latke.servlet.handler.RouteHandler;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Permission;
@@ -40,7 +39,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -108,14 +106,8 @@ public class PermissionCheck extends ProcessAdvice {
             final String method = request.getMethod();
             String rule = prefix;
 
-            final RequestDispatchHandler requestDispatchHandler = (RequestDispatchHandler) DispatcherServlet.HANDLERS.get(2);
-
             try {
-                final Method doMatch = RequestDispatchHandler.class.getDeclaredMethod("doMatch",
-                        String.class, String.class);
-                doMatch.setAccessible(true);
-                final MatchResult matchResult = (MatchResult) doMatch.invoke(requestDispatchHandler, requestURI, method);
-
+                final MatchResult matchResult = RouteHandler.doMatch(requestURI, method);
                 rule += matchResult.getMatchedPattern() + "." + method;
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Match method failed", e);

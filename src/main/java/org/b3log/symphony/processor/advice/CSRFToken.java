@@ -20,8 +20,8 @@ package org.b3log.symphony.processor.advice;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.AfterRequestProcessAdvice;
-import org.b3log.latke.servlet.renderer.AbstractHTTPResponseRenderer;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
+import org.b3log.latke.servlet.renderer.AbstractResponseRenderer;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.util.Sessions;
 
@@ -35,7 +35,7 @@ import java.util.Map;
  * @since 1.3.0
  */
 @Singleton
-public class CSRFToken extends AfterRequestProcessAdvice {
+public class CSRFToken extends ProcessAdvice {
 
     /**
      * Logger.
@@ -43,8 +43,8 @@ public class CSRFToken extends AfterRequestProcessAdvice {
     private static final Logger LOGGER = Logger.getLogger(CSRFToken.class);
 
     @Override
-    public void doAdvice(final RequestContext context, final Object ret) {
-        final AbstractHTTPResponseRenderer renderer = context.getRenderer();
+    public void doAdvice(final RequestContext context) {
+        final AbstractResponseRenderer renderer = context.getRenderer();
         if (null != renderer) {
             final Map<String, Object> dataModel = renderer.getRenderDataModel();
 
