@@ -22,8 +22,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -97,7 +97,7 @@ public class TagProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/tags/query", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/tags/query", method = HttpMethod.GET)
     public void queryTags(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -133,9 +133,9 @@ public class TagProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/tags", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/tags", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTagsWall(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -161,9 +161,9 @@ public class TagProcessor {
      * @param tagURI  the specified tag URI
      */
     @RequestProcessing(value = {"/tag/{tagURI}", "/tag/{tagURI}/hot", "/tag/{tagURI}/good", "/tag/{tagURI}/reply",
-            "/tag/{tagURI}/perfect"}, method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+            "/tag/{tagURI}/perfect"}, method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTagArticles(final RequestContext context, final String tagURI) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();

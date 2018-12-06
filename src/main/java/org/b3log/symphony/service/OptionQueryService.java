@@ -235,7 +235,7 @@ public class OptionQueryService {
      *
      * @return misc
      */
-    public List<JSONObject> getMisc()  {
+    public List<JSONObject> getMisc() {
         final Query query = new Query().
                 setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_MISC));
         try {

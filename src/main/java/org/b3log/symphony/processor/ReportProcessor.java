@@ -24,8 +24,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -76,9 +76,9 @@ public class ReportProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/report", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @RequestProcessing(value = "/report", method = HttpMethod.POST)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After(StopwatchEndAdvice.class)
     public void report(final RequestContext context) {
         context.renderJSON();
 

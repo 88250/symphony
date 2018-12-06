@@ -29,8 +29,8 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Strings;
@@ -94,7 +94,7 @@ public class FileUploadProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/upload/*", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/upload/*", method = HttpMethod.GET)
     public void getFile(final RequestContext context) {
         if (QN_ENABLED) {
             return;
@@ -154,7 +154,7 @@ public class FileUploadProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/upload", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/upload", method = HttpMethod.POST)
     public void uploadFile(final RequestContext context) {
         if (QN_ENABLED) {
             return;

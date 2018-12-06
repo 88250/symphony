@@ -22,7 +22,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
@@ -42,7 +42,7 @@ import java.util.Map;
  * @since 1.3.0
  */
 @Singleton
-public class Activity1A0001CollectValidation extends BeforeRequestProcessAdvice {
+public class Activity1A0001CollectValidation extends ProcessAdvice {
 
     /**
      * Language service.
@@ -57,7 +57,7 @@ public class Activity1A0001CollectValidation extends BeforeRequestProcessAdvice 
     private ActivityQueryService activityQueryService;
 
     @Override
-    public void doAdvice(final RequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         if (Symphonys.getBoolean("activity1A0001Closed")) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityClosedLabel")));
         }

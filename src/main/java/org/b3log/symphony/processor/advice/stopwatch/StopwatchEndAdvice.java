@@ -21,8 +21,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.AfterRequestProcessAdvice;
-import org.b3log.latke.servlet.renderer.AbstractHTTPResponseRenderer;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
+import org.b3log.latke.servlet.renderer.AbstractResponseRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
@@ -37,7 +37,7 @@ import java.util.Map;
  * @since 0.2.0
  */
 @Service
-public class StopwatchEndAdvice extends AfterRequestProcessAdvice {
+public class StopwatchEndAdvice extends ProcessAdvice {
 
     /**
      * Logger.
@@ -45,10 +45,10 @@ public class StopwatchEndAdvice extends AfterRequestProcessAdvice {
     private static final Logger LOGGER = Logger.getLogger(StopwatchEndAdvice.class);
 
     @Override
-    public void doAdvice(final RequestContext context, final Object ret) {
+    public void doAdvice(final RequestContext context) {
         Stopwatchs.end();
 
-        final AbstractHTTPResponseRenderer renderer = context.getRenderer();
+        final AbstractResponseRenderer renderer = context.getRenderer();
         if (null != renderer) {
             final Map<String, Object> dataModel = renderer.getRenderDataModel();
             final String requestURI = context.getRequest().getRequestURI();

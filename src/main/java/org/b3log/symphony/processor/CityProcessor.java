@@ -25,8 +25,8 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -109,9 +109,9 @@ public class CityProcessor {
      * @param context the specified context
      * @param city    the specified city
      */
-    @RequestProcessing(value = {"/city/{city}", "/city/{city}/articles"}, method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = {"/city/{city}", "/city/{city}/articles"}, method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCityArticles(final RequestContext context, final String city) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -196,13 +196,13 @@ public class CityProcessor {
     /**
      * Shows city users.
      *
-     * @param context  the specified context
-     * @param city     the specified city
+     * @param context the specified context
+     * @param city    the specified city
      */
-    @RequestProcessing(value = {"/city/{city}/users"}, method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showCityUsers(final RequestContext context, final String city)  {
+    @RequestProcessing(value = {"/city/{city}/users"}, method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
+    public void showCityUsers(final RequestContext context, final String city) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 

@@ -29,8 +29,8 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -170,8 +170,8 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/guide/next", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class})
+    @RequestProcessing(value = "/guide/next", method = HttpMethod.POST)
+    @Before({LoginCheck.class})
     public void nextGuideStep(final RequestContext context) {
         context.renderJSON();
 
@@ -212,9 +212,9 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/guide", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/guide", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showGuide(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -272,9 +272,9 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/login", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/login", method = HttpMethod.GET)
+    @Before(StopwatchStartAdvice.class)
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showLogin(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -310,9 +310,9 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/forget-pwd", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/forget-pwd", method = HttpMethod.GET)
+    @Before(StopwatchStartAdvice.class)
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showForgetPwd(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -330,8 +330,8 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/forget-pwd", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = UserForgetPwdValidation.class)
+    @RequestProcessing(value = "/forget-pwd", method = HttpMethod.POST)
+    @Before(UserForgetPwdValidation.class)
     public void forgetPwd(final RequestContext context) {
         context.renderJSON();
 
@@ -374,9 +374,9 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/reset-pwd", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/reset-pwd", method = HttpMethod.GET)
+    @Before(StopwatchStartAdvice.class)
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showResetPwd(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -407,7 +407,7 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/reset-pwd", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/reset-pwd", method = HttpMethod.POST)
     public void resetPwd(final RequestContext context) {
         context.renderJSON();
 
@@ -453,9 +453,9 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/register", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/register", method = HttpMethod.GET)
+    @Before(StopwatchStartAdvice.class)
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showRegister(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -530,8 +530,8 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/register", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = UserRegisterValidation.class)
+    @RequestProcessing(value = "/register", method = HttpMethod.POST)
+    @Before(UserRegisterValidation.class)
     public void register(final RequestContext context) {
         context.renderJSON();
         final HttpServletRequest request = context.getRequest();
@@ -589,8 +589,8 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/register2", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = UserRegister2Validation.class)
+    @RequestProcessing(value = "/register2", method = HttpMethod.POST)
+    @Before(UserRegister2Validation.class)
     public void register2(final RequestContext context) {
         context.renderJSON();
 
@@ -686,7 +686,7 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/login", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/login", method = HttpMethod.POST)
     public void login(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -788,7 +788,7 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/logout", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/logout", method = HttpMethod.GET)
     public void logout(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 

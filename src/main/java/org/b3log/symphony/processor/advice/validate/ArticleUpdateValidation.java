@@ -19,7 +19,7 @@ package org.b3log.symphony.processor.advice.validate;
 
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.json.JSONObject;
 
@@ -34,10 +34,10 @@ import java.util.Map;
  * @since 0.2.0
  */
 @Singleton
-public class ArticleUpdateValidation extends BeforeRequestProcessAdvice {
+public class ArticleUpdateValidation extends ProcessAdvice {
 
     @Override
-    public void doAdvice(final RequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         ArticleAddValidation.validateArticleFields(request, requestJSONObject);

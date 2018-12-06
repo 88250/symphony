@@ -20,8 +20,8 @@ package org.b3log.symphony.processor;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -97,8 +97,8 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/follow/user", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = LoginCheck.class)
+    @RequestProcessing(value = "/follow/user", method = HttpMethod.POST)
+    @Before(LoginCheck.class)
     public void followUser(final RequestContext context) {
         context.renderJSON();
 
@@ -136,8 +136,8 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/unfollow/user", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = LoginCheck.class)
+    @RequestProcessing(value = "/unfollow/user", method = HttpMethod.POST)
+    @Before(LoginCheck.class)
     public void unfollowUser(final RequestContext context) {
         context.renderJSON();
 
@@ -165,8 +165,8 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/follow/tag", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = LoginCheck.class)
+    @RequestProcessing(value = "/follow/tag", method = HttpMethod.POST)
+    @Before(LoginCheck.class)
     public void followTag(final RequestContext context) {
         context.renderJSON();
         final HttpServletRequest request = context.getRequest();
@@ -193,8 +193,8 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/unfollow/tag", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = LoginCheck.class)
+    @RequestProcessing(value = "/unfollow/tag", method = HttpMethod.POST)
+    @Before(LoginCheck.class)
     public void unfollowTag(final RequestContext context) {
         context.renderJSON();
 
@@ -222,8 +222,8 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/follow/article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
+    @RequestProcessing(value = "/follow/article", method = HttpMethod.POST)
+    @Before({LoginCheck.class, PermissionCheck.class})
     public void followArticle(final RequestContext context) {
         context.renderJSON();
 
@@ -265,8 +265,8 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/unfollow/article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = LoginCheck.class)
+    @RequestProcessing(value = "/unfollow/article", method = HttpMethod.POST)
+    @Before(LoginCheck.class)
     public void unfollowArticle(final RequestContext context) {
         context.renderJSON();
 
@@ -294,8 +294,8 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/follow/article-watch", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
+    @RequestProcessing(value = "/follow/article-watch", method = HttpMethod.POST)
+    @Before({LoginCheck.class, PermissionCheck.class})
     public void watchArticle(final RequestContext context) {
         context.renderJSON();
 
@@ -337,8 +337,8 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/unfollow/article-watch", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = LoginCheck.class)
+    @RequestProcessing(value = "/unfollow/article-watch", method = HttpMethod.POST)
+    @Before(LoginCheck.class)
     public void unwatchArticle(final RequestContext context) {
         context.renderJSON();
 

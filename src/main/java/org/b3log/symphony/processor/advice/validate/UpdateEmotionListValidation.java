@@ -20,7 +20,7 @@ package org.b3log.symphony.processor.advice.validate;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.json.JSONObject;
 
@@ -35,10 +35,10 @@ import java.util.Map;
  * @since 1.5.0
  */
 @Singleton
-public class UpdateEmotionListValidation extends BeforeRequestProcessAdvice {
+public class UpdateEmotionListValidation extends ProcessAdvice {
 
     @Override
-    public void doAdvice(final RequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
 
         JSONObject requestJSONObject;

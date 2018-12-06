@@ -71,7 +71,7 @@ public class FollowMgmtService {
      * @param followingTagId the specified following tag id
      */
     @Transactional
-    public void followTag(final String followerId, final String followingTagId)  {
+    public void followTag(final String followerId, final String followingTagId) {
         try {
             follow(followerId, followingTagId, Follow.FOLLOWING_TYPE_C_TAG);
         } catch (final RepositoryException e) {
@@ -103,7 +103,7 @@ public class FollowMgmtService {
      * @param followingArticleId the specified following article id
      */
     @Transactional
-    public void followArticle(final String followerId, final String followingArticleId)  {
+    public void followArticle(final String followerId, final String followingArticleId) {
         try {
             follow(followerId, followingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
         } catch (final RepositoryException e) {
@@ -119,7 +119,7 @@ public class FollowMgmtService {
      * @param followingArticleId the specified following article id
      */
     @Transactional
-    public void watchArticle(final String followerId, final String followingArticleId)  {
+    public void watchArticle(final String followerId, final String followingArticleId) {
         try {
             follow(followerId, followingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH);
         } catch (final RepositoryException e) {
@@ -135,7 +135,7 @@ public class FollowMgmtService {
      * @param followingTagId the specified following tag id
      */
     @Transactional
-    public void unfollowTag(final String followerId, final String followingTagId)  {
+    public void unfollowTag(final String followerId, final String followingTagId) {
         try {
             unfollow(followerId, followingTagId, Follow.FOLLOWING_TYPE_C_TAG);
         } catch (final RepositoryException e) {
@@ -167,7 +167,7 @@ public class FollowMgmtService {
      * @param followingArticleId the specified following article id
      */
     @Transactional
-    public void unfollowArticle(final String followerId, final String followingArticleId)  {
+    public void unfollowArticle(final String followerId, final String followingArticleId) {
         try {
             unfollow(followerId, followingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
         } catch (final RepositoryException e) {
@@ -184,7 +184,7 @@ public class FollowMgmtService {
      * @param followingArticleId the specified following article id
      */
     @Transactional
-    public void unwatchArticle(final String followerId, final String followingArticleId)  {
+    public void unwatchArticle(final String followerId, final String followingArticleId) {
         try {
             unfollow(followerId, followingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH);
         } catch (final RepositoryException e) {

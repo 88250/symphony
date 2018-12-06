@@ -23,8 +23,8 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.AfterRequestProcessAdvice;
-import org.b3log.latke.servlet.renderer.AbstractHTTPResponseRenderer;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
+import org.b3log.latke.servlet.renderer.AbstractResponseRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Permission;
@@ -42,7 +42,7 @@ import java.util.Map;
  * @since 1.8.0
  */
 @Singleton
-public class PermissionGrant extends AfterRequestProcessAdvice {
+public class PermissionGrant extends ProcessAdvice {
 
     /**
      * Logger.
@@ -61,8 +61,8 @@ public class PermissionGrant extends AfterRequestProcessAdvice {
     private LangPropsService langPropsService;
 
     @Override
-    public void doAdvice(final RequestContext context, final Object ret) {
-        final AbstractHTTPResponseRenderer renderer = context.getRenderer();
+    public void doAdvice(final RequestContext context) {
+        final AbstractResponseRenderer renderer = context.getRenderer();
         if (null == renderer) {
             return;
         }

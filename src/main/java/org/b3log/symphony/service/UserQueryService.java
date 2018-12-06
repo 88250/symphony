@@ -638,7 +638,7 @@ public class UserQueryService {
      * </pre>
      * @see Pagination
      */
-    public JSONObject getUsersByCity(final JSONObject requestJSONObject)  {
+    public JSONObject getUsersByCity(final JSONObject requestJSONObject) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -701,7 +701,7 @@ public class UserQueryService {
      * }
      * </pre>, returns {@code null} if not found
      */
-    public JSONObject getUser(final String userId)  {
+    public JSONObject getUser(final String userId) {
         try {
             return userRepository.get(userId);
         } catch (final RepositoryException e) {

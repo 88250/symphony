@@ -95,7 +95,7 @@ public class OptionMgmtService {
      * @param optionId the given option id
      * @param option   the specified option
      */
-    public void updateOption(final String optionId, final JSONObject option)  {
+    public void updateOption(final String optionId, final JSONObject option) {
         final Transaction transaction = optionRepository.beginTransaction();
 
         try {

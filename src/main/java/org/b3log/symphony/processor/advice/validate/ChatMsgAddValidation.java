@@ -24,7 +24,7 @@ import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Role;
@@ -45,7 +45,7 @@ import java.util.Map;
  * @since 1.4.0
  */
 @Singleton
-public class ChatMsgAddValidation extends BeforeRequestProcessAdvice {
+public class ChatMsgAddValidation extends ProcessAdvice {
 
     /**
      * Language service.
@@ -71,7 +71,7 @@ public class ChatMsgAddValidation extends BeforeRequestProcessAdvice {
     public static final int MAX_CONTENT_LENGTH = 2000;
 
     @Override
-    public void doAdvice(final RequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
 
         JSONObject requestJSONObject;

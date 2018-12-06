@@ -81,7 +81,7 @@ public class DomainMgmtService {
      * @param tagId    the specified tag id
      */
     @Transactional
-    public void removeDomainTag(final String domainId, final String tagId)  {
+    public void removeDomainTag(final String domainId, final String tagId) {
         try {
             final JSONObject domain = domainRepository.get(domainId);
             domain.put(Domain.DOMAIN_TAG_COUNT, domain.optInt(Domain.DOMAIN_TAG_COUNT) - 1);

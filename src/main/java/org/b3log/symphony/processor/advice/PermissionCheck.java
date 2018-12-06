@@ -26,7 +26,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.DispatcherServlet;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.servlet.handler.MatchResult;
 import org.b3log.latke.servlet.handler.RequestDispatchHandler;
@@ -51,7 +51,7 @@ import java.util.*;
  * @since 1.8.0
  */
 @Singleton
-public class PermissionCheck extends BeforeRequestProcessAdvice {
+public class PermissionCheck extends ProcessAdvice {
 
     /**
      * Logger.
@@ -93,7 +93,7 @@ public class PermissionCheck extends BeforeRequestProcessAdvice {
     private RoleQueryService roleQueryService;
 
     @Override
-    public void doAdvice(final RequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         Stopwatchs.start("Check Permissions");
 
         try {

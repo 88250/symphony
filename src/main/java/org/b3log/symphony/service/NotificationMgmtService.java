@@ -207,7 +207,7 @@ public class NotificationMgmtService {
      *                          "dataId": "" // comment id-vote user id
      */
     @Transactional
-    public void addCommentVoteUpNotification(final JSONObject requestJSONObject)  {
+    public void addCommentVoteUpNotification(final JSONObject requestJSONObject) {
         try {
             requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_COMMENT_VOTE_UP);
 
@@ -669,7 +669,7 @@ public class NotificationMgmtService {
      *                          "dataId": "" // transfer record id
      */
     @Transactional
-    public void addPointTransferNotification(final JSONObject requestJSONObject)  {
+    public void addPointTransferNotification(final JSONObject requestJSONObject) {
         try {
             requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_POINT_TRANSFER);
 

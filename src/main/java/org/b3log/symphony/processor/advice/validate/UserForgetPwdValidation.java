@@ -23,7 +23,7 @@ import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.processor.CaptchaProcessor;
@@ -40,7 +40,7 @@ import java.util.Map;
  * @since 1.4.0
  */
 @Singleton
-public class UserForgetPwdValidation extends BeforeRequestProcessAdvice {
+public class UserForgetPwdValidation extends ProcessAdvice {
 
     /**
      * Language service.
@@ -49,7 +49,7 @@ public class UserForgetPwdValidation extends BeforeRequestProcessAdvice {
     private LangPropsService langPropsService;
 
     @Override
-    public void doAdvice(final RequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
 
         JSONObject requestJSONObject;

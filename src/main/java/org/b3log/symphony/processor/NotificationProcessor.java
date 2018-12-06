@@ -22,8 +22,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -107,9 +107,9 @@ public class NotificationProcessor {
      * @param context the specified context
      * @param type    the specified type: commented/reply/at/following/point/broadcast
      */
-    @RequestProcessing(value = "/notifications/remove/{type}", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @RequestProcessing(value = "/notifications/remove/{type}", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After(StopwatchEndAdvice.class)
     public void removeNotifications(final RequestContext context, final String type) {
         final HttpServletRequest request = context.getRequest();
 
@@ -173,9 +173,9 @@ public class NotificationProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/notifications/remove", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @RequestProcessing(value = "/notifications/remove", method = HttpMethod.POST)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After(StopwatchEndAdvice.class)
     public void removeNotification(final RequestContext context) {
         context.renderJSON(true);
 
@@ -203,9 +203,9 @@ public class NotificationProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/notifications/sys-announce", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/notifications/sys-announce", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showSysAnnounceNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -253,9 +253,9 @@ public class NotificationProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/notifications/all-read", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @RequestProcessing(value = "/notifications/all-read", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After(StopwatchEndAdvice.class)
     public void makeAllNotificationsRead(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
@@ -272,9 +272,9 @@ public class NotificationProcessor {
      * @param context the specified context
      * @param type    the specified type: "commented"/"at"/"following"
      */
-    @RequestProcessing(value = "/notifications/read/{type}", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @RequestProcessing(value = "/notifications/read/{type}", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After(StopwatchEndAdvice.class)
     public void makeNotificationRead(final RequestContext context, final String type) {
         final HttpServletRequest request = context.getRequest();
 
@@ -321,9 +321,9 @@ public class NotificationProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/notifications/read", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @RequestProcessing(value = "/notifications/read", method = HttpMethod.POST)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After(StopwatchEndAdvice.class)
     public void makeNotificationRead(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
@@ -342,9 +342,9 @@ public class NotificationProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/notifications", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @RequestProcessing(value = "/notifications", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After(StopwatchEndAdvice.class)
     public void navigateNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -425,9 +425,9 @@ public class NotificationProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/notifications/point", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/notifications/point", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showPointNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -527,9 +527,9 @@ public class NotificationProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/notifications/commented", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/notifications/commented", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCommentedNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -580,9 +580,9 @@ public class NotificationProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/notifications/reply", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/notifications/reply", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showReplyNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -634,9 +634,9 @@ public class NotificationProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/notifications/at", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/notifications/at", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAtNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -696,9 +696,9 @@ public class NotificationProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/notifications/following", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/notifications/following", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showFollowingNotifications(final RequestContext context) throws Exception {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -751,9 +751,9 @@ public class NotificationProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/notifications/broadcast", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/notifications/broadcast", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showBroadcastNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -806,9 +806,9 @@ public class NotificationProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/notifications/unread/count", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/notifications/unread/count", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @After({StopwatchEndAdvice.class})
     public void getUnreadNotificationCount(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 

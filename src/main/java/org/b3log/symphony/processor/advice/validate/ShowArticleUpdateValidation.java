@@ -23,7 +23,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.UserExt;
@@ -41,7 +41,7 @@ import java.util.Map;
  * @since 0.2.0
  */
 @Singleton
-public class ShowArticleUpdateValidation extends BeforeRequestProcessAdvice {
+public class ShowArticleUpdateValidation extends ProcessAdvice {
 
     /**
      * Language service.
@@ -56,7 +56,7 @@ public class ShowArticleUpdateValidation extends BeforeRequestProcessAdvice {
     private ArticleQueryService articleQueryService;
 
     @Override
-    public void doAdvice(final RequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
 
         JSONObject article;

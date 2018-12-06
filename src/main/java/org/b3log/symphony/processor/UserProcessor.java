@@ -24,8 +24,8 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -181,9 +181,9 @@ public class UserProcessor {
      * @param userName     the specified user name
      * @param breezemoonId the specified breezemoon id, may be {@code null}
      */
-    @RequestProcessing(value = {"/member/{userName}/breezemoons", "/member/{userName}/breezemoons/{breezemoonId}"}, method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
-    @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = {"/member/{userName}/breezemoons", "/member/{userName}/breezemoons/{breezemoonId}"}, method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeBreezemoons(final RequestContext context, final String userName, final String breezemoonId) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -254,9 +254,9 @@ public class UserProcessor {
      * @param context  the specified context
      * @param userName the specified user name
      */
-    @RequestProcessing(value = "/member/{userName}/comments/anonymous", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/member/{userName}/comments/anonymous", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, UserBlockCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeAnonymousComments(final RequestContext context, final String userName) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -335,9 +335,9 @@ public class UserProcessor {
      * @param context  the specified context
      * @param userName the specified user name
      */
-    @RequestProcessing(value = "/member/{userName}/articles/anonymous", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/member/{userName}/articles/anonymous", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, UserBlockCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAnonymousArticles(final RequestContext context, final String userName) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -416,9 +416,9 @@ public class UserProcessor {
      * @param context  the specified context
      * @param userName the specified user name
      */
-    @RequestProcessing(value = "/member/{userName}", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/member/{userName}", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHome(final RequestContext context, final String userName) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -491,9 +491,9 @@ public class UserProcessor {
      * @param context  the specified context
      * @param userName the specified user name
      */
-    @RequestProcessing(value = "/member/{userName}/comments", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/member/{userName}/comments", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeComments(final RequestContext context, final String userName) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -559,9 +559,9 @@ public class UserProcessor {
      * @param context  the specified context
      * @param userName the specified user name
      */
-    @RequestProcessing(value = "/member/{userName}/following/users", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/member/{userName}/following/users", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingUsers(final RequestContext context, final String userName) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -628,9 +628,9 @@ public class UserProcessor {
      * @param context  the specified context
      * @param userName the specified user name
      */
-    @RequestProcessing(value = "/member/{userName}/following/tags", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/member/{userName}/following/tags", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingTags(final RequestContext context, final String userName) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -696,9 +696,9 @@ public class UserProcessor {
      * @param context  the specified context
      * @param userName the specified user name
      */
-    @RequestProcessing(value = "/member/{userName}/following/articles", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/member/{userName}/following/articles", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingArticles(final RequestContext context, final String userName) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -765,9 +765,9 @@ public class UserProcessor {
      * @param context  the specified context
      * @param userName the specified user name
      */
-    @RequestProcessing(value = "/member/{userName}/watching/articles", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/member/{userName}/watching/articles", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeWatchingArticles(final RequestContext context, final String userName) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -834,9 +834,9 @@ public class UserProcessor {
      * @param context  the specified context
      * @param userName the specified user name
      */
-    @RequestProcessing(value = "/member/{userName}/followers", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/member/{userName}/followers", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowers(final RequestContext context, final String userName) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -910,9 +910,9 @@ public class UserProcessor {
      * @param context  the specified context
      * @param userName the specified user name
      */
-    @RequestProcessing(value = "/member/{userName}/points", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/member/{userName}/points", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomePoints(final RequestContext context, final String userName) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -971,7 +971,7 @@ public class UserProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/users/names", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/users/names", method = HttpMethod.GET)
     public void listNames(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
@@ -1004,7 +1004,7 @@ public class UserProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/users/emotions", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/users/emotions", method = HttpMethod.GET)
     public void getEmotions(final RequestContext context) {
         context.renderJSON();
 

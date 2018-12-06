@@ -19,8 +19,8 @@ package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -67,9 +67,9 @@ public class ManProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/man", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/man", method = HttpMethod.GET)
+    @Before(StopwatchStartAdvice.class)
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showMan(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -109,7 +109,7 @@ public class ManProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/man/cmd", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/man/cmd", method = HttpMethod.GET)
     public void listMans(final RequestContext context) {
         context.renderJSON().renderTrueResult();
         final HttpServletRequest request = context.getRequest();

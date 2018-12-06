@@ -171,7 +171,7 @@ public class DomainQueryService {
      * @param domainURI the specified domain URI
      * @return domain, returns {@code null} if not null
      */
-    public JSONObject getByURI(final String domainURI)  {
+    public JSONObject getByURI(final String domainURI) {
         try {
             final JSONObject ret = domainRepository.getByURI(domainURI);
             if (null == ret) {

@@ -105,11 +105,11 @@ public class ChatRoomChannel {
      * Notifies the specified chat message to browsers.
      *
      * @param message the specified message, for example      <pre>
-     *                {
-     *                    "userName": "",
-     *                    "content": ""
-     *                }
-     *                </pre>
+     *                               {
+     *                                   "userName": "",
+     *                                   "content": ""
+     *                               }
+     *                               </pre>
      */
     public static void notifyChat(final JSONObject message) {
         message.put(Common.TYPE, "msg");

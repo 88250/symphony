@@ -100,7 +100,7 @@ public class OperationQueryService {
      * </pre>
      * @see Pagination
      */
-    public JSONObject getAuditlogs(final JSONObject requestJSONObject)  {
+    public JSONObject getAuditlogs(final JSONObject requestJSONObject) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -115,7 +115,7 @@ public class OperationQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Get operations failed", e);
 
-           return null;
+            return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);

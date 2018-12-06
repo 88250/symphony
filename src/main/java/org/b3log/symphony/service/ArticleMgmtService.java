@@ -1020,7 +1020,7 @@ public class ArticleMgmtService {
      * @param articleId the given article id
      * @param article   the specified article
      */
-    public void updateArticleByAdmin(final String articleId, final JSONObject article)  {
+    public void updateArticleByAdmin(final String articleId, final JSONObject article) {
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {

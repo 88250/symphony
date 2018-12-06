@@ -23,8 +23,8 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.RssRenderer;
@@ -105,7 +105,7 @@ public class FeedProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/rss/recent.xml", method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = "/rss/recent.xml", method = {HttpMethod.GET, HttpMethod.HEAD})
     public void genRecentRSS(final RequestContext context) {
         final RssRenderer renderer = new RssRenderer();
         context.setRenderer(renderer);
@@ -146,7 +146,7 @@ public class FeedProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/rss/domain/{domainURI}.xml", method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = "/rss/domain/{domainURI}.xml", method = {HttpMethod.GET, HttpMethod.HEAD})
     public void genDomainRSS(final RequestContext context, final String domainURI) {
         final RssRenderer renderer = new RssRenderer();
         context.setRenderer(renderer);

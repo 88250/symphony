@@ -22,8 +22,8 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -72,9 +72,9 @@ public class ErrorProcessor {
      * @param context    the specified context
      * @param statusCode the specified status code
      */
-    @RequestProcessing(value = "/error/{statusCode}", method = {HTTPRequestMethod.GET, HTTPRequestMethod.POST})
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/error/{statusCode}", method = {HttpMethod.GET, HttpMethod.POST})
+    @Before(StopwatchStartAdvice.class)
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void handleErrorPage(final RequestContext context, final String statusCode) {
         if (StringUtils.equals("GET", context.method())) {
             final String requestURI = context.requestURI();

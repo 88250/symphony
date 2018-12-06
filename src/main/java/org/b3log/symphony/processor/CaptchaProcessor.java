@@ -20,8 +20,8 @@ package org.b3log.symphony.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.PNGRenderer;
@@ -108,7 +108,7 @@ public class CaptchaProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/captcha", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/captcha", method = HttpMethod.GET)
     public void get(final RequestContext context) {
         final PNGRenderer renderer = new PNGRenderer();
         context.setRenderer(renderer);
@@ -154,7 +154,7 @@ public class CaptchaProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/captcha/login", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/captcha/login", method = HttpMethod.GET)
     public void getLoginCaptcha(final RequestContext context) {
         try {
             final HttpServletRequest request = context.getRequest();

@@ -21,8 +21,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -106,9 +106,9 @@ public class VoteProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/vote/up/comment", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void voteUpComment(final RequestContext context)  {
+    @RequestProcessing(value = "/vote/up/comment", method = HttpMethod.POST)
+    @Before({LoginCheck.class, PermissionCheck.class})
+    public void voteUpComment(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -161,8 +161,8 @@ public class VoteProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/vote/down/comment", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
+    @RequestProcessing(value = "/vote/down/comment", method = HttpMethod.POST)
+    @Before({LoginCheck.class, PermissionCheck.class})
     public void voteDownComment(final RequestContext context) {
         context.renderJSON();
 
@@ -217,8 +217,8 @@ public class VoteProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/vote/up/article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
+    @RequestProcessing(value = "/vote/up/article", method = HttpMethod.POST)
+    @Before({LoginCheck.class, PermissionCheck.class})
     public void voteUpArticle(final RequestContext context) {
         context.renderJSON();
 
@@ -272,8 +272,8 @@ public class VoteProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/vote/down/article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
+    @RequestProcessing(value = "/vote/down/article", method = HttpMethod.POST)
+    @Before({LoginCheck.class, PermissionCheck.class})
     public void voteDownArticle(final RequestContext context) {
         context.renderJSON();
 

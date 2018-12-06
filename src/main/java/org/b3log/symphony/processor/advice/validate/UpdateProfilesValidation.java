@@ -25,7 +25,7 @@ import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
@@ -48,7 +48,7 @@ import java.util.Map;
  * @since 0.2.0
  */
 @Singleton
-public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
+public class UpdateProfilesValidation extends ProcessAdvice {
 
     /**
      * Language service.
@@ -77,7 +77,7 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
     public static final int MAX_USER_INTRO_LENGTH = 255;
 
     @Override
-    public void doAdvice(final RequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
 
         JSONObject requestJSONObject;

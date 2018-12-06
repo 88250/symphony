@@ -187,7 +187,7 @@ public class VoteMgmtService {
      * @param dataType the specified data type
      */
     @Transactional
-    public void voteUp(final String userId, final String dataId, final int dataType)  {
+    public void voteUp(final String userId, final String dataId, final int dataType) {
         try {
             up(userId, dataId, dataType);
         } catch (final RepositoryException e) {

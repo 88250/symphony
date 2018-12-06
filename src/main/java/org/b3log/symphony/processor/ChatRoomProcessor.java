@@ -24,8 +24,8 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -156,8 +156,8 @@ public class ChatRoomProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/chat-room/send", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, ChatMsgAddValidation.class})
+    @RequestProcessing(value = "/chat-room/send", method = HttpMethod.POST)
+    @Before({LoginCheck.class, ChatMsgAddValidation.class})
     public synchronized void addChatRoomMsg(final RequestContext context) {
         context.renderJSON();
 
@@ -227,9 +227,9 @@ public class ChatRoomProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/cr", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
-    @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
+    @RequestProcessing(value = "/cr", method = HttpMethod.GET)
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showChatRoom(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -267,9 +267,9 @@ public class ChatRoomProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/community/push", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @RequestProcessing(value = "/community/push", method = HttpMethod.POST)
+    @Before(StopwatchStartAdvice.class)
+    @After(StopwatchEndAdvice.class)
     public synchronized void receiveXiaoV(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();

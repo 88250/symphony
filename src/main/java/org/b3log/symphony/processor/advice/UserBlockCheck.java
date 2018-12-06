@@ -23,7 +23,7 @@ import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserQueryService;
@@ -31,7 +31,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 /**
  * User block check. Gets user from request attribute named "user".
@@ -41,7 +40,7 @@ import java.util.Map;
  * @since 0.2.5
  */
 @Singleton
-public class UserBlockCheck extends BeforeRequestProcessAdvice {
+public class UserBlockCheck extends ProcessAdvice {
 
     /**
      * Logger.
@@ -55,14 +54,14 @@ public class UserBlockCheck extends BeforeRequestProcessAdvice {
     private UserQueryService userQueryService;
 
     @Override
-    public void doAdvice(final RequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
 
         final JSONObject exception = new JSONObject();
         exception.put(Keys.MSG, HttpServletResponse.SC_NOT_FOUND);
         exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
 
-        final String userName = (String) args.get("userName");
+        final String userName = context.pathVar("userName");
         if (UserExt.NULL_USER_NAME.equals(userName)) {
             exception.put(Keys.MSG, "Nil User [" + userName + ", requestURI=" + request.getRequestURI() + "]");
             throw new RequestProcessAdviceException(exception);
