@@ -19,7 +19,7 @@ package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -70,7 +70,7 @@ public class ManProcessor {
     @RequestProcessing(value = "/man", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showMan(final HTTPRequestContext context) {
+    public void showMan(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         if (!ManQueryService.TLDR_ENABLED) {
@@ -110,7 +110,7 @@ public class ManProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/man/cmd", method = HTTPRequestMethod.GET)
-    public void listMans(final HTTPRequestContext context) {
+    public void listMans(final RequestContext context) {
         context.renderJSON().renderTrueResult();
         final HttpServletRequest request = context.getRequest();
         final String cmdPrefix = request.getParameter(Common.NAME);

@@ -22,7 +22,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -108,7 +108,7 @@ public class SearchProcessor {
     @RequestProcessing(value = "/search", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void search(final HTTPRequestContext context) {
+    public void search(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 

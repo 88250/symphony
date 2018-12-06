@@ -23,7 +23,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -213,7 +213,7 @@ public class StatisticProcessor {
     @RequestProcessing(value = "/statistic", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showStatistic(final HTTPRequestContext context) {
+    public void showStatistic(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 

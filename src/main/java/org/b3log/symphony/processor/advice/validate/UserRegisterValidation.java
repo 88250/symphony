@@ -25,7 +25,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Strings;
@@ -160,7 +160,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
     }
 
     @Override
-    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
 
         JSONObject requestJSONObject;

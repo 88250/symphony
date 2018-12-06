@@ -20,7 +20,7 @@ package org.b3log.symphony.processor;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -99,7 +99,7 @@ public class FollowProcessor {
      */
     @RequestProcessing(value = "/follow/user", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
-    public void followUser(final HTTPRequestContext context) {
+    public void followUser(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -138,7 +138,7 @@ public class FollowProcessor {
      */
     @RequestProcessing(value = "/unfollow/user", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
-    public void unfollowUser(final HTTPRequestContext context) {
+    public void unfollowUser(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -167,7 +167,7 @@ public class FollowProcessor {
      */
     @RequestProcessing(value = "/follow/tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
-    public void followTag(final HTTPRequestContext context) {
+    public void followTag(final RequestContext context) {
         context.renderJSON();
         final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
@@ -195,7 +195,7 @@ public class FollowProcessor {
      */
     @RequestProcessing(value = "/unfollow/tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
-    public void unfollowTag(final HTTPRequestContext context) {
+    public void unfollowTag(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -224,7 +224,7 @@ public class FollowProcessor {
      */
     @RequestProcessing(value = "/follow/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void followArticle(final HTTPRequestContext context) {
+    public void followArticle(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -267,7 +267,7 @@ public class FollowProcessor {
      */
     @RequestProcessing(value = "/unfollow/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
-    public void unfollowArticle(final HTTPRequestContext context) {
+    public void unfollowArticle(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -296,7 +296,7 @@ public class FollowProcessor {
      */
     @RequestProcessing(value = "/follow/article-watch", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void watchArticle(final HTTPRequestContext context) {
+    public void watchArticle(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -339,7 +339,7 @@ public class FollowProcessor {
      */
     @RequestProcessing(value = "/unfollow/article-watch", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
-    public void unwatchArticle(final HTTPRequestContext context) {
+    public void unwatchArticle(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();

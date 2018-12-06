@@ -20,7 +20,7 @@ package org.b3log.symphony.processor.advice.stopwatch;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.advice.AfterRequestProcessAdvice;
 import org.b3log.latke.servlet.renderer.AbstractHTTPResponseRenderer;
 import org.b3log.latke.util.Stopwatchs;
@@ -45,7 +45,7 @@ public class StopwatchEndAdvice extends AfterRequestProcessAdvice {
     private static final Logger LOGGER = Logger.getLogger(StopwatchEndAdvice.class);
 
     @Override
-    public void doAdvice(final HTTPRequestContext context, final Object ret) {
+    public void doAdvice(final RequestContext context, final Object ret) {
         Stopwatchs.end();
 
         final AbstractHTTPResponseRenderer renderer = context.getRenderer();

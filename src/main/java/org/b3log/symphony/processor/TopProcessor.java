@@ -18,7 +18,7 @@
 package org.b3log.symphony.processor;
 
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -95,7 +95,7 @@ public class TopProcessor {
     @RequestProcessing(value = "/top", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showTop(final HTTPRequestContext context) {
+    public void showTop(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -121,7 +121,7 @@ public class TopProcessor {
     @RequestProcessing(value = "/top/link", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showLink(final HTTPRequestContext context) {
+    public void showLink(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -148,7 +148,7 @@ public class TopProcessor {
     @RequestProcessing(value = "/top/balance", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showBalance(final HTTPRequestContext context) {
+    public void showBalance(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -176,7 +176,7 @@ public class TopProcessor {
     @RequestProcessing(value = "/top/consumption", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showConsumption(final HTTPRequestContext context) {
+    public void showConsumption(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -204,7 +204,7 @@ public class TopProcessor {
     @RequestProcessing(value = "/top/checkin", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showCheckin(final HTTPRequestContext context) {
+    public void showCheckin(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 

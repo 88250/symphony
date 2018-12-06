@@ -22,7 +22,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -98,7 +98,7 @@ public class TagProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/tags/query", method = HTTPRequestMethod.GET)
-    public void queryTags(final HTTPRequestContext context) {
+    public void queryTags(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -136,7 +136,7 @@ public class TagProcessor {
     @RequestProcessing(value = "/tags", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showTagsWall(final HTTPRequestContext context) {
+    public void showTagsWall(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -164,7 +164,7 @@ public class TagProcessor {
             "/tag/{tagURI}/perfect"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showTagArticles(final HTTPRequestContext context, final String tagURI) {
+    public void showTagArticles(final RequestContext context, final String tagURI) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 

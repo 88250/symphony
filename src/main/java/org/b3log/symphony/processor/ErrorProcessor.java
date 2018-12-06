@@ -22,7 +22,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -75,7 +75,7 @@ public class ErrorProcessor {
     @RequestProcessing(value = "/error/{statusCode}", method = {HTTPRequestMethod.GET, HTTPRequestMethod.POST})
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void handleErrorPage(final HTTPRequestContext context, final String statusCode) {
+    public void handleErrorPage(final RequestContext context, final String statusCode) {
         if (StringUtils.equals("GET", context.method())) {
             final String requestURI = context.requestURI();
             final String templateName = statusCode + ".ftl";

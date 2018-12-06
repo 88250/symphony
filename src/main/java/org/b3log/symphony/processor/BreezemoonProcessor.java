@@ -23,7 +23,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -109,7 +109,7 @@ public class BreezemoonProcessor {
     @RequestProcessing(value = "/watch/breezemoons", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showWatchBreezemoon(final HTTPRequestContext context) {
+    public void showWatchBreezemoon(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -165,7 +165,7 @@ public class BreezemoonProcessor {
     @RequestProcessing(value = "/breezemoon", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void addBreezemoon(final HTTPRequestContext context) {
+    public void addBreezemoon(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -215,7 +215,7 @@ public class BreezemoonProcessor {
     @RequestProcessing(value = "/breezemoon/{id}", method = HTTPRequestMethod.PUT)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void updateBreezemoon(final HTTPRequestContext context, final String id) {
+    public void updateBreezemoon(final RequestContext context, final String id) {
         context.renderJSON();
         final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
@@ -260,7 +260,7 @@ public class BreezemoonProcessor {
     @RequestProcessing(value = "/breezemoon/{id}", method = HTTPRequestMethod.DELETE)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void removeBreezemoon(final HTTPRequestContext context, final String id) {
+    public void removeBreezemoon(final RequestContext context, final String id) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -284,7 +284,7 @@ public class BreezemoonProcessor {
         }
     }
 
-    private boolean isInvalid(final HTTPRequestContext context, final JSONObject requestJSONObject) {
+    private boolean isInvalid(final RequestContext context, final JSONObject requestJSONObject) {
         String breezemoonContent = requestJSONObject.optString(Breezemoon.BREEZEMOON_CONTENT);
         breezemoonContent = StringUtils.trim(breezemoonContent);
         final long length = StringUtils.length(breezemoonContent);

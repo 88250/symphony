@@ -21,7 +21,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -96,7 +96,7 @@ public class DomainProcessor {
     @RequestProcessing(value = "/domain/{domainURI}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showDomainArticles(final HTTPRequestContext context, final String domainURI) {
+    public void showDomainArticles(final RequestContext context, final String domainURI) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -167,7 +167,7 @@ public class DomainProcessor {
     @RequestProcessing(value = "/domains", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showDomains(final HTTPRequestContext context) {
+    public void showDomains(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 

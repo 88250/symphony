@@ -22,7 +22,7 @@ import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.advice.AfterRequestProcessAdvice;
 import org.b3log.latke.servlet.renderer.AbstractHTTPResponseRenderer;
 import org.b3log.latke.util.Stopwatchs;
@@ -61,7 +61,7 @@ public class PermissionGrant extends AfterRequestProcessAdvice {
     private LangPropsService langPropsService;
 
     @Override
-    public void doAdvice(final HTTPRequestContext context, final Object ret) {
+    public void doAdvice(final RequestContext context, final Object ret) {
         final AbstractHTTPResponseRenderer renderer = context.getRenderer();
         if (null == renderer) {
             return;

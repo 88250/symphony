@@ -18,7 +18,7 @@
 package org.b3log.symphony.processor.advice.stopwatch;
 
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.util.Stopwatchs;
 
@@ -35,7 +35,7 @@ import java.util.Map;
 public class StopwatchStartAdvice extends BeforeRequestProcessAdvice {
 
     @Override
-    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) {
+    public void doAdvice(final RequestContext context, final Map<String, Object> args) {
         final String requestURI = context.getRequest().getRequestURI();
         Stopwatchs.start("Request URI [" + requestURI + ']');
     }

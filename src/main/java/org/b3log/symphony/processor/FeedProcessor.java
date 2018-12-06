@@ -23,7 +23,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -106,7 +106,7 @@ public class FeedProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/rss/recent.xml", method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void genRecentRSS(final HTTPRequestContext context) {
+    public void genRecentRSS(final RequestContext context) {
         final RssRenderer renderer = new RssRenderer();
         context.setRenderer(renderer);
 
@@ -147,7 +147,7 @@ public class FeedProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/rss/domain/{domainURI}.xml", method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void genDomainRSS(final HTTPRequestContext context, final String domainURI) {
+    public void genDomainRSS(final RequestContext context, final String domainURI) {
         final RssRenderer renderer = new RssRenderer();
         context.setRenderer(renderer);
 

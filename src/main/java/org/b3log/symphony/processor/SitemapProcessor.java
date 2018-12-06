@@ -20,7 +20,7 @@ package org.b3log.symphony.processor;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -58,7 +58,7 @@ public class SitemapProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/sitemap.xml", method = HTTPRequestMethod.GET)
-    public void sitemap(final HTTPRequestContext context) {
+    public void sitemap(final RequestContext context) {
         final TextXMLRenderer renderer = new TextXMLRenderer();
 
         context.setRenderer(renderer);

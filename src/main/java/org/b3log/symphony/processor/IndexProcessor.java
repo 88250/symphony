@@ -26,7 +26,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -122,7 +122,7 @@ public class IndexProcessor {
     @RequestProcessing(value = {"/qna", "/qna/unanswered", "/qna/reward", "/qna/hot"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showQnA(final HTTPRequestContext context) {
+    public void showQnA(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -203,7 +203,7 @@ public class IndexProcessor {
     @RequestProcessing(value = {"/watch", "/watch/users"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showWatch(final HTTPRequestContext context) {
+    public void showWatch(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -264,7 +264,7 @@ public class IndexProcessor {
     @RequestProcessing(value = "/guide/markdown", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showMDGuide(final HTTPRequestContext context) {
+    public void showMDGuide(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -295,7 +295,7 @@ public class IndexProcessor {
     @RequestProcessing(value = {"", "/"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showIndex(final HTTPRequestContext context) {
+    public void showIndex(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
@@ -339,7 +339,7 @@ public class IndexProcessor {
     @RequestProcessing(value = {"/recent", "/recent/hot", "/recent/good", "/recent/reply"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showRecent(final HTTPRequestContext context) {
+    public void showRecent(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -432,7 +432,7 @@ public class IndexProcessor {
     @RequestProcessing(value = "/hot", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showHotArticles(final HTTPRequestContext context) {
+    public void showHotArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -474,7 +474,7 @@ public class IndexProcessor {
     @RequestProcessing(value = "/perfect", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showPerfectArticles(final HTTPRequestContext context) {
+    public void showPerfectArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -527,7 +527,7 @@ public class IndexProcessor {
     @RequestProcessing(value = "/about", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void showAbout(final HTTPRequestContext context) throws Exception {
+    public void showAbout(final RequestContext context) throws Exception {
         context.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
         context.setHeader("Location", "https://hacpai.com/article/1440573175609");
         final HttpServletResponse response = context.getResponse();
@@ -542,7 +542,7 @@ public class IndexProcessor {
     @RequestProcessing(value = "/b3log", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showB3log(final HTTPRequestContext context) {
+    public void showB3log(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -566,7 +566,7 @@ public class IndexProcessor {
     @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void showKillBrowser(final HTTPRequestContext context) {
+    public void showKillBrowser(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);

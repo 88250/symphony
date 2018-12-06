@@ -25,7 +25,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -112,7 +112,7 @@ public class CityProcessor {
     @RequestProcessing(value = {"/city/{city}", "/city/{city}/articles"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showCityArticles(final HTTPRequestContext context, final String city) {
+    public void showCityArticles(final RequestContext context, final String city) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -202,7 +202,7 @@ public class CityProcessor {
     @RequestProcessing(value = {"/city/{city}/users"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showCityUsers(final HTTPRequestContext context, final String city)  {
+    public void showCityUsers(final RequestContext context, final String city)  {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 

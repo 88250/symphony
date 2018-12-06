@@ -30,7 +30,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -196,7 +196,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/settings/deactivate", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class})
-    public void deactivateUser(final HTTPRequestContext context) {
+    public void deactivateUser(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -219,7 +219,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/settings/username", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class})
-    public void updateUserName(final HTTPRequestContext context) {
+    public void updateUserName(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -255,7 +255,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/settings/email/vc", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class})
-    public void sendEmailVC(final HTTPRequestContext context) {
+    public void sendEmailVC(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -323,7 +323,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/settings/email", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class})
-    public void updateEmail(final HTTPRequestContext context) {
+    public void updateEmail(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -368,7 +368,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/settings/i18n", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
-    public void updateI18n(final HTTPRequestContext context) {
+    public void updateI18n(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -416,7 +416,7 @@ public class SettingsProcessor {
     @RequestProcessing(value = {"/settings", "/settings/*"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showSettings(final HTTPRequestContext context) {
+    public void showSettings(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -527,7 +527,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/settings/geo/status", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
-    public void updateGeoStatus(final HTTPRequestContext context) {
+    public void updateGeoStatus(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -567,7 +567,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/settings/privacy", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
-    public void updatePrivacy(final HTTPRequestContext context) {
+    public void updatePrivacy(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -642,7 +642,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/settings/function", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
-    public void updateFunction(final HTTPRequestContext context) {
+    public void updateFunction(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -728,7 +728,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/settings/profiles", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdateProfilesValidation.class})
-    public void updateProfiles(final HTTPRequestContext context) {
+    public void updateProfiles(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -764,7 +764,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/settings/avatar", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdateProfilesValidation.class})
-    public void updateAvatar(final HTTPRequestContext context) {
+    public void updateAvatar(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -809,7 +809,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/settings/password", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdatePasswordValidation.class})
-    public void updatePassword(final HTTPRequestContext context) {
+    public void updatePassword(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -845,7 +845,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/settings/emotionList", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdateEmotionListValidation.class})
-    public void updateEmoji(final HTTPRequestContext context) {
+    public void updateEmoji(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -872,7 +872,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/point/transfer", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PointTransferValidation.class})
-    public void pointTransfer(final HTTPRequestContext context) {
+    public void pointTransfer(final RequestContext context) {
         final JSONObject ret = Results.falseResult();
         context.renderJSON(ret);
 
@@ -912,7 +912,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/invitecode/state", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
-    public void queryInvitecode(final HTTPRequestContext context) {
+    public void queryInvitecode(final RequestContext context) {
         final JSONObject ret = Results.falseResult();
         context.renderJSON(ret);
 
@@ -966,7 +966,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/point/buy-invitecode", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
-    public void pointBuy(final HTTPRequestContext context) {
+    public void pointBuy(final RequestContext context) {
         final JSONObject ret = Results.falseResult();
         context.renderJSON(ret);
 
@@ -1007,7 +1007,7 @@ public class SettingsProcessor {
      */
     @RequestProcessing(value = "/export/posts", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class})
-    public void exportPosts(final HTTPRequestContext context) {
+    public void exportPosts(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();

@@ -23,7 +23,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.symphony.model.Common;
@@ -150,11 +150,11 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     }
 
     @Override
-    protected void beforeRender(final HTTPRequestContext context) {
+    protected void beforeRender(final RequestContext context) {
     }
 
     @Override
-    protected void afterRender(final HTTPRequestContext context) {
+    protected void afterRender(final RequestContext context) {
     }
 
     /**

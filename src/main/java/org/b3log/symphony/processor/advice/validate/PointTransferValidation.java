@@ -23,7 +23,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.Common;
@@ -61,7 +61,7 @@ public class PointTransferValidation extends BeforeRequestProcessAdvice {
     private UserQueryService userQueryService;
 
     @Override
-    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
 
         JSONObject requestJSONObject;

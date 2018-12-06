@@ -22,7 +22,7 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>2.4.33</latke.version>
+        <latke.version>2.4.34-SNAPSHOT</latke.version>
 
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.4.14.v20181114</jetty.version>
@@ -136,7 +136,7 @@
 
         <dependency>
             <groupId>org.b3log</groupId>
-            <artifactId>latke</artifactId>
+            <artifactId>latke-core</artifactId>
             <version>${latke.version}</version>
             <exclusions>
                 <exclusion>

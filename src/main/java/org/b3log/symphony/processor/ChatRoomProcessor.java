@@ -24,7 +24,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -158,7 +158,7 @@ public class ChatRoomProcessor {
      */
     @RequestProcessing(value = "/chat-room/send", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, ChatMsgAddValidation.class})
-    public synchronized void addChatRoomMsg(final HTTPRequestContext context) {
+    public synchronized void addChatRoomMsg(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -230,7 +230,7 @@ public class ChatRoomProcessor {
     @RequestProcessing(value = "/cr", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showChatRoom(final HTTPRequestContext context) {
+    public void showChatRoom(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -270,7 +270,7 @@ public class ChatRoomProcessor {
     @RequestProcessing(value = "/community/push", method = HTTPRequestMethod.POST)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public synchronized void receiveXiaoV(final HTTPRequestContext context) {
+    public synchronized void receiveXiaoV(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 

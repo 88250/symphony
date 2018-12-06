@@ -25,7 +25,7 @@ import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.AntPathMatcher;
@@ -112,7 +112,7 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
     }
 
     @Override
-    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
         final String requestURI = request.getRequestURI();
 

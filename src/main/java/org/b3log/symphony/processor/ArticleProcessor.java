@@ -30,7 +30,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -209,7 +209,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/{id}/remove", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void removeArticle(final HTTPRequestContext context, final String id) {
+    public void removeArticle(final RequestContext context, final String id) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -257,7 +257,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/check-title", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void checkArticleTitle(final HTTPRequestContext context) {
+    public void checkArticleTitle(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
@@ -339,7 +339,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/{articleId}/image", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void getArticleImage(final HTTPRequestContext context, final String articleId) {
+    public void getArticleImage(final RequestContext context, final String articleId) {
         final JSONObject article = articleQueryService.getArticle(articleId);
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
@@ -414,7 +414,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/{id}/revisions", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void getArticleRevisions(final HTTPRequestContext context, final String id) {
+    public void getArticleRevisions(final RequestContext context, final String id) {
         final List<JSONObject> revisions = revisionQueryService.getArticleRevisions(id);
         final JSONObject ret = new JSONObject();
         ret.put(Keys.STATUS_CODE, true);
@@ -431,7 +431,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/pre-post", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showPreAddArticle(final HTTPRequestContext context) {
+    public void showPreAddArticle(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -489,7 +489,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/post", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showAddArticle(final HTTPRequestContext context) {
+    public void showAddArticle(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -623,7 +623,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/{articleId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showArticle(final HTTPRequestContext context, final String articleId) {
+    public void showArticle(final RequestContext context, final String articleId) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -935,7 +935,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleAddValidation.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void addArticle(final HTTPRequestContext context) {
+    public void addArticle(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -1010,7 +1010,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/update", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showUpdateArticle(final HTTPRequestContext context) {
+    public void showUpdateArticle(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -1096,7 +1096,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/{id}", method = HTTPRequestMethod.PUT)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleUpdateValidation.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void updateArticle(final HTTPRequestContext context, final String id) {
+    public void updateArticle(final RequestContext context, final String id) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -1206,7 +1206,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/markdown", method = HTTPRequestMethod.POST)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void markdown2HTML(final HTTPRequestContext context) {
+    public void markdown2HTML(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
         context.renderJSON(true);
@@ -1245,7 +1245,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/{articleId}/preview", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void getArticlePreviewContent(final HTTPRequestContext context, final String articleId) {
+    public void getArticlePreviewContent(final RequestContext context, final String articleId) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -1267,7 +1267,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/reward", method = HTTPRequestMethod.POST)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void reward(final HTTPRequestContext context) {
+    public void reward(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -1310,7 +1310,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/thank", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void thank(final HTTPRequestContext context) {
+    public void thank(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -1349,7 +1349,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/stick", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, PermissionCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void stickArticle(final HTTPRequestContext context) {
+    public void stickArticle(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 

@@ -21,7 +21,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -108,7 +108,7 @@ public class VoteProcessor {
      */
     @RequestProcessing(value = "/vote/up/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void voteUpComment(final HTTPRequestContext context)  {
+    public void voteUpComment(final RequestContext context)  {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -163,7 +163,7 @@ public class VoteProcessor {
      */
     @RequestProcessing(value = "/vote/down/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void voteDownComment(final HTTPRequestContext context) {
+    public void voteDownComment(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -219,7 +219,7 @@ public class VoteProcessor {
      */
     @RequestProcessing(value = "/vote/up/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void voteUpArticle(final HTTPRequestContext context) {
+    public void voteUpArticle(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
@@ -274,7 +274,7 @@ public class VoteProcessor {
      */
     @RequestProcessing(value = "/vote/down/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, PermissionCheck.class})
-    public void voteDownArticle(final HTTPRequestContext context) {
+    public void voteDownArticle(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();

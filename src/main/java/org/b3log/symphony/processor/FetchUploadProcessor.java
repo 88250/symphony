@@ -30,7 +30,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
@@ -84,7 +84,7 @@ public class FetchUploadProcessor {
     @RequestProcessing(value = "/fetch-upload", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
-    public void fetchUpload(final HTTPRequestContext context) {
+    public void fetchUpload(final RequestContext context) {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
