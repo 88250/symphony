@@ -147,7 +147,8 @@ public class FeedProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/rss/domain/{domainURI}.xml", method = {HttpMethod.GET, HttpMethod.HEAD})
-    public void genDomainRSS(final RequestContext context, final String domainURI) {
+    public void genDomainRSS(final RequestContext context) {
+        final String domainURI = context.pathVar("domainURI");
         final RssRenderer renderer = new RssRenderer();
         context.setRenderer(renderer);
 

@@ -69,13 +69,13 @@ public class ErrorProcessor {
     /**
      * Handles the error.
      *
-     * @param context    the specified context
-     * @param statusCode the specified status code
+     * @param context the specified context
      */
     @RequestProcessing(value = "/error/{statusCode}", method = {HttpMethod.GET, HttpMethod.POST})
     @Before(StopwatchStartAdvice.class)
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
-    public void handleErrorPage(final RequestContext context, final String statusCode) {
+    public void handleErrorPage(final RequestContext context) {
+        final String statusCode = context.pathVar("statusCode");
         if (StringUtils.equals("GET", context.method())) {
             final String requestURI = context.requestURI();
             final String templateName = statusCode + ".ftl";

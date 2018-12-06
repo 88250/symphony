@@ -107,12 +107,12 @@ public class CityProcessor {
      * Shows city articles.
      *
      * @param context the specified context
-     * @param city    the specified city
      */
     @RequestProcessing(value = {"/city/{city}", "/city/{city}/articles"}, method = HttpMethod.GET)
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showCityArticles(final RequestContext context, final String city) {
+    public void showCityArticles(final RequestContext context) {
+        final String city = context.pathVar("city");
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -197,12 +197,12 @@ public class CityProcessor {
      * Shows city users.
      *
      * @param context the specified context
-     * @param city    the specified city
      */
     @RequestProcessing(value = {"/city/{city}/users"}, method = HttpMethod.GET)
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showCityUsers(final RequestContext context, final String city) {
+    public void showCityUsers(final RequestContext context) {
+        final String city = context.pathVar("city");
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 

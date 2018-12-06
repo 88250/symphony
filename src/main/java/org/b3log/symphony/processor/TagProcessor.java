@@ -158,13 +158,13 @@ public class TagProcessor {
      * Show tag articles.
      *
      * @param context the specified context
-     * @param tagURI  the specified tag URI
      */
     @RequestProcessing(value = {"/tag/{tagURI}", "/tag/{tagURI}/hot", "/tag/{tagURI}/good", "/tag/{tagURI}/reply",
             "/tag/{tagURI}/perfect"}, method = HttpMethod.GET)
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showTagArticles(final RequestContext context, final String tagURI) {
+    public void showTagArticles(final RequestContext context) {
+        final String tagURI = context.pathVar("tagURI");
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 

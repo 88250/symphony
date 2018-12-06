@@ -215,7 +215,8 @@ public class BreezemoonProcessor {
     @RequestProcessing(value = "/breezemoon/{id}", method = HttpMethod.PUT)
     @Before({StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
-    public void updateBreezemoon(final RequestContext context, final String id) {
+    public void updateBreezemoon(final RequestContext context) {
+        final String id = context.pathVar("id");
         context.renderJSON();
         final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
@@ -260,7 +261,8 @@ public class BreezemoonProcessor {
     @RequestProcessing(value = "/breezemoon/{id}", method = HttpMethod.DELETE)
     @Before({StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
-    public void removeBreezemoon(final RequestContext context, final String id) {
+    public void removeBreezemoon(final RequestContext context) {
+        final String id = context.pathVar("id");
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();

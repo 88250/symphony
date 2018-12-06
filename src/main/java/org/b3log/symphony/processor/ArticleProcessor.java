@@ -209,7 +209,8 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/{id}/remove", method = HttpMethod.POST)
     @Before({StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
     @After({StopwatchEndAdvice.class})
-    public void removeArticle(final RequestContext context, final String id) {
+    public void removeArticle(final RequestContext context) {
+        final String id = context.pathVar("id");
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -333,13 +334,13 @@ public class ArticleProcessor {
     /**
      * Gets article image.
      *
-     * @param context   the specified context
-     * @param articleId the specified article id
+     * @param context the specified context
      */
     @RequestProcessing(value = "/article/{articleId}/image", method = HttpMethod.GET)
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({StopwatchEndAdvice.class})
-    public void getArticleImage(final RequestContext context, final String articleId) {
+    public void getArticleImage(final RequestContext context) {
+        final String articleId = context.pathVar("articleId");
         final JSONObject article = articleQueryService.getArticle(articleId);
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
@@ -409,12 +410,12 @@ public class ArticleProcessor {
      * Gets an article's revisions.
      *
      * @param context the specified context
-     * @param id      the specified article id
      */
     @RequestProcessing(value = "/article/{id}/revisions", method = HttpMethod.GET)
     @Before({StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
     @After({StopwatchEndAdvice.class})
-    public void getArticleRevisions(final RequestContext context, final String id) {
+    public void getArticleRevisions(final RequestContext context) {
+        final String id = context.pathVar("id");
         final List<JSONObject> revisions = revisionQueryService.getArticleRevisions(id);
         final JSONObject ret = new JSONObject();
         ret.put(Keys.STATUS_CODE, true);
@@ -617,13 +618,13 @@ public class ArticleProcessor {
     /**
      * Shows article with the specified article id.
      *
-     * @param context   the specified context
-     * @param articleId the specified article id
+     * @param context the specified context
      */
     @RequestProcessing(value = "/article/{articleId}", method = HttpMethod.GET)
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showArticle(final RequestContext context, final String articleId) {
+    public void showArticle(final RequestContext context) {
+        final String articleId = context.pathVar("articleId");
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -1091,15 +1092,13 @@ public class ArticleProcessor {
      * </p>
      *
      * @param context the specified context
-     * @param id      the specified article id
      */
     @RequestProcessing(value = "/article/{id}", method = HttpMethod.PUT)
     @Before({StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleUpdateValidation.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
-    public void updateArticle(final RequestContext context, final String id) {
+    public void updateArticle(final RequestContext context) {
+        final String id = context.pathVar("id");
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
         if (StringUtils.isBlank(id)) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -1239,16 +1238,14 @@ public class ArticleProcessor {
      * </pre>
      * </p>
      *
-     * @param context   the specified http request context
-     * @param articleId the specified article id
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/article/{articleId}/preview", method = HttpMethod.GET)
     @Before(StopwatchStartAdvice.class)
     @After(StopwatchEndAdvice.class)
-    public void getArticlePreviewContent(final RequestContext context, final String articleId) {
+    public void getArticlePreviewContent(final RequestContext context) {
+        final String articleId = context.pathVar("articleId");
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
         final String content = articleQueryService.getArticlePreviewContent(articleId, request);
         if (StringUtils.isBlank(content)) {
             context.renderJSON().renderFalseResult();

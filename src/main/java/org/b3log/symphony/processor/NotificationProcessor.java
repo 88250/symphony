@@ -105,12 +105,12 @@ public class NotificationProcessor {
      * Remove notifications by the specified type.
      *
      * @param context the specified context
-     * @param type    the specified type: commented/reply/at/following/point/broadcast
      */
     @RequestProcessing(value = "/notifications/remove/{type}", method = HttpMethod.GET)
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After(StopwatchEndAdvice.class)
-    public void removeNotifications(final RequestContext context, final String type) {
+    public void removeNotifications(final RequestContext context) {
+        final String type = context.pathVar("type"); // commented/reply/at/following/point/broadcast
         final HttpServletRequest request = context.getRequest();
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
@@ -270,12 +270,12 @@ public class NotificationProcessor {
      * Makes the specified type notifications as read.
      *
      * @param context the specified context
-     * @param type    the specified type: "commented"/"at"/"following"
      */
     @RequestProcessing(value = "/notifications/read/{type}", method = HttpMethod.GET)
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After(StopwatchEndAdvice.class)
-    public void makeNotificationRead(final RequestContext context, final String type) {
+    public void makeNotificationReadByType(final RequestContext context) {
+        final String type = context.pathVar("type"); // "commented"/"at"/"following"
         final HttpServletRequest request = context.getRequest();
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);

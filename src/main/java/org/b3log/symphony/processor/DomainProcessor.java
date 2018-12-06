@@ -90,13 +90,13 @@ public class DomainProcessor {
     /**
      * Shows domain articles.
      *
-     * @param context   the specified context
-     * @param domainURI the specified domain URI
+     * @param context the specified context
      */
     @RequestProcessing(value = "/domain/{domainURI}", method = HttpMethod.GET)
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showDomainArticles(final RequestContext context, final String domainURI) {
+    public void showDomainArticles(final RequestContext context) {
+        final String domainURI = context.pathVar("domainURI");
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
