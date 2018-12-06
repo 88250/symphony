@@ -62,7 +62,7 @@ import java.util.*;
  * Settings processor.
  * <ul>
  * <li>Shows settings (/settings), GET</li>
- * <li>Shows settings pages (/settings/*), GET</li>
+ * <li>Shows settings pages (/settings/{page}), GET</li>
  * <li>Updates profiles (/settings/profiles), POST</li>
  * <li>Updates user avatar (/settings/avatar), POST</li>
  * <li>Geo status (/settings/geo/status), POST</li>
@@ -413,7 +413,7 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/settings", "/settings/*"}, method = HttpMethod.GET)
+    @RequestProcessing(value = {"/settings", "/settings/{page}"}, method = HttpMethod.GET)
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showSettings(final RequestContext context) {
@@ -422,8 +422,7 @@ public class SettingsProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
-        final String requestURI = request.getRequestURI();
-        String page = StringUtils.substringAfter(requestURI, "/settings/");
+        String page = context.pathVar("page");
         if (StringUtils.isBlank(page)) {
             page = "profile";
         }
@@ -496,6 +495,7 @@ public class SettingsProcessor {
 
         dataModel.put(Invitecode.INVITECODES, invitecodes);
 
+        final String requestURI = request.getRequestURI();
         if (requestURI.contains("function")) {
             dataModel.put(Emotion.EMOTIONS, emotionQueryService.getEmojis(userId));
             dataModel.put(Emotion.SHORT_T_LIST, emojiLists);

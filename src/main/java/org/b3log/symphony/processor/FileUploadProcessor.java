@@ -94,7 +94,7 @@ public class FileUploadProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/upload/*", method = HttpMethod.GET)
+    @RequestProcessing(value = "/upload/{yyyy}/{MM}/{file}", method = HttpMethod.GET)
     public void getFile(final RequestContext context) {
         if (QN_ENABLED) {
             return;
