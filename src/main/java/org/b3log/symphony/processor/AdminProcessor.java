@@ -565,7 +565,9 @@ public class AdminProcessor {
             breezemoonMgmtService.updateBreezemoon(breezemoon);
             operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_BREEZEMOON, breezemoonId));
         } catch (final Exception e) {
-            // ignored
+            LOGGER.log(Level.ERROR, "Updates a breezemoon failed", e);
+
+            return;
         }
 
         breezemoon = breezemoonQueryService.getBreezemoon(breezemoonId);
@@ -590,7 +592,7 @@ public class AdminProcessor {
             breezemoonMgmtService.removeBreezemoon(id);
             operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_BREEZEMOON, id));
         } catch (final Exception e) {
-            // ignored
+            LOGGER.log(Level.ERROR, "Removes a breezemoon failed", e);
         }
 
         context.sendRedirect(Latkes.getServePath() + "/admin/breezemoons");
@@ -947,7 +949,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/invitecodes/generate", method = HttpMethod.POST)
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
-    public void generateInvitecodes(final RequestContext context) throws Exception {
+    public void generateInvitecodes(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -967,7 +969,7 @@ public class AdminProcessor {
         invitecodeMgmtService.adminGenInvitecodes(quantity, memo);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_GENERATE_INVITECODES, quantity + " " + memo));
 
-        response.sendRedirect(Latkes.getServePath() + "/admin/invitecodes");
+        context.sendRedirect(Latkes.getServePath() + "/admin/invitecodes");
     }
 
     /**
@@ -1042,7 +1044,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/invitecode/{invitecodeId}", method = HttpMethod.POST)
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateInvitecode(final RequestContext context) throws Exception {
+    public void updateInvitecode(final RequestContext context) {
         final String invitecodeId = context.pathVar("invitecodeId");
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -1062,8 +1064,14 @@ public class AdminProcessor {
             invitecode.put(name, value);
         }
 
-        invitecodeMgmtService.updateInvitecode(invitecodeId, invitecode);
-        operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_INVITECODE, invitecodeId));
+        try {
+            invitecodeMgmtService.updateInvitecode(invitecodeId, invitecode);
+            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_INVITECODE, invitecodeId));
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Updates an invitecode failed", e);
+
+            return;
+        }
 
         invitecode = invitecodeQueryService.getInvitecodeById(invitecodeId);
         dataModel.put(Invitecode.INVITECODE, invitecode);
@@ -1646,7 +1654,9 @@ public class AdminProcessor {
             userMgmtService.updateUser(userId, user);
             operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_USER, userId));
         } catch (final Exception e) {
-            // ignored
+            LOGGER.log(Level.ERROR, "Updates a user failed", e);
+
+            return;
         }
 
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -2372,7 +2382,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HttpMethod.POST)
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
-    public void updateTag(final RequestContext context) throws Exception {
+    public void updateTag(final RequestContext context) {
         final String tagId = context.pathVar("tagId");
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -2408,8 +2418,14 @@ public class AdminProcessor {
         final String newTitle = tag.optString(Tag.TAG_TITLE);
 
         if (oldTitle.equalsIgnoreCase(newTitle)) {
-            tagMgmtService.updateTag(tagId, tag);
-            operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_TAG, tagId));
+            try {
+                tagMgmtService.updateTag(tagId, tag);
+                operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_TAG, tagId));
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Updates a tag failed", e);
+
+                return;
+            }
         }
 
         tag = tagQueryService.getTag(tagId);

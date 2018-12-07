@@ -26,7 +26,6 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.*;
@@ -1088,9 +1087,8 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      */
-    public JSONObject getFollowingNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getFollowingNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);
@@ -1185,7 +1183,7 @@ public class NotificationQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets [following] notifications", e);
 
-            throw new ServiceException(e);
+            return null;
         }
     }
 

@@ -699,7 +699,7 @@ public class NotificationProcessor {
     @RequestProcessing(value = "/notifications/following", method = HttpMethod.GET)
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showFollowingNotifications(final RequestContext context) throws Exception {
+    public void showFollowingNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 

@@ -303,13 +303,9 @@ public class IndexProcessor {
             // 自定义首页跳转 https://github.com/b3log/symphony/issues/774
             final String indexRedirectURL = currentUser.optString(UserExt.USER_INDEX_REDIRECT_URL);
             if (StringUtils.isNotBlank(indexRedirectURL)) {
-                try {
-                    response.sendRedirect(indexRedirectURL);
+                context.sendRedirect(indexRedirectURL);
 
-                    return;
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Sends index redirect for user [id=" + currentUser.optString(Keys.OBJECT_ID) + "] failed", e);
-                }
+                return;
             }
         }
 
@@ -527,11 +523,8 @@ public class IndexProcessor {
     @RequestProcessing(value = "/about", method = HttpMethod.GET)
     @Before(StopwatchStartAdvice.class)
     @After(StopwatchEndAdvice.class)
-    public void showAbout(final RequestContext context) throws Exception {
-        context.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-        context.setHeader("Location", "https://hacpai.com/article/1440573175609");
-        final HttpServletResponse response = context.getResponse();
-        response.flushBuffer();
+    public void showAbout(final RequestContext context) {
+        context.sendRedirect("https://hacpai.com/article/1440573175609");
     }
 
     /**

@@ -133,9 +133,8 @@ public class InvitecodeMgmtService {
      *
      * @param quantity the specified quantity
      * @param memo     the specified memo
-     * @throws ServiceException service exception
      */
-    public void adminGenInvitecodes(final int quantity, final String memo) throws ServiceException {
+    public void adminGenInvitecodes(final int quantity, final String memo) {
         final Transaction transaction = invitecodeRepository.beginTransaction();
 
         try {
@@ -158,7 +157,6 @@ public class InvitecodeMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Generates invitecodes failed", e);
-            throw new ServiceException(e);
         }
     }
 
