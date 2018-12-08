@@ -67,7 +67,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.7, Nov 28, 2018
+ * @version 1.27.0.8, Dec 8, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -239,7 +239,13 @@ public class UserProcessor {
         if (StringUtils.isNotBlank(breezemoonId)) {
             dataModel.put(Common.IS_SINGLE_BREEZEMOON_URL, true);
             final JSONObject breezemoon = breezemoonQueryService.getBreezemoon(breezemoonId);
-            bms = Arrays.asList(breezemoon);
+            if (null == breezemoon) {
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return;
+            }
+
+            bms = Collections.singletonList(breezemoon);
             breezemoonQueryService.organizeBreezemoons(avatarViewMode, "admin", bms);
             dataModel.put(Common.USER_HOME_BREEZEMOONS, bms);
         } else {
