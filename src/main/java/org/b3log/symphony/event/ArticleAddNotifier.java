@@ -48,7 +48,7 @@ import java.util.Set;
  * Sends article add related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.17, Nov 17, 2018
+ * @version 1.3.4.18, Dec 10, 2018
  * @since 0.2.0
  */
 @Singleton
@@ -131,7 +131,14 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
                 final JSONObject followerUsersResult = followQueryService.getFollowerUsers(
                         UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleAuthorId, 1, Integer.MAX_VALUE);
                 final List<JSONObject> followerUsers = (List<JSONObject>) followerUsersResult.opt(Keys.RESULTS);
+                final long thirtyDaysAgo = DateUtils.addDays(new Date(), -30).getTime();
                 for (final JSONObject followerUser : followerUsers) {
+                    // 30 天未登录的用户不发关注发帖通知 https://github.com/b3log/symphony/issues/820
+                    final long latestLoginTime = followerUser.optLong(UserExt.USER_LATEST_LOGIN_TIME);
+                    if (latestLoginTime < thirtyDaysAgo) {
+                        continue;
+                    }
+
                     final JSONObject requestJSONObject = new JSONObject();
                     final String followerUserId = followerUser.optString(Keys.OBJECT_ID);
                     if (atedUserIds.contains(followerUserId)) {
