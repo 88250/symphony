@@ -45,7 +45,7 @@ import java.util.*;
  * Permission check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Oct 16, 2018
+ * @version 1.0.1.2, Dec 10, 2018
  * @since 1.8.0
  */
 @Singleton
@@ -108,7 +108,7 @@ public class PermissionCheck extends ProcessAdvice {
 
             try {
                 final MatchResult matchResult = RouteHandler.doMatch(requestURI, method);
-                rule += matchResult.getMatchedPattern() + "." + method;
+                rule += matchResult.getMatchedUriTemplate() + "." + method;
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Match method failed", e);
 
