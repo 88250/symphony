@@ -222,7 +222,7 @@ public class CronMgmtService {
                         q = notification.optString(Comment.COMMENT_CONTENT);
                         break;
                     default:
-                        LOGGER.warn("Unknown notificat data type [" + dataType + "] for XiaoV reply");
+                        LOGGER.warn("Unknown notification data type [" + dataType + "] for XiaoV reply");
                 }
 
                 String xiaoVSaid;
