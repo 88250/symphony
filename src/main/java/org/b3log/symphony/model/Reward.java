@@ -58,7 +58,7 @@ public final class Reward {
     public static final int TYPE_C_ARTICLE = 0;
 
     /**
-     * Reward type - comment.
+     * Reward type - comment (thank comment).
      */
     public static final int TYPE_C_COMMENT = 1;
 
