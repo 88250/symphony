@@ -1021,7 +1021,7 @@
         {
           "name": "commentScore",
           "type": "double",
-          "description": "回帖评分"
+          "description": "回帖 Reddit 算法评分"
         },
         {
           "name": "commentReplyCnt",
