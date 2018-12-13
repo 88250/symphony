@@ -1748,7 +1748,7 @@ public class ArticleQueryService {
         for (int i = 0; i < imgs.length; i++) {
             ret = StringUtils.substringBetween(imgs[i], "data-src=\"", "\"");
             if (StringUtils.isBlank(ret)) {
-                ret = StringUtils.substringBetween(ret, "src=\"", "\"");
+                ret = StringUtils.substringBetween(imgs[i], "src=\"", "\"");
             }
 
             if (!StringUtils.containsIgnoreCase(ret, ".ico")) {
