@@ -40,15 +40,9 @@
 * [IT遇岛](https://www.ityudao.com)
 * [汇桔网](https://bbs.wtoip.com)
 * [TapDealing](http://www.tapdealing.com)
-* 杭州橙子信息科技有限公司
 * [艺术家与艺术爱好者](http://www.dizmix.com/)
 * [乾学院](http://c.raqsoft.com.cn)
-* 深圳市优服网技术服务有限公司 
-* 平安科技（深圳）有限公司
-* 越亮传奇科技股份有限公司
 * [GeeCall极客社区](http://geecall.com/)
-* 金蝶蝶金云计算有限公司
-* 北京和气聚力教育科技有限公司
 * ......
 
 ## 功能
