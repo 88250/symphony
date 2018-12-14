@@ -9,7 +9,7 @@
 * 包含了面向用户分享、交友、游戏的社交网络
 * `100%` 开源
 
-欢迎到 [Sym 官方讨论区](https://hacpai.com)了解更多。
+欢迎到 [Sym 官方讨论区](https://hacpai.com/tag/sym)了解更多。
 
 ## 动机
 
@@ -27,11 +27,11 @@
 * [AIQ-机器学习](http://www.6aiq.com)
 * [宽客网](http://www.cnq.net)
 * [许昌IT圈](http://www.xcitq.com)
-* [PRA](http://support.i-search.com.cn/)
-* [凤凰匯](https://www.fengd.com/)
-* [猪玩派 | 喜欢游玩  热爱生活  乐于分享！](http://pigplay.net/)
-* [俩猴网](http://www.xfx77.cn/)
-* [听雨轩](http://nucode.cn/)
+* [PRA](http://support.i-search.com.cn)
+* [凤凰匯](https://www.fengd.com)
+* [猪玩派 | 喜欢游玩  热爱生活  乐于分享！](http://pigplay.net)
+* [俩猴网](http://www.xfx77.cn)
+* [听雨轩](http://nucode.cn)
 * ......
 
 商业版：
@@ -40,18 +40,15 @@
 * [IT遇岛](https://www.ityudao.com)
 * [汇桔网](https://bbs.wtoip.com)
 * [TapDealing](http://www.tapdealing.com)
-* [艺术家与艺术爱好者](http://www.dizmix.com/)
+* [艺术家与艺术爱好者](http://www.dizmix.com)
 * [乾学院](http://c.raqsoft.com.cn)
-* [GeeCall极客社区](http://geecall.com/)
+* [GeeCall极客社区](http://geecall.com)
 * ......
 
 ## 功能
 
-[**Sym 功能点脑图**](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
-
-<a href="http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a" target="_blank">
-<img src="https://user-images.githubusercontent.com/873584/44509003-f0593d00-a6e2-11e8-856f-3fdad10c0b58.png" />
-</a>
+* [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
+* [Sym 商业版简介幻灯片](https://sym.b3log.org/syme-intro.pptx)
 
 ## 文档
 
