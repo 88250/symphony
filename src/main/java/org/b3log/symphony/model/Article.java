@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.32.0.2, Aug 4, 2018
+ * @version 1.33.0.0, Dec 16, 2018
  * @since 0.2.0
  */
 public final class Article {
@@ -140,6 +140,11 @@ public final class Article {
      * Key of article type.
      */
     public static final String ARTICLE_TYPE = "articleType";
+
+    /**
+     * Key of article thank count.
+     */
+    public static final String ARTICLE_THANK_CNT = "articleThankCnt";
 
     /**
      * Key of article good count.

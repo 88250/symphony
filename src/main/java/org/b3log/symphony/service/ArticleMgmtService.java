@@ -640,6 +640,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_AUTHOR_ID, authorId);
             article.put(Article.ARTICLE_COMMENT_CNT, 0);
             article.put(Article.ARTICLE_VIEW_CNT, 0);
+            article.put(Article.ARTICLE_THANK_CNT, 0);
             article.put(Article.ARTICLE_GOOD_CNT, 0);
             article.put(Article.ARTICLE_BAD_CNT, 0);
             article.put(Article.ARTICLE_COLLECT_CNT, 0);
@@ -1237,6 +1238,12 @@ public class ArticleMgmtService {
                 }
             }
 
+            final int thankCnt = article.optInt(Article.ARTICLE_THANK_CNT);
+            article.put(Article.ARTICLE_THANK_CNT, thankCnt + 1);
+            final Transaction transaction = articleRepository.beginTransaction();
+            articleRepository.update(articleId, article);
+            transaction.commit();
+
             final JSONObject reward = new JSONObject();
             reward.put(Keys.OBJECT_ID, thankId);
             reward.put(Reward.SENDER_ID, senderId);
@@ -1764,6 +1771,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_EDITOR_TYPE, 0);
             article.put(Article.ARTICLE_COMMENT_CNT, 0);
             article.put(Article.ARTICLE_VIEW_CNT, 0);
+            article.put(Article.ARTICLE_THANK_CNT, 0);
             article.put(Article.ARTICLE_GOOD_CNT, 0);
             article.put(Article.ARTICLE_BAD_CNT, 0);
             article.put(Article.ARTICLE_COLLECT_CNT, 0);

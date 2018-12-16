@@ -1752,6 +1752,11 @@
           "description": "0：普通帖子，1：讨论组（小黑屋），2：同城广播，3：思绪"
         },
         {
+          "name": "articleThankCnt",
+          "type": "int",
+          "description": "帖子感谢计数"
+        },
+        {
           "name": "articleGoodCnt",
           "type": "int",
           "description": "帖子点赞计数"

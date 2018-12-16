@@ -2328,6 +2328,7 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_TITLE, String.class).
                 addProjection(Article.ARTICLE_STATUS, Integer.class).
                 addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
+                addProjection(Article.ARTICLE_THANK_CNT, Integer.class).
                 addProjection(Article.ARTICLE_TYPE, Integer.class).
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
                 addProjection(Article.ARTICLE_TAGS, String.class).

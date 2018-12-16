@@ -2071,6 +2071,7 @@ public class AdminProcessor {
                     || name.equals(Article.ARTICLE_QNA_OFFER_POINT)
                     || name.equals(Article.ARTICLE_STATUS)
                     || name.equals(Article.ARTICLE_TYPE)
+                    || name.equals(Article.ARTICLE_THANK_CNT)
                     || name.equals(Article.ARTICLE_GOOD_CNT)
                     || name.equals(Article.ARTICLE_BAD_CNT)
                     || name.equals(Article.ARTICLE_PERFECT)
