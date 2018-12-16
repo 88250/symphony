@@ -46,7 +46,7 @@ import java.util.concurrent.TimeUnit;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.2.4, Nov 30, 2018
+ * @version 2.12.2.5, Dec 16, 2018
  * @since 0.2.0
  */
 @Service
@@ -251,7 +251,7 @@ public class CommentQueryService {
             ret.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
             ret.put(Common.TIME_AGO, comment.optString(Common.TIME_AGO));
             ret.put(Comment.COMMENT_CREATE_TIME_STR, comment.optString(Comment.COMMENT_CREATE_TIME_STR));
-            ret.put(Common.REWARED_COUNT, comment.optString(Common.REWARED_COUNT));
+            ret.put(Common.REWARED_COUNT, comment.optInt(Comment.COMMENT_THANK_CNT));
             ret.put(Common.REWARDED, comment.optBoolean(Common.REWARDED));
             ret.put(Keys.OBJECT_ID, commentId);
             ret.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
@@ -317,7 +317,7 @@ public class CommentQueryService {
                 reply.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                 reply.put(Common.TIME_AGO, comment.optString(Common.TIME_AGO));
                 reply.put(Comment.COMMENT_CREATE_TIME_STR, comment.optString(Comment.COMMENT_CREATE_TIME_STR));
-                reply.put(Common.REWARED_COUNT, comment.optString(Common.REWARED_COUNT));
+                reply.put(Common.REWARED_COUNT, comment.optInt(Comment.COMMENT_THANK_CNT));
                 reply.put(Common.REWARDED, comment.optBoolean(Common.REWARDED));
                 reply.put(Keys.OBJECT_ID, comment.optString(Keys.OBJECT_ID));
                 reply.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));

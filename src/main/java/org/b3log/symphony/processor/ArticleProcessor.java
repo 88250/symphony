@@ -60,8 +60,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * Article processor.
@@ -88,7 +88,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.2.8, Nov 27, 2018
+ * @version 1.27.2.9, Dec 16, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -752,7 +752,7 @@ public class ArticleProcessor {
         Stopwatchs.start("Fills article thank");
         try {
             article.put(Common.THANKED, rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_THANK_ARTICLE));
-            article.put(Common.THANKED_COUNT, rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_THANK_ARTICLE));
+            article.put(Common.THANKED_COUNT, article.optInt(Article.ARTICLE_THANK_CNT));
             final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
             if (Article.ARTICLE_TYPE_C_QNA == article.optInt(Article.ARTICLE_TYPE)) {
                 article.put(Common.OFFERED, rewardQueryService.isRewarded(articleAuthorId, articleId, Reward.TYPE_C_ACCEPT_COMMENT));
@@ -760,7 +760,8 @@ public class ArticleProcessor {
                 article.put(Article.ARTICLE_T_OFFERED_COMMENT, offeredComment);
                 if (null != offeredComment) {
                     final String offeredCmtId = offeredComment.optString(Keys.OBJECT_ID);
-                    offeredComment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(offeredCmtId, Reward.TYPE_C_COMMENT));
+                    final int rewardCount = offeredComment.optInt(Comment.COMMENT_THANK_CNT);
+                    offeredComment.put(Common.REWARED_COUNT, rewardCount);
                     offeredComment.put(Common.REWARDED, rewardQueryService.isRewarded(currentUserId, offeredCmtId, Reward.TYPE_C_COMMENT));
                 }
             }
@@ -833,7 +834,7 @@ public class ArticleProcessor {
                     comment.put(Comment.COMMENT_T_VOTE, commentVote);
                 }
 
-                comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
+                comment.put(Common.REWARED_COUNT, comment.optInt(Comment.COMMENT_THANK_CNT));
 
                 // https://github.com/b3log/symphony/issues/682
                 if (Comment.COMMENT_VISIBLE_C_AUTHOR == comment.optInt(Comment.COMMENT_VISIBLE)) {
@@ -869,7 +870,7 @@ public class ArticleProcessor {
                     comment.put(Comment.COMMENT_T_VOTE, commentVote);
                 }
 
-                comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
+                comment.put(Common.REWARED_COUNT, comment.optInt(Comment.COMMENT_THANK_CNT));
 
                 // https://github.com/b3log/symphony/issues/682
                 if (Comment.COMMENT_VISIBLE_C_AUTHOR == comment.optInt(Comment.COMMENT_VISIBLE)) {

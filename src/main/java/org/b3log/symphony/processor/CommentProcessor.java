@@ -67,7 +67,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.4, Aug 7, 2018
+ * @version 1.8.0.5, Dec 16, 2018
  * @since 0.2.0
  */
 @RequestProcessor
@@ -380,8 +380,6 @@ public class CommentProcessor {
                             originalCmtId, Reward.TYPE_C_COMMENT));
         }
 
-        originalCmt.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(originalCmtId, Reward.TYPE_C_COMMENT));
-
         context.renderJSON(true).renderJSONValue(Comment.COMMENT_T_REPLIES, originalCmt);
     }
 
@@ -422,7 +420,8 @@ public class CommentProcessor {
                                 replyId, Reward.TYPE_C_COMMENT));
             }
 
-            reply.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(replyId, Reward.TYPE_C_COMMENT));
+            final int rewardCount = reply.optInt(Comment.COMMENT_THANK_CNT);
+            reply.put(Common.REWARED_COUNT, rewardCount);
         }
 
         context.renderJSON(true).renderJSONValue(Comment.COMMENT_T_REPLIES, replies);
