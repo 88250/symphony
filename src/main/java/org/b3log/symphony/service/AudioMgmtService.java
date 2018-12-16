@@ -22,9 +22,9 @@ import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -34,6 +34,7 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -45,7 +46,7 @@ import java.util.UUID;
  * Audio management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.3, May 6, 2018
+ * @version 1.1.0.0, Dec 16, 2018
  * @since 2.1.0
  */
 @Service
@@ -147,11 +148,46 @@ public class AudioMgmtService {
     }
 
     /**
+     * Remove speech audio files in object storage.
+     *
+     * @param audioURL the specified speech audio URL
+     */
+    public void removeAudioFile(final String audioURL) {
+        try {
+            LOGGER.log(Level.INFO, "Removing audio file [" + audioURL + "]");
+
+            if (Symphonys.getBoolean("qiniu.enabled")) {
+                final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+                final BucketManager bucketManager = new BucketManager(auth, new Configuration());
+                final String fileKey = StringUtils.replace(audioURL, Symphonys.get("qiniu.domain") + "/", "");
+                bucketManager.delete(Symphonys.get("qiniu.bucket"), fileKey);
+            } else {
+                final String fileName = StringUtils.replace(audioURL, Latkes.getServePath() + "/upload", "");
+                final File file = new File(Symphonys.get("upload.dir") + fileName);
+                FileUtils.deleteQuietly(file);
+            }
+
+            LOGGER.log(Level.INFO, "Removed audio file [" + audioURL + "]");
+        } catch (final Exception e) {
+            if (e instanceof QiniuException) {
+                try {
+                    LOGGER.log(Level.ERROR, "Removes audio failed [" + audioURL + "], Qiniu exception body [" +
+                            ((QiniuException) e).response.bodyString() + "]");
+                } catch (final Exception qe) {
+                    LOGGER.log(Level.ERROR, "Removes audio and parse result exception", qe);
+                }
+            } else {
+                LOGGER.log(Level.ERROR, "Removes audio failed [" + audioURL + "]", e);
+            }
+        }
+    }
+
+    /**
      * Text to speech.
      *
      * @param text   the specified text
-     * @param type   specified type, "article"/"comment"
-     * @param textId the specified id of text, article id or comment id
+     * @param type   the specified type, "article"/"comment"
+     * @param textId the specified text id, article id or comment id
      * @param uid    the specified user id
      * @return speech URL, returns {@code ""} if TTS failed
      */
@@ -167,15 +203,14 @@ public class AudioMgmtService {
                 final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
                 final UploadManager uploadManager = new UploadManager(new Configuration());
                 final BucketManager bucketManager = new BucketManager(auth, new Configuration());
-                final int seq = RandomUtils.nextInt(10);
-                final String fileKey = "audio/" + type + "/" + textId + seq + ".mp3";
+                final String fileKey = "audio/" + type + "/" + textId + ".mp3";
                 try {
                     bucketManager.delete(Symphonys.get("qiniu.bucket"), fileKey);
                 } catch (final Exception e) {
                     // ignore
                 }
                 uploadManager.put(bytes, fileKey, auth.uploadToken(Symphonys.get("qiniu.bucket")), null, "audio/mp3", false);
-                ret = Symphonys.get("qiniu.domain") + "/audio/" + type + "/" + textId + seq + ".mp3";
+                ret = Symphonys.get("qiniu.domain") + "/" + fileKey;
             } else {
                 final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".mp3";
                 try (final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName)) {

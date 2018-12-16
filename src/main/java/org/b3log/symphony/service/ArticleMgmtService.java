@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.5.0, Nov 27, 2018
+ * @version 2.18.5.1, Dec 16, 2018
  * @since 0.2.0
  */
 @Service
@@ -430,6 +430,11 @@ public class ArticleMgmtService {
 
             if (Symphonys.getBoolean("es.enabled")) {
                 searchMgmtService.removeESDocument(article, Article.ARTICLE);
+            }
+
+            final String audioURL = article.optString(Article.ARTICLE_AUDIO_URL);
+            if (StringUtils.isNotBlank(audioURL)) {
+                audioMgmtService.removeAudioFile(audioURL);
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Removes an article error [id=" + articleId + "]", e);
