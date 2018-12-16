@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.41.0.0, Nov 19, 2018",
+  "version": "4.41.0.1, Dec 16, 2018",
   "authors": [
     "Liang Ding",
     "Zephyr",
@@ -1007,6 +1007,11 @@
           "name": "commentAnonymous",
           "type": "int",
           "description": "0：公开回帖，1：匿名回帖"
+        },
+        {
+          "name": "commentThankCnt",
+          "type": "int",
+          "description": "回帖感谢计数"
         },
         {
           "name": "commentGoodCnt",

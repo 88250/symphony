@@ -2198,6 +2198,7 @@ public class AdminProcessor {
             final String value = request.getParameter(name);
 
             if (name.equals(Comment.COMMENT_STATUS)
+                    || name.equals(Comment.COMMENT_THANK_CNT)
                     || name.equals(Comment.COMMENT_GOOD_CNT)
                     || name.equals(Comment.COMMENT_BAD_CNT)) {
                 comment.put(name, Integer.valueOf(value));

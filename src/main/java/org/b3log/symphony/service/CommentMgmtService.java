@@ -47,7 +47,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.0.0, Aug 28, 2018
+ * @version 2.15.0.1, Dec 16, 2018
  * @since 0.2.0
  */
 @Service
@@ -331,6 +331,12 @@ public class CommentMgmtService {
                 }
             }
 
+            final int thankCnt = comment.optInt(Comment.COMMENT_THANK_CNT);
+            comment.put(Comment.COMMENT_THANK_CNT, thankCnt + 1);
+            final Transaction transaction = commentRepository.beginTransaction();
+            commentRepository.update(commentId, comment);
+            transaction.commit();
+
             final JSONObject reward = new JSONObject();
             reward.put(Keys.OBJECT_ID, rewardId);
             reward.put(Reward.SENDER_ID, senderId);
@@ -525,6 +531,7 @@ public class CommentMgmtService {
             commenter.put(UserExt.USER_LATEST_CMT_TIME, currentTimeMillis);
             userRepository.update(commenter.optString(Keys.OBJECT_ID), commenter);
 
+            comment.put(Comment.COMMENT_THANK_CNT, 0);
             comment.put(Comment.COMMENT_GOOD_CNT, 0);
             comment.put(Comment.COMMENT_BAD_CNT, 0);
             comment.put(Comment.COMMENT_SCORE, 0D);
