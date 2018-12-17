@@ -59,7 +59,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.28.0.8, Nov 4, 2018
+ * @version 2.28.0.9, Dec 17, 2018
  * @since 0.2.0
  */
 @Service
@@ -69,11 +69,6 @@ public class ArticleQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleQueryService.class);
-
-    /**
-     * Count to fetch article tags for relevant articles.
-     */
-    private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
 
     /**
      * Article repository.
@@ -677,29 +672,24 @@ public class ArticleQueryService {
             excludedB3logTitles.add("B3log");
         }
         tagTitles = excludedB3logTitles.toArray(new String[0]);
-        final int tagTitlesLength = tagTitles.length;
-        final int subCnt = tagTitlesLength > RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT
-                ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
-
-        final List<Integer> tagIdx = CollectionUtils.getRandomIntegers(0, tagTitlesLength, subCnt);
-        final int subFetchSize = fetchSize / subCnt;
         final Set<String> fetchedArticleIds = new HashSet<>();
-
-        final List<JSONObject> ret = new ArrayList<>();
         try {
-            for (int i = 0; i < tagIdx.size(); i++) {
-                final String tagTitle = tagTitles[tagIdx.get(i)].trim();
-
+            List<JSONObject> ret = new ArrayList<>();
+            final List<JSONObject> tags = new ArrayList<>();
+            for (int i = 0; i < tagTitles.length; i++) {
+                final String tagTitle = tagTitles[i];
                 final JSONObject tag = tagRepository.getByTitle(tagTitle);
+                tags.add(tag);
+            }
+            Collections.sort(tags, Comparator.comparingInt(t -> t.optInt(Tag.TAG_REFERENCE_CNT)));
+
+            for (final JSONObject tag : tags) {
                 final String tagId = tag.optString(Keys.OBJECT_ID);
-                JSONObject result = tagArticleRepository.getByTagId(tagId, 1, subFetchSize);
-
+                JSONObject result = tagArticleRepository.getByTagId(tagId, 1, fetchSize);
                 final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
-
                 final Set<String> articleIds = new HashSet<>();
                 for (int j = 0; j < tagArticleRelations.length(); j++) {
                     final String articleId = tagArticleRelations.optJSONObject(j).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID);
-
                     if (fetchedArticleIds.contains(articleId)) {
                         continue;
                     }
@@ -714,10 +704,14 @@ public class ArticleQueryService {
                         addProjection(Article.ARTICLE_TITLE, String.class).
                         addProjection(Article.ARTICLE_PERMALINK, String.class).
                         addProjection(Article.ARTICLE_AUTHOR_ID, String.class);
-                result = articleRepository.get(query);
-
-                ret.addAll(CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS)));
+                ret.addAll(articleRepository.getList(query));
+                if (ret.size() >= fetchSize) {
+                    break;
+                }
             }
+
+            final int size = ret.size() > fetchSize ? fetchSize : ret.size();
+            ret = ret.subList(0, size);
 
             organizeArticles(avatarViewMode, ret);
 
