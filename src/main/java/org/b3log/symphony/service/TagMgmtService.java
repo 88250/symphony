@@ -23,9 +23,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -131,7 +129,7 @@ public class TagMgmtService {
 
         int removedCnt = 0;
         try {
-            final JSONArray tags = tagRepository.get(new Query()).optJSONArray(Keys.RESULTS);
+            final JSONArray tags = tagRepository.get(new Query().setFilter(new PropertyFilter(Tag.TAG_REFERENCE_CNT, FilterOperator.EQUAL, 0))).optJSONArray(Keys.RESULTS);
 
             for (int i = 0; i < tags.length(); i++) {
                 JSONObject tag = tags.optJSONObject(i);
