@@ -31,7 +31,7 @@ import java.util.List;
  * Follow repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 18, 2018
+ * @version 1.1.0.0, Dec 18, 2018
  * @since 0.2.5
  */
 @Repository
@@ -103,5 +103,33 @@ public class FollowRepository extends AbstractRepository {
     public boolean exists(final String followerId, final String followingId, final int followingType)
             throws RepositoryException {
         return null != getByFollowerIdAndFollowingId(followerId, followingId, followingType);
+    }
+
+    /**
+     * Get follows by the specified following id and type.
+     *
+     * @param followingId    the specified following id
+     * @param type           the specified type
+     * @param currentPageNum the specified current page number, MUST greater then {@code 0}
+     * @param pageSize       the specified page size(count of a page contains objects), MUST greater then {@code 0}
+     * @return for example      <pre>
+     * {
+     *     "pagination": {
+     *       "paginationPageCount": 88250
+     *     },
+     *     "rslts": [{
+     *         Follow
+     *     }, ....]
+     * }
+     * </pre>
+     * @throws RepositoryException repository exception
+     */
+    public JSONObject getByFollowingId(final String followingId, final int type, final int currentPageNum, final int pageSize) throws RepositoryException {
+        final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                new PropertyFilter(Follow.FOLLOWING_ID, FilterOperator.EQUAL, followingId),
+                new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, type))).
+                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
+
+        return get(query);
     }
 }
