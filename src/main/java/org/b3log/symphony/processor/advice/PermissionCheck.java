@@ -17,7 +17,9 @@
  */
 package org.b3log.symphony.processor.advice;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
@@ -45,7 +47,7 @@ import java.util.*;
  * Permission check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Dec 10, 2018
+ * @version 1.0.1.3, Dec 19, 2018
  * @since 1.8.0
  */
 @Singleton
@@ -102,7 +104,7 @@ public class PermissionCheck extends ProcessAdvice {
             exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
 
             final String prefix = "permission.rule.url.";
-            final String requestURI = request.getRequestURI();
+            final String requestURI = StringUtils.substringAfter(request.getRequestURI(), Latkes.getContextPath());
             final String method = request.getMethod();
             String rule = prefix;
 
