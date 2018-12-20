@@ -57,11 +57,12 @@ import java.util.Map;
  * City processor.
  * <ul>
  * <li>Shows city articles (/city/{city}), GET</li>
+ * <li>Show city users (/city/{city}/users), GET </li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.3.1.10, Aug 9, 2018
+ * @version 1.3.1.11, Dec 20, 2018
  * @since 1.3.0
  */
 @RequestProcessor
@@ -104,7 +105,7 @@ public class CityProcessor {
     private LangPropsService langService;
 
     /**
-     * Shows city articles.
+     * Show city articles.
      *
      * @param context the specified context
      */
@@ -194,11 +195,11 @@ public class CityProcessor {
     }
 
     /**
-     * Shows city users.
+     * Show city users.
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/city/{city}/users"}, method = HttpMethod.GET)
+    @RequestProcessing(value = "/city/{city}/users", method = HttpMethod.GET)
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCityUsers(final RequestContext context) {
