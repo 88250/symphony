@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.1, Aug 20, 2018
+ * @version 1.11.0.0, Dec 19, 2018
  */
 @import "variables";
 @import "common";
@@ -2470,4 +2470,12 @@ code .dec {
 #breezemoonList button.absolute {
   right: 0;
   top: 0;
+}
+
+@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2),
+only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3),
+only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
+  .footer {
+    padding-bottom: 22px;
+  }
 }
