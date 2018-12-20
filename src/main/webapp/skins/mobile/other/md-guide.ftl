@@ -22,7 +22,7 @@
     <html>
     <head>
         <@head title="Markdown ${tutorialLabel} - ${symphonyLabel}" />
-        <link rel="canonical" href="${servePath}/guide/markdown">
+        <link rel="canonical" href="https://hacpai.com/guide/markdown">
         <link rel="stylesheet" href="${staticServePath}/js/lib/highlight/styles/github.css">
     </head>
     <body>

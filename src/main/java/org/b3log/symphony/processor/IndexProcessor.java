@@ -17,12 +17,10 @@
  */
 package org.b3log.symphony.processor;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
@@ -47,14 +45,11 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -254,37 +249,6 @@ public class IndexProcessor {
 
         dataModel.put(Common.SELECTED, Common.WATCH);
         dataModel.put(Common.CURRENT, StringUtils.substringAfter(context.requestURI(), "/watch"));
-    }
-
-    /**
-     * Shows md guide.
-     *
-     * @param context the specified context
-     */
-    @RequestProcessing(value = "/guide/markdown", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class})
-    @After({PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showMDGuide(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("other/md-guide.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        try (final InputStream inputStream = IndexProcessor.class.getResourceAsStream("/md_guide.md")) {
-            final String md = IOUtils.toString(inputStream, "UTF-8");
-            String html = Emotions.convert(md);
-            html = Markdowns.toHTML(html);
-
-            dataModel.put("md", md);
-            dataModel.put("html", html);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Loads markdown guide failed", e);
-        }
-
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
