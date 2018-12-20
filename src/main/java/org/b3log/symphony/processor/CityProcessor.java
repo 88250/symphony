@@ -125,7 +125,7 @@ public class CityProcessor {
 
         dataModel.put(Common.CURRENT, "");
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
@@ -136,7 +136,7 @@ public class CityProcessor {
         dataModel.put(Article.ARTICLES, articles); // an empty list to avoid null check in template
         dataModel.put(Common.SELECTED, Common.CITY);
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (!UserExt.finshedGuide(user)) {
             context.sendRedirect(Latkes.getServePath() + "/guide");
 
@@ -224,7 +224,7 @@ public class CityProcessor {
         dataModel.put(User.USERS, users);
         dataModel.put(Common.SELECTED, Common.CITY);
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (!UserExt.finshedGuide(user)) {
             context.sendRedirect(Latkes.getServePath() + "/guide");
 

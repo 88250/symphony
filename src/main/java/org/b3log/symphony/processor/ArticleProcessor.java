@@ -220,7 +220,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
         final JSONObject article = articleQueryService.getArticle(id);
         if (null == article) {
@@ -261,7 +261,7 @@ public class ArticleProcessor {
     public void checkArticleTitle(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
         final JSONObject requestJSONObject = context.requestJSON();
         String title = requestJSONObject.optString(Article.ARTICLE_TITLE);
@@ -514,7 +514,7 @@ public class ArticleProcessor {
         dataModel.put("fileMaxSize", fileMaxSize);
 
         String tags = context.param(Tag.TAGS);
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
 
         if (StringUtils.isBlank(tags)) {
             tags = "";
@@ -633,7 +633,7 @@ public class ArticleProcessor {
         renderer.setTemplateName("article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
         if (null == article) {
@@ -701,12 +701,12 @@ public class ArticleProcessor {
         final int cmtViewMode = Integer.valueOf(cmtViewModeStr);
         dataModel.put(UserExt.USER_COMMENT_VIEW_MODE, cmtViewMode);
 
-        final JSONObject viewer = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject viewer = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != viewer) {
             livenessMgmtService.incLiveness(viewer.optString(Keys.OBJECT_ID), Liveness.LIVENESS_PV);
         }
 
-        if (!(Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
+        if (!(Boolean) context.attr(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
             final long created = System.currentTimeMillis();
             final long expired = DateUtils.addMonths(new Date(created), 1).getTime();
             final String ip = Requests.getRemoteAddr(request);
@@ -973,7 +973,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
 
         try {
-            final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
 
             article.put(Article.ARTICLE_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
 
@@ -1030,7 +1030,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser
                 || !currentUser.optString(Keys.OBJECT_ID).equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -1106,7 +1106,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject oldArticle = articleQueryService.getArticleById(avatarViewMode, id);
         if (null == oldArticle) {
@@ -1152,7 +1152,7 @@ public class ArticleProcessor {
         }
         article.put(Article.ARTICLE_UA, ua);
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser
                 || !currentUser.optString(Keys.OBJECT_ID).equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -1269,7 +1269,7 @@ public class ArticleProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -1312,7 +1312,7 @@ public class ArticleProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -1351,7 +1351,7 @@ public class ArticleProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 

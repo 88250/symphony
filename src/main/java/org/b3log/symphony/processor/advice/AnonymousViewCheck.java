@@ -141,7 +141,7 @@ public class AnonymousViewCheck extends ProcessAdvice {
                 }
 
                 if (Article.ARTICLE_ANONYMOUS_VIEW_C_NOT_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)
-                        && null == request.getAttribute(Common.CURRENT_USER)) {
+                        && null == context.attr(Common.CURRENT_USER)) {
                     throw new RequestProcessAdviceException(exception401);
                 } else if (Article.ARTICLE_ANONYMOUS_VIEW_C_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)) {
                     return;
@@ -157,7 +157,7 @@ public class AnonymousViewCheck extends ProcessAdvice {
             // Check if admin allow to anonymous view
             final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
             if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
-                final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+                final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
 
                 // https://github.com/b3log/symphony/issues/373
                 final String cookieNameVisits = "anonymous-visits";

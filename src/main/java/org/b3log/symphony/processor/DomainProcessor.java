@@ -107,7 +107,7 @@ public class DomainProcessor {
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 
@@ -133,7 +133,7 @@ public class DomainProcessor {
 
         final String domainId = domain.optString(Keys.OBJECT_ID);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject result = articleQueryService.getDomainArticles(avatarViewMode, domainId, pageNum, pageSize);
         final List<JSONObject> latestArticles = (List<JSONObject>) result.opt(Article.ARTICLES);

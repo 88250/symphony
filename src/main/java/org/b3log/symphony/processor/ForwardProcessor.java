@@ -97,7 +97,7 @@ public class ForwardProcessor {
             linkMgmtService.addLink(url);
         });
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != user && UserExt.USER_XXX_STATUS_C_DISABLED == user.optInt(UserExt.USER_FORWARD_PAGE_STATUS)) {
             context.sendRedirect(to);
 

@@ -201,7 +201,7 @@ public class SettingsProcessor {
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         try {
             userMgmtService.deactivateUser(currentUser.optString(Keys.OBJECT_ID));
             Sessions.logout(currentUser.optString(Keys.OBJECT_ID), response);
@@ -224,7 +224,7 @@ public class SettingsProcessor {
 
         final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         try {
             if (currentUser.optInt(UserExt.USER_POINT) < Pointtransfer.TRANSFER_SUM_C_CHANGE_USERNAME) {
@@ -276,7 +276,7 @@ public class SettingsProcessor {
             return;
         }
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (email.equalsIgnoreCase(user.optString(User.USER_EMAIL))) {
             final String msg = langPropsService.get("sendFailedLabel") + " - " + langPropsService.get("bindedLabel");
             context.renderMsg(msg);
@@ -329,7 +329,7 @@ public class SettingsProcessor {
         final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         try {
             final JSONObject verifycode = verifycodeQueryService.getVerifycodeByUserId(Verifycode.TYPE_C_EMAIL, Verifycode.BIZ_TYPE_C_BIND_EMAIL, userId);
@@ -393,7 +393,7 @@ public class SettingsProcessor {
         }
 
         try {
-            JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
             final String userId = user.optString(Keys.OBJECT_ID);
             user = userQueryService.getUser(userId);
 
@@ -430,10 +430,10 @@ public class SettingsProcessor {
         renderer.setTemplateName("home/settings/" + page);
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         UserProcessor.fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
         final String userId = user.optString(Keys.OBJECT_ID);
@@ -547,7 +547,7 @@ public class SettingsProcessor {
         }
 
         try {
-            JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
             final String userId = user.optString(Keys.OBJECT_ID);
             user = userQueryService.getUser(userId);
             user.put(UserExt.USER_GEO_STATUS, geoStatus);
@@ -595,7 +595,7 @@ public class SettingsProcessor {
         final boolean userJoinPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_POINT_RANK);
         final boolean userJoinUsedPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_USED_POINT_RANK);
 
-        JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = user.optString(Keys.OBJECT_ID);
         user = userQueryService.getUser(userId);
 
@@ -697,7 +697,7 @@ public class SettingsProcessor {
             userListPageSize = Symphonys.getInt("indexArticlesCnt");
         }
 
-        JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = user.optString(Keys.OBJECT_ID);
         user = userQueryService.getUser(userId);
 
@@ -732,7 +732,7 @@ public class SettingsProcessor {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
-        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+        final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
 
         final String userTags = requestJSONObject.optString(UserExt.USER_TAGS);
         final String userURL = requestJSONObject.optString(User.USER_URL);
@@ -740,7 +740,7 @@ public class SettingsProcessor {
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
         final String userNickname = requestJSONObject.optString(UserExt.USER_NICKNAME);
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         user.put(UserExt.USER_TAGS, userTags);
         user.put(User.USER_URL, userURL);
         user.put(UserExt.USER_QQ, userQQ);
@@ -768,10 +768,10 @@ public class SettingsProcessor {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
-        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+        final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
         final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
 
-        JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = user.optString(Keys.OBJECT_ID);
         user = userQueryService.getUser(userId);
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
@@ -813,12 +813,12 @@ public class SettingsProcessor {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
-        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+        final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
 
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
         final String newPassword = requestJSONObject.optString(User.USER_NEW_PASSWORD);
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (!password.equals(user.optString(User.USER_PASSWORD))) {
             context.renderMsg(langPropsService.get("invalidOldPwdLabel"));
 
@@ -849,10 +849,10 @@ public class SettingsProcessor {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
-        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+        final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
         final String emotionList = requestJSONObject.optString(Emotion.EMOTIONS);
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         try {
             emotionMgmtService.setEmotionList(user.optString(Keys.OBJECT_ID), emotionList);
 
@@ -877,12 +877,12 @@ public class SettingsProcessor {
         context.renderJSON(ret);
 
         final HttpServletRequest request = context.getRequest();
-        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+        final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
 
         final int amount = requestJSONObject.optInt(Common.AMOUNT);
-        final JSONObject toUser = (JSONObject) request.getAttribute(Common.TO_USER);
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
-        String memo = (String) request.getAttribute(Pointtransfer.MEMO);
+        final JSONObject toUser = (JSONObject) context.attr(Common.TO_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        String memo = (String) context.attr(Pointtransfer.MEMO);
         if (StringUtils.isBlank(memo)) {
             memo = "";
         }
@@ -976,7 +976,7 @@ public class SettingsProcessor {
             return;
         }
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
         final String userName = currentUser.optString(User.USER_NAME);
 
@@ -1011,7 +1011,7 @@ public class SettingsProcessor {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = user.optString(Keys.OBJECT_ID);
 
         final String downloadURL = postExportService.exportPosts(userId);

@@ -113,7 +113,7 @@ public class NotificationProcessor {
         final String type = context.pathVar("type"); // commented/reply/at/following/point/broadcast
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
         switch (type) {
@@ -182,7 +182,7 @@ public class NotificationProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final JSONObject requestJSONObject = context.requestJSON();
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final String notificationId = requestJSONObject.optString(Common.ID);
 
@@ -210,7 +210,7 @@ public class NotificationProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
@@ -222,7 +222,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("sysAnnounceNotificationsCnt");
         final int windowSize = Symphonys.getInt("sysAnnounceNotificationsWindowSize");
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject result = notificationQueryService.getSysAnnounceNotifications(
                 avatarViewMode, userId, pageNum, pageSize);
@@ -258,7 +258,7 @@ public class NotificationProcessor {
     @After(StopwatchEndAdvice.class)
     public void makeAllNotificationsRead(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
         notificationMgmtService.makeAllRead(userId);
@@ -278,7 +278,7 @@ public class NotificationProcessor {
         final String type = context.pathVar("type"); // "commented"/"at"/"following"
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
         switch (type) {
@@ -327,7 +327,7 @@ public class NotificationProcessor {
     public void makeNotificationRead(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
         final List<String> commentIds = Arrays.asList(requestJSONObject.optString(Comment.COMMENT_T_IDS).split(","));
@@ -349,7 +349,7 @@ public class NotificationProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -432,7 +432,7 @@ public class NotificationProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -533,7 +533,7 @@ public class NotificationProcessor {
     public void showCommentedNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -550,7 +550,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("commentedNotificationsCnt");
         final int windowSize = Symphonys.getInt("commentedNotificationsWindowSize");
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject result = notificationQueryService.getCommentedNotifications(
                 avatarViewMode, userId, pageNum, pageSize);
@@ -587,7 +587,7 @@ public class NotificationProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -604,7 +604,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("replyNotificationsCnt");
         final int windowSize = Symphonys.getInt("replyNotificationsWindowSize");
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject result = notificationQueryService.getReplyNotifications(
                 avatarViewMode, userId, pageNum, pageSize);
@@ -641,7 +641,7 @@ public class NotificationProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -658,7 +658,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("atNotificationsCnt");
         final int windowSize = Symphonys.getInt("atNotificationsWindowSize");
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject result = notificationQueryService.getAtNotifications(avatarViewMode, userId, pageNum, pageSize);
         final List<JSONObject> atNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
@@ -703,7 +703,7 @@ public class NotificationProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -720,7 +720,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("followingNotificationsCnt");
         final int windowSize = Symphonys.getInt("followingNotificationsWindowSize");
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject result = notificationQueryService.getFollowingNotifications(
                 avatarViewMode, userId, pageNum, pageSize);
@@ -758,7 +758,7 @@ public class NotificationProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -775,7 +775,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("broadcastNotificationsCnt");
         final int windowSize = Symphonys.getInt("broadcastNotificationsWindowSize");
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject result = notificationQueryService.getBroadcastNotifications(
                 avatarViewMode, userId, pageNum, pageSize);
@@ -812,7 +812,7 @@ public class NotificationProcessor {
     public void getUnreadNotificationCount(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final Map<String, Object> dataModel = new HashMap<>();
 

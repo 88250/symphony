@@ -84,7 +84,7 @@ public class Activity1A0001CollectValidation extends ProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (UserExt.USER_STATUS_C_VALID != currentUser.optInt(UserExt.USER_STATUS)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
         }

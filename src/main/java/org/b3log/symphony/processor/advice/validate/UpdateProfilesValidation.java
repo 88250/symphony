@@ -151,7 +151,7 @@ public class UpdateProfilesValidation extends ProcessAdvice {
                     throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
                 }
 
-                final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+                final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
                 if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                     throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,

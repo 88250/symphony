@@ -67,7 +67,7 @@ public class Activity1A0001Validation extends ProcessAdvice {
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int currentLiveness = livenessQueryService.getCurrentLivenessPoint(userId);
         final int livenessMax = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");

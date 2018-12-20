@@ -157,7 +157,7 @@ public class TopProcessor {
         renderer.setTemplateName("top/balance.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         final List<JSONObject> users = pointtransferQueryService.getTopBalanceUsers(avatarViewMode, Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_BALANCE_USERS, users);
 
@@ -185,7 +185,7 @@ public class TopProcessor {
         renderer.setTemplateName("top/consumption.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         final List<JSONObject> users = pointtransferQueryService.getTopConsumptionUsers(avatarViewMode, Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_CONSUMPTION_USERS, users);
 
@@ -213,7 +213,7 @@ public class TopProcessor {
         renderer.setTemplateName("top/checkin.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         final List<JSONObject> users = activityQueryService.getTopCheckinUsers(avatarViewMode, Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_CHECKIN_USERS, users);
 

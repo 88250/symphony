@@ -131,7 +131,7 @@ public class SearchProcessor {
 
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
         }
@@ -178,7 +178,7 @@ public class SearchProcessor {
             }
         }
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         articleQueryService.organizeArticles(avatarViewMode, articles);
         final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");

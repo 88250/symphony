@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Validates for article adding locally.
@@ -81,12 +80,11 @@ public class ArticleAddValidation extends ProcessAdvice {
     /**
      * Validates article fields.
      *
-     * @param request           the specified HTTP servlet request
+     * @param context           the specified HTTP servlet request context
      * @param requestJSONObject the specified request object
      * @throws RequestProcessAdviceException if validate failed
      */
-    public static void validateArticleFields(final HttpServletRequest request,
-                                             final JSONObject requestJSONObject) throws RequestProcessAdviceException {
+    public static void validateArticleFields(final RequestContext context, final JSONObject requestJSONObject) throws RequestProcessAdviceException {
         final BeanManager beanManager = BeanManager.getInstance();
         final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
         final TagQueryService tagQueryService = beanManager.getReference(TagQueryService.class);
@@ -151,7 +149,7 @@ public class ArticleAddValidation extends ProcessAdvice {
                     }
                 }
 
-                final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+                final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
                 if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                     throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("articleTagReservedLabel")
@@ -212,8 +210,7 @@ public class ArticleAddValidation extends ProcessAdvice {
 
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
-        validateArticleFields(request, requestJSONObject);
+        validateArticleFields(context, requestJSONObject);
     }
 }

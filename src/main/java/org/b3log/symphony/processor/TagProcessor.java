@@ -102,7 +102,7 @@ public class TagProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        if (null == request.getAttribute(Common.CURRENT_USER)) {
+        if (null == context.attr(Common.CURRENT_USER)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -176,7 +176,7 @@ public class TagProcessor {
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
 
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 
@@ -208,7 +208,7 @@ public class TagProcessor {
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         String sortModeStr = StringUtils.substringAfter(context.requestURI(), "/tag/" + tagURI);
         int sortMode;
         switch (sortModeStr) {

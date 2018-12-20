@@ -475,7 +475,7 @@ public class AdminProcessor {
         final int pageNum = Paginator.getPage(request);
         final int pageSize = PAGE_SIZE;
         final int windowSize = WINDOW_SIZE;
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
@@ -885,7 +885,7 @@ public class AdminProcessor {
             return;
         }
 
-        final JSONObject admin = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject admin = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = admin.optString(Keys.OBJECT_ID);
 
         String tagId;
@@ -1550,7 +1550,7 @@ public class AdminProcessor {
             user.put(UserExt.USER_APP_ROLE, appRole);
             user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
 
-            final JSONObject admin = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            final JSONObject admin = (JSONObject) context.attr(Common.CURRENT_USER);
             user.put(UserExt.USER_LANGUAGE, admin.optString(UserExt.USER_LANGUAGE));
 
             userId = userMgmtService.addUser(user);
@@ -1645,7 +1645,7 @@ public class AdminProcessor {
             }
         }
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
             user.put(User.USER_ROLE, oldRole);
         }
@@ -2000,7 +2000,7 @@ public class AdminProcessor {
         articleFields.put(Article.ARTICLE_STATUS, Integer.class);
         articleFields.put(Article.ARTICLE_STICK, Long.class);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject result = articleQueryService.getArticles(avatarViewMode, requestJSONObject, articleFields);
         dataModel.put(Article.ARTICLES, CollectionUtils.jsonArrayToList(result.optJSONArray(Article.ARTICLES)));
@@ -2131,7 +2131,7 @@ public class AdminProcessor {
         commentFields.put(Comment.COMMENT_STATUS, Integer.class);
         commentFields.put(Comment.COMMENT_CONTENT, String.class);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject result = commentQueryService.getComments(avatarViewMode, requestJSONObject, commentFields);
         dataModel.put(Comment.COMMENTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Comment.COMMENTS)));
@@ -2715,7 +2715,7 @@ public class AdminProcessor {
                 return;
             }
 
-            final JSONObject admin = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            final JSONObject admin = (JSONObject) context.attr(Common.CURRENT_USER);
             final String userId = admin.optString(Keys.OBJECT_ID);
 
             try {

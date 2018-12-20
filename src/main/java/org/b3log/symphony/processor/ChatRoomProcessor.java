@@ -162,7 +162,7 @@ public class ChatRoomProcessor {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
-        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+        final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
         String content = requestJSONObject.optString(Common.CONTENT);
 
         content = shortLinkQueryService.linkArticle(content);
@@ -170,7 +170,7 @@ public class ChatRoomProcessor {
         content = Markdowns.toHTML(content);
         content = Markdowns.clean(content, "");
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userName = currentUser.optString(User.USER_NAME);
 
         final JSONObject msg = new JSONObject();

@@ -133,7 +133,7 @@ public class IndexProcessor {
 
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 
@@ -144,7 +144,7 @@ public class IndexProcessor {
             }
         }
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         String sortModeStr = StringUtils.substringAfter(context.requestURI(), "/qna");
         int sortMode;
@@ -213,8 +213,8 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         int pageSize = Symphonys.getInt("indexArticlesCnt");
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 
@@ -298,7 +298,7 @@ public class IndexProcessor {
     public void showIndex(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != currentUser) {
             // 自定义首页跳转 https://github.com/b3log/symphony/issues/774
             final String indexRedirectURL = currentUser.optString(UserExt.USER_INDEX_REDIRECT_URL);
@@ -314,7 +314,7 @@ public class IndexProcessor {
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         final List<JSONObject> recentArticles = articleQueryService.getIndexRecentArticles(avatarViewMode);
         dataModel.put(Common.RECENT_ARTICLES, recentArticles);
 
@@ -345,7 +345,7 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 
@@ -356,7 +356,7 @@ public class IndexProcessor {
             }
         }
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         String sortModeStr = StringUtils.substringAfter(context.requestURI(), "/recent");
         int sortMode;
@@ -438,12 +438,12 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         int pageSize = Symphonys.getInt("indexArticlesCnt");
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
         }
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         final List<JSONObject> indexArticles = articleQueryService.getHotArticles(avatarViewMode, pageSize);
         dataModel.put(Common.INDEX_ARTICLES, indexArticles);
         dataModel.put(Common.SELECTED, Common.HOT);
@@ -480,7 +480,7 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
             if (!UserExt.finshedGuide(user)) {
@@ -490,7 +490,7 @@ public class IndexProcessor {
             }
         }
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         final JSONObject result = articleQueryService.getPerfectArticles(avatarViewMode, pageNum, pageSize);
         final List<JSONObject> perfectArticles = (List<JSONObject>) result.get(Article.ARTICLES);
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);

@@ -187,7 +187,7 @@ public class UserProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) context.attr(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
@@ -200,7 +200,7 @@ public class UserProcessor {
 
         fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
@@ -277,7 +277,7 @@ public class UserProcessor {
             currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
         }
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) context.attr(User.USER);
 
         if (null == currentUser || (!currentUser.optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID)))
                 && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
@@ -292,7 +292,7 @@ public class UserProcessor {
 
         fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
@@ -358,7 +358,7 @@ public class UserProcessor {
             currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
         }
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) context.attr(User.USER);
 
         if (null == currentUser || (!currentUser.optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID)))
                 && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
@@ -373,7 +373,7 @@ public class UserProcessor {
 
         fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
         if (isLoggedIn) {
@@ -427,7 +427,7 @@ public class UserProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) context.attr(User.USER);
         final int pageNum = Paginator.getPage(request);
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
@@ -441,7 +441,7 @@ public class UserProcessor {
 
         fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
@@ -479,7 +479,7 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Pagination.PAGINATION_RECORD_COUNT, recordCount);
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             dataModel.put(Common.IS_MY_ARTICLE, false);
         } else {
@@ -501,7 +501,7 @@ public class UserProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) context.attr(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
@@ -514,7 +514,7 @@ public class UserProcessor {
 
         fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
@@ -568,7 +568,7 @@ public class UserProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) context.attr(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
@@ -584,7 +584,7 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
         final JSONObject followingUsersResult = followQueryService.getFollowingUsers(avatarViewMode,
@@ -636,7 +636,7 @@ public class UserProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) context.attr(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
@@ -652,7 +652,7 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
         final JSONObject followingTagsResult = followQueryService.getFollowingTags(followingId, pageNum, pageSize);
@@ -703,7 +703,7 @@ public class UserProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) context.attr(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
@@ -719,7 +719,7 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
         final JSONObject followingArticlesResult = followQueryService.getFollowingArticles(avatarViewMode,
@@ -771,7 +771,7 @@ public class UserProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) context.attr(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
@@ -787,7 +787,7 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
         final JSONObject followingArticlesResult = followQueryService.getWatchingArticles(avatarViewMode,
@@ -839,7 +839,7 @@ public class UserProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) context.attr(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
@@ -855,7 +855,7 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject followerUsersResult = followQueryService.getFollowerUsers(avatarViewMode,
                 followingId, pageNum, pageSize);
@@ -914,7 +914,7 @@ public class UserProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) context.attr(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
@@ -927,7 +927,7 @@ public class UserProcessor {
 
         fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
@@ -1006,7 +1006,7 @@ public class UserProcessor {
         context.renderJSON();
 
         final HttpServletRequest request = context.getRequest();
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             context.renderJSONValue("emotions", "");
 

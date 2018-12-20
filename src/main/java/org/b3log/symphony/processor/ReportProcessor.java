@@ -85,7 +85,7 @@ public class ReportProcessor {
         final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final String dataId = requestJSONObject.optString(Report.REPORT_DATA_ID);
         final int dataType = requestJSONObject.optInt(Report.REPORT_DATA_TYPE);

@@ -122,7 +122,7 @@ public class PermissionCheck extends ProcessAdvice {
                 return;
             }
 
-            final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
             final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
             final Set<String> grantPermissions = roleQueryService.getPermissions(roleId);
 
