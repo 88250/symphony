@@ -278,9 +278,9 @@ public class ActivityProcessor {
         if (!Symphonys.getBoolean("geetest.enabled")) {
             activityMgmtService.dailyCheckin(userId);
         } else {
-            final String challenge = request.getParameter(GeetestLib.fn_geetest_challenge);
-            final String validate = request.getParameter(GeetestLib.fn_geetest_validate);
-            final String seccode = request.getParameter(GeetestLib.fn_geetest_seccode);
+            final String challenge = context.param(GeetestLib.fn_geetest_challenge);
+            final String validate = context.param(GeetestLib.fn_geetest_validate);
+            final String seccode = context.param(GeetestLib.fn_geetest_seccode);
             if (StringUtils.isBlank(challenge) || StringUtils.isBlank(validate) || StringUtils.isBlank(seccode)) {
                 context.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
 

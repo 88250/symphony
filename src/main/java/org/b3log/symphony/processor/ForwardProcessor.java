@@ -80,7 +80,7 @@ public class ForwardProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        String to = request.getParameter(Common.GOTO);
+        String to = context.param(Common.GOTO);
         if (StringUtils.isBlank(to)) {
             to = Latkes.getServePath();
         }

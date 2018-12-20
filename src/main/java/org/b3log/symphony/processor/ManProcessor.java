@@ -90,7 +90,7 @@ public class ManProcessor {
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
 
-        String cmd = request.getParameter(Common.CMD);
+        String cmd = context.param(Common.CMD);
         if (StringUtils.isBlank(cmd)) {
             cmd = "man";
         }
@@ -113,7 +113,7 @@ public class ManProcessor {
     public void listMans(final RequestContext context) {
         context.renderJSON().renderTrueResult();
         final HttpServletRequest request = context.getRequest();
-        final String cmdPrefix = request.getParameter(Common.NAME);
+        final String cmdPrefix = context.param(Common.NAME);
         if (StringUtils.isBlank(cmdPrefix)) {
             return;
         }

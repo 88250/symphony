@@ -160,7 +160,7 @@ public class CaptchaProcessor {
             final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
 
-            final String userId = request.getParameter(Common.NEED_CAPTCHA);
+            final String userId = context.param(Common.NEED_CAPTCHA);
             if (StringUtils.isBlank(userId)) {
                 return;
             }

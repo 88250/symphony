@@ -110,7 +110,7 @@ public class TagProcessor {
 
         context.renderJSON().renderTrueResult();
 
-        final String titlePrefix = request.getParameter("title");
+        final String titlePrefix = context.param("title");
 
         List<JSONObject> tags;
         final int fetchSize = 7;

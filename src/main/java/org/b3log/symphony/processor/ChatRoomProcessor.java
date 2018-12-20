@@ -275,20 +275,20 @@ public class ChatRoomProcessor {
         final HttpServletResponse response = context.getResponse();
 
         final String key = Symphonys.get("xiaov.key");
-        if (!key.equals(request.getParameter("key"))) {
+        if (!key.equals(context.param("key"))) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
 
-        final String msg = request.getParameter("msg");
+        final String msg = context.param("msg");
         if (StringUtils.isBlank(msg)) {
             context.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
             return;
         }
 
-        String user = request.getParameter("user");
+        String user = context.param("user");
         if (StringUtils.isBlank("user")) {
             user = "V";
         }

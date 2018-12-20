@@ -119,7 +119,7 @@
                                     <span class="ft-gray">${getStartTipLabel}</span>
                                 </li>
                                 <li>
-                                    <a href="${servePath}/tag/user_guide">${basicLabel}</a>
+                                    <a href="https://hacpai.com/tag/user-guide">${basicLabel}</a>
                                     <span class="ft-gray">${basicTipLabel}</span>
                                 </li>
                                 <li>

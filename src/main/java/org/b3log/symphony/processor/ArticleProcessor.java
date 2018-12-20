@@ -513,7 +513,7 @@ public class ArticleProcessor {
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
         dataModel.put("fileMaxSize", fileMaxSize);
 
-        String tags = request.getParameter(Tag.TAGS);
+        String tags = context.param(Tag.TAGS);
         final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
 
         if (StringUtils.isBlank(tags)) {
@@ -560,7 +560,7 @@ public class ArticleProcessor {
             dataModel.put(Tag.TAGS, tagBuilder.toString());
         }
 
-        final String type = request.getParameter(Common.TYPE);
+        final String type = context.param(Common.TYPE);
         if (StringUtils.isBlank(type)) {
             dataModel.put(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
         } else {
@@ -579,7 +579,7 @@ public class ArticleProcessor {
             dataModel.put(Article.ARTICLE_TYPE, articleType);
         }
 
-        String at = request.getParameter(Common.AT);
+        String at = context.param(Common.AT);
         at = StringUtils.trim(at);
         if (StringUtils.isNotBlank(at)) {
             dataModel.put(Common.AT, at + " ");
@@ -667,7 +667,7 @@ public class ArticleProcessor {
 
         articleQueryService.processArticleContent(article, request);
 
-        String cmtViewModeStr = request.getParameter("m");
+        String cmtViewModeStr = context.param("m");
         JSONObject currentUser;
         String currentUserId = null;
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
@@ -885,7 +885,7 @@ public class ArticleProcessor {
         }
 
         // Referral statistic
-        final String referralUserName = request.getParameter("r");
+        final String referralUserName = context.param("r");
         if (!UserRegisterValidation.invalidUserName(referralUserName)) {
             final JSONObject referralUser = userQueryService.getUserByName(referralUserName);
             if (null == referralUser) {
@@ -1016,7 +1016,7 @@ public class ArticleProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String articleId = request.getParameter("id");
+        final String articleId = context.param("id");
         if (StringUtils.isBlank(articleId)) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -1210,7 +1210,7 @@ public class ArticleProcessor {
         final HttpServletRequest request = context.getRequest();
 
         context.renderJSON(true);
-        String markdownText = request.getParameter("markdownText");
+        String markdownText = context.param("markdownText");
         if (StringUtils.isBlank(markdownText)) {
             context.renderJSONValue("html", "");
 
@@ -1276,7 +1276,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        final String articleId = context.param(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
             context.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
@@ -1319,7 +1319,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        final String articleId = context.param(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
             context.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
@@ -1358,7 +1358,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        final String articleId = context.param(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
             context.sendError(HttpServletResponse.SC_BAD_REQUEST);
 

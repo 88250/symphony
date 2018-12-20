@@ -61,7 +61,7 @@ public class ShowArticleUpdateValidation extends ProcessAdvice {
 
         JSONObject article;
         try {
-            final String articleId = request.getParameter("id");
+            final String articleId = context.param("id");
             if (StringUtils.isBlank(articleId)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("updateArticleNotFoundLabel")));
             }

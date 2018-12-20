@@ -974,7 +974,7 @@ public class UserProcessor {
 
         context.renderJSON().renderTrueResult();
 
-        final String namePrefix = request.getParameter("name");
+        final String namePrefix = context.param("name");
         if (StringUtils.isBlank(namePrefix)) {
             final List<JSONObject> admins = userQueryService.getAdmins();
             final List<JSONObject> userNames = new ArrayList<>();

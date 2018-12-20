@@ -123,7 +123,7 @@ public class SearchProcessor {
         }
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        String keyword = request.getParameter("key");
+        String keyword = context.param("key");
         if (StringUtils.isBlank(keyword)) {
             keyword = "";
         }

@@ -288,7 +288,7 @@ public class LoginProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
 
-        String referer = request.getParameter(Common.GOTO);
+        String referer = context.param(Common.GOTO);
         if (StringUtils.isBlank(referer)) {
             referer = request.getHeader("referer");
         }
@@ -385,7 +385,7 @@ public class LoginProcessor {
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final String code = request.getParameter("code");
+        final String code = context.param("code");
         final JSONObject verifycode = verifycodeQueryService.getVerifycode(code);
         if (null == verifycode) {
             dataModel.put(Keys.MSG, langPropsService.get("verifycodeExpiredLabel"));
@@ -474,7 +474,7 @@ public class LoginProcessor {
 
         boolean useInvitationLink = false;
 
-        String referral = request.getParameter("r");
+        String referral = context.param("r");
         if (!UserRegisterValidation.invalidUserName(referral)) {
             final JSONObject referralUser = userQueryService.getUserByName(referral);
             if (null != referralUser) {
@@ -488,7 +488,7 @@ public class LoginProcessor {
             }
         }
 
-        final String code = request.getParameter("code");
+        final String code = context.param("code");
         if (StringUtils.isBlank(code)) { // Register Step 1
             renderer.setTemplateName("verify/register.ftl");
         } else { // Register Step 2
@@ -797,7 +797,7 @@ public class LoginProcessor {
             Sessions.logout(user.optString(Keys.OBJECT_ID), context.getResponse());
         }
 
-        String destinationURL = request.getParameter(Common.GOTO);
+        String destinationURL = context.param(Common.GOTO);
         if (StringUtils.isBlank(destinationURL)) {
             destinationURL = request.getHeader("referer");
         }

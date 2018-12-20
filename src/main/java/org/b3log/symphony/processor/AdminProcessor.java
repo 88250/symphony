@@ -552,7 +552,7 @@ public class AdminProcessor {
         final Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             final String name = parameterNames.nextElement();
-            final String value = request.getParameter(name);
+            final String value = context.param(name);
 
             if (name.equals(Breezemoon.BREEZEMOON_STATUS)) {
                 breezemoon.put(name, Integer.valueOf(value));
@@ -586,7 +586,7 @@ public class AdminProcessor {
     @After(StopwatchEndAdvice.class)
     public void removeBreezemoon(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final String id = request.getParameter(Common.ID);
+        final String id = context.param(Common.ID);
 
         try {
             breezemoonMgmtService.removeBreezemoon(id);
@@ -624,14 +624,14 @@ public class AdminProcessor {
     public void addRole(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final String roleName = request.getParameter(Role.ROLE_NAME);
+        final String roleName = context.param(Role.ROLE_NAME);
         if (StringUtils.isBlank(roleName)) {
             context.sendRedirect(Latkes.getServePath() + "/admin/roles");
 
             return;
         }
 
-        final String roleDesc = request.getParameter(Role.ROLE_DESCRIPTION);
+        final String roleDesc = context.param(Role.ROLE_DESCRIPTION);
 
         final JSONObject role = new JSONObject();
         role.put(Role.ROLE_NAME, roleName);
@@ -742,7 +742,7 @@ public class AdminProcessor {
     public void updateSideAd(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final String sideFullAd = request.getParameter("sideFullAd");
+        final String sideFullAd = context.param("sideFullAd");
 
         JSONObject adOption = optionQueryService.getOption(Option.ID_C_SIDE_FULL_AD);
         if (null == adOption) {
@@ -771,7 +771,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateBanner(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final String headerBanner = request.getParameter("headerBanner");
+        final String headerBanner = context.param("headerBanner");
 
         JSONObject adOption = optionQueryService.getOption(Option.ID_C_HEADER_BANNER);
         if (null == adOption) {
@@ -855,7 +855,7 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        String title = StringUtils.trim(request.getParameter(Tag.TAG_TITLE));
+        String title = StringUtils.trim(context.param(Tag.TAG_TITLE));
         try {
             if (StringUtils.isBlank(title)) {
                 throw new Exception(langPropsService.get("tagsErrorLabel"));
@@ -918,7 +918,7 @@ public class AdminProcessor {
     public void stickArticle(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        final String articleId = context.param(Article.ARTICLE_T_ID);
         articleMgmtService.adminStick(articleId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_STICK_ARTICLE, articleId));
         context.sendRedirect(Latkes.getServePath() + "/admin/articles");
@@ -935,7 +935,7 @@ public class AdminProcessor {
     public void stickCancelArticle(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        final String articleId = context.param(Article.ARTICLE_T_ID);
         articleMgmtService.adminCancelStick(articleId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_CANCEL_STICK_ARTICLE, articleId));
         context.sendRedirect(Latkes.getServePath() + "/admin/articles");
@@ -953,7 +953,7 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String quantityStr = request.getParameter("quantity");
+        final String quantityStr = context.param("quantity");
         int quantity = 20;
         try {
             quantity = Integer.valueOf(quantityStr);
@@ -961,7 +961,7 @@ public class AdminProcessor {
             // ignore
         }
 
-        String memo = request.getParameter("memo");
+        String memo = context.param("memo");
         if (StringUtils.isBlank(memo)) {
             memo = "注册帖";
         }
@@ -1059,7 +1059,7 @@ public class AdminProcessor {
         final Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             final String name = parameterNames.nextElement();
-            final String value = request.getParameter(name);
+            final String value = context.param(name);
 
             invitecode.put(name, value);
         }
@@ -1111,7 +1111,7 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String userName = request.getParameter(User.USER_NAME);
+        final String userName = context.param(User.USER_NAME);
         final JSONObject author = userQueryService.getUserByName(userName);
         if (null == author) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1125,12 +1125,12 @@ public class AdminProcessor {
             return;
         }
 
-        final String timeStr = request.getParameter(Common.TIME);
-        final String articleTitle = request.getParameter(Article.ARTICLE_TITLE);
-        final String articleTags = request.getParameter(Article.ARTICLE_TAGS);
-        final String articleContent = request.getParameter(Article.ARTICLE_CONTENT);
-        String rewardContent = request.getParameter(Article.ARTICLE_REWARD_CONTENT);
-        final String rewardPoint = request.getParameter(Article.ARTICLE_REWARD_POINT);
+        final String timeStr = context.param(Common.TIME);
+        final String articleTitle = context.param(Article.ARTICLE_TITLE);
+        final String articleTags = context.param(Article.ARTICLE_TAGS);
+        final String articleContent = context.param(Article.ARTICLE_CONTENT);
+        String rewardContent = context.param(Article.ARTICLE_REWARD_CONTENT);
+        final String rewardPoint = context.param(Article.ARTICLE_REWARD_POINT);
 
         long time = System.currentTimeMillis();
 
@@ -1183,7 +1183,7 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        String word = request.getParameter(Common.WORD);
+        String word = context.param(Common.WORD);
         word = StringUtils.trim(word);
         if (StringUtils.isBlank(word)) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -1268,7 +1268,7 @@ public class AdminProcessor {
         final Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             final String name = parameterNames.nextElement();
-            final String value = request.getParameter(name);
+            final String value = context.param(name);
 
             word.put(name, value);
         }
@@ -1336,7 +1336,7 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String id = request.getParameter("id");
+        final String id = context.param("id");
         optionMgmtService.removeOption(id);
         final JSONObject option = optionQueryService.getOption(id);
         final String word = option.optString(Option.OPTION_VALUE);
@@ -1357,7 +1357,7 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String commentId = request.getParameter(Comment.COMMENT_T_ID);
+        final String commentId = context.param(Comment.COMMENT_T_ID);
         commentMgmtService.removeCommentByAdmin(commentId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_COMMENT, commentId));
 
@@ -1376,7 +1376,7 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        final String articleId = context.param(Article.ARTICLE_T_ID);
         articleMgmtService.removeArticleByAdmin(articleId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_ARTICLE, articleId));
 
@@ -1433,7 +1433,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
-        final String query = request.getParameter(Common.QUERY);
+        final String query = context.param(Common.QUERY);
         if (StringUtils.isNotBlank(query)) {
             requestJSONObject.put(Common.QUERY, query);
         }
@@ -1513,10 +1513,10 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String userName = request.getParameter(User.USER_NAME);
-        final String email = request.getParameter(User.USER_EMAIL);
-        final String password = request.getParameter(User.USER_PASSWORD);
-        final String appRole = request.getParameter(UserExt.USER_APP_ROLE);
+        final String userName = context.param(User.USER_NAME);
+        final String email = context.param(User.USER_EMAIL);
+        final String password = context.param(User.USER_PASSWORD);
+        final String appRole = context.param(UserExt.USER_APP_ROLE);
 
         final boolean nameInvalid = UserRegisterValidation.invalidUserName(userName);
         final boolean emailInvalid = !Strings.isEmail(email);
@@ -1599,7 +1599,7 @@ public class AdminProcessor {
         final Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             final String name = parameterNames.nextElement();
-            final String value = request.getParameter(name);
+            final String value = context.param(name);
 
             switch (name) {
                 case UserExt.USER_POINT:
@@ -1677,7 +1677,7 @@ public class AdminProcessor {
 
         final JSONObject user = userQueryService.getUser(userId);
         final String oldEmail = user.optString(User.USER_EMAIL);
-        final String newEmail = request.getParameter(User.USER_EMAIL);
+        final String newEmail = context.param(User.USER_EMAIL);
 
         if (oldEmail.equals(newEmail)) {
             context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
@@ -1720,7 +1720,7 @@ public class AdminProcessor {
 
         final JSONObject user = userQueryService.getUser(userId);
         final String oldUserName = user.optString(User.USER_NAME);
-        final String newUserName = request.getParameter(User.USER_NAME);
+        final String newUserName = context.param(User.USER_NAME);
 
         if (oldUserName.equals(newUserName)) {
             context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
@@ -1761,8 +1761,8 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String pointStr = request.getParameter(Common.POINT);
-        final String memo = request.getParameter("memo");
+        final String pointStr = context.param(Common.POINT);
+        final String memo = context.param("memo");
 
         if (StringUtils.isBlank(pointStr) || StringUtils.isBlank(memo) || !Strings.isNumeric(memo.split("-")[0])) {
             LOGGER.warn("Charge point memo format error");
@@ -1811,7 +1811,7 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String pointStr = request.getParameter(Common.POINT);
+        final String pointStr = context.param(Common.POINT);
 
         try {
             final int point = Integer.valueOf(pointStr);
@@ -1831,7 +1831,7 @@ public class AdminProcessor {
                 return;
             }
 
-            final String memo = request.getParameter(Common.MEMO);
+            final String memo = context.param(Common.MEMO);
 
             final String transferId = pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                     Pointtransfer.TRANSFER_TYPE_C_ABUSE_DEDUCT, point, memo, System.currentTimeMillis(), "");
@@ -1913,7 +1913,7 @@ public class AdminProcessor {
         final String userId = context.pathVar("userId");
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final String pointStr = request.getParameter(Common.POINT);
+        final String pointStr = context.param(Common.POINT);
 
         try {
             final int point = Integer.valueOf(pointStr);
@@ -1983,7 +1983,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
-        final String articleId = request.getParameter("id");
+        final String articleId = context.param("id");
         if (StringUtils.isNotBlank(articleId)) {
             requestJSONObject.put(Keys.OBJECT_ID, articleId);
         }
@@ -2065,7 +2065,7 @@ public class AdminProcessor {
         final Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             final String name = parameterNames.nextElement();
-            final String value = request.getParameter(name);
+            final String value = context.param(name);
 
             if (name.equals(Article.ARTICLE_REWARD_POINT)
                     || name.equals(Article.ARTICLE_QNA_OFFER_POINT)
@@ -2196,7 +2196,7 @@ public class AdminProcessor {
         final Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             final String name = parameterNames.nextElement();
-            final String value = request.getParameter(name);
+            final String value = context.param(name);
 
             if (name.equals(Comment.COMMENT_STATUS)
                     || name.equals(Comment.COMMENT_THANK_CNT)
@@ -2262,7 +2262,7 @@ public class AdminProcessor {
         final Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             final String name = parameterNames.nextElement();
-            final String value = request.getParameter(name);
+            final String value = context.param(name);
 
             final JSONObject option = new JSONObject();
             option.put(Keys.OBJECT_ID, name);
@@ -2308,7 +2308,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
-        final String tagTitle = request.getParameter(Common.TITLE);
+        final String tagTitle = context.param(Common.TITLE);
         if (StringUtils.isNotBlank(tagTitle)) {
             requestJSONObject.put(Tag.TAG_TITLE, tagTitle);
         }
@@ -2401,7 +2401,7 @@ public class AdminProcessor {
         final Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             final String name = parameterNames.nextElement();
-            final String value = request.getParameter(name);
+            final String value = context.param(name);
 
             if (name.equals(Tag.TAG_REFERENCE_CNT)
                     || name.equals(Tag.TAG_COMMENT_CNT)
@@ -2461,7 +2461,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
-        final String domainTitle = request.getParameter(Common.TITLE);
+        final String domainTitle = context.param(Common.TITLE);
         if (StringUtils.isNotBlank(domainTitle)) {
             requestJSONObject.put(Domain.DOMAIN_TITLE, domainTitle);
         }
@@ -2538,7 +2538,7 @@ public class AdminProcessor {
         final Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             final String name = parameterNames.nextElement();
-            String value = request.getParameter(name);
+            String value = context.param(name);
 
             if (Domain.DOMAIN_ICON_PATH.equals(name)) {
                 value = StringUtils.replace(value, "\"", "'");
@@ -2594,7 +2594,7 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String domainTitle = request.getParameter(Domain.DOMAIN_TITLE);
+        final String domainTitle = context.param(Domain.DOMAIN_TITLE);
 
         if (StringUtils.isBlank(domainTitle)) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -2659,7 +2659,7 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String domainId = request.getParameter(Domain.DOMAIN_T_ID);
+        final String domainId = context.param(Domain.DOMAIN_T_ID);
         domainMgmtService.removeDomain(domainId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_DOMAIN, domainId));
 
@@ -2679,7 +2679,7 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        String tagTitle = request.getParameter(Tag.TAG_TITLE);
+        String tagTitle = context.param(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
 
         String tagId;
@@ -2772,7 +2772,7 @@ public class AdminProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String tagTitle = request.getParameter(Tag.TAG_TITLE);
+        final String tagTitle = context.param(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
 
         if (null == tag) {
