@@ -181,7 +181,7 @@ public class IndexProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -241,7 +241,7 @@ public class IndexProcessor {
                 break;
         }
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -285,7 +285,7 @@ public class IndexProcessor {
         final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles();
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillIndexTags(dataModel);
 
         dataModel.put(Common.SELECTED, Common.INDEX);
@@ -375,7 +375,7 @@ public class IndexProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -414,7 +414,7 @@ public class IndexProcessor {
 
         Stopwatchs.start("Fills");
         try {
-            dataModelService.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(context, dataModel);
             if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
                 dataModelService.fillRandomArticles(dataModel);
             }
@@ -471,7 +471,7 @@ public class IndexProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -508,7 +508,7 @@ public class IndexProcessor {
         renderer.setTemplateName("other/b3log.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);

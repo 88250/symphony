@@ -138,7 +138,7 @@ public class ActivityProcessor {
         renderer.setTemplateName("activity/character.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -219,7 +219,7 @@ public class ActivityProcessor {
         renderer.setTemplateName("home/activities.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -255,7 +255,7 @@ public class ActivityProcessor {
         renderer.setTemplateName("activity/checkin.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -406,7 +406,7 @@ public class ActivityProcessor {
             break;
         }
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -480,7 +480,7 @@ public class ActivityProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
@@ -565,7 +565,7 @@ public class ActivityProcessor {
         renderer.setTemplateName("activity/gobang.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);

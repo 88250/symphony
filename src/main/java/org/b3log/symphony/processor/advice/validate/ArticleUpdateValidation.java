@@ -23,9 +23,6 @@ import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-
 /**
  * Validates for article updating.
  *

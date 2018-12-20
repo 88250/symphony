@@ -255,7 +255,7 @@ public class ChatRoomProcessor {
         dataModel.put("fileMaxSize", fileMaxSize);
         dataModel.put(Common.ONLINE_CHAT_CNT, SESSIONS.size());
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);

@@ -30,7 +30,6 @@ import org.b3log.symphony.processor.CaptchaProcessor;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * User forget password form validation.

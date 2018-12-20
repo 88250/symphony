@@ -26,6 +26,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.SymphonyServletListener;
@@ -35,8 +36,6 @@ import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -243,12 +242,10 @@ public class DataModelService {
     /**
      * Fills header.
      *
-     * @param request   the specified request
-     * @param response  the specified response
+     * @param context   the specified request context
      * @param dataModel the specified data model
      */
-    private void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
-                            final Map<String, Object> dataModel) {
+    private void fillHeader(final RequestContext context, final Map<String, Object> dataModel) {
         fillMinified(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put("esEnabled", Symphonys.getBoolean("es.enabled"));
@@ -258,7 +255,7 @@ public class DataModelService {
         dataModel.put("algoliaIndex", Symphonys.get("algolia.index"));
 
         // fillTrendTags(dataModel);
-        fillPersonalNav(request, response, dataModel);
+        fillPersonalNav(context, dataModel);
 
         fillLangs(dataModel);
         fillSideAd(dataModel);
@@ -303,17 +300,16 @@ public class DataModelService {
     /**
      * Fills header and footer.
      *
-     * @param request   the specified request
-     * @param response  the specified response
+     * @param context   the specified request context
      * @param dataModel the specified data model
      */
-    public void fillHeaderAndFooter(final HttpServletRequest request, final HttpServletResponse response, final Map<String, Object> dataModel) {
+    public void fillHeaderAndFooter(final RequestContext context, final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills header");
         try {
-            final boolean isMobile = (Boolean) request.getAttribute(Common.IS_MOBILE);
+            final boolean isMobile = (Boolean) context.attr(Common.IS_MOBILE);
             dataModel.put(Common.IS_MOBILE, isMobile);
 
-            fillHeader(request, response, dataModel);
+            fillHeader(context, dataModel);
         } finally {
             Stopwatchs.end();
         }
@@ -333,17 +329,16 @@ public class DataModelService {
     /**
      * Fills personal navigation.
      *
-     * @param request   the specified request
-     * @param response  the specified response
+     * @param context   the specified request context
      * @param dataModel the specified data model
      */
-    private void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response, final Map<String, Object> dataModel) {
+    private void fillPersonalNav(final RequestContext context, final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills personal nav");
         try {
             dataModel.put(Common.IS_LOGGED_IN, false);
             dataModel.put(Common.IS_ADMIN_LOGGED_IN, false);
 
-            final JSONObject curUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            final JSONObject curUser = (JSONObject) context.attr(Common.CURRENT_USER);
             if (null == curUser) {
                 dataModel.put("loginLabel", langPropsService.get("loginLabel"));
 

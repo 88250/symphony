@@ -106,7 +106,7 @@ public class TopProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put(Common.SELECTED, Common.TOP);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -133,7 +133,7 @@ public class TopProcessor {
         final List<JSONObject> topLinks = linkQueryService.getTopLink(Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_LINKS, topLinks);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -161,7 +161,7 @@ public class TopProcessor {
         final List<JSONObject> users = pointtransferQueryService.getTopBalanceUsers(avatarViewMode, Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_BALANCE_USERS, users);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -189,7 +189,7 @@ public class TopProcessor {
         final List<JSONObject> users = pointtransferQueryService.getTopConsumptionUsers(avatarViewMode, Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_CONSUMPTION_USERS, users);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -217,7 +217,7 @@ public class TopProcessor {
         final List<JSONObject> users = activityQueryService.getTopCheckinUsers(avatarViewMode, Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_CHECKIN_USERS, users);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);

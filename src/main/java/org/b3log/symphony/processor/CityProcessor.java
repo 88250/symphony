@@ -122,7 +122,7 @@ public class CityProcessor {
 
         renderer.setTemplateName("city.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
 
         dataModel.put(Common.CURRENT, "");
 
@@ -212,7 +212,7 @@ public class CityProcessor {
 
         renderer.setTemplateName("city.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
 
         dataModel.put(Common.CURRENT, "/users");
 

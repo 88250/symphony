@@ -151,7 +151,7 @@ public class TagProcessor {
         dataModel.put(Common.TREND_TAGS, trendTags);
         dataModel.put(Common.COLD_TAGS, coldTags);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
     /**
@@ -172,7 +172,7 @@ public class TagProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("tag-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
 

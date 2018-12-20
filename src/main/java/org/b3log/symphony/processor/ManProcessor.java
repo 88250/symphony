@@ -84,7 +84,7 @@ public class ManProcessor {
         renderer.setTemplateName("other/man.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);

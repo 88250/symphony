@@ -109,6 +109,6 @@ public class ForwardProcessor {
         renderer.setTemplateName("forward.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put("forwardURL", to);
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 }

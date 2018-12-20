@@ -32,6 +32,7 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.*;
 import org.b3log.symphony.cache.ArticleCache;
 import org.b3log.symphony.model.*;
@@ -48,7 +49,6 @@ import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
@@ -1124,10 +1124,10 @@ public class ArticleQueryService {
      * Gets preview content of the article specified with the given article id.
      *
      * @param articleId the given article id
-     * @param request   the specified request
+     * @param context   the specified request context
      * @return preview content
      */
-    public String getArticlePreviewContent(final String articleId, final HttpServletRequest request) {
+    public String getArticlePreviewContent(final String articleId, final RequestContext context) {
         final JSONObject article = getArticle(articleId);
         if (null == article) {
             return null;
@@ -1152,7 +1152,7 @@ public class ArticleQueryService {
             }
 
             final Set<String> userNames = userQueryService.getUserNames(ret);
-            final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
             final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
             final String authorName = author.optString(User.USER_NAME);
             if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType && !authorName.equals(currentUserName)) {
@@ -1932,9 +1932,9 @@ public class ArticleQueryService {
      *                "articleTitle": "",
      *                ....,
      *                "author": {}
-     * @param request the specified request
+     * @param context the specified request context
      */
-    public void processArticleContent(final JSONObject article, final HttpServletRequest request) {
+    public void processArticleContent(final JSONObject article, final RequestContext context) {
         Stopwatchs.start("Process content");
 
         try {
@@ -1959,7 +1959,7 @@ public class ArticleQueryService {
             String articleContent = article.optString(Article.ARTICLE_CONTENT);
             article.put(Common.DISCUSSION_VIEWABLE, true);
 
-            final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+            final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
             final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
             final String currentRole = null == currentUser ? "" : currentUser.optString(User.USER_ROLE);
             final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);

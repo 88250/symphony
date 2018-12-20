@@ -31,7 +31,6 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * Validates for show article update.

@@ -36,7 +36,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * Validates for user point transfer.

@@ -31,7 +31,6 @@ import org.b3log.symphony.service.OptionQueryService;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * UserRegister2Validation for validate {@link org.b3log.symphony.processor.LoginProcessor} register2(Type POST) method.

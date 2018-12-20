@@ -48,7 +48,7 @@ public class CSRFToken extends ProcessAdvice {
         if (null != renderer) {
             final Map<String, Object> dataModel = renderer.getRenderDataModel();
 
-            dataModel.put(Common.CSRF_TOKEN, Sessions.getCSRFToken(context.getRequest()));
+            dataModel.put(Common.CSRF_TOKEN, Sessions.getCSRFToken(context));
         }
     }
 }

@@ -27,6 +27,7 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.Crypts;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
@@ -76,11 +77,11 @@ public final class Sessions {
     /**
      * Gets CSRF token from the specified request.
      *
-     * @param request the specified request
+     * @param context the specified request context
      * @return CSRF token, returns {@code ""} if not found
      */
-    public static String getCSRFToken(final HttpServletRequest request) {
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+    public static String getCSRFToken(final RequestContext context) {
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == user) {
             return "";
         }

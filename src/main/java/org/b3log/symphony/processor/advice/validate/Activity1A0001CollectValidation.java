@@ -32,7 +32,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
-import java.util.Map;
 
 /**
  * Validates for activity 1A0001 collect.

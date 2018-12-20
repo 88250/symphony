@@ -75,7 +75,7 @@ public class ChargeProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("charge-point.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);

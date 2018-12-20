@@ -232,7 +232,7 @@ public class StatisticProcessor {
         dataModel.put("historyArticleCnts", historyArticleCnts);
         dataModel.put("historyCommentCnts", historyCommentCnts);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);

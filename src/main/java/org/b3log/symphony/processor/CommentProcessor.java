@@ -181,7 +181,7 @@ public class CommentProcessor {
     /**
      * Removes a comment.
      *
-     * @param context  the specified context
+     * @param context the specified context
      */
     @RequestProcessing(value = "/comment/{id}/remove", method = HttpMethod.POST)
     @Before({StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})

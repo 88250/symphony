@@ -264,7 +264,7 @@ public class LoginProcessor {
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
         dataModel.put("fileMaxSize", fileMaxSize);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
     /**
@@ -302,7 +302,7 @@ public class LoginProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put(Common.GOTO, referer);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
     /**
@@ -322,7 +322,7 @@ public class LoginProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         renderer.setTemplateName("verify/forget-pwd.ftl");
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
     /**
@@ -399,7 +399,7 @@ public class LoginProcessor {
             dataModel.put(Common.CODE, code);
         }
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
     /**
@@ -522,7 +522,7 @@ public class LoginProcessor {
             dataModel.put(Option.ID_C_MISC_ALLOW_REGISTER, "1");
         }
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
     /**

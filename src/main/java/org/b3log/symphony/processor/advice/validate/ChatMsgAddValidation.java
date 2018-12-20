@@ -35,7 +35,6 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * Validates for chat message adding.

@@ -193,7 +193,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("home/breezemoons.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeBreezemoonsCnt");
         final int windowSize = Symphonys.getInt("userHomeBreezemoonsWindowSize");
@@ -269,7 +269,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         JSONObject currentUser = null;
@@ -350,7 +350,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("home/home.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         JSONObject currentUser = null;
@@ -432,7 +432,7 @@ public class UserProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -507,7 +507,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeCmtsCnt");
         final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
@@ -574,7 +574,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("home/following-users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeFollowingUsersCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingUsersWindowSize");
@@ -642,7 +642,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("home/following-tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeFollowingTagsCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingTagsWindowSize");
@@ -709,7 +709,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("home/following-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeFollowingArticlesCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingArticlesWindowSize");
@@ -777,7 +777,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("home/watching-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeFollowingArticlesCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingArticlesWindowSize");
@@ -845,7 +845,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("home/followers.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomeFollowersCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowersWindowSize");
@@ -920,7 +920,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("home/points.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
         final int pageSize = Symphonys.getInt("userHomePointsCnt");
         final int windowSize = Symphonys.getInt("userHomePointsWindowSize");

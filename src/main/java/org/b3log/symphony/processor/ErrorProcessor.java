@@ -89,7 +89,7 @@ public class ErrorProcessor {
 
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.putAll(langPropsService.getAll(Locales.getLocale()));
-            dataModelService.fillHeaderAndFooter(request, response, dataModel);
+            dataModelService.fillHeaderAndFooter(context, dataModel);
             dataModelService.fillSideHotArticles(dataModel);
             dataModelService.fillRandomArticles(dataModel);
             dataModelService.fillSideTags(dataModel);

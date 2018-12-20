@@ -38,7 +38,6 @@ import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
-import java.util.Map;
 
 /**
  * Validates for user profiles update.

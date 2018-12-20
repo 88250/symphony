@@ -70,7 +70,7 @@ public class CSRFCheck extends ProcessAdvice {
 
         // 2. Check Token
         final String clientToken = context.header(Common.CSRF_TOKEN);
-        final String serverToken = Sessions.getCSRFToken(request);
+        final String serverToken = Sessions.getCSRFToken(context);
 
         if (!StringUtils.equals(clientToken, serverToken)) {
             throw new RequestProcessAdviceException(exception);

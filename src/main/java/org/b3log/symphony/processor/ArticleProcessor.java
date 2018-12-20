@@ -443,7 +443,7 @@ public class ArticleProcessor {
 
         dataModel.put(Common.BROADCAST_POINT, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST);
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
     /**
@@ -585,7 +585,7 @@ public class ArticleProcessor {
             dataModel.put(Common.AT, at + " ");
         }
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
 
         String rewardEditorPlaceholderLabel = langPropsService.get("rewardEditorPlaceholderLabel");
         rewardEditorPlaceholderLabel = rewardEditorPlaceholderLabel.replace("{point}",
@@ -642,7 +642,7 @@ public class ArticleProcessor {
             return;
         }
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
 
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
         final JSONObject author = userQueryService.getUser(authorId);
@@ -665,7 +665,7 @@ public class ArticleProcessor {
         article.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_ARTICLE));
         article.put(Article.ARTICLE_REVISION_COUNT, revisionQueryService.count(articleId, Revision.DATA_TYPE_C_ARTICLE));
 
-        articleQueryService.processArticleContent(article, request);
+        articleQueryService.processArticleContent(article, context);
 
         String cmtViewModeStr = context.param("m");
         JSONObject currentUser;
@@ -1046,7 +1046,7 @@ public class ArticleProcessor {
         dataModel.put(Article.ARTICLE, article);
         dataModel.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
 
-        dataModelService.fillHeaderAndFooter(request, response, dataModel);
+        dataModelService.fillHeaderAndFooter(context, dataModel);
 
         // Qiniu file upload authenticate
         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
@@ -1247,7 +1247,7 @@ public class ArticleProcessor {
     public void getArticlePreviewContent(final RequestContext context) {
         final String articleId = context.pathVar("articleId");
         final HttpServletRequest request = context.getRequest();
-        final String content = articleQueryService.getArticlePreviewContent(articleId, request);
+        final String content = articleQueryService.getArticlePreviewContent(articleId, context);
         if (StringUtils.isBlank(content)) {
             context.renderJSON().renderFalseResult();
 
@@ -1294,7 +1294,7 @@ public class ArticleProcessor {
         }
 
         final JSONObject article = articleQueryService.getArticle(articleId);
-        articleQueryService.processArticleContent(article, request);
+        articleQueryService.processArticleContent(article, context);
 
         final String rewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
         context.renderTrueResult().renderJSONValue(Article.ARTICLE_REWARD_CONTENT, rewardContent);
