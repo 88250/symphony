@@ -140,7 +140,7 @@ public class TagProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -168,7 +168,7 @@ public class TagProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("tag-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -209,7 +209,7 @@ public class TagProcessor {
         }
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/tag/" + tagURI);
+        String sortModeStr = StringUtils.substringAfter(context.requestURI(), "/tag/" + tagURI);
         int sortMode;
         switch (sortModeStr) {
             case "":
@@ -261,7 +261,7 @@ public class TagProcessor {
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
 
-        dataModel.put(Common.CURRENT, StringUtils.substringAfter(URLs.decode(request.getRequestURI()),
+        dataModel.put(Common.CURRENT, StringUtils.substringAfter(URLs.decode(context.requestURI()),
                 "/tag/" + tagURI));
     }
 }

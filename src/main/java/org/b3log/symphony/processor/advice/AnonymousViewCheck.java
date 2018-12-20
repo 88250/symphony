@@ -114,7 +114,7 @@ public class AnonymousViewCheck extends ProcessAdvice {
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
-        final String requestURI = request.getRequestURI();
+        final String requestURI = context.requestURI();
 
         final String[] skips = Symphonys.get("anonymousViewSkips").split(",");
         for (final String skip : skips) {
@@ -124,11 +124,11 @@ public class AnonymousViewCheck extends ProcessAdvice {
         }
 
         final JSONObject exception404 = new JSONObject();
-        exception404.put(Keys.MSG, HttpServletResponse.SC_NOT_FOUND + ", " + request.getRequestURI());
+        exception404.put(Keys.MSG, HttpServletResponse.SC_NOT_FOUND + ", " + context.requestURI());
         exception404.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
 
         final JSONObject exception401 = new JSONObject();
-        exception401.put(Keys.MSG, HttpServletResponse.SC_UNAUTHORIZED + ", " + request.getRequestURI());
+        exception401.put(Keys.MSG, HttpServletResponse.SC_UNAUTHORIZED + ", " + context.requestURI());
         exception401.put(Keys.STATUS_CODE, HttpServletResponse.SC_UNAUTHORIZED);
 
         if (requestURI.startsWith(Latkes.getContextPath() + "/article/")) {

@@ -189,7 +189,7 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/breezemoons.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -265,7 +265,7 @@ public class UserProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -346,7 +346,7 @@ public class UserProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/home.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -429,7 +429,7 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         final int pageNum = Paginator.getPage(request);
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(request, response, dataModel);
@@ -503,7 +503,7 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -570,7 +570,7 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/following-users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -638,7 +638,7 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/following-tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -705,7 +705,7 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/following-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -773,7 +773,7 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/watching-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -841,7 +841,7 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/followers.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -916,7 +916,7 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/points.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

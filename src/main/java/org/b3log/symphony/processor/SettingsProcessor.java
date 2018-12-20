@@ -420,7 +420,7 @@ public class SettingsProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         String page = context.pathVar("page");
         if (StringUtils.isBlank(page)) {
@@ -495,7 +495,7 @@ public class SettingsProcessor {
 
         dataModel.put(Invitecode.INVITECODES, invitecodes);
 
-        final String requestURI = request.getRequestURI();
+        final String requestURI = context.requestURI();
         if (requestURI.contains("function")) {
             dataModel.put(Emotion.EMOTIONS, emotionQueryService.getEmojis(userId));
             dataModel.put(Emotion.SHORT_T_LIST, emojiLists);

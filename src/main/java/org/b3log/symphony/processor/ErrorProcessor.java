@@ -83,7 +83,7 @@ public class ErrorProcessor {
 
             final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
-            final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
             renderer.setTemplateName("error/" + templateName);
             context.setRenderer(renderer);
 

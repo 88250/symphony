@@ -67,7 +67,7 @@ public class LoginCheck extends ProcessAdvice {
         final HttpServletRequest request = context.getRequest();
 
         final JSONObject exception = new JSONObject();
-        exception.put(Keys.MSG, HttpServletResponse.SC_UNAUTHORIZED + ", " + request.getRequestURI());
+        exception.put(Keys.MSG, HttpServletResponse.SC_UNAUTHORIZED + ", " + context.requestURI());
         exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_UNAUTHORIZED);
 
         JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);

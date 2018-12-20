@@ -63,13 +63,13 @@ public class CSRFCheck extends ProcessAdvice {
         exception.put(Keys.STATUS_CODE, false);
 
         // 1. Check Referer
-        final String referer = request.getHeader("Referer");
+        final String referer = context.header("Referer");
         if (!StringUtils.startsWith(referer, StringUtils.substringBeforeLast(Latkes.getServePath(), ":"))) {
             throw new RequestProcessAdviceException(exception);
         }
 
         // 2. Check Token
-        final String clientToken = request.getHeader(Common.CSRF_TOKEN);
+        final String clientToken = context.header(Common.CSRF_TOKEN);
         final String serverToken = Sessions.getCSRFToken(request);
 
         if (!StringUtils.equals(clientToken, serverToken)) {

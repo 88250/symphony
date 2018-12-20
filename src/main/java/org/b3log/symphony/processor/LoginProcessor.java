@@ -227,7 +227,7 @@ public class LoginProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("verify/guide.ftl");
 
@@ -285,12 +285,12 @@ public class LoginProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
 
         String referer = context.param(Common.GOTO);
         if (StringUtils.isBlank(referer)) {
-            referer = request.getHeader("referer");
+            referer = context.header("referer");
         }
 
         if (!StringUtils.startsWith(referer, Latkes.getServePath())) {
@@ -317,7 +317,7 @@ public class LoginProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
         renderer.setTemplateName("verify/forget-pwd.ftl");
@@ -381,7 +381,7 @@ public class LoginProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
 
@@ -466,7 +466,7 @@ public class LoginProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -799,7 +799,7 @@ public class LoginProcessor {
 
         String destinationURL = context.param(Common.GOTO);
         if (StringUtils.isBlank(destinationURL)) {
-            destinationURL = request.getHeader("referer");
+            destinationURL = context.header("referer");
         }
 
         context.sendRedirect(destinationURL);

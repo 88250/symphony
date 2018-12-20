@@ -126,7 +126,7 @@ public class IndexProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("qna.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -146,7 +146,7 @@ public class IndexProcessor {
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/qna");
+        String sortModeStr = StringUtils.substringAfter(context.requestURI(), "/qna");
         int sortMode;
         switch (sortModeStr) {
             case "":
@@ -192,7 +192,7 @@ public class IndexProcessor {
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
 
-        dataModel.put(Common.CURRENT, StringUtils.substringAfter(request.getRequestURI(), "/qna"));
+        dataModel.put(Common.CURRENT, StringUtils.substringAfter(context.requestURI(), "/qna"));
     }
 
     /**
@@ -207,7 +207,7 @@ public class IndexProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("watch.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -226,7 +226,7 @@ public class IndexProcessor {
         }
 
         dataModel.put(Common.WATCHING_ARTICLES, Collections.emptyList());
-        String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/watch");
+        String sortModeStr = StringUtils.substringAfter(context.requestURI(), "/watch");
         switch (sortModeStr) {
             case "":
                 if (null != user) {
@@ -253,7 +253,7 @@ public class IndexProcessor {
         dataModelService.fillLatestCmts(dataModel);
 
         dataModel.put(Common.SELECTED, Common.WATCH);
-        dataModel.put(Common.CURRENT, StringUtils.substringAfter(request.getRequestURI(), "/watch"));
+        dataModel.put(Common.CURRENT, StringUtils.substringAfter(context.requestURI(), "/watch"));
     }
 
     /**
@@ -268,7 +268,7 @@ public class IndexProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("other/md-guide.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -309,7 +309,7 @@ public class IndexProcessor {
             }
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -339,7 +339,7 @@ public class IndexProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("recent.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -358,7 +358,7 @@ public class IndexProcessor {
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/recent");
+        String sortModeStr = StringUtils.substringAfter(context.requestURI(), "/recent");
         int sortMode;
         switch (sortModeStr) {
             case "":
@@ -417,7 +417,7 @@ public class IndexProcessor {
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
 
-        dataModel.put(Common.CURRENT, StringUtils.substringAfter(request.getRequestURI(), "/recent"));
+        dataModel.put(Common.CURRENT, StringUtils.substringAfter(context.requestURI(), "/recent"));
     }
 
     /**
@@ -432,7 +432,7 @@ public class IndexProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("hot.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -474,7 +474,7 @@ public class IndexProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("perfect.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -539,7 +539,7 @@ public class IndexProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("other/b3log.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -562,7 +562,7 @@ public class IndexProcessor {
     public void showKillBrowser(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         renderer.setTemplateName("other/kill-browser.ftl");
         context.setRenderer(renderer);
 

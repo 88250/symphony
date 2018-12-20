@@ -435,7 +435,7 @@ public class ArticleProcessor {
     public void showPreAddArticle(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
 
         renderer.setTemplateName("home/pre-post.ftl");
@@ -493,7 +493,7 @@ public class ArticleProcessor {
     public void showAddArticle(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -628,7 +628,7 @@ public class ArticleProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -1038,7 +1038,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

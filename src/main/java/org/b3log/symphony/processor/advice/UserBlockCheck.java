@@ -63,23 +63,23 @@ public class UserBlockCheck extends ProcessAdvice {
 
         final String userName = context.pathVar("userName");
         if (UserExt.NULL_USER_NAME.equals(userName)) {
-            exception.put(Keys.MSG, "Nil User [" + userName + ", requestURI=" + request.getRequestURI() + "]");
+            exception.put(Keys.MSG, "Nil User [" + userName + ", requestURI=" + context.requestURI() + "]");
             throw new RequestProcessAdviceException(exception);
         }
 
         final JSONObject user = userQueryService.getUserByName(userName);
         if (null == user) {
-            exception.put(Keys.MSG, "Not found user [" + userName + ", requestURI=" + request.getRequestURI() + "]");
+            exception.put(Keys.MSG, "Not found user [" + userName + ", requestURI=" + context.requestURI() + "]");
             throw new RequestProcessAdviceException(exception);
         }
 
         if (UserExt.USER_STATUS_C_NOT_VERIFIED == user.optInt(UserExt.USER_STATUS)) {
-            exception.put(Keys.MSG, "Unverified User [" + userName + ", requestURI=" + request.getRequestURI() + "]");
+            exception.put(Keys.MSG, "Unverified User [" + userName + ", requestURI=" + context.requestURI() + "]");
             throw new RequestProcessAdviceException(exception);
         }
 
         if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
-            exception.put(Keys.MSG, "Blocked User [" + userName + ", requestURI=" + request.getRequestURI() + "]");
+            exception.put(Keys.MSG, "Blocked User [" + userName + ", requestURI=" + context.requestURI() + "]");
             throw new RequestProcessAdviceException(exception);
         }
 

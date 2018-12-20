@@ -103,7 +103,7 @@ public class FileUploadProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String uri = request.getRequestURI();
+        final String uri = context.requestURI();
         String key = StringUtils.substringAfter(uri, "/upload/");
         key = StringUtils.substringBeforeLast(key, "?"); // Erase Qiniu template
         key = StringUtils.substringBeforeLast(key, "?"); // Erase Qiniu template

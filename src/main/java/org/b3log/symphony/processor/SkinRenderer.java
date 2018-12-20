@@ -42,7 +42,7 @@ import java.util.TimeZone;
  * Skin user-switchable FreeMarker Renderer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.5, Sep 27, 2018
+ * @version 1.3.0.6, Dec 20, 2018
  * @since 1.3.0
  */
 public final class SkinRenderer extends AbstractFreeMarkerRenderer {
@@ -53,17 +53,17 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     private static final Logger LOGGER = Logger.getLogger(SkinRenderer.class);
 
     /**
-     * HTTP servlet request.
+     * HTTP servlet request context.
      */
-    private final HttpServletRequest request;
+    private final RequestContext context;
 
     /**
      * Constructs a skin renderer with the specified HTTP servlet request.
      *
-     * @param request the specified HTTP servlet request
+     * @param context the specified HTTP servlet request context
      */
-    public SkinRenderer(final HttpServletRequest request) {
-        this.request = request;
+    public SkinRenderer(final RequestContext context) {
+        this.context = context;
     }
 
     /**
@@ -74,7 +74,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
      * @return template
      */
     public Template getTemplate(final boolean isSearchEngineBot, final JSONObject user) {
-        String templateDirName = (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+        String templateDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
         final String templateName = getTemplateName();
         try {
             Template ret;
@@ -112,8 +112,8 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
 
     @Override
     protected Template getTemplate() {
-        final boolean isSearchEngineBot = (Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final boolean isSearchEngineBot = (Boolean) context.attr(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
+        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
 
         return getTemplate(isSearchEngineBot, user);
     }
@@ -129,7 +129,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
      */
     protected String genHTML(final HttpServletRequest request, final Map<String, Object> dataModel, final Template template)
             throws Exception {
-        final boolean isPJAX = isPJAX(request);
+        final boolean isPJAX = isPJAX(context);
         dataModel.put("pjax", isPJAX);
         if (!isPJAX) {
             return super.genHTML(request, dataModel, template);
@@ -160,12 +160,12 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     /**
      * Determines whether the specified request is sending with pjax.
      *
-     * @param request the specified request
+     * @param context the specified request context
      * @return {@code true} if it is sending with pjax, otherwise returns {@code false}
      */
-    private static boolean isPJAX(final HttpServletRequest request) {
-        final boolean pjax = Boolean.valueOf(request.getHeader("X-PJAX"));
-        final String pjaxContainer = request.getHeader("X-PJAX-Container");
+    private static boolean isPJAX(final RequestContext context) {
+        final boolean pjax = Boolean.valueOf(context.header("X-PJAX"));
+        final String pjaxContainer = context.header("X-PJAX-Container");
 
         return pjax && StringUtils.isNotBlank(pjaxContainer);
     }

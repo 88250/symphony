@@ -113,7 +113,7 @@ public class BreezemoonProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("breezemoon.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -146,7 +146,7 @@ public class BreezemoonProcessor {
         dataModelService.fillLatestCmts(dataModel);
 
         dataModel.put(Common.SELECTED, Common.WATCH);
-        dataModel.put(Common.CURRENT, StringUtils.substringAfter(request.getRequestURI(), "/watch"));
+        dataModel.put(Common.CURRENT, StringUtils.substringAfter(context.requestURI(), "/watch"));
     }
 
     /**

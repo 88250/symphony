@@ -104,7 +104,7 @@ public class PermissionCheck extends ProcessAdvice {
             exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
 
             final String prefix = "permission.rule.url.";
-            final String requestURI = StringUtils.substringAfter(request.getRequestURI(), Latkes.getContextPath());
+            final String requestURI = StringUtils.substringAfter(context.requestURI(), Latkes.getContextPath());
             final String method = request.getMethod();
             String rule = prefix;
 

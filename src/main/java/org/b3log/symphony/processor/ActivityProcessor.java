@@ -133,7 +133,7 @@ public class ActivityProcessor {
     public void showCharacter(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("activity/character.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -214,7 +214,7 @@ public class ActivityProcessor {
     public void showActivities(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("home/activities.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -250,7 +250,7 @@ public class ActivityProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("activity/checkin.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -335,7 +335,7 @@ public class ActivityProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("activity/1A0001.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -474,7 +474,7 @@ public class ActivityProcessor {
     public void showEatingSnake(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("activity/eating-snake.ftl");
 
@@ -530,7 +530,7 @@ public class ActivityProcessor {
     @After({CSRFToken.class, StopwatchEndAdvice.class})
     public void collectEatingSnake(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("activity/eating-snake.ftl");
 
@@ -560,7 +560,7 @@ public class ActivityProcessor {
     public void showGobang(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("activity/gobang.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
