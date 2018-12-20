@@ -105,7 +105,7 @@ public class PermissionCheck extends ProcessAdvice {
 
             final String prefix = "permission.rule.url.";
             final String requestURI = StringUtils.substringAfter(context.requestURI(), Latkes.getContextPath());
-            final String method = request.getMethod();
+            final String method = context.method();
             String rule = prefix;
 
             try {
