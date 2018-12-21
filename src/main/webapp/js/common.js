@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.45.0.0, Oct 20, 2018
+ * @version 1.45.1.0, Dec 21, 2018
  */
 
 /**
@@ -61,11 +61,14 @@ var Util = {
       var initMathJax = function () {
         MathJax.Hub.Config({
           tex2jax: {
-            inlineMath: [['$', '$'], ["\\(", "\\)"]],
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
             displayMath: [['$$', '$$']],
             processEscapes: true,
             processEnvironments: true,
-            skipTags: ['pre', 'code', 'script']
+            skipTags: ['pre', 'code', 'script'],
+          },
+          asciimath2jax: {
+            delimiters: [['$','$']]
           }
         });
         MathJax.Hub.Typeset();
@@ -76,7 +79,7 @@ var Util = {
       } else {
         $.ajax({
           method: "GET",
-          url: "https://cdn.staticfile.org/MathJax/MathJax-2.6-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&_=1473258780393",
+          url: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML",
           dataType: "script"
         }).done(function () {
           initMathJax();
