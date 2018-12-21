@@ -985,7 +985,7 @@ public class ArticleMgmtService {
             transaction.commit();
 
             try {
-                Thread.sleep(50); // wait for db write to avoid artitle duplication
+                Thread.sleep(50); // wait for db write to avoid article duplication
             } catch (final Exception e) {
             }
 
