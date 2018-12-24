@@ -1013,9 +1013,6 @@ public class ArticleProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showUpdateArticle(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
         final String articleId = context.param("id");
         if (StringUtils.isBlank(articleId)) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -1043,6 +1040,9 @@ public class ArticleProcessor {
         renderer.setTemplateName("home/post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
+        String title = article.optString(Article.ARTICLE_TITLE);
+        title = Escapes.escapeHTML(title);
+        article.put(Article.ARTICLE_TITLE, title);
         dataModel.put(Article.ARTICLE, article);
         dataModel.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
 
