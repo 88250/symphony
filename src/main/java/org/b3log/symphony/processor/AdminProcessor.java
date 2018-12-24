@@ -2026,15 +2026,12 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showArticle(final RequestContext context) {
-        final String articleId = context.pathVar("articleId");
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
+        final String articleId = context.pathVar("articleId");
         final JSONObject article = articleQueryService.getArticle(articleId);
         Escapes.escapeHTML(article);
         dataModel.put(Article.ARTICLE, article);
