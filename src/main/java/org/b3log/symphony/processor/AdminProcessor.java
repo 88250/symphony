@@ -1337,9 +1337,9 @@ public class AdminProcessor {
         final HttpServletResponse response = context.getResponse();
 
         final String id = context.param("id");
-        optionMgmtService.removeOption(id);
         final JSONObject option = optionQueryService.getOption(id);
         final String word = option.optString(Option.OPTION_VALUE);
+        optionMgmtService.removeOption(id);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_RESERVED_WORD, word));
 
         context.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
