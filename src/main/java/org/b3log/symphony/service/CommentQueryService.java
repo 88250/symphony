@@ -46,7 +46,7 @@ import java.util.concurrent.TimeUnit;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.2.5, Dec 16, 2018
+ * @version 2.12.2.6, Dec 25, 2018
  * @since 0.2.0
  */
 @Service
@@ -507,8 +507,8 @@ public class CommentQueryService {
                 .setCurrentPageNum(currentPageNum).setPageSize(pageSize).
                         setFilter(CompositeFilterOperator.and(
                                 new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId),
-                                new PropertyFilter(Comment.COMMENT_ANONYMOUS, FilterOperator.EQUAL, anonymous)
-                        ));
+                                new PropertyFilter(Comment.COMMENT_ANONYMOUS, FilterOperator.EQUAL, anonymous),
+                                new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)));
         try {
             final JSONObject result = commentRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
