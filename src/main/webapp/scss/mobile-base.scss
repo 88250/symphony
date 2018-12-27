@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.0.0, Dec 19, 2018
+ * @version 1.12.0.0, Dec 27, 2018
  */
 @import "variables";
 @import "common";
@@ -148,6 +148,7 @@ a[class*=" icon-"]:hover {
   text-decoration: none;
   color: $blue;
 }
+
 /* end icon */
 
 /* start tip */
@@ -727,6 +728,7 @@ ul.CodeMirror-hints {
 .CodeMirror pre.CodeMirror-placeholder {
   color: #999;
 }
+
 #revision .revisions {
   margin: 5px 0 15px;
   text-align: center;
@@ -1144,7 +1146,7 @@ label.cmt-anonymous {
 }
 
 .comments > div.comments-header svg {
-  margin:3px 10px 0 0;
+  margin: 3px 10px 0 0;
 }
 
 .comments > div.comments-header a {
@@ -2243,7 +2245,6 @@ code .dec {
   padding-bottom: 10px;
 }
 
-
 .home-account {
   &__captch {
     position: relative;
@@ -2256,6 +2257,7 @@ code .dec {
     }
   }
 }
+
 /* end home */
 
 /* start notifications */
@@ -2298,6 +2300,7 @@ code .dec {
   left: 45px;
   top: 45px;
 }
+
 /* end follow */
 
 /* start admin */
@@ -2467,9 +2470,12 @@ code .dec {
 }
 
 /* end other */
-#breezemoonList button.absolute {
-  right: 0;
-  top: 0;
+
+.breezemoon__btn {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  border-radius: 0 3px 3px 0 !important;
 }
 
 @media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2),

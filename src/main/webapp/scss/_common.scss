@@ -19,7 +19,7 @@
  * Common style for mobile and web.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.4.0.0, Jul 10, 2018
+ * @version 1.5.0.0, Dec 27, 2018
  */
 
 /* start reset */
@@ -672,3 +672,14 @@ blockquote {
 }
 
 /* end aplayer */
+
+// breezemoon
+#breezemoonList button.absolute {
+  right: 0;
+  top: 0;
+}
+.breezemoon {
+  &__input {
+    padding-right: 61px !important;
+  }
+}

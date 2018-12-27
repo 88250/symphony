@@ -38,6 +38,34 @@
     </div>
 </div>
 </#if>
+
+<div class="module">
+    <div class="module-header form">
+        <input id="breezemoonInput"
+               type="text"
+               class="comment__text breezemoon__input"
+               placeholder="${breezemoonLabel}"/>
+        <span id="breezemoonPostBtn" class="btn breezemoon__btn" data-csrf="${csrfToken}">${postLabel}</span>
+    </div>
+    <div class="module-panel">
+        <ul class="module-list">
+        <#list sideBreezemoons as item>
+            <li>
+                <a href="${servePath}/member/${item.breezemoonAuthorName}">
+                    <span class="avatar-small slogan tooltipped tooltipped-se" aria-label="${item.breezemoonAuthorName}"
+                          style="background-image: url(${item.breezemoonAuthorThumbnailURL48})"></span>
+                </a>
+                <a href="${servePath}/member/${item.breezemoonAuthorName}/breezemoons/${item.oId}"
+                   class="title">${item.breezemoonContent}</a>
+            </li>
+        </#list>
+            <#if sideBreezemoons?size == 0>
+                <li class="ft-center ft-gray">${chickenEggLabel}</li>
+            </#if>
+        </ul>
+    </div>
+</div>
+
 <div class="module">
     <div class="module-header">
         <h2>开源项目</h2>
