@@ -112,13 +112,12 @@ public class InvitecodeQueryService {
     /**
      * Gets invitecodes by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     *                                                                                                                                                       {
-     *                                                                                                                                                           "paginationCurrentPageNum": 1,
-     *                                                                                                                                                           "paginationPageSize": 20,
-     *                                                                                                                                                           "paginationWindowSize": 10
-     *                                                                                                                                                       }, see {@link Pagination} for more details
-     *                                                                                                                                                       </pre>
+     * @param requestJSONObject the specified request json object, for example,
+     *                          {
+     *                          "paginationCurrentPageNum": 1,
+     *                          "paginationPageSize": 20,
+     *                          "paginationWindowSize": 10
+     *                          }
      * @return for example,      <pre>
      * {
      *     "pagination": {

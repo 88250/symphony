@@ -51,13 +51,12 @@ public class RewardMgmtService {
     /**
      * Adds a reward with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     *                                                                            {
-     *                                                                                "senderId"; "",
-     *                                                                                "dataId": "",
-     *                                                                                "type": int
-     *                                                                            }
-     *                                                                            </pre>
+     * @param requestJSONObject the specified request json object, for example,
+     *                          {
+     *                          "senderId"; "",
+     *                          "dataId": "",
+     *                          "type": int
+     *                          }
      * @return reward id
      * @throws ServiceException service exception
      */
