@@ -22,6 +22,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -42,7 +43,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.36, Oct 29, 2018
+ * @version 1.12.2.37, Dec 27, 2018
  * @since 0.2.0
  */
 @Service
@@ -124,6 +125,12 @@ public class DataModelService {
      */
     @Inject
     private DomainCache domainCache;
+
+    /**
+     * Breezemoon query service.
+     */
+    @Inject
+    private BreezemoonQueryService breezemoonQueryService;
 
     /**
      * Fills relevant articles.
@@ -261,7 +268,7 @@ public class DataModelService {
         fillSideAd(dataModel);
         fillHeaderBanner(dataModel);
         fillSideTips(dataModel);
-
+        fillSideBreezemoons(context, dataModel);
         fillDomainNav(dataModel);
     }
 
@@ -407,6 +414,26 @@ public class DataModelService {
                 break;
             default:
                 throw new AssertionError();
+        }
+    }
+
+    /**
+     * Fills side breezemoons.
+     *
+     * @param context   the specified request context
+     * @param dataModel the specified data model
+     */
+    private void fillSideBreezemoons(final RequestContext context, final Map<String, Object> dataModel) {
+        Stopwatchs.start("Fills breezemoons");
+        try {
+            final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
+            final List<JSONObject> sideBreezemoons = breezemoonQueryService.getSideBreezemoons(avatarViewMode);
+
+            dataModel.put(Common.SIDE_BREEZEMOONS, sideBreezemoons);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Fill side breezemoons failed", e);
+        } finally {
+            Stopwatchs.end();
         }
     }
 

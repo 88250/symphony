@@ -19,6 +19,7 @@ package org.b3log.symphony.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -36,8 +37,11 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Images;
 import org.b3log.symphony.util.Markdowns;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import java.util.*;
 
@@ -45,7 +49,7 @@ import java.util.*;
  * Breezemoon query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Nov 28, 2018
+ * @version 1.0.0.8, Dec 27, 2018
  * @since 2.8.0
  */
 @Service
@@ -85,6 +89,54 @@ public class BreezemoonQueryService {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
+    /**
+     * Get side breezemoons.
+     *
+     * @return a list of breezemoons, returns an empty list if not found
+     */
+    public List<JSONObject> getSideBreezemoons(final int avatarViewMode) {
+
+        try {
+            final BeanManager beanManager = BeanManager.getInstance();
+            final BreezemoonRepository breezemoonRepository = beanManager.getReference(BreezemoonRepository.class);
+            final Query query = new Query().setCurrentPageNum(1).setPageCount(1).setPageSize(Symphonys.getInt("sideBreezemoonsCnt") * 2)
+                    .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+            List<JSONObject> ret = breezemoonRepository.getList(query);
+
+            final BreezemoonQueryService breezemoonQueryService = beanManager.getReference(BreezemoonQueryService.class);
+            breezemoonQueryService.organizeBreezemoons(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, "", ret);
+            final Iterator<JSONObject> iterator = ret.iterator();
+            while (iterator.hasNext()) {
+                final JSONObject bm = iterator.next();
+                String content = bm.optString(Breezemoon.BREEZEMOON_CONTENT);
+                content = Jsoup.clean(content, Whitelist.none());
+                content = StringUtils.trim(content);
+                if (StringUtils.isBlank(content)) {
+                    iterator.remove();
+                }
+
+                content = StringUtils.substring(content, 0, 52);
+                bm.put(Breezemoon.BREEZEMOON_CONTENT, content);
+            }
+
+            if (ret.size() > Symphonys.getInt("sideBreezemoonsCnt")) {
+                ret = ret.subList(0, Symphonys.getInt("sideBreezemoonsCnt"));
+            }
+
+            if (UserExt.USER_AVATAR_VIEW_MODE_C_STATIC == avatarViewMode) {
+                for (final JSONObject breezemoon : ret) {
+                    breezemoon.put(Breezemoon.BREEZEMOON_T_AUTHOR_THUMBNAIL_URL + "48", breezemoon.optString(Breezemoon.BREEZEMOON_T_AUTHOR_THUMBNAIL_URL + "48Static"));
+                }
+            }
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Get side breezemoons failed", e);
+
+            return Collections.emptyList();
+        }
+    }
 
     /**
      * Get following user breezemoons.
