@@ -34,6 +34,7 @@ import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.util.Markdowns;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -270,6 +271,8 @@ public class DataModelService {
         fillSideTips(dataModel);
         fillSideBreezemoons(context, dataModel);
         fillDomainNav(dataModel);
+
+        dataModel.put(Common.CSRF_TOKEN, Sessions.getCSRFToken(context));
     }
 
     /**
