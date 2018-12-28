@@ -982,7 +982,7 @@ public class ArticleProcessor {
             }
 
             if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType && StringUtils.isBlank(articleTags)) {
-                articleTags = "小黑屋";
+                articleTags = "机要";
             }
 
             if (Article.ARTICLE_TYPE_C_THOUGHT == articleType && StringUtils.isBlank(articleTags)) {
@@ -1167,7 +1167,7 @@ public class ArticleProcessor {
         }
 
         if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType && StringUtils.isBlank(articleTags)) {
-            articleTags = "小黑屋";
+            articleTags = "机要";
         }
 
         if (Article.ARTICLE_TYPE_C_THOUGHT == articleType && StringUtils.isBlank(articleTags)) {
