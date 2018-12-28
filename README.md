@@ -47,8 +47,8 @@
 
 ## 功能
 
+* [Sym 简介幻灯片](https://sym.b3log.org/syme-intro.pptx)
 * [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
-* [Sym 商业版简介幻灯片](https://sym.b3log.org/syme-intro.pptx)
 
 ## 文档
 
