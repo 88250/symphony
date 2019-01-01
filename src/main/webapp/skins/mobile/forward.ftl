@@ -23,7 +23,10 @@
     <meta charset="UTF-8">
     <title>${forwardingLabel} - ${symphonyLabel}</title>
     <meta name="description" content="${forwardingLabel}"/>
+    <meta name="robots" content="noindex">
     <link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png"/>
+    <link rel="apple-touch-icon" href="${staticServePath}/images/apple-touch-icon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="${staticServePath}/images/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <style>
         html {
@@ -49,39 +52,66 @@
             background: -o-linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
             background: -ms-linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
             background: linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding-bottom: 20px;
+            box-sizing: border-box;
         }
 
         .text {
-            position: fixed;
-            bottom: 20px;
-            text-align: center;
-            width: 100%;
+            flex: 1;
+        }
+
+        button {
+            cursor: pointer;
+            color: #000;
+            border-radius: 3px;
+            padding: 6px 12px;
+            background-color: hsla(0, 0%, 100%, .58);
+            border: 1px solid #d5d5d5;
+            border-bottom-color: #e1e1e1;
+            box-sizing: border-box;
+            line-height: 19px;
+            white-space: nowrap;
+            display: inline-block;
+            font-size: 14px;
+            outline: none;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            text-decoration: none;
+            border-color: #eee;
+            background-color: hsla(0, 0%, 100%, .8);
+        }
+
+        button:active,
+        button:focus {
+            box-shadow: inset 0 2px 15px rgba(0, 0, 0, .25)
         }
 
         .canvas {
+            height: 50vh;
+            width: 50vw;
             margin: 0 auto;
             display: block;
-        }
-
-        iframe {
-            position: absolute;
-            left: -99999px;
         }
     </style>
 </head>
 <body class="body--ready">
 <canvas class="canvas"></canvas>
-<p class="text">
-    正在跳转至 <a href="${forwardURL}">${forwardURL}</a><br/>
+<div class="text">
+    是否跳转至 <br>
+    <a rel="nofollow" href="${forwardURL}">${forwardURL}</a><br/>
+    <button onclick="window.location.replace('${forwardURL}')">确定</button>
+</div>
+<div>
     <a href="https://github.com/b3log/symphony">GitHub</a> &nbsp;
-    <a href="https://b3log.org/">B3log</a>
-</p>
-<script src="${staticServePath}/js/lib/jquery/jquery-3.1.0.min.js"></script>
+    <a href="https://b3log.org/" target="_blank" rel="noopener">B3log</a>
+</div>
 <script>
-    setTimeout(function () {
-        window.location.href = '${forwardURL}'
-    }, 1500)
-
     var S = {
         init: function () {
             S.Drawing.init('.canvas');
@@ -97,16 +127,16 @@
 
     S.Drawing = (function () {
         var canvas,
-            context,
-            renderFn,
-            requestFrame = window.requestAnimationFrame ||
-                window.webkitRequestAnimationFrame ||
-                window.mozRequestAnimationFrame ||
-                window.oRequestAnimationFrame ||
-                window.msRequestAnimationFrame ||
-                function (callback) {
-                    window.setTimeout(callback, 1000 / 60);
-                };
+                context,
+                renderFn,
+                requestFrame = window.requestAnimationFrame ||
+                        window.webkitRequestAnimationFrame ||
+                        window.mozRequestAnimationFrame ||
+                        window.oRequestAnimationFrame ||
+                        window.msRequestAnimationFrame ||
+                        function (callback) {
+                            window.setTimeout(callback, 1000 / 60);
+                        };
 
         return {
             init: function (el) {
@@ -147,16 +177,16 @@
 
     S.UI = (function () {
         var interval,
-            currentAction,
-            time,
-            maxShapeSize = 30,
-            sequence = [],
-            cmd = '#';
+                currentAction,
+                time,
+                maxShapeSize = 30,
+                sequence = [],
+                cmd = '#';
 
         function formatTime(date) {
             var h = date.getHours(),
-                m = date.getMinutes(),
-                m = m < 10 ? '0' + m : m;
+                    m = date.getMinutes(),
+                    m = m < 10 ? '0' + m : m;
             return h + ':' + m;
         }
 
@@ -188,8 +218,8 @@
 
         function performAction(value) {
             var action,
-                value,
-                current;
+                    value,
+                    current;
 
             sequence = typeof (value) === 'object' ? value : sequence.concat(value.split('|'));
 
@@ -316,10 +346,10 @@
         },
         _moveTowards: function (n) {
             var details = this.distanceTo(n, true),
-                dx = details[0],
-                dy = details[1],
-                d = details[2],
-                e = this.e * d;
+                    dx = details[0],
+                    dy = details[1],
+                    d = details[2],
+                    e = this.e * d;
 
             if (this.p.h === -1) {
                 this.p.x = n.x;
@@ -370,8 +400,8 @@
         },
         distanceTo: function (n, details) {
             var dx = this.p.x - n.x,
-                dy = this.p.y - n.y,
-                d = Math.sqrt(dx * dx + dy * dy);
+                    dy = this.p.y - n.y,
+                    d = Math.sqrt(dx * dx + dy * dy);
 
             return details ? [dx, dy, d] : d;
         },
@@ -389,10 +419,10 @@
 
     S.ShapeBuilder = (function () {
         var gap = 13,
-            shapeCanvas = document.createElement('canvas'),
-            shapeContext = shapeCanvas.getContext('2d'),
-            fontSize = 500,
-            fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
+                shapeCanvas = document.createElement('canvas'),
+                shapeContext = shapeCanvas.getContext('2d'),
+                fontSize = 500,
+                fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
 
         function fit() {
             shapeCanvas.width = Math.floor(window.innerWidth / gap) * gap;
@@ -405,13 +435,13 @@
         function processCanvas() {
             var pixels = shapeContext.getImageData(0, 0, shapeCanvas.width, shapeCanvas.height).data;
             dots = [],
-                pixels,
-                x = 0,
-                y = 0,
-                fx = shapeCanvas.width,
-                fy = shapeCanvas.height,
-                w = 0,
-                h = 0;
+                    pixels,
+                    x = 0,
+                    y = 0,
+                    fx = shapeCanvas.width,
+                    fy = shapeCanvas.height,
+                    w = 0,
+                    h = 0;
 
             for (var p = 0; p < pixels.length; p += (4 * gap)) {
                 if (pixels[p + 3] > 0) {
@@ -457,7 +487,7 @@
         return {
             imageFile: function (url, callback) {
                 var image = new Image(),
-                    a = S.Drawing.getArea();
+                        a = S.Drawing.getArea();
 
                 image.onload = function () {
                     shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
@@ -486,8 +516,8 @@
 
                 setFontSize(fontSize);
                 s = Math.min(fontSize,
-                    (shapeCanvas.width / shapeContext.measureText(l).width) * 0.8 * fontSize,
-                    (shapeCanvas.height / fontSize) * (isNumber(l) ? 1 : 0.45) * fontSize);
+                        (shapeCanvas.width / shapeContext.measureText(l).width) * 0.8 * fontSize,
+                        (shapeCanvas.height / fontSize) * (isNumber(l) ? 1 : 0.45) * fontSize);
                 setFontSize(s);
 
                 shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
@@ -497,8 +527,8 @@
             },
             rectangle: function (w, h) {
                 var dots = [],
-                    width = gap * w,
-                    height = gap * h;
+                        width = gap * w,
+                        height = gap * h;
 
                 for (var y = 0; y < height; y += gap) {
                     for (var x = 0; x < width; x += gap) {
@@ -517,10 +547,10 @@
 
     S.Shape = (function () {
         var dots = [],
-            width = 0,
-            height = 0,
-            cx = 0,
-            cy = 0;
+                width = 0,
+                height = 0,
+                cx = 0,
+                cy = 0;
 
         function compensate() {
             var a = S.Drawing.getArea();
@@ -544,7 +574,7 @@
             },
             switchShape: function (n, fast) {
                 var size,
-                    a = S.Drawing.getArea();
+                        a = S.Drawing.getArea();
 
                 width = n.w;
                 height = n.h;
@@ -559,7 +589,7 @@
                 }
 
                 var d = 0,
-                    i = 0;
+                        i = 0;
 
                 while (n.dots.length > 0) {
                     i = Math.floor(Math.random() * n.dots.length);
