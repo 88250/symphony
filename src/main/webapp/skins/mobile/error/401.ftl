@@ -38,7 +38,7 @@
                         ${indexIntroLabel} &nbsp; &nbsp;
                         <a href="https://github.com/b3log/symphony" target="_blank" class="tooltipped tooltipped-n" aria-label="${siteCodeLabel}">
                             <svg><use xlink:href="#github"></use></svg></a> &nbsp;
-                        <a href="http://weibo.com/u/2778228501" target="_blank" class="tooltipped tooltipped-n" aria-label="${followWeiboLabel}">
+                        <a href="https://weibo.com/b3log" target="_blank" class="tooltipped tooltipped-n" aria-label="${followWeiboLabel}">
                             <svg><use xlink:href="#weibo"></use></svg></a>   &nbsp;
                         <a target="_blank" rel="noopener"
                            href="https://t.me/b3log">

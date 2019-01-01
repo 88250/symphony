@@ -128,11 +128,8 @@
         ${indexIntroLabel}&nbsp;
         <a href="https://github.com/b3log/symphony" target="_blank">
             <svg><use xlink:href="#github"></use></svg></a>
-        <a href="http://weibo.com/u/2778228501" target="_blank">
+        <a href="https://weibo.com/b3log" target="_blank">
             <svg><use xlink:href="#weibo"></use></svg></a>
-        <a target="_blank"
-           href="http://shang.qq.com/wpa/qunwpa?idkey=981d9282616274abb1752336e21b8036828f715a1c4d0628adcf208f2fd54f3a">
-            <svg><use xlink:href="#qq"></use></svg></a>
         <a target="_blank" rel="noopener"
            href="https://t.me/b3log">
             <svg><use xlink:href="#icon-telegram"></use></svg></a>
