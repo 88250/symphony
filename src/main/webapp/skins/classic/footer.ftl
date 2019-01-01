@@ -27,7 +27,7 @@
                     <use xlink:href="#github"></use>
                 </svg>
             </a> &nbsp;
-            <a href="http://weibo.com/u/2778228501" target="_blank" class="tooltipped tooltipped-n"
+            <a href="https://weibo.com/b3log" target="_blank" class="tooltipped tooltipped-n"
                aria-label="${followWeiboLabel}">
                 <svg class="icon-weibo">
                     <use xlink:href="#weibo"></use>

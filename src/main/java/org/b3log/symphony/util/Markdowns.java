@@ -64,7 +64,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.7, Oct 20, 2018
+ * @version 1.11.21.8, Dec 30, 2018
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -277,14 +277,14 @@ public final class Markdowns {
                 } catch (final Exception e) {
                     LOGGER.log(Level.WARN, "Failed to use [marked] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
 
-                    com.vladsch.flexmark.ast.Node document = PARSER.parse(markdownText);
+                    com.vladsch.flexmark.util.ast.Node document = PARSER.parse(markdownText);
                     html = RENDERER.render(document);
                     if (!StringUtils.startsWith(html, "<p>")) {
                         html = "<p>" + html + "</p>";
                     }
                 }
             } else {
-                com.vladsch.flexmark.ast.Node document = PARSER.parse(markdownText);
+                com.vladsch.flexmark.util.ast.Node document = PARSER.parse(markdownText);
                 html = RENDERER.render(document);
                 if (!StringUtils.startsWith(html, "<p>")) {
                     html = "<p>" + html + "</p>";

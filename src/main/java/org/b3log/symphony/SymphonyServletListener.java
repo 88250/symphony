@@ -56,7 +56,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.10.25, Dec 7, 2018
+ * @version 3.19.10.26, Dec 31, 2018
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -80,7 +80,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         LOGGER.log(Level.INFO, "Sym process [pid=" + Symphonys.currentPID() + "]");
         Stopwatchs.start("Context Initialized");
-        Latkes.USER_AGENT = Symphonys.USER_AGENT_BOT;
         Latkes.setScanPath("org.b3log.symphony");
         super.contextInitialized(servletContextEvent);
 

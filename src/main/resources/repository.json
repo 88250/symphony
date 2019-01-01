@@ -1749,7 +1749,7 @@
         {
           "name": "articleType",
           "type": "int",
-          "description": "0：普通帖子，1：讨论组（小黑屋），2：同城广播，3：思绪"
+          "description": "0：普通帖子，1：机要，2：同城广播，3：思绪"
         },
         {
           "name": "articleThankCnt",

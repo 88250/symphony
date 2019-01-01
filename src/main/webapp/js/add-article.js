@@ -417,7 +417,7 @@ var AddArticle = {
         return false
       }
 
-      if (1 === Label.articleType) { // 小黑屋不检查
+      if (1 === Label.articleType) { // 机要不检查
         return
       }
 
