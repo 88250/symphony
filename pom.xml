@@ -347,6 +347,7 @@
                         <include>**/src/*/webapp/css/*.css</include>
                         <include>**/src/*/webapp/scss/*.scss</include>
                         <include>**/src/*/resources/*.properties</include>
+                        <include>**/src/*/webapp/skins/*/*.properties</include>
                         <include>**/src/*/webapp/WEB-INF/*.xml</include>
                         <include>**/src/*/webapp/*.xml</include>
                         <include>gulpfile.js</include>
