@@ -19,7 +19,7 @@
  * Common style for mobile and web.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.5.0.0, Dec 27, 2018
+ * @version 1.5.0.1, Jan 2, 2019
  */
 
 /* start reset */
@@ -341,7 +341,7 @@ blockquote {
   overflow: auto;
   line-height: 1.65;
   font-size: 16px;
-  word-break: break-all;
+  word-break: break-word;
 
   ul,
   ol {
@@ -363,6 +363,10 @@ blockquote {
     cursor: auto;
   }
 
+  img.emoji {
+    max-width: 18px;
+  }
+
   h1,
   h2,
   h3,
@@ -377,7 +381,7 @@ blockquote {
 
   h1 {
     padding-bottom: 0.3em;
-    font-size: 2em;
+    font-size: 1.7em;
     border-bottom: 1px solid #eee;
   }
 
@@ -404,7 +408,7 @@ blockquote {
   }
 
   hr {
-    height: 0.25em;
+    height: 0.15em;
     padding: 0;
     margin: 24px 0;
     background-color: #e7e7e7;
@@ -425,6 +429,10 @@ blockquote {
 
   blockquote p {
     margin: 0;
+  }
+
+  ins > iframe {
+    border: 0;
   }
 
   iframe {
@@ -498,16 +506,16 @@ blockquote {
     box-shadow: inset 0 -1px 0 #bbb;
   }
 
-  li.task-list-item {
+  &__task,
+  .task-list-item {
     list-style: none;
-
-    & > input {
-      margin-left: -2em;
-      vertical-align: middle;
+    margin-left: -1em;
+    input {
+      float: left;
+      margin: 5px 5px 0 0;
     }
   }
 }
-
 /* end reset */
 
 /* start function */
