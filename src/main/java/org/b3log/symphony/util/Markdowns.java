@@ -64,7 +64,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.8, Dec 30, 2018
+ * @version 1.11.21.9, Jan 2, 2019
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -117,7 +117,7 @@ public final class Markdowns {
             conn.setDoOutput(true);
 
             try (final OutputStream outputStream = conn.getOutputStream()) {
-                IOUtils.write("Symphony 大法好", outputStream, "UTF-8");
+                IOUtils.write("再见理想", outputStream, "UTF-8");
             }
 
             String html;
@@ -127,7 +127,7 @@ public final class Markdowns {
 
             conn.disconnect();
 
-            MARKED_AVAILABLE = StringUtils.contains(html, "<p>Symphony 大法好</p>");
+            MARKED_AVAILABLE = StringUtils.contains(html, "<p>再见理想</p>");
 
             if (MARKED_AVAILABLE) {
                 LOGGER.log(Level.INFO, "[marked] is available, uses it for markdown processing");
