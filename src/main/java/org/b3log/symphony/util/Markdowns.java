@@ -64,7 +64,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.9, Jan 2, 2019
+ * @version 1.11.21.10, Jan 3, 2019
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -268,27 +268,26 @@ public final class Markdowns {
 
             String html = langPropsService.get("contentRenderFailedLabel");
 
-            if (MARKED_AVAILABLE) {
-                try {
-                    html = toHtmlByMarked(markdownText);
-                    if (!StringUtils.startsWith(html, "<p>")) {
-                        html = "<p>" + html + "</p>";
-                    }
-                } catch (final Exception e) {
-                    LOGGER.log(Level.WARN, "Failed to use [marked] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
-
-                    com.vladsch.flexmark.util.ast.Node document = PARSER.parse(markdownText);
-                    html = RENDERER.render(document);
-                    if (!StringUtils.startsWith(html, "<p>")) {
-                        html = "<p>" + html + "</p>";
-                    }
-                }
+            final int count = StringUtils.countMatches(markdownText, "\n");
+            if (3 >= count) {
+                // 优化 Markdown 渲染 https://github.com/b3log/symphony/issues/841
+                html = toHtmlByFlexmark(markdownText);
             } else {
-                com.vladsch.flexmark.util.ast.Node document = PARSER.parse(markdownText);
-                html = RENDERER.render(document);
-                if (!StringUtils.startsWith(html, "<p>")) {
-                    html = "<p>" + html + "</p>";
+                if (MARKED_AVAILABLE) {
+                    try {
+                        html = toHtmlByMarked(markdownText);
+                    } catch (final Exception e) {
+                        LOGGER.log(Level.WARN, "Failed to use [marked] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
+
+                        html = toHtmlByFlexmark(markdownText);
+                    }
+                } else {
+                    html = toHtmlByFlexmark(markdownText);
                 }
+            }
+
+            if (!StringUtils.startsWith(html, "<p>")) {
+                html = "<p>" + html + "</p>";
             }
 
             final Whitelist whitelist = Whitelist.relaxed();
@@ -420,6 +419,12 @@ public final class Markdowns {
         //conn.disconnect();
 
         return ret;
+    }
+
+    private static String toHtmlByFlexmark(final String markdownText) {
+        com.vladsch.flexmark.util.ast.Node document = PARSER.parse(markdownText);
+
+        return RENDERER.render(document);
     }
 
     /**
