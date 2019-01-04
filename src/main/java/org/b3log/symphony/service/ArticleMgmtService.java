@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.5.1, Dec 16, 2018
+ * @version 2.18.5.2, Jan 4, 2019
  * @since 0.2.0
  */
 @Service
@@ -752,15 +752,12 @@ public class ArticleMgmtService {
                 // Revision
                 final JSONObject revision = new JSONObject();
                 revision.put(Revision.REVISION_AUTHOR_ID, authorId);
-
                 final JSONObject revisionData = new JSONObject();
                 revisionData.put(Article.ARTICLE_TITLE, articleTitle);
                 revisionData.put(Article.ARTICLE_CONTENT, articleContent);
-
                 revision.put(Revision.REVISION_DATA, revisionData.toString());
                 revision.put(Revision.REVISION_DATA_ID, articleId);
                 revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_ARTICLE);
-
                 revisionRepository.add(revision);
             }
 
@@ -938,6 +935,8 @@ public class ArticleMgmtService {
 
             final long currentTimeMillis = System.currentTimeMillis();
             final long createTime = oldArticle.optLong(Keys.OBJECT_ID);
+            final boolean notIn5m = currentTimeMillis - createTime > 1000 * 60 * 5;
+
             oldArticle.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
 
             final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
@@ -965,20 +964,17 @@ public class ArticleMgmtService {
 
             articleRepository.update(articleId, oldArticle);
 
-            if (Article.ARTICLE_TYPE_C_THOUGHT != articleType
+            if (notIn5m && Article.ARTICLE_TYPE_C_THOUGHT != articleType
                     && (!oldContent.equals(articleContent) || !oldTitle.equals(articleTitle))) {
                 // Revision
                 final JSONObject revision = new JSONObject();
                 revision.put(Revision.REVISION_AUTHOR_ID, authorId);
-
                 final JSONObject revisionData = new JSONObject();
                 revisionData.put(Article.ARTICLE_TITLE, articleTitle);
                 revisionData.put(Article.ARTICLE_CONTENT, articleContent);
-
                 revision.put(Revision.REVISION_DATA, revisionData.toString());
                 revision.put(Revision.REVISION_DATA_ID, articleId);
                 revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_ARTICLE);
-
                 revisionRepository.add(revision);
             }
 
@@ -990,7 +986,7 @@ public class ArticleMgmtService {
             }
 
             if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
-                if (currentTimeMillis - createTime > 1000 * 60 * 5) {
+                if (notIn5m) {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE,
                             updatePointSum, articleId, System.currentTimeMillis(), "");

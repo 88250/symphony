@@ -47,7 +47,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.0.1, Dec 16, 2018
+ * @version 2.15.0.2, Jan 4, 2019
  * @since 0.2.0
  */
 @Service
@@ -554,14 +554,11 @@ public class CommentMgmtService {
             // Revision
             final JSONObject revision = new JSONObject();
             revision.put(Revision.REVISION_AUTHOR_ID, comment.optString(Comment.COMMENT_AUTHOR_ID));
-
             final JSONObject revisionData = new JSONObject();
             revisionData.put(Comment.COMMENT_CONTENT, content);
-
             revision.put(Revision.REVISION_DATA, revisionData.toString());
             revision.put(Revision.REVISION_DATA_ID, commentId);
             revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_COMMENT);
-
             revisionRepository.add(revision);
 
             transaction.commit();
@@ -632,18 +629,19 @@ public class CommentMgmtService {
 
             commentRepository.update(commentId, comment);
 
-            if (!oldContent.equals(content)) {
+            final long now = System.currentTimeMillis();
+            final long createTime = comment.optLong(Keys.OBJECT_ID);
+            final boolean notIn5m = now - createTime > 1000 * 60 * 5;
+
+            if (notIn5m && !oldContent.equals(content)) {
                 // Revision
                 final JSONObject revision = new JSONObject();
                 revision.put(Revision.REVISION_AUTHOR_ID, commentAuthorId);
-
                 final JSONObject revisionData = new JSONObject();
                 revisionData.put(Comment.COMMENT_CONTENT, content);
-
                 revision.put(Revision.REVISION_DATA, revisionData.toString());
                 revision.put(Revision.REVISION_DATA_ID, commentId);
                 revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_COMMENT);
-
                 revisionRepository.add(revision);
             }
 
@@ -656,9 +654,7 @@ public class CommentMgmtService {
             if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous
                     && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
-                final long now = System.currentTimeMillis();
-                final long createTime = comment.optLong(Keys.OBJECT_ID);
-                if (now - createTime > 1000 * 60 * 5) {
+                if (notIn5m) {
                     pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_UPDATE_COMMENT,
                             Pointtransfer.TRANSFER_SUM_C_UPDATE_COMMENT, commentId, now, "");
