@@ -49,7 +49,6 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -289,11 +288,8 @@ public class IndexProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showRecent(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("recent.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "recent.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
@@ -381,12 +377,7 @@ public class IndexProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHotArticles(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("hot.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "hot.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         int pageSize = Symphonys.getInt("indexArticlesCnt");
@@ -424,11 +415,8 @@ public class IndexProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showPerfectArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("perfect.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "perfect.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
@@ -488,12 +476,7 @@ public class IndexProcessor {
     @Before(StopwatchStartAdvice.class)
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showB3log(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("other/b3log.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "other/b3log.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
@@ -512,15 +495,9 @@ public class IndexProcessor {
     @Before(StopwatchStartAdvice.class)
     @After(StopwatchEndAdvice.class)
     public void showKillBrowser(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        renderer.setTemplateName("other/kill-browser.ftl");
-        context.setRenderer(renderer);
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "other/kill-browser.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final Map<String, String> langs = langPropsService.getAll(Locales.getLocale());
-
         dataModel.putAll(langs);
         Keys.fillRuntime(dataModel);
         dataModelService.fillMinified(dataModel);
