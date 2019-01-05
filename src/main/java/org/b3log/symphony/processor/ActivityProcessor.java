@@ -51,7 +51,6 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +74,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.9.1.13, Aug 3, 2018
+ * @version 1.9.1.14, Jan 5, 2019
  * @since 1.3.0
  */
 @RequestProcessor
@@ -131,11 +130,7 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCharacter(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("activity/character.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/character.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
@@ -212,13 +207,8 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showActivities(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/activities.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/activities.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
@@ -240,8 +230,6 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDailyCheckin(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
         final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = user.optString(Keys.OBJECT_ID);
         if (activityQueryService.isCheckedinToday(userId)) {
@@ -250,11 +238,8 @@ public class ActivityProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("activity/checkin.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/checkin.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
@@ -332,12 +317,7 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void show1A0001(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("activity/1A0001.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/1A0001.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
@@ -424,7 +404,6 @@ public class ActivityProcessor {
     public void bet1A0001(final RequestContext context) {
         context.renderJSON().renderFalseResult();
 
-        final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
 
         final int amount = requestJSONObject.optInt(Common.AMOUNT);
@@ -454,7 +433,6 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class, Activity1A0001CollectValidation.class})
     @After(StopwatchEndAdvice.class)
     public void collect1A0001(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
         final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
@@ -472,14 +450,8 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showEatingSnake(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("activity/eating-snake.ftl");
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/eating-snake.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         dataModelService.fillRandomArticles(dataModel);
@@ -529,10 +501,7 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({CSRFToken.class, StopwatchEndAdvice.class})
     public void collectEatingSnake(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("activity/eating-snake.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/eating-snake.ftl");
 
         JSONObject requestJSONObject;
         try {
@@ -558,13 +527,8 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showGobang(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("activity/gobang.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/gobang.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
@@ -584,7 +548,6 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After(StopwatchEndAdvice.class)
     public void startGobang(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
         final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         final JSONObject ret = Results.falseResult();
 

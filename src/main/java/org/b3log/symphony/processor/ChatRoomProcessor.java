@@ -67,7 +67,7 @@ import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.17, Nov 28, 2018
+ * @version 1.3.5.18, Jan 5, 2019
  * @since 1.4.0
  */
 @RequestProcessor
@@ -231,12 +231,7 @@ public class ChatRoomProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showChatRoom(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("chat-room.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "chat-room.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final List<JSONObject> msgs = messages.stream().

@@ -60,8 +60,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 /**
  * Article processor.
@@ -81,14 +81,10 @@ import java.util.*;
  * <li>Checks article title (/article/check-title), POST</li>
  * <li>Removes an article (/article/{id}/remove), POST</li>
  * </ul>
- * <p>
- * The '<em>locally</em>' means user post an article on Symphony directly rather than receiving an article from
- * externally (for example Rhythm).
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.2.9, Dec 16, 2018
+ * @version 1.27.2.10, Jan 5, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -433,16 +429,9 @@ public class ArticleProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showPreAddArticle(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-
-        renderer.setTemplateName("home/pre-post.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/pre-post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         dataModel.put(Common.BROADCAST_POINT, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST);
-
         dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
@@ -491,11 +480,7 @@ public class ArticleProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddArticle(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/post.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         // Qiniu file upload authenticate
@@ -626,11 +611,8 @@ public class ArticleProcessor {
     public void showArticle(final RequestContext context) {
         final String articleId = context.pathVar("articleId");
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("article.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
@@ -1035,9 +1017,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/post.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         String title = article.optString(Article.ARTICLE_TITLE);

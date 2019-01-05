@@ -79,7 +79,7 @@ public class ManProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
         context.setRenderer(renderer);
         renderer.setTemplateName("other/man.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

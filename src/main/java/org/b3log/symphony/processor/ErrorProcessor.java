@@ -35,15 +35,13 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.10, Jun 2, 2018
+ * @version 1.2.0.11, Jan 5, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -81,12 +79,7 @@ public class ErrorProcessor {
             final String templateName = statusCode + ".ftl";
             LOGGER.log(Level.TRACE, "Shows error page[requestURI={0}, templateName={1}]", requestURI, templateName);
 
-            final HttpServletRequest request = context.getRequest();
-            final HttpServletResponse response = context.getResponse();
-            final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-            renderer.setTemplateName("error/" + templateName);
-            context.setRenderer(renderer);
-
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "error/" + templateName);
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.putAll(langPropsService.getAll(Locales.getLocale()));
             dataModelService.fillHeaderAndFooter(context, dataModel);

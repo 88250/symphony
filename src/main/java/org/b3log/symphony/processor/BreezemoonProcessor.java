@@ -49,7 +49,6 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +64,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Sep 4, 2018
+ * @version 1.0.1.2, Jan 5, 2019
  * @since 2.8.0
  */
 @RequestProcessor
@@ -111,11 +110,8 @@ public class BreezemoonProcessor {
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showWatchBreezemoon(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("breezemoon.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "breezemoon.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
@@ -265,7 +261,6 @@ public class BreezemoonProcessor {
         final String id = context.pathVar("id");
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
         try {
             final JSONObject breezemoon = breezemoonQueryService.getBreezemoon(id);
             if (null == breezemoon) {

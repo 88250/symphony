@@ -68,7 +68,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.13.12.5, Aug 7, 2018
+ * @version 1.13.12.6, Jan 5, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -227,10 +227,7 @@ public class LoginProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("verify/guide.ftl");
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "verify/guide.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put(Common.CURRENT_USER, currentUser);
 
@@ -276,17 +273,11 @@ public class LoginProcessor {
     @Before(StopwatchStartAdvice.class)
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showLogin(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
         if (null != context.attr(Common.CURRENT_USER)) {
             context.sendRedirect(Latkes.getServePath());
 
             return;
         }
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
 
         String referer = context.param(Common.GOTO);
         if (StringUtils.isBlank(referer)) {
@@ -297,8 +288,7 @@ public class LoginProcessor {
             referer = Latkes.getServePath();
         }
 
-        renderer.setTemplateName("verify/login.ftl");
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "verify/login.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put(Common.GOTO, referer);
 
@@ -314,14 +304,8 @@ public class LoginProcessor {
     @Before(StopwatchStartAdvice.class)
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showForgetPwd(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "verify/forget-pwd.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        renderer.setTemplateName("verify/forget-pwd.ftl");
-
         dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
@@ -378,10 +362,7 @@ public class LoginProcessor {
     @Before(StopwatchStartAdvice.class)
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showResetPwd(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, null);
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
 
@@ -457,18 +438,13 @@ public class LoginProcessor {
     @Before(StopwatchStartAdvice.class)
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showRegister(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
         if (null != context.attr(Common.CURRENT_USER)) {
             context.sendRedirect(Latkes.getServePath());
 
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, null);
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put(Common.REFERRAL, "");
 

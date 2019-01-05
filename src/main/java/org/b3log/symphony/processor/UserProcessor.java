@@ -67,7 +67,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.8, Dec 8, 2018
+ * @version 1.27.0.9, Jan 5, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -185,13 +185,10 @@ public class UserProcessor {
     public void showHomeBreezemoons(final RequestContext context) {
         final String breezemoonId = context.pathVar("breezemoonId");
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/breezemoons.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/breezemoons.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -263,11 +260,8 @@ public class UserProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeAnonymousComments(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/comments.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
 
@@ -344,11 +338,8 @@ public class UserProcessor {
     public void showAnonymousArticles(final RequestContext context) {
         final String userName = context.pathVar("userName");
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/home.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/home.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
 
@@ -425,19 +416,15 @@ public class UserProcessor {
     public void showHome(final RequestContext context) {
         final String userName = context.pathVar("userName");
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
         final int pageNum = Paginator.getPage(request);
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/home.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
-
-        renderer.setTemplateName("home/home.ftl");
 
         fillHomeUser(dataModel, user, roleQueryService);
 
@@ -499,13 +486,10 @@ public class UserProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeComments(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/comments.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -566,13 +550,10 @@ public class UserProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingUsers(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/following-users.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/following-users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -634,13 +615,10 @@ public class UserProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingTags(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/following-tags.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/following-tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -705,9 +683,7 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/following-articles.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/following-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -769,13 +745,10 @@ public class UserProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeWatchingArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/watching-articles.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/watching-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -837,13 +810,10 @@ public class UserProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowers(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/followers.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/followers.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -912,13 +882,10 @@ public class UserProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomePoints(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/points.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/points.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
@@ -970,8 +937,6 @@ public class UserProcessor {
      */
     @RequestProcessing(value = "/users/names", method = HttpMethod.GET)
     public void listNames(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-
         context.renderJSON().renderTrueResult();
 
         final String namePrefix = context.param("name");
@@ -1005,7 +970,6 @@ public class UserProcessor {
     public void getEmotions(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
         final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null == currentUser) {
             context.renderJSONValue("emotions", "");

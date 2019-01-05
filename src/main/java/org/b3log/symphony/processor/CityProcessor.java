@@ -47,7 +47,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +61,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.3.1.11, Dec 20, 2018
+ * @version 1.3.1.12, Jan 5, 2019
  * @since 1.3.0
  */
 @RequestProcessor
@@ -115,12 +114,8 @@ public class CityProcessor {
     public void showCityArticles(final RequestContext context) {
         final String city = context.pathVar("city");
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-
-        renderer.setTemplateName("city.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "city.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
 
@@ -205,12 +200,8 @@ public class CityProcessor {
     public void showCityUsers(final RequestContext context) {
         final String city = context.pathVar("city");
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-
-        renderer.setTemplateName("city.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "city.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
 
