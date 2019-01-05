@@ -69,11 +69,7 @@ public class ChargeProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showChargePoint(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("charge-point.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "charge-point.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         dataModelService.fillRandomArticles(dataModel);

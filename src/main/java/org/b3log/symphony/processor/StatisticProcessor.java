@@ -217,7 +217,7 @@ public class StatisticProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
         context.setRenderer(renderer);
         renderer.setTemplateName("statistic.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

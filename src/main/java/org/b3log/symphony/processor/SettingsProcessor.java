@@ -420,7 +420,7 @@ public class SettingsProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
         context.setRenderer(renderer);
         String page = context.pathVar("page");
         if (StringUtils.isBlank(page)) {

@@ -42,7 +42,7 @@ import java.util.TimeZone;
  * Skin user-switchable FreeMarker Renderer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.6, Dec 20, 2018
+ * @version 1.3.0.6, Jan 5, 2019
  * @since 1.3.0
  */
 public final class SkinRenderer extends AbstractFreeMarkerRenderer {
@@ -58,12 +58,15 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     private final RequestContext context;
 
     /**
-     * Constructs a skin renderer with the specified HTTP servlet request.
+     * Constructs a skin renderer with the specified request context and template name.
      *
-     * @param context the specified HTTP servlet request context
+     * @param context      the specified request context
+     * @param templateName the specified template name
      */
-    public SkinRenderer(final RequestContext context) {
+    public SkinRenderer(final RequestContext context, final String templateName) {
         this.context = context;
+        this.context.setRenderer(this);
+        setTemplateName(templateName);
     }
 
     /**

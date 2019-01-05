@@ -207,7 +207,7 @@ public class NotificationProcessor {
         final HttpServletRequest request = context.getRequest();
         final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
         context.setRenderer(renderer);
         renderer.setTemplateName("home/notifications/sys-announce.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -425,7 +425,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
         context.setRenderer(renderer);
         renderer.setTemplateName("home/notifications/point.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -519,7 +519,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
         context.setRenderer(renderer);
         renderer.setTemplateName("home/notifications/commented.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -571,7 +571,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
         context.setRenderer(renderer);
         renderer.setTemplateName("home/notifications/reply.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -623,7 +623,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
         context.setRenderer(renderer);
         renderer.setTemplateName("home/notifications/at.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -684,7 +684,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
         context.setRenderer(renderer);
         renderer.setTemplateName("home/notifications/following.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -737,7 +737,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
         context.setRenderer(renderer);
         renderer.setTemplateName("home/notifications/broadcast.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

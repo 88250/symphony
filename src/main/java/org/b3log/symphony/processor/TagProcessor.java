@@ -140,7 +140,7 @@ public class TagProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
         context.setRenderer(renderer);
         renderer.setTemplateName("tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -168,7 +168,7 @@ public class TagProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
         context.setRenderer(renderer);
         renderer.setTemplateName("tag-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
