@@ -110,11 +110,8 @@ public class SearchProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void search(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("search-articles.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "search-articles.ftl");
 
         if (!Symphonys.getBoolean("es.enabled") && !Symphonys.getBoolean("algolia.enabled")) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
