@@ -68,7 +68,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.15.0.1, Sep 14, 2018
+ * @version 1.15.0.2, Jan 5, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -119,11 +119,8 @@ public class IndexProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showQnA(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("qna.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "qna.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final int pageNum = Paginator.getPage(request);
@@ -199,12 +196,7 @@ public class IndexProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showWatch(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("watch.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "watch.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         int pageSize = Symphonys.getInt("indexArticlesCnt");
@@ -260,8 +252,6 @@ public class IndexProcessor {
     @Before({StopwatchStartAdvice.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showIndex(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
         final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != currentUser) {
             // 自定义首页跳转 https://github.com/b3log/symphony/issues/774
@@ -273,9 +263,7 @@ public class IndexProcessor {
             }
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("index.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
