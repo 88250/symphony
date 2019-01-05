@@ -66,7 +66,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.12.0.3, Dec 24, 2018
+ * @version 1.12.0.4, Jan 5, 2019
  * @since 0.2.5
  */
 @RequestProcessor
@@ -207,9 +207,7 @@ public class NotificationProcessor {
         final HttpServletRequest request = context.getRequest();
         final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/notifications/sys-announce.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/notifications/sys-announce.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
@@ -425,9 +423,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/notifications/point.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/notifications/point.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
@@ -519,9 +515,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/notifications/commented.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/notifications/commented.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
@@ -571,9 +565,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/notifications/reply.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/notifications/reply.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
@@ -623,9 +615,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/notifications/at.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/notifications/at.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
@@ -684,9 +674,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/notifications/following.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/notifications/following.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
@@ -737,9 +725,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("home/notifications/broadcast.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/notifications/broadcast.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
