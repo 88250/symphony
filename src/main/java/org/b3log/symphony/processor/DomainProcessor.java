@@ -51,7 +51,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.11, Apr 6, 2018
+ * @version 1.1.0.12, Jan 5, 2019
  * @since 1.4.0
  */
 @RequestProcessor
@@ -100,9 +100,7 @@ public class DomainProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("domain-articles.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "domain-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
@@ -168,12 +166,7 @@ public class DomainProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDomains(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("domains.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "domains.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject statistic = optionQueryService.getStatistic();

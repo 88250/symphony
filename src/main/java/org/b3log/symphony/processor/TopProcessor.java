@@ -35,8 +35,6 @@ import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +49,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.0, Aug 21, 2018
+ * @version 1.4.0.1, Jan 5, 2019
  * @since 1.3.0
  */
 @RequestProcessor
@@ -96,13 +94,7 @@ public class TopProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTop(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("top/index.ftl");
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put(Common.SELECTED, Common.TOP);
 
@@ -122,13 +114,7 @@ public class TopProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showLink(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("top/link.ftl");
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/link.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final List<JSONObject> topLinks = linkQueryService.getTopLink(Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_LINKS, topLinks);
@@ -149,13 +135,7 @@ public class TopProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showBalance(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("top/balance.ftl");
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/balance.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         final List<JSONObject> users = pointtransferQueryService.getTopBalanceUsers(avatarViewMode, Symphonys.getInt("topCnt"));
@@ -177,13 +157,7 @@ public class TopProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showConsumption(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("top/consumption.ftl");
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/consumption.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         final List<JSONObject> users = pointtransferQueryService.getTopConsumptionUsers(avatarViewMode, Symphonys.getInt("topCnt"));
@@ -205,13 +179,7 @@ public class TopProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCheckin(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("top/checkin.ftl");
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/checkin.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         final List<JSONObject> users = activityQueryService.getTopCheckinUsers(avatarViewMode, Symphonys.getInt("topCnt"));

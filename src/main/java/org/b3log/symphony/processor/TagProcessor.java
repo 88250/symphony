@@ -56,7 +56,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.14, Nov 18, 2018
+ * @version 1.7.0.15, Jan 5, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -137,12 +137,7 @@ public class TagProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTagsWall(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("tags.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final List<JSONObject> trendTags = tagQueryService.getTrendTags(Symphonys.getInt("tagsWallTrendCnt"));
@@ -166,11 +161,8 @@ public class TagProcessor {
     public void showTagArticles(final RequestContext context) {
         final String tagURI = context.pathVar("tagURI");
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("tag-articles.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "tag-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);

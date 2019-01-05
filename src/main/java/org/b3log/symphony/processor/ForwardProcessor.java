@@ -49,7 +49,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Nov 21, 2018
+ * @version 1.0.0.4, Jan 5, 2019
  * @since 2.3.0
  */
 @RequestProcessor
@@ -104,9 +104,7 @@ public class ForwardProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, );
-        context.setRenderer(renderer);
-        renderer.setTemplateName("forward.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "forward.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put("forwardURL", to);
         dataModelService.fillHeaderAndFooter(context, dataModel);
