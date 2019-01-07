@@ -27,6 +27,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Link;
 import org.b3log.symphony.repository.LinkRepository;
 import org.b3log.symphony.util.Links;
@@ -191,7 +192,7 @@ public class LinkMgmtService {
             int responseCode = 0;
             try {
                 final int TIMEOUT = 5000;
-                final HttpResponse response = HttpRequest.get(linkAddr).timeout(TIMEOUT).followRedirects(true).header("User-Agent", Symphonys.USER_AGENT_BOT).send();
+                final HttpResponse response = HttpRequest.get(linkAddr).timeout(TIMEOUT).followRedirects(true).header(Common.USER_AGENT, Symphonys.USER_AGENT_BOT).send();
                 responseCode = response.statusCode();
             } catch (final Exception e) {
                 LOGGER.trace("Link [url=" + linkAddr + "] accessibility check failed [msg=" + e.getMessage() + "]");
