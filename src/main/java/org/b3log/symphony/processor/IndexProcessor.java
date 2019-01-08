@@ -61,13 +61,12 @@ import java.util.*;
  * <li>Show hot articles (/hot), GET</li>
  * <li>Show perfect articles (/perfect), GET</li>
  * <li>Shows about (/about), GET</li>
- * <li>Shows b3log (/b3log), GET</li>
  * <li>Shows kill browser (/kill-browser), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.15.0.2, Jan 5, 2019
+ * @version 1.15.0.3, Jan 8, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -465,25 +464,6 @@ public class IndexProcessor {
     @After(StopwatchEndAdvice.class)
     public void showAbout(final RequestContext context) {
         context.sendRedirect("https://hacpai.com/article/1440573175609");
-    }
-
-    /**
-     * Shows b3log.
-     *
-     * @param context the specified context
-     */
-    @RequestProcessing(value = "/b3log", method = HttpMethod.GET)
-    @Before(StopwatchStartAdvice.class)
-    @After({PermissionGrant.class, StopwatchEndAdvice.class})
-    public void showB3log(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "other/b3log.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        dataModelService.fillHeaderAndFooter(context, dataModel);
-        dataModelService.fillRandomArticles(dataModel);
-        dataModelService.fillSideHotArticles(dataModel);
-        dataModelService.fillSideTags(dataModel);
-        dataModelService.fillLatestCmts(dataModel);
     }
 
     /**
