@@ -27,7 +27,7 @@
 * [AIQ-机器学习](http://www.6aiq.com)
 * [宽客网](http://www.cnq.net)
 * [许昌IT圈](http://www.xcitq.com)
-* [PRA](http://support.i-search.com.cn)
+* [艺赛旗 RPA](http://support.i-search.com.cn)
 * [凤凰匯](https://www.fengd.com)
 * [猪玩派 | 喜欢游玩  热爱生活  乐于分享！](http://pigplay.net)
 * [俩猴网](http://www.xfx77.cn)
