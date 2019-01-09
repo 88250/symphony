@@ -66,7 +66,7 @@
                             <tr style="border-collapse:collapse">
                                 <td width="640" align="center" bgcolor="#FFFFFF" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
                                     <a href="${servePath}" target="_blank">
-                                        <img height="140" width="640" src="${staticServePath}/images/mail/weekly-banner3.png" alt="黑客派">
+                                        <img height="140" width="640" src="${staticServePath}/images/mail/weekly-banner3.png" alt="Sym">
                                     </a>
                                 </td>
                             </tr>
