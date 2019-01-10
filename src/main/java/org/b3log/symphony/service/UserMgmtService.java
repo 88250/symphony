@@ -60,7 +60,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.16.0.5, Sep 26, 2018
+ * @version 1.16.0.6, Jan 10, 2019
  * @since 0.2.0
  */
 @Service
@@ -389,8 +389,8 @@ public class UserMgmtService {
             user.put(UserExt.USER_CURRENT_CHECKIN_STREAK, 0);
             user.put(UserExt.USER_POINT, 0);
             user.put(UserExt.USER_USED_POINT, 0);
-            user.put(UserExt.USER_JOIN_POINT_RANK, UserExt.USER_JOIN_POINT_RANK_C_JOIN);
-            user.put(UserExt.USER_JOIN_USED_POINT_RANK, UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN);
+            user.put(UserExt.USER_JOIN_POINT_RANK, UserExt.USER_JOIN_XXX_C_JOIN);
+            user.put(UserExt.USER_JOIN_USED_POINT_RANK, UserExt.USER_JOIN_XXX_C_JOIN);
             user.put(UserExt.USER_TAGS, "");
             user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName"));
             user.put(UserExt.USER_MOBILE_SKIN, Symphonys.get("mobileSkinDirName"));

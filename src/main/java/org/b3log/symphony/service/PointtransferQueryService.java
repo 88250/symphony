@@ -43,7 +43,7 @@ import java.util.List;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.4.1, Oct 1, 2018
+ * @version 1.21.4.2, Jan 10, 2019
  * @since 1.3.0
  */
 @Service
@@ -139,10 +139,8 @@ public class PointtransferQueryService {
     public List<JSONObject> getTopBalanceUsers(final int avatarViewMode, final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<>();
 
-        final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
-                .setPageSize(fetchSize).
-                        setFilter(new PropertyFilter(UserExt.USER_JOIN_POINT_RANK,
-                                FilterOperator.EQUAL, UserExt.USER_JOIN_POINT_RANK_C_JOIN));
+        final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(fetchSize).
+                setFilter(new PropertyFilter(UserExt.USER_JOIN_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_JOIN_XXX_C_JOIN));
 
         final int moneyUnit = Symphonys.getInt("pointExchangeUnit");
         try {
@@ -179,10 +177,8 @@ public class PointtransferQueryService {
     public List<JSONObject> getTopConsumptionUsers(final int avatarViewMode, final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<>();
 
-        final Query query = new Query().addSort(UserExt.USER_USED_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
-                .setPageSize(fetchSize).
-                        setFilter(new PropertyFilter(UserExt.USER_JOIN_USED_POINT_RANK,
-                                FilterOperator.EQUAL, UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN));
+        final Query query = new Query().addSort(UserExt.USER_USED_POINT, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(fetchSize).
+                setFilter(new PropertyFilter(UserExt.USER_JOIN_USED_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_JOIN_XXX_C_JOIN));
 
         final int moneyUnit = Symphonys.getInt("pointExchangeUnit");
         try {

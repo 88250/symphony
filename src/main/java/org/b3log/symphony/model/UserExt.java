@@ -28,7 +28,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.16.0.0, Nov 5, 2018
+ * @version 2.16.0.1, Jan 10, 2019
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -457,30 +457,20 @@ public final class UserExt {
      */
     public static final int USER_STATUS_C_DEACTIVATED = 4;
 
-    //// Join point rank constants
+    //// Join join XXX rank constants
     /**
-     * User join point rank - join.
+     * User join XXX rank - join.
      */
-    public static final int USER_JOIN_POINT_RANK_C_JOIN = 0;
+    public static final int USER_JOIN_XXX_C_JOIN = 0;
 
     /**
-     * User join point rank - not join.
+     * User join XXX rank - not join.
      */
-    public static final int USER_JOIN_POINT_RANK_C_NOT_JOIN = 1;
+    public static final int USER_JOIN_XXX_C_NOT_JOIN = 1;
 
+    //// User XXX status constants
     /**
-     * User join used point rank - join.
-     */
-    public static final int USER_JOIN_USED_POINT_RANK_C_JOIN = 0;
-
-    /**
-     * User join used point rank - not join.
-     */
-    public static final int USER_JOIN_USED_POINT_RANK_C_NOT_JOIN = 1;
-
-    //// User XXX Status constants
-    /**
-     * User XXX (notify/point/follower/following article/following tag/following user/comment/article/breezemoon) status - public.
+     * User XXX (notify/point/follower/following article/watching article/following tag/following user/comment/article/breezemoon) status - public.
      */
     public static final int USER_XXX_STATUS_C_PUBLIC = 0;
 
