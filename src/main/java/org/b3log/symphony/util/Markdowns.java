@@ -64,7 +64,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.10, Jan 3, 2019
+ * @version 1.11.21.11, Jan 10, 2019
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -457,7 +457,7 @@ public final class Markdowns {
     }
 
     private static void inputWhitelist(final Whitelist whitelist) {
-        whitelist.addTags("span", "hr", "kbd", "samp", "tt", "del", "s", "strike", "u").
+        whitelist.addTags("span", "hr", "kbd", "samp", "tt", "del", "s", "strike", "u", "details", "summary").
                 addAttributes("iframe", "src", "width", "height", "border", "marginwidth", "marginheight").
                 addAttributes("audio", "controls", "src").
                 addAttributes("video", "controls", "src", "width", "height").
