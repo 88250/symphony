@@ -19,7 +19,7 @@
  * Common style for mobile and web.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.5.0.1, Jan 2, 2019
+ * @version 1.6.0.0, Jan 10, 2019
  */
 
 /* start reset */
@@ -504,6 +504,13 @@ blockquote {
     border-bottom-color: #bbb;
     border-radius: 3px;
     box-shadow: inset 0 -1px 0 #bbb;
+  }
+
+  summary {
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
   }
 
   &__task,
