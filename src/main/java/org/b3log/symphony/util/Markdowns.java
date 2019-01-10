@@ -57,7 +57,7 @@ import java.util.concurrent.*;
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  * <p>
- * Uses the <a href="https://github.com/markedjs/marked">marked</a> as the processor, if not found this command, try
+ * Uses the <a href="https://github.com/b3log/http-marked">http-marked</a> as the processor, if not found this service, try
  * built-in <a href="https://github.com/vsch/flexmark-java">flexmark</a> instead.
  * </p>
  *
