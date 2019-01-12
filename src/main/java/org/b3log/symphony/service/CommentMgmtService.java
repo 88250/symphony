@@ -47,7 +47,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.0.2, Jan 4, 2019
+ * @version 2.15.0.3, Jan 12, 2019
  * @since 0.2.0
  */
 @Service
@@ -633,8 +633,8 @@ public class CommentMgmtService {
             final long createTime = comment.optLong(Keys.OBJECT_ID);
             final boolean notIn5m = now - createTime > 1000 * 60 * 5;
 
-            if (notIn5m && !oldContent.equals(content)) {
-                // Revision
+            final boolean contentChanged = !oldContent.replaceAll("\\s+", "").equals(content.replaceAll("\\s+", ""));
+            if (notIn5m && contentChanged) {
                 final JSONObject revision = new JSONObject();
                 revision.put(Revision.REVISION_AUTHOR_ID, commentAuthorId);
                 final JSONObject revisionData = new JSONObject();

@@ -235,7 +235,8 @@ public class CommentProcessor {
     @After({StopwatchEndAdvice.class})
     public void getCommentRevisions(final RequestContext context) {
         final String id = context.pathVar("id");
-        final List<JSONObject> revisions = revisionQueryService.getCommentRevisions(id);
+        final JSONObject viewer = (JSONObject) context.getRequest().getAttribute(Common.CURRENT_USER);
+        final List<JSONObject> revisions = revisionQueryService.getCommentRevisions(viewer, id);
         final JSONObject ret = new JSONObject();
         ret.put(Keys.STATUS_CODE, true);
         ret.put(Revision.REVISIONS, (Object) revisions);

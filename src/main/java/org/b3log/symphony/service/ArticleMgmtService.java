@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.5.2, Jan 4, 2019
+ * @version 2.18.5.3, Jan 12, 2019
  * @since 0.2.0
  */
 @Service
@@ -749,7 +749,6 @@ public class ArticleMgmtService {
             final String articleId = articleRepository.add(article);
 
             if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
-                // Revision
                 final JSONObject revision = new JSONObject();
                 revision.put(Revision.REVISION_AUTHOR_ID, authorId);
                 final JSONObject revisionData = new JSONObject();
@@ -964,9 +963,10 @@ public class ArticleMgmtService {
 
             articleRepository.update(articleId, oldArticle);
 
+            final boolean titleChanged = !oldTitle.replaceAll("\\s+", "").equals(articleTitle.replaceAll("\\s+", ""));
+            final boolean contentChanged = !oldContent.replaceAll("\\s+", "").equals(articleContent.replaceAll("\\s+", ""));
             if (notIn5m && Article.ARTICLE_TYPE_C_THOUGHT != articleType
-                    && (!oldContent.equals(articleContent) || !oldTitle.equals(articleTitle))) {
-                // Revision
+                    && (titleChanged || contentChanged)) {
                 final JSONObject revision = new JSONObject();
                 revision.put(Revision.REVISION_AUTHOR_ID, authorId);
                 final JSONObject revisionData = new JSONObject();
