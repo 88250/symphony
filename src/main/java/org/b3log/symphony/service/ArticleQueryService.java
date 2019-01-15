@@ -1420,7 +1420,7 @@ public class ArticleQueryService {
                         setFilter(CompositeFilterOperator.and(
                                 new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION),
                                 new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID))).
-                        setPageCount(1).setPageSize(fetchSize).
+                        setPageCount(1).setPage(1, fetchSize).
                         addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING);
                 ret = articleRepository.getList(query);
 
@@ -2336,7 +2336,7 @@ public class ArticleQueryService {
                         new PropertyFilter(Article.ARTICLE_STICK, FilterOperator.NOT_EQUAL, 0L),
                         new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION),
                         new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID))).
-                setPageCount(1).setPageSize(2).
+                setPageCount(1).setPage(1, 2).
                 addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING);
         try {
             return articleRepository.getList(query);

@@ -54,7 +54,7 @@ public class LinkRepository extends AbstractRepository {
     public JSONObject getLink(final String addr) {
         final String hash = DigestUtils.sha1Hex(addr);
         final Query query = new Query().setFilter(new PropertyFilter(Link.LINK_ADDR_HASH, FilterOperator.EQUAL, hash)).
-                setPageCount(1).setPageSize(1).setCurrentPageNum(1);
+                setPageCount(1).setPage(1, 1);
         try {
             final JSONObject result = get(query);
             final JSONArray links = result.optJSONArray(Keys.RESULTS);

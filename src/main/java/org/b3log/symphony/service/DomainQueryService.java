@@ -91,7 +91,7 @@ public class DomainQueryService {
                 addSort(Domain.DOMAIN_SORT, SortDirection.ASCENDING).
                 addSort(Domain.DOMAIN_TAG_COUNT, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setPageSize(Integer.MAX_VALUE).setPageCount(1);
+                setPage(1, Integer.MAX_VALUE).setPageCount(1);
         try {
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(domainRepository.get(query).optJSONArray(Keys.RESULTS));
             for (final JSONObject domain : ret) {
@@ -120,7 +120,7 @@ public class DomainQueryService {
                 addSort(Domain.DOMAIN_SORT, SortDirection.ASCENDING).
                 addSort(Domain.DOMAIN_TAG_COUNT, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setPageSize(fetchSize).setPageCount(1);
+                setPage(1, fetchSize).setPageCount(1);
         try {
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(domainRepository.get(query).optJSONArray(Keys.RESULTS));
             for (final JSONObject domain : ret) {
