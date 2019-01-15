@@ -150,7 +150,7 @@ public class CommentQueryService {
     public JSONObject getOfferedComment(final int avatarViewMode, final int commentViewMode, final String articleId) {
         Stopwatchs.start("Gets accepted comment");
         try {
-            final Query query = new Query().addSort(Comment.COMMENT_SCORE, SortDirection.DESCENDING).setCurrentPageNum(1).setPageCount(1)
+            final Query query = new Query().addSort(Comment.COMMENT_SCORE, SortDirection.DESCENDING).setPage(1, 1).setPageCount(1)
                     .setFilter(CompositeFilterOperator.and(
                             new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
                             new PropertyFilter(Comment.COMMENT_QNA_OFFERED, FilterOperator.EQUAL, Comment.COMMENT_QNA_OFFERED_C_YES),
@@ -190,8 +190,7 @@ public class CommentQueryService {
      * @return page number, return {@code 1} if occurs exception
      */
     public int getCommentPage(final String articleId, final String commentId, final int sortMode, final int pageSize) {
-        final Query numQuery = new Query()
-                .setPageSize(Integer.MAX_VALUE).setCurrentPageNum(1).setPageCount(1);
+        final Query numQuery = new Query().setPage(1, Integer.MAX_VALUE).setPageCount(1);
 
         switch (sortMode) {
             case UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL:
@@ -290,8 +289,8 @@ public class CommentQueryService {
      */
     public List<JSONObject> getReplies(final String currentUserId, final int avatarViewMode, final int commentViewMode, final String commentId) {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setPageSize(Integer.MAX_VALUE).setCurrentPageNum(1).setPageCount(1)
-                .setFilter(CompositeFilterOperator.and(
+                setPage(1, Integer.MAX_VALUE).setPageCount(1).
+                setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(Comment.COMMENT_ORIGINAL_COMMENT_ID, FilterOperator.EQUAL, commentId),
                         new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
                 ));
@@ -361,8 +360,8 @@ public class CommentQueryService {
         Stopwatchs.start("Gets nice comments");
         try {
             final Query query = new Query().addSort(Comment.COMMENT_SCORE, SortDirection.DESCENDING).
-                    setPageSize(fetchSize).setCurrentPageNum(1).setPageCount(1)
-                    .setFilter(CompositeFilterOperator.and(
+                    setPage(1, fetchSize).setPageCount(1).
+                    setFilter(CompositeFilterOperator.and(
                             new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
                             new PropertyFilter(Comment.COMMENT_SCORE, FilterOperator.GREATER_THAN, 0D),
                             new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
@@ -503,12 +502,12 @@ public class CommentQueryService {
      */
     public List<JSONObject> getUserComments(final int avatarViewMode, final String userId, final int anonymous,
                                             final int currentPageNum, final int pageSize, final JSONObject viewer) {
-        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
-                .setCurrentPageNum(currentPageNum).setPageSize(pageSize).
-                        setFilter(CompositeFilterOperator.and(
-                                new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId),
-                                new PropertyFilter(Comment.COMMENT_ANONYMOUS, FilterOperator.EQUAL, anonymous),
-                                new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)));
+        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING).
+                setPage(currentPageNum, pageSize).
+                setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId),
+                        new PropertyFilter(Comment.COMMENT_ANONYMOUS, FilterOperator.EQUAL, anonymous),
+                        new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)));
         try {
             final JSONObject result = commentRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -630,9 +629,8 @@ public class CommentQueryService {
                                                final String articleId, final int currentPageNum, final int pageSize, final int sortMode) {
         Stopwatchs.start("Get comments");
 
-        final Query query = new Query()
-                .setPageCount(1).setCurrentPageNum(currentPageNum).setPageSize(pageSize)
-                .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId));
+        final Query query = new Query().setPageCount(1).setPage(currentPageNum, pageSize).
+                setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId));
 
         if (UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME == sortMode) {
             query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);

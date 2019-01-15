@@ -221,14 +221,14 @@ public class ArticleQueryService {
                 query = new Query().
                         addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING).
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
+                        setPage(currentPageNum, fetchSize).
                         setFilter(makeQuestionArticleShowingFilter());
 
                 break;
             default:
                 query = new Query().
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
+                        setPage(currentPageNum, fetchSize).
                         setFilter(makeQuestionArticleShowingFilter());
         }
 
@@ -289,9 +289,7 @@ public class ArticleQueryService {
             return Collections.emptyList();
         }
 
-        final Query query = new Query()
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setPage(currentPageNum, pageSize);
 
         final List<String> followingUserIds = new ArrayList<>();
         for (final JSONObject user : users) {
@@ -386,7 +384,7 @@ public class ArticleQueryService {
                     new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN, articleId)).
                     addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).
                     select(Article.ARTICLE_PERMALINK, Article.ARTICLE_TITLE).
-                    setCurrentPageNum(1).setPageCount(1).setPageSize(1);
+                    setPage(1, 1).setPageCount(1);
 
             final JSONArray result = articleRepository.get(query).optJSONArray(Keys.RESULTS);
             if (0 == result.length()) {
@@ -433,7 +431,7 @@ public class ArticleQueryService {
                     new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, articleId)).
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                     select(Article.ARTICLE_PERMALINK, Article.ARTICLE_TITLE).
-                    setCurrentPageNum(1).setPageCount(1).setPageSize(1);
+                    setPage(1, 1).setPageCount(1);
 
             final JSONArray result = articleRepository.get(query).optJSONArray(Keys.RESULTS);
             if (0 == result.length()) {
@@ -538,8 +536,8 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getValidArticles(final int currentPageNum, final int pageSize, final int... types) throws ServiceException {
         try {
-            final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                    .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+            final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setPageCount(1).
+                    setPage(currentPageNum, pageSize);
 
             if (null != types && types.length > 0) {
                 final List<Filter> typeFilters = new ArrayList<>();
@@ -603,7 +601,7 @@ public class ArticleQueryService {
 
             Query query = new Query().setFilter(
                     new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.IN, tagIds)).
-                    setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                    setPage(currentPageNum, pageSize).
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
             JSONObject result = tagArticleRepository.get(query);
             final JSONArray tagArticles = result.optJSONArray(Keys.RESULTS);
@@ -761,8 +759,8 @@ public class ArticleQueryService {
                 filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
                 filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
 
-                final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                        .setPageCount(currentPageNum).setPageSize(pageSize).setCurrentPageNum(1);
+                final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setPageCount(currentPageNum).
+                        setPage(1, pageSize);
                 query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
                 for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
                     query.select(articleField.getKey());
@@ -850,7 +848,7 @@ public class ArticleQueryService {
 
             // XXX: 这里的分页是有问题的，后面取文章的时候会少（因为一篇文章可以有多个标签，但是文章 id 一样）
             Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                    setFilter(filter).setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+                    setFilter(filter).setPageCount(1).setPage(currentPageNum, pageSize);
 
             JSONObject result = tagArticleRepository.get(query);
             final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
@@ -892,8 +890,8 @@ public class ArticleQueryService {
                                               final int currentPageNum, final int pageSize) {
         try {
             final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                    setFilter(new PropertyFilter(Article.ARTICLE_CITY, FilterOperator.EQUAL, city))
-                    .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+                    setFilter(new PropertyFilter(Article.ARTICLE_CITY, FilterOperator.EQUAL, city)).
+                    setPageCount(1).setPage(currentPageNum, pageSize);
 
             final JSONObject result = articleRepository.get(query);
 
@@ -928,43 +926,43 @@ public class ArticleQueryService {
             switch (sortMode) {
                 case 0:
                     query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
-                            .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))).
+                            setPageCount(1).setPage(currentPageNum, pageSize);
 
                     break;
                 case 1:
                     query.addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
                             addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
-                            .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))).
+                            setPageCount(1).setPage(currentPageNum, pageSize);
 
                     break;
                 case 2:
                     query.addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING).
                             addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
-                            .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))).
+                            setPageCount(1).setPage(currentPageNum, pageSize);
 
                     break;
                 case 3:
                     query.addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING).
                             addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
-                            .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))).
+                            setPageCount(1).setPage(currentPageNum, pageSize);
 
                     break;
                 case 4:
                     query.addSort(Article.ARTICLE_PERFECT, SortDirection.DESCENDING).
                             addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
-                            .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))).
+                            setPageCount(1).setPage(currentPageNum, pageSize);
 
                     break;
                 default:
                     LOGGER.warn("Unknown sort mode [" + sortMode + "]");
                     query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
-                            .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))).
+                            setPageCount(1).setPage(currentPageNum, pageSize);
             }
 
             JSONObject result = tagArticleRepository.get(query);
@@ -1194,12 +1192,12 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getUserArticles(final int avatarViewMode, final String userId, final int anonymous,
                                             final int currentPageNum, final int pageSize) {
-        final Query query = new Query().addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING)
-                .setCurrentPageNum(currentPageNum).setPageSize(pageSize).
-                        setFilter(CompositeFilterOperator.and(
-                                new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, userId),
-                                new PropertyFilter(Article.ARTICLE_ANONYMOUS, FilterOperator.EQUAL, anonymous),
-                                new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID)));
+        final Query query = new Query().addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING).
+                setPage(currentPageNum, pageSize).
+                setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, userId),
+                        new PropertyFilter(Article.ARTICLE_ANONYMOUS, FilterOperator.EQUAL, anonymous),
+                        new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID)));
         try {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -1292,12 +1290,12 @@ public class ArticleQueryService {
      * @return top articles query
      */
     private Query makeTopQuery(final int currentPageNum, final int fetchSize) {
-        final Query query = new Query()
-                .addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING)
-                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
-
+        final Query query = new Query().
+                addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING).
+                addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING).
+                setPageCount(1).setPage(currentPageNum, fetchSize);
         query.setFilter(makeArticleShowingFilter());
+
         return query;
     }
 
@@ -1370,7 +1368,7 @@ public class ArticleQueryService {
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                         setFilter(makeRecentArticleShowingFilter());
         }
-        query.setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+        query.setPage(currentPageNum, fetchSize);
         addListProjections(query);
 
         JSONObject result = null;
@@ -1527,9 +1525,8 @@ public class ArticleQueryService {
      * </pre>
      */
     public JSONObject getPerfectArticles(final int avatarViewMode, final int currentPageNum, final int fetchSize) {
-        final Query query = new Query()
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setCurrentPageNum(currentPageNum).setPageSize(fetchSize);
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setPage(currentPageNum, fetchSize);
         query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
 
         final JSONObject ret = new JSONObject();
@@ -1853,7 +1850,7 @@ public class ArticleQueryService {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).
                 select(Keys.OBJECT_ID, Comment.COMMENT_AUTHOR_ID).
-                setPageCount(1).setCurrentPageNum(1).setPageSize(fetchSize);
+                setPageCount(1).setPage(1, fetchSize);
         final List<JSONObject> ret = new ArrayList<>();
 
         try {
@@ -2049,7 +2046,7 @@ public class ArticleQueryService {
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
-        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+        final Query query = new Query().setPage(currentPageNum, pageSize).
                 addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {

@@ -113,7 +113,7 @@ public class TagTagRepository extends AbstractRepository {
         filters.add(new PropertyFilter(Common.WEIGHT, FilterOperator.GREATER_THAN_OR_EQUAL, WEIGHT));
 
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
-                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1).
+                setPage(currentPageNum, pageSize).setPageCount(1).
                 addSort(Common.WEIGHT, SortDirection.DESCENDING);
 
         return get(query);

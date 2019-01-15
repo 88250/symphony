@@ -62,7 +62,7 @@ public class InvitecodeMgmtService {
         final long now = System.currentTimeMillis();
         final long expired = now - Symphonys.getLong("invitecode.expired");
 
-        final Query query = new Query().setCurrentPageNum(1).setPageSize(Integer.MAX_VALUE).
+        final Query query = new Query().setPage(1, Integer.MAX_VALUE).
                 setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(Invitecode.STATUS, FilterOperator.EQUAL, Invitecode.STATUS_C_UNUSED),
                         new PropertyFilter(Invitecode.GENERATOR_ID, FilterOperator.NOT_EQUAL, Pointtransfer.ID_C_SYS),
