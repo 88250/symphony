@@ -691,7 +691,7 @@ public class TagQueryService {
         final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> tagField : tagFields.entrySet()) {
-            query.addProjection(tagField.getKey(), tagField.getValue());
+            query.select(tagField.getKey());
         }
 
         if (requestJSONObject.has(Tag.TAG_TITLE)) {

@@ -108,8 +108,8 @@ public class ShortLinkQueryService {
                         anchor = StringUtils.substringAfter(url, "#");
                     }
 
-                    final Query query = new Query().addProjection(Article.ARTICLE_TITLE, String.class)
-                            .setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, linkId));
+                    final Query query = new Query().select(Article.ARTICLE_TITLE).
+                            setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, linkId));
                     final JSONArray results = articleRepository.get(query).optJSONArray(Keys.RESULTS);
                     if (0 == results.length()) {
                         continue;

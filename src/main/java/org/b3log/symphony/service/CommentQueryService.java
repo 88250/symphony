@@ -733,7 +733,7 @@ public class CommentQueryService {
         final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize)
                 .addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> commentField : commentFields.entrySet()) {
-            query.addProjection(commentField.getKey(), commentField.getValue());
+            query.select(commentField.getKey());
         }
 
         JSONObject result;

@@ -122,10 +122,7 @@ public class ArticleCache {
             filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
 
             query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
-                    addProjection(Article.ARTICLE_TITLE, String.class).
-                    addProjection(Article.ARTICLE_PERMALINK, String.class).
-                    addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                    addProjection(Article.ARTICLE_ANONYMOUS, Integer.class);
+                    select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_AUTHOR_ID, Article.ARTICLE_ANONYMOUS);
 
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -230,23 +227,23 @@ public class ArticleCache {
                     .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                     .setPageCount(1).setPageSize(Symphonys.getInt("indexPerfectCnt")).setCurrentPageNum(1);
             query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
-            query.addProjection(Keys.OBJECT_ID, String.class).
-                    addProjection(Article.ARTICLE_STICK, Long.class).
-                    addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                    addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                    addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
-                    addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                    addProjection(Article.ARTICLE_TITLE, String.class).
-                    addProjection(Article.ARTICLE_STATUS, Integer.class).
-                    addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
-                    addProjection(Article.ARTICLE_TYPE, Integer.class).
-                    addProjection(Article.ARTICLE_PERMALINK, String.class).
-                    addProjection(Article.ARTICLE_TAGS, String.class).
-                    addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                    addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                    addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                    addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                    addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
+            query.select(Keys.OBJECT_ID,
+                    Article.ARTICLE_STICK,
+                    Article.ARTICLE_CREATE_TIME,
+                    Article.ARTICLE_UPDATE_TIME,
+                    Article.ARTICLE_LATEST_CMT_TIME,
+                    Article.ARTICLE_AUTHOR_ID,
+                    Article.ARTICLE_TITLE,
+                    Article.ARTICLE_STATUS,
+                    Article.ARTICLE_VIEW_CNT,
+                    Article.ARTICLE_TYPE,
+                    Article.ARTICLE_PERMALINK,
+                    Article.ARTICLE_TAGS,
+                    Article.ARTICLE_LATEST_CMTER_NAME,
+                    Article.ARTICLE_COMMENT_CNT,
+                    Article.ARTICLE_ANONYMOUS,
+                    Article.ARTICLE_PERFECT,
+                    Article.ARTICLE_QNA_OFFER_POINT);
 
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
