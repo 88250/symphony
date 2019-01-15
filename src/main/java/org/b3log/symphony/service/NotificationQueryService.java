@@ -329,7 +329,7 @@ public class NotificationQueryService {
         filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
         filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, notificationDataType));
         final Query query = new Query();
-        query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addProjection(Keys.OBJECT_ID, String.class);
+        query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).select(Keys.OBJECT_ID);
 
         try {
             final JSONObject result = notificationRepository.get(query);
@@ -676,9 +676,7 @@ public class NotificationQueryService {
                 final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, commentId);
 
                 final Query q = new Query().setPageCount(1).
-                        addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                        addProjection(Article.ARTICLE_TITLE, String.class).
-                        addProjection(Article.ARTICLE_TYPE, Integer.class).
+                        select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
                 final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
                 final JSONObject article = rlts.optJSONObject(0);
@@ -758,9 +756,7 @@ public class NotificationQueryService {
                 final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, commentId);
 
                 final Query q = new Query().setPageCount(1).
-                        addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                        addProjection(Article.ARTICLE_TITLE, String.class).
-                        addProjection(Article.ARTICLE_TYPE, Integer.class).
+                        select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
                 final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
                 final JSONObject article = rlts.optJSONObject(0);
@@ -866,9 +862,7 @@ public class NotificationQueryService {
                         final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, dataId);
                         if (null != comment) {
                             final Query q = new Query().setPageCount(1).
-                                    addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                                    addProjection(Article.ARTICLE_TITLE, String.class).
-                                    addProjection(Article.ARTICLE_TYPE, Integer.class).
+                                    select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                                     setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
                                             comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
                             final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
@@ -1119,9 +1113,7 @@ public class NotificationQueryService {
                     case Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_COMMENT:
                         final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, commentId);
                         final Query q = new Query().setPageCount(1).
-                                addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                                addProjection(Article.ARTICLE_TITLE, String.class).
-                                addProjection(Article.ARTICLE_TYPE, Integer.class).
+                                select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                                 setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
                                         comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
                         final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
@@ -1235,14 +1227,14 @@ public class NotificationQueryService {
                 final JSONObject notification = results.optJSONObject(i);
                 final String articleId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final Query q = new Query().setPageCount(1).
-                        addProjection(Article.ARTICLE_TITLE, String.class).
-                        addProjection(Article.ARTICLE_TYPE, Integer.class).
-                        addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                        addProjection(Article.ARTICLE_PERMALINK, String.class).
-                        addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                        addProjection(Article.ARTICLE_TAGS, String.class).
-                        addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                        addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                        select(Article.ARTICLE_TITLE,
+                                Article.ARTICLE_TYPE,
+                                Article.ARTICLE_AUTHOR_ID,
+                                Article.ARTICLE_PERMALINK,
+                                Article.ARTICLE_CREATE_TIME,
+                                Article.ARTICLE_TAGS,
+                                Article.ARTICLE_COMMENT_CNT,
+                                Article.ARTICLE_PERFECT).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, articleId));
                 final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
                 final JSONObject article = rlts.optJSONObject(0);

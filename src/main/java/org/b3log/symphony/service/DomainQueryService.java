@@ -297,7 +297,7 @@ public class DomainQueryService {
                 addSort(Domain.DOMAIN_TAG_COUNT, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> field : domainFields.entrySet()) {
-            query.addProjection(field.getKey(), field.getValue());
+            query.select(field.getKey());
         }
 
         if (requestJSONObject.has(Domain.DOMAIN_TITLE)) {

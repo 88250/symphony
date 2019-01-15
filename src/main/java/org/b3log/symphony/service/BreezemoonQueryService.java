@@ -312,7 +312,7 @@ public class BreezemoonQueryService {
         final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize)
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> field : fields.entrySet()) {
-            query.addProjection(field.getKey(), field.getValue());
+            query.select(field.getKey());
         }
 
         JSONObject result;
