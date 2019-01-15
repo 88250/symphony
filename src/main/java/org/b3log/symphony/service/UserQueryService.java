@@ -281,8 +281,7 @@ public class UserQueryService {
 
         final Query query = new Query().setPageCount(1).
                 setFilter(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID)).
-                addProjection(User.USER_NAME, String.class).
-                addProjection(UserExt.USER_AVATAR_URL, String.class);
+                select(User.USER_NAME, UserExt.USER_AVATAR_URL);
         try {
             final JSONObject result = userRepository.get(query);
             final JSONArray array = result.optJSONArray(Keys.RESULTS);

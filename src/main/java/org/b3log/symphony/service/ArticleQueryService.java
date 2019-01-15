@@ -386,8 +386,7 @@ public class ArticleQueryService {
             final Query query = new Query().setFilter(
                     new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN, articleId)).
                     addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).
-                    addProjection(Article.ARTICLE_PERMALINK, String.class).
-                    addProjection(Article.ARTICLE_TITLE, String.class).
+                    select(Article.ARTICLE_PERMALINK, Article.ARTICLE_TITLE).
                     setCurrentPageNum(1).setPageCount(1).setPageSize(1);
 
             final JSONArray result = articleRepository.get(query).optJSONArray(Keys.RESULTS);
@@ -434,8 +433,7 @@ public class ArticleQueryService {
             final Query query = new Query().setFilter(
                     new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, articleId)).
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                    addProjection(Article.ARTICLE_PERMALINK, String.class).
-                    addProjection(Article.ARTICLE_TITLE, String.class).
+                    select(Article.ARTICLE_PERMALINK, Article.ARTICLE_TITLE).
                     setCurrentPageNum(1).setPageCount(1).setPageSize(1);
 
             final JSONArray result = articleRepository.get(query).optJSONArray(Keys.RESULTS);
@@ -701,9 +699,7 @@ public class ArticleQueryService {
                 articleIds.remove(article.optString(Keys.OBJECT_ID));
 
                 final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
-                        addProjection(Article.ARTICLE_TITLE, String.class).
-                        addProjection(Article.ARTICLE_PERMALINK, String.class).
-                        addProjection(Article.ARTICLE_AUTHOR_ID, String.class);
+                        select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_AUTHOR_ID);
                 ret.addAll(articleRepository.getList(query));
                 if (ret.size() >= fetchSize) {
                     break;
@@ -770,7 +766,7 @@ public class ArticleQueryService {
                         .setPageCount(currentPageNum).setPageSize(pageSize).setCurrentPageNum(1);
                 query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
                 for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
-                    query.addProjection(articleField.getKey(), articleField.getValue());
+                    query.select(articleField.getKey());
                 }
 
                 final JSONObject result = articleRepository.get(query);
@@ -868,7 +864,7 @@ public class ArticleQueryService {
             query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
             for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
-                query.addProjection(articleField.getKey(), articleField.getValue());
+                query.select(articleField.getKey());
             }
 
             result = articleRepository.get(query);
@@ -1855,11 +1851,10 @@ public class ArticleQueryService {
      * </pre>, returns an empty list if not found
      */
     public List<JSONObject> getArticleLatestParticipants(final int avatarViewMode, final String articleId, final int fetchSize) {
-        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId))
-                .addProjection(Keys.OBJECT_ID, String.class)
-                .addProjection(Comment.COMMENT_AUTHOR_ID, String.class)
-                .setPageCount(1).setCurrentPageNum(1).setPageSize(fetchSize);
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).
+                select(Keys.OBJECT_ID, Comment.COMMENT_AUTHOR_ID).
+                setPageCount(1).setCurrentPageNum(1).setPageSize(fetchSize);
         final List<JSONObject> ret = new ArrayList<>();
 
         try {
@@ -2059,7 +2054,7 @@ public class ArticleQueryService {
                 addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
-            query.addProjection(articleField.getKey(), articleField.getValue());
+            query.select(articleField.getKey());
         }
 
         if (requestJSONObject.has(Keys.OBJECT_ID)) {
@@ -2313,30 +2308,30 @@ public class ArticleQueryService {
     }
 
     private void addListProjections(final Query query) {
-        query.addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Article.ARTICLE_STICK, Long.class).
-                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
-                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
-                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_STATUS, Integer.class).
-                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
-                addProjection(Article.ARTICLE_THANK_CNT, Integer.class).
-                addProjection(Article.ARTICLE_TYPE, Integer.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_TAGS, String.class).
-                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
-                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
-                addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
-                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
-                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
-                addProjection(Article.ARTICLE_UA, String.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class).
-                addProjection(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
+        query.select(Keys.OBJECT_ID,
+                Article.ARTICLE_STICK,
+                Article.ARTICLE_CREATE_TIME,
+                Article.ARTICLE_UPDATE_TIME,
+                Article.ARTICLE_LATEST_CMT_TIME,
+                Article.ARTICLE_AUTHOR_ID,
+                Article.ARTICLE_TITLE,
+                Article.ARTICLE_STATUS,
+                Article.ARTICLE_VIEW_CNT,
+                Article.ARTICLE_THANK_CNT,
+                Article.ARTICLE_TYPE,
+                Article.ARTICLE_PERMALINK,
+                Article.ARTICLE_TAGS,
+                Article.ARTICLE_LATEST_CMTER_NAME,
+                Article.ARTICLE_COMMENT_CNT,
+                Article.ARTICLE_ANONYMOUS,
+                Article.ARTICLE_PERFECT,
+                Article.ARTICLE_BAD_CNT,
+                Article.ARTICLE_GOOD_CNT,
+                Article.ARTICLE_COLLECT_CNT,
+                Article.ARTICLE_WATCH_CNT,
+                Article.ARTICLE_UA,
+                Article.ARTICLE_CONTENT,
+                Article.ARTICLE_QNA_OFFER_POINT);
     }
 
     private List<JSONObject> getStickArticles() {

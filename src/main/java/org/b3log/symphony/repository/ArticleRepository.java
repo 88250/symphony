@@ -95,9 +95,7 @@ public class ArticleRepository extends AbstractRepository {
                         new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
                         new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID),
                         new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION))).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_AUTHOR_ID).
                 setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
         final List<JSONObject> list1 = getList(query);
         ret.addAll(list1);
@@ -109,9 +107,7 @@ public class ArticleRepository extends AbstractRepository {
                             new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
                             new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID),
                             new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION))).
-                    addProjection(Article.ARTICLE_TITLE, String.class).
-                    addProjection(Article.ARTICLE_PERMALINK, String.class).
-                    addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                    select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_AUTHOR_ID).
                     setCurrentPageNum(1).setPageSize(reminingSize).setPageCount(1);
             final List<JSONObject> list2 = getList(query);
 
