@@ -115,11 +115,11 @@ public class PostExportService {
 
         Query query = new Query().setFilter(
                 new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, userId)).
-                addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_TAGS, String.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class).
-                addProjection(Article.ARTICLE_CREATE_TIME, Long.class);
+                select(Keys.OBJECT_ID,
+                        Article.ARTICLE_TITLE,
+                        Article.ARTICLE_TAGS,
+                        Article.ARTICLE_CONTENT,
+                        Article.ARTICLE_CREATE_TIME);
 
         try {
             final JSONArray articles = articleRepository.get(query).optJSONArray(Keys.RESULTS);
@@ -147,11 +147,8 @@ public class PostExportService {
             return null;
         }
 
-        query = new Query().setFilter(
-                new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId)).
-                addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Comment.COMMENT_CONTENT, String.class).
-                addProjection(Comment.COMMENT_CREATE_TIME, Long.class);
+        query = new Query().setFilter(new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId)).
+                select(Keys.OBJECT_ID, Comment.COMMENT_CONTENT, Comment.COMMENT_CREATE_TIME);
 
         try {
             final JSONArray comments = commentRepository.get(query).optJSONArray(Keys.RESULTS);
