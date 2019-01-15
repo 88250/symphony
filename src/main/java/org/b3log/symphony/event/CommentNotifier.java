@@ -160,8 +160,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             String originalCmtAuthorId = null;
             if (StringUtils.isNotBlank(originalCmtId)) {
-                final Query numQuery = new Query()
-                        .setPageSize(Integer.MAX_VALUE).setCurrentPageNum(1).setPageCount(1);
+                final Query numQuery = new Query().setPage(1, Integer.MAX_VALUE).setPageCount(1);
 
                 switch (commentViewMode) {
                     case UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL:

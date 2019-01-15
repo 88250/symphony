@@ -114,7 +114,8 @@ public class ArticleCache {
         try {
             final String id = String.valueOf(DateUtils.addDays(new Date(), -7).getTime());
             final Query query = new Query().addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
-                    addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(Symphonys.getInt("sideHotArticlesCnt"));
+                    addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).
+                    setPage(1, Symphonys.getInt("sideHotArticlesCnt"));
 
             final List<Filter> filters = new ArrayList<>();
             filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
@@ -223,9 +224,9 @@ public class ArticleCache {
 
         Stopwatchs.start("Query perfect articles");
         try {
-            final Query query = new Query()
-                    .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                    .setPageCount(1).setPageSize(Symphonys.getInt("indexPerfectCnt")).setCurrentPageNum(1);
+            final Query query = new Query().
+                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                    setPageCount(1).setPage(1, Symphonys.getInt("indexPerfectCnt"));
             query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
             query.select(Keys.OBJECT_ID,
                     Article.ARTICLE_STICK,

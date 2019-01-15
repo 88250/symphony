@@ -132,7 +132,7 @@ public class MailMgmtService {
 
             // select receivers 
             final Query toUserQuery = new Query();
-            toUserQuery.setCurrentPageNum(1).setPageCount(1).setPageSize(userSize).
+            toUserQuery.setPage(1, userSize).setPageCount(1).
                     setFilter(CompositeFilterOperator.and(
                             new PropertyFilter(UserExt.USER_SUB_MAIL_SEND_TIME, FilterOperator.LESS_THAN_OR_EQUAL, sevenDaysAgo),
                             new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.LESS_THAN_OR_EQUAL, sevenDaysAgo),
@@ -173,7 +173,7 @@ public class MailMgmtService {
 
             // select nice articles
             final Query articleQuery = new Query();
-            articleQuery.setCurrentPageNum(1).setPageCount(1).setPageSize(Symphonys.getInt("mail.batch.articleSize")).
+            articleQuery.setPage(1, Symphonys.getInt("mail.batch.articleSize")).setPageCount(1).
                     setFilter(CompositeFilterOperator.and(
                             new PropertyFilter(Article.ARTICLE_CREATE_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, sevenDaysAgo),
                             new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.EQUAL, Article.ARTICLE_TYPE_C_NORMAL),

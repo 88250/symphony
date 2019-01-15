@@ -100,8 +100,8 @@ public class BreezemoonQueryService {
         try {
             final BeanManager beanManager = BeanManager.getInstance();
             final BreezemoonRepository breezemoonRepository = beanManager.getReference(BreezemoonRepository.class);
-            final Query query = new Query().setCurrentPageNum(1).setPageCount(1).setPageSize(Symphonys.getInt("sideBreezemoonsCnt") * 2)
-                    .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+            final Query query = new Query().setPage(1, Symphonys.getInt("sideBreezemoonsCnt") * 2).setPageCount(1).
+                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
             List<JSONObject> ret = breezemoonRepository.getList(query);
 
             final BreezemoonQueryService breezemoonQueryService = beanManager.getReference(BreezemoonQueryService.class);
@@ -169,8 +169,7 @@ public class BreezemoonQueryService {
             return getBreezemoons(avatarViewMode, userId, "", page, pageSize, windowSize);
         }
 
-        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageSize(pageSize).setCurrentPageNum(page);
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setPage(page, pageSize);
         final List<String> followingUserIds = new ArrayList<>();
         for (final JSONObject user : users) {
             followingUserIds.add(user.optString(Keys.OBJECT_ID));
@@ -244,7 +243,7 @@ public class BreezemoonQueryService {
         } else {
             filter = CompositeFilterOperator.and(new PropertyFilter(Breezemoon.BREEZEMOON_AUTHOR_ID, FilterOperator.NOT_EQUAL, authorId), statusFilter);
         }
-        final Query query = new Query().setFilter(filter).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(page).setPageSize(20);
+        final Query query = new Query().setFilter(filter).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setPage(page, 20);
         JSONObject result;
         try {
             result = breezemoonRepository.get(query);
@@ -309,8 +308,7 @@ public class BreezemoonQueryService {
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
-        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize)
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        final Query query = new Query().setPage(currentPageNum, pageSize).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> field : fields.entrySet()) {
             query.select(field.getKey());
         }

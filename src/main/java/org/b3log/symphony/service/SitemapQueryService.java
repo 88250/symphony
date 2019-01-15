@@ -106,7 +106,7 @@ public class SitemapQueryService {
      * @param sitemap the specified sitemap
      */
     public void genArticles(final Sitemap sitemap) {
-        final Query query = new Query().setCurrentPageNum(1).setPageCount(Integer.MAX_VALUE).
+        final Query query = new Query().setPage(1, Integer.MAX_VALUE).setPageCount(Integer.MAX_VALUE).
                 select(Keys.OBJECT_ID, Article.ARTICLE_UPDATE_TIME).
                 setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID)).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);

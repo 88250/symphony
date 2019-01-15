@@ -476,8 +476,8 @@ public class FollowQueryService {
         filters.add(new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, followingType));
 
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters))
-                .setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                setPage(currentPageNum, pageSize);
 
         final JSONObject result = followRepository.get(query);
         final List<JSONObject> records = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -517,8 +517,8 @@ public class FollowQueryService {
         filters.add(new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, followingType));
 
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters))
-                .setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                setPage(currentPageNum, pageSize);
 
         final JSONObject result = followRepository.get(query);
 

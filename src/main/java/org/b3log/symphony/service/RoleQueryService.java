@@ -337,7 +337,7 @@ public class RoleQueryService {
     public JSONObject getRoles(final int currentPage, final int pageSize, final int windowSize) {
         final JSONObject ret = new JSONObject();
 
-        final Query query = new Query().setCurrentPageNum(currentPage).setPageSize(pageSize).
+        final Query query = new Query().setPage(currentPage, pageSize).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
         JSONObject result;

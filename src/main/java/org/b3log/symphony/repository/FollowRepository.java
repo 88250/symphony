@@ -125,10 +125,11 @@ public class FollowRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public JSONObject getByFollowingId(final String followingId, final int type, final int currentPageNum, final int pageSize) throws RepositoryException {
-        final Query query = new Query().setFilter(CompositeFilterOperator.and(
-                new PropertyFilter(Follow.FOLLOWING_ID, FilterOperator.EQUAL, followingId),
-                new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, type))).
-                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
+        final Query query = new Query().
+                setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Follow.FOLLOWING_ID, FilterOperator.EQUAL, followingId),
+                        new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, type))).
+                setPage(currentPageNum, pageSize).setPageCount(1);
 
         return get(query);
     }

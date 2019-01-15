@@ -728,8 +728,8 @@ public class CommentQueryService {
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
-        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize)
-                .addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING);
+        final Query query = new Query().setPage(currentPageNum, pageSize).
+                addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> commentField : commentFields.entrySet()) {
             query.select(commentField.getKey());
         }

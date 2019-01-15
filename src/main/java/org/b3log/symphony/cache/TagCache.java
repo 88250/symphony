@@ -189,7 +189,7 @@ public class TagCache {
         final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
 
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setCurrentPageNum(1).setPageSize(Symphonys.getInt("newTagsCnt")).setPageCount(1);
+                setPage(1, Symphonys.getInt("newTagsCnt")).setPageCount(1);
 
         query.setFilter(new PropertyFilter(Tag.TAG_REFERENCE_CNT, FilterOperator.GREATER_THAN, 0));
 
@@ -209,12 +209,12 @@ public class TagCache {
         final BeanManager beanManager = BeanManager.getInstance();
         final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
 
-        final Query query = new Query().setFilter(
-                CompositeFilterOperator.and(
+        final Query query = new Query().
+                setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(Tag.TAG_ICON_PATH, FilterOperator.NOT_EQUAL, ""),
-                        new PropertyFilter(Tag.TAG_STATUS, FilterOperator.EQUAL, Tag.TAG_STATUS_C_VALID)))
-                .setCurrentPageNum(1).setPageSize(Integer.MAX_VALUE).setPageCount(1)
-                .addSort(Tag.TAG_RANDOM_DOUBLE, SortDirection.ASCENDING);
+                        new PropertyFilter(Tag.TAG_STATUS, FilterOperator.EQUAL, Tag.TAG_STATUS_C_VALID))).
+                setPage(1, Integer.MAX_VALUE).setPageCount(1).
+                addSort(Tag.TAG_RANDOM_DOUBLE, SortDirection.ASCENDING);
         try {
             final JSONObject result = tagRepository.get(query);
             final List<JSONObject> tags = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -251,9 +251,9 @@ public class TagCache {
         final BeanManager beanManager = BeanManager.getInstance();
         final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
 
-        final Query query = new Query().setFilter(
-                new PropertyFilter(Tag.TAG_STATUS, FilterOperator.EQUAL, Tag.TAG_STATUS_C_VALID))
-                .setCurrentPageNum(1).setPageSize(Integer.MAX_VALUE).setPageCount(1);
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Tag.TAG_STATUS, FilterOperator.EQUAL, Tag.TAG_STATUS_C_VALID)).
+                setPage(1, Integer.MAX_VALUE).setPageCount(1);
         try {
             final JSONObject result = tagRepository.get(query);
             final List<JSONObject> tags = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));

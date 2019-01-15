@@ -46,7 +46,7 @@ public class ReferralRepository extends AbstractRepository {
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Referral.REFERRAL_DATA_ID, FilterOperator.EQUAL, dataId),
                 new PropertyFilter(Referral.REFERRAL_IP, FilterOperator.EQUAL, ip)
-        )).setPageCount(1).setPageSize(1).setCurrentPageNum(1);
+        )).setPageCount(1).setPage(1, 1);
 
         final JSONArray records = get(query).optJSONArray(Keys.RESULTS);
         if (records.length() < 1) {

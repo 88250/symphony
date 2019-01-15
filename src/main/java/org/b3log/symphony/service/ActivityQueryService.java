@@ -174,7 +174,7 @@ public class ActivityQueryService {
 
         final Query query = new Query().addSort(UserExt.USER_LONGEST_CHECKIN_STREAK, SortDirection.DESCENDING).
                 addSort(UserExt.USER_CURRENT_CHECKIN_STREAK, SortDirection.DESCENDING).
-                setCurrentPageNum(1).setPageSize(fetchSize);
+                setPage(1, fetchSize);
 
         try {
             final JSONObject result = userRepository.get(query);

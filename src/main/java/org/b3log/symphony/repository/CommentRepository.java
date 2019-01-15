@@ -107,7 +107,8 @@ public class CommentRepository extends AbstractRepository {
         if (0 < article.optInt(Article.ARTICLE_COMMENT_CNT)) {
             final Query latestCmtQuery = new Query().
                     setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).
-                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(1);
+                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                    setPage(1, 1);
             final JSONObject latestCmt = get(latestCmtQuery).optJSONArray(Keys.RESULTS).optJSONObject(0);
             article.put(Article.ARTICLE_LATEST_CMT_TIME, latestCmt.optLong(Keys.OBJECT_ID));
             final JSONObject latestCmtAuthor = userRepository.get(latestCmt.optString(Comment.COMMENT_AUTHOR_ID));
