@@ -408,7 +408,7 @@ public class TagQueryService {
      */
     public List<JSONObject> getTrendTags(final int fetchSize) {
         final Query query = new Query().addSort(Tag.TAG_REFERENCE_CNT, SortDirection.DESCENDING).
-                setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
+                setPage(1, fetchSize).setPageCount(1);
 
         try {
             final JSONObject result = tagRepository.get(query);
@@ -443,7 +443,7 @@ public class TagQueryService {
      */
     public List<JSONObject> getColdTags(final int fetchSize) {
         final Query query = new Query().addSort(Tag.TAG_REFERENCE_CNT, SortDirection.ASCENDING).
-                setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
+                setPage(1, fetchSize).setPageCount(1);
 
         try {
             final JSONObject result = tagRepository.get(query);
@@ -494,7 +494,7 @@ public class TagQueryService {
 
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, orFilters));
 
-        final Query query = new Query().setCurrentPageNum(1).setPageSize(1).setPageCount(1).
+        final Query query = new Query().setPage(1, 1).setPageCount(1).
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                 addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
 
@@ -554,7 +554,7 @@ public class TagQueryService {
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
         filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, 1));
 
-        Query query = new Query().setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1).
+        Query query = new Query().setPage(1, fetchSize).setPageCount(1).
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
 
         final List<JSONObject> ret = new ArrayList<>();
@@ -688,7 +688,7 @@ public class TagQueryService {
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
-        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+        final Query query = new Query().setPage(currentPageNum, pageSize).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> tagField : tagFields.entrySet()) {
             query.select(tagField.getKey());

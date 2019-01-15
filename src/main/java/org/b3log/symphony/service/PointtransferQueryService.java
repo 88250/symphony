@@ -115,8 +115,8 @@ public class PointtransferQueryService {
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, userFilters));
         filters.add(new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL, type));
 
-        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(1)
-                .setPageSize(fetchSize).setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setPage(1, fetchSize).setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
 
         try {
             final JSONObject result = pointtransferRepository.get(query);
@@ -139,7 +139,8 @@ public class PointtransferQueryService {
     public List<JSONObject> getTopBalanceUsers(final int avatarViewMode, final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<>();
 
-        final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(fetchSize).
+        final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).
+                setPage(1, fetchSize).
                 setFilter(new PropertyFilter(UserExt.USER_JOIN_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_JOIN_XXX_C_JOIN));
 
         final int moneyUnit = Symphonys.getInt("pointExchangeUnit");
@@ -177,7 +178,8 @@ public class PointtransferQueryService {
     public List<JSONObject> getTopConsumptionUsers(final int avatarViewMode, final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<>();
 
-        final Query query = new Query().addSort(UserExt.USER_USED_POINT, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(fetchSize).
+        final Query query = new Query().addSort(UserExt.USER_USED_POINT, SortDirection.DESCENDING).
+                setPage(1, fetchSize).
                 setFilter(new PropertyFilter(UserExt.USER_JOIN_USED_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_JOIN_XXX_C_JOIN));
 
         final int moneyUnit = Symphonys.getInt("pointExchangeUnit");
@@ -221,8 +223,8 @@ public class PointtransferQueryService {
      * </pre>
      */
     public JSONObject getUserPoints(final String userId, final int currentPageNum, final int pageSize) {
-        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setPage(currentPageNum, pageSize);
         final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Pointtransfer.FROM_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Pointtransfer.TO_ID, FilterOperator.EQUAL, userId));

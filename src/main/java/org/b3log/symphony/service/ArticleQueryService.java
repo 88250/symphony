@@ -188,16 +188,15 @@ public class ArticleQueryService {
         Query query;
         switch (sortMode) {
             case 0:
-                query = new Query().
-                        addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum).
+                query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                        setPage(currentPageNum, fetchSize).
                         setFilter(makeQuestionArticleShowingFilter());
 
                 break;
             case 1:
                 query = new Query().
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+                        setPage(currentPageNum, fetchSize);
                 final CompositeFilter compositeFilter1 = makeQuestionArticleShowingFilter();
                 final List<Filter> filters1 = new ArrayList<>();
                 filters1.add(new PropertyFilter(Article.ARTICLE_COMMENT_CNT, FilterOperator.EQUAL, 0));
@@ -210,7 +209,7 @@ public class ArticleQueryService {
                 query = new Query().
                         addSort(Article.ARTICLE_QNA_OFFER_POINT, SortDirection.DESCENDING).
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+                        setPage(currentPageNum, fetchSize);
                 final CompositeFilter compositeFilter2 = makeQuestionArticleShowingFilter();
                 final List<Filter> filters2 = new ArrayList<>();
                 filters2.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
