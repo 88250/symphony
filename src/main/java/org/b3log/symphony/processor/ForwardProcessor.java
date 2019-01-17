@@ -49,7 +49,7 @@ import java.util.Map;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Jan 5, 2019
+ * @version 1.0.0.5, Jan 17, 2019
  * @since 2.3.0
  */
 @RequestProcessor
@@ -93,9 +93,7 @@ public class ForwardProcessor {
         }
 
         final String url = to;
-        Symphonys.EXECUTOR_SERVICE.submit(() -> {
-            linkMgmtService.addLink(url);
-        });
+        Symphonys.EXECUTOR_SERVICE.submit(() -> linkMgmtService.addLink(url));
 
         final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         if (null != user && UserExt.USER_XXX_STATUS_C_DISABLED == user.optInt(UserExt.USER_FORWARD_PAGE_STATUS)) {
