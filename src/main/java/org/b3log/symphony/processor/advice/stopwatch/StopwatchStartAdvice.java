@@ -35,6 +35,6 @@ public class StopwatchStartAdvice extends ProcessAdvice {
     @Override
     public void doAdvice(final RequestContext context) {
         final String requestURI = context.getRequest().getRequestURI();
-        Stopwatchs.start("Request URI [" + requestURI + ']');
+        Stopwatchs.start("Request URI [" + requestURI + "]");
     }
 }

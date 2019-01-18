@@ -993,7 +993,7 @@ public final class Emotions {
                 emotionName = "em" + i;
             }
 
-            ret = ret.replace('[' + emotionName + ']',
+            ret = ret.replace('[' + emotionName + "]",
                     "<img class=\"emoji\" src='" + Latkes.getStaticServePath() + "/images/emotions/" + emotionName + ".png" + "' />");
         }
 

@@ -201,7 +201,7 @@ public class LinkMgmtService {
 
                 final long elapsed = System.currentTimeMillis() - start;
                 LOGGER.log(Level.TRACE, "Accesses link [url=" + linkAddr + "] response [code=" + responseCode + "], "
-                        + "elapsed [" + elapsed + ']');
+                        + "elapsed [" + elapsed + "]");
 
                 link.put(Link.LINK_PING_CNT, link.optInt(Link.LINK_PING_CNT) + 1);
                 if (HttpServletResponse.SC_OK != responseCode) {

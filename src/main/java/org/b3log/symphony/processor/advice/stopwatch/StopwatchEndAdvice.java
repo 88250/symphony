@@ -53,7 +53,7 @@ public class StopwatchEndAdvice extends ProcessAdvice {
             final Map<String, Object> dataModel = renderer.getRenderDataModel();
             final String requestURI = context.getRequest().getRequestURI();
 
-            final long elapsed = Stopwatchs.getElapsed("Request URI [" + requestURI + ']');
+            final long elapsed = Stopwatchs.getElapsed("Request URI [" + requestURI + "]");
             dataModel.put(Common.ELAPSED, elapsed);
         }
 

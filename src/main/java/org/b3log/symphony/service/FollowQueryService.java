@@ -96,8 +96,7 @@ public class FollowQueryService {
         try {
             return followRepository.exists(followerId, followingId, followingType);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Determines following failed [followerId=" + followerId + ", followingId="
-                    + followingId + ']', e);
+            LOGGER.log(Level.ERROR, "Determines following failed [followerId=" + followerId + ", followingId=" + followingId + "]", e);
 
             return false;
         } finally {
@@ -138,7 +137,7 @@ public class FollowQueryService {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
                 final JSONObject user = userRepository.get(followingId);
                 if (null == user) {
-                    LOGGER.log(Level.WARN, "Not found user [id=" + followingId + ']');
+                    LOGGER.log(Level.WARN, "Not found user [id=" + followingId + "]");
 
                     continue;
                 }
@@ -184,7 +183,7 @@ public class FollowQueryService {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
                 final JSONObject tag = tagRepository.get(followingId);
                 if (null == tag) {
-                    LOGGER.log(Level.WARN, "Not found tag [followerId=" + followerId + ", followingId=" + followingId + ']');
+                    LOGGER.log(Level.WARN, "Not found tag [followerId=" + followerId + ", followingId=" + followingId + "]");
                     // Fix error data caused by history bug
                     try {
                         final Transaction transaction = followRepository.beginTransaction();
@@ -238,7 +237,7 @@ public class FollowQueryService {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
                 final JSONObject article = articleRepository.get(followingId);
                 if (null == article) {
-                    LOGGER.log(Level.WARN, "Not found article [id=" + followingId + ']');
+                    LOGGER.log(Level.WARN, "Not found article [id=" + followingId + "]");
 
                     continue;
                 }
@@ -286,7 +285,7 @@ public class FollowQueryService {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
                 final JSONObject article = articleRepository.get(followingId);
                 if (null == article) {
-                    LOGGER.log(Level.WARN, "Not found article [id=" + followingId + ']');
+                    LOGGER.log(Level.WARN, "Not found article [id=" + followingId + "]");
 
                     continue;
                 }
@@ -333,7 +332,7 @@ public class FollowQueryService {
                 final String followerId = follow.optString(Follow.FOLLOWER_ID);
                 final JSONObject user = userRepository.get(followerId);
                 if (null == user) {
-                    LOGGER.log(Level.WARN, "Not found user [id=" + followerId + ']');
+                    LOGGER.log(Level.WARN, "Not found user [id=" + followerId + "]");
 
                     continue;
                 }
@@ -380,7 +379,7 @@ public class FollowQueryService {
                 final String followerId = follow.optString(Follow.FOLLOWER_ID);
                 final JSONObject user = userRepository.get(followerId);
                 if (null == user) {
-                    LOGGER.log(Level.WARN, "Not found user [id=" + followerId + ']');
+                    LOGGER.log(Level.WARN, "Not found user [id=" + followerId + "]");
 
                     continue;
                 }

@@ -1240,7 +1240,7 @@ public class NotificationQueryService {
                 final JSONObject article = rlts.optJSONObject(0);
 
                 if (null == article) {
-                    LOGGER.warn("Not found article [id=" + articleId + ']');
+                    LOGGER.warn("Not found article [id=" + articleId + "]");
                     continue;
                 }
 
@@ -1248,7 +1248,7 @@ public class NotificationQueryService {
                 final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
                 final JSONObject author = userRepository.get(articleAuthorId);
                 if (null == author) {
-                    LOGGER.warn("Not found user [id=" + articleAuthorId + ']');
+                    LOGGER.warn("Not found user [id=" + articleAuthorId + "]");
 
                     continue;
                 }
