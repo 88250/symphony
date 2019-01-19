@@ -1187,25 +1187,23 @@ public class ArticleProcessor {
     @Before(StopwatchStartAdvice.class)
     @After(StopwatchEndAdvice.class)
     public void markdown2HTML(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-
         context.renderJSON(true);
-        String markdownText = context.param("markdownText");
+        final String markdownText = context.param("markdownText");
         if (StringUtils.isBlank(markdownText)) {
             context.renderJSONValue("html", "");
 
             return;
         }
 
-        markdownText = shortLinkQueryService.linkArticle(markdownText);
-        markdownText = Emotions.toAliases(markdownText);
-        markdownText = Emotions.convert(markdownText);
-        markdownText = Markdowns.toHTML(markdownText);
-        markdownText = Markdowns.clean(markdownText, "");
-        markdownText = MP3Players.render(markdownText);
-        markdownText = VideoPlayers.render(markdownText);
+        String html = shortLinkQueryService.linkArticle(markdownText);
+        html = Emotions.toAliases(html);
+        html = Emotions.convert(html);
+        html = Markdowns.toHTML(html);
+        html = Markdowns.clean(html, "");
+        html = MP3Players.render(html);
+        html = VideoPlayers.render(html);
 
-        context.renderJSONValue("html", markdownText);
+        context.renderJSONValue("html", html);
     }
 
     /**
