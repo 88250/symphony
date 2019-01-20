@@ -449,7 +449,7 @@ public class ArticleProcessor {
             domain.put(Domain.DOMAIN_T_TAGS, (Object) tags);
         }
 
-        final JSONObject user = (JSONObject) dataModel.get(Common.CURRENT_USER);
+        final JSONObject user = Sessions.getUser();
         if (null == user) {
             return;
         }
@@ -652,7 +652,7 @@ public class ArticleProcessor {
         String currentUserId = null;
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
-            currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            currentUser = Sessions.getUser();
             currentUserId = currentUser.optString(Keys.OBJECT_ID);
             article.put(Common.IS_MY_ARTICLE, currentUserId.equals(article.optString(Article.ARTICLE_AUTHOR_ID)));
 

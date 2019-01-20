@@ -207,7 +207,7 @@ public class UserProcessor {
         JSONObject currentUser;
         String currentUserId = null;
         if (isLoggedIn) {
-            currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            currentUser = Sessions.getUser();
             currentUserId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(currentUserId, followingId, Follow.FOLLOWING_TYPE_C_USER);
@@ -268,7 +268,7 @@ public class UserProcessor {
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         JSONObject currentUser = null;
         if (isLoggedIn) {
-            currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            currentUser = Sessions.getUser();
         }
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
@@ -292,7 +292,7 @@ public class UserProcessor {
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
         if (isLoggedIn) {
-            currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            currentUser = Sessions.getUser();
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
@@ -343,7 +343,7 @@ public class UserProcessor {
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         JSONObject currentUser = null;
         if (isLoggedIn) {
-            currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            currentUser = Sessions.getUser();
         }
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
@@ -427,7 +427,7 @@ public class UserProcessor {
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final JSONObject currentUser = Sessions.getUser();
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
@@ -499,7 +499,7 @@ public class UserProcessor {
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         JSONObject currentUser = null;
         if (isLoggedIn) {
-            currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            currentUser = Sessions.getUser();
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
@@ -564,7 +564,7 @@ public class UserProcessor {
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final JSONObject currentUser = Sessions.getUser();
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
@@ -627,7 +627,7 @@ public class UserProcessor {
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final JSONObject currentUser = Sessions.getUser();
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
@@ -691,7 +691,7 @@ public class UserProcessor {
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final JSONObject currentUser = Sessions.getUser();
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
@@ -754,7 +754,7 @@ public class UserProcessor {
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final JSONObject currentUser = Sessions.getUser();
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
@@ -817,7 +817,7 @@ public class UserProcessor {
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final JSONObject currentUser = Sessions.getUser();
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId, Follow.FOLLOWING_TYPE_C_USER);
@@ -887,7 +887,7 @@ public class UserProcessor {
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final JSONObject currentUser = Sessions.getUser();
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, user.optString(Keys.OBJECT_ID), Follow.FOLLOWING_TYPE_C_USER);

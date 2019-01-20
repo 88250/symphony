@@ -39,8 +39,6 @@ import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * Report processor.
  * <ul>

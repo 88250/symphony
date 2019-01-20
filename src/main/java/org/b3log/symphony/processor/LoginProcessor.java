@@ -273,7 +273,7 @@ public class LoginProcessor {
     @Before(StopwatchStartAdvice.class)
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showLogin(final RequestContext context) {
-        if (null != context.attr(Common.CURRENT_USER)) {
+        if (Sessions.isLoggedIn()) {
             context.sendRedirect(Latkes.getServePath());
 
             return;
@@ -438,7 +438,7 @@ public class LoginProcessor {
     @Before(StopwatchStartAdvice.class)
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showRegister(final RequestContext context) {
-        if (null != context.attr(Common.CURRENT_USER)) {
+        if (Sessions.isLoggedIn()) {
             context.sendRedirect(Latkes.getServePath());
 
             return;

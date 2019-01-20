@@ -100,11 +100,8 @@ public class TagProcessor {
      */
     @RequestProcessing(value = "/tags/query", method = HttpMethod.GET)
     public void queryTags(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        if (null == context.attr(Common.CURRENT_USER)) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        if (!Sessions.isLoggedIn()) {
+            context.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
@@ -194,7 +191,7 @@ public class TagProcessor {
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final JSONObject currentUser = Sessions.getUser();
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, tagId, Follow.FOLLOWING_TYPE_C_TAG);

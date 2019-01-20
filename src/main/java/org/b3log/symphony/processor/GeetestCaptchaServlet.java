@@ -45,7 +45,7 @@ public class GeetestCaptchaServlet extends HttpServlet {
 
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-        final JSONObject currentUser = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 

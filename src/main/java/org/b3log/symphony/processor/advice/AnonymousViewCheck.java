@@ -31,7 +31,6 @@ import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.AntPathMatcher;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.service.OptionQueryService;
@@ -141,7 +140,7 @@ public class AnonymousViewCheck extends ProcessAdvice {
                 }
 
                 if (Article.ARTICLE_ANONYMOUS_VIEW_C_NOT_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)
-                        && null == context.attr(Common.CURRENT_USER)) {
+                        && !Sessions.isLoggedIn()) {
                     throw new RequestProcessAdviceException(exception401);
                 } else if (Article.ARTICLE_ANONYMOUS_VIEW_C_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)) {
                     return;

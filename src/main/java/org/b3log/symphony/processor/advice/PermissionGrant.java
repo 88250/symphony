@@ -26,7 +26,6 @@ import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.renderer.AbstractResponseRenderer;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.Role;
 import org.b3log.symphony.service.RoleQueryService;
@@ -71,7 +70,7 @@ public class PermissionGrant extends ProcessAdvice {
         try {
             final Map<String, Object> dataModel = context.getRenderer().getRenderDataModel();
 
-            final JSONObject user = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final JSONObject user = Sessions.getUser();
             final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
             final Map<String, JSONObject> permissionsGrant = roleQueryService.getPermissionsGrantMap(roleId);
             dataModel.put(Permission.PERMISSIONS, permissionsGrant);
