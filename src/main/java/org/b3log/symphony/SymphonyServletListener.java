@@ -163,7 +163,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
 
         httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
-        httpServletRequest.setAttribute(Common.IS_MOBILE, false);
+        Sessions.setMobile(false);
 
         httpServletRequest.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
 
@@ -211,7 +211,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         Stopwatchs.start("Request initialized [" + httpServletRequest.getRequestURI() + "]");
 
-        httpServletRequest.setAttribute(Common.IS_MOBILE, BrowserType.MOBILE_BROWSER == browserType);
+        Sessions.setMobile(BrowserType.MOBILE_BROWSER == browserType);
 
         resolveSkinDir(httpServletRequest);
     }
@@ -251,10 +251,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
     private void resolveSkinDir(final HttpServletRequest request) {
         Stopwatchs.start("Resolve skin");
 
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, (Boolean) request.getAttribute(Common.IS_MOBILE)
-                ? "mobile" : "classic");
-        String templateDirName = (Boolean) request.getAttribute(Common.IS_MOBILE) ? "mobile" : "classic";
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, templateDirName);
+        final String templateDirName = Sessions.isMobile() ? "mobile" : "classic";
+        Sessions.setTemplateDir(templateDirName);
 
         final HttpSession httpSession = request.getSession();
         httpSession.setAttribute(Keys.TEMAPLTE_DIR_NAME, templateDirName);
@@ -313,8 +311,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
                 }
             }
 
-            final String skin = (Boolean) request.getAttribute(Common.IS_MOBILE)
-                    ? user.optString(UserExt.USER_MOBILE_SKIN) : user.optString(UserExt.USER_SKIN);
+            final String skin = Sessions.isMobile() ? user.optString(UserExt.USER_MOBILE_SKIN) : user.optString(UserExt.USER_SKIN);
 
             request.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
             httpSession.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);

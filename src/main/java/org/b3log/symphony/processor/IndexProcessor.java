@@ -393,9 +393,7 @@ public class IndexProcessor {
         Stopwatchs.start("Fills");
         try {
             dataModelService.fillHeaderAndFooter(context, dataModel);
-            if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
-                dataModelService.fillRandomArticles(dataModel);
-            }
+            dataModelService.fillRandomArticles(dataModel);
             dataModelService.fillSideHotArticles(dataModel);
             dataModelService.fillSideTags(dataModel);
             dataModelService.fillLatestCmts(dataModel);

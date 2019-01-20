@@ -210,10 +210,7 @@ public class DataModelService {
         Stopwatchs.start("Fills side tags");
         try {
             dataModel.put(Common.SIDE_TAGS, tagQueryService.getTags(Symphonys.getInt("sideTagsCnt")));
-
-            if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
-                fillNewTags(dataModel);
-            }
+            fillNewTags(dataModel);
         } finally {
             Stopwatchs.end();
         }
@@ -316,9 +313,6 @@ public class DataModelService {
     public void fillHeaderAndFooter(final RequestContext context, final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills header");
         try {
-            final boolean isMobile = (Boolean) context.attr(Common.IS_MOBILE);
-            dataModel.put(Common.IS_MOBILE, isMobile);
-
             fillHeader(context, dataModel);
         } finally {
             Stopwatchs.end();
