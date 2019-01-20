@@ -71,12 +71,12 @@ import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
  * @since 1.4.0
  */
 @RequestProcessor
-public class ChatRoomProcessor {
+public class ChatroomProcessor {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ChatRoomProcessor.class);
+    private static final Logger LOGGER = Logger.getLogger(ChatroomProcessor.class);
 
     /**
      * Chat messages.
