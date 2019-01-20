@@ -77,7 +77,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
      * @return template
      */
     public Template getTemplate(final boolean isSearchEngineBot, final JSONObject user) {
-        String templateDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
+        String templateDirName = Sessions.getTemplateDir();
         final String templateName = getTemplateName();
         try {
             Template ret;

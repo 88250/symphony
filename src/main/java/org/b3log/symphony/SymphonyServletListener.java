@@ -160,11 +160,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
         Locales.setLocale(Latkes.getLocale());
 
-        final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
-
-        httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
+        Sessions.setTemplateDir(Symphonys.get("skinDirName"));
         Sessions.setMobile(false);
 
+        final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
         httpServletRequest.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
 
         final String userAgentStr = httpServletRequest.getHeader(Common.USER_AGENT);
@@ -313,7 +312,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
             final String skin = Sessions.isMobile() ? user.optString(UserExt.USER_MOBILE_SKIN) : user.optString(UserExt.USER_SKIN);
 
-            request.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
+            Sessions.setTemplateDir(skin);
             httpSession.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
             request.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, user.optInt(UserExt.USER_AVATAR_VIEW_MODE));
 
