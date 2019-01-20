@@ -137,8 +137,7 @@ public class TopProcessor {
     public void showBalance(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/balance.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        final List<JSONObject> users = pointtransferQueryService.getTopBalanceUsers(avatarViewMode, Symphonys.getInt("topCnt"));
+        final List<JSONObject> users = pointtransferQueryService.getTopBalanceUsers(Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_BALANCE_USERS, users);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
@@ -159,8 +158,7 @@ public class TopProcessor {
     public void showConsumption(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/consumption.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        final List<JSONObject> users = pointtransferQueryService.getTopConsumptionUsers(avatarViewMode, Symphonys.getInt("topCnt"));
+        final List<JSONObject> users = pointtransferQueryService.getTopConsumptionUsers(Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_CONSUMPTION_USERS, users);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);

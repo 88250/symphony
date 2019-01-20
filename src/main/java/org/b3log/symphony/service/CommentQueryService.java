@@ -613,15 +613,13 @@ public class CommentQueryService {
     /**
      * Gets the article comments with the specified article id, page number and page size.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param articleId      the specified article id
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
      * @param sortMode       the specified sort mode (traditional: 0, real time: 1)
      * @return comments, return an empty list if not found
      */
-    public List<JSONObject> getArticleComments(final int avatarViewMode,
-                                               final String articleId, final int currentPageNum, final int pageSize, final int sortMode) {
+    public List<JSONObject> getArticleComments(final String articleId, final int currentPageNum, final int pageSize, final int sortMode) {
         Stopwatchs.start("Get comments");
 
         final Query query = new Query().setPageCount(1).setPage(currentPageNum, pageSize).

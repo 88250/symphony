@@ -433,8 +433,7 @@ public class SettingsProcessor {
         final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
         UserProcessor.fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final String userId = user.optString(Keys.OBJECT_ID);
 

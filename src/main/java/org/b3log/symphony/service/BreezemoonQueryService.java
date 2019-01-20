@@ -26,7 +26,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.*;
 import org.b3log.symphony.model.Breezemoon;
@@ -141,11 +140,10 @@ public class BreezemoonQueryService {
     /**
      * Get following user breezemoons.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param userId         the specified user id, may be {@code null}
-     * @param page           the specified page number
-     * @param pageSize       the specified page size
-     * @param windowSize     the specified window size
+     * @param userId     the specified user id, may be {@code null}
+     * @param page       the specified page number
+     * @param pageSize   the specified page size
+     * @param windowSize the specified window size
      * @return for example, <pre>
      * {
      *     "pagination": {
@@ -159,12 +157,10 @@ public class BreezemoonQueryService {
      * }
      * </pre>
      */
-    public JSONObject getFollowingUserBreezemoons(final int avatarViewMode, final String userId,
-                                                  final int page, final int pageSize, final int windowSize) {
+    public JSONObject getFollowingUserBreezemoons(final String userId, final int page, final int pageSize, final int windowSize) {
         final JSONObject ret = new JSONObject();
 
-        final List<JSONObject> users = (List<JSONObject>) followQueryService.getFollowingUsers(
-                avatarViewMode, userId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
+        final List<JSONObject> users = (List<JSONObject>) followQueryService.getFollowingUsers(userId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
         if (users.isEmpty()) {
             return getBreezemoons(userId, "", page, pageSize, windowSize);
         }
@@ -275,7 +271,6 @@ public class BreezemoonQueryService {
     /**
      * Get breezemoons by the specified request json object.
      *
-     * @param avatarViewMode    the specified avatar view mode
      * @param requestJSONObject the specified request json object, for example,
      *                          "paginationCurrentPageNum": 1,
      *                          "paginationPageSize": 20,
@@ -296,11 +291,10 @@ public class BreezemoonQueryService {
      *      }, ....]
      * }
      * </pre>
-     * @throws ServiceException service exception
      * @see Pagination
      */
 
-    public JSONObject getBreezemoons(final int avatarViewMode, final JSONObject requestJSONObject, final Map<String, Class<?>> fields) {
+    public JSONObject getBreezemoons(final JSONObject requestJSONObject, final Map<String, Class<?>> fields) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);

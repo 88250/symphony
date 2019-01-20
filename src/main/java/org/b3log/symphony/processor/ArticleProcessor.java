@@ -615,9 +615,7 @@ public class ArticleProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-
-        final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
+        final JSONObject article = articleQueryService.getArticleById(articleId);
         if (null == article) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -711,7 +709,7 @@ public class ArticleProcessor {
             articleMgmtService.incArticleViewCount(visit);
         }
 
-        dataModelService.fillRelevantArticles(avatarViewMode, dataModel, article);
+        dataModelService.fillRelevantArticles(dataModel, article);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
 
@@ -738,7 +736,7 @@ public class ArticleProcessor {
             final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
             if (Article.ARTICLE_TYPE_C_QNA == article.optInt(Article.ARTICLE_TYPE)) {
                 article.put(Common.OFFERED, rewardQueryService.isRewarded(articleAuthorId, articleId, Reward.TYPE_C_ACCEPT_COMMENT));
-                final JSONObject offeredComment = commentQueryService.getOfferedComment(avatarViewMode, cmtViewMode, articleId);
+                final JSONObject offeredComment = commentQueryService.getOfferedComment(cmtViewMode, articleId);
                 article.put(Article.ARTICLE_T_OFFERED_COMMENT, offeredComment);
                 if (null != offeredComment) {
                     final String offeredCmtId = offeredComment.optString(Keys.OBJECT_ID);
@@ -796,7 +794,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final List<JSONObject> niceComments = commentQueryService.getNiceComments(avatarViewMode, cmtViewMode, articleId, 3);
+        final List<JSONObject> niceComments = commentQueryService.getNiceComments(cmtViewMode, articleId, 3);
         article.put(Article.ARTICLE_T_NICE_COMMENTS, (Object) niceComments);
 
         double niceCmtScore = Double.MAX_VALUE;
@@ -829,8 +827,7 @@ public class ArticleProcessor {
         }
 
         // Load comments
-        final List<JSONObject> articleComments =
-                commentQueryService.getArticleComments(avatarViewMode, articleId, pageNum, pageSize, cmtViewMode);
+        final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, pageNum, pageSize, cmtViewMode);
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
         // Fill comment thank
@@ -1086,9 +1083,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-
-        final JSONObject oldArticle = articleQueryService.getArticleById(avatarViewMode, id);
+        final JSONObject oldArticle = articleQueryService.getArticleById(id);
         if (null == oldArticle) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
 

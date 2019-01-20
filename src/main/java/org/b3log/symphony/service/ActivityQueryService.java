@@ -91,11 +91,10 @@ public class ActivityQueryService {
     /**
      * Gets the top eating snake users (single game max) with the specified fetch size.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param fetchSize      the specified fetch size
+     * @param fetchSize the specified fetch size
      * @return users, returns an empty list if not found
      */
-    public List<JSONObject> getTopEatingSnakeUsersMax(final int avatarViewMode, final int fetchSize) {
+    public List<JSONObject> getTopEatingSnakeUsersMax(final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<>();
 
         try {
@@ -128,11 +127,10 @@ public class ActivityQueryService {
     /**
      * Gets the top eating snake users (sum) with the specified fetch size.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param fetchSize      the specified fetch size
+     * @param fetchSize the specified fetch size
      * @return users, returns an empty list if not found
      */
-    public List<JSONObject> getTopEatingSnakeUsersSum(final int avatarViewMode, final int fetchSize) {
+    public List<JSONObject> getTopEatingSnakeUsersSum(final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<>();
 
         try {
@@ -165,11 +163,10 @@ public class ActivityQueryService {
     /**
      * Gets the top checkin users with the specified fetch size.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param fetchSize      the specified fetch size
+     * @param fetchSize the specified fetch size
      * @return users, returns an empty list if not found
      */
-    public List<JSONObject> getTopCheckinUsers(final int avatarViewMode, final int fetchSize) {
+    public List<JSONObject> getTopCheckinUsers(final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<>();
 
         final Query query = new Query().addSort(UserExt.USER_LONGEST_CHECKIN_STREAK, SortDirection.DESCENDING).

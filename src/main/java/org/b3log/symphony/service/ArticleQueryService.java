@@ -649,12 +649,11 @@ public class ArticleQueryService {
      * The relevant articles exist the same tag with the specified article.
      * </p>
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param article        the specified article
-     * @param fetchSize      the specified fetch size
+     * @param article   the specified article
+     * @param fetchSize the specified fetch size
      * @return relevant articles, returns an empty list if not found
      */
-    public List<JSONObject> getRelevantArticles(final int avatarViewMode, final JSONObject article, final int fetchSize) {
+    public List<JSONObject> getRelevantArticles(final JSONObject article, final int fetchSize) {
         final String tagsString = article.optString(Article.ARTICLE_TAGS);
         String[] tagTitles = tagsString.split(",");
         final List<String> excludedB3logTitles = new ArrayList<>();
@@ -1050,11 +1049,10 @@ public class ArticleQueryService {
      * Saves thumbnail if it updated.
      * </p>
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param articleId      the specified id
+     * @param articleId the specified id
      * @return article, return {@code null} if not found
      */
-    public JSONObject getArticleById(final int avatarViewMode, final String articleId) {
+    public JSONObject getArticleById(final String articleId) {
         Stopwatchs.start("Get article by id");
         try {
             final JSONObject ret = articleRepository.get(articleId);
@@ -2008,7 +2006,6 @@ public class ArticleQueryService {
     /**
      * Gets articles by the specified request json object.
      *
-     * @param avatarViewMode    the specified avatar view mode
      * @param requestJSONObject the specified request json object, for example
      *                          "oId": "", // optional
      *                          "paginationCurrentPageNum": 1,
@@ -2031,7 +2028,7 @@ public class ArticleQueryService {
      * </pre>
      * @see Pagination
      */
-    public JSONObject getArticles(final int avatarViewMode, final JSONObject requestJSONObject, final Map<String, Class<?>> articleFields) {
+    public JSONObject getArticles(final JSONObject requestJSONObject, final Map<String, Class<?>> articleFields) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);

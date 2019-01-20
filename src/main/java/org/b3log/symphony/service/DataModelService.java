@@ -136,12 +136,11 @@ public class DataModelService {
     /**
      * Fills relevant articles.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param dataModel      the specified data model
-     * @param article        the specified article
+     * @param dataModel the specified data model
+     * @param article   the specified article
      * @throws Exception exception
      */
-    public void fillRelevantArticles(final int avatarViewMode, final Map<String, Object> dataModel, final JSONObject article) {
+    public void fillRelevantArticles(final Map<String, Object> dataModel, final JSONObject article) {
         final int articleStatus = article.optInt(Article.ARTICLE_STATUS);
         if (Article.ARTICLE_STATUS_C_INVALID == articleStatus) {
             dataModel.put(Common.SIDE_RELEVANT_ARTICLES, Collections.emptyList());
@@ -152,7 +151,7 @@ public class DataModelService {
         Stopwatchs.start("Fills relevant articles");
         try {
             dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                    articleQueryService.getRelevantArticles(avatarViewMode, article, Symphonys.getInt("sideRelevantArticlesCnt")));
+                    articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
         } finally {
             Stopwatchs.end();
         }

@@ -453,16 +453,15 @@ public class ActivityProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/eating-snake.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
 
-        final List<JSONObject> maxUsers = activityQueryService.getTopEatingSnakeUsersMax(avatarViewMode, 10);
+        final List<JSONObject> maxUsers = activityQueryService.getTopEatingSnakeUsersMax(10);
         dataModel.put("maxUsers", maxUsers);
 
-        final List<JSONObject> sumUsers = activityQueryService.getTopEatingSnakeUsersSum(avatarViewMode, 10);
+        final List<JSONObject> sumUsers = activityQueryService.getTopEatingSnakeUsersSum(10);
         dataModel.put("sumUsers", sumUsers);
 
         final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);

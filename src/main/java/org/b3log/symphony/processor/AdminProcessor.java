@@ -462,7 +462,6 @@ public class AdminProcessor {
         final int pageNum = Paginator.getPage(request);
         final int pageSize = PAGE_SIZE;
         final int windowSize = WINDOW_SIZE;
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
@@ -476,7 +475,7 @@ public class AdminProcessor {
         fields.put(Breezemoon.BREEZEMOON_AUTHOR_ID, String.class);
         fields.put(Breezemoon.BREEZEMOON_STATUS, Integer.class);
 
-        final JSONObject result = breezemoonQueryService.getBreezemoons(avatarViewMode, requestJSONObject, fields);
+        final JSONObject result = breezemoonQueryService.getBreezemoons(requestJSONObject, fields);
         dataModel.put(Breezemoon.BREEZEMOONS, CollectionUtils.jsonArrayToList(result.optJSONArray(Breezemoon.BREEZEMOONS)));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
@@ -1850,8 +1849,6 @@ public class AdminProcessor {
         articleFields.put(Article.ARTICLE_STATUS, Integer.class);
         articleFields.put(Article.ARTICLE_STICK, Long.class);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-
         final JSONObject result = articleQueryService.getArticles(avatarViewMode, requestJSONObject, articleFields);
         dataModel.put(Article.ARTICLES, CollectionUtils.jsonArrayToList(result.optJSONArray(Article.ARTICLES)));
 
@@ -1973,9 +1970,7 @@ public class AdminProcessor {
         commentFields.put(Comment.COMMENT_STATUS, Integer.class);
         commentFields.put(Comment.COMMENT_CONTENT, String.class);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-
-        final JSONObject result = commentQueryService.getComments(avatarViewMode, requestJSONObject, commentFields);
+        final JSONObject result = commentQueryService.getComments(requestJSONObject, commentFields);
         dataModel.put(Comment.COMMENTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Comment.COMMENTS)));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
