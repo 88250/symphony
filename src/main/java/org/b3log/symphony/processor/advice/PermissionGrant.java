@@ -29,6 +29,7 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.Role;
 import org.b3log.symphony.service.RoleQueryService;
+import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
 
 import java.util.Map;
