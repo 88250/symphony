@@ -310,7 +310,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
             }
 
             final String skin = Sessions.isMobile() ? user.optString(UserExt.USER_MOBILE_SKIN) : user.optString(UserExt.USER_SKIN);
-
             httpSession.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
             Sessions.setTemplateDir(skin);
             Sessions.setAvatarViewMode(user.optInt(UserExt.USER_AVATAR_VIEW_MODE));
