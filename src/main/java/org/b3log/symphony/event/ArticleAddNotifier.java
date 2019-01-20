@@ -128,8 +128,7 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
                     && Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)
                     && !Tag.TAG_TITLE_C_SANDBOX.equals(tags)
                     && !StringUtils.containsIgnoreCase(tags, Symphonys.get("systemAnnounce"))) {
-                final JSONObject followerUsersResult = followQueryService.getFollowerUsers(
-                        UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleAuthorId, 1, Integer.MAX_VALUE);
+                final JSONObject followerUsersResult = followQueryService.getFollowerUsers(articleAuthorId, 1, Integer.MAX_VALUE);
                 final List<JSONObject> followerUsers = (List<JSONObject>) followerUsersResult.opt(Keys.RESULTS);
                 final long thirtyDaysAgo = DateUtils.addDays(new Date(), -30).getTime();
                 for (final JSONObject followerUser : followerUsers) {

@@ -42,6 +42,7 @@ import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.SearchQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Escapes;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;

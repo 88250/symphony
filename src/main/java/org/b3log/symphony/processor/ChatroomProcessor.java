@@ -43,10 +43,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
 import org.b3log.symphony.processor.channel.ChatroomChannel;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.util.JSONs;
-import org.b3log.symphony.util.Markdowns;
-import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;

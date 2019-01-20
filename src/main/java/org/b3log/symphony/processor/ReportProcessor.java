@@ -35,6 +35,7 @@ import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ReportMgmtService;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
@@ -81,7 +82,6 @@ public class ReportProcessor {
     public void report(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
 
         final JSONObject currentUser = Sessions.getUser();

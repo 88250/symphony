@@ -28,6 +28,7 @@ import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;

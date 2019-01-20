@@ -30,6 +30,7 @@ import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.service.*;
+import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;

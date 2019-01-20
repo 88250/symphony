@@ -33,6 +33,7 @@ import org.b3log.symphony.processor.advice.PermissionCheck;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.FollowMgmtService;
 import org.b3log.symphony.service.NotificationMgmtService;
+import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;

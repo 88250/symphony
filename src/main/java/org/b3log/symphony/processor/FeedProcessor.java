@@ -32,7 +32,6 @@ import org.b3log.latke.util.Locales;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Option;
-import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.model.feed.RSSCategory;
 import org.b3log.symphony.model.feed.RSSChannel;
 import org.b3log.symphony.model.feed.RSSItem;
@@ -112,7 +111,7 @@ public class FeedProcessor {
 
         try {
             final RSSChannel channel = new RSSChannel();
-            final JSONObject result = articleQueryService.getRecentArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, 0, 1, Symphonys.getInt("indexArticlesCnt"));
+            final JSONObject result = articleQueryService.getRecentArticles(0, 1, Symphonys.getInt("indexArticlesCnt"));
             final List<JSONObject> articles = (List<JSONObject>) result.get(Article.ARTICLES);
             for (int i = 0; i < articles.size(); i++) {
                 RSSItem item = getItem(articles, i);
@@ -162,7 +161,7 @@ public class FeedProcessor {
 
             final RSSChannel channel = new RSSChannel();
             final String domainId = domain.optString(Keys.OBJECT_ID);
-            final JSONObject result = articleQueryService.getDomainArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, domainId, 1, Symphonys.getInt("indexArticlesCnt"));
+            final JSONObject result = articleQueryService.getDomainArticles(domainId, 1, Symphonys.getInt("indexArticlesCnt"));
             final List<JSONObject> articles = (List<JSONObject>) result.get(Article.ARTICLES);
             for (int i = 0; i < articles.size(); i++) {
                 RSSItem item = getItem(articles, i);
