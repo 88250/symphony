@@ -31,7 +31,6 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.util.JSONs;
@@ -127,7 +126,7 @@ public class ArticleCache {
 
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
+            articleQueryService.organizeArticles(articles);
 
             SIDE_HOT_ARTICLES.clear();
             SIDE_HOT_ARTICLES.addAll(articles);
@@ -175,7 +174,7 @@ public class ArticleCache {
         Stopwatchs.start("Load side random articles");
         try {
             final List<JSONObject> articles = articleRepository.getRandomly(size * 5);
-            articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
+            articleQueryService.organizeArticles(articles);
 
             SIDE_RANDOM_ARTICLES.clear();
             SIDE_RANDOM_ARTICLES.addAll(articles);
@@ -249,7 +248,7 @@ public class ArticleCache {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
-            articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
+            articleQueryService.organizeArticles(articles);
 
             PERFECT_ARTICLES.clear();
             PERFECT_ARTICLES.addAll(articles);

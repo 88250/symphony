@@ -177,9 +177,9 @@ public class SearchProcessor {
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
 
-        articleQueryService.organizeArticles(avatarViewMode, articles);
+        articleQueryService.organizeArticles(articles);
         final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
-        articleQueryService.genParticipants(avatarViewMode, articles, participantsCnt);
+        articleQueryService.genParticipants(articles, participantsCnt);
 
         dataModel.put(Article.ARTICLES, articles);
 

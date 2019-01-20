@@ -127,7 +127,7 @@ public class UserQueryService {
             }
 
             for (final JSONObject selectedUser : ret) {
-                avatarQueryService.fillUserAvatarURL(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, selectedUser);
+                avatarQueryService.fillUserAvatarURL(selectedUser);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get nice users failed", e);
@@ -291,7 +291,7 @@ public class UserQueryService {
                 final JSONObject u = new JSONObject();
                 u.put(User.USER_NAME, user.optString(User.USER_NAME));
                 u.put(UserExt.USER_T_NAME_LOWER_CASE, user.optString(User.USER_NAME).toLowerCase());
-                final String avatar = avatarQueryService.getAvatarURLByUser(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, user, "20");
+                final String avatar = avatarQueryService.getAvatarURLByUser(user, "20");
                 u.put(UserExt.USER_AVATAR_URL, avatar);
                 USER_NAMES.add(u);
             }
@@ -599,7 +599,7 @@ public class UserQueryService {
             final JSONObject user = users.optJSONObject(i);
             user.put(UserExt.USER_T_CREATE_TIME, new Date(user.optLong(Keys.OBJECT_ID)));
 
-            avatarQueryService.fillUserAvatarURL(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, user);
+            avatarQueryService.fillUserAvatarURL(user);
 
             final JSONObject role = roleQueryService.getRole(user.optString(User.USER_ROLE));
             user.put(Role.ROLE_NAME, role.optString(Role.ROLE_NAME));

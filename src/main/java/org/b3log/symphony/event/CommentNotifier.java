@@ -189,8 +189,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
                 if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == originalCmt.optInt(Comment.COMMENT_ANONYMOUS)) {
                     chData.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
-                            avatarQueryService.getAvatarURLByUser(
-                                    UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, originalCmtAuthor, "20"));
+                            avatarQueryService.getAvatarURLByUser(originalCmtAuthor, "20"));
                 } else {
                     chData.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
                             avatarQueryService.getDefaultAvatarURL("20"));
@@ -199,8 +198,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == originalComment.optInt(Comment.COMMENT_ANONYMOUS)) {
                 chData.put(Comment.COMMENT_T_AUTHOR_NAME, commenterName);
-                chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(
-                        UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, commenter, "48"));
+                chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(commenter, "48"));
             } else {
                 chData.put(Comment.COMMENT_T_AUTHOR_NAME, UserExt.ANONYMOUS_USER_NAME);
                 chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getDefaultAvatarURL("48"));
@@ -244,8 +242,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             if (hasAtParticipantPerm) {
                 // 1. '@participants' Notification
                 if (commentContent.contains("@participants ")) {
-                    final List<JSONObject> participants = articleQueryService.getArticleLatestParticipants(
-                            UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleId, Integer.MAX_VALUE);
+                    final List<JSONObject> participants = articleQueryService.getArticleLatestParticipants(articleId, Integer.MAX_VALUE);
                     int count = participants.size();
                     if (count < 1) {
                         return;

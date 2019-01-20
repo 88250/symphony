@@ -747,9 +747,7 @@ public class ArticleQueryService {
             final List<JSONObject> ret = new ArrayList<>();
 
             if (!tagList.isEmpty()) {
-                final List<JSONObject> tagArticles
-                        = getArticlesByTags(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC,
-                        currentPageNum, pageSize, articleFields, tagList.toArray(new JSONObject[0]));
+                final List<JSONObject> tagArticles = getArticlesByTags(currentPageNum, pageSize, articleFields, tagList.toArray(new JSONObject[0]));
 
                 ret.addAll(tagArticles);
             }
@@ -799,7 +797,7 @@ public class ArticleQueryService {
                 article.remove(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "210");
                 article.remove(Article.ARTICLE_T_STICK_REMAINS);
 
-                long createTime = 0;
+                long createTime;
                 final Object time = article.get(Article.ARTICLE_CREATE_TIME);
                 if (time instanceof Date) {
                     createTime = ((Date) time).getTime();
@@ -1801,7 +1799,6 @@ public class ArticleQueryService {
     /**
      * Generates participants for the specified articles.
      *
-     * @param avatarViewMode  the specified avatar view mode
      * @param articles        the specified articles
      * @param participantsCnt the specified generate size
      */
@@ -1815,8 +1812,7 @@ public class ArticleQueryService {
                     continue;
                 }
 
-                final List<JSONObject> articleParticipants = getArticleLatestParticipants(
-                        avatarViewMode, article.optString(Keys.OBJECT_ID), participantsCnt);
+                final List<JSONObject> articleParticipants = getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
                 article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) articleParticipants);
             }
         } finally {
@@ -1827,9 +1823,8 @@ public class ArticleQueryService {
     /**
      * Gets the article participants (commenters) with the specified article article id and fetch size.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param articleId      the specified article id
-     * @param fetchSize      the specified fetch size
+     * @param articleId the specified article id
+     * @param fetchSize the specified fetch size
      * @return article participants, for example,      <pre>
      * [
      *     {
@@ -1842,7 +1837,7 @@ public class ArticleQueryService {
      * ]
      * </pre>, returns an empty list if not found
      */
-    public List<JSONObject> getArticleLatestParticipants(final int avatarViewMode, final String articleId, final int fetchSize) {
+    public List<JSONObject> getArticleLatestParticipants(final String articleId, final int fetchSize) {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).
                 select(Keys.OBJECT_ID, Comment.COMMENT_AUTHOR_ID).

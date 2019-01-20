@@ -189,7 +189,7 @@ public class MailMgmtService {
 
                 return;
             }
-            articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
+            articleQueryService.organizeArticles(articles);
 
             String mailSubject = "";
             int goodCnt = 0;
