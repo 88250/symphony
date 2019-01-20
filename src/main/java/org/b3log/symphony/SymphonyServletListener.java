@@ -162,10 +162,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         Sessions.setTemplateDir(Symphonys.get("skinDirName"));
         Sessions.setMobile(false);
+        Sessions.setAvatarViewMode(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
 
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
-        httpServletRequest.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
-
         final String userAgentStr = httpServletRequest.getHeader(Common.USER_AGENT);
 
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
@@ -312,9 +311,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
             final String skin = Sessions.isMobile() ? user.optString(UserExt.USER_MOBILE_SKIN) : user.optString(UserExt.USER_SKIN);
 
-            Sessions.setTemplateDir(skin);
             httpSession.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
-            request.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, user.optInt(UserExt.USER_AVATAR_VIEW_MODE));
+            Sessions.setTemplateDir(skin);
+            Sessions.setAvatarViewMode(user.optInt(UserExt.USER_AVATAR_VIEW_MODE));
 
             request.setAttribute(Common.CURRENT_USER, user);
 

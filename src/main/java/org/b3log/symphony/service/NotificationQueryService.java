@@ -673,7 +673,7 @@ public class NotificationQueryService {
             for (int i = 0; i < results.length(); i++) {
                 final JSONObject notification = results.optJSONObject(i);
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
-                final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, commentId);
+                final JSONObject comment = commentQueryService.getCommentById(commentId);
 
                 final Query q = new Query().setPageCount(1).
                         select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
@@ -753,7 +753,7 @@ public class NotificationQueryService {
             for (int i = 0; i < results.length(); i++) {
                 final JSONObject notification = results.optJSONObject(i);
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
-                final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, commentId);
+                final JSONObject comment = commentQueryService.getCommentById(commentId);
 
                 final Query q = new Query().setPageCount(1).
                         select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
@@ -859,7 +859,7 @@ public class NotificationQueryService {
 
                 switch (dataType) {
                     case Notification.DATA_TYPE_C_AT:
-                        final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, dataId);
+                        final JSONObject comment = commentQueryService.getCommentById(dataId);
                         if (null != comment) {
                             final Query q = new Query().setPageCount(1).
                                     select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
@@ -893,7 +893,7 @@ public class NotificationQueryService {
 
                             atNotification.put(Common.AUTHOR_NAME, articleAuthor.optString(User.USER_NAME));
                             atNotification.put(Common.CONTENT, "");
-                            final String thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, articleAuthor, "48");
+                            final String thumbnailURL = avatarQueryService.getAvatarURLByUser(articleAuthor, "48");
                             atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
                             atNotification.put(Article.ARTICLE_TITLE, Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                             atNotification.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
@@ -939,7 +939,7 @@ public class NotificationQueryService {
                         final String followerUserName = followerUser.optString(User.USER_NAME);
                         atNotification.put(User.USER_NAME, followerUserName);
 
-                        final String thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, followerUser, "48");
+                        final String thumbnailURL = avatarQueryService.getAvatarURLByUser(followerUser, "48");
                         atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
 
                         final String userLink = UserExt.getUserLink(followerUserName);
@@ -963,7 +963,7 @@ public class NotificationQueryService {
                         final JSONObject cmtVoter = userRepository.get(cmtVoterId);
                         String voterUserName = cmtVoter.optString(User.USER_NAME);
                         atNotification.put(User.USER_NAME, voterUserName);
-                        String thumbnailURLVote = avatarQueryService.getAvatarURLByUser(avatarViewMode, cmtVoter, "48");
+                        String thumbnailURLVote = avatarQueryService.getAvatarURLByUser(cmtVoter, "48");
                         atNotification.put(Common.THUMBNAIL_URL, thumbnailURLVote);
 
                         JSONObject articleVote = null;
@@ -1014,7 +1014,7 @@ public class NotificationQueryService {
                         final JSONObject voter = userRepository.get(voterId);
                         voterUserName = voter.optString(User.USER_NAME);
                         atNotification.put(User.USER_NAME, voterUserName);
-                        thumbnailURLVote = avatarQueryService.getAvatarURLByUser(avatarViewMode, voter, "48");
+                        thumbnailURLVote = avatarQueryService.getAvatarURLByUser(voter, "48");
                         atNotification.put(Common.THUMBNAIL_URL, thumbnailURLVote);
 
                         JSONObject voteArticle = null;
@@ -1111,7 +1111,7 @@ public class NotificationQueryService {
 
                 switch (dataType) {
                     case Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_COMMENT:
-                        final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, commentId);
+                        final JSONObject comment = commentQueryService.getCommentById(commentId);
                         final Query q = new Query().setPageCount(1).
                                 select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                                 setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
@@ -1148,7 +1148,7 @@ public class NotificationQueryService {
                         followingNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                         followingNotification.put(Common.AUTHOR_NAME, articleAuthor.optString(User.USER_NAME));
                         followingNotification.put(Common.CONTENT, "");
-                        final String thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, articleAuthor, "48");
+                        final String thumbnailURL = avatarQueryService.getAvatarURLByUser(articleAuthor, "48");
                         followingNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
                         followingNotification.put(Article.ARTICLE_TITLE, Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                         followingNotification.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
@@ -1257,7 +1257,7 @@ public class NotificationQueryService {
                 broadcastNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                 broadcastNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
                 broadcastNotification.put(Common.CONTENT, "");
-                broadcastNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(avatarViewMode, author, "48"));
+                broadcastNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author, "48"));
                 broadcastNotification.put(Article.ARTICLE_TITLE, Emotions.convert(articleTitle));
                 broadcastNotification.put(Common.URL, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
                 broadcastNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));

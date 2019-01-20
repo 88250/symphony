@@ -198,7 +198,7 @@ public class UserProcessor {
         fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -214,7 +214,7 @@ public class UserProcessor {
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
-        final JSONObject result = breezemoonQueryService.getBreezemoons(avatarViewMode, currentUserId, followingId, pageNum, pageSize, windowSize);
+        final JSONObject result = breezemoonQueryService.getBreezemoons(currentUserId, followingId, pageNum, pageSize, windowSize);
         List<JSONObject> bms = (List<JSONObject>) result.opt(Breezemoon.BREEZEMOONS);
         dataModel.put(Common.USER_HOME_BREEZEMOONS, bms);
 
@@ -243,7 +243,7 @@ public class UserProcessor {
             }
 
             bms = Collections.singletonList(breezemoon);
-            breezemoonQueryService.organizeBreezemoons(avatarViewMode, "admin", bms);
+            breezemoonQueryService.organizeBreezemoons("admin", bms);
             dataModel.put(Common.USER_HOME_BREEZEMOONS, bms);
         } else {
             dataModel.put(Common.IS_SINGLE_BREEZEMOON_URL, false);
@@ -287,7 +287,7 @@ public class UserProcessor {
         fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -300,9 +300,7 @@ public class UserProcessor {
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
-        final List<JSONObject> userComments = commentQueryService.getUserComments(
-                avatarViewMode, user.optString(Keys.OBJECT_ID), Comment.COMMENT_ANONYMOUS_C_ANONYMOUS,
-                pageNum, pageSize, currentUser);
+        final List<JSONObject> userComments = commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID), Comment.COMMENT_ANONYMOUS_C_ANONYMOUS, pageNum, pageSize, currentUser);
         dataModel.put(Common.USER_HOME_COMMENTS, userComments);
 
         int recordCount = 0;
@@ -365,7 +363,7 @@ public class UserProcessor {
         fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         if (isLoggedIn) {
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
@@ -429,7 +427,7 @@ public class UserProcessor {
         fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
@@ -499,7 +497,7 @@ public class UserProcessor {
         fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -514,8 +512,7 @@ public class UserProcessor {
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
-        final List<JSONObject> userComments = commentQueryService.getUserComments(avatarViewMode,
-                user.optString(Keys.OBJECT_ID), Comment.COMMENT_ANONYMOUS_C_PUBLIC, pageNum, pageSize, currentUser);
+        final List<JSONObject> userComments = commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID), Comment.COMMENT_ANONYMOUS_C_PUBLIC, pageNum, pageSize, currentUser);
         dataModel.put(Common.USER_HOME_COMMENTS, userComments);
 
         int recordCount = 0;
@@ -566,7 +563,7 @@ public class UserProcessor {
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final JSONObject followingUsersResult = followQueryService.getFollowingUsers(avatarViewMode,
                 followingId, pageNum, pageSize);
@@ -631,7 +628,7 @@ public class UserProcessor {
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final JSONObject followingTagsResult = followQueryService.getFollowingTags(followingId, pageNum, pageSize);
         final List<JSONObject> followingTags = (List<JSONObject>) followingTagsResult.opt(Keys.RESULTS);
@@ -696,7 +693,7 @@ public class UserProcessor {
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final JSONObject followingArticlesResult = followQueryService.getFollowingArticles(avatarViewMode,
                 followingId, pageNum, pageSize);
@@ -761,7 +758,7 @@ public class UserProcessor {
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final JSONObject followingArticlesResult = followQueryService.getWatchingArticles(avatarViewMode,
                 followingId, pageNum, pageSize);
@@ -832,7 +829,7 @@ public class UserProcessor {
         final List<JSONObject> followerUsers = (List) followerUsersResult.opt(Keys.RESULTS);
         dataModel.put(Common.USER_HOME_FOLLOWER_USERS, followerUsers);
 
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
@@ -895,7 +892,7 @@ public class UserProcessor {
         fillHomeUser(dataModel, user, roleQueryService);
 
         final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -946,7 +943,7 @@ public class UserProcessor {
             for (final JSONObject admin : admins) {
                 final JSONObject userName = new JSONObject();
                 userName.put(User.USER_NAME, admin.optString(User.USER_NAME));
-                final String avatar = avatarQueryService.getAvatarURLByUser(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, admin, "20");
+                final String avatar = avatarQueryService.getAvatarURLByUser(admin, "20");
                 userName.put(UserExt.USER_AVATAR_URL, avatar);
 
                 userNames.add(userName);

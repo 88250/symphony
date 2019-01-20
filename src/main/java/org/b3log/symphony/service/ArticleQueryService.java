@@ -1796,9 +1796,9 @@ public class ArticleQueryService {
             article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "20", avatarQueryService.getDefaultAvatarURL("20"));
         } else {
             article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
-            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "210", avatarQueryService.getAvatarURLByUser(avatarViewMode, author, "210"));
-            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "48", avatarQueryService.getAvatarURLByUser(avatarViewMode, author, "48"));
-            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "20", avatarQueryService.getAvatarURLByUser(avatarViewMode, author, "20"));
+            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "210", avatarQueryService.getAvatarURLByUser(author, "210"));
+            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "48", avatarQueryService.getAvatarURLByUser(author, "48"));
+            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "20", avatarQueryService.getAvatarURLByUser(author, "20"));
         }
     }
 
@@ -1885,7 +1885,7 @@ public class ArticleQueryService {
 
                 String thumbnailURL = AvatarQueryService.DEFAULT_AVATAR_URL;
                 if (!UserExt.COM_BOT_EMAIL.equals(email)) {
-                    thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, commenter, "48");
+                    thumbnailURL = avatarQueryService.getAvatarURLByUser(commenter, "48");
                 }
 
                 final JSONObject participant = new JSONObject();

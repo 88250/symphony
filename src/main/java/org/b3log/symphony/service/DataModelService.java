@@ -259,14 +259,12 @@ public class DataModelService {
         dataModel.put("algoliaSearchKey", Symphonys.get("algolia.searchKey"));
         dataModel.put("algoliaIndex", Symphonys.get("algolia.index"));
 
-        // fillTrendTags(dataModel);
-        fillPersonalNav(context, dataModel);
-
+        fillPersonalNav(dataModel);
         fillLangs(dataModel);
         fillSideAd(dataModel);
         fillHeaderBanner(dataModel);
         fillSideTips(dataModel);
-        fillSideBreezemoons(context, dataModel);
+        fillSideBreezemoons(dataModel);
         fillDomainNav(dataModel);
 
         dataModel.put(Common.CSRF_TOKEN, Sessions.getCSRFToken(context));
@@ -333,33 +331,27 @@ public class DataModelService {
     /**
      * Fills personal navigation.
      *
-     * @param context   the specified request context
      * @param dataModel the specified data model
      */
-    private void fillPersonalNav(final RequestContext context, final Map<String, Object> dataModel) {
+    private void fillPersonalNav(final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills personal nav");
         try {
-            dataModel.put(Common.IS_LOGGED_IN, false);
+            final boolean isLoggedIn = Sessions.isLoggedIn();
+            dataModel.put(Common.IS_LOGGED_IN, isLoggedIn);
             dataModel.put(Common.IS_ADMIN_LOGGED_IN, false);
 
-            final JSONObject curUser = (JSONObject) context.attr(Common.CURRENT_USER);
-            if (null == curUser) {
-                dataModel.put("loginLabel", langPropsService.get("loginLabel"));
 
+            if (!isLoggedIn) {
                 return;
             }
 
             dataModel.put(Common.IS_LOGGED_IN, true);
             dataModel.put(Common.LOGOUT_URL, userQueryService.getLogoutURL("/"));
-            dataModel.put("logoutLabel", langPropsService.get("logoutLabel"));
-
+            final JSONObject curUser = Sessions.getUser();
             final String userRole = curUser.optString(User.USER_ROLE);
             dataModel.put(User.USER_ROLE, userRole);
-
             dataModel.put(Common.IS_ADMIN_LOGGED_IN, Role.ROLE_ID_C_ADMIN.equals(userRole));
-
-            avatarQueryService.fillUserAvatarURL(curUser.optInt(UserExt.USER_AVATAR_VIEW_MODE), curUser);
-
+            avatarQueryService.fillUserAvatarURL(curUser);
             final String userId = curUser.optString(Keys.OBJECT_ID);
 
             final long followingArticleCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_ARTICLE);
@@ -417,13 +409,12 @@ public class DataModelService {
     /**
      * Fills side breezemoons.
      *
-     * @param context   the specified request context
      * @param dataModel the specified data model
      */
-    private void fillSideBreezemoons(final RequestContext context, final Map<String, Object> dataModel) {
+    private void fillSideBreezemoons(final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills breezemoons");
         try {
-            final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
+            final int avatarViewMode = Sessions.getAvatarViewMode();
             final List<JSONObject> sideBreezemoons = breezemoonQueryService.getSideBreezemoons(avatarViewMode);
 
             dataModel.put(Common.SIDE_BREEZEMOONS, sideBreezemoons);

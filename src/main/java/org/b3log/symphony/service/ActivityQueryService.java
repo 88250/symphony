@@ -114,7 +114,7 @@ public class ActivityQueryService {
                     + "LIMIT ?", fetchSize);
 
             for (final JSONObject user : users) {
-                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+                avatarQueryService.fillUserAvatarURL(user);
 
                 ret.add(user);
             }
@@ -151,7 +151,7 @@ public class ActivityQueryService {
                     + "LIMIT ?", fetchSize);
 
             for (final JSONObject user : users) {
-                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+                avatarQueryService.fillUserAvatarURL(user);
 
                 ret.add(user);
             }
@@ -187,7 +187,7 @@ public class ActivityQueryService {
                     user.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(user.optInt(UserExt.USER_POINT)));
                 }
 
-                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+                avatarQueryService.fillUserAvatarURL(user);
 
                 ret.add(user);
             }

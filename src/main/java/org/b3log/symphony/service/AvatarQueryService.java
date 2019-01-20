@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -31,7 +32,7 @@ import java.awt.image.BufferedImage;
  * User avatar query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.3, Oct 21, 2018
+ * @version 1.5.2.4, Jan 20, 2019
  * @since 0.3.0
  */
 @Service
@@ -45,13 +46,12 @@ public class AvatarQueryService {
     /**
      * Fills the specified user thumbnail URL.
      *
-     * @param viewMode the specified view mode, {@code 0} for original image, {@code 1} for static image
-     * @param user     the specified user
+     * @param user the specified user
      */
-    public void fillUserAvatarURL(final int viewMode, final JSONObject user) {
-        user.put(UserExt.USER_AVATAR_URL + "210", getAvatarURLByUser(viewMode, user, "210"));
-        user.put(UserExt.USER_AVATAR_URL + "48", getAvatarURLByUser(viewMode, user, "48"));
-        user.put(UserExt.USER_AVATAR_URL + "20", getAvatarURLByUser(viewMode, user, "20"));
+    public void fillUserAvatarURL(final JSONObject user) {
+        user.put(UserExt.USER_AVATAR_URL + "210", getAvatarURLByUser(user, "210"));
+        user.put(UserExt.USER_AVATAR_URL + "48", getAvatarURLByUser(user, "48"));
+        user.put(UserExt.USER_AVATAR_URL + "20", getAvatarURLByUser(user, "20"));
     }
 
     /**
@@ -74,15 +74,16 @@ public class AvatarQueryService {
     /**
      * Gets the avatar URL for the specified user with the specified size.
      *
-     * @param viewMode the specified view mode, {@code 0} for original image, {@code 1} for static image
-     * @param user     the specified user
-     * @param size     the specified size
+     * @param user the specified user
+     * @param size the specified size
      * @return the avatar URL
      */
-    public String getAvatarURLByUser(final int viewMode, final JSONObject user, final String size) {
+    public String getAvatarURLByUser(final JSONObject user, final String size) {
         if (null == user) {
-            return DEFAULT_AVATAR_URL;
+            return getDefaultAvatarURL(size);
         }
+
+        final int viewMode = Sessions.getAvatarViewMode();
 
         String originalURL = user.optString(UserExt.USER_AVATAR_URL);
         if (StringUtils.isBlank(originalURL)) {
