@@ -258,7 +258,7 @@ public class ArticleQueryService {
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
         final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
-        organizeArticles(avatarViewMode, articles);
+        organizeArticles(articles);
         for (final JSONObject article : articles) {
             final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
             final String articleId = article.optString(Keys.OBJECT_ID);
@@ -318,7 +318,7 @@ public class ArticleQueryService {
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
         final List<JSONObject> ret = CollectionUtils.jsonArrayToList(data);
-        organizeArticles(avatarViewMode, ret);
+        organizeArticles(ret);
 
         return ret;
     }
@@ -360,7 +360,7 @@ public class ArticleQueryService {
         articleFields.put(Article.ARTICLE_CONTENT, String.class);
         articleFields.put(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
 
-        return getArticlesByTags(avatarViewMode, currentPageNum, pageSize, articleFields, tags.toArray(new JSONObject[0]));
+        return getArticlesByTags(currentPageNum, pageSize, articleFields, tags.toArray(new JSONObject[0]));
     }
 
     /**
@@ -628,10 +628,10 @@ public class ArticleQueryService {
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articleRepository.get(query).optJSONArray(Keys.RESULTS));
-            organizeArticles(avatarViewMode, articles);
+            organizeArticles(articles);
 
             final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
-            genParticipants(avatarViewMode, articles, participantsCnt);
+            genParticipants(articles, participantsCnt);
 
             ret.put(Article.ARTICLES, (Object) articles);
 
@@ -706,7 +706,7 @@ public class ArticleQueryService {
             final int size = ret.size() > fetchSize ? fetchSize : ret.size();
             ret = ret.subList(0, size);
 
-            organizeArticles(avatarViewMode, ret);
+            organizeArticles(ret);
 
             return ret;
         } catch (final Exception e) {
@@ -824,14 +824,13 @@ public class ArticleQueryService {
     /**
      * Gets articles by the specified tags (order by article create date desc).
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param tags           the specified tags
      * @param currentPageNum the specified page number
      * @param articleFields  the specified article fields to return
      * @param pageSize       the specified page size
      * @return articles, return an empty list if not found
      */
-    public List<JSONObject> getArticlesByTags(final int avatarViewMode, final int currentPageNum, final int pageSize,
+    public List<JSONObject> getArticlesByTags(final int currentPageNum, final int pageSize,
                                               final Map<String, Class<?>> articleFields, final JSONObject... tags) {
         try {
             final List<Filter> filters = new ArrayList<>();
@@ -867,7 +866,7 @@ public class ArticleQueryService {
             result = articleRepository.get(query);
 
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            organizeArticles(avatarViewMode, ret);
+            organizeArticles(ret);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -896,10 +895,10 @@ public class ArticleQueryService {
             final JSONObject result = articleRepository.get(query);
 
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            organizeArticles(avatarViewMode, ret);
+            organizeArticles(ret);
 
             final Integer participantsCnt = Symphonys.getInt("cityArticleParticipantsCnt");
-            genParticipants(avatarViewMode, ret, participantsCnt);
+            genParticipants(ret, participantsCnt);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -1034,10 +1033,10 @@ public class ArticleQueryService {
                     break;
             }
 
-            organizeArticles(avatarViewMode, ret);
+            organizeArticles(ret);
 
             final Integer participantsCnt = Symphonys.getInt("tagArticleParticipantsCnt");
-            genParticipants(avatarViewMode, ret, participantsCnt);
+            genParticipants(ret, participantsCnt);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -1048,7 +1047,7 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets an article with {@link #organizeArticle(int, JSONObject)} by the specified id.
+     * Gets an article with {@link #organizeArticle(JSONObject)} by the specified id.
      * <p>
      * Saves thumbnail if it updated.
      * </p>
@@ -1067,7 +1066,7 @@ public class ArticleQueryService {
 
             final JSONObject articleDO = JSONs.clone(ret);
 
-            organizeArticle(avatarViewMode, ret);
+            organizeArticle(ret);
 
             final String generatedThumb = ret.optString(Article.ARTICLE_T_THUMBNAIL_URL);
             final String articleImg1 = ret.optString(Article.ARTICLE_IMG1_URL);
@@ -1213,7 +1212,7 @@ public class ArticleQueryService {
             first.put(Pagination.PAGINATION_RECORD_COUNT, recordCount);
             first.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
 
-            organizeArticles(avatarViewMode, ret);
+            organizeArticles(ret);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -1395,7 +1394,7 @@ public class ArticleQueryService {
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
         final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
-        organizeArticles(avatarViewMode, articles);
+        organizeArticles(articles);
 
         //final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
         //genParticipants(articles, participantsCnt);
@@ -1444,7 +1443,7 @@ public class ArticleQueryService {
                 Stopwatchs.end();
             }
 
-            organizeArticles(avatarViewMode, ret);
+            organizeArticles(ret);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -1474,7 +1473,7 @@ public class ArticleQueryService {
                 Stopwatchs.end();
             }
 
-            organizeArticles(avatarViewMode, ret);
+            organizeArticles(ret);
 
             Stopwatchs.start("Checks author status");
             try {
@@ -1557,7 +1556,7 @@ public class ArticleQueryService {
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
         final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
-        organizeArticles(avatarViewMode, articles);
+        organizeArticles(articles);
 
         //final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
         //genParticipants(articles, participantsCnt);
@@ -1578,17 +1577,16 @@ public class ArticleQueryService {
     /**
      * Organizes the specified articles.
      *
-     * @param avatarViewMode the specified avatarViewMode
-     * @param articles       the specified articles
-     * @see #organizeArticle(int, org.json.JSONObject)
+     * @param articles the specified articles
+     * @see #organizeArticle(org.json.JSONObject)
      */
-    public void organizeArticles(final int avatarViewMode, final List<JSONObject> articles) {
+    public void organizeArticles(final List<JSONObject> articles) {
         Stopwatchs.start("Organize articles");
         try {
             final ForkJoinPool pool = new ForkJoinPool(Symphonys.PROCESSORS);
             pool.submit(() -> articles.parallelStream().forEach(article -> {
                 try {
-                    organizeArticle(avatarViewMode, article);
+                    organizeArticle(article);
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Organizes article [" + article.optString(Keys.OBJECT_ID) + "] failed", e);
                 } finally {
@@ -1624,15 +1622,14 @@ public class ArticleQueryService {
      * <li>image processing if using Qiniu</li>
      * </ul>
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param article        the specified article
+     * @param article the specified article
      * @throws RepositoryException repository exception
      */
-    public void organizeArticle(final int avatarViewMode, final JSONObject article) throws RepositoryException {
+    public void organizeArticle(final JSONObject article) throws RepositoryException {
         article.put(Article.ARTICLE_T_ORIGINAL_CONTENT, article.optString(Article.ARTICLE_CONTENT));
         article.put(Common.OFFERED, false);
         toArticleDate(article);
-        genArticleAuthor(avatarViewMode, article);
+        genArticleAuthor(article);
 
         final String previewContent = getArticleMetaDesc(article);
         article.put(Article.ARTICLE_T_PREVIEW_CONTENT, previewContent);
@@ -1779,11 +1776,10 @@ public class ArticleQueryService {
     /**
      * Generates the specified article author name and thumbnail URL.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param article        the specified article
+     * @param article the specified article
      * @throws RepositoryException repository exception
      */
-    private void genArticleAuthor(final int avatarViewMode, final JSONObject article) throws RepositoryException {
+    private void genArticleAuthor(final JSONObject article) throws RepositoryException {
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
         final JSONObject author = userRepository.get(authorId);
@@ -1809,7 +1805,7 @@ public class ArticleQueryService {
      * @param articles        the specified articles
      * @param participantsCnt the specified generate size
      */
-    public void genParticipants(final int avatarViewMode, final List<JSONObject> articles, final Integer participantsCnt) {
+    public void genParticipants(final List<JSONObject> articles, final Integer participantsCnt) {
         Stopwatchs.start("Generates participants");
         try {
             for (final JSONObject article : articles) {
@@ -2076,7 +2072,7 @@ public class ArticleQueryService {
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
         final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
-        organizeArticles(avatarViewMode, articles);
+        organizeArticles(articles);
 
         ret.put(Article.ARTICLES, articles);
 

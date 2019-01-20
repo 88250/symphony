@@ -142,7 +142,7 @@ public class FollowQueryService {
                     continue;
                 }
 
-                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+                avatarQueryService.fillUserAvatarURL(user);
 
                 records.add(user);
             }
@@ -242,7 +242,7 @@ public class FollowQueryService {
                     continue;
                 }
 
-                articleQueryService.organizeArticle(avatarViewMode, article);
+                articleQueryService.organizeArticle(article);
 
                 records.add(article);
             }
@@ -290,7 +290,7 @@ public class FollowQueryService {
                     continue;
                 }
 
-                articleQueryService.organizeArticle(avatarViewMode, article);
+                articleQueryService.organizeArticle(article);
 
                 records.add(article);
             }
@@ -337,7 +337,7 @@ public class FollowQueryService {
                     continue;
                 }
 
-                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+                avatarQueryService.fillUserAvatarURL(user);
 
                 records.add(user);
             }
@@ -384,7 +384,7 @@ public class FollowQueryService {
                     continue;
                 }
 
-                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+                avatarQueryService.fillUserAvatarURL(user);
 
                 records.add(user);
             }
