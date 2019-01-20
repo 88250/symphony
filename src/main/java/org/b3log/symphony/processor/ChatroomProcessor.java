@@ -41,7 +41,7 @@ import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
-import org.b3log.symphony.processor.channel.ChatRoomChannel;
+import org.b3log.symphony.processor.channel.ChatroomChannel;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.JSONs;
@@ -56,7 +56,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
+import static org.b3log.symphony.processor.channel.ChatroomChannel.SESSIONS;
 
 /**
  * Chatroom processor.
@@ -187,7 +187,7 @@ public class ChatroomProcessor {
 
         final JSONObject pushMsg = JSONs.clone(msg);
         pushMsg.put(Common.TIME, Times.getTimeAgo(msg.optLong(Common.TIME), Locales.getLocale()));
-        ChatRoomChannel.notifyChat(pushMsg);
+        ChatroomChannel.notifyChat(pushMsg);
 
         if (content.contains("@" + TuringQueryService.ROBOT_NAME + " ")) {
             content = content.replaceAll("@" + TuringQueryService.ROBOT_NAME + " ", "");
@@ -206,7 +206,7 @@ public class ChatroomProcessor {
 
                 final JSONObject pushXiaoVMsg = JSONs.clone(xiaoVMsg);
                 pushXiaoVMsg.put(Common.TIME, Times.getTimeAgo(System.currentTimeMillis(), Locales.getLocale()));
-                ChatRoomChannel.notifyChat(pushXiaoVMsg);
+                ChatroomChannel.notifyChat(pushXiaoVMsg);
             }
         }
 
@@ -223,7 +223,7 @@ public class ChatroomProcessor {
     }
 
     /**
-     * Shows chat room.
+     * Shows chatroom.
      *
      * @param context the specified context
      */
@@ -296,7 +296,7 @@ public class ChatroomProcessor {
         chatroomMsg.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
         chatroomMsg.put(Common.CONTENT, msg);
 
-        ChatRoomChannel.notifyChat(chatroomMsg);
+        ChatroomChannel.notifyChat(chatroomMsg);
         messages.addFirst(chatroomMsg);
         final int maxCnt = Symphonys.getInt("chatRoom.msgCnt");
         if (messages.size() > maxCnt) {

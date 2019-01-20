@@ -33,7 +33,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.StatisticProcessor;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
-import org.b3log.symphony.processor.channel.ChatRoomChannel;
+import org.b3log.symphony.processor.channel.ChatroomChannel;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -122,7 +122,7 @@ public class CacheMgmtService {
         final JSONObject ret = new JSONObject();
         ret.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
         ret.put(Common.ONLINE_MEMBER_CNT, optionQueryService.getOnlineMemberCount());
-        ret.put(Common.ONLINE_CHAT_CNT, ChatRoomChannel.SESSIONS.size());
+        ret.put(Common.ONLINE_CHAT_CNT, ChatroomChannel.SESSIONS.size());
         ret.put(Common.ARTICLE_CHANNEL_CNT, ArticleChannel.SESSIONS.size());
         ret.put(Common.ARTICLE_LIST_CHANNEL_CNT, ArticleListChannel.SESSIONS.size());
         ret.put(Common.THREAD_CNT, Symphonys.getActiveThreadCount() + "/" + Symphonys.getMaxThreadCount());

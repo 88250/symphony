@@ -29,19 +29,19 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Char room channel.
+ * Chatroom channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.1, Apr 25, 2016
  * @since 1.4.0
  */
 @ServerEndpoint(value = "/chat-room-channel", configurator = Channels.WebSocketConfigurator.class)
-public class ChatRoomChannel {
+public class ChatroomChannel {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ChatRoomChannel.class);
+    private static final Logger LOGGER = Logger.getLogger(ChatroomChannel.class);
 
     /**
      * Session set.
