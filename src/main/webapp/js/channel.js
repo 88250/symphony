@@ -60,8 +60,7 @@ var ArticleChannel = {
           var cmtCount = parseInt(
             $('.comments-header .article-cmt-cnt').text()) + 1
           // 总帖数更新
-          $('.comments-header .article-cmt-cnt').
-            text(cmtCount + ' ' + Label.cmtLabel)
+          $('.comments-header .article-cmt-cnt').text(cmtCount + ' ' + Label.cmtLabel)
 
           // 新增第一条评论时到底部的锚点
           if ($('#comments .list > ul > li').length === 0) {
@@ -79,8 +78,7 @@ var ArticleChannel = {
           }
 
           // ua
-          $('#' + data.commentId + ' .cmt-via').
-            text('via ' + Util.getDeviceByUa(data.commentUA))
+          $('#' + data.commentId + ' .cmt-via').text('via ' + Util.getDeviceByUa(data.commentUA))
 
           // 回帖高亮，他人回帖不定位，只有自己回帖才定位
           if (Label.currentUserName === data.commentAuthorName) {
@@ -102,20 +100,15 @@ var ArticleChannel = {
                 + $replyBtn.find('span').attr('class') + '"></span>')
 
               if ($replyBtn.find('svg').attr('class') === 'icon-chevron-up') {
-                $replyBtn.find('svg').
-                  removeClass('icon-chevron-up').
-                  addClass('icon-chevron-down').
-                  find('use').
-                  attr('xlink:href', '#chevron-down')
+                $replyBtn.find('svg').removeClass('icon-chevron-up').addClass('icon-chevron-down').find('use').attr('xlink:href', '#chevron-down')
                 $replyBtn.click()
               }
             } else {
-              $originalComment.find('.comment-action > .ft-fade').
-                prepend('<span class="fn-pointer ft-smaller fn-left" onclick="Comment.showReply(\''
-                  + data.commentOriginalCommentId +
-                  '\', this, \'comment-replies\')" style="opacity: 1;"> 1 '
-                  + Label.replyLabel +
-                  ' <svg class="icon-chevron-down"><use xlink:href="#chevron-down"></use></svg>')
+              $originalComment.find('.comment-action > .ft-fade').prepend('<span class="fn-pointer ft-smaller fn-left" onclick="Comment.showReply(\''
+                + data.commentOriginalCommentId +
+                '\', this, \'comment-replies\')" style="opacity: 1;"> 1 '
+                + Label.replyLabel +
+                ' <svg class="icon-chevron-down"><use xlink:href="#chevron-down"></use></svg>')
             }
           }
           Util.parseMarkdown()
@@ -215,7 +208,7 @@ var ArticleListChannel = {
 }
 
 /**
- * @description Char room channel.
+ * @description Chatroom channel.
  * @static
  */
 var ChatRoomChannel = {

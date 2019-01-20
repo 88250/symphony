@@ -59,9 +59,9 @@ import java.util.stream.Collectors;
 import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
 
 /**
- * Chat room processor.
+ * Chatroom processor.
  * <ul>
- * <li>Shows char room (/cr), GET</li>
+ * <li>Shows chatroom (/cr), GET</li>
  * <li>Sends chat message (/chat-room/send), POST</li>
  * <li>Receives <a href="https://github.com/b3log/xiaov">XiaoV</a> message (/community/push), POST</li>
  * </ul>
