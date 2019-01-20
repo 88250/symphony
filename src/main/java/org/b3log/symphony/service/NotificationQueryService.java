@@ -199,7 +199,6 @@ public class NotificationQueryService {
     /**
      * Gets 'sys announce' type notifications with the specified user id, current page number and page size.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param userId         the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
@@ -214,7 +213,7 @@ public class NotificationQueryService {
      * }
      * </pre>
      */
-    public JSONObject getSysAnnounceNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) {
+    public JSONObject getSysAnnounceNotifications(final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);
@@ -630,7 +629,6 @@ public class NotificationQueryService {
     /**
      * Gets 'commented' type notifications with the specified user id, current page number and page size.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param userId         the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
@@ -651,7 +649,7 @@ public class NotificationQueryService {
      * }
      * </pre>
      */
-    public JSONObject getCommentedNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) {
+    public JSONObject getCommentedNotifications(final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);
@@ -713,7 +711,6 @@ public class NotificationQueryService {
     /**
      * Gets 'reply' type notifications with the specified user id, current page number and page size.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param userId         the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
@@ -734,7 +731,7 @@ public class NotificationQueryService {
      * }
      * </pre>
      */
-    public JSONObject getReplyNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) {
+    public JSONObject getReplyNotifications(final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);
@@ -794,7 +791,6 @@ public class NotificationQueryService {
     /**
      * Gets 'at' type notifications with the specified user id, current page number and page size.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param userId         the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
@@ -820,7 +816,7 @@ public class NotificationQueryService {
      * }
      * </pre>
      */
-    public JSONObject getAtNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) {
+    public JSONObject getAtNotifications(final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);
@@ -1057,7 +1053,6 @@ public class NotificationQueryService {
     /**
      * Gets 'following' type notifications with the specified user id, current page number and page size.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param userId         the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
@@ -1082,7 +1077,7 @@ public class NotificationQueryService {
      * }
      * </pre>
      */
-    public JSONObject getFollowingNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) {
+    public JSONObject getFollowingNotifications(final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);
@@ -1182,7 +1177,6 @@ public class NotificationQueryService {
     /**
      * Gets 'broadcast' type notifications with the specified user id, current page number and page size.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param userId         the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
@@ -1207,7 +1201,7 @@ public class NotificationQueryService {
      * }
      * </pre>
      */
-    public JSONObject getBroadcastNotifications(final int avatarViewMode, final String userId, final int currentPageNum, final int pageSize) {
+    public JSONObject getBroadcastNotifications(final String userId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) rslts);

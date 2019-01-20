@@ -225,12 +225,11 @@ public class CommentQueryService {
      * Gets original comment of a comment specified by the given comment id.
      *
      * @param currentUserId   the specified current user id, may be null
-     * @param avatarViewMode  the specified avatar view mode
      * @param commentViewMode the specified comment view mode
      * @param commentId       the given comment id
      * @return original comment, return {@code null} if not found
      */
-    public JSONObject getOriginalComment(final String currentUserId, final int avatarViewMode, final int commentViewMode, final String commentId) {
+    public JSONObject getOriginalComment(final String currentUserId, final int commentViewMode, final String commentId) {
         try {
             final JSONObject comment = commentRepository.get(commentId);
 
@@ -281,12 +280,11 @@ public class CommentQueryService {
      * Gets replies of a comment specified by the given comment id.
      *
      * @param currentUserId   the specified current user id, may be null
-     * @param avatarViewMode  the specified avatar view mode
      * @param commentViewMode the specified comment view mode
      * @param commentId       the given comment id
      * @return a list of replies, return an empty list if not found
      */
-    public List<JSONObject> getReplies(final String currentUserId, final int avatarViewMode, final int commentViewMode, final String commentId) {
+    public List<JSONObject> getReplies(final String currentUserId, final int commentViewMode, final String commentId) {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setPage(1, Integer.MAX_VALUE).setPageCount(1).
                 setFilter(CompositeFilterOperator.and(

@@ -209,7 +209,6 @@ public class FollowQueryService {
     /**
      * Gets following articles of the specified follower.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param followerId     the specified follower id
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
@@ -222,7 +221,7 @@ public class FollowQueryService {
      * }
      * </pre>
      */
-    public JSONObject getFollowingArticles(final int avatarViewMode, final String followerId, final int currentPageNum, final int pageSize) {
+    public JSONObject getFollowingArticles(final String followerId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) records);
@@ -257,7 +256,6 @@ public class FollowQueryService {
     /**
      * Gets watching articles of the specified follower.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param followerId     the specified follower id
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
@@ -270,7 +268,7 @@ public class FollowQueryService {
      * }
      * </pre>
      */
-    public JSONObject getWatchingArticles(final int avatarViewMode, final String followerId, final int currentPageNum, final int pageSize) {
+    public JSONObject getWatchingArticles(final String followerId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) records);
@@ -352,7 +350,6 @@ public class FollowQueryService {
     /**
      * Gets follower users of the specified following user.
      *
-     * @param avatarViewMode  the specified avatar view mode
      * @param followingUserId the specified following user id
      * @param currentPageNum  the specified page number
      * @param pageSize        the specified page size
@@ -365,7 +362,7 @@ public class FollowQueryService {
      * }
      * </pre>
      */
-    public JSONObject getFollowerUsers(final int avatarViewMode, final String followingUserId, final int currentPageNum, final int pageSize) {
+    public JSONObject getFollowerUsers(final String followingUserId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<>();
         ret.put(Keys.RESULTS, (Object) records);

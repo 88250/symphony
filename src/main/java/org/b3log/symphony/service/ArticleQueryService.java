@@ -163,7 +163,6 @@ public class ArticleQueryService {
     /**
      * Gets the question articles with the specified fetch size.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param sortMode       the specified sort mode, 0: default, 1: unanswered, 2: reward, 3: hot
      * @param currentPageNum the specified current page number
      * @param fetchSize      the specified fetch size
@@ -182,7 +181,7 @@ public class ArticleQueryService {
      * }
      * </pre>
      */
-    public JSONObject getQuestionArticles(final int avatarViewMode, final int sortMode, final int currentPageNum, final int fetchSize) {
+    public JSONObject getQuestionArticles(final int sortMode, final int currentPageNum, final int fetchSize) {
         final JSONObject ret = new JSONObject();
 
         Query query;
@@ -275,16 +274,13 @@ public class ArticleQueryService {
     /**
      * Gets following user articles.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param userId         the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
      * @return following tag articles, returns an empty list if not found
      */
-    public List<JSONObject> getFollowingUserArticles(final int avatarViewMode, final String userId,
-                                                     final int currentPageNum, final int pageSize) {
-        final List<JSONObject> users = (List<JSONObject>) followQueryService.getFollowingUsers(
-                avatarViewMode, userId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
+    public List<JSONObject> getFollowingUserArticles(final String userId, final int currentPageNum, final int pageSize) {
+        final List<JSONObject> users = (List<JSONObject>) followQueryService.getFollowingUsers(userId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
         if (users.isEmpty()) {
             return Collections.emptyList();
         }
@@ -326,14 +322,12 @@ public class ArticleQueryService {
     /**
      * Gets following tag articles.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param userId         the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
      * @return following tag articles, returns an empty list if not found
      */
-    public List<JSONObject> getFollowingTagArticles(final int avatarViewMode, final String userId,
-                                                    final int currentPageNum, final int pageSize) {
+    public List<JSONObject> getFollowingTagArticles(final String userId, final int currentPageNum, final int pageSize) {
         final List<JSONObject> tags = (List<JSONObject>) followQueryService.getFollowingTags(
                 userId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
         if (tags.isEmpty()) {
@@ -570,14 +564,12 @@ public class ArticleQueryService {
     /**
      * Gets domain articles.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param domainId       the specified domain id
      * @param currentPageNum the specified current page number
      * @param pageSize       the specified page size
      * @return result
      */
-    public JSONObject getDomainArticles(final int avatarViewMode, final String domainId,
-                                        final int currentPageNum, final int pageSize) {
+    public JSONObject getDomainArticles(final String domainId, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         ret.put(Article.ARTICLES, (Object) Collections.emptyList());
 
@@ -876,14 +868,12 @@ public class ArticleQueryService {
     /**
      * Gets articles by the specified city (order by article create date desc).
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param city           the specified city
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
      * @return articles, return an empty list if not found
      */
-    public List<JSONObject> getArticlesByCity(final int avatarViewMode, final String city,
-                                              final int currentPageNum, final int pageSize) {
+    public List<JSONObject> getArticlesByCity(final String city, final int currentPageNum, final int pageSize) {
         try {
             final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                     setFilter(new PropertyFilter(Article.ARTICLE_CITY, FilterOperator.EQUAL, city)).
@@ -908,15 +898,13 @@ public class ArticleQueryService {
     /**
      * Gets articles by the specified tag (order by article create date desc).
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param sortMode       the specified sort mode, 0: default, 1: hot, 2: score, 3: reply, 4: perfect
      * @param tag            the specified tag
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
      * @return articles, return an empty list if not found
      */
-    public List<JSONObject> getArticlesByTag(final int avatarViewMode, final int sortMode, final JSONObject tag,
-                                             final int currentPageNum, final int pageSize) {
+    public List<JSONObject> getArticlesByTag(final int sortMode, final JSONObject tag, final int currentPageNum, final int pageSize) {
         try {
             Query query = new Query();
             switch (sortMode) {
@@ -1178,15 +1166,13 @@ public class ArticleQueryService {
     /**
      * Gets the user articles with the specified user id, page number and page size.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param userId         the specified user id
      * @param anonymous      the specified article anonymous
      * @param currentPageNum the specified page number
      * @param pageSize       the specified page size
      * @return user articles, return an empty list if not found
      */
-    public List<JSONObject> getUserArticles(final int avatarViewMode, final String userId, final int anonymous,
-                                            final int currentPageNum, final int pageSize) {
+    public List<JSONObject> getUserArticles(final String userId, final int anonymous, final int currentPageNum, final int pageSize) {
         final Query query = new Query().addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING).
                 setPage(currentPageNum, pageSize).
                 setFilter(CompositeFilterOperator.and(
@@ -1297,7 +1283,6 @@ public class ArticleQueryService {
     /**
      * Gets the recent articles with the specified fetch size.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param sortMode       the specified sort mode, 0: default, 1: hot, 2: score, 3: reply
      * @param currentPageNum the specified current page number
      * @param fetchSize      the specified fetch size
@@ -1316,7 +1301,7 @@ public class ArticleQueryService {
      * }
      * </pre>
      */
-    public JSONObject getRecentArticles(final int avatarViewMode, final int sortMode, final int currentPageNum, final int fetchSize) {
+    public JSONObject getRecentArticles(final int sortMode, final int currentPageNum, final int fetchSize) {
         final JSONObject ret = new JSONObject();
 
         Query query;
@@ -1402,10 +1387,9 @@ public class ArticleQueryService {
     /**
      * Gets the index recent articles.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @return recent articles, returns an empty list if not found
      */
-    public List<JSONObject> getIndexRecentArticles(final int avatarViewMode) {
+    public List<JSONObject> getIndexRecentArticles() {
         List<JSONObject> ret;
         try {
             Stopwatchs.start("Query index recent articles");
@@ -1452,11 +1436,10 @@ public class ArticleQueryService {
     /**
      * Gets the hot articles with the specified fetch size.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param fetchSize      the specified fetch size
+     * @param fetchSize the specified fetch size
      * @return hot articles, returns an empty list if not found
      */
-    public List<JSONObject> getHotArticles(final int avatarViewMode, final int fetchSize) {
+    public List<JSONObject> getHotArticles(final int fetchSize) {
         final Query query = makeTopQuery(1, fetchSize);
 
         try {
@@ -1501,7 +1484,6 @@ public class ArticleQueryService {
     /**
      * Gets the perfect articles with the specified fetch size.
      *
-     * @param avatarViewMode the specified avatar view mode
      * @param currentPageNum the specified current page number
      * @param fetchSize      the specified fetch size
      * @return for example,      <pre>
@@ -1519,7 +1501,7 @@ public class ArticleQueryService {
      * }
      * </pre>
      */
-    public JSONObject getPerfectArticles(final int avatarViewMode, final int currentPageNum, final int fetchSize) {
+    public JSONObject getPerfectArticles(final int currentPageNum, final int fetchSize) {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setPage(currentPageNum, fetchSize);
         query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));

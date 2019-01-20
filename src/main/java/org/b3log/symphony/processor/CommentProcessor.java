@@ -362,15 +362,13 @@ public class CommentProcessor {
         final JSONObject requestJSONObject = context.requestJSON();
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
-        int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
         final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         String currentUserId = null;
         if (null != currentUser) {
-            avatarViewMode = currentUser.optInt(UserExt.USER_AVATAR_VIEW_MODE);
             currentUserId = currentUser.optString(Keys.OBJECT_ID);
         }
 
-        final JSONObject originalCmt = commentQueryService.getOriginalComment(currentUserId, avatarViewMode, commentViewMode, commentId);
+        final JSONObject originalCmt = commentQueryService.getOriginalComment(currentUserId, commentViewMode, commentId);
 
         // Fill thank
         final String originalCmtId = originalCmt.optString(Keys.OBJECT_ID);
@@ -391,15 +389,12 @@ public class CommentProcessor {
      */
     @RequestProcessing(value = "/comment/replies", method = HttpMethod.POST)
     public void getReplies(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
-        int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
         final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
         String currentUserId = null;
         if (null != currentUser) {
-            avatarViewMode = currentUser.optInt(UserExt.USER_AVATAR_VIEW_MODE);
             currentUserId = currentUser.optString(Keys.OBJECT_ID);
         }
 
@@ -409,7 +404,7 @@ public class CommentProcessor {
             return;
         }
 
-        final List<JSONObject> replies = commentQueryService.getReplies(currentUserId, avatarViewMode, commentViewMode, commentId);
+        final List<JSONObject> replies = commentQueryService.getReplies(currentUserId, commentViewMode, commentId);
 
         // Fill reply thank
         for (final JSONObject reply : replies) {

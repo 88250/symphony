@@ -121,8 +121,6 @@ public class CityProcessor {
 
         dataModel.put(Common.CURRENT, "");
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
@@ -171,7 +169,7 @@ public class CityProcessor {
 
         final JSONObject statistic = optionQueryService.getOption(queryCity + "-ArticleCount");
         if (null != statistic) {
-            articles = articleQueryService.getArticlesByCity(avatarViewMode, queryCity, pageNum, pageSize);
+            articles = articleQueryService.getArticlesByCity(queryCity, pageNum, pageSize);
             dataModel.put(Article.ARTICLES, articles);
         }
 

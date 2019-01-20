@@ -215,10 +215,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("sysAnnounceNotificationsCnt");
         final int windowSize = Symphonys.getInt("sysAnnounceNotificationsWindowSize");
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-
-        final JSONObject result = notificationQueryService.getSysAnnounceNotifications(
-                avatarViewMode, userId, pageNum, pageSize);
+        final JSONObject result = notificationQueryService.getSysAnnounceNotifications(userId, pageNum, pageSize);
         final List<JSONObject> notifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.SYS_ANNOUNCE_NOTIFICATIONS, notifications);
@@ -523,9 +520,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("commentedNotificationsCnt");
         final int windowSize = Symphonys.getInt("commentedNotificationsWindowSize");
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-
-        final JSONObject result = notificationQueryService.getCommentedNotifications(avatarViewMode, userId, pageNum, pageSize);
+        final JSONObject result = notificationQueryService.getCommentedNotifications(userId, pageNum, pageSize);
         final List<JSONObject> commentedNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
         dataModel.put(Common.COMMENTED_NOTIFICATIONS, commentedNotifications);
 
@@ -573,9 +568,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("replyNotificationsCnt");
         final int windowSize = Symphonys.getInt("replyNotificationsWindowSize");
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-
-        final JSONObject result = notificationQueryService.getReplyNotifications(avatarViewMode, userId, pageNum, pageSize);
+        final JSONObject result = notificationQueryService.getReplyNotifications(userId, pageNum, pageSize);
         final List<JSONObject> replyNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
         dataModel.put(Common.REPLY_NOTIFICATIONS, replyNotifications);
 
@@ -623,9 +616,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("atNotificationsCnt");
         final int windowSize = Symphonys.getInt("atNotificationsWindowSize");
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-
-        final JSONObject result = notificationQueryService.getAtNotifications(avatarViewMode, userId, pageNum, pageSize);
+        final JSONObject result = notificationQueryService.getAtNotifications(userId, pageNum, pageSize);
         final List<JSONObject> atNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.AT_NOTIFICATIONS, atNotifications);
@@ -682,9 +673,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("followingNotificationsCnt");
         final int windowSize = Symphonys.getInt("followingNotificationsWindowSize");
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-
-        final JSONObject result = notificationQueryService.getFollowingNotifications(avatarViewMode, userId, pageNum, pageSize);
+        final JSONObject result = notificationQueryService.getFollowingNotifications(userId, pageNum, pageSize);
         final List<JSONObject> followingNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.FOLLOWING_NOTIFICATIONS, followingNotifications);
@@ -733,9 +722,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("broadcastNotificationsCnt");
         final int windowSize = Symphonys.getInt("broadcastNotificationsWindowSize");
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-
-        final JSONObject result = notificationQueryService.getBroadcastNotifications(avatarViewMode, userId, pageNum, pageSize);
+        final JSONObject result = notificationQueryService.getBroadcastNotifications(userId, pageNum, pageSize);
         final List<JSONObject> broadcastNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.BROADCAST_NOTIFICATIONS, broadcastNotifications);

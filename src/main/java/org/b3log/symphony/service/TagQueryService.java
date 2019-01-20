@@ -474,8 +474,7 @@ public class TagQueryService {
     /**
      * Gets the creator of the specified tag of the given tag id.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param tagId          the given tag id
+     * @param tagId the given tag id
      * @return tag creator, for example,      <pre>
      * {
      *     "tagCreatorThumbnailURL": "",
@@ -484,7 +483,7 @@ public class TagQueryService {
      * }
      * </pre>, returns {@code null} if not found
      */
-    public JSONObject getCreator(final int avatarViewMode, final String tagId) {
+    public JSONObject getCreator(final String tagId) {
         final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
 
@@ -535,9 +534,8 @@ public class TagQueryService {
     /**
      * Gets the participants (article ref) of the specified tag of the given tag id.
      *
-     * @param avatarViewMode the specified avatar view mode
-     * @param tagId          the given tag id
-     * @param fetchSize      the specified fetch size
+     * @param tagId     the given tag id
+     * @param fetchSize the specified fetch size
      * @return tag participants, for example,      <pre>
      * [
      *     {
@@ -548,8 +546,7 @@ public class TagQueryService {
      * ]
      * </pre>, returns an empty list if not found
      */
-    public List<JSONObject> getParticipants(final int avatarViewMode,
-                                            final String tagId, final int fetchSize) {
+    public List<JSONObject> getParticipants(final String tagId, final int fetchSize) {
         final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
         filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, 1));

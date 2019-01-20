@@ -197,7 +197,6 @@ public class UserProcessor {
 
         fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
@@ -286,7 +285,6 @@ public class UserProcessor {
 
         fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
@@ -362,7 +360,6 @@ public class UserProcessor {
 
         fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(user);
 
         if (isLoggedIn) {
@@ -375,8 +372,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeArticlesCnt");
         final int windowSize = Symphonys.getInt("userHomeArticlesWindowSize");
 
-        final List<JSONObject> userArticles = articleQueryService.getUserArticles(avatarViewMode,
-                user.optString(Keys.OBJECT_ID), Article.ARTICLE_ANONYMOUS_C_ANONYMOUS, pageNum, pageSize);
+        final List<JSONObject> userArticles = articleQueryService.getUserArticles(user.optString(Keys.OBJECT_ID), Article.ARTICLE_ANONYMOUS_C_ANONYMOUS, pageNum, pageSize);
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
 
         int recordCount = 0;
@@ -426,7 +422,6 @@ public class UserProcessor {
 
         fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(user);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
@@ -441,8 +436,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeArticlesCnt");
         final int windowSize = Symphonys.getInt("userHomeArticlesWindowSize");
 
-        final List<JSONObject> userArticles = articleQueryService.getUserArticles(avatarViewMode,
-                user.optString(Keys.OBJECT_ID), Article.ARTICLE_ANONYMOUS_C_PUBLIC, pageNum, pageSize);
+        final List<JSONObject> userArticles = articleQueryService.getUserArticles(user.optString(Keys.OBJECT_ID), Article.ARTICLE_ANONYMOUS_C_PUBLIC, pageNum, pageSize);
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
 
         int recordCount = 0;
@@ -496,7 +490,6 @@ public class UserProcessor {
 
         fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
@@ -562,11 +555,9 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(user);
 
-        final JSONObject followingUsersResult = followQueryService.getFollowingUsers(avatarViewMode,
-                followingId, pageNum, pageSize);
+        final JSONObject followingUsersResult = followQueryService.getFollowingUsers(followingId, pageNum, pageSize);
         final List<JSONObject> followingUsers = (List<JSONObject>) followingUsersResult.opt(Keys.RESULTS);
         dataModel.put(Common.USER_HOME_FOLLOWING_USERS, followingUsers);
 
@@ -627,7 +618,6 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(user);
 
         final JSONObject followingTagsResult = followQueryService.getFollowingTags(followingId, pageNum, pageSize);
@@ -692,11 +682,9 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(user);
 
-        final JSONObject followingArticlesResult = followQueryService.getFollowingArticles(avatarViewMode,
-                followingId, pageNum, pageSize);
+        final JSONObject followingArticlesResult = followQueryService.getFollowingArticles(followingId, pageNum, pageSize);
         final List<JSONObject> followingArticles = (List<JSONObject>) followingArticlesResult.opt(Keys.RESULTS);
         dataModel.put(Common.USER_HOME_FOLLOWING_ARTICLES, followingArticles);
 
@@ -757,11 +745,9 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(user);
 
-        final JSONObject followingArticlesResult = followQueryService.getWatchingArticles(avatarViewMode,
-                followingId, pageNum, pageSize);
+        final JSONObject followingArticlesResult = followQueryService.getWatchingArticles(followingId, pageNum, pageSize);
         final List<JSONObject> followingArticles = (List<JSONObject>) followingArticlesResult.opt(Keys.RESULTS);
         dataModel.put(Common.USER_HOME_FOLLOWING_ARTICLES, followingArticles);
 
@@ -822,10 +808,7 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-
-        final JSONObject followerUsersResult = followQueryService.getFollowerUsers(avatarViewMode,
-                followingId, pageNum, pageSize);
+        final JSONObject followerUsersResult = followQueryService.getFollowerUsers(followingId, pageNum, pageSize);
         final List<JSONObject> followerUsers = (List) followerUsersResult.opt(Keys.RESULTS);
         dataModel.put(Common.USER_HOME_FOLLOWER_USERS, followerUsers);
 
@@ -891,7 +874,6 @@ public class UserProcessor {
 
         fillHomeUser(dataModel, user, roleQueryService);
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);

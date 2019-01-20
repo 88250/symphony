@@ -130,7 +130,7 @@ public class BreezemoonProcessor {
         }
 
         final int windowSize = Symphonys.getInt("latestArticlesWindowSize");
-        final JSONObject result = breezemoonQueryService.getFollowingUserBreezemoons( currentUserId, pageNum, pageSize, windowSize);
+        final JSONObject result = breezemoonQueryService.getFollowingUserBreezemoons(currentUserId, pageNum, pageSize, windowSize);
         final List<JSONObject> bms = (List<JSONObject>) result.opt(Breezemoon.BREEZEMOONS);
         dataModel.put(Common.WATCHING_BREEZEMOONS, bms);
 

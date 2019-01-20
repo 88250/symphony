@@ -26,7 +26,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
@@ -179,8 +178,7 @@ public class TopProcessor {
     public void showCheckin(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/checkin.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
-        final List<JSONObject> users = activityQueryService.getTopCheckinUsers(avatarViewMode, Symphonys.getInt("topCnt"));
+        final List<JSONObject> users = activityQueryService.getTopCheckinUsers(Symphonys.getInt("topCnt"));
         dataModel.put(Common.TOP_CHECKIN_USERS, users);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);

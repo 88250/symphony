@@ -200,7 +200,6 @@ public class TagProcessor {
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
-        final int avatarViewMode = (int) context.attr(UserExt.USER_AVATAR_VIEW_MODE);
         String sortModeStr = StringUtils.substringAfter(context.requestURI(), "/tag/" + tagURI);
         int sortMode;
         switch (sortModeStr) {
@@ -228,12 +227,12 @@ public class TagProcessor {
                 sortMode = 0;
         }
 
-        final List<JSONObject> articles = articleQueryService.getArticlesByTag(avatarViewMode, sortMode, tag, pageNum, pageSize);
+        final List<JSONObject> articles = articleQueryService.getArticlesByTag(sortMode, tag, pageNum, pageSize);
         dataModel.put(Article.ARTICLES, articles);
-        final JSONObject tagCreator = tagQueryService.getCreator(avatarViewMode, tagId);
+        final JSONObject tagCreator = tagQueryService.getCreator(tagId);
         tag.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, tagCreator.optString(Tag.TAG_T_CREATOR_THUMBNAIL_URL));
         tag.put(Tag.TAG_T_CREATOR_NAME, tagCreator.optString(Tag.TAG_T_CREATOR_NAME));
-        tag.put(Tag.TAG_T_PARTICIPANTS, (Object) tagQueryService.getParticipants(avatarViewMode, tagId, Symphonys.getInt("tagParticipantsCnt")));
+        tag.put(Tag.TAG_T_PARTICIPANTS, (Object) tagQueryService.getParticipants(tagId, Symphonys.getInt("tagParticipantsCnt")));
 
         final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_CNT);
         final int pageCount = (int) Math.ceil(tagRefCnt / (double) pageSize);
