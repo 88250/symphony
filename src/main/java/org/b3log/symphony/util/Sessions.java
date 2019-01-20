@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.3.3, Oct 8, 2018
+ * @version 2.1.0.0, Jan 20, 2019
  */
 public final class Sessions {
 
@@ -69,9 +69,201 @@ public final class Sessions {
     private static final int COOKIE_EXPIRY = 60 * 60 * 24 * 7;
 
     /**
-     * Private constructor.
+     * Thread local data
      */
-    private Sessions() {
+    private static final ThreadLocal<JSONObject> THREAD_LOCAL_DATA = new ThreadLocal<>();
+
+    /**
+     * Checks whether is bot.
+     *
+     * @return {@code true} if it is bot, returns {@code false} otherwise
+     */
+    public static boolean isBot() {
+        final JSONObject data = THREAD_LOCAL_DATA.get();
+        if (null == data) {
+            return false;
+        }
+
+        return data.optBoolean(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
+    }
+
+    /**
+     * Sets the specified bot flag into thread local data.
+     *
+     * @param isBot the specified bot flag
+     */
+    public static void setBot(final boolean isBot) {
+        JSONObject data = THREAD_LOCAL_DATA.get();
+        if (null == data) {
+            data = new JSONObject().put(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, isBot);
+            THREAD_LOCAL_DATA.set(data);
+
+            return;
+        }
+
+        data.put(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, isBot);
+    }
+
+    /**
+     * Checks whether is mobile.
+     *
+     * @return {@code true} if it is mobile, returns {@code false} otherwise
+     */
+    public static boolean isMobile() {
+        final JSONObject data = THREAD_LOCAL_DATA.get();
+        if (null == data) {
+            return false;
+        }
+
+        return data.optBoolean(Common.IS_MOBILE);
+    }
+
+    /**
+     * Sets the specified mobile flag into thread local data.
+     *
+     * @param isMobile the specified mobile flag
+     */
+    public static void setMobile(final boolean isMobile) {
+        JSONObject data = THREAD_LOCAL_DATA.get();
+        if (null == data) {
+            data = new JSONObject().put(Common.IS_MOBILE, isMobile);
+            THREAD_LOCAL_DATA.set(data);
+
+            return;
+        }
+
+        data.put(Common.IS_MOBILE, isMobile);
+    }
+
+    /**
+     * Gets the current avatar view mode from thread local data.
+     *
+     * @return avatar view mode, returns {@value UserExt#USER_AVATAR_VIEW_MODE_C_ORIGINAL} "original mode" if not found
+     */
+    public static int getAvatarViewMode() {
+        JSONObject data = THREAD_LOCAL_DATA.get();
+        if (null == data) {
+            return UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
+        }
+
+        return data.optInt(UserExt.USER_AVATAR_VIEW_MODE);
+    }
+
+    /**
+     * Sets the specified avatar view mode into thread local data.
+     *
+     * @param avatarViewMode the specified avatar view mode
+     */
+    public static void setAvatarViewMode(final int avatarViewMode) {
+        JSONObject data = THREAD_LOCAL_DATA.get();
+        if (null == data) {
+            data = new JSONObject().put(UserExt.USER_AVATAR_VIEW_MODE, avatarViewMode);
+            THREAD_LOCAL_DATA.set(data);
+
+            return;
+        }
+
+        data.put(UserExt.USER_AVATAR_VIEW_MODE, avatarViewMode);
+    }
+
+    /**
+     * Checks whether is logged in.
+     *
+     * @return {@code true} if logged in, returns {@code false} otherwise
+     */
+    public static boolean isLoggedIn() {
+        final JSONObject data = THREAD_LOCAL_DATA.get();
+        if (null == data) {
+            return false;
+        }
+
+        return data.optBoolean(Common.IS_LOGGED_IN);
+    }
+
+    /**
+     * Sets the specified logged in flag into thread local data.
+     *
+     * @param isLoggedIn the specified logged in flag
+     */
+    public static void setLoggedIn(final boolean isLoggedIn) {
+        JSONObject data = THREAD_LOCAL_DATA.get();
+        if (null == data) {
+            data = new JSONObject().put(Common.IS_LOGGED_IN, isLoggedIn);
+            THREAD_LOCAL_DATA.set(data);
+
+            return;
+        }
+
+        data.put(Common.IS_LOGGED_IN, isLoggedIn);
+    }
+
+    /**
+     * Gets the current user from thread local data.
+     *
+     * @return user, returns {@code null} if not found
+     */
+    public static JSONObject getUser() {
+        JSONObject data = THREAD_LOCAL_DATA.get();
+        if (null == data) {
+            return null;
+        }
+
+        return data.optJSONObject(User.USER);
+    }
+
+    /**
+     * Sets the specified user into thread local data.
+     *
+     * @param user the specified user
+     */
+    public static void setUser(final JSONObject user) {
+        JSONObject data = THREAD_LOCAL_DATA.get();
+        if (null == data) {
+            data = new JSONObject().put(User.USER, user);
+            THREAD_LOCAL_DATA.set(data);
+
+            return;
+        }
+
+        data.put(User.USER, user);
+    }
+
+    /**
+     * Gets the current template dir from thread local data.
+     *
+     * @return template dir, returns "classic" if not found
+     */
+    public static String getTemplateDir() {
+        JSONObject data = THREAD_LOCAL_DATA.get();
+        if (null == data) {
+            return "classic";
+        }
+
+        return data.optString(Keys.TEMAPLTE_DIR_NAME);
+    }
+
+    /**
+     * Sets the specified template dir into thread local data.
+     *
+     * @param templateDir the specified template dir
+     */
+    public static void setTemplateDir(final String templateDir) {
+        JSONObject data = THREAD_LOCAL_DATA.get();
+        if (null == data) {
+            data = new JSONObject().put(Keys.TEMAPLTE_DIR_NAME, templateDir);
+            THREAD_LOCAL_DATA.set(data);
+
+            return;
+        }
+
+        data.put(Keys.TEMAPLTE_DIR_NAME, templateDir);
+    }
+
+    /**
+     * Clears the thread local data.
+     */
+    public static void clearThreadLocalData() {
+        THREAD_LOCAL_DATA.set(null);
     }
 
     /**
@@ -300,5 +492,11 @@ public final class Sessions {
      */
     public static void put(final String key, final JSONObject value) {
         SESSION_CACHE.put(key, value);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Sessions() {
     }
 }

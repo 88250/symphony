@@ -56,7 +56,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.10.27, Jan 10, 2019
+ * @version 3.19.10.28, Jan 20, 2019
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -198,12 +198,12 @@ public final class SymphonyServletListener extends AbstractServletListener {
         if (BrowserType.ROBOT == browserType) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine [User-Agent={0}]",
                     httpServletRequest.getHeader(Common.USER_AGENT));
-            httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
+            Sessions.setBot(true);
 
             return;
         }
 
-        httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, false);
+        Sessions.setBot(false);
 
         if (StaticResources.isStatic(httpServletRequest)) {
             return;
@@ -219,6 +219,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
         Locales.setLocale(null);
+        Sessions.clearThreadLocalData();
 
         try {
             super.requestDestroyed(servletRequestEvent);

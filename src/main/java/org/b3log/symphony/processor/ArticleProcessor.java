@@ -688,7 +688,7 @@ public class ArticleProcessor {
             livenessMgmtService.incLiveness(viewer.optString(Keys.OBJECT_ID), Liveness.LIVENESS_PV);
         }
 
-        if (!(Boolean) context.attr(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
+        if (!Sessions.isBot()) {
             final long created = System.currentTimeMillis();
             final long expired = DateUtils.addMonths(new Date(created), 1).getTime();
             final String ip = Requests.getRemoteAddr(request);

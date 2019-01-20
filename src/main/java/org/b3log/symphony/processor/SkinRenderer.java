@@ -26,8 +26,8 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Skins;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -115,8 +115,8 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
 
     @Override
     protected Template getTemplate() {
-        final boolean isSearchEngineBot = (Boolean) context.attr(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
-        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+        final boolean isSearchEngineBot = Sessions.isBot();
+        final JSONObject user = Sessions.getUser();
 
         return getTemplate(isSearchEngineBot, user);
     }
