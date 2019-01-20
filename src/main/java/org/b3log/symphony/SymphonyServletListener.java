@@ -314,8 +314,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             httpSession.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
             Sessions.setTemplateDir(skin);
             Sessions.setAvatarViewMode(user.optInt(UserExt.USER_AVATAR_VIEW_MODE));
-
-            request.setAttribute(Common.CURRENT_USER, user);
+            Sessions.setUser(user);
 
             final Locale locale = Locales.getLocale(user.optString(UserExt.USER_LANGUAGE));
             Locales.setLocale(locale);

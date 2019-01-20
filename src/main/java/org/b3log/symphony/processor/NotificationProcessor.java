@@ -39,6 +39,7 @@ import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -112,7 +113,7 @@ public class NotificationProcessor {
     public void removeNotifications(final RequestContext context) {
         final String type = context.pathVar("type"); // commented/reply/at/following/point/broadcast
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
         switch (type) {
@@ -179,7 +180,7 @@ public class NotificationProcessor {
         context.renderJSON(true);
 
         final JSONObject requestJSONObject = context.requestJSON();
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final String notificationId = requestJSONObject.optString(Common.ID);
 
@@ -205,7 +206,7 @@ public class NotificationProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showSysAnnounceNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/notifications/sys-announce.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -247,7 +248,7 @@ public class NotificationProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After(StopwatchEndAdvice.class)
     public void makeAllNotificationsRead(final RequestContext context) {
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
         notificationMgmtService.makeAllRead(userId);
@@ -266,7 +267,7 @@ public class NotificationProcessor {
     public void makeNotificationReadByType(final RequestContext context) {
         final String type = context.pathVar("type"); // "commented"/"at"/"following"
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
         switch (type) {
@@ -314,7 +315,7 @@ public class NotificationProcessor {
     @After(StopwatchEndAdvice.class)
     public void makeNotificationRead(final RequestContext context) {
         final JSONObject requestJSONObject = context.requestJSON();
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
         final List<String> commentIds = Arrays.asList(requestJSONObject.optString(Comment.COMMENT_T_IDS).split(","));
@@ -333,7 +334,7 @@ public class NotificationProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After(StopwatchEndAdvice.class)
     public void navigateNotifications(final RequestContext context) {
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -413,7 +414,7 @@ public class NotificationProcessor {
     public void showPointNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -505,7 +506,7 @@ public class NotificationProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCommentedNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -553,7 +554,7 @@ public class NotificationProcessor {
     public void showReplyNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -601,7 +602,7 @@ public class NotificationProcessor {
     public void showAtNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -658,7 +659,7 @@ public class NotificationProcessor {
     public void showFollowingNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -707,7 +708,7 @@ public class NotificationProcessor {
     public void showBroadcastNotifications(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -754,7 +755,7 @@ public class NotificationProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({StopwatchEndAdvice.class})
     public void getUnreadNotificationCount(final RequestContext context) {
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final Map<String, Object> dataModel = new HashMap<>();
 

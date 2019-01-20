@@ -841,7 +841,7 @@ public class AdminProcessor {
             return;
         }
 
-        final JSONObject admin = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject admin = Sessions.getUser();
         final String userId = admin.optString(Keys.OBJECT_ID);
 
         String tagId;
@@ -1432,7 +1432,7 @@ public class AdminProcessor {
             user.put(UserExt.USER_APP_ROLE, appRole);
             user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
 
-            final JSONObject admin = (JSONObject) context.attr(Common.CURRENT_USER);
+            final JSONObject admin = Sessions.getUser();
             user.put(UserExt.USER_LANGUAGE, admin.optString(UserExt.USER_LANGUAGE));
 
             userId = userMgmtService.addUser(user);
@@ -1522,7 +1522,7 @@ public class AdminProcessor {
             }
         }
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
             user.put(User.USER_ROLE, oldRole);
         }
@@ -2496,7 +2496,7 @@ public class AdminProcessor {
                 return;
             }
 
-            final JSONObject admin = (JSONObject) context.attr(Common.CURRENT_USER);
+            final JSONObject admin = Sessions.getUser();
             final String userId = admin.optString(Keys.OBJECT_ID);
 
             try {

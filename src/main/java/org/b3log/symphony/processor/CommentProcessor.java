@@ -144,7 +144,7 @@ public class CommentProcessor {
 
         final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
 
@@ -195,7 +195,7 @@ public class CommentProcessor {
             return;
         }
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
         final JSONObject comment = commentQueryService.getComment(id);
         if (null == comment) {
@@ -264,7 +264,7 @@ public class CommentProcessor {
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (!currentUser.optString(Keys.OBJECT_ID).equals(comment.optString(Comment.COMMENT_AUTHOR_ID))) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -307,7 +307,7 @@ public class CommentProcessor {
                 return;
             }
 
-            final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+            final JSONObject currentUser = Sessions.getUser();
             if (!currentUser.optString(Keys.OBJECT_ID).equals(comment.optString(Comment.COMMENT_AUTHOR_ID))) {
                 context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -362,7 +362,7 @@ public class CommentProcessor {
         final JSONObject requestJSONObject = context.requestJSON();
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         String currentUserId = null;
         if (null != currentUser) {
             currentUserId = currentUser.optString(Keys.OBJECT_ID);
@@ -392,7 +392,7 @@ public class CommentProcessor {
         final JSONObject requestJSONObject = context.requestJSON();
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         String currentUserId = null;
         if (null != currentUser) {
             currentUserId = currentUser.optString(Keys.OBJECT_ID);
@@ -475,7 +475,7 @@ public class CommentProcessor {
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, commentOriginalCommentId);
 
         try {
-            final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+            final JSONObject currentUser = Sessions.getUser();
             final String currentUserName = currentUser.optString(User.USER_NAME);
             final JSONObject article = articleQueryService.getArticle(articleId);
             final String articleContent = article.optString(Article.ARTICLE_CONTENT);
@@ -535,7 +535,7 @@ public class CommentProcessor {
 
         final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
 
         try {

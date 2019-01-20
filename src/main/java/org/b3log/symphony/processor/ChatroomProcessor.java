@@ -170,7 +170,7 @@ public class ChatroomProcessor {
         content = Markdowns.toHTML(content);
         content = Markdowns.clean(content, "");
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String userName = currentUser.optString(User.USER_NAME);
 
         final JSONObject msg = new JSONObject();

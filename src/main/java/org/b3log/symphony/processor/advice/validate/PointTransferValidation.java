@@ -93,7 +93,7 @@ public class PointTransferValidation extends ProcessAdvice {
 
         request.setAttribute(Common.TO_USER, toUser);
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (UserExt.USER_STATUS_C_VALID != currentUser.optInt(UserExt.USER_STATUS)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
         }

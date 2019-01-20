@@ -35,6 +35,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.LinkMgmtService;
 import org.b3log.symphony.util.Headers;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -95,7 +96,7 @@ public class ForwardProcessor {
         final String url = to;
         Symphonys.EXECUTOR_SERVICE.submit(() -> linkMgmtService.addLink(url));
 
-        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject user = Sessions.getUser();
         if (null != user && UserExt.USER_XXX_STATUS_C_DISABLED == user.optInt(UserExt.USER_FORWARD_PAGE_STATUS)) {
             context.sendRedirect(to);
 

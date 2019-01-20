@@ -115,7 +115,7 @@ public class BreezemoonProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int pageNum = Paginator.getPage(request);
         int pageSize = Symphonys.getInt("indexArticlesCnt");
-        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject user = Sessions.getUser();
         String currentUserId = null;
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
@@ -172,7 +172,7 @@ public class BreezemoonProcessor {
         final JSONObject breezemoon = new JSONObject();
         final String breezemoonContent = requestJSONObject.optString(Breezemoon.BREEZEMOON_CONTENT);
         breezemoon.put(Breezemoon.BREEZEMOON_CONTENT, breezemoonContent);
-        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject user = Sessions.getUser();
         final String authorId = user.optString(Keys.OBJECT_ID);
         breezemoon.put(Breezemoon.BREEZEMOON_AUTHOR_ID, authorId);
         final String ip = Requests.getRemoteAddr(request);
@@ -225,7 +225,7 @@ public class BreezemoonProcessor {
                 throw new ServiceException(langPropsService.get("queryFailedLabel"));
             }
 
-            final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+            final JSONObject user = Sessions.getUser();
             if (!old.optString(Breezemoon.BREEZEMOON_AUTHOR_ID).equals(user.optString(Keys.OBJECT_ID))) {
                 throw new ServiceException(langPropsService.get("sc403Label"));
             }
@@ -266,7 +266,7 @@ public class BreezemoonProcessor {
                 throw new ServiceException(langPropsService.get("queryFailedLabel"));
             }
 
-            final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+            final JSONObject user = Sessions.getUser();
             if (!breezemoon.optString(Breezemoon.BREEZEMOON_AUTHOR_ID).equals(user.optString(Keys.OBJECT_ID))) {
                 throw new ServiceException(langPropsService.get("sc403Label"));
             }

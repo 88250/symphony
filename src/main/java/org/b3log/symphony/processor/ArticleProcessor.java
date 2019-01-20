@@ -216,7 +216,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
         final JSONObject article = articleQueryService.getArticle(id);
         if (null == article) {
@@ -257,7 +257,7 @@ public class ArticleProcessor {
     public void checkArticleTitle(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
         final JSONObject requestJSONObject = context.requestJSON();
         String title = requestJSONObject.optString(Article.ARTICLE_TITLE);
@@ -499,7 +499,7 @@ public class ArticleProcessor {
         dataModel.put("fileMaxSize", fileMaxSize);
 
         String tags = context.param(Tag.TAGS);
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
 
         if (StringUtils.isBlank(tags)) {
             tags = "";
@@ -681,7 +681,7 @@ public class ArticleProcessor {
         final int cmtViewMode = Integer.valueOf(cmtViewModeStr);
         dataModel.put(UserExt.USER_COMMENT_VIEW_MODE, cmtViewMode);
 
-        final JSONObject viewer = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject viewer = Sessions.getUser();
         if (null != viewer) {
             livenessMgmtService.incLiveness(viewer.optString(Keys.OBJECT_ID), Liveness.LIVENESS_PV);
         }
@@ -952,7 +952,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
 
         try {
-            final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+            final JSONObject currentUser = Sessions.getUser();
 
             article.put(Article.ARTICLE_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
 
@@ -1006,7 +1006,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser
                 || !currentUser.optString(Keys.OBJECT_ID).equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -1127,7 +1127,7 @@ public class ArticleProcessor {
         }
         article.put(Article.ARTICLE_UA, ua);
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser
                 || !currentUser.optString(Keys.OBJECT_ID).equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -1242,7 +1242,7 @@ public class ArticleProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -1285,7 +1285,7 @@ public class ArticleProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -1324,7 +1324,7 @@ public class ArticleProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 

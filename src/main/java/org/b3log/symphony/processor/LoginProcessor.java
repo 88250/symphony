@@ -185,7 +185,7 @@ public class LoginProcessor {
         }
 
         final HttpServletRequest request = context.getRequest();
-        JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+        JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
 
         int step = requestJSONObject.optInt(UserExt.USER_GUIDE_STEP);
@@ -219,7 +219,7 @@ public class LoginProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final int step = currentUser.optInt(UserExt.USER_GUIDE_STEP);
         if (UserExt.USER_GUIDE_STEP_FIN == step) {
             context.sendRedirect(Latkes.getServePath());
@@ -768,7 +768,7 @@ public class LoginProcessor {
     public void logout(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject user = Sessions.getUser();
         if (null != user) {
             Sessions.logout(user.optString(Keys.OBJECT_ID), context.getResponse());
         }

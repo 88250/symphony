@@ -139,7 +139,7 @@ public class ActivityProcessor {
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
 
-        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
 
         String activityCharacterGuideLabel = langPropsService.get("activityCharacterGuideLabel");
@@ -188,7 +188,7 @@ public class ActivityProcessor {
             return;
         }
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final String dataURL = requestJSONObject.optString("dataURL");
         final String dataPart = StringUtils.substringAfter(dataURL, ",");
@@ -230,7 +230,7 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDailyCheckin(final RequestContext context) {
-        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
         if (activityQueryService.isCheckedinToday(userId)) {
             context.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
@@ -257,7 +257,7 @@ public class ActivityProcessor {
     @After(StopwatchEndAdvice.class)
     public void dailyCheckin(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
 
         if (!Symphonys.getBoolean("geetest.enabled")) {
@@ -300,7 +300,7 @@ public class ActivityProcessor {
     @After(StopwatchEndAdvice.class)
     public void yesterdayLivenessReward(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
 
         activityMgmtService.yesterdayLivenessReward(userId);
@@ -320,7 +320,7 @@ public class ActivityProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/1A0001.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
         final boolean closed = Symphonys.getBoolean("activity1A0001Closed");
@@ -409,7 +409,7 @@ public class ActivityProcessor {
         final int amount = requestJSONObject.optInt(Common.AMOUNT);
         final int smallOrLarge = requestJSONObject.optInt(Common.SMALL_OR_LARGE);
 
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
 
         final JSONObject ret = activityMgmtService.bet1A0001(fromId, amount, smallOrLarge);
@@ -433,7 +433,7 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class, Activity1A0001CollectValidation.class})
     @After(StopwatchEndAdvice.class)
     public void collect1A0001(final RequestContext context) {
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
         final JSONObject ret = activityMgmtService.collect1A0001(userId);
@@ -464,7 +464,7 @@ public class ActivityProcessor {
         final List<JSONObject> sumUsers = activityQueryService.getTopEatingSnakeUsersSum(10);
         dataModel.put("sumUsers", sumUsers);
 
-        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
         final int startPoint = activityQueryService.getEatingSnakeAvgPoint(userId);
 
@@ -483,7 +483,7 @@ public class ActivityProcessor {
     @After(StopwatchEndAdvice.class)
     public void startEatingSnake(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
 
         final JSONObject ret = activityMgmtService.startEatingSnake(fromId);
@@ -506,7 +506,7 @@ public class ActivityProcessor {
         try {
             requestJSONObject = context.requestJSON();
             final int score = requestJSONObject.optInt("score");
-            final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+            final JSONObject user = Sessions.getUser();
             final JSONObject ret = activityMgmtService.collectEatingSnake(user.optString(Keys.OBJECT_ID), score);
 
             context.renderJSON(ret);
@@ -547,7 +547,7 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After(StopwatchEndAdvice.class)
     public void startGobang(final RequestContext context) {
-        final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject currentUser = Sessions.getUser();
         final JSONObject ret = Results.falseResult();
 
         final boolean succ = currentUser.optInt(UserExt.USER_POINT) - Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START >= 0;

@@ -273,7 +273,7 @@ public final class Sessions {
      * @return CSRF token, returns {@code ""} if not found
      */
     public static String getCSRFToken(final RequestContext context) {
-        final JSONObject user = (JSONObject) context.attr(Common.CURRENT_USER);
+        final JSONObject user = Sessions.getUser();
         if (null == user) {
             return "";
         }

@@ -198,11 +198,9 @@ public class CronMgmtService {
             final JSONObject xiaoV = userQueryService.getUserByName(TuringQueryService.ROBOT_NAME);
             final int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
             final String xiaoVUserId = xiaoV.optString(Keys.OBJECT_ID);
-            final JSONObject atResult = notificationQueryService.getAtNotifications(
-                    avatarViewMode, xiaoVUserId, 1, 1); // Just get the latest one
+            final JSONObject atResult = notificationQueryService.getAtNotifications(xiaoVUserId, 1, 1); // Just get the latest one
             final List<JSONObject> notifications = (List<JSONObject>) atResult.get(Keys.RESULTS);
-            final JSONObject replyResult = notificationQueryService.getReplyNotifications(
-                    avatarViewMode, xiaoVUserId, 1, 1); // Just get the latest one
+            final JSONObject replyResult = notificationQueryService.getReplyNotifications(xiaoVUserId, 1, 1); // Just get the latest one
             notifications.addAll((List<JSONObject>) replyResult.get(Keys.RESULTS));
             for (final JSONObject notification : notifications) {
                 if (notification.optBoolean(Notification.NOTIFICATION_HAS_READ)) {

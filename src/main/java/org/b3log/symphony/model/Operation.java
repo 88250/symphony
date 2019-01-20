@@ -20,6 +20,7 @@ package org.b3log.symphony.model;
 import org.b3log.latke.Keys;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.util.Headers;
+import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -332,7 +333,7 @@ public final class Operation {
     public static JSONObject newOperation(final HttpServletRequest request, final int code, final String dataId) {
         final String ip = Requests.getRemoteAddr(request);
         final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
-        final JSONObject user = (JSONObject) request.getAttribute(Common.CURRENT_USER);
+        final JSONObject user = Sessions.getUser();
 
         return new JSONObject().
                 put(Operation.OPERATION_USER_ID, user.optString(Keys.OBJECT_ID)).

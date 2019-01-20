@@ -156,7 +156,7 @@ public class AnonymousViewCheck extends ProcessAdvice {
             // Check if admin allow to anonymous view
             final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
             if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
-                final JSONObject currentUser = (JSONObject) context.attr(Common.CURRENT_USER);
+                final JSONObject currentUser = Sessions.getUser();
 
                 // https://github.com/b3log/symphony/issues/373
                 final String cookieNameVisits = "anonymous-visits";
