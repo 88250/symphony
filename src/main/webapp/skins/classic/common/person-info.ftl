@@ -54,7 +54,7 @@
 
             <div class="fn-right">
                 <#if !isDailyCheckin>
-                    <a class="ft-gray" href="<#if useCaptchaCheckin>${servePath}/activity/checkin<#else>${servePath}/activity/daily-checkin</#if>">${dailyCheckinLabel}</a>
+                    <a class="ft-gray" href="${servePath}/activity/daily-checkin">${dailyCheckinLabel}</a>
                 <#else>
                     <a class="tooltipped tooltipped-w ft-fade" aria-label="${checkinStreakLabel}/${checkinStreakPart0Label}" href="${servePath}/top/checkin">
                     ${currentUser.userCurrentCheckinStreak}/<span class="ft-gray">${currentUser.userLongestCheckinStreak}</span>
