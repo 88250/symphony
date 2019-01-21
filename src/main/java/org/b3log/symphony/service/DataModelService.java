@@ -377,7 +377,6 @@ public class DataModelService {
             dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, 0); // AJAX polling 
 
             dataModel.put(Common.IS_DAILY_CHECKIN, activityQueryService.isCheckedinToday(userId));
-            dataModel.put(Common.USE_CAPTCHA_CHECKIN, Symphonys.getBoolean("geetest.enabled"));
 
             final int livenessMax = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");
             final int currentLiveness = livenessQueryService.getCurrentLivenessPoint(userId);

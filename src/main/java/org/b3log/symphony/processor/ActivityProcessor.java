@@ -44,7 +44,6 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.Activity1A0001CollectValidation;
 import org.b3log.symphony.processor.advice.validate.Activity1A0001Validation;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.GeetestLib;
 import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
@@ -74,7 +73,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.9.1.14, Jan 5, 2019
+ * @version 1.9.1.15, Jan 21, 2019
  * @since 1.3.0
  */
 @RequestProcessor
@@ -256,36 +255,9 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After(StopwatchEndAdvice.class)
     public void dailyCheckin(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
         final JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
-
-        if (!Symphonys.getBoolean("geetest.enabled")) {
-            activityMgmtService.dailyCheckin(userId);
-        } else {
-            final String challenge = context.param(GeetestLib.fn_geetest_challenge);
-            final String validate = context.param(GeetestLib.fn_geetest_validate);
-            final String seccode = context.param(GeetestLib.fn_geetest_seccode);
-            if (StringUtils.isBlank(challenge) || StringUtils.isBlank(validate) || StringUtils.isBlank(seccode)) {
-                context.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
-
-                return;
-            }
-
-            final GeetestLib gtSdk = new GeetestLib(Symphonys.get("geetest.id"), Symphonys.get("geetest.key"));
-            final JSONObject statusValue = Sessions.get(userId + GeetestLib.gtServerStatusSessionKey);
-            final int gt_server_status_code = statusValue.optInt(Common.DATA);
-            int gtResult = 0;
-            if (gt_server_status_code == 1) {
-                gtResult = gtSdk.enhencedValidateRequest(challenge, validate, seccode, userId);
-            } else {
-                gtResult = gtSdk.failbackValidateRequest(challenge, validate, seccode);
-            }
-
-            if (gtResult == 1) {
-                activityMgmtService.dailyCheckin(userId);
-            }
-        }
+        activityMgmtService.dailyCheckin(userId);
 
         context.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
     }
