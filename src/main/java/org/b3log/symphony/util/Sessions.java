@@ -44,9 +44,14 @@ import javax.servlet.http.HttpServletResponse;
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.0, Jan 20, 2019
+ * @version 2.1.1.0, Jan 22, 2019
  */
 public final class Sessions {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Sessions.class);
 
     /**
      * Session cache.
@@ -59,9 +64,9 @@ public final class Sessions {
     public static final String COOKIE_NAME = "sym-ce";
 
     /**
-     * Logger.
+     * Cookie value separator.
      */
-    private static final Logger LOGGER = Logger.getLogger(Sessions.class);
+    public static final String COOKIE_ITEM_SEPARATOR = ":";
 
     /**
      * Cookie expiry: 7 days.
@@ -324,7 +329,7 @@ public final class Sessions {
             cookieJSONObject.put(Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
 
             final String random = RandomStringUtils.randomAlphanumeric(16);
-            cookieJSONObject.put(Keys.TOKEN, user.optString(User.USER_PASSWORD) + ":" + random);
+            cookieJSONObject.put(Keys.TOKEN, user.optString(User.USER_PASSWORD) + COOKIE_ITEM_SEPARATOR + random);
             cookieJSONObject.put(Common.REMEMBER_LOGIN, rememberLogin);
 
             final String ret = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.get("cookie.secret"));
@@ -400,6 +405,13 @@ public final class Sessions {
                     return null;
                 }
 
+                final String token = cookieJSONObject.optString(Keys.TOKEN);
+                final String password = StringUtils.substringBeforeLast(token, COOKIE_ITEM_SEPARATOR);
+                final String userPassword = ret.optString(User.USER_PASSWORD);
+                if (!userPassword.equals(password)) {
+                    return null;
+                }
+
                 if (UserExt.USER_STATUS_C_INVALID == ret.optInt(UserExt.USER_STATUS)
                         || UserExt.USER_STATUS_C_INVALID_LOGIN == ret.optInt(UserExt.USER_STATUS)
                         || UserExt.USER_STATUS_C_DEACTIVATED == ret.optInt(UserExt.USER_STATUS)) {
@@ -454,7 +466,7 @@ public final class Sessions {
 
             final String userPassword = ret.optString(User.USER_PASSWORD);
             final String token = cookieJSONObject.optString(Keys.TOKEN);
-            final String password = StringUtils.substringBeforeLast(token, ":");
+            final String password = StringUtils.substringBeforeLast(token, COOKIE_ITEM_SEPARATOR);
             if (userPassword.equals(password)) {
                 userMgmtService.updateOnlineStatus(userId, ip, true, true);
 
