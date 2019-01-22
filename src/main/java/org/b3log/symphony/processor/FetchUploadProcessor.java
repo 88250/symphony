@@ -133,6 +133,11 @@ public class FetchUploadProcessor {
             suffix = StringUtils.substringAfter(contentType, "/");
         }
 
+        final String[] allowedSuffixArray = Symphonys.get("upload.suffix").split(",");
+        if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
+            return;
+        }
+
         final String fileName = UUID.randomUUID().toString().replace("-", "") + "." + suffix;
 
         if (Symphonys.getBoolean("qiniu.enabled")) {
