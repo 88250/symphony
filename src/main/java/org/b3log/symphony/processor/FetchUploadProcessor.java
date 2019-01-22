@@ -47,6 +47,7 @@ import org.json.JSONObject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.UUID;
 
 /**
@@ -88,7 +89,7 @@ public class FetchUploadProcessor {
 
         final JSONObject requestJSONObject = context.requestJSON();
         final String originalURL = requestJSONObject.optString(Common.URL);
-        if (!Strings.isURL(originalURL)) {
+        if (!Strings.isURL(originalURL) || !StringUtils.startsWithIgnoreCase(originalURL, "http")) {
             return;
         }
 
@@ -96,6 +97,11 @@ public class FetchUploadProcessor {
         byte[] data;
         String contentType;
         try {
+            final String host = new URL(originalURL).getHost();
+            if (Strings.isIPv4(host) || StringUtils.containsIgnoreCase(host, "localhost")) {
+                return;
+            }
+
             final HttpRequest req = HttpRequest.get(originalURL).header(Common.USER_AGENT, Symphonys.USER_AGENT_BOT).method("GET");
             res = req.send();
 
