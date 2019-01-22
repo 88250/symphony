@@ -90,6 +90,7 @@
 * [@gh0stkey](https://github.com/gh0stkey)
 * [@breezecoder](https://github.com/breezecoder)
 * [@SeagullGR](https://github.com/SeagullGR)
+* [voidfyoo of Chaitin Tech](https://www.chaitin.cn)
 
 ----
 
