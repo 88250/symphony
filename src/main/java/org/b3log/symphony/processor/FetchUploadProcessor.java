@@ -25,7 +25,6 @@ import jodd.http.HttpResponse;
 import jodd.net.MimeTypes;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -36,6 +35,7 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
@@ -44,7 +44,6 @@ import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -59,7 +58,7 @@ import java.util.UUID;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Apr 5, 2018
+ * @version 1.0.1.0, Jan 22, 2019
  * @since 1.5.0
  */
 @RequestProcessor
@@ -87,24 +86,17 @@ public class FetchUploadProcessor {
     public void fetchUpload(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = context.requestJSON();
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-        } catch (final Exception e) {
-            LOGGER.warn(e.getMessage());
-
+        final JSONObject requestJSONObject = context.requestJSON();
+        final String originalURL = requestJSONObject.optString(Common.URL);
+        if (!Strings.isURL(originalURL)) {
             return;
         }
-
-        final String originalURL = requestJSONObject.optString(Common.URL);
 
         HttpResponse res = null;
         byte[] data;
         String contentType;
         try {
-            final HttpRequest req = HttpRequest.get(originalURL);
+            final HttpRequest req = HttpRequest.get(originalURL).header(Common.USER_AGENT, Symphonys.USER_AGENT_BOT).method("GET");
             res = req.send();
 
             if (HttpServletResponse.SC_OK != res.statusCode()) {
