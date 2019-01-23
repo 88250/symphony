@@ -35,7 +35,6 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
-import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.CronMgmtService;
 import org.b3log.symphony.service.InitMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -45,7 +44,6 @@ import org.json.JSONObject;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
@@ -56,7 +54,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.10.28, Jan 20, 2019
+ * @version 3.19.10.29, Jan 23, 2019
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -257,7 +255,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         try {
             final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
-            final UserRepository userRepository = beanManager.getReference(UserRepository.class);
             final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
 
             final JSONObject optionLang = optionRepository.get(Option.ID_C_MISC_LANGUAGE);
@@ -270,43 +267,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
             JSONObject user = userQueryService.getCurrentUser(request);
             if (null == user) {
-                final Cookie[] cookies = request.getCookies();
-                if (null == cookies || 0 == cookies.length) {
-                    return;
-                }
-
-                try {
-                    for (final Cookie cookie : cookies) {
-                        if (!Sessions.COOKIE_NAME.equals(cookie.getName())) {
-                            continue;
-                        }
-
-                        final String value = Crypts.decryptByAES(cookie.getValue(), Symphonys.get("cookie.secret"));
-                        if (StringUtils.isBlank(value)) {
-                            break;
-                        }
-
-                        final JSONObject cookieJSONObject = new JSONObject(value);
-
-                        final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
-                        if (StringUtils.isBlank(userId)) {
-                            break;
-                        }
-
-                        user = userRepository.get(userId);
-                        if (null == user) {
-                            return;
-                        } else {
-                            break;
-                        }
-                    }
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Read cookie failed", e);
-                }
-
-                if (null == user) {
-                    return;
-                }
+                return;
             }
 
             final String skin = Sessions.isMobile() ? user.optString(UserExt.USER_MOBILE_SKIN) : user.optString(UserExt.USER_SKIN);
