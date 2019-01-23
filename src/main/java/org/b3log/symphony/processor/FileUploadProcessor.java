@@ -51,7 +51,7 @@ import java.util.UUID;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.0.1.4, Oct 28, 2018
+ * @version 2.0.1.5, Jan 23, 2019
  * @since 1.4.0
  */
 @RequestProcessor
@@ -65,7 +65,7 @@ public class FileUploadProcessor {
     /**
      * Upload directory.
      */
-    private static final String UPLOAD_DIR = Symphonys.get("upload.dir");
+    public static final String UPLOAD_DIR = Symphonys.get("upload.dir");
 
     /**
      * Qiniu enabled.

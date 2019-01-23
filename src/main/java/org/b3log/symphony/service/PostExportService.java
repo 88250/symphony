@@ -37,6 +37,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.FileUploadProcessor;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -214,7 +215,7 @@ public class PostExportService {
 
                 return Symphonys.get("qiniu.domain") + "/" + fileKey;
             } else {
-                final String filePath = Symphonys.get("upload.dir") + fileKey;
+                final String filePath = FileUploadProcessor.UPLOAD_DIR + fileKey;
 
                 FileUtils.copyFile(zipFile, new File(filePath));
 

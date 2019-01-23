@@ -30,6 +30,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.URLs;
+import org.b3log.symphony.processor.FileUploadProcessor;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -163,7 +164,7 @@ public class AudioMgmtService {
                 bucketManager.delete(Symphonys.get("qiniu.bucket"), fileKey);
             } else {
                 final String fileName = StringUtils.replace(audioURL, Latkes.getServePath() + "/upload", "");
-                final File file = new File(Symphonys.get("upload.dir") + fileName);
+                final File file = new File(FileUploadProcessor.UPLOAD_DIR + fileName);
                 FileUtils.deleteQuietly(file);
             }
 
@@ -213,7 +214,7 @@ public class AudioMgmtService {
                 ret = Symphonys.get("qiniu.domain") + "/" + fileKey;
             } else {
                 final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".mp3";
-                try (final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName)) {
+                try (final OutputStream output = new FileOutputStream(FileUploadProcessor.UPLOAD_DIR + fileName)) {
                     IOUtils.write(bytes, output);
                 }
 

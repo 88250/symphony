@@ -154,7 +154,7 @@ public class FetchUploadProcessor {
             context.renderJSONValue(Common.URL, Symphonys.get("qiniu.domain") + "/e/" + fileName);
             context.renderJSONValue("originalURL", originalURL);
         } else {
-            try (final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName)) {
+            try (final OutputStream output = new FileOutputStream(FileUploadProcessor.UPLOAD_DIR + fileName)) {
                 IOUtils.write(data, output);
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Writes output stream failed", e);
