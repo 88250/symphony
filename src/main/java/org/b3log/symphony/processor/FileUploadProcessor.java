@@ -196,8 +196,7 @@ public class FileUploadProcessor {
             final String processName = name.replaceAll("\\W", "");
             final String uuid = StringUtils.substring(UUID.randomUUID().toString().replaceAll("-", ""), 0, 8);
             fileName = processName + '-' + uuid + "." + suffix;
-            final String date = DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM");
-            fileName = date + "/" + fileName;
+            fileName = genFilePath(fileName);
             final Path path = Paths.get(UPLOAD_DIR, fileName);
             path.getParent().toFile().mkdirs();
             try (final OutputStream output = new FileOutputStream(path.toFile());
@@ -217,6 +216,18 @@ public class FileUploadProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Uploads a file failed", e);
         }
+    }
+
+    /**
+     * Generates upload file path for the specified file name.
+     *
+     * @param fileName the specified file name
+     * @return "yyyy/MM/fileName"
+     */
+    public static String genFilePath(final String fileName) {
+        final String date = DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM");
+
+        return date + "/" + fileName;
     }
 
     private static String getSuffix(final FileUpload file) {

@@ -187,7 +187,7 @@ public class PostExportService {
         }
 
         final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        String fileKey = "export/" + userId + "/" + uuid + ".zip";
+        String fileKey = "export-" + userId + "-" + uuid + ".zip";
 
         final String tmpDir = System.getProperty("java.io.tmpdir");
         String localFilePath = tmpDir + "/" + uuid + ".json";
@@ -215,6 +215,7 @@ public class PostExportService {
 
                 return Symphonys.get("qiniu.domain") + "/" + fileKey;
             } else {
+                fileKey = FileUploadProcessor.genFilePath(fileKey);
                 final String filePath = FileUploadProcessor.UPLOAD_DIR + fileKey;
 
                 FileUtils.copyFile(zipFile, new File(filePath));

@@ -213,7 +213,8 @@ public class AudioMgmtService {
                 uploadManager.put(bytes, fileKey, auth.uploadToken(Symphonys.get("qiniu.bucket")), null, "audio/mp3", false);
                 ret = Symphonys.get("qiniu.domain") + "/" + fileKey;
             } else {
-                final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".mp3";
+                String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".mp3";
+                fileName = FileUploadProcessor.genFilePath(fileName);
                 try (final OutputStream output = new FileOutputStream(FileUploadProcessor.UPLOAD_DIR + fileName)) {
                     IOUtils.write(bytes, output);
                 }

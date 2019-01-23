@@ -138,7 +138,7 @@ public class FetchUploadProcessor {
             return;
         }
 
-        final String fileName = UUID.randomUUID().toString().replace("-", "") + "." + suffix;
+        String fileName = UUID.randomUUID().toString().replace("-", "") + "." + suffix;
 
         if (Symphonys.getBoolean("qiniu.enabled")) {
             final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
@@ -154,6 +154,7 @@ public class FetchUploadProcessor {
             context.renderJSONValue(Common.URL, Symphonys.get("qiniu.domain") + "/e/" + fileName);
             context.renderJSONValue("originalURL", originalURL);
         } else {
+            fileName = FileUploadProcessor.genFilePath(fileName);
             try (final OutputStream output = new FileOutputStream(FileUploadProcessor.UPLOAD_DIR + fileName)) {
                 IOUtils.write(data, output);
             } catch (final Exception e) {

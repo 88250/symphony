@@ -486,7 +486,8 @@ public class UserMgmtService {
                                     null, "image/jpeg", false);
                             user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?" + new Date().getTime());
                         } else {
-                            final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
+                             String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
+                             fileName = FileUploadProcessor.genFilePath(fileName);
                             try (final OutputStream output = new FileOutputStream(FileUploadProcessor.UPLOAD_DIR + fileName)) {
                                 IOUtils.write(avatarData, output);
                             }
