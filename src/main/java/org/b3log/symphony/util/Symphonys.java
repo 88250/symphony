@@ -24,6 +24,7 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
@@ -184,7 +185,7 @@ public final class Symphonys {
             @Override
             public void run() {
                 final String symURL = Latkes.getServePath();
-                if (Networks.isIPv4(symURL)) {
+                if (Strings.isIPv4(symURL)) {
                     return;
                 }
 

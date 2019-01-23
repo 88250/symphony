@@ -21,6 +21,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
 
@@ -61,7 +62,7 @@ public final class Geos {
      */
     public static JSONObject getAddress(final String ip) {
         final String ak = Symphonys.get("baidu.lbs.ak");
-        if (StringUtils.isBlank(ak) || !Networks.isIPv4(ip)) {
+        if (StringUtils.isBlank(ak) || !Strings.isIPv4(ip)) {
             return null;
         }
 
