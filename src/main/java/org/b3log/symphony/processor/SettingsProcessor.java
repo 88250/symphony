@@ -48,10 +48,7 @@ import org.b3log.symphony.processor.advice.validate.UpdateEmotionListValidation;
 import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.Languages;
-import org.b3log.symphony.util.Results;
-import org.b3log.symphony.util.Sessions;
-import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,7 +79,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.2, Jan 10, 2019
+ * @version 1.3.2.0, Jan 23, 2019
  * @since 2.4.0
  */
 @RequestProcessor
@@ -716,15 +713,14 @@ public class SettingsProcessor {
     @Before({LoginCheck.class, CSRFCheck.class, UpdateProfilesValidation.class})
     public void updateProfiles(final RequestContext context) {
         context.renderJSON();
-
-        final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
-
         final String userTags = requestJSONObject.optString(UserExt.USER_TAGS);
         final String userURL = requestJSONObject.optString(User.USER_URL);
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
-        final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
-        final String userNickname = requestJSONObject.optString(UserExt.USER_NICKNAME);
+        String userIntro = StringUtils.trim(requestJSONObject.optString(UserExt.USER_INTRO));
+        userIntro = Escapes.escapeHTML(userIntro);
+        String userNickname = StringUtils.trim(requestJSONObject.optString(UserExt.USER_NICKNAME));
+        userNickname = Escapes.escapeHTML(userNickname);
 
         final JSONObject user = Sessions.getUser();
         user.put(UserExt.USER_TAGS, userTags);
