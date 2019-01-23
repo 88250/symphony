@@ -18,35 +18,52 @@
 package org.b3log.symphony.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 
+import java.net.InetAddress;
+import java.nio.ByteBuffer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Network utilities.
  *
+ * @author <a href="https://github.com/voidfyoo">Voidfyoo</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.1, Aug 2, 2018
+ * @version 1.1.0.0, Jan 23, 2019
  * @since 1.3.0
  */
 public final class Networks {
 
     /**
-     * Is IPv4.
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Networks.class);
+
+    /**
+     * Checks the specified hostname is an inner address.
      *
-     * @param ip ip
+     * @param host the specified hostname
      * @return {@code true} if it is, returns {@code false} otherwise
      */
-    public static boolean isIPv4(final String ip) {
-        if (StringUtils.isBlank(ip)) {
-            return false;
+    public static boolean isInnerAddress(final String host) {
+        try {
+            final int intAddress = ipToLong(host);
+            return ipToLong("0.0.0.0") >> 24 == intAddress >> 24 ||
+                    ipToLong("127.0.0.1") >> 24 == intAddress >> 24 ||
+                    ipToLong("10.0.0.0") >> 24 == intAddress >> 24 ||
+                    ipToLong("172.16.0.0") >> 20 == intAddress >> 20 ||
+                    ipToLong("192.168.0.0") >> 16 == intAddress >> 16;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Checks inner address failed: " + e.getMessage());
+
+            return true;
         }
+    }
 
-        final String regex = "^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-        final Pattern pattern = Pattern.compile(regex);
-        final Matcher matcher = pattern.matcher(ip);
-
-        return matcher.matches();
+    private static int ipToLong(final String ip) throws Exception {
+        return ByteBuffer.wrap(InetAddress.getByName(ip).getAddress()).getInt();
     }
 
     /**

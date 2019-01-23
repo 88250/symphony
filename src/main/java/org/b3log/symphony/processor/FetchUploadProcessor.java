@@ -41,12 +41,14 @@ import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.OptionQueryService;
+import org.b3log.symphony.util.Networks;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.UUID;
 
@@ -98,7 +100,8 @@ public class FetchUploadProcessor {
         String contentType;
         try {
             final String host = new URL(originalURL).getHost();
-            if (Strings.isIPv4(host) || StringUtils.containsIgnoreCase(host, "localhost")) {
+            final String hostIp = InetAddress.getByName(host).getHostAddress();
+            if (Networks.isInnerAddress(hostIp)) {
                 return;
             }
 
