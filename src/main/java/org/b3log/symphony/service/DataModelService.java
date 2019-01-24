@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.37, Dec 27, 2018
+ * @version 1.12.2.38, Jan 24, 2019
  * @since 0.2.0
  */
 @Service
@@ -469,12 +469,6 @@ public class DataModelService {
                 tipsLabels.add(entry.getValue());
             }
         }
-
-        // Builtin for Sym promotion
-        tipsLabels.add("<img align=\"absmiddle\" alt=\"tada\" class=\"emoji\" src=\"" + Latkes.getStaticServePath() +
-                "/emoji/graphics/tada.png\" title=\"tada\"> 本站使用 <a href=\"https://sym.b3log.org\" target=\"_blank\">Sym</a> 搭建，请为它点赞！");
-        tipsLabels.add("<img align=\"absmiddle\" alt=\"sparkles\" class=\"emoji\" src=\"" + Latkes.getStaticServePath() +
-                "/emoji/graphics/sparkles.png\" title=\"sparkles\"> 欢迎使用 <a href=\"https://sym.b3log.org\" target=\"_blank\">Sym</a> 来搭建自己的社区！");
 
         dataModel.put("tipsLabel", tipsLabels.get(RandomUtils.nextInt(tipsLabels.size())));
     }
