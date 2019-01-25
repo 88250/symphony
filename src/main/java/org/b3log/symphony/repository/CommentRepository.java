@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Comment repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Nov 3, 2018
+ * @version 1.1.1.2, Jan 25, 2019
  * @since 0.2.0
  */
 @Repository
@@ -98,7 +98,11 @@ public class CommentRepository extends AbstractRepository {
 
         final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
         final JSONObject commenter = userRepository.get(commentAuthorId);
-        commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) - 1);
+        int commentCount = commenter.optInt(UserExt.USER_COMMENT_COUNT) - 1;
+        if (0 > commentCount) {
+            commentCount = 0;
+        }
+        commenter.put(UserExt.USER_COMMENT_COUNT, commentCount);
         userRepository.update(commentAuthorId, commenter);
 
         final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);

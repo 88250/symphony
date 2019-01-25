@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.5.3, Jan 12, 2019
+ * @version 2.18.5.4, Jan 25, 2019
  * @since 0.2.0
  */
 @Service
@@ -366,8 +366,7 @@ public class ArticleMgmtService {
                 return;
             }
 
-            Query query = new Query().setFilter(new PropertyFilter(
-                    Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).setPageCount(1);
+            Query query = new Query().setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).setPageCount(1);
             final JSONArray comments = commentRepository.get(query).optJSONArray(Keys.RESULTS);
             final int commentCnt = comments.length();
             for (int i = 0; i < commentCnt; i++) {
@@ -379,7 +378,11 @@ public class ArticleMgmtService {
 
             final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userRepository.get(authorId);
-            author.put(UserExt.USER_ARTICLE_COUNT, author.optInt(UserExt.USER_ARTICLE_COUNT) - 1);
+            int articleCount = author.optInt(UserExt.USER_ARTICLE_COUNT) - 1;
+            if (0 > articleCount) {
+                articleCount = 0;
+            }
+            author.put(UserExt.USER_ARTICLE_COUNT, articleCount);
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
             final String city = article.optString(Article.ARTICLE_CITY);
