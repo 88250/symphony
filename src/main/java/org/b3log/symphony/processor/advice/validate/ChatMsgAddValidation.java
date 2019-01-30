@@ -65,11 +65,6 @@ public class ChatMsgAddValidation extends ProcessAdvice {
     @Inject
     private UserQueryService userQueryService;
 
-    /**
-     * Max content length.
-     */
-    public static final int MAX_CONTENT_LENGTH = 2000;
-
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
@@ -90,7 +85,7 @@ public class ChatMsgAddValidation extends ProcessAdvice {
 
         String content = requestJSONObject.optString(Common.CONTENT);
         content = StringUtils.trim(content);
-        if (StringUtils.isBlank(content) || content.length() > MAX_CONTENT_LENGTH) {
+        if (StringUtils.isBlank(content) || content.length() > 4096) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentErrorLabel")));
         }
 

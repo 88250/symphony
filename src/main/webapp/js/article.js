@@ -796,7 +796,7 @@ var Comment = {
         {
           'target': Comment.editor,
           'type': 'editor',
-          'max': 2000,
+          'max': 4096,
           'msg': Label.commentErrorLabel,
         }],
     })) {
