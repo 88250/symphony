@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.0.0, Dec 16, 2018
+ * @version 1.15.0.1, Jan 30, 2019
  * @since 0.2.0
  */
 public final class Comment {
@@ -280,6 +280,12 @@ public final class Comment {
      * Comment visible - only author.
      */
     public static final int COMMENT_VISIBLE_C_AUTHOR = 1;
+
+    //// Validation constants
+    /**
+     * Max comment content length.
+     */
+    public static final int MAX_COMMENT_CONTENT_LENGTH = 4096;
 
     /**
      * Private constructor.

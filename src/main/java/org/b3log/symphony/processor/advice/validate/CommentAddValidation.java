@@ -40,31 +40,30 @@ import javax.servlet.http.HttpServletRequest;
  * Validates for comment adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.2, Mar 9, 2017
+ * @version 1.3.0.3, Jan 30, 2019
  * @since 0.2.0
  */
 @Singleton
 public class CommentAddValidation extends ProcessAdvice {
 
     /**
-     * Max comment content length.
-     */
-    public static final int MAX_COMMENT_CONTENT_LENGTH = 2000;
-    /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
+
     /**
      * Comment query service.
      */
     @Inject
     private CommentQueryService commentQueryService;
+
     /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
     /**
      * Option query service.
      */
@@ -88,7 +87,7 @@ public class CommentAddValidation extends ProcessAdvice {
         exception.put(Keys.STATUS_CODE, StatusCodes.ERR);
 
         final String commentContent = StringUtils.trim(requestJSONObject.optString(Comment.COMMENT_CONTENT));
-        if (StringUtils.isBlank(commentContent) || commentContent.length() > MAX_COMMENT_CONTENT_LENGTH) {
+        if (StringUtils.isBlank(commentContent) || commentContent.length() > Comment.MAX_COMMENT_CONTENT_LENGTH) {
             throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentErrorLabel")));
         }
 
