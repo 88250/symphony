@@ -27,7 +27,7 @@ import org.json.JSONObject;
 /**
  * Emotion repository.
  *
- * @author Zephyr
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.0, Aug 18, 2016
  * @since 1.5.0

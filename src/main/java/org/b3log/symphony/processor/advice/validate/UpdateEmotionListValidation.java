@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Validates for emotion list.
  *
- * @author Zephyr
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @version 1.0.0.0, Aug 16, 2016
  * @since 1.5.0
  */
