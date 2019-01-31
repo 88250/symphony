@@ -66,7 +66,7 @@
 
 ## 社区
 
-* [讨论区](https://hacpai.com/tag/Sym)
+* [讨论区](https://hacpai.com/tag/sym)
 * [报告问题](https://github.com/b3log/symphony/issues/new/choose)
 
 ## 鸣谢
