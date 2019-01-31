@@ -36,6 +36,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -51,7 +52,7 @@ import java.util.UUID;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.0.1.5, Jan 23, 2019
+ * @version 2.0.1.6, Jan 31, 2019
  * @since 1.4.0
  */
 @RequestProcessor
@@ -159,6 +160,7 @@ public class FileUploadProcessor {
         if (QN_ENABLED) {
             return;
         }
+
         final HttpServletRequest request = context.getRequest();
         final int maxSize = Symphonys.getInt("upload.file.maxSize");
         final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
@@ -169,6 +171,7 @@ public class FileUploadProcessor {
         }
         final FileUpload file = parser.getFiles("file")[0];
         String fileName = file.getHeader().getFileName();
+        fileName = Escapes.sanitizeFilename(fileName);
         final String suffix = getSuffix(file);
 
         final HttpServletResponse response = context.getResponse();
@@ -193,9 +196,8 @@ public class FileUploadProcessor {
 
         try {
             final String name = StringUtils.substringBeforeLast(fileName, ".");
-            final String processName = name.replaceAll("\\W", "");
             final String uuid = StringUtils.substring(UUID.randomUUID().toString().replaceAll("-", ""), 0, 8);
-            fileName = processName + '-' + uuid + "." + suffix;
+            fileName = name + '-' + uuid + "." + suffix;
             fileName = genFilePath(fileName);
             final Path path = Paths.get(UPLOAD_DIR, fileName);
             path.getParent().toFile().mkdirs();
