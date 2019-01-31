@@ -26,15 +26,20 @@ import java.util.Iterator;
  * Escape utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 18, 2017
+ * @version 1.1.0.0, Jan 31, 2019
  * @since 2.3.0
  */
 public final class Escapes {
-
     /**
-     * Private constructor.
+     * Sanitizes the specified file name.
+     *
+     * @param unsanitized the specified file name
+     * @return sanitized file name
      */
-    private Escapes() {
+    public static String sanitizeFilename(final String unsanitized) {
+        return unsanitized.
+                replaceAll("[\\?\\\\/:|<>\\*]", " "). // filter out ? \ / : | < > *
+                replaceAll("\\s+", "_");              // white space as underscores
     }
 
     /**
@@ -60,4 +65,11 @@ public final class Escapes {
             }
         }
     }
+
+    /**
+     * Private constructor.
+     */
+    private Escapes() {
+    }
+
 }
