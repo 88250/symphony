@@ -44,7 +44,6 @@ import org.b3log.symphony.processor.advice.*;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.PointTransferValidation;
-import org.b3log.symphony.processor.advice.validate.UpdateEmotionListValidation;
 import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.service.*;
@@ -79,7 +78,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.0, Jan 23, 2019
+ * @version 1.3.2.1, Jan 31, 2019
  * @since 2.4.0
  */
 @RequestProcessor
@@ -826,12 +825,11 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/settings/emotionList", method = HttpMethod.POST)
-    @Before({LoginCheck.class, CSRFCheck.class, UpdateEmotionListValidation.class})
+    @Before({LoginCheck.class, CSRFCheck.class})
     public void updateEmoji(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
-        final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
+        final JSONObject requestJSONObject = context.requestJSON();
         final String emotionList = requestJSONObject.optString(Emotion.EMOTIONS);
 
         final JSONObject user = Sessions.getUser();
