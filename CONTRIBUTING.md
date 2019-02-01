@@ -4,7 +4,7 @@
 
 ### 关于提问
 
-在你咨询问题前请先到[黑客派](https://hacpai.com)以及 [issues](https://github.com/b3log/symphony/issues)  列表中进行搜索，这多半能够解决你的疑问。
+在你咨询问题前请先到[黑客派](https://hacpai.com)以及 [issues](https://github.com/b3log/symphony/issues) 列表中进行搜索，这多半能够解决你的疑问。
 
 提问相关具体细节请参考[《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)来进行操作。
 
@@ -17,4 +17,7 @@
 
 ### 关于报告安全漏洞
 
-请先到黑客派上[发私信给我们](https://hacpai.com/post?type=1&tags=%E5%B0%8F%E9%BB%91%E5%B1%8B&at=88250)，我们确认过问题并修复后再开 issue。
+* 在黑客派上[私信给我们](https://hacpai.com/chats/88250)
+* 或发邮件至 d@b3log.org
+
+我们确认过问题并修复后再开 issue，谢谢。
