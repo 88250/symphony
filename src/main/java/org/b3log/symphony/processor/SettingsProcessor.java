@@ -442,7 +442,7 @@ public class SettingsProcessor {
         dataModel.put("qiniuUploadToken", uploadToken);
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
-        if (!Symphonys.getBoolean("qiniu.enabled")) {
+        if (!FileUploadProcessor.QN_ENABLED) {
             dataModel.put("qiniuUploadToken", "");
         }
 
@@ -761,7 +761,7 @@ public class SettingsProcessor {
         if (Strings.contains(userAvatarURL, new String[]{"<", ">", "\"", "'"})) {
             user.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
         } else {
-            if (Symphonys.getBoolean("qiniu.enabled")) {
+            if (FileUploadProcessor.QN_ENABLED) {
                 final String qiniuDomain = Symphonys.get("qiniu.domain");
 
                 if (!StringUtils.startsWith(userAvatarURL, qiniuDomain)) {

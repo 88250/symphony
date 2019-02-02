@@ -17,14 +17,11 @@
  */
 package org.b3log.symphony.util;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Network utilities.

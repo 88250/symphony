@@ -143,7 +143,7 @@ public class FetchUploadProcessor {
 
         String fileName = UUID.randomUUID().toString().replace("-", "") + "." + suffix;
 
-        if (Symphonys.getBoolean("qiniu.enabled")) {
+        if (FileUploadProcessor.QN_ENABLED) {
             final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
             final UploadManager uploadManager = new UploadManager(new Configuration());
 

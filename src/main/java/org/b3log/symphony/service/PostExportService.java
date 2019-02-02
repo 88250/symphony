@@ -206,10 +206,9 @@ public class PostExportService {
             final FileInputStream inputStream = new FileInputStream(zipFile);
             final byte[] zipData = IOUtils.toByteArray(inputStream);
 
-            if (Symphonys.getBoolean("qiniu.enabled")) {
+            if (FileUploadProcessor.QN_ENABLED) {
                 final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
                 final UploadManager uploadManager = new UploadManager(new Configuration());
-
                 uploadManager.put(zipData, fileKey, auth.uploadToken(Symphonys.get("qiniu.bucket")),
                         null, "application/zip", false);
 

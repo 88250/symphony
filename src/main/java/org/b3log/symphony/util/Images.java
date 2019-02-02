@@ -19,6 +19,7 @@ package org.b3log.symphony.util;
 
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.symphony.processor.FileUploadProcessor;
 
 /**
  * Image utilities.
@@ -38,8 +39,7 @@ public final class Images {
     public static String qiniuImgProcessing(final String content) {
         String ret = content;
 
-        final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
-        if (!qiniuEnabled) {
+        if (!FileUploadProcessor.QN_ENABLED) {
             return ret;
         }
 

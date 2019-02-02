@@ -71,7 +71,7 @@ public class FileUploadProcessor {
     /**
      * Qiniu enabled.
      */
-    private static final Boolean QN_ENABLED = Symphonys.getBoolean("qiniu.enabled");
+    public static final Boolean QN_ENABLED = Symphonys.getBoolean("qiniu.enabled");
 
     static {
         if (!QN_ENABLED) {

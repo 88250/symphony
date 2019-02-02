@@ -252,7 +252,7 @@ public class LoginProcessor {
         dataModel.put("qiniuUploadToken", uploadToken);
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
-        if (!Symphonys.getBoolean("qiniu.enabled")) {
+        if (!FileUploadProcessor.QN_ENABLED) {
             dataModel.put("qiniuUploadToken", "");
         }
 

@@ -440,7 +440,7 @@ public class UserMgmtService {
                 user.put(UserExt.USER_NO, userNo);
 
                 if (!AvatarQueryService.DEFAULT_AVATAR_URL.equals(avatarURL)) { // generate/upload avatar succ
-                    if (Symphonys.getBoolean("qiniu.enabled")) {
+                    if (FileUploadProcessor.QN_ENABLED) {
                         user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
                                 + new Date().getTime());
                     } else {
@@ -478,7 +478,7 @@ public class UserMgmtService {
                             baos.close();
                         }
 
-                        if (Symphonys.getBoolean("qiniu.enabled")) {
+                        if (FileUploadProcessor.QN_ENABLED) {
                             final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
                             final UploadManager uploadManager = new UploadManager(new Configuration());
 
@@ -486,8 +486,8 @@ public class UserMgmtService {
                                     null, "image/jpeg", false);
                             user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?" + new Date().getTime());
                         } else {
-                             String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
-                             fileName = FileUploadProcessor.genFilePath(fileName);
+                            String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
+                            fileName = FileUploadProcessor.genFilePath(fileName);
                             try (final OutputStream output = new FileOutputStream(FileUploadProcessor.UPLOAD_DIR + fileName)) {
                                 IOUtils.write(avatarData, output);
                             }

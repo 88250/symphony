@@ -489,7 +489,7 @@ public class ArticleProcessor {
         dataModel.put("qiniuUploadToken", uploadToken);
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
-        if (!Symphonys.getBoolean("qiniu.enabled")) {
+        if (!FileUploadProcessor.QN_ENABLED) {
             dataModel.put("qiniuUploadToken", "");
         }
 
@@ -719,7 +719,7 @@ public class ArticleProcessor {
         dataModel.put("qiniuUploadToken", uploadToken);
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
-        if (!Symphonys.getBoolean("qiniu.enabled")) {
+        if (!FileUploadProcessor.QN_ENABLED) {
             dataModel.put("qiniuUploadToken", "");
         }
 
@@ -1031,7 +1031,7 @@ public class ArticleProcessor {
         dataModel.put("qiniuUploadToken", uploadToken);
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
-        if (!Symphonys.getBoolean("qiniu.enabled")) {
+        if (!FileUploadProcessor.QN_ENABLED) {
             dataModel.put("qiniuUploadToken", "");
         }
 

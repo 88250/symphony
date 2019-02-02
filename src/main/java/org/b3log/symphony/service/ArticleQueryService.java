@@ -36,6 +36,7 @@ import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.*;
 import org.b3log.symphony.cache.ArticleCache;
 import org.b3log.symphony.model.*;
+import org.b3log.symphony.processor.FileUploadProcessor;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.repository.*;
@@ -1710,8 +1711,7 @@ public class ArticleQueryService {
             return "";
         }
 
-        final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
-        if (qiniuEnabled) {
+        if (FileUploadProcessor.QN_ENABLED) {
             final String qiniuDomain = Symphonys.get("qiniu.domain");
             if (StringUtils.startsWith(ret, qiniuDomain)) {
                 ret = StringUtils.substringBefore(ret, "?");

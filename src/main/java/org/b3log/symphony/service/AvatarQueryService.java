@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.FileUploadProcessor;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -63,8 +64,7 @@ public class AvatarQueryService {
     public String getDefaultAvatarURL(final String size) {
         final String finerSize = String.valueOf(Integer.valueOf(size) + 32);
 
-        final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
-        if (qiniuEnabled) {
+        if (FileUploadProcessor.QN_ENABLED) {
             return DEFAULT_AVATAR_URL + "?imageView2/1/w/" + finerSize + "/h/" + finerSize + "/interlace/0/q";
         } else {
             return DEFAULT_AVATAR_URL;
@@ -95,7 +95,7 @@ public class AvatarQueryService {
 
         final String finerSize = String.valueOf(Integer.valueOf(size) + 32);
         String avatarURL = StringUtils.substringBeforeLast(originalURL, "?");
-        final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
+        final boolean qiniuEnabled = FileUploadProcessor.QN_ENABLED;
         if (UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL == viewMode) {
             if (qiniuEnabled) {
                 final String qiniuDomain = Symphonys.get("qiniu.domain");

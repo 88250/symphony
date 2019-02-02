@@ -157,7 +157,7 @@ public class AudioMgmtService {
         try {
             LOGGER.log(Level.INFO, "Removing audio file [" + audioURL + "]");
 
-            if (Symphonys.getBoolean("qiniu.enabled")) {
+            if (FileUploadProcessor.QN_ENABLED) {
                 final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
                 final BucketManager bucketManager = new BucketManager(auth, new Configuration());
                 final String fileKey = StringUtils.replace(audioURL, Symphonys.get("qiniu.domain") + "/", "");
@@ -200,7 +200,7 @@ public class AudioMgmtService {
 
         String ret;
         try {
-            if (Symphonys.getBoolean("qiniu.enabled")) {
+            if (FileUploadProcessor.QN_ENABLED) {
                 final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
                 final UploadManager uploadManager = new UploadManager(new Configuration());
                 final BucketManager bucketManager = new BucketManager(auth, new Configuration());
