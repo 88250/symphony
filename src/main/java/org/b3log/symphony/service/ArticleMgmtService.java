@@ -798,7 +798,6 @@ public class ArticleMgmtService {
                 livenessMgmtService.incLiveness(authorId, Liveness.LIVENESS_ARTICLE);
             }
 
-            // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, article);
             eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
@@ -1002,7 +1001,6 @@ public class ArticleMgmtService {
                 }
             }
 
-            // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, oldArticle);
             eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
@@ -1853,7 +1851,6 @@ public class ArticleMgmtService {
             // Grows the tag graph
             tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
 
-            // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, article);
             eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));

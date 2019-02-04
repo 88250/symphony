@@ -581,7 +581,6 @@ public class CommentMgmtService {
                 livenessMgmtService.incLiveness(commentAuthorId, Liveness.LIVENESS_COMMENT);
             }
 
-            // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Article.ARTICLE, article);
@@ -661,7 +660,6 @@ public class CommentMgmtService {
                 }
             }
 
-            // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, article);
             eventData.put(Comment.COMMENT, comment);
