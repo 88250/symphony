@@ -96,7 +96,6 @@
 ## 鸣谢
 
 * [jQuery](https://github.com/jquery/jquery)：前端 JavaScript 工具库
-* [CodeMirror](https://github.com/codemirror/CodeMirror)：前端 Markdown 编辑器内核
 * [Highlight.js](https://github.com/isagalaev/highlight.js)：前端代码高亮库
 * [pjax](https://github.com/defunkt/jquery-pjax)：pushState + ajax = pjax
 * [MathJax](https://github.com/mathjax/MathJax)：前端数学公式渲染引擎
