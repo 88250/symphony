@@ -50,6 +50,30 @@
 * [Sym 简介幻灯片](https://sym.b3log.org/syme-intro.pptx)
 * [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
 
+## 界面
+
+以下截图来自 Sym 商业版。
+
+**首页**
+
+![index](https://user-images.githubusercontent.com/873584/52256097-629ba200-2950-11e9-9242-bd515aec2906.png)
+
+**列表**
+
+![list](https://user-images.githubusercontent.com/873584/52256098-629ba200-2950-11e9-8641-3122e59db229.png)
+
+**帖子**
+
+![article](https://user-images.githubusercontent.com/873584/52256237-e6ee2500-2950-11e9-883f-45bb01bf8271.png)
+
+**发帖**
+
+![post](https://user-images.githubusercontent.com/873584/52256100-63343880-2950-11e9-9bba-38bf9c8bc8f2.png)
+
+**用户**
+
+![home](https://user-images.githubusercontent.com/873584/52256096-629ba200-2950-11e9-87de-31d3e235578d.png)
+
 ## 文档
 
 * [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
