@@ -64,7 +64,7 @@
 
 **帖子**
 
-![article](https://user-images.githubusercontent.com/873584/52256237-e6ee2500-2950-11e9-883f-45bb01bf8271.png)
+![article](https://user-images.githubusercontent.com/873584/52264908-b799e100-296d-11e9-81e7-ed5e3e2c101a.png)
 
 **发帖**
 
@@ -96,6 +96,7 @@
 ## 鸣谢
 
 * [jQuery](https://github.com/jquery/jquery)：前端 JavaScript 工具库
+* [CodeMirror](https://github.com/codemirror/CodeMirror)：前端 Markdown 编辑器内核
 * [Highlight.js](https://github.com/isagalaev/highlight.js)：前端代码高亮库
 * [pjax](https://github.com/defunkt/jquery-pjax)：pushState + ajax = pjax
 * [MathJax](https://github.com/mathjax/MathJax)：前端数学公式渲染引擎
