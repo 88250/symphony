@@ -185,7 +185,7 @@ public class VerifycodeMgmtService {
 
                         break;
                     case Verifycode.BIZ_TYPE_C_BIND_EMAIL:
-                        dataModel.put(Common.CODE, code);
+                        dataModel.put(Keys.CODE, code);
                         subject = langPropsService.get("bindEmailSubjectLabel", Latkes.getLocale());
 
                         break;

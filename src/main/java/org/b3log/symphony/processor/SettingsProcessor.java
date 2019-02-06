@@ -332,7 +332,7 @@ public class SettingsProcessor {
             if (null == verifycode) {
                 final String msg = langPropsService.get("updateFailLabel") + " - " + langPropsService.get("captchaErrorLabel");
                 context.renderMsg(msg);
-                context.renderJSONValue(Common.CODE, 2);
+                context.renderJSONValue(Keys.CODE, 2);
 
                 return;
             }
@@ -340,7 +340,7 @@ public class SettingsProcessor {
             if (!StringUtils.equals(verifycode.optString(Verifycode.CODE), captcha)) {
                 final String msg = langPropsService.get("updateFailLabel") + " - " + langPropsService.get("captchaErrorLabel");
                 context.renderMsg(msg);
-                context.renderJSONValue(Common.CODE, 2);
+                context.renderJSONValue(Keys.CODE, 2);
 
                 return;
             }

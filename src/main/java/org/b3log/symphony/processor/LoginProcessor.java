@@ -377,7 +377,7 @@ public class LoginProcessor {
             final String userId = verifycode.optString(Verifycode.USER_ID);
             final JSONObject user = userQueryService.getUser(userId);
             dataModel.put(User.USER, user);
-            dataModel.put(Common.CODE, code);
+            dataModel.put(Keys.CODE, code);
         }
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
@@ -396,7 +396,7 @@ public class LoginProcessor {
         final JSONObject requestJSONObject = context.requestJSON();
         final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
         final String userId = requestJSONObject.optString(UserExt.USER_T_ID);
-        final String code = requestJSONObject.optString(Common.CODE);
+        final String code = requestJSONObject.optString(Keys.CODE);
         final JSONObject verifycode = verifycodeQueryService.getVerifycode(code);
         if (null == verifycode || !verifycode.optString(Verifycode.USER_ID).equals(userId)) {
             context.renderMsg(langPropsService.get("verifycodeExpiredLabel"));
