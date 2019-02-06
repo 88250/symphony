@@ -1,6 +1,6 @@
 <p align = "center">
-<img src="https://user-images.githubusercontent.com/873584/52320309-9555a100-2a09-11e9-9252-f04dc47b0a31.png">
-<br><br>
+<img alt="Sym" src="https://user-images.githubusercontent.com/873584/52320309-9555a100-2a09-11e9-9252-f04dc47b0a31.png">
+<br>
 下一代的社区系统，为未来而构建
 </p>
 
