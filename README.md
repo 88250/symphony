@@ -1,4 +1,8 @@
-<img src="https://cloud.githubusercontent.com/assets/873584/19897669/e6a6f5ce-a093-11e6-8cf3-8e5c2acea033.png">  
+<p align = "center">
+<img src="https://cloud.githubusercontent.com/assets/873584/19897809/84c4ed56-a094-11e6-8498-43e9337c475f.png">
+<br>
+下一代的社区系统，为未来而构建
+</p>
 
 ## 简介
 
@@ -115,11 +119,3 @@
 * [@gh0stkey](https://github.com/gh0stkey)
 * [@SeagullGR](https://github.com/SeagullGR)
 * [长亭科技](https://www.chaitin.cn)
-
-----
-
-<p align = "center">
-<strong>下一代的社区系统，为未来而构建</strong>
-<br><br>
-<img src="https://cloud.githubusercontent.com/assets/873584/19897809/84c4ed56-a094-11e6-8498-43e9337c475f.png">
-</p>
