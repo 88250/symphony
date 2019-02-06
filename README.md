@@ -1,7 +1,9 @@
 <p align = "center">
 <img alt="Sym" src="https://user-images.githubusercontent.com/873584/52320309-9555a100-2a09-11e9-9252-f04dc47b0a31.png">
-<br>
+<br><br>
 下一代的社区系统，为未来而构建
+<br><br>
+<a title="Build Status" target="_blank" href="https://travis-ci.org/b3log/symphony"><img src="https://img.shields.io/travis/b3log/symphony.svg?style=flat-square"></a>
 </p>
 
 ## 简介
