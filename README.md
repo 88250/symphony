@@ -4,6 +4,7 @@
 下一代的社区系统，为未来而构建
 <br><br>
 <a title="Build Status" target="_blank" href="https://travis-ci.org/b3log/symphony"><img src="https://img.shields.io/travis/b3log/symphony.svg?style=flat-square"></a>
+<a title="Downloads" target="_blank" href="https://github.com/b3log/symphony/releases"><img src="https://img.shields.io/github/downloads/b3log/symphony/total.svg?style=flat-square"></a>
 </p>
 
 ## 简介
