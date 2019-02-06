@@ -104,18 +104,16 @@
 ## 鸣谢
 
 * [jQuery](https://github.com/jquery/jquery)：前端 JavaScript 工具库
-* [CodeMirror](https://github.com/codemirror/CodeMirror)：前端 Markdown 编辑器内核
+* [Vditor](https://github.com/b3log/vditor)： 一款浏览器端的 Markdown 编辑器，使用 TypeScript 实现
 * [Highlight.js](https://github.com/isagalaev/highlight.js)：前端代码高亮库
 * [pjax](https://github.com/defunkt/jquery-pjax)：pushState + ajax = pjax
 * [MathJax](https://github.com/mathjax/MathJax)：前端数学公式渲染引擎
-* [SoundRecorder](https://github.com/rderveloy/JavaScript-Sound-Recorder)：前端 HTML5 录音库
 * [Sass](http://sass-lang.com)：前端 CSS 处理工具
 * [jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器
 * [flexmark](https://github.com/vsch/flexmark-java)：Java Markdown 处理库
 * [Apache Commons](http://commons.apache.org)：Java 工具库集
 * [Jodd](https://github.com/oblac/jodd)：Java 工具库集
 * [Latke](https://github.com/b3log/latke)：一款以 JSON 为主的 Java Web 框架
-* [Vditor](https://github.com/b3log/vditor)： 一款浏览器端的 Markdown 编辑器，使用 TypeScript 实现
 
 安全方面特别感谢：
 
