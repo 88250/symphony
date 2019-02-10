@@ -17,6 +17,8 @@
  */
 package org.b3log.symphony.util;
 
+import jodd.io.upload.FileUpload;
+import jodd.net.MimeTypes;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -27,10 +29,46 @@ import javax.servlet.http.HttpServletRequest;
  * HTTP header utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jul 27, 2018
+ * @version 1.1.0.0, Feb 10, 2018
  * @since 2.8.0
  */
 public final class Headers {
+
+    /**
+     * Gets suffix (for example jpg) of the specified file.
+     *
+     * @param file the specified file
+     * @return suffix
+     */
+    public static String getSuffix(final FileUpload file) {
+        final String fileName = file.getHeader().getFileName();
+        String ret = StringUtils.substringAfterLast(fileName, ".");
+        if (StringUtils.isNotBlank(ret)) {
+            return ret;
+        }
+
+        final String contentType = file.getHeader().getContentType();
+        return getSuffix(contentType);
+    }
+
+    /**
+     * Gets suffix (for example jpg) with the specified content type.
+     *
+     * @param contentType the specified content type
+     * @return suffix
+     */
+    public static String getSuffix(final String contentType) {
+        String ret;
+        final String[] exts = MimeTypes.findExtensionsByMimeTypes(contentType, false);
+        if (null != exts && 0 < exts.length) {
+            ret = exts[0];
+        } else {
+            ret = StringUtils.substringAfter(contentType, "/");
+            ret = StringUtils.substringBefore(ret, ";");
+        }
+
+        return ret;
+    }
 
     /**
      * Gets a value of a header specified by the given header name from the specified request.

@@ -22,13 +22,14 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
-import jodd.net.MimeTypes;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.After;
@@ -41,8 +42,7 @@ import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.OptionQueryService;
-import org.b3log.symphony.util.Networks;
-import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
@@ -61,7 +61,7 @@ import java.util.UUID;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Jan 22, 2019
+ * @version 1.0.1.1, Feb 10, 2019
  * @since 1.5.0
  */
 @RequestProcessor
@@ -79,6 +79,12 @@ public class FetchUploadProcessor {
     private OptionQueryService optionQueryService;
 
     /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
      * Fetches the remote file and upload it.
      *
      * @param context the specified context
@@ -87,7 +93,9 @@ public class FetchUploadProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({StopwatchEndAdvice.class})
     public void fetchUpload(final RequestContext context) {
-        context.renderJSON();
+        final JSONObject result = Results.newFail();
+        context.renderJSONPretty(result);
+        final JSONObject data = new JSONObject();
 
         final JSONObject requestJSONObject = context.requestJSON();
         final String originalURL = requestJSONObject.optString(Common.URL);
@@ -95,8 +103,7 @@ public class FetchUploadProcessor {
             return;
         }
 
-        HttpResponse res = null;
-        byte[] data;
+        byte[] bytes;
         String contentType;
         try {
             final String host = new URL(originalURL).getHost();
@@ -105,39 +112,28 @@ public class FetchUploadProcessor {
                 return;
             }
 
-            final HttpRequest req = HttpRequest.get(originalURL).header(Common.USER_AGENT, Symphonys.USER_AGENT_BOT).method("GET");
-            res = req.send();
-
+            final HttpRequest req = HttpRequest.get(originalURL).header(Common.USER_AGENT, Symphonys.USER_AGENT_BOT);
+            final HttpResponse res = req.connectionTimeout(3000).timeout(5000).send();
+            res.close();
             if (HttpServletResponse.SC_OK != res.statusCode()) {
                 return;
             }
 
-            data = res.bodyBytes();
+            bytes = res.bodyBytes();
             contentType = res.contentType();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Fetch file [url=" + originalURL + "] failed", e);
 
             return;
-        } finally {
-            if (null != res) {
-                try {
-                    res.close();
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Close response failed", e);
-                }
-            }
         }
 
-        String suffix;
-        String[] exts = MimeTypes.findExtensionsByMimeTypes(contentType, false);
-        if (null != exts && 0 < exts.length) {
-            suffix = exts[0];
-        } else {
-            suffix = StringUtils.substringAfter(contentType, "/");
-        }
-
+        final String suffix = Headers.getSuffix(contentType);
         final String[] allowedSuffixArray = Symphonys.get("upload.suffix").split(",");
         if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
+            String msg = langPropsService.get("invalidFileSuffixLabel");
+            msg = StringUtils.replace(msg, "${suffix}", suffix);
+            result.put(Keys.MSG, msg);
+
             return;
         }
 
@@ -148,26 +144,28 @@ public class FetchUploadProcessor {
             final UploadManager uploadManager = new UploadManager(new Configuration());
 
             try {
-                uploadManager.put(data, "e/" + fileName, auth.uploadToken(Symphonys.get("qiniu.bucket")),
+                uploadManager.put(bytes, "e/" + fileName, auth.uploadToken(Symphonys.get("qiniu.bucket")),
                         null, contentType, false);
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Uploads to qiniu failed", e);
+                LOGGER.log(Level.ERROR, "Uploads to Qiniu failed", e);
             }
 
-            context.renderJSONValue(Common.URL, Symphonys.get("qiniu.domain") + "/e/" + fileName);
-            context.renderJSONValue("originalURL", originalURL);
+            data.put(Common.URL, Symphonys.get("qiniu.domain") + "/e/" + fileName);
+            data.put("originalURL", originalURL);
         } else {
             fileName = FileUploadProcessor.genFilePath(fileName);
             try (final OutputStream output = new FileOutputStream(FileUploadProcessor.UPLOAD_DIR + fileName)) {
-                IOUtils.write(data, output);
+                IOUtils.write(bytes, output);
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Writes output stream failed", e);
             }
 
-            context.renderJSONValue(Common.URL, Latkes.getServePath() + "/upload/" + fileName);
-            context.renderJSONValue("originalURL", originalURL);
+            data.put(Common.URL, Latkes.getServePath() + "/upload/" + fileName);
+            data.put("originalURL", originalURL);
         }
 
-        context.renderTrueResult();
+        result.put(Common.DATA, data);
+        result.put(Keys.CODE, StatusCodes.SUCC);
+        result.put(Keys.MSG, "");
     }
 }

@@ -27,8 +27,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -37,6 +39,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.util.Escapes;
+import org.b3log.symphony.util.Headers;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -91,6 +94,12 @@ public class FileUploadProcessor {
     }
 
     /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
      * Gets file by the specified URL.
      *
      * @param context the specified context
@@ -101,7 +110,6 @@ public class FileUploadProcessor {
             return;
         }
 
-        final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
         final String uri = context.requestURI();
@@ -172,7 +180,7 @@ public class FileUploadProcessor {
         final FileUpload file = parser.getFiles("file")[0];
         String fileName = file.getHeader().getFileName();
         fileName = Escapes.sanitizeFilename(fileName);
-        final String suffix = getSuffix(file);
+        final String suffix = Headers.getSuffix(file);
 
         final HttpServletResponse response = context.getResponse();
 
@@ -180,7 +188,9 @@ public class FileUploadProcessor {
         if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
             final JSONObject data = new JSONObject();
             data.put("code", 1);
-            data.put("msg", "Invalid suffix [" + suffix + "], please compress this file and try again");
+            String msg = langPropsService.get("invalidFileSuffixLabel");
+            msg = StringUtils.replace(msg, "${suffix}", suffix);
+            data.put("msg", msg);
             data.put("key", Latkes.getServePath() + "/upload/" + fileName);
             data.put("name", fileName);
             response.setContentType("application/json");
@@ -230,23 +240,5 @@ public class FileUploadProcessor {
         final String date = DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM");
 
         return date + "/" + fileName;
-    }
-
-    private static String getSuffix(final FileUpload file) {
-        final String fileName = file.getHeader().getFileName();
-        String ret = StringUtils.substringAfterLast(fileName, ".");
-        if (StringUtils.isNotBlank(ret)) {
-            return ret;
-        }
-
-        final String contentType = file.getHeader().getContentType();
-        final String[] exts = MimeTypes.findExtensionsByMimeTypes(contentType, false);
-        if (null != exts && 0 < exts.length) {
-            ret = exts[0];
-        } else {
-            ret = StringUtils.substringAfter(contentType, "/");
-        }
-
-        return ret;
     }
 }
