@@ -47,7 +47,10 @@ import org.b3log.symphony.processor.advice.validate.PointTransferValidation;
 import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.*;
+import org.b3log.symphony.util.Escapes;
+import org.b3log.symphony.util.Languages;
+import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -853,7 +856,7 @@ public class SettingsProcessor {
     @RequestProcessing(value = "/point/transfer", method = HttpMethod.POST)
     @Before({LoginCheck.class, CSRFCheck.class, PointTransferValidation.class})
     public void pointTransfer(final RequestContext context) {
-        final JSONObject ret = Results.falseResult();
+        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
         context.renderJSON(ret);
 
         final HttpServletRequest request = context.getRequest();
@@ -893,7 +896,7 @@ public class SettingsProcessor {
     @RequestProcessing(value = "/invitecode/state", method = HttpMethod.POST)
     @Before({LoginCheck.class, CSRFCheck.class})
     public void queryInvitecode(final RequestContext context) {
-        final JSONObject ret = Results.falseResult();
+        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
         context.renderJSON(ret);
 
         final JSONObject requestJSONObject = context.requestJSON();
@@ -947,10 +950,9 @@ public class SettingsProcessor {
     @RequestProcessing(value = "/point/buy-invitecode", method = HttpMethod.POST)
     @Before({LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
     public void pointBuy(final RequestContext context) {
-        final JSONObject ret = Results.falseResult();
+        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
         context.renderJSON(ret);
 
-        final HttpServletRequest request = context.getRequest();
         final String allowRegister = optionQueryService.getAllowRegister();
         if (!"2".equals(allowRegister)) {
             return;
@@ -990,7 +992,6 @@ public class SettingsProcessor {
     public void exportPosts(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
         final JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
 

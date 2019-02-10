@@ -33,7 +33,6 @@ import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.CharacterRepository;
 import org.b3log.symphony.repository.PointtransferRepository;
-import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Symphonys;
 import org.b3log.symphony.util.Tesseracts;
 import org.json.JSONObject;
@@ -131,7 +130,7 @@ public class ActivityMgmtService {
      * @return result
      */
     public synchronized JSONObject startEatingSnake(final String userId) {
-        final JSONObject ret = Results.falseResult();
+        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
 
         final int startPoint = pointtransferRepository.getActivityEatingSnakeAvg(userId);
 
@@ -157,7 +156,7 @@ public class ActivityMgmtService {
      * @return result
      */
     public synchronized JSONObject collectEatingSnake(final String userId, final int score) {
-        final JSONObject ret = Results.falseResult();
+        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
 
         if (score < 1) {
             ret.put(Keys.STATUS_CODE, true);
@@ -396,7 +395,7 @@ public class ActivityMgmtService {
      * @return result
      */
     public synchronized JSONObject bet1A0001(final String userId, final int amount, final int smallOrLarge) {
-        final JSONObject ret = Results.falseResult();
+        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
 
         if (activityQueryService.is1A0001Today(userId)) {
             ret.put(Keys.MSG, langPropsService.get("activityParticipatedLabel"));
@@ -427,7 +426,7 @@ public class ActivityMgmtService {
      * @return result
      */
     public synchronized JSONObject collect1A0001(final String userId) {
-        final JSONObject ret = Results.falseResult();
+        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
 
         if (!activityQueryService.is1A0001Today(userId)) {
             ret.put(Keys.MSG, langPropsService.get("activityNotParticipatedLabel"));
@@ -546,7 +545,7 @@ public class ActivityMgmtService {
      * @return result
      */
     public synchronized JSONObject startGobang(final String userId) {
-        final JSONObject ret = Results.falseResult();
+        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
 
         final int startPoint = Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START;
 
@@ -572,7 +571,7 @@ public class ActivityMgmtService {
      * @return result
      */
     public synchronized JSONObject collectGobang(final String userId, final int score) {
-        final JSONObject ret = Results.falseResult();
+        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
 
         final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_GOBANG_COLLECT, score,

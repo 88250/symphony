@@ -44,7 +44,6 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.Activity1A0001CollectValidation;
 import org.b3log.symphony.processor.advice.validate.Activity1A0001Validation;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -519,8 +518,8 @@ public class ActivityProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After(StopwatchEndAdvice.class)
     public void startGobang(final RequestContext context) {
+        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
         final JSONObject currentUser = Sessions.getUser();
-        final JSONObject ret = Results.falseResult();
 
         final boolean succ = currentUser.optInt(UserExt.USER_POINT) - Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START >= 0;
         ret.put(Keys.STATUS_CODE, succ);
