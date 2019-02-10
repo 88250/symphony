@@ -42,6 +42,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Escapes;
+import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -61,8 +62,8 @@ import java.util.*;
  * <li>User followers (/member/{userName}/followers), GET</li>
  * <li>User points (/member/{userName}/points), GET</li>
  * <li>User breezemoons (/member/{userName}/breezemoons), GET</li>
- * <li>Lists usernames (/users/names), GET</li>
- * <li>Lists emotions (/users/emotions), GET</li>
+ * <li>List usernames (/users/names), GET</li>
+ * <li>List emotions (/users/emotions), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -911,13 +912,14 @@ public class UserProcessor {
     }
 
     /**
-     * Lists usernames.
+     * List usernames.
      *
      * @param context the specified context
      */
     @RequestProcessing(value = "/users/names", method = HttpMethod.GET)
     public void listNames(final RequestContext context) {
-        context.renderJSON().renderTrueResult();
+        final JSONObject result = Results.newSucc();
+        context.renderJSON(result);
 
         final String namePrefix = context.param("name");
         if (StringUtils.isBlank(namePrefix)) {
@@ -938,11 +940,11 @@ public class UserProcessor {
         }
 
         final List<JSONObject> userNames = userQueryService.getUserNamesByPrefix(namePrefix);
-        context.renderJSONValue(Common.USER_NAMES, userNames);
+        result.put(Common.DATA, userNames);
     }
 
     /**
-     * Lists emotions.
+     * List emotions.
      *
      * @param context the specified context
      */

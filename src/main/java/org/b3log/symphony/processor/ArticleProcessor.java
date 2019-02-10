@@ -84,7 +84,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.2.10, Jan 5, 2019
+ * @version 1.27.2.11, Feb 10, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1182,8 +1182,11 @@ public class ArticleProcessor {
     @Before(StopwatchStartAdvice.class)
     @After(StopwatchEndAdvice.class)
     public void markdown2HTML(final RequestContext context) {
-        context.renderJSON(true);
-        final String markdownText = context.param("markdownText");
+        final JSONObject result = Results.newSucc();
+        context.renderJSON(result);
+
+        final JSONObject requestJSON = context.requestJSON();
+        final String markdownText = requestJSON.optString("markdownText");
         if (StringUtils.isBlank(markdownText)) {
             context.renderJSONValue("html", "");
 
@@ -1198,7 +1201,7 @@ public class ArticleProcessor {
         html = MP3Players.render(html);
         html = VideoPlayers.render(html);
 
-        context.renderJSONValue("html", html);
+        result.put(Common.DATA, html);
     }
 
     /**
