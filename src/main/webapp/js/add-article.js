@@ -478,8 +478,6 @@ var AddArticle = {
 
       $('.post .tags-selected').append('<span class="tag"><span class="text">'
         + text + '</span><span class="close">x</span></span>')
-      $('#articleTags').
-        width($('.tags-input').width() - $('.post .tags-selected').width() - 10)
 
       // set tags to localStorage
       if (location.search.indexOf('?id=') === -1) {
@@ -520,8 +518,6 @@ var AddArticle = {
     // 移除 tag
     $('.tags-input').on('click', '.tag > span.close', function () {
       $(this).parent().remove()
-      $('#articleTags').
-        width($('.tags-input').width() - $('.post .tags-selected').width() - 10)
 
       // set tags to localStorage
       if (location.search.indexOf('?id=') === -1) {
