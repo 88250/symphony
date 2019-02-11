@@ -151,8 +151,13 @@
                         ${article.articleContent}
                     </div>
                     <#else>
-                        <div id="thoughtProgress"><span class="bar"></span><svg class="icon-video"><use xlink:href="#video"></use></svg><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
-                        <div class="content-reset article-content"></div>
+                        <div id="thoughtProgress"><span class="bar"></span>
+                            <svg class="icon-video">
+                                <use xlink:href="#video"></use>
+                            </svg>
+                        </div>
+                        <div class="content-reset article-content" id="articleThought" data-author="${article.articleAuthorName}"
+                             data-link="${servePath}${article.articlePermalink}"></div>
                 </#if>
 
                 <#if 0 < article.articleRewardPoint>

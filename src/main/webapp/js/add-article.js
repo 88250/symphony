@@ -252,6 +252,7 @@ var AddArticle = {
         thoughtContent: '',
         rewardContent: '',
         rewardPoint: '',
+        thoughtTime: (new Date()).getTime(),
       }
       localStorage.postData = JSON.stringify(postData)
     } else {

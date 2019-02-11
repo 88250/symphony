@@ -212,6 +212,9 @@
             Label.articleType = ${articleType};
             Label.confirmRemoveLabel = '${confirmRemoveLabel}';
         </script>
+        <#if 3 == articleType>
+        <script src="${staticServePath}/js/lib/diff2html/diff.min.js"></script>
+        </#if>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
     </body>
 </html>
