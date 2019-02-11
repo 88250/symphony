@@ -17,6 +17,9 @@
  */
 package org.b3log.symphony.processor;
 
+import com.qiniu.storage.Configuration;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.util.Auth;
 import jodd.io.FileUtil;
 import jodd.io.upload.FileUpload;
 import jodd.io.upload.MultipartStreamParser;
@@ -26,6 +29,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -38,24 +42,24 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.SymphonyServletListener;
-import org.b3log.symphony.util.Escapes;
-import org.b3log.symphony.util.Headers;
-import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.model.Common;
+import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * File upload to local.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.0.1.6, Jan 31, 2019
+ * @version 2.0.1.7, Feb 11, 2019
  * @since 1.4.0
  */
 @RequestProcessor
@@ -165,69 +169,134 @@ public class FileUploadProcessor {
      */
     @RequestProcessing(value = "/upload", method = HttpMethod.POST)
     public void uploadFile(final RequestContext context) {
-        if (QN_ENABLED) {
-            return;
-        }
+        final JSONObject result = Results.newFail();
+        context.renderJSONPretty(result);
 
-        final HttpServletRequest request = context.getRequest();
         final int maxSize = Symphonys.getInt("upload.file.maxSize");
         final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
         try {
-            parser.parseRequestStream(request.getInputStream(), "UTF-8");
+            parser.parseRequestStream(context.getRequest().getInputStream(), "UTF-8");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Parses request stream failed", e);
+
+            return;
         }
-        final FileUpload file = parser.getFiles("file")[0];
-        String fileName = file.getHeader().getFileName();
-        fileName = Escapes.sanitizeFilename(fileName);
-        final String suffix = Headers.getSuffix(file);
+        final Map<String, String> succMap = new HashMap<>();
+        final FileUpload[] allFiles = parser.getFiles("file[]");
+        final List<FileUpload> files = new ArrayList<>();
+        String fileName;
 
-        final HttpServletResponse response = context.getResponse();
+        Auth auth;
+        UploadManager uploadManager = null;
+        String uploadToken = null;
+        if (QN_ENABLED) {
+            auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+            uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
+            uploadManager = new UploadManager(new Configuration());
+        }
 
+        final JSONObject data = new JSONObject();
+        final List<String> errFiles = new ArrayList<>();
+
+        boolean checkFailed = false;
+        String suffix = "";
         final String[] allowedSuffixArray = Symphonys.get("upload.suffix").split(",");
-        if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
-            final JSONObject data = new JSONObject();
-            data.put("code", 1);
+        for (int i = 0; i < allFiles.length; i++) {
+            final FileUpload file = allFiles[i];
+            suffix = Headers.getSuffix(file);
+            if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
+                checkFailed = true;
+
+                break;
+            }
+
+            if (maxSize < file.getSize()) {
+                continue;
+            }
+
+            files.add(file);
+        }
+
+        if (checkFailed) {
+            for (final FileUpload file : allFiles) {
+                fileName = file.getHeader().getFileName();
+                errFiles.add(fileName);
+            }
+
+            data.put("errFiles", errFiles);
+            data.put("succMap", succMap);
+            result.put(Common.DATA, data);
+            result.put(Keys.CODE, 1);
             String msg = langPropsService.get("invalidFileSuffixLabel");
             msg = StringUtils.replace(msg, "${suffix}", suffix);
-            data.put("msg", msg);
-            data.put("key", Latkes.getServePath() + "/upload/" + fileName);
-            data.put("name", fileName);
-            response.setContentType("application/json");
-            try (final PrintWriter writer = response.getWriter()) {
-                writer.append(data.toString());
-                writer.flush();
-            } catch (final Exception e) {
-                // ignored
-            }
+            result.put(Keys.MSG, msg);
 
             return;
         }
 
-        try {
-            final String name = StringUtils.substringBeforeLast(fileName, ".");
-            final String uuid = StringUtils.substring(UUID.randomUUID().toString().replaceAll("-", ""), 0, 8);
-            fileName = name + '-' + uuid + "." + suffix;
-            fileName = genFilePath(fileName);
-            final Path path = Paths.get(UPLOAD_DIR, fileName);
-            path.getParent().toFile().mkdirs();
-            try (final OutputStream output = new FileOutputStream(path.toFile());
-                 final InputStream input = file.getFileInputStream()) {
-                IOUtils.copy(input, output);
+        final List<byte[]> fileBytes = new ArrayList<>();
+        if (QN_ENABLED) { // 文件上传性能优化 https://github.com/b3log/symphony/issues/866
+            for (final FileUpload file : files) {
+                try (final InputStream inputStream = file.getFileInputStream()) {
+                    final byte[] bytes = IOUtils.toByteArray(inputStream);
+                    fileBytes.add(bytes);
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Reads input stream failed", e);
+                }
             }
-
-            final JSONObject data = new JSONObject();
-            data.put("code", 0);
-            data.put("key", Latkes.getServePath() + "/upload/" + fileName);
-            data.put("name", fileName);
-            response.setContentType("application/json");
-            try (final PrintWriter writer = response.getWriter()) {
-                writer.append(data.toString());
-                writer.flush();
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Uploads a file failed", e);
         }
+
+        final CountDownLatch countDownLatch = new CountDownLatch(files.size());
+        for (int i = 0; i < files.size(); i++) {
+            final FileUpload file = files.get(i);
+            final String originalName = fileName = Escapes.sanitizeFilename(file.getHeader().getFileName());
+            try {
+                String url;
+                byte[] bytes;
+                suffix = Headers.getSuffix(file);
+                final String name = StringUtils.substringBeforeLast(fileName, ".");
+                final String uuid = StringUtils.substring(UUID.randomUUID().toString().replaceAll("-", ""), 0, 8);
+                fileName = name + '-' + uuid + "." + suffix;
+                fileName = genFilePath(fileName);
+                if (QN_ENABLED) {
+                    bytes = fileBytes.get(i);
+                    final String contentType = file.getHeader().getContentType();
+                    uploadManager.asyncPut(bytes, fileName, uploadToken, null, contentType, false, (key, r) -> {
+                        LOGGER.log(Level.TRACE, "Uploaded [" + key + "], response [" + r.toString() + "]");
+                        countDownLatch.countDown();
+                    });
+                    url = Symphonys.get("qiniu.domain") + "/" + fileName;
+                    succMap.put(originalName, url);
+                } else {
+                    final Path path = Paths.get(UPLOAD_DIR, fileName);
+                    path.getParent().toFile().mkdirs();
+                    try (final OutputStream output = new FileOutputStream(path.toFile());
+                         final InputStream input = file.getFileInputStream()) {
+                        IOUtils.copy(input, output);
+
+                        countDownLatch.countDown();
+                    }
+                    url = Latkes.getServePath() + "/upload/" + fileName;
+                    succMap.put(originalName, url);
+                }
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Uploads file failed", e);
+
+                errFiles.add(originalName);
+            }
+        }
+
+        try {
+            countDownLatch.await(1, TimeUnit.MINUTES);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Count down latch failed", e);
+        }
+
+        data.put("errFiles", errFiles);
+        data.put("succMap", succMap);
+        result.put(Common.DATA, data);
+        result.put(Keys.CODE, StatusCodes.SUCC);
+        result.put(Keys.MSG, "");
     }
 
     /**
