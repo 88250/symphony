@@ -934,7 +934,7 @@ public class UserProcessor {
                 userNames.add(userName);
             }
 
-            context.renderJSONValue(Common.USER_NAMES, userNames);
+            result.put(Common.DATA, userNames);
 
             return;
         }
