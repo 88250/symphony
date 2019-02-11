@@ -50,7 +50,6 @@
 <script>
         Settings.initUploadAvatar({
             id: 'avatarUpload',
-            qiniuUploadToken: '${qiniuUploadToken}',
             userId: '${currentUser.oId}',
             maxSize: '${imgMaxSize?c}'
         }, function (data) {
@@ -58,14 +57,6 @@
             $('#avatarURL').css("background-image", 'url(' + uploadKey + ')').data('imageurl', uploadKey);
             $('#avatarURLMid').css("background-image", 'url(' + uploadKey + ')').data('imageurl', uploadKey);
             $('#avatarURLNor').css("background-image", 'url(' + uploadKey + ')').data('imageurl', uploadKey);
-
-            Settings.updateAvatar('${csrfToken}');
-        }, function (data) {
-            var qiniuKey = data.result.key,
-                    t = new Date().getTime();
-            $('#avatarURL').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
-            $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
-            $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
 
             Settings.updateAvatar('${csrfToken}');
         });

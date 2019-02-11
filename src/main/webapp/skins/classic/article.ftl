@@ -571,8 +571,6 @@
             Label.commonUpdateCommentPermissionLabel = '${commonUpdateCommentPermissionLabel}';
             Label.insertEmojiLabel = '${insertEmojiLabel}';
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
-            Label.qiniuDomain = '${qiniuDomain}';
-            Label.qiniuUploadToken = '${qiniuUploadToken}';
             Label.noPermissionLabel = '${noPermissionLabel}';
             Label.rewardLabel = '${rewardLabel}';
             Label.imgMaxSize = ${imgMaxSize?c};

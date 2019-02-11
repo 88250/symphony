@@ -102,7 +102,6 @@ function minArticleLibs () {
   var jsArticleLib = [
     './src/main/webapp/js/lib/vditor-0.1.7/index.min.js',
     './src/main/webapp/js/lib/highlight/highlight.pack.js',
-    './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js',
     './src/main/webapp/js/lib/sound-recorder/SoundRecorder.js',
     './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js',
     './src/main/webapp/js/lib/aplayer/APlayer.min.js',

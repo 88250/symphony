@@ -32,12 +32,13 @@
     <body>
         <#include "../header.ftl">
         <div class="main post">
-            <div class="form fn-flex-1 fn-clear">
+            <div class="fn-flex-1 fn-clear">
                 <input type="text" id="articleTitle" autocomplete="off" tabindex="1"<#if requisite> readonly disabled</#if>
                        value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
                 <div class="post-article-content">
-                    <textarea id="articleContent" tabindex="2"
-                              placeholder="<#if !article?? && 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent?html}</#if><#if at??>@${at}</#if></textarea>
+                    <div id="articleContent"
+                         data-placeholder="<#if !article?? && 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"></div>
+                    <textarea class="fn-none"><#if article??>${article.articleContent?html}</#if><#if at??>@${at}</#if></textarea>
                 </div>
                 <div class="tags-wrap">
                     <div class="tags-input"><span class="tags-selected"></span>
@@ -74,8 +75,9 @@
                 </button>
                 <div class="fn-none">
                     <div class="fn-clear article-reward-content">
-                        <textarea id="articleRewardContent" tabindex="4"
-                                  placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
+                        <div id="articleRewardContent"
+                                  data-placeholder="${rewardEditorPlaceholderLabel}"></div>
+                        <textarea class="fn-none"><#if article??>${article.articleRewardContent}</#if></textarea>
                     </div>
                     <div>
                         <input id="articleRewardPoint" type="number" tabindex="5" min="1"
@@ -178,7 +180,6 @@
         <#include "../footer.ftl">
         <script src="${staticServePath}/js/lib/vditor-0.1.7/index.min.js"></script>
         <script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
-        <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
         <script>
             Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
@@ -205,8 +206,6 @@
             Label.uploadFileLabel = '${uploadFileLabel}';
             Label.discussionLabel = '${discussionLabel}';
             Label.insertEmojiLabel = '${insertEmojiLabel}';
-            Label.qiniuDomain = '${qiniuDomain}';
-            Label.qiniuUploadToken = '${qiniuUploadToken}';
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
             Label.requisite = ${requisite?c};
             <#if article??>Label.articleOId = '${article.oId}' ;</#if>
@@ -214,27 +213,5 @@
             Label.confirmRemoveLabel = '${confirmRemoveLabel}';
         </script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script>
-            Util.uploadFile({
-                "id": "fileUpload",
-                "pasteZone": $("#articleContent").next().next(),
-                "qiniuUploadToken": "${qiniuUploadToken}",
-                "editor": AddArticle.editor,
-                "uploadingLabel": "${uploadingLabel}",
-                "qiniuDomain": "${qiniuDomain}",
-                "imgMaxSize": ${imgMaxSize?c},
-                "fileMaxSize": ${fileMaxSize?c}
-            });
-            Util.uploadFile({
-                "id": "rewardFileUpload",
-                "pasteZone": $("#articleRewardContent").next().next(),
-                "qiniuUploadToken": "${qiniuUploadToken}",
-                "editor": AddArticle.rewardEditor,
-                "uploadingLabel": "${uploadingLabel}",
-                "qiniuDomain": "${qiniuDomain}",
-                "imgMaxSize": ${imgMaxSize?c},
-                "fileMaxSize": ${fileMaxSize?c}
-            });
-        </script>
     </body>
 </html>

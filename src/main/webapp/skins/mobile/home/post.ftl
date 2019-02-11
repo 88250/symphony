@@ -172,7 +172,6 @@
         <#include "../footer.ftl"/>
         <script src="${staticServePath}/js/lib/vditor-0.1.7/index.min.js"></script>
         <script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
-        <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
         <script>
             Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
@@ -199,35 +198,11 @@
             Label.helpLabel = '${helpLabel}';
             Label.fullscreenLabel = '${fullscreenLabel}';
             Label.uploadFileLabel = '${uploadFileLabel}';
-            Label.qiniuDomain = '${qiniuDomain}';
-            Label.qiniuUploadToken = '${qiniuUploadToken}';
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
             <#if article??>Label.articleOId = '${article.oId}' ;</#if>
             Label.articleType = ${articleType};
             Label.confirmRemoveLabel = '${confirmRemoveLabel}';
         </script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script>
-            Util.uploadFile({
-                "id": "fileUpload",
-                "pasteZone": $("#articleContent").next().next(),
-                "qiniuUploadToken": "${qiniuUploadToken}",
-                "editor": AddArticle.editor,
-                "uploadingLabel": "${uploadingLabel}",
-                "qiniuDomain": "${qiniuDomain}",
-                "imgMaxSize": ${imgMaxSize?c},
-                "fileMaxSize": ${fileMaxSize?c}
-            });
-            Util.uploadFile({
-                "id": "rewardFileUpload",
-                "pasteZone": $("#articleRewardContent").next().next(),
-                "qiniuUploadToken": "${qiniuUploadToken}",
-                "editor": AddArticle.rewardEditor,
-                "uploadingLabel": "${uploadingLabel}",
-                "qiniuDomain": "${qiniuDomain}",
-                "imgMaxSize": ${imgMaxSize?c},
-                "fileMaxSize": ${fileMaxSize?c}
-            });
-        </script>
     </body>
 </html>

@@ -91,7 +91,6 @@
         </script>
         <script src="${staticServePath}/js/lib/vditor-0.1.7/index.min.js"></script>
         <script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
-        <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/chat-room${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
@@ -112,17 +111,6 @@
             // Init [ChatRoom] channel
             ChatRoomChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/chat-room-channel");
             var chatRoomMsgCnt = ${chatRoomMsgCnt};
-            Util.uploadFile({
-                "type": "img",
-                "id": "fileUpload",
-                "pasteZone": $(".CodeMirror"),
-                "editor": ChatRoom.editor,
-                "qiniuUploadToken": "${qiniuUploadToken}",
-                "uploadingLabel": "${uploadingLabel}",
-                "qiniuDomain": "${qiniuDomain}",
-                "imgMaxSize": ${imgMaxSize?c},
-                "fileMaxSize": ${fileMaxSize?c}
-            });
         </script>
     </body>
 </html>

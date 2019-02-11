@@ -492,8 +492,6 @@
             Label.uploadFileLabel = '${uploadFileLabel}';
             Label.insertEmojiLabel = '${insertEmojiLabel}';
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
-            Label.qiniuDomain = '${qiniuDomain}';
-            Label.qiniuUploadToken = '${qiniuUploadToken}';
             Label.noPermissionLabel = '${noPermissionLabel}';
             Label.imgMaxSize = ${imgMaxSize?c};
             Label.fileMaxSize = ${fileMaxSize?c};

@@ -31,6 +31,68 @@
 var AddArticle = {
   editor: undefined,
   rewardEditor: undefined,
+  recordThought: function (prevValue, postData) {
+    var diff = JsDiff.diffChars(prevValue, event.target.value)
+    var sameLength = 0
+    var hasRemoved = false, hasAdded = false, addedValue = ''
+    for (var iMax = diff.length, i = 0; i < iMax; i++) {
+      if (diff[i].removed) {
+        hasRemoved = true
+      } else if (diff[i].added) {
+        hasAdded = true
+        addedValue += diff[i].value
+      } else if (!hasRemoved && !hasAdded) {
+        sameLength += diff[i].count
+      }
+      if (!diff[i].removed && !diff[i].added && i !== iMax - 1 &&
+        i !== 0) {
+        addedValue += diff[i].value
+      }
+    }
+    if (!hasRemoved && !hasAdded) {
+      return
+    }
+
+    var getPosition = function (value, length) {
+      var getPosition = {ch: 0, line: 0}
+      var valueArray = value.substr(0, length).split('\n')
+      getPosition.line = valueArray.length - 1
+      getPosition.ch = valueArray.slice(-1).pop().length
+      return getPosition
+    }
+
+    var change = '',
+      changes = {
+        from: getPosition(prevValue, sameLength),
+        to: getPosition(prevValue, prevValue.length -
+          (diff.slice(-1).pop().removed ? 0 : diff.slice(-1).pop().count) // 删除最后一个元素时，to 为 0
+        ),
+      },
+      unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
+      time = (new Date()).getTime() - postData.thoughtTime
+
+    if (hasRemoved && !hasAdded) {
+      // delete
+      change = String.fromCharCode(24) + unitSep + time // cancel
+        + unitSep + changes.from.ch + '-' + changes.from.line
+        + unitSep + changes.to.ch + '-' + changes.to.line
+        + String.fromCharCode(30)  // Record Separator (记录分隔符)
+    } else {
+      if (hasAdded) {
+        change += addedValue
+      }
+      if (hasRemoved) {
+        change += String.fromCharCode(29) // group separator
+      }
+      change += unitSep + time
+        + unitSep + changes.from.ch + '-' + changes.from.line
+        + unitSep + changes.to.ch + '-' + changes.to.line
+        + String.fromCharCode(30)  // Record Separator (记录分隔符)
+    }
+
+    postData.thoughtContent += change
+  },
+
   /**
    * @description 删除文章
    * @csrfToken [string] CSRF 令牌
@@ -83,12 +145,6 @@ var AddArticle = {
           'max': 256,
           'msg': Label.articleTitleErrorLabel,
           'target': $('#articleTitle'),
-        }, {
-          'type': 'editor',
-          'target': this.editor,
-          'max': 1048576,
-          'min': 4,
-          'msg': Label.articleContentErrorLabel,
         }],
     })) {
       var articleType = parseInt(
@@ -162,6 +218,8 @@ var AddArticle = {
             window.location.href = Label.servePath + '/article/' +
               result.articleId
             localStorage.removeItem('postData')
+            AddArticle.editor.clearCache()
+            AddArticle.rewardEditor.clearCache()
           } else {
             $('#addArticleTip').
               addClass('error').
@@ -205,49 +263,29 @@ var AddArticle = {
       $('#articleContent').val(postData.content)
     }
 
-      // 初始化文章编辑器
-      var addArticleEditor = new Editor({
-        element: document.getElementById('articleContent'),
-        dragDrop: false,
-        lineWrapping: true,
-        htmlURL: Label.servePath + '/markdown',
-        readOnly: Label.requisite,
-        extraKeys: {
-          'Alt-/': 'autocompleteUserName',
-          'Ctrl-/': 'autocompleteEmoji',
-          'Cmd-/': 'autocompleteEmoji',
-          'Alt-S': 'startAudioRecord',
-          'Alt-R': 'endAudioRecord',
-        },
-        toolbar: [
-          {name: 'emoji'},
-          {name: 'bold'},
-          {name: 'italic'},
-          {name: 'quote'},
-          {name: 'link'},
-          {
-            name: 'image',
-            html: '<div class="tooltipped tooltipped-n" aria-label="' +
-            Label.uploadFileLabel +
-            '" ><form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><svg><use xlink:href="#upload"></use></svg><input type="file"/></label></form></div>',
-          },
-          {name: 'unordered-list'},
-          {name: 'ordered-list'},
-          {name: 'view'},
-          {name: 'fullscreen'},
-          {name: 'question', action: 'https://hacpai.com/guide/markdown'},
-        ],
-        status: false,
-      })
-      addArticleEditor.render()
-
-      AddArticle.editor = addArticleEditor.codemirror
-
-
-    // 默认使用 preview
-    $('.post-article-content .editor-toolbar .icon-view:eq(0)').
-      parent().
-      click()
+    var prevValue = postData.content
+    // 初始化文章编辑器
+    AddArticle.editor = Util.newVditor({
+      id: 'articleContent',
+      cache: Label.articleOId ? false : true,
+      preview: {
+        show: true,
+      },
+      resize: {
+        enable: false,
+      },
+      height: 360,
+      counter: 4096,
+      placeholder: $('#articleContent').data('placeholder'),
+      input: function () {
+        if (Label.articleType === 3) {
+          var postData = JSON.parse(localStorage.postData)
+          prevValue = localStorage.getItem('vditorarticleContent') || ''
+          AddArticle.recordThought(prevValue, postData)
+          localStorage.postData = JSON.stringify(postData)
+        }
+      },
+    })
 
     // 私信 at 默认值
     var atIdx = location.href.indexOf('at=')
@@ -255,15 +293,12 @@ var AddArticle = {
       if ('' == postData.content) {
         var at = AddArticle.editor.getValue()
         AddArticle.editor.setValue('\n\n\n' + at)
-        AddArticle.editor.setCursor(CodeMirror.Pos(0, 0))
-        AddArticle.editor.focus()
       }
 
       if ('' == postData.title) {
         var username = Util.getParameterByName('at')
         $('#articleTitle').val('Hi, ' + username)
       }
-
       if ('' !== postData.tags) {
         var tagTitles = Label.discussionLabel
         var tags = Util.getParameterByName('tags')
@@ -298,95 +333,9 @@ var AddArticle = {
 
     this._initTag()
 
-      AddArticle.editor.on('keydown', function (cm, evt) {
-        if (8 === evt.keyCode) {
-          var cursor = cm.getCursor()
-          var token = cm.getTokenAt(cursor)
-
-          // delete the whole emoji
-          var preCursor = CodeMirror.Pos(cursor.line, cursor.ch)
-          token = cm.getTokenAt(preCursor)
-          if (/^:\S+:$/.test(token.string)) {
-            cm.replaceRange('', CodeMirror.Pos(cursor.line, token.start),
-              CodeMirror.Pos(cursor.line, token.end - 1))
-          }
-        }
-      })
-
-      var thoughtTime = ''
-      AddArticle.editor.on('changes', function (cm, changes) {
-        var postData = JSON.parse(localStorage.postData)
-        postData.content = cm.getValue()
-
-        if (thoughtTime === '') {
-          thoughtTime = (new Date()).getTime()
-        }
-
-        var cursor = cm.getCursor()
-        var token = cm.getTokenAt(cursor)
-        if (token.string.indexOf('@') === 0) {
-          cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false})
-          return CodeMirror.Pass
-        }
-
-        var change = '',
-          unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
-          time = (new Date()).getTime() - thoughtTime
-
-        switch (changes[0].origin) {
-          case '+delete':
-            change = String.fromCharCode(24) + unitSep + time // cancel
-              + unitSep + changes[0].from.ch + '-' + changes[0].from.line
-              + unitSep + changes[0].to.ch + '-' + changes[0].to.line
-              + String.fromCharCode(30)  // Record Separator (记录分隔符)
-            break
-          case '*compose':
-          case '+input':
-          default:
-
-            for (var i = 0; i < changes[0].text.length; i++) {
-              if (i === changes[0].text.length - 1) {
-                change += changes[0].text[i]
-              } else {
-                change += changes[0].text[i] + String.fromCharCode(10) // New Line
-              }
-            }
-            for (var j = 0; j < changes[0].removed.length; j++) {
-              if (j === 0) {
-                change += String.fromCharCode(29) // group separator
-                break
-              }
-            }
-            change += unitSep + time
-              + unitSep + changes[0].from.ch + '-' + changes[0].from.line
-              + unitSep + changes[0].to.ch + '-' + changes[0].to.line
-              + String.fromCharCode(30)  // Record Separator (记录分隔符)
-            break
-        }
-
-        postData.thoughtContent += change
-        localStorage.postData = JSON.stringify(postData)
-
-        if ($('.post-article-content .editor-preview-active').length === 0) {
-          return false
-        }
-
-        $.ajax({
-          url: Label.servePath + '/markdown',
-          type: 'POST',
-          cache: false,
-          data: {
-            markdownText: cm.getValue(),
-          },
-          success: function (result, textStatus) {
-            $('.post-article-content .editor-preview-active').
-              html(result.html)
-            hljs.initHighlighting.called = false
-            hljs.initHighlighting()
-            Util.parseMarkdown()
-          },
-        })
-      })
+    if ($('#articleContent').next().val() !== '') {
+      AddArticle.editor.setValue($('#articleContent').next().val())
+    }
 
     // focus
     if ($('#articleTitle').val().length <= 0) {
@@ -429,12 +378,13 @@ var AddArticle = {
     })
 
     // 快捷发文
-    $('#articleTags, #articleRewardPoint, #articleAskPoint').keypress(function (event) {
-      if (event.ctrlKey && 10 === event.charCode) {
-        AddArticle.add()
-        return false
-      }
-    })
+    $('#articleTags, #articleRewardPoint, #articleAskPoint').
+      keypress(function (event) {
+        if (event.ctrlKey && 10 === event.charCode) {
+          AddArticle.add()
+          return false
+        }
+      })
 
     if ($('#articleAskPoint').length === 0) {
       // 初始化打赏区编辑器
@@ -442,92 +392,25 @@ var AddArticle = {
         $('#showReward').click()
       }
 
-        var addArticleRewardEditor = new Editor({
-          element: document.getElementById('articleRewardContent'),
-          dragDrop: false,
-          lineWrapping: true,
-          htmlURL: Label.servePath + '/markdown',
-          toolbar: [
-            {name: 'emoji'},
-            {name: 'bold'},
-            {name: 'italic'},
-            {name: 'quote'},
-            {name: 'link'},
-            {
-              name: 'image',
-              html: '<div class="tooltipped tooltipped-n" aria-label="' +
-              Label.uploadFileLabel +
-              '" ><form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><svg><use xlink:href="#upload"></use></svg><input type="file"/></label></form></div>',
-            },
-            {name: 'unordered-list'},
-            {name: 'ordered-list'},
-            {name: 'view'},
-            {name: 'fullscreen'},
-            {name: 'question', action: 'https://hacpai.com/guide/markdown'},
-          ],
-          extraKeys: {
-            'Alt-/': 'autocompleteUserName',
-            'Ctrl-/': 'autocompleteEmoji',
-            'Cmd-/': 'autocompleteEmoji',
-            'Alt-S': 'startAudioRecord',
-            'Alt-R': 'endAudioRecord',
-          },
-          status: false,
-        })
-        addArticleRewardEditor.render()
-        AddArticle.rewardEditor = addArticleRewardEditor.codemirror
+      AddArticle.rewardEditor = Util.newVditor({
+        id: 'articleRewardContent',
+        cache: Label.articleOId ? false : true,
+        preview: {
+          show: false,
+        },
+        resize: {
+          enable: false,
+        },
+        height: 160,
+        counter: 4096,
+        placeholder: $('#articleRewardContent').data('placeholder')
+      })
 
-        AddArticle.rewardEditor.on('keydown', function (cm, evt) {
-          if (8 === evt.keyCode) {
-            var cursor = cm.getCursor()
-            var token = cm.getTokenAt(cursor)
-
-            // delete the whole emoji
-            var preCursor = CodeMirror.Pos(cursor.line, cursor.ch)
-            token = cm.getTokenAt(preCursor)
-            if (/^:\S+:$/.test(token.string)) {
-              cm.replaceRange('', CodeMirror.Pos(cursor.line, token.start),
-                CodeMirror.Pos(cursor.line, token.end - 1))
-            }
-          }
-        })
-
-        AddArticle.rewardEditor.on('changes', function (cm) {
-          var cursor = cm.getCursor()
-          var token = cm.getTokenAt(cursor)
-          if (token.string.indexOf('@') === 0) {
-            cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false})
-            return CodeMirror.Pass
-          }
-
-          var postData = JSON.parse(localStorage.postData)
-          postData.rewardContent = cm.getValue()
-          localStorage.postData = JSON.stringify(postData)
-
-          if ($('.article-reward-content .editor-preview-active').length ===
-            0) {
-            return false
-          }
-
-          $.ajax({
-            url: Label.servePath + '/markdown',
-            type: 'POST',
-            cache: false,
-            data: {
-              markdownText: cm.getValue(),
-            },
-            success: function (result, textStatus) {
-              $('.article-reward-content .editor-preview-active').
-                html(result.html)
-              hljs.initHighlighting.called = false
-              hljs.initHighlighting()
-              Util.parseMarkdown()
-            },
-          })
-        })
+      if ($('#articleRewardContent').next().val() !== '') {
+        $('#showReward').click()
+        AddArticle.rewardEditor.setValue($('#articleRewardContent').next().val())
       }
-
-    $('#articleContent').next().next().height(330)
+    }
 
     if ($('#articleAskPoint').length === 0) {
       if ('' !== postData.rewardContent) {
@@ -545,7 +428,7 @@ var AddArticle = {
         localStorage.postData = JSON.stringify(postData)
       })
     } else {
-      $('#articleAskPoint').keyup(function() {
+      $('#articleAskPoint').keyup(function () {
         var postData = JSON.parse(localStorage.postData)
         postData.QnAOfferPoint = $(this).val()
         localStorage.postData = JSON.stringify(postData)
