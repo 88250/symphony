@@ -950,9 +950,10 @@ public class UserProcessor {
         final JSONObject result = Results.newSucc();
         context.renderJSON(result);
 
+        final JSONObject data = new JSONObject();
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
-            result.put(Common.DATA, "");
+            result.put(Common.DATA, data);
 
             return;
         }
@@ -960,20 +961,16 @@ public class UserProcessor {
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         String emotions = emotionQueryService.getEmojis(userId);
         final String[] emojis = emotions.split(",");
-        StringBuilder emojisBuilder = new StringBuilder();
         for (final String emoji : emojis) {
             String emojiChar = Emotions.toUnicode(":" + emoji + ":");
             if (StringUtils.contains(emojiChar, ":")) {
                 emojiChar = "https://vditor.b3log.org/images/" + emoji + ".png";
             }
-            final String e = "\"" + emoji + "\": \"" + emojiChar + "\"";
-            emojisBuilder.append(e).append(",");
-        }
-        if (1 < emojisBuilder.length()) {
-            emojisBuilder.deleteCharAt(emojisBuilder.length() - 1);
+
+            data.put("\"" + emoji + "\"", emojiChar);
         }
 
-        result.put(Common.DATA, emojisBuilder.toString());
+        result.put(Common.DATA, data);
     }
 
     /**
