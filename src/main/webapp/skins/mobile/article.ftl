@@ -287,7 +287,7 @@
                 <#if 1 == userCommentViewMode>
                 <#if isLoggedIn>
                 <#if discussionViewable && article.articleCommentable && permissions["commonAddComment"].permissionGrant>
-                <div class="form fn-clear comment-wrap">
+                <div class="fn-clear comment-wrap">
                     <br/>
                     <div id="replyUseName"> </div>
                     <div id="commentContent"></div>
@@ -299,7 +299,7 @@
                         <label class="anonymous-check">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
                         </#if>
                         <label class="anonymous-check">${onlyArticleAuthorVisibleLabel}<input type="checkbox" id="commentVisible"></label>
-                        <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
+                        <button id="articleCommentBtn" class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}'), this">${submitLabel}</button>
                     </div>
                 </div>
                 </#if>

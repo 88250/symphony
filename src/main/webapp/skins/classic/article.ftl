@@ -496,21 +496,24 @@
         <div class="editor-panel">
             <div class="editor-bg"></div>
             <div class="wrapper">
-                <div class="form fn-clear comment-wrap">
+                <div style="width: 100%">
                     <div class="fn-flex">
                         <div id="replyUseName" class="fn-flex-1 fn-ellipsis"></div>
                         <span class="tooltipped tooltipped-w fn-pointer editor-hide" onclick="Comment._toggleReply()" aria-label="${cancelLabel}"> <svg><use xlink:href="#chevron-down"></use></svg></span>
                     </div>
                     <div class="article-comment-content">
                         <div id="commentContent"></div>
-                        <div class="comment-submit">
+                        <br>
+                        <div class="comment-submit fn-clear">
                             <#if permissions["commonAddCommentAnonymous"].permissionGrant>
                                 <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
                             </#if>
                             <label class="cmt-anonymous">${onlyArticleAuthorVisibleLabel}<input type="checkbox" id="commentVisible"></label>
-                            <button class="green" onclick="Comment.add('${article.oId}', '${csrfToken}', this)">${submitLabel}</button> &nbsp; &nbsp;
-                            <a class="fn-pointer ft-a-title" href="javascript:Comment._toggleReply()">${cancelLabel}</a>
-                            <div class="tip fn-right" id="addCommentTip"></div>
+                            <div class="fn-right">
+                                <div class="tip fn-left" id="addCommentTip"></div> &nbsp; &nbsp;
+                                <a class="fn-pointer ft-a-title" href="javascript:Comment._toggleReply()">${cancelLabel}</a> &nbsp; &nbsp;
+                                <button id="articleCommentBtn" class="green" onclick="Comment.add('${article.oId}', '${csrfToken}', this)">${submitLabel}</button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -683,6 +683,8 @@ var Util = {
           if (element.style.display === 'none') {
             return
           }
+          hljs.initHighlighting.called = false
+          hljs.initHighlighting()
           Util.parseMarkdown()
           Util.LazyLoadImage()
         },
