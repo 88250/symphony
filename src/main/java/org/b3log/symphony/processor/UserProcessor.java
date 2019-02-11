@@ -41,10 +41,7 @@ import org.b3log.symphony.processor.advice.UserBlockCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.Escapes;
-import org.b3log.symphony.util.Results;
-import org.b3log.symphony.util.Sessions;
-import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +60,7 @@ import java.util.*;
  * <li>User points (/member/{userName}/points), GET</li>
  * <li>User breezemoons (/member/{userName}/breezemoons), GET</li>
  * <li>List usernames (/users/names), GET</li>
- * <li>List emotions (/users/emotions), GET</li>
+ * <li>List frequent emotions (/users/emotions), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -944,25 +941,39 @@ public class UserProcessor {
     }
 
     /**
-     * List emotions.
+     * List frequent emotions.
      *
      * @param context the specified context
      */
     @RequestProcessing(value = "/users/emotions", method = HttpMethod.GET)
-    public void getEmotions(final RequestContext context) {
-        context.renderJSON();
+    public void getFrequentEmotions(final RequestContext context) {
+        final JSONObject result = Results.newSucc();
+        context.renderJSON(result);
 
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
-            context.renderJSONValue("emotions", "");
+            result.put(Common.DATA, "");
 
             return;
         }
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
-        final String emotions = emotionQueryService.getEmojis(userId);
+        String emotions = emotionQueryService.getEmojis(userId);
+        final String[] emojis = emotions.split(",");
+        StringBuilder emojisBuilder = new StringBuilder();
+        for (final String emoji : emojis) {
+            String emojiChar = Emotions.toUnicode(":" + emoji + ":");
+            if (StringUtils.contains(emojiChar, ":")) {
+                emojiChar = "https://vditor.b3log.org/images/" + emoji + ".png";
+            }
+            final String e = "\"" + emoji + "\": \"" + emojiChar + "\"";
+            emojisBuilder.append(e).append(",");
+        }
+        if (1 < emojisBuilder.length()) {
+            emojisBuilder.deleteCharAt(emojisBuilder.length() - 1);
+        }
 
-        context.renderJSONValue("emotions", emotions);
+        result.put(Common.DATA, emojisBuilder.toString());
     }
 
     /**
