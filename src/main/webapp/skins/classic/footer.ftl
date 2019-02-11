@@ -73,6 +73,7 @@
 <script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     var Label = {
+        commentEditorPlaceholderLabel: '${commentEditorPlaceholderLabel}',
         langLabel: '${langLabel}',
         markedAvailable: ${markedAvailable?c},
         reportSuccLabel: '${reportSuccLabel}',

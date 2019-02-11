@@ -49,6 +49,7 @@ var ChatRoom = {
         show: false,
       },
       resize: {
+        enable: true,
         position: 'bottom',
       },
       height: 160,
@@ -79,20 +80,12 @@ var ChatRoom = {
           attr('disabled', 'disabled').
           css('opacity', '0.3')
       },
-      success: function (result, textStatus) {
+      success: function (result) {
         if (result.sc) {
           $('#chatContentTip').removeClass('error succ').html('')
 
           ChatRoom.editor.setValue('')
-          // reset comment editor
-          $('.editor-preview').html('')
-          if ($('.icon-view').parent().hasClass('active')) {
-            $('.icon-view').click()
-          }
 
-          if (window.localStorage) {
-            window.localStorage.chatRoom = ''
-          }
         } else {
           $('#chatContentTip').
             addClass('error').

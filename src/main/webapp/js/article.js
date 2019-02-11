@@ -43,8 +43,8 @@ var Comment = {
       data: JSON.stringify({
         reportDataId: $('#reportDialog').data('id'),
         reportDataType: $('#reportDialog').data('type'),
-        reportType: $('input[name=report]:checked').val( ),
-        reportMemo: $('#reportTextarea').val()
+        reportType: $('input[name=report]:checked').val(),
+        reportMemo: $('#reportTextarea').val(),
       }),
       complete: function (result) {
         $btn.removeAttr('disabled').css('opacity', '1')
@@ -230,7 +230,9 @@ var Comment = {
       css('margin-bottom', $('.editor-panel > .wrapper').outerHeight() + 'px')
     $('#replyUseName').
       html('<a href="javascript:void(0)" onclick="Comment._bgFade($(\'.article-content\'))" class="ft-a-title"><svg><use xlink:href="#reply-to"></use></svg>'
-        + $('.article-title').text().replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</a>').
+        +
+        $('.article-title').text().replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+        '</a>').
       removeData()
 
     // 如果 hide 初始化， focus 无效
@@ -451,131 +453,26 @@ var Comment = {
     if (!Label.isLoggedIn || !document.getElementById('commentContent')) {
       return false
     }
-    var commentEditor = new Editor({
-      element: document.getElementById('commentContent'),
-      dragDrop: false,
-      lineWrapping: true,
-      htmlURL: Label.servePath + '/markdown',
-      toolbar: [
-        {name: 'emoji'},
-        {name: 'bold'},
-        {name: 'italic'},
-        {name: 'quote'},
-        {name: 'link'},
-        {
-          name: 'image',
-          html: '<div class="tooltipped tooltipped-n" aria-label="' +
-          Label.uploadFileLabel +
-          '" ><form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><svg><use xlink:href="#upload"></use></svg><input type="file"/></label></form></div>',
-        },
-        {name: 'unordered-list'},
-        {name: 'ordered-list'},
-        {name: 'view'},
-        {name: 'fullscreen'},
-        {name: 'question', action: 'https://hacpai.com/guide/markdown'},
-      ],
-      extraKeys: {
-        'Alt-/': 'autocompleteUserName',
-        'Cmd-/': 'autocompleteEmoji',
-        'Ctrl-/': 'autocompleteEmoji',
-        'Alt-S': 'startAudioRecord',
-        'Alt-R': 'endAudioRecord',
-        'Esc': function () {
-          $('.editor-hide').click()
-        },
+    Comment.editor = Util.newVditor({
+      id: 'commentContent',
+      cache: true,
+      preview: {
+        show: false,
       },
-      status: false,
-    })
-    commentEditor.render()
-
-    commentEditor.codemirror['for'] = 'comment'
-
-    Comment.editor = commentEditor.codemirror
-
-    if (window.localStorage && window.localStorage[Label.articleOId]) {
-      var localData = null
-
-      try {
-        localData = JSON.parse(window.localStorage[Label.articleOId])
-      } catch (e) {
-        var emptyContent = {
-          commentContent: '',
-        }
-
-        window.localStorage[Label.articleOId] = JSON.stringify(emptyContent)
-        localData = JSON.parse(window.localStorage[Label.articleOId])
-      }
-
-      if ('' !== localData.commentContent.replace(/(^\s*)|(\s*$)/g, '')) {
-        Comment.editor.setValue(localData.commentContent)
-      }
-    }
-
-    Comment.editor.on('changes', function (cm) {
-      $('#addCommentTip').removeClass('error succ').html('')
-
-      if (window.localStorage) {
-        window.localStorage[Label.articleOId] = JSON.stringify({
-          commentContent: cm.getValue(),
-        })
-      }
-
-      var cursor = cm.getCursor()
-      var token = cm.getTokenAt(cursor)
-
-      if (token.string.indexOf('@') === 0) {
-        cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false})
-        return
-      }
-
-      if ($('.editor-preview-active').length === 0) {
-        return false
-      }
-
-      $.ajax({
-        url: Label.servePath + '/markdown',
-        type: 'POST',
-        cache: false,
-        data: {
-          markdownText: cm.getValue(),
-        },
-        success: function (result, textStatus) {
-          $('.article-comment-content .editor-preview-active').
-            html(result.html)
-          hljs.initHighlighting.called = false
-          hljs.initHighlighting()
-          Util.parseMarkdown()
-        },
-      })
-    })
-
-    Comment.editor.on('keypress', function (cm, evt) {
-      if (evt.ctrlKey && 10 === evt.charCode) {
-        Comment.add(Label.articleOId, Label.csrfToken)
-        return false
-      }
-    })
-
-    Comment.editor.on('keydown', function (cm, evt) {
-      // mac command + enter add article
-      $.ua.set(navigator.userAgent)
-      if ($.ua.os.name.indexOf('Mac OS') > -1 && evt.metaKey && evt.keyCode ===
-        13) {
-        Comment.add(Label.articleOId, Label.csrfToken)
-        return false
-      }
-      if (8 === evt.keyCode) {
-        var cursor = cm.getCursor()
-        var token = cm.getTokenAt(cursor)
-
-        // delete the whole emoji
-        var preCursor = CodeMirror.Pos(cursor.line, cursor.ch)
-        token = cm.getTokenAt(preCursor)
-        if (/^:\S+:$/.test(token.string)) {
-          cm.replaceRange('', CodeMirror.Pos(cursor.line, token.start),
-            CodeMirror.Pos(cursor.line, token.end - 1))
-        }
-      }
+      resize: {
+        enable: true,
+        position: 'top',
+      },
+      height: 160,
+      counter: 4096,
+      placeholder: Label.commentEditorPlaceholderLabel,
+      ctrlEnter: function () {
+        Comment.add(Label.articleOId, Label.csrfToken,
+          document.getElementById('articleCommentBtn'))
+      },
+      esc: function () {
+        $('.editor-hide').click()
+      },
     })
   },
   /**
@@ -787,19 +684,6 @@ var Comment = {
    * @param {BOM} it targetElement
    */
   add: function (id, csrfToken, it) {
-    if (!Validate.goValidate({
-      target: $('#addCommentTip'),
-      data: [
-        {
-          'target': Comment.editor,
-          'type': 'editor',
-          'max': 4096,
-          'msg': Label.commentErrorLabel,
-        }],
-    })) {
-      return false
-    }
-
     var requestJSONObject = {
       articleId: id,
       commentAnonymous: $('#commentAnonymous').prop('checked'),
@@ -829,7 +713,6 @@ var Comment = {
       data: JSON.stringify(requestJSONObject),
       beforeSend: function () {
         $(it).attr('disabled', 'disabled').css('opacity', '0.3')
-        Comment.editor.setOption('readOnly', 'nocursor')
       },
       success: function (result, textStatus) {
         $(it).removeAttr('disabled').css('opacity', '1')
@@ -848,26 +731,12 @@ var Comment = {
 
           // reset comment editor
           Comment.editor.setValue('')
-          $('.editor-preview').html('')
-          if ($('.icon-view').parent().hasClass('active')) {
-            $('.icon-view').click()
-          }
 
           // hide comment panel
           $('.editor-hide').click()
 
           // clear reply comment
           $('#replyUseName').text('').removeData()
-
-          // clear local storage
-          if (window.localStorage) {
-            var emptyContent = {
-              commentContent: '',
-            }
-
-            window.localStorage[Label.articleOId] = JSON.stringify(
-              emptyContent)
-          }
 
           // 定为到回贴位置
           if (Label.userCommentViewMode === 1) {
@@ -889,7 +758,6 @@ var Comment = {
       },
       complete: function () {
         $(it).removeAttr('disabled').css('opacity', '1')
-        Comment.editor.setOption('readOnly', false)
       },
     })
   },
@@ -1890,18 +1758,6 @@ Article.init()
 
 $(document).ready(function () {
   Comment.init()
-  // jQuery File Upload
-  Util.uploadFile({
-    'type': 'img',
-    'id': 'fileUpload',
-    'pasteZone': $('.CodeMirror'),
-    'qiniuUploadToken': Label.qiniuUploadToken,
-    'editor': Comment.editor,
-    'uploadingLabel': Label.uploadingLabel,
-    'qiniuDomain': Label.qiniuDomain,
-    'imgMaxSize': Label.imgMaxSize,
-    'fileMaxSize': Label.fileMaxSize,
-  })
 
   // Init [Article] channel
   ArticleChannel.init(Label.articleChannel)

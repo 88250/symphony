@@ -29,6 +29,67 @@
  * @static
  */
 var Util = {
+  LazyLoadImage: function () {
+    var loadImg = function (it) {
+      var testImage = document.createElement('img')
+      testImage.src = it.getAttribute('data-src')
+      testImage.addEventListener('load', function () {
+        if (!$(it).attr('style') && !$(it).attr('class') &&
+          !$(it).attr('width') && !$(it).attr('height') &&
+          $(it).closest('.content-reset').length === 1) {
+          if (testImage.naturalHeight > testImage.naturalWidth &&
+            testImage.naturalWidth / testImage.naturalHeight <
+            $(it).closest('.content-reset').width() /
+            ($(window).height() - 40) &&
+            testImage.naturalHeight > ($(window).height() - 40)) {
+            it.style.height = ($(window).height() - 40) + 'px'
+          }
+        }
+
+        if (!$(it).attr('class') && $(it).closest('.content-reset').length ===
+          1) {
+          _processPreview($(it))
+        }
+
+        it.src = testImage.src
+        it.style.backgroundImage = 'none'
+        it.style.backgroundColor = 'transparent'
+      })
+      it.removeAttribute('data-src')
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      $('img').each(function () {
+        if (this.getAttribute('data-src')) {
+          loadImg(this)
+        }
+      })
+      return false
+    }
+
+    if (window.imageIntersectionObserver) {
+      window.imageIntersectionObserver.disconnect()
+      $('img').each(function () {
+        window.imageIntersectionObserver.observe(this)
+      })
+    } else {
+      window.imageIntersectionObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entrie) {
+            if ((typeof entrie.isIntersecting === 'undefined'
+              ? entrie.intersectionRatio !== 0
+              : entrie.isIntersecting)
+              && entrie.target.getAttribute('data-src')
+            ) {
+              loadImg(entrie.target)
+            }
+          })
+        })
+      $('img').each(function () {
+        window.imageIntersectionObserver.observe(this)
+      })
+    }
+  },
   /**
    * 按需加载 MathJax 及 flow、live photo
    * @returns {undefined}
@@ -622,11 +683,10 @@ var Util = {
           if (element.style.display === 'none') {
             return
           }
-          LazyLoadCSSImage()
-          LazyLoadImage()
-          parseCode()
-          parseMarkdown()
-          parseAPlayer()
+          hljs.initHighlighting.called = false
+          hljs.initHighlighting()
+          Util.parseMarkdown()
+          Util.LazyLoadImage()
         },
       },
       upload: {
@@ -688,7 +748,6 @@ var Util = {
       options.toolbar = [
         'emoji',
         'headings',
-        'line',
         'quote',
         '|',
         'list',
