@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import com.qiniu.util.Auth;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -81,7 +80,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.1, Jan 31, 2019
+ * @version 1.3.2.2, Feb 11, 2019
  * @since 2.4.0
  */
 @RequestProcessor
@@ -438,16 +437,6 @@ public class SettingsProcessor {
 
         final int invitedUserCount = userQueryService.getInvitedUserCount(userId);
         dataModel.put(Common.INVITED_USER_COUNT, invitedUserCount);
-
-        // Qiniu file upload authenticate
-        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
-        dataModel.put("qiniuUploadToken", uploadToken);
-        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
-
-        if (!FileUploadProcessor.QN_ENABLED) {
-            dataModel.put("qiniuUploadToken", "");
-        }
 
         final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
         dataModel.put("imgMaxSize", imgMaxSize);

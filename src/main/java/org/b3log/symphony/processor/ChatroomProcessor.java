@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import com.qiniu.util.Auth;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
@@ -64,7 +63,7 @@ import static org.b3log.symphony.processor.channel.ChatroomChannel.SESSIONS;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.18, Jan 5, 2019
+ * @version 1.3.5.19, Feb 11, 2019
  * @since 1.4.0
  */
 @RequestProcessor
@@ -235,11 +234,6 @@ public class ChatroomProcessor {
                 map(msg -> JSONs.clone(msg).put(Common.TIME, Times.getTimeAgo(msg.optLong(Common.TIME), Locales.getLocale()))).collect(Collectors.toList());
         dataModel.put(Common.MESSAGES, msgs);
         dataModel.put("chatRoomMsgCnt", Symphonys.getInt("chatRoom.msgCnt"));
-
-        // Qiniu file upload authenticate
-        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-        dataModel.put("qiniuUploadToken", auth.uploadToken(Symphonys.get("qiniu.bucket")));
-        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
         final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
         dataModel.put("imgMaxSize", imgMaxSize);
