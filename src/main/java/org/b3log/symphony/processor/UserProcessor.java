@@ -913,7 +913,7 @@ public class UserProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/users/names", method = HttpMethod.GET)
+    @RequestProcessing(value = "/users/names", method = HttpMethod.POST)
     public void listNames(final RequestContext context) {
         final JSONObject result = Results.newSucc();
         context.renderJSON(result);
