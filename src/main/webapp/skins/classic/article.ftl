@@ -502,7 +502,7 @@
                         <span class="tooltipped tooltipped-w fn-pointer editor-hide" onclick="Comment._toggleReply()" aria-label="${cancelLabel}"> <svg><use xlink:href="#chevron-down"></use></svg></span>
                     </div>
                     <div class="article-comment-content">
-                        <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
+                        <div id="commentContent"></div>
                         <div class="comment-submit">
                             <#if permissions["commonAddCommentAnonymous"].permissionGrant>
                                 <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>

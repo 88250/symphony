@@ -290,7 +290,7 @@
                 <div class="form fn-clear comment-wrap">
                     <br/>
                     <div id="replyUseName"> </div>
-                    <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
+                    <div id="commentContent"></div>
                     <br><br>
                     <div class="tip" id="addCommentTip"></div>
 
@@ -339,7 +339,7 @@
                 <#if discussionViewable && article.articleCommentable && permissions["commonAddComment"].permissionGrant>
                 <div class="form fn-clear wrapper">
                     <div id="replyUseName"> </div>
-                    <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
+                    <div id="commentContent"></div>
                     <br><br>
                     <div class="tip" id="addCommentTip"></div>
 

@@ -451,40 +451,25 @@ var Comment = {
     if (!Label.isLoggedIn || !document.getElementById('commentContent')) {
       return false
     }
-    var commentEditor = new Editor({
-      element: document.getElementById('commentContent'),
-      dragDrop: false,
-      lineWrapping: true,
-      htmlURL: Label.servePath + '/markdown',
-      toolbar: [
-        {name: 'emoji'},
-        {name: 'bold'},
-        {name: 'italic'},
-        {name: 'quote'},
-        {name: 'link'},
-        {
-          name: 'image',
-          html: '<div class="tooltipped tooltipped-n" aria-label="' +
-          Label.uploadFileLabel +
-          '" ><form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><svg><use xlink:href="#upload"></use></svg><input type="file"/></label></form></div>',
-        },
-        {name: 'unordered-list'},
-        {name: 'ordered-list'},
-        {name: 'view'},
-        {name: 'fullscreen'},
-        {name: 'question', action: 'https://hacpai.com/guide/markdown'},
-      ],
-      extraKeys: {
-        'Alt-/': 'autocompleteUserName',
-        'Cmd-/': 'autocompleteEmoji',
-        'Ctrl-/': 'autocompleteEmoji',
-        'Alt-S': 'startAudioRecord',
-        'Alt-R': 'endAudioRecord',
-        'Esc': function () {
-          $('.editor-hide').click()
-        },
+    var commentEditor = Util.newVditor({
+      id: 'commentContent',
+      cache: true,
+      preview: {
+        show: false,
       },
-      status: false,
+      resize: {
+        enable: true,
+        position: 'top',
+      },
+      height: 160,
+      counter: 4096,
+      placeholder: Label.commentEditorPlaceholderLabel,
+      ctrlEnter: function () {
+        ChatRoom.send()
+      },
+      esc: function () {
+        $('.editor-hide').click()
+      }
     })
     commentEditor.render()
 
