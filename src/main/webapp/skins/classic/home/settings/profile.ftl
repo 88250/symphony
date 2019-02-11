@@ -41,7 +41,6 @@
         <div class="tip" id="profilesTip"></div>
         <br>
         <button class="fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
-        <button class="green" onclick="Settings.preview(this)">${previewLabel}</button>
     </div>
 </div>
 </@home>

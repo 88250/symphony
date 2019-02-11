@@ -168,8 +168,13 @@
                 <#if 3 != article.articleType>
                 <div class="content-reset article-content">${article.articleContent}</div>
                 <#else>
-                <div id="thoughtProgress"><span class="bar"></span><svg class="icon-video"><use xlink:href="#video"></use></svg><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
-                <div class="content-reset article-content"></div>
+                <div id="thoughtProgress"><span class="bar"></span>
+                    <svg class="icon-video">
+                        <use xlink:href="#video"></use>
+                    </svg>
+                </div>
+                <div class="content-reset article-content" id="articleThought" data-author="${article.articleAuthorName}"
+                     data-link="${servePath}${article.articlePermalink}"></div>
                 </#if>
 
                 <div class="fn-clear">
@@ -443,6 +448,7 @@
             </div>
         </div>
         <#include "footer.ftl">
+        <div id="thoughtProgressPreview"></div>
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/m-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>

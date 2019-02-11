@@ -186,25 +186,6 @@ var Settings = {
     })
   },
   /**
-   * 个人设置预览
-   */
-  preview: function (it) {
-    if ($('#homeSidePanel').css('display') === 'block') {
-      $('#homeSidePanel').hide()
-      $(it).text(Label.previewLabel)
-    } else {
-      $('#homeSidePanel').show()
-      $('#userNicknameDom').text($('#userNickname').val())
-      $('#userTagsDom').text($('#userTags').val())
-      $('#userURLDom').
-        text($('#userURL').val()).
-        attr('href', $('#userURL').val())
-      $('#userIntroDom').text($('#userIntro').val())
-
-      $(it).text(Label.unPreviewLabel)
-    }
-  },
-  /**
    * 初始化个人设置中的头像图片上传.
    *
    * @returns {Boolean}
@@ -255,7 +236,12 @@ var Settings = {
       submit: function (e, data) {
       },
       done: function (e, data) {
-        succCB(data)
+        var result = {
+          result: {
+            key: data.result.data.succMap[Object.keys(data.result.data.succMap)[0]]
+          }
+        }
+        succCB(result)
       },
       fail: function (e, data) {
         Util.alert('Upload error: ' + data.errorThrown)

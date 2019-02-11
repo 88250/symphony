@@ -1616,6 +1616,16 @@ var Article = {
       maxHeight = Math.max(maxHeight, $(thoughtContent).height())
     }
 
+    $('#thoughtProgressPreview').html('<div class="content-reset">' + articleHTML + '</div>')
+
+    $('#thoughtProgressPreview').dialog({
+      'modal': true,
+      'hideFooter': true,
+    })
+    $thoughtIcon.click(function () {
+      $('#thoughtProgressPreview').dialog('open')
+    })
+
     // set default height
     $(thoughtContent).html(articleHTML).
       height(maxHeight).

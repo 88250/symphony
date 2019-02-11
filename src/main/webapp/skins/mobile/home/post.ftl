@@ -32,18 +32,19 @@
         <div class="main">
             <div class="wrapper post">
                 <div class="fn-hr10"></div>
-                <div class="form fn-flex-1 fn-clear">
-                    <input type="text" id="articleTitle" tabindex="1"
-                           value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
-                    <div class="fn-hr10"></div>
-                    <div class="fn-hr10"></div>
+                <div class="fn-flex-1 fn-clear">
+                    <div class="form">
+                        <input type="text" id="articleTitle" tabindex="1"
+                               value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
+                    </div>
                     <div class="article-content">
-                        <textarea id="articleContent" tabindex="2"
-                                  placeholder="<#if !article?? && 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if><#if at??>@${at}</#if></textarea>
+                        <div id="articleContent"
+                             data-placeholder="<#if !article?? && 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"></div>
+                        <textarea class="fn-none"><#if article??>${article.articleContent?html}</#if><#if at??>@${at}</#if></textarea>
                     </div>
                     <div class="tags-wrap">
-                        <div class="tags-input"><span class="tags-selected"></span>
-                        <input id="articleTags" type="text" tabindex="3" 
+                        <div class="tags-input fn-flex"><span class="tags-selected"></span>
+                        <input id="articleTags" type="text" tabindex="3" class="fn-flex-1"
                                value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）" autocomplete="off" />
                         </div>
                         <#if addArticleDomains?size != 0>
@@ -68,19 +69,22 @@
                         <br/>
                     </div>
                     <#if (!article?? && 5 == articleType) || (article?? && article.articleType == 5)>
-                     <input id="articleAskPoint"
-                            value="<#if article??>${article.articleQnAOfferPoint}</#if>"
-                            type="number" tabindex="5" min="1" placeholder="${qnaOfferPointLabel}"/>
+                    <div class="form">
+                        <input id="articleAskPoint"
+                               value="<#if article??>${article.articleQnAOfferPoint}</#if>"
+                               type="number" tabindex="5" min="1" placeholder="${qnaOfferPointLabel}"/>
+                    </div>
                     <#else>
                     <button id="showReward" class="fn-ellipsis" onclick="$(this).next().show(); $(this).hide()">
                         ${rewardEditorPlaceholderLabel} &dtrif;
                     </button>
                     <div class="fn-none">
                         <div class="fn-clear article-reward-content">
-                            <textarea id="articleRewardContent" tabindex="4"
-                                      placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
+                            <div id="articleRewardContent"
+                                 data-placeholder="${rewardEditorPlaceholderLabel}"></div>
+                            <textarea class="fn-none"><#if article??>${article.articleRewardContent}</#if></textarea>
                         </div><br>
-                        <div>
+                        <div class="form">
                             <input id="articleRewardPoint" type="number" tabindex="5" min="1" 
                                    <#if article?? && 0 < article.articleRewardPoint>data-orval="${article.articleRewardPoint}"</#if> 
                                    value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" />
@@ -203,6 +207,9 @@
             Label.articleType = ${articleType};
             Label.confirmRemoveLabel = '${confirmRemoveLabel}';
         </script>
+        <#if 3 == articleType>
+            <script src="${staticServePath}/js/lib/diff2html/diff.min.js"></script>
+        </#if>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
     </body>
 </html>

@@ -1149,12 +1149,20 @@ var Article = {
    * @param {string} articleContent 记录过程
    */
   playThought: function (articleContent) {
-    // - 0x1E: Record Separator (记录分隔符)
-    // + 0x1F: Unit Separator (单元分隔符)
+    // + 0x1F: Unit Separator (单元分隔符) 31
+    var UNIT_SEPARATOR = String.fromCharCode(31)
+    // - 0x1E: Record Separator (记录分隔符) 30
+    var RECORD_SEPARATOR = String.fromCharCode(30)
+    var GROUP_SEPARATOR = String.fromCharCode(29)
+    var NEWLINE = String.fromCharCode(10)
+    var DELETE = String.fromCharCode(24)
 
-    var fast = 2
+    var $thoughtLine = $('#thoughtProgress > span')
+    var $thoughtIcon = $('#thoughtProgress > svg')
+    var thoughtContent = '#articleThought'
+
     var genThought = function (record, articleLinesList) {
-      var units = record.split('')
+      var units = record.split(UNIT_SEPARATOR)
       if (units.length === 3) {
         units.splice(0, 0, '')
       }
@@ -1166,10 +1174,11 @@ var Article = {
       to[0] = parseInt(to[0])    // to.ch
       to[1] = parseInt(to[1])    // to.line
 
-      if (srcLinesContent === '') {
+      if (srcLinesContent === DELETE) {
         // remove
         var removeLines = []
-        for (var n = from[1], m = 0; n <= to[1]; n++, m++) {
+        for (var n = from[1], m = 0; n <= to[1], n <
+        articleLinesList.length; n++, m++) {
           if (from[1] === to[1]) {
             articleLinesList[n] = articleLinesList[n].substring(0, from[0]) +
               articleLinesList[n].substr(to[0])
@@ -1189,92 +1198,105 @@ var Article = {
           articleLinesList.splice(removeLines[o] - o, 1)
         }
       } else {
-        var addLines = srcLinesContent.split(String.fromCharCode(29))[0],
-          removedLines = srcLinesContent.split(String.fromCharCode(29))[1]
+        var addLines = srcLinesContent.split(GROUP_SEPARATOR)[0],
+          removedLines = srcLinesContent.split(GROUP_SEPARATOR)[1]
 
         if (removedLines === '') {
           articleLinesList[from[1]] = articleLinesList[from[1]].substring(0,
             from[0]) +
             articleLinesList[to[1]].substr(to[0])
+          // Note: for b3log editor
+          articleLinesList.splice(from[1] + 1, to[1] - from[1])
         }
 
-        articleLinesList[from[1]] = articleLinesList[from[1]].substring(0,
-          from[0]) + addLines
-          + articleLinesList[from[1]].substr(from[0])
+        if (typeof articleLinesList[from[1]] !== 'undefined') {
+          articleLinesList[from[1]] = articleLinesList[from[1]].substring(0,
+            from[0]) + addLines
+            + articleLinesList[from[1]].substr(from[0])
+        } else {
+          articleLinesList[from[1]] = ''
+        }
       }
       return articleLinesList
     }
 
-    var records = articleContent.split('')
+    var records = articleContent.split(RECORD_SEPARATOR)
+    var STEP = 20 // 间隔速度
+    var SPEED = Math.max(records[records.length - 2].split(UNIT_SEPARATOR)[1] /
+      30000, 2)
 
     // 分隔符后的''删除
     if (records[records.length - 1] === '') {
       records.pop()
     }
+
     for (var i = 0, j = 0; i < records.length; i++) {
       setTimeout(function () {
-        if (!$('.article-content').data('text')) {
-          $('.article-content').data('text', '')
+        if (!$(thoughtContent).data('text')) {
+          $(thoughtContent).data('text', '')
         }
 
         var articleLinesList = genThought(records[j++],
-          $('.article-content').data('text').split(String.fromCharCode(10)))
+          $(thoughtContent).data('text').split(NEWLINE))
 
-        var articleText = articleLinesList.join(String.fromCharCode(10))
+        var articleText = articleLinesList.join(NEWLINE)
         var articleHTML = articleText.replace(/\n/g, '<br>').
           replace(/ /g, '&nbsp;').
           replace(/	/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
 
-        $('.article-content').data('text', articleText).html(articleHTML)
+        $(thoughtContent).data('text', articleText).html(articleHTML)
 
-      }, parseInt(records[i].split('')[1]) / fast)
+      }, parseInt(records[i].split(UNIT_SEPARATOR)[1]) / SPEED)
     }
 
     // progress
-    var currentTime = 0,
-      step = 20, // 间隔速度
-      amountTime = parseInt(records[i - 1].split('')[1]) / fast + step * 6
+    var currentTime = 0
+    var amountTime = parseInt(records[i - 1].split(UNIT_SEPARATOR)[1]) / SPEED
     var interval = setInterval(function () {
       if (currentTime >= amountTime) {
-        $('#thoughtProgress .bar').width('100%')
-        $('#thoughtProgress .icon-video').css('left', '100%')
+        $thoughtLine.width('100%')
+        $thoughtIcon.css('left', '100%')
         clearInterval(interval)
       } else {
-        currentTime += step
-        $('#thoughtProgress .icon-video').
-          css('left', (currentTime * 100 / amountTime) + '%')
-        $('#thoughtProgress .bar').
-          width((currentTime * 100 / amountTime) + '%')
+        currentTime += STEP
+        $thoughtIcon.css('left', (currentTime * 100 / amountTime) + '%')
+        $thoughtLine.width((currentTime * 100 / amountTime) + '%')
       }
-
-    }, step)
+    }, STEP)
 
     // preview
+    var previewText = ''
+    var articleHTML = ''
+    var maxHeight = 0
     for (var v = 0, k = 0; v < records.length; v++) {
       var articleLinesList = genThought(records[k++],
-        $('#thoughtProgressPreview').
-          data('text').
-          split(String.fromCharCode(10)))
+        previewText.split(NEWLINE))
 
-      var articleText = articleLinesList.join(String.fromCharCode(10))
-      var articleHTML = articleText.replace(/\n/g, '<br>').
+      var articleText = articleLinesList.join(NEWLINE)
+      articleHTML = articleText.replace(/\n/g, '<br>').
         replace(/ /g, '&nbsp;').
         replace(/	/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
 
-      $('#thoughtProgressPreview').data('text', articleText).html(articleHTML)
+      previewText = articleText
+      $(thoughtContent).html(articleHTML)
+      maxHeight = Math.max(maxHeight, $(thoughtContent).height())
     }
+
+    $('#thoughtProgressPreview').
+      html('<div class="content-reset">' + articleHTML + '</div>')
+
     $('#thoughtProgressPreview').dialog({
       'modal': true,
       'hideFooter': true,
     })
-    $('#thoughtProgress .icon-video').click(function () {
+    $thoughtIcon.click(function () {
       $('#thoughtProgressPreview').dialog('open')
     })
 
     // set default height
-    $('.article-content').
-      html(articleHTML).
-      height($('.article-content').height()).
+    $(thoughtContent).html(articleHTML).
+      height(maxHeight).
+      css('margin-bottom', '15px').
       html('')
   },
   /**

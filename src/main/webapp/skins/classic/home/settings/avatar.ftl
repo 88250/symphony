@@ -40,7 +40,6 @@
                     ${uploadLabel}<input type="file" name="file">
                 </label>
             </form>
-            <label class="btn green" onclick="Settings.preview(this)">${previewLabel}</label>
         </div>
     </div>
 </div>

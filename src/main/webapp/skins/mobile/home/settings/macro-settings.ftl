@@ -74,9 +74,6 @@
                 <div class="fn-hr10"></div>
                 <#nested>
             </div>
-            <div class="side">
-                <#include "../home-side.ftl">
-            </div>
         </div>
         <#include "../../footer.ftl">
         <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>

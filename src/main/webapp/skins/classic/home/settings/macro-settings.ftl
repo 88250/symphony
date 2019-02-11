@@ -35,11 +35,6 @@
                     <#nested>
                 </div>
                 <div class="side">
-                    <#if 'profile' == type || 'avatar' == type>
-                        <div id="homeSidePanel" class="fn-none">
-                            <#include "../home-side.ftl">
-                        </div>
-                    </#if>
                     <div class="module">
                         <div class="module-panel fn-oh">
                             <nav class="home-menu">
