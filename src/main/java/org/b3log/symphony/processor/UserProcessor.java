@@ -967,7 +967,7 @@ public class UserProcessor {
                 emojiChar = "https://vditor.b3log.org/images/" + emoji + ".png";
             }
 
-            data.put("\"" + emoji + "\"", emojiChar);
+            data.put(emoji, emojiChar);
         }
 
         result.put(Common.DATA, data);
