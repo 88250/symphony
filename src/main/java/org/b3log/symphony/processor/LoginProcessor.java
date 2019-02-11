@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import com.qiniu.util.Auth;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -68,7 +67,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.13.12.6, Jan 5, 2019
+ * @version 1.13.12.7, Feb 11, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -245,16 +244,6 @@ public class LoginProcessor {
             }
         }
         dataModel.put(User.USERS, users);
-
-        // Qiniu file upload authenticate
-        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
-        dataModel.put("qiniuUploadToken", uploadToken);
-        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
-
-        if (!FileUploadProcessor.QN_ENABLED) {
-            dataModel.put("qiniuUploadToken", "");
-        }
 
         final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
         dataModel.put("imgMaxSize", imgMaxSize);

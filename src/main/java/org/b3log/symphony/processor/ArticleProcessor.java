@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import com.qiniu.util.Auth;
 import jodd.util.Base64;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -84,7 +83,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.2.11, Feb 10, 2019
+ * @version 1.27.2.12, Feb 11, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -483,16 +482,6 @@ public class ArticleProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        // Qiniu file upload authenticate
-        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
-        dataModel.put("qiniuUploadToken", uploadToken);
-        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
-
-        if (!FileUploadProcessor.QN_ENABLED) {
-            dataModel.put("qiniuUploadToken", "");
-        }
-
         final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
         dataModel.put("imgMaxSize", imgMaxSize);
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
@@ -712,16 +701,6 @@ public class ArticleProcessor {
         dataModelService.fillRelevantArticles(dataModel, article);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
-
-        // Qiniu file upload authenticate
-        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
-        dataModel.put("qiniuUploadToken", uploadToken);
-        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
-
-        if (!FileUploadProcessor.QN_ENABLED) {
-            dataModel.put("qiniuUploadToken", "");
-        }
 
         final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
         dataModel.put("imgMaxSize", imgMaxSize);
@@ -1024,16 +1003,6 @@ public class ArticleProcessor {
         dataModel.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
-
-        // Qiniu file upload authenticate
-        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
-        dataModel.put("qiniuUploadToken", uploadToken);
-        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
-
-        if (!FileUploadProcessor.QN_ENABLED) {
-            dataModel.put("qiniuUploadToken", "");
-        }
 
         final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
         dataModel.put("imgMaxSize", imgMaxSize);
