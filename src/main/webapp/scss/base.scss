@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.38.0.0, Dec 27, 2018
+ * @version 2.38.0.1, Feb 11, 2019
  */
 @import "variables";
 @import "common";
@@ -1031,62 +1031,6 @@ a[class*=" icon-"]:hover {
   right: 15px;
   top: 40%;
 }
-
-.cm-s-default.CodeMirror {
-  border-radius: 0 0 3px 3px;
-  margin-bottom: 20px;
-  border-top-width: 0;
-  height: 100px;
-}
-
-.CodeMirror-scroll {
-  background-color: #FAFAFA;
-  font-family: $font-family-base;
-  line-height: 17px;
-}
-
-.cm-s-default.CodeMirror-fullscreen.CodeMirror {
-  margin: 0;
-}
-
-.CodeMirror,
-ul.CodeMirror-hints {
-  font-family: $font-family-base;
-}
-
-.CodeMirror-hints .ico {
-  margin: -1px 2px 0 -1px;
-}
-
-.CodeMirror-focused .cm-matchhighlight {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFklEQVQI12NgYGBgkKzc8x9CMDAwAAAmhwSbidEoSQAAAABJRU5ErkJggg==);
-  background-position: bottom;
-  background-repeat: repeat-x;
-}
-
-.CodeMirror-hint {
-  padding-right: 18px;
-  max-width: none;
-}
-
-.CodeMirror-hint:hover {
-  background: $blue;
-  color: white;
-}
-
-.CodeMirror-scrollbar-filler,
-.CodeMirror-gutter-filler {
-  background-color: transparent;
-}
-
-.CodeMirror-empty.CodeMirror-focused {
-  outline: none;
-}
-
-.CodeMirror pre.CodeMirror-placeholder {
-  color: $gray;
-}
-
 /* end article */
 
 /* start side module */

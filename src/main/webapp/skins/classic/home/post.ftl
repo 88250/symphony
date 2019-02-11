@@ -26,7 +26,7 @@
         <meta name="robots" content="none" />
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
-        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css?${staticResourceVersion}">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/vditor-0.1.7/index.classic.css">
         <link rel="stylesheet" href="${staticServePath}/js/lib/highlight/styles/github.css">
     </head>
     <body>
@@ -176,7 +176,7 @@
             </div>
         </div>
         <#include "../footer.ftl">
-        <script src="${staticServePath}/js/lib/editor/codemirror.min.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/lib/vditor-0.1.7/index.min.js"></script>
         <script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
         <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>

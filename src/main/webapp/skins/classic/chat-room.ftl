@@ -25,7 +25,7 @@
         <meta name="description" content="${chatRoomLabel}"/>
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
-        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css?${staticResourceVersion}">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/vditor-0.1.7/index.classic.css">
         <link rel="canonical" href="${servePath}/community">
     </head>
     <body>
@@ -35,10 +35,10 @@
                 <div class="content chat-room">
                     <div class="module">
                         <h2 class="sub-head">${chatRoomLabel}</h2>
-                        <div class="form fn-content">
+                        <div class="fn-content">
                             <div class="reply">
                                 <#if isLoggedIn>
-                                <textarea id="chatContent" rows="10" placeholder="Say sth...."></textarea>
+                                <div id="chatContent"></div><br>
                                 <div class="fn-clear comment-submit">
                                     <div class="fn-left online-cnt">${onlineVisitorCountLabel} <span id="onlineCnt"></span></div>
                                     <div class="tip fn-left" id="chatContentTip"></div>
@@ -89,8 +89,7 @@
         <script>
             Label.uploadLabel = "${uploadLabel}";
         </script>
-        <script src="${staticServePath}/js/lib/editor/codemirror.min.js?${staticResourceVersion}"></script>
-        <script src="${staticServePath}/js/lib/editor/editor.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/lib/vditor-0.1.7/index.min.js"></script>
         <script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
         <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>

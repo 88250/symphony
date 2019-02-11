@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.0.0, Dec 27, 2018
+ * @version 1.12.0.1, Feb 11, 2019
  */
 @import "variables";
 @import "common";
@@ -671,64 +671,6 @@ label.anonymous-check {
   color: #999;
 }
 
-.cm-s-default.CodeMirror {
-  border-radius: 0 0 3px 3px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
-  border: 1px solid #CCCCCC;
-  margin-bottom: 20px;
-  border-top-width: 0;
-  height: 330px;
-}
-
-.CodeMirror-scroll {
-  background-color: #FAFAFA;
-  font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
-  line-height: 17px;
-}
-
-.cm-s-default.CodeMirror-fullscreen.CodeMirror {
-  margin: 0;
-}
-
-.CodeMirror,
-ul.CodeMirror-hints {
-  font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
-}
-
-.CodeMirror-hints .ico {
-  margin: -1px 2px 0 -1px;
-}
-
-.CodeMirror-focused .cm-matchhighlight {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFklEQVQI12NgYGBgkKzc8x9CMDAwAAAmhwSbidEoSQAAAABJRU5ErkJggg==);
-  background-position: bottom;
-  background-repeat: repeat-x;
-}
-
-.CodeMirror-hint {
-  padding-right: 18px;
-  max-width: none;
-}
-
-.CodeMirror-hint:hover {
-  background: #08f;
-  color: white;
-}
-
-.CodeMirror-scrollbar-filler,
-.CodeMirror-gutter-filler {
-  background-color: transparent;
-}
-
-.CodeMirror-empty.CodeMirror-focused {
-  outline: none;
-}
-
-.CodeMirror pre.CodeMirror-placeholder {
-  color: #999;
-}
-
 #revision .revisions {
   margin: 5px 0 15px;
   text-align: center;
@@ -1251,16 +1193,6 @@ label.cmt-anonymous {
   display: inline-block;
 }
 
-#commentContent,
-#chatContent {
-  background-color: #FAFAFA;
-  margin: 51px 0 0 0;
-  overflow: hidden;
-  padding: 4px;
-  height: 88px;
-  width: 100%;
-}
-
 .article-tags .tag {
   margin: 0;
   padding: 0 3px;
@@ -1297,14 +1229,6 @@ label.cmt-anonymous {
 
 .share [class^="icon-"]:hover {
   color: $blue;
-}
-
-.cm-s-default.CodeMirror {
-  height: auto !important;
-}
-
-.CodeMirror-scroll {
-  min-height: 88px;
 }
 
 #replyUseName {

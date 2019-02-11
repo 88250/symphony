@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.13.0.0, Jul 11, 2018
+ * @version 2.13.0.1, Feb 11, 2019
  */
 @import "variables";
 
@@ -199,11 +199,6 @@
   &__info {
     float: left;
     margin: 2px 5px 0 0;
-  }
-
-  .cm-s-default.CodeMirror {
-    border: 0;
-    margin-bottom: 0;
   }
 
   .wrapper {

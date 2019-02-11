@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.33.1.1, Aug 20, 2018
+ * @version 2.33.1.2, Feb 11, 2019
  */
 
 @import "variables";
@@ -368,10 +368,6 @@
       color: $black-text;
     }
   }
-
-  .cm-s-default.CodeMirror {
-    height: 210px;
-  }
 }
 
 #heatBar {
@@ -534,30 +530,9 @@ label.cmt-anonymous {
   background-color: transparent;
 }
 
-#commentContent,
-#chatContent {
-  background-color: #FAFAFA;
-  margin: 32px 0 0 0;
-  overflow: hidden;
-  padding: 4px;
-  height: 102px;
-  width: 100%;
-}
-
-.CodeMirror-scroll {
-  min-height: 88px;
-}
-
 #replyUseName {
   line-height: 20px;
   height: 20px;
-}
-
-#revision .cm-s-default.CodeMirror {
-  border-radius: 0;
-  border: 0;
-  margin-bottom: 0;
-  height: auto;
 }
 
 .img-preview {

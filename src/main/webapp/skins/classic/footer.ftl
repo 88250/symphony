@@ -73,6 +73,7 @@
 <script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     var Label = {
+        langLabel: '${langLabel}',
         markedAvailable: ${markedAvailable?c},
         reportSuccLabel: '${reportSuccLabel}',
         breezemoonLabel: '${breezemoonLabel}',

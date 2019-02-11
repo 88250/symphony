@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 0.4.0.2, Jul 29, 2018
+ * @version 0.5.0.0, Feb 11, 2019
  * @since 2.1.0
  */
 
@@ -291,22 +291,6 @@ var Comment = {
       return false;
     }
 
-    if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
-      $('#commentContent').before('<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
-        + Label.uploadLabel + '<input type="file"/></label></form>')
-        .css('margin', 0);
-      Comment.editor = Util.initTextarea('commentContent',
-        function (editor) {
-          if (window.localStorage) {
-            window.localStorage[Label.articleOId] = JSON.stringify({
-              commentContent: editor.$it.val()
-            });
-          }
-        }
-      );
-    } else {
-      Util.initCodeMirror();
-
       var commentEditor = new Editor({
         element: document.getElementById('commentContent'),
         dragDrop: false,
@@ -343,7 +327,7 @@ var Comment = {
       commentEditor.codemirror['for'] = 'comment';
 
       Comment.editor = commentEditor.codemirror;
-    }
+
 
     if (window.localStorage && window.localStorage[Label.articleOId]) {
       var localData = null;
@@ -362,10 +346,6 @@ var Comment = {
       if ("" !== localData.commentContent.replace(/(^\s*)|(\s*$)/g, "")) {
         Comment.editor.setValue(localData.commentContent);
       }
-    }
-
-    if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
-      return false;
     }
 
     Comment.editor.on('changes', function (cm) {

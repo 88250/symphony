@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.42.1.0, Aug 28, 2018
+ * @version 1.43.0.0, Feb 11, 2019
  */
 
 /**
@@ -451,9 +451,6 @@ var Comment = {
     if (!Label.isLoggedIn || !document.getElementById('commentContent')) {
       return false
     }
-
-    Util.initCodeMirror()
-
     var commentEditor = new Editor({
       element: document.getElementById('commentContent'),
       dragDrop: false,

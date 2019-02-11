@@ -47,6 +47,7 @@
 <script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     var Label = {
+        langLabel: '${langLabel}'
         reportSuccLabel: '${reportSuccLabel}',
         breezemoonLabel: '${breezemoonLabel}',
         confirmRemoveLabel: "${confirmRemoveLabel}",

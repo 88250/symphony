@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.25.0.0, Aug 10, 2018
+ * @version 2.26.0.0, Feb 11, 2019
  */
 
 /**
@@ -205,21 +205,6 @@ var AddArticle = {
       $('#articleContent').val(postData.content)
     }
 
-    if ($.ua.device.type === 'mobile' &&
-      ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
-      AddArticle.editor = Util.initTextarea('articleContent',
-        function (editor) {
-          var postData = JSON.parse(localStorage.postData)
-          postData.content = editor.getValue()
-          localStorage.postData = JSON.stringify(postData)
-        }
-      )
-      $('#articleContent').
-        before('<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
-          + Label.uploadLabel + '<input type="file"/></label></form>').
-        css('margin-top', 0)
-    } else {
-      Util.initCodeMirror()
       // 初始化文章编辑器
       var addArticleEditor = new Editor({
         element: document.getElementById('articleContent'),
@@ -257,7 +242,7 @@ var AddArticle = {
       addArticleEditor.render()
 
       AddArticle.editor = addArticleEditor.codemirror
-    }
+
 
     // 默认使用 preview
     $('.post-article-content .editor-toolbar .icon-view:eq(0)').
@@ -313,8 +298,6 @@ var AddArticle = {
 
     this._initTag()
 
-    if ($.ua.device.type !== 'mobile' ||
-      ($.ua.device.vendor !== 'Apple' && $.ua.device.vendor !== 'Nokia')) {
       AddArticle.editor.on('keydown', function (cm, evt) {
         if (8 === evt.keyCode) {
           var cursor = cm.getCursor()
@@ -404,7 +387,6 @@ var AddArticle = {
           },
         })
       })
-    }
 
     // focus
     if ($('#articleTitle').val().length <= 0) {
@@ -460,21 +442,6 @@ var AddArticle = {
         $('#showReward').click()
       }
 
-      if ($.ua.device.type === 'mobile' &&
-        ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
-        AddArticle.rewardEditor = Util.initTextarea('articleRewardContent',
-          function (editor) {
-            var postData = JSON.parse(localStorage.postData)
-            postData.rewardContent = editor.getValue()
-            localStorage.postData = JSON.stringify(postData)
-          }
-        )
-
-        $('#articleRewardContent').
-          before('<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
-            + Label.uploadLabel + '<input type="file"/></label></form>').
-          css('margin-top', 0)
-      } else {
         var addArticleRewardEditor = new Editor({
           element: document.getElementById('articleRewardContent'),
           dragDrop: false,
@@ -559,7 +526,6 @@ var AddArticle = {
           })
         })
       }
-    }
 
     $('#articleContent').next().next().height(330)
 
