@@ -216,6 +216,7 @@ var Settings = {
         pasteZone: null,
         dropZone: null,
         url: Label.servePath + "/upload",
+        paramName: 'file[]',
         add: function (e, data) {
           ext = data.files[0].type.split("/")[1];
 
@@ -268,7 +269,7 @@ var Settings = {
           Util.alert(currentFile.error);
         }
       });
-    } else {
+    } else { // TODO: 可以删除
       $('#' + params.id).fileupload({
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
         maxFileSize: parseInt(params.maxSize),

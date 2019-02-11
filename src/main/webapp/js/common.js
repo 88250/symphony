@@ -1355,7 +1355,7 @@ var Util = {
         pasteZone: obj.pasteZone,
         dropZone: obj.pasteZone,
         url: Label.servePath + '/upload',
-        paramName: 'file',
+        paramName: 'file[]',
         add: function (e, data) {
           fileIndex++
           if (window.File && window.FileReader && window.FileList &&
@@ -1464,6 +1464,7 @@ var Util = {
       return false
     }
 
+    // TODO: 可以刪除
     $('#' + obj.id).fileupload({
       multipart: true,
       pasteZone: obj.pasteZone,
