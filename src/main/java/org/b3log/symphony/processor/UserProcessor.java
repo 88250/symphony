@@ -52,7 +52,9 @@ import java.util.*;
  * User processor.
  * <ul>
  * <li>User articles (/member/{userName}), GET</li>
+ * <li>User anonymous articles (/member/{userName}/anonymous</li>
  * <li>User comments (/member/{userName}/comments), GET</li>
+ * <li>User anonymous comments (/member/{userName}/comments/anonymous</li>
  * <li>User following users (/member/{userName}/following/users), GET</li>
  * <li>User following tags (/member/{userName}/following/tags), GET</li>
  * <li>User following articles (/member/{userName}/following/articles), GET</li>
@@ -66,7 +68,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.9, Jan 5, 2019
+ * @version 1.27.0.10, Feb 13, 2019
  * @since 0.2.0
  */
 @RequestProcessor
