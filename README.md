@@ -104,7 +104,7 @@
 ## 鸣谢
 
 * [jQuery](https://github.com/jquery/jquery)：前端 JavaScript 工具库
-* [Vditor](https://github.com/b3log/vditor)： 一款浏览器端的 Markdown 编辑器，使用 TypeScript 实现
+* [Vditor](https://github.com/b3log/vditor)： 浏览器端的 Markdown 编辑器
 * [Highlight.js](https://github.com/isagalaev/highlight.js)：前端代码高亮库
 * [pjax](https://github.com/defunkt/jquery-pjax)：pushState + ajax = pjax
 * [MathJax](https://github.com/mathjax/MathJax)：前端数学公式渲染引擎
@@ -113,7 +113,7 @@
 * [flexmark](https://github.com/vsch/flexmark-java)：Java Markdown 处理库
 * [Apache Commons](http://commons.apache.org)：Java 工具库集
 * [Jodd](https://github.com/oblac/jodd)：Java 工具库集
-* [Latke](https://github.com/b3log/latke)：一款以 JSON 为主的 Java Web 框架
+* [Latke](https://github.com/b3log/latke)：以 JSON 为主的 Java Web 框架
 
 安全方面特别感谢：
 
