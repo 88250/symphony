@@ -1,1 +1,0 @@
-(window.webpackJsonpVditor=window.webpackJsonpVditor||[]).push([[2],{25:function(o,n){}}]);

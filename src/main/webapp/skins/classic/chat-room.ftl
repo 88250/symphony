@@ -25,7 +25,7 @@
         <meta name="description" content="${chatRoomLabel}"/>
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
-        <link rel="stylesheet" href="${staticServePath}/js/lib/vditor-0.1.7/index.classic.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/vditor-0.1.8/index.classic.css">
         <link rel="canonical" href="${servePath}/community">
     </head>
     <body>
@@ -89,7 +89,7 @@
         <script>
             Label.uploadLabel = "${uploadLabel}";
         </script>
-        <script src="${staticServePath}/js/lib/vditor-0.1.7/index.min.js"></script>
+        <script src="${staticServePath}/js/lib/vditor-0.1.8/index.min.js"></script>
         <script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/chat-room${miniPostfix}.js?${staticResourceVersion}"></script>
