@@ -134,7 +134,16 @@ public final class Emotions {
             return ret;
         }
 
-        return EmojiParser.parseToUnicode(ret);
+        ret = toUnicode(ret);
+        for (final String emojiCode : EMOJIS) {
+            String repl = "<img alt=\"" + emojiCode + "\" class=\"emoji\" src=\""
+                    + Latkes.getStaticServePath() + "/emoji/graphics/" + emojiCode;
+            final String suffix = "huaji".equals(emojiCode) ? ".gif" : ".png";
+            repl += suffix + "\" title=\"" + emojiCode + "\" />";
+            ret = ret.replace(":" + emojiCode + ":", repl);
+        }
+
+        return ret;
     }
 
     public static void main(String[] args) {
@@ -535,6 +544,7 @@ public final class Emotions {
             "hourglass_flowing_sand",
             "house",
             "house_with_garden",
+            "huaji",
             "hushed",
             "i",
             "icecream",
