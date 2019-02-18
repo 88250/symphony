@@ -17,11 +17,14 @@
  */
 package org.b3log.symphony.model;
 
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
+
 /**
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.33.0.0, Dec 16, 2018
+ * @version 1.34.0.0, Feb 18, 2019
  * @since 0.2.0
  */
 public final class Article {
@@ -458,9 +461,32 @@ public final class Article {
     public static final int ARTICLE_TYPE_C_QNA = 5;
 
     /**
-     * Private constructor.
+     * Checks the specified article1 is different from the specified article2.
+     *
+     * @param a1 the specified article1
+     * @param a2 the specified article2
+     * @return {@code true} if they are different, otherwise returns {@code false}
      */
-    private Article() {
+    public static boolean isDifferent(final JSONObject a1, final JSONObject a2) {
+        final String title1 = a1.optString(Article.ARTICLE_TITLE);
+        final String title2 = a2.optString(Article.ARTICLE_TITLE);
+        if (!StringUtils.equalsIgnoreCase(title1, title2)) {
+            return true;
+        }
+
+        final String tags1 = a1.optString(Article.ARTICLE_TAGS);
+        final String tags2 = a2.optString(Article.ARTICLE_TAGS);
+        if (!StringUtils.equalsIgnoreCase(tags1, tags2)) {
+            return true;
+        }
+
+        final String content1 = a1.optString(Article.ARTICLE_CONTENT);
+        final String content2 = a2.optString(Article.ARTICLE_CONTENT);
+        if (!StringUtils.equalsIgnoreCase(content1, content2)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -471,5 +497,11 @@ public final class Article {
      */
     public static boolean isInvalidArticleType(final int articleType) {
         return articleType < 0 || articleType > Article.ARTICLE_TYPE_C_QNA;
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Article() {
     }
 }

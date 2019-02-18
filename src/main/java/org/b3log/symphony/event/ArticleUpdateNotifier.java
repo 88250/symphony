@@ -26,10 +26,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.Permission;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
@@ -45,7 +42,7 @@ import java.util.Set;
  * Sends article update related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Nov 17, 2018
+ * @version 1.0.0.5, Feb 18, 2019
  * @since 2.0.0
  */
 @Singleton
@@ -98,15 +95,15 @@ public class ArticleUpdateNotifier extends AbstractEventListener<JSONObject> {
         LOGGER.log(Level.TRACE, "Processing an event [type={0}, data={1}]", event.getType(), data);
 
         try {
-            final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
-            final String articleId = originalArticle.optString(Keys.OBJECT_ID);
+            final JSONObject articleUpdated = data.getJSONObject(Article.ARTICLE);
+            final String articleId = articleUpdated.optString(Keys.OBJECT_ID);
 
-            final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
+            final String articleAuthorId = articleUpdated.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
             final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
-            final boolean isDiscussion = originalArticle.optInt(Article.ARTICLE_TYPE) == Article.ARTICLE_TYPE_C_DISCUSSION;
+            final boolean isDiscussion = articleUpdated.optInt(Article.ARTICLE_TYPE) == Article.ARTICLE_TYPE_C_DISCUSSION;
 
-            final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
+            final String articleContent = articleUpdated.optString(Article.ARTICLE_CONTENT);
             final Set<String> atUserNames = userQueryService.getUserNames(articleContent);
             atUserNames.remove(articleAuthorName); // Do not notify the author itself
 
@@ -128,6 +125,14 @@ public class ArticleUpdateNotifier extends AbstractEventListener<JSONObject> {
 
                     atedUserIds.add(atedUserId);
                 }
+            }
+
+            final JSONObject oldArticle = data.optJSONObject(Common.OLD_ARTICLE);
+            if (!Article.isDifferent(oldArticle, articleUpdated)) {
+                // 更新帖子通知改进 https://github.com/b3log/symphony/issues/872
+                LOGGER.log(Level.DEBUG, "The article [title=" + oldArticle.optString(Article.ARTICLE_TITLE) + "] has not changed, do not notify it's watchers");
+
+                return;
             }
 
             // 'following - article update' Notification

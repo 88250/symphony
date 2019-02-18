@@ -21,10 +21,15 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.73.0.7, Feb 6, 2019
+ * @version 1.73.0.9, Feb 18, 2019
  * @since 0.2.0
  */
 public final class Common {
+
+    /**
+     * Key of old article.
+     */
+    public static final String OLD_ARTICLE = "oldArticle";
 
     /**
      * Lock.

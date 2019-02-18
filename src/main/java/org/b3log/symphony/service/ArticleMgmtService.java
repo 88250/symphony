@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.5.4, Jan 25, 2019
+ * @version 2.18.5.5, Feb 18, 2019
  * @since 0.2.0
  */
 @Service
@@ -836,11 +836,12 @@ public class ArticleMgmtService {
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
 
         String articleId;
+        JSONObject articleToUpdate;
         JSONObject oldArticle;
         String authorId;
         JSONObject author;
         int updatePointSum;
-        int articleAnonymous = 0;
+        int articleAnonymous;
 
         try {
             // check if admin allow to add article
@@ -851,8 +852,9 @@ public class ArticleMgmtService {
             }
 
             articleId = requestJSONObject.optString(Keys.OBJECT_ID);
-            oldArticle = articleRepository.get(articleId);
-            authorId = oldArticle.optString(Article.ARTICLE_AUTHOR_ID);
+            articleToUpdate = articleRepository.get(articleId);
+            oldArticle = JSONs.clone(articleToUpdate);
+            authorId = articleToUpdate.optString(Article.ARTICLE_AUTHOR_ID);
             author = userRepository.get(authorId);
             if (UserExt.USER_STATUS_C_VALID != author.optInt(UserExt.USER_STATUS)) {
                 throw new ServiceException(langPropsService.get("userStatusInvalidLabel"));
@@ -865,7 +867,7 @@ public class ArticleMgmtService {
             addition += (collectCnt + watchCnt) * 2;
             updatePointSum = Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition;
 
-            articleAnonymous = oldArticle.optInt(Article.ARTICLE_ANONYMOUS);
+            articleAnonymous = articleToUpdate.optInt(Article.ARTICLE_ANONYMOUS);
 
             if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
@@ -877,7 +879,7 @@ public class ArticleMgmtService {
 
             final JSONObject maybeExist = articleRepository.getByTitle(articleTitle);
             if (null != maybeExist) {
-                if (!oldArticle.optString(Article.ARTICLE_TITLE).equals(articleTitle)) {
+                if (!articleToUpdate.optString(Article.ARTICLE_TITLE).equals(articleTitle)) {
                     final String existArticleAuthorId = maybeExist.optString(Article.ARTICLE_AUTHOR_ID);
                     String msg;
                     if (existArticleAuthorId.equals(authorId)) {
@@ -901,10 +903,10 @@ public class ArticleMgmtService {
         }
 
         final int qnaOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT, 0);
-        if (qnaOfferPoint < oldArticle.optInt(Article.ARTICLE_QNA_OFFER_POINT)) { // Increase only to prevent lowering points when adopting answer
+        if (qnaOfferPoint < articleToUpdate.optInt(Article.ARTICLE_QNA_OFFER_POINT)) { // Increase only to prevent lowering points when adopting answer
             throw new ServiceException(langPropsService.get("qnaOfferPointMustMoreThanOldLabel"));
         }
-        oldArticle.put(Article.ARTICLE_QNA_OFFER_POINT, qnaOfferPoint);
+        articleToUpdate.put(Article.ARTICLE_QNA_OFFER_POINT, qnaOfferPoint);
 
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
 
@@ -912,18 +914,18 @@ public class ArticleMgmtService {
 
         try {
             requestJSONObject.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
-            processTagsForArticleUpdate(oldArticle, requestJSONObject, author);
+            processTagsForArticleUpdate(articleToUpdate, requestJSONObject, author);
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
             articleTitle = Emotions.toAliases(articleTitle);
             articleTitle = Pangu.spacingText(articleTitle);
 
-            final String oldTitle = oldArticle.optString(Article.ARTICLE_TITLE);
-            oldArticle.put(Article.ARTICLE_TITLE, articleTitle);
+            final String oldTitle = articleToUpdate.optString(Article.ARTICLE_TITLE);
+            articleToUpdate.put(Article.ARTICLE_TITLE, articleTitle);
 
-            oldArticle.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
-            oldArticle.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
-            oldArticle.put(Article.ARTICLE_TYPE, articleType);
+            articleToUpdate.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
+            articleToUpdate.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
+            articleToUpdate.put(Article.ARTICLE_TYPE, articleType);
 
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
             articleContent = Emotions.toAliases(articleContent);
@@ -931,39 +933,39 @@ public class ArticleMgmtService {
             articleContent = articleContent.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             articleContent = articleContent.replace(langPropsService.get("uploadingLabel", Locale.US), "");
 
-            final String oldContent = oldArticle.optString(Article.ARTICLE_CONTENT);
-            oldArticle.put(Article.ARTICLE_CONTENT, articleContent);
+            final String oldContent = articleToUpdate.optString(Article.ARTICLE_CONTENT);
+            articleToUpdate.put(Article.ARTICLE_CONTENT, articleContent);
 
             final long currentTimeMillis = System.currentTimeMillis();
-            final long createTime = oldArticle.optLong(Keys.OBJECT_ID);
+            final long createTime = articleToUpdate.optLong(Keys.OBJECT_ID);
             final boolean notIn5m = currentTimeMillis - createTime > 1000 * 60 * 5;
 
-            oldArticle.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
+            articleToUpdate.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
 
             final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
             boolean enableReward = false;
             if (0 < rewardPoint) {
-                if (1 > oldArticle.optInt(Article.ARTICLE_REWARD_POINT)) {
+                if (1 > articleToUpdate.optInt(Article.ARTICLE_REWARD_POINT)) {
                     enableReward = true;
                 }
 
                 String rewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
                 rewardContent = Emotions.toAliases(rewardContent);
-                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
-                oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
+                articleToUpdate.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
+                articleToUpdate.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
             }
 
             final String ip = requestJSONObject.optString(Article.ARTICLE_IP);
-            oldArticle.put(Article.ARTICLE_IP, ip);
+            articleToUpdate.put(Article.ARTICLE_IP, ip);
 
             String ua = requestJSONObject.optString(Article.ARTICLE_UA);
             if (StringUtils.length(ua) > Common.MAX_LENGTH_UA) {
                 ua = StringUtils.substring(ua, 0, Common.MAX_LENGTH_UA);
             }
-            oldArticle.put(Article.ARTICLE_UA, ua);
-            oldArticle.put(Article.ARTICLE_AUDIO_URL, ""); // 小薇语音预览更新 https://github.com/b3log/symphony/issues/791
+            articleToUpdate.put(Article.ARTICLE_UA, ua);
+            articleToUpdate.put(Article.ARTICLE_AUDIO_URL, ""); // 小薇语音预览更新 https://github.com/b3log/symphony/issues/791
 
-            articleRepository.update(articleId, oldArticle);
+            articleRepository.update(articleId, articleToUpdate);
 
             final boolean titleChanged = !oldTitle.replaceAll("\\s+", "").equals(articleTitle.replaceAll("\\s+", ""));
             final boolean contentChanged = !oldContent.replaceAll("\\s+", "").equals(articleContent.replaceAll("\\s+", ""));
@@ -1002,7 +1004,8 @@ public class ArticleMgmtService {
             }
 
             final JSONObject eventData = new JSONObject();
-            eventData.put(Article.ARTICLE, oldArticle);
+            eventData.put(Article.ARTICLE, articleToUpdate);
+            eventData.put(Common.OLD_ARTICLE, oldArticle);
             eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
         } catch (final Exception e) {
             if (transaction.isActive()) {
