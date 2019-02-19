@@ -26,7 +26,7 @@
         <meta name="robots" content="none" />
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
-        <link rel="stylesheet" href="${staticServePath}/js/lib/vditor-0.1.8/index.classic.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/vditor-0.2.5/index.classic.css">
         <link rel="stylesheet" href="${staticServePath}/js/lib/highlight/styles/github.css">
     </head>
     <body>
@@ -178,7 +178,7 @@
             </div>
         </div>
         <#include "../footer.ftl">
-        <script src="${staticServePath}/js/lib/vditor-0.1.8/index.min.js"></script>
+        <script src="${staticServePath}/js/lib/vditor-0.2.5/index.min.js"></script>
         <script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
         <script src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
         <script>

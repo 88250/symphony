@@ -19,6 +19,7 @@ package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -68,7 +69,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.10, Feb 13, 2019
+ * @version 1.27.0.11, Feb 19, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -966,7 +967,8 @@ public class UserProcessor {
         for (final String emoji : emojis) {
             String emojiChar = Emotions.toUnicode(":" + emoji + ":");
             if (StringUtils.contains(emojiChar, ":")) {
-                emojiChar = "https://vditor.b3log.org/images/" + emoji + ".png";
+                final String suffix = "huaji".equals(emoji) ? ".gif" : ".png";
+                emojiChar = Latkes.getStaticServePath() + "/emoji/graphics/" + emoji + suffix;
             }
 
             data.put(emoji, emojiChar);

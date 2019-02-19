@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.3.0.2, Feb 11, 2019
+ * @version 1.3.0.3, Feb 19, 2019
  * @since 0.2.0
  */
 public final class Emotions {
@@ -136,7 +136,7 @@ public final class Emotions {
 
         ret = toUnicode(ret);
         for (final String emojiCode : EMOJIS) {
-            String repl = "<img alt=\"" + emojiCode + "\" class=\"emoji\" src=\""
+            String repl = "<img alt=\"" + emojiCode + "\" class=\"emoji\" width=\"18\" src=\""
                     + Latkes.getStaticServePath() + "/emoji/graphics/" + emojiCode;
             final String suffix = "huaji".equals(emojiCode) ? ".gif" : ".png";
             repl += suffix + "\" title=\"" + emojiCode + "\" />";

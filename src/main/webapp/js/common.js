@@ -709,6 +709,7 @@ var Util = {
         preview: 'content-reset',
       },
       hint: {
+        emojiPath: Label.staticServePath + '/emoji/graphics',
         emojiTail: '<a href="' + Label.servePath +
         '/settings/function" target="_blank">设置常用表情</a>',
         emoji: Label.emoji,
