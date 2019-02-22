@@ -42,7 +42,7 @@ import java.util.Set;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.0, Nov 6, 2018
+ * @version 1.2.2.1, Feb 22, 2019
  * @since 1.8.0
  */
 @Service
@@ -218,9 +218,14 @@ public class InitMgmtService {
      */
     public void initSym() {
         try {
-            final List<JSONObject> admins = userQueryService.getAdmins();
-            if (null != admins && !admins.isEmpty() && 0 < optionRepository.count()) { // Initialized already
-                return;
+            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+            final boolean userTableExist = JdbcRepositories.existTable(tablePrefix + User.USER);
+            final boolean optionTableExist = JdbcRepositories.existTable(tablePrefix + Option.OPTION);
+            if (userTableExist && optionTableExist) {
+                final List<JSONObject> admins = userQueryService.getAdmins();
+                if (!admins.isEmpty() && 0 < optionRepository.count()) { // Initialized already
+                    return;
+                }
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Check init failed", e);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.16.6.125, Jan 15, 2019
+    Version: 2.16.6.126, Feb 22, 2019
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -17,12 +17,11 @@
     <url>https://sym.b3log.org</url>
     <description>
         一款用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）平台。
-        A modern community (forum/BBS/SNS/blog) platform written in Java.
     </description>
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>2.4.42</latke.version>
+        <latke.version>2.4.43</latke.version>
 
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.4.14.v20181114</jetty.version>
