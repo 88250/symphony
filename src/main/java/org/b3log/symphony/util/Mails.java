@@ -475,7 +475,6 @@ public final class Mails {
  * <ul>
  * <li>SIMPLE 简单类型，可以发送 HTML 格式文本，遵从 FreeMarker 模板的设置</li>
  * <li>IMAGE HTML 格式类型，同时会保存 HTML 里面的 image 到磁盘，并生成 eml 保存到服务器的配置目录</li>
- * <li>MULTI 带附件的 Attachment，TODO</li>
  * </ul>
  * </p>
  *
@@ -602,9 +601,6 @@ final class MailSender implements java.io.Serializable {
             createTextMail(message, sender, tos, subject, content, savedEmlPath);
         } else if (MailType.IMAGE.equals(mailType)) {
             message = createImageMail(message, sender, tos, subject, content, savedEmlPath);
-        } else {
-            // TODO MULTI
-            createTextMail(message, sender, tos, subject, content, savedEmlPath);
         }
 
         // 5、发送邮件
@@ -819,7 +815,7 @@ final class MailSender implements java.io.Serializable {
     }
 
     private enum MailType {
-        SIMPLE, IMAGE /* html with image */, MULTI/* Attachment TODO */
+        SIMPLE, IMAGE /* html with image */
     }
 
     private static class MailSenderHolder {
