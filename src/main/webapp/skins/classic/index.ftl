@@ -180,9 +180,9 @@
                                     <b>${adDeliveryLabel}</b>
                                 </a>
                             <#else>
-                                <a class="preview" href="https://hacpai.com/man">
-                                    <img src="${staticServePath}/images/tags/shell.png" alt="${sponsorLabel}">
-                                    <b>Hacker's Manual</b>
+                                <a class="preview" href="${servePath}/about">
+                                    <img src="${staticServePath}/emoji/graphics/heart.png" alt="${sponsorLabel}">
+                                    <b>${adDeliveryLabel}</b>
                                 </a>
                             </#if>
                             </div>
