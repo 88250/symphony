@@ -484,11 +484,8 @@ public class UserMgmtService {
                             user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?" + new Date().getTime());
                         } else {
                             String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
-                            File dir = new File(FileUploadProcessor.UPLOAD_DIR+fileName.substring(0,fileName.lastIndexOf(File.separator)));
-                            if (!dir.exists()) {
-                                dir.mkdirs();
-                            }
                             fileName = FileUploadProcessor.genFilePath(fileName);
+                            new File(FileUploadProcessor.UPLOAD_DIR + fileName).getParentFile().mkdirs();
                             try (final OutputStream output = new FileOutputStream(FileUploadProcessor.UPLOAD_DIR + fileName)) {
                                 IOUtils.write(avatarData, output);
                             }
