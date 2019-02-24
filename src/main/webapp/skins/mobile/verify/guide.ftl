@@ -130,9 +130,6 @@
                                     <a href="${servePath}/about">Markdown ${tutorialLabel}</a>
                                     <span class="ft-gray">${markdownTutorialTipLabel}</span>
                                 </li>
-                                <li>
-                                ${pipeIntroLabel}
-                                </li>
                             </ul>
                             <br/>
                         </div>
