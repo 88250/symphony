@@ -180,7 +180,7 @@ public final class Symphonys {
             // ignore
         }
 
-        // Reports status to Rhythm, I hope that everyone will be able to join in the SymHub plan :p
+        // 向 Rhy 发送统计数据，仅发送站点名称、URL。用于 Sym 使用统计，如果不想发送请移除该代码
         new Timer(true).schedule(new TimerTask() {
             @Override
             public void run() {
