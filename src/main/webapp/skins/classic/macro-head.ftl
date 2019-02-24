@@ -17,4 +17,22 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<#macro head title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>${title}</title><#nested><link rel="preconnect" href="${staticServePath}"><meta name="copyright" content="B3log" /><meta http-equiv="Window-target" content="_top" /><link rel="stylesheet" href="${staticServePath}/css/responsive.css?${staticResourceVersion}" /><link rel="stylesheet" href="${staticServePath}/css/base.css?${staticResourceVersion}" /><link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" /><link rel="apple-touch-icon" href="${staticServePath}/images/faviconH.png"><link rel="search" type="application/opensearchdescription+xml" title="HacPai" href="/opensearch.xml"><#if !isAdminLoggedIn>${siteVisitStatCode}</#if>${macroHeadPCCode}</#macro>
+<#macro head title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>${title}</title>
+<#nested>
+<link rel="preconnect" href="${staticServePath}">
+<meta name="copyright" content="B3log" />
+<meta http-equiv="Window-target" content="_top" />
+<link rel="stylesheet" href="${staticServePath}/css/responsive.css?${staticResourceVersion}" />
+<link rel="stylesheet" href="${staticServePath}/css/base.css?${staticResourceVersion}" />
+<link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" />
+<link rel="apple-touch-icon" href="${staticServePath}/images/faviconH.png">
+<link rel="search" type="application/opensearchdescription+xml" title="Sym" href="/opensearch.xml">
+<#if !isAdminLoggedIn>
+${siteVisitStatCode}
+</#if>
+${macroHeadPCCode}
+</#macro>

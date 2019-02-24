@@ -276,7 +276,7 @@
                         break;
 
                     default:
-                        S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'HacPai' : current));
+                        S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'Sym' : current));
                 }
             }, 2000, sequence.length);
         }

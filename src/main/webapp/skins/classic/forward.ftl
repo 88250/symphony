@@ -115,7 +115,7 @@
         init: function () {
             S.Drawing.init('.canvas')
             document.body.classList.add('body--ready')
-            var text = 'HacPai'
+            var text = 'Sym'
             S.UI.simulate(text)
             S.Drawing.loop(function () {
                 S.Shape.render()
@@ -274,7 +274,7 @@
                         break
 
                     default:
-                        S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'HacPai' : current))
+                        S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'Sym' : current))
                 }
             }, 2000, sequence.length)
         }
