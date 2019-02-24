@@ -175,7 +175,7 @@
                             </div>
                             <div class="metro-item">
                             <#if ADLabel != '' >
-                                <a class="preview" href="https://hacpai.com/article/1460083956075">
+                                <a class="preview" href="${servePath}/member/admin">
                                     <img src="${staticServePath}/emoji/graphics/heart.png" alt="${sponsorLabel}">
                                     <b>${adDeliveryLabel}</b>
                                 </a>
@@ -192,7 +192,7 @@
                                 ${ADLabel}
                                 </div>
                             <#else>
-                                <a class="preview" href="https://hacpai.com/article/1460083956075">
+                                <a class="preview" href="${servePath}/member/admin">
                                     <img src="${staticServePath}/emoji/graphics/heart.png" alt="${sponsorLabel}">
                                     <b>${adDeliveryLabel}</b>
                                 </a>

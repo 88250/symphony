@@ -147,7 +147,6 @@
                                                                 <span style="color:#999">•</span>
                                                                 <a href="${servePath}/tag/announcement" style="color:#4183c4;font-weight:bold;text-decoration:none" target="_blank">公告</a>
                                                                 <span style="color:#999">•</span>
-                                                                <a href="${servePath}/article/1460083956075" style="color:#4183c4;font-weight:bold;text-decoration:none" target="_blank">广告投放</a>
                                                             </span>
                                                         </p>
                                                     </span>

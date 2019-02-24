@@ -101,7 +101,7 @@
                 <#if ADLabel != ''>
                 <div class="module">
                     <div class="module-header" style="background-color: #7ea5c8">
-                        <a href="https://hacpai.com/article/1460083956075">${sponsorLabel}</a>
+                        <a href="${servePath}/member/admin">${sponsorLabel}</a>
                     </div>
                     <div class="ad module-panel fn-clear">
                         ${ADLabel}
