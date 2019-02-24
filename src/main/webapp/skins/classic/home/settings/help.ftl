@@ -31,15 +31,15 @@
                 <span class="ft-gray">${getStartTipLabel}</span>
             </li>
             <li>
-                <a href="https://hacpai.com/tag/user-guide">${basicLabel}</a>
+                <a href="${servePath}/about">${basicLabel}</a>
                 <span class="ft-gray">${basicTipLabel}</span>
             </li>
             <li>
-                <a href="https://hacpai.com/article/1474030007391">${hotKeyLabel}</a>
+                <a href="${servePath}/about">${hotKeyLabel}</a>
                 <span class="ft-gray">${hotKeyTipLabel}</span>
             </li>
             <li>
-                <a href="https://hacpai.com/guide/markdown">Markdown ${tutorialLabel}</a>
+                <a href="${servePath}/about">Markdown ${tutorialLabel}</a>
                 <span class="ft-gray">${markdownTutorialTipLabel}</span>
             </li>
             <li>

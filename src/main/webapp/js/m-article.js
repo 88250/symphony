@@ -572,7 +572,7 @@ var Article = {
         mode: 'circulation',
         music: {
           title: $it.data('title'),
-          author: '<a href="https://hacpai.com/article/1464416402922" target="_blank">音乐分享</a>',
+          author: '<a href="' + Label.servePath + '/about" target="_blank">音乐分享</a>',
           url: $it.data('url'),
           pic: Label.staticServePath + '/images/music.png',
         },

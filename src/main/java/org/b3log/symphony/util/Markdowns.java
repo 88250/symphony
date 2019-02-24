@@ -319,7 +319,7 @@ public final class Markdowns {
                                         text = text.replace('@' + userName + (nextIsBr ? "" : " "), "@" + UserExt.getUserLink(userName));
                                     }
                                     text = text.replace("@participants ",
-                                            "@<a href='" + Latkes.getServePath() + "/member/admin' target='_blank' class='ft-red'>participants</a> ");
+                                            "@<a href='" + Latkes.getServePath() + "/about' target='_blank' class='ft-red'>participants</a> ");
                                 }
 
                                 if (text.contains("@<a href=")) {

@@ -162,7 +162,7 @@
                             <#elseif 3 == articleType>
                                 <svg><use xlink:href="#video"></use></svg> ${thoughtLabel}
                             <span class="ft-gray">${addThoughtArticleTipLabel}
-                                <a href="${servePath}/member/admin" target="_blank">(?)</a></span>
+                                <a href="${servePath}/about" target="_blank">(?)</a></span>
                             <#elseif 5 == articleType>
                             <svg class="post__info">
                                 <use xlink:href="#iconAsk"></use>

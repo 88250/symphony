@@ -101,7 +101,7 @@
                 <#if ADLabel != ''>
                 <div class="module">
                     <div class="module-header" style="background-color: #7ea5c8">
-                        <a href="${servePath}/member/admin">${sponsorLabel}</a>
+                        <a href="${servePath}/about">${sponsorLabel}</a>
                     </div>
                     <div class="ad module-panel fn-clear">
                         ${ADLabel}

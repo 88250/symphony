@@ -452,6 +452,8 @@ public class IndexProcessor {
     @Before(StopwatchStartAdvice.class)
     @After(StopwatchEndAdvice.class)
     public void showAbout(final RequestContext context) {
+        // 关于页主要描述社区愿景、行为准则、内容协议等，并介绍社区的功能
+        // 这些内容请搭建后自行编写发布，然后再修改这里进行重定向
         context.sendRedirect(Latkes.getServePath() + "/member/admin");
     }
 

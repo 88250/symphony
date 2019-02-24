@@ -51,7 +51,7 @@
                     </a>
                     <div class="ft-gray">
                         ${addThoughtArticleTipLabel}
-                        <a href="${servePath}/member/admin" target="_blank">(?)</a>
+                        <a href="${servePath}/about" target="_blank">(?)</a>
                     </div>
                 </div>
                 <div>
