@@ -49,10 +49,7 @@ import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -488,6 +485,7 @@ public class UserMgmtService {
                         } else {
                             String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
                             fileName = FileUploadProcessor.genFilePath(fileName);
+                            new File(FileUploadProcessor.UPLOAD_DIR + fileName).getParentFile().mkdirs();
                             try (final OutputStream output = new FileOutputStream(FileUploadProcessor.UPLOAD_DIR + fileName)) {
                                 IOUtils.write(avatarData, output);
                             }
