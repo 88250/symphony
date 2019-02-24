@@ -452,7 +452,7 @@ public class IndexProcessor {
     @Before(StopwatchStartAdvice.class)
     @After(StopwatchEndAdvice.class)
     public void showAbout(final RequestContext context) {
-        context.sendRedirect("https://hacpai.com/article/1440573175609");
+        context.sendRedirect(Latkes.getServePath() + "/member/admin");
     }
 
     /**

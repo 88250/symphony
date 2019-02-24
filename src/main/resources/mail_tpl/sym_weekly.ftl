@@ -206,7 +206,6 @@
                                                             <span>
                                                                 <a href="${servePath}/about" style="color:#4183c4;font-weight:bold;text-decoration:none" target="_blank">关于</a> 
                                                                 <span style="color:#999">•</span>
-                                                                <a href="${servePath}/article/1457158841475" style="color:#4183c4;font-weight:bold;text-decoration:none" target="_blank">API</a>
                                                                 <span style="color:#999">•</span>
                                                                 <a href="${servePath}/perfect" style="color:#4183c4;font-weight:bold;text-decoration:none" target="_blank">优选</a> 
                                                                 <span style="color:#999">•</span>
