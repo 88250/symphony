@@ -51,7 +51,7 @@
                     </a>
                     <div class="ft-gray">
                         ${addThoughtArticleTipLabel}
-                        <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a>
+                        <a href="${servePath}/member/admin" target="_blank">(?)</a>
                     </div>
                 </div>
                 <div>
