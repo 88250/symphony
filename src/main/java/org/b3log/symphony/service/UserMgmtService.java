@@ -49,10 +49,7 @@ import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -487,6 +484,10 @@ public class UserMgmtService {
                             user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?" + new Date().getTime());
                         } else {
                             String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
+                            File dir = new File(FileUploadProcessor.UPLOAD_DIR+fileName.substring(0,fileName.lastIndexOf(File.separator)));
+                            if (!dir.exists()) {
+                                dir.mkdirs();
+                            }
                             fileName = FileUploadProcessor.genFilePath(fileName);
                             try (final OutputStream output = new FileOutputStream(FileUploadProcessor.UPLOAD_DIR + fileName)) {
                                 IOUtils.write(avatarData, output);
