@@ -446,7 +446,6 @@ public class IndexProcessor {
      * Shows about.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/about", method = HttpMethod.GET)
     @Before(StopwatchStartAdvice.class)
