@@ -594,7 +594,7 @@ var Article = {
       preload: 'none',
       music: {
         title: '语音预览',
-        author: '<a href="https://hacpai.com/member/v" target="_blank">小薇</a>',
+        author: '<a href="' + Label.servePath + '/about" target="_blank">小薇</a>',
         url: $articleAudio.data('url'),
         pic: Label.staticServePath + '/images/blank.png',
       },

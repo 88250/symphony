@@ -20,7 +20,6 @@
 <div class="footer">
     <div class="wrapper ft-smaller">
         <div class="footer-nav">
-            <a rel="copyright" href="https://hacpai.com" target="_blank">hacpai.com</a>
         ${visionLabel}
         </div>
         <div class="fn-hr5"></div>

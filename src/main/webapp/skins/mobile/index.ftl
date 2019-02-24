@@ -128,11 +128,6 @@
         ${indexIntroLabel}&nbsp;
         <a href="https://github.com/b3log/symphony" target="_blank">
             <svg><use xlink:href="#github"></use></svg></a>
-        <a href="https://weibo.com/b3log" target="_blank">
-            <svg><use xlink:href="#weibo"></use></svg></a>
-        <a target="_blank" rel="noopener"
-           href="https://t.me/b3log">
-            <svg><use xlink:href="#icon-telegram"></use></svg></a>
     </div>
     <#include "footer.ftl">
 </body>
