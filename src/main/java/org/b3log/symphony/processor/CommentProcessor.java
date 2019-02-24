@@ -61,10 +61,6 @@ import java.util.Set;
  * <li>Removes a comment (/comment/{id}/remove), POST</li>
  * <li>Accepts a comment (/comment/accept), POST</li>
  * </ul>
- * <p>
- * The '<em>locally</em>' means user post a comment on Symphony directly rather than receiving a comment from externally
- * (for example Solo).
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.8.0.5, Dec 16, 2018
