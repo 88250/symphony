@@ -75,31 +75,6 @@
                     </#if>
                     </#if>
                     <div class="module">
-                        <div class="module-header">
-                            <h2>开源项目</h2>
-                        </div>
-                        <div class="module-panel">
-                            <ul class="module-list open-source">
-                                <li>
-                                    <a target="_blank" rel="noopener" href="https://github.com/b3log/solo"><b class="ft-red slogan">【Solo】</b></a>
-                                    <a class="title" target="_blank" rel="noopener" href="https://github.com/b3log/solo">GitHub 上 Star 数最多的 Java 博客</a>
-                                </li>
-                                <li class="last">
-                                    <a target="_blank" rel="noopener" href="https://github.com/b3log/symphony"> <b class="ft-green slogan">【Sym】</b></a>
-                                    <a class="title" target="_blank" rel="noopener" href="https://github.com/b3log/symphony">现代化的社区论坛系统</a>
-                                </li>
-                                <li class="last">
-                                    <a target="_blank" rel="noopener" href="https://github.com/b3log/pipe"> <b class="ft-gray slogan">【Pipe】</b></a>
-                                    <a class="title" target="_blank" rel="noopener" href="https://github.com/b3log/pipe">小而美的博客平台</a>
-                                </li>
-                                <li>
-                                    <a target="_blank" rel="noopener" href="https://github.com/b3log/wide"><b class="ft-blue slogan">【Wide】</b></a>
-                                    <a class="title" target="_blank" rel="noopener" href="https://github.com/b3log/wide">Golang 黑科技之在线 IDE </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="module">
                         <div class="module-header">  
                             <h2>
                                 ${coldTagsLabel}
