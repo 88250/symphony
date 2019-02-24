@@ -471,9 +471,6 @@ public class CommentMgmtService {
             final JSONObject comment = new JSONObject();
             comment.put(Keys.OBJECT_ID, ret);
 
-            String content = requestJSONObject.optString(Comment.COMMENT_CONTENT).
-                    replace("_esc_enter_88250_", "<br/>"); // Solo client escape
-
             comment.put(Comment.COMMENT_AUTHOR_ID, commentAuthorId);
             comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
 
@@ -489,6 +486,7 @@ public class CommentMgmtService {
                 notificationMgmtService.makeRead(commentAuthorId, Arrays.asList(originalCmtId));
             }
 
+            String content = requestJSONObject.optString(Comment.COMMENT_CONTENT);
             content = Emotions.toAliases(content);
             content = content.replaceAll("\\s+$", ""); // https://github.com/b3log/symphony/issues/389
             content += " "; // in case of tailing @user
