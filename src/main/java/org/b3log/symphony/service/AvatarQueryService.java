@@ -18,6 +18,7 @@
 package org.b3log.symphony.service;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.UserExt;
@@ -42,7 +43,7 @@ public class AvatarQueryService {
     /**
      * Default avatar URL.
      */
-    public static final String DEFAULT_AVATAR_URL = Symphonys.get("defaultThumbnailURL");
+    public static final String DEFAULT_AVATAR_URL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
     /**
      * Fills the specified user thumbnail URL.
