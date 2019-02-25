@@ -22,6 +22,7 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
@@ -58,7 +59,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.16.0.6, Jan 10, 2019
+ * @version 1.16.0.7, Feb 25, 2019
  * @since 0.2.0
  */
 @Service
@@ -143,6 +144,7 @@ public class UserMgmtService {
             final String newName = UserExt.ANONYMOUS_USER_NAME + userNo;
             user.put(User.USER_NAME, newName);
             user.put(User.USER_EMAIL, newName + UserExt.USER_BUILTIN_EMAIL_SUFFIX);
+            user.put(User.USER_PASSWORD, DigestUtils.md5Hex(RandomStringUtils.randomAlphanumeric(8)));
             user.put(UserExt.USER_NICKNAME, "");
             user.put(UserExt.USER_TAGS, "");
             user.put(User.USER_URL, "");
