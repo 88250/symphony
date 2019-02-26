@@ -302,6 +302,15 @@
             </resource>
         </resources>
 
+        <testResources>
+            <testResource>
+                <directory>src/main/webapp</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+
         <plugins>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -325,7 +334,6 @@
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <useSystemClassLoader>false</useSystemClassLoader>
-                    <skipTests>false</skipTests>
                 </configuration>
             </plugin>
 
