@@ -71,61 +71,6 @@ public final class Mails {
     public static final String TEMPLATE_NAME_WEEKLY = "sym_weekly";
 
     /**
-     * Mail channel.
-     */
-    private static final String MAIL_CHANNEL = Symphonys.get("mail.channel");
-
-    /**
-     * SendCloud API user.
-     */
-    private static final String SENDCLOUD_API_USER = Symphonys.get("mail.sendcloud.apiUser");
-
-    /**
-     * SendCloud API key.
-     */
-    private static final String SENDCLOUD_API_KEY = Symphonys.get("mail.sendcloud.apiKey");
-
-    /**
-     * SendCloud from.
-     */
-    private static final String SENDCLOUD_FROM = Symphonys.get("mail.sendcloud.from");
-
-    /**
-     * SendCloud batch API User.
-     */
-    private static final String SENDCLOUD_BATCH_API_USER = Symphonys.get("mail.sendcloud.batch.apiUser");
-
-    /**
-     * SendCloud batch API key.
-     */
-    private static final String SENDCLOUD_BATCH_API_KEY = Symphonys.get("mail.sendcloud.batch.apiKey");
-
-    /**
-     * SendCloud batch sender email.
-     */
-    private static final String SENDCLOUD_BATCH_FROM = Symphonys.get("mail.sendcloud.batch.from");
-
-    /**
-     * Aliyun accesskey.
-     */
-    private static final String ALIYUN_ACCESSKEY = Symphonys.get("mail.aliyun.accessKey");
-
-    /**
-     * Aliyun access secret.
-     */
-    private static final String ALIYUN_ACCESSSECRET = Symphonys.get("mail.aliyun.accessSecret");
-
-    /**
-     * Aliyun from.
-     */
-    private static final String ALIYUN_FROM = Symphonys.get("mail.aliyun.from");
-
-    /**
-     * Aliyun batch from.
-     */
-    private static final String ALIYUN_BATCH_FROM = Symphonys.get("mail.aliyun.batch.from");
-
-    /**
      * Template configuration.
      */
     private static final Configuration TEMPLATE_CFG = new Configuration(Skins.FREEMARKER_VER);
@@ -145,7 +90,7 @@ public final class Mails {
             LOGGER.log(Level.ERROR, "Loads mail templates failed", e);
         }
 
-        final String mailDomains = Symphonys.get("mail.channel.mailDomains");
+        final String mailDomains = Symphonys.MAIL_CHANNEL_MAIL_DOMAINS;
         if (StringUtils.isNotBlank(mailDomains)) {
             // aliyun:163.com,126.com;sendcloud:qq.com
             final String[] channelMaps = StringUtils.split(mailDomains, ";");
@@ -179,14 +124,14 @@ public final class Mails {
      */
     public static void sendHTML(final String fromName, final String subject, final String toMail,
                                 final String templateName, final Map<String, Object> dataModel) {
-        if ("sendcloud".equals(MAIL_CHANNEL)) {
-            if (StringUtils.isBlank(SENDCLOUD_API_USER) || StringUtils.isBlank(SENDCLOUD_API_KEY)) {
+        if ("sendcloud".equals(Symphonys.MAIL_CHANNEL)) {
+            if (StringUtils.isBlank(Symphonys.MAIL_SENDCLOUD_API_USER) || StringUtils.isBlank(Symphonys.MAIL_SENDCLOUD_API_KEY)) {
                 LOGGER.warn("Please configure [#### SendCloud Mail channel ####] section in symphony.properties for sending mail");
 
                 return;
             }
-        } else if ("aliyun".equals(MAIL_CHANNEL)) {
-            if (StringUtils.isBlank(ALIYUN_ACCESSKEY) || StringUtils.isBlank(ALIYUN_ACCESSSECRET)) {
+        } else if ("aliyun".equals(Symphonys.MAIL_CHANNEL)) {
+            if (StringUtils.isBlank(Symphonys.MAIL_ALIYUN_AK) || StringUtils.isBlank(Symphonys.MAIL_ALIYUN_SK)) {
                 LOGGER.warn("Please configure [#### Aliyun Mail channel ####] section in symphony.properties for sending mail");
 
                 return;
@@ -211,10 +156,10 @@ public final class Mails {
             final String html = stringWriter.toString();
 
             final String domain = StringUtils.substringAfter(toMail, "@");
-            final String channel = DOMAIN_CHANNEL.getOrDefault(domain, MAIL_CHANNEL);
+            final String channel = DOMAIN_CHANNEL.getOrDefault(domain, Symphonys.MAIL_CHANNEL);
             switch (channel) {
                 case "aliyun":
-                    aliSendHtml(ALIYUN_FROM, fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
+                    aliSendHtml(Symphonys.MAIL_ALIYUN_FROM, fromName, subject, toMail, html, Symphonys.MAIL_ALIYUN_AK, Symphonys.MAIL_ALIYUN_SK);
 
                     return;
                 case "local":
@@ -223,9 +168,9 @@ public final class Mails {
                     return;
                 case "sendcloud":
                     final Map<String, Object> formData = new HashMap<>();
-                    formData.put("apiUser", SENDCLOUD_API_USER);
-                    formData.put("apiKey", SENDCLOUD_API_KEY);
-                    formData.put("from", SENDCLOUD_FROM);
+                    formData.put("apiUser", Symphonys.MAIL_SENDCLOUD_API_USER);
+                    formData.put("apiKey", Symphonys.MAIL_SENDCLOUD_BATCH_API_KEY);
+                    formData.put("from", Symphonys.MAIL_SENDCLOUD_FROM);
                     formData.put("fromName", fromName);
                     formData.put("subject", subject);
                     formData.put("to", toMail);
@@ -257,14 +202,14 @@ public final class Mails {
      */
     public static void batchSendHTML(final String fromName, final String subject, final List<String> toMails,
                                      final String templateName, final Map<String, Object> dataModel) {
-        if ("sendcloud".equals(MAIL_CHANNEL)) {
-            if (StringUtils.isBlank(SENDCLOUD_BATCH_API_USER) || StringUtils.isBlank(SENDCLOUD_BATCH_API_KEY)) {
+        if ("sendcloud".equals(Symphonys.MAIL_CHANNEL)) {
+            if (StringUtils.isBlank(Symphonys.MAIL_SENDCLOUD_BATCH_API_USER) || StringUtils.isBlank(Symphonys.MAIL_SENDCLOUD_BATCH_API_KEY)) {
                 LOGGER.warn("Please configure [#### SendCloud Mail channel ####] section in symphony.properties for sending mail");
 
                 return;
             }
-        } else if ("aliyun".equals(MAIL_CHANNEL)) {
-            if (StringUtils.isBlank(ALIYUN_ACCESSKEY) || StringUtils.isBlank(ALIYUN_ACCESSSECRET)) {
+        } else if ("aliyun".equals(Symphonys.MAIL_CHANNEL)) {
+            if (StringUtils.isBlank(Symphonys.MAIL_ALIYUN_AK) || StringUtils.isBlank(Symphonys.MAIL_ALIYUN_SK)) {
                 LOGGER.warn("Please configure [#### Aliyun Mail channel ####] section in symphony.properties for sending mail");
 
                 return;
@@ -284,9 +229,9 @@ public final class Mails {
         try {
             final Map<String, Object> formData = new HashMap<>();
 
-            formData.put("apiUser", SENDCLOUD_BATCH_API_USER);
-            formData.put("apiKey", SENDCLOUD_BATCH_API_KEY);
-            formData.put("from", SENDCLOUD_BATCH_FROM);
+            formData.put("apiUser", Symphonys.MAIL_SENDCLOUD_BATCH_API_USER);
+            formData.put("apiKey", Symphonys.MAIL_SENDCLOUD_BATCH_API_KEY);
+            formData.put("from", Symphonys.MAIL_SENDCLOUD_BATCH_FROM);
             formData.put("fromName", fromName);
             formData.put("subject", subject);
             formData.put("templateInvokeName", templateName);
@@ -298,7 +243,7 @@ public final class Mails {
             final String html = stringWriter.toString();
 
             // Creates or updates the SendCloud email template
-            if ("sendcloud".equals(MAIL_CHANNEL)) {
+            if ("sendcloud".equals(Symphonys.MAIL_CHANNEL)) {
                 refreshWeeklyTemplate(html);
             }
 
@@ -312,12 +257,12 @@ public final class Mails {
                 index++;
 
                 if (batch.size() > 99) {
-                    if ("aliyun".equals(MAIL_CHANNEL)) {
+                    if ("aliyun".equals(Symphonys.MAIL_CHANNEL)) {
                         final String toMail = getStringToMailByList(batch);
-                        aliSendHtml(ALIYUN_BATCH_FROM, fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
+                        aliSendHtml(Symphonys.MAIL_ALIYUN_BATCH_FROM, fromName, subject, toMail, html, Symphonys.MAIL_ALIYUN_AK, Symphonys.MAIL_ALIYUN_SK);
 
                         LOGGER.info("Sent [" + batch.size() + "] mails");
-                    } else if ("local".equals(MAIL_CHANNEL.toLowerCase())) {
+                    } else if ("local".equals(Symphonys.MAIL_CHANNEL.toLowerCase())) {
                         MailSender.getInstance().sendHTML(fromName, subject, batch, html);
                     } else {
                         try {
@@ -343,11 +288,11 @@ public final class Mails {
             }
 
             if (!batch.isEmpty()) { // Process remains
-                if ("aliyun".equals(MAIL_CHANNEL)) {
+                if ("aliyun".equals(Symphonys.MAIL_CHANNEL)) {
                     final String toMail = getStringToMailByList(batch);
-                    aliSendHtml(ALIYUN_BATCH_FROM, fromName, subject, toMail, html, ALIYUN_ACCESSKEY, ALIYUN_ACCESSSECRET);
+                    aliSendHtml(Symphonys.MAIL_ALIYUN_BATCH_FROM, fromName, subject, toMail, html, Symphonys.MAIL_ALIYUN_AK, Symphonys.MAIL_ALIYUN_SK);
                     LOGGER.info("Sent [" + batch.size() + "] mails");
-                } else if ("local".equals(MAIL_CHANNEL.toLowerCase())) {
+                } else if ("local".equals(Symphonys.MAIL_CHANNEL.toLowerCase())) {
                     MailSender.getInstance().sendHTML(fromName, subject, batch, html);
                 } else {
                     try {
@@ -448,8 +393,8 @@ public final class Mails {
 
     private static void refreshWeeklyTemplate(final String html) {
         final Map<String, Object> addData = new HashMap<>();
-        addData.put("apiUser", SENDCLOUD_BATCH_API_USER);
-        addData.put("apiKey", SENDCLOUD_BATCH_API_KEY);
+        addData.put("apiUser", Symphonys.MAIL_SENDCLOUD_BATCH_API_USER);
+        addData.put("apiKey", Symphonys.MAIL_SENDCLOUD_BATCH_API_KEY);
         addData.put("invokeName", TEMPLATE_NAME_WEEKLY);
         addData.put("name", "Weekly Newsletter");
         addData.put("subject", "Weekly Newsletter");
@@ -460,8 +405,8 @@ public final class Mails {
                 connectionTimeout(5000).timeout(30000).send().close();
 
         final Map<String, Object> updateData = new HashMap<>();
-        updateData.put("apiUser", SENDCLOUD_BATCH_API_USER);
-        updateData.put("apiKey", SENDCLOUD_BATCH_API_KEY);
+        updateData.put("apiUser", Symphonys.MAIL_SENDCLOUD_BATCH_API_USER);
+        updateData.put("apiKey", Symphonys.MAIL_SENDCLOUD_BATCH_API_KEY);
         updateData.put("invokeName", TEMPLATE_NAME_WEEKLY);
 
         updateData.put("html", html);
@@ -487,20 +432,20 @@ public final class Mails {
  */
 final class MailSender implements java.io.Serializable {
 
-    public static final String sender = Symphonys.get("mail.local.smtp.sender");
-    public static final String username = Symphonys.get("mail.local.smtp.username");
-    public static final String password = Symphonys.get("mail.local.smtp.passsword");
+    public static final String sender = Symphonys.MAIL_LOCAL_SMTP_SENDER;
+    public static final String username = Symphonys.MAIL_LOCAL_SMTP_USERNAME;
+    public static final String password = Symphonys.MAIL_LOCAL_SMTP_PASSWORD;
 
     private static final long serialVersionUID = -1000794424345267933L;
     private static final String CHARSET = "text/html;charset=UTF-8";
     private static final Logger LOGGER = Logger.getLogger(Markdowns.class);
-    private static final boolean is_debug = Boolean.valueOf(Symphonys.get("mail.local.isdebug"));
-    private static final String mail_transport_protocol = Symphonys.get("mail.local.transport.protocol");
-    private static final String mail_host = Symphonys.get("mail.local.host");
-    private static final String mail_port = Symphonys.get("mail.local.port");
-    private static final String mail_smtp_auth = Symphonys.get("mail.local.smtp.auth");
-    private static final String mail_smtp_ssl = Symphonys.get("mail.local.smtp.ssl");
-    private static final String mail_smtp_starttls_enable = Symphonys.get("mail.local.smtp.starttls.enable");
+    private static final boolean is_debug = Boolean.valueOf(Symphonys.MAIL_LOCAL_ISDEBUG);
+    private static final String mail_transport_protocol = Symphonys.MAIL_LOCAL_TRANSPORT_PROTOCOL;
+    private static final String mail_host = Symphonys.MAIL_LOCAL_HOST;
+    private static final String mail_port = Symphonys.MAIL_LOCAL_PORT;
+    private static final String mail_smtp_auth = Symphonys.MAIL_LOCAL_SMTP_AUTH;
+    private static final String mail_smtp_ssl = Symphonys.MAIL_LOCAL_SMTP_SSL;
+    private static final String mail_smtp_starttls_enable = Symphonys.MAIL_LOCAL_SMTP_STARTTLS;
     private static MailSender mailSender;
     private static Properties prop = new Properties();
 

@@ -80,11 +80,6 @@ public final class Markdowns {
     private static final Map<String, JSONObject> MD_CACHE = new ConcurrentHashMap<>();
 
     /**
-     * Markdown to HTML timeout.
-     */
-    private static final int MD_TIMEOUT = Symphonys.getInt("markdown.timeout");
-
-    /**
      * Marked engine serve path.
      */
     private static final String MARKED_ENGINE_URL = "http://localhost:8250";
@@ -352,7 +347,7 @@ public final class Markdowns {
                     return;
                 }
 
-                if (StringUtils.startsWithAny(src, new String[]{Latkes.getServePath(), Symphonys.get("qiniu.domain")})
+                if (StringUtils.startsWithAny(src, new String[]{Latkes.getServePath(), Symphonys.UPLOAD_QINIU_DOMAIN})
                         || StringUtils.endsWithIgnoreCase(src, ".mov")) {
                     return;
                 }
@@ -377,7 +372,7 @@ public final class Markdowns {
         try {
             final Future<String> future = pool.submit(call);
 
-            return future.get(MD_TIMEOUT, TimeUnit.MILLISECONDS);
+            return future.get(Symphonys.MARKDOWN_TIMEOUT, TimeUnit.MILLISECONDS);
         } catch (final TimeoutException e) {
             LOGGER.log(Level.ERROR, "Markdown timeout [md=" + StringUtils.substring(markdownText, 0, 256) + "]");
             Callstacks.printCallstack(Level.ERROR, new String[]{"org.b3log"}, null);

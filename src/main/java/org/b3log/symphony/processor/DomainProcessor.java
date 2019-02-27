@@ -104,7 +104,7 @@ public class DomainProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "domain-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int pageNum = Paginator.getPage(request);
-        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        int pageSize = Symphonys.ARTICLE_LIST_CNT;
 
         final JSONObject user = Sessions.getUser();
         if (null != user) {

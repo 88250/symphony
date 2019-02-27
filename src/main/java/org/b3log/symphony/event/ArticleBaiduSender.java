@@ -50,17 +50,12 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
     private static final Logger LOGGER = Logger.getLogger(ArticleBaiduSender.class);
 
     /**
-     * Baidu data token.
-     */
-    private static final String TOKEN = Symphonys.get("baidu.data.token");
-
-    /**
      * Sends the specified URLs to Baidu.
      *
      * @param urls the specified URLs
      */
     public static void sendToBaidu(final String... urls) {
-        if (Latkes.RuntimeMode.PRODUCTION != Latkes.getRuntimeMode() || StringUtils.isBlank(TOKEN)) {
+        if (Latkes.RuntimeMode.PRODUCTION != Latkes.getRuntimeMode() || StringUtils.isBlank(Symphonys.BAIDU_DATA_TOKEN)) {
             return;
         }
 
@@ -71,7 +66,7 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
         Symphonys.EXECUTOR_SERVICE.submit(() -> {
             try {
                 final String urlsStr = StringUtils.join(urls, "\n");
-                final HttpResponse response = HttpRequest.post("http://data.zz.baidu.com/urls?site=" + Latkes.getServerHost() + "&token=" + TOKEN).
+                final HttpResponse response = HttpRequest.post("http://data.zz.baidu.com/urls?site=" + Latkes.getServerHost() + "&token=" + Symphonys.BAIDU_DATA_TOKEN).
                         header(Common.USER_AGENT, "curl/7.12.1").
                         header("Host", "data.zz.baidu.com").
                         header("Content-Type", "text/plain").
@@ -89,7 +84,7 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
         final JSONObject data = event.getData();
         LOGGER.log(Level.TRACE, "Processing an event [type={0}, data={1}]", event.getType(), data);
 
-        if (Latkes.RuntimeMode.PRODUCTION != Latkes.getRuntimeMode() || StringUtils.isBlank(TOKEN)) {
+        if (Latkes.RuntimeMode.PRODUCTION != Latkes.getRuntimeMode() || StringUtils.isBlank(Symphonys.BAIDU_DATA_TOKEN)) {
             return;
         }
 

@@ -155,7 +155,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
         Locales.setLocale(Latkes.getLocale());
 
-        Sessions.setTemplateDir(Symphonys.get("skinDirName"));
+        Sessions.setTemplateDir(Symphonys.SKIN_DIR_NAME);
         Sessions.setMobile(false);
         Sessions.setAvatarViewMode(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
 
@@ -222,7 +222,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             if (null != isStaticObj && !(Boolean) isStaticObj) {
                 Stopwatchs.end();
 
-                final int threshold = Symphonys.getInt("performance.threshold");
+                final int threshold = Symphonys.PERFORMANCE_THRESHOLD;
                 if (0 < threshold) {
                     final long elapsed = Stopwatchs.getElapsed("Request initialized [" + request.getRequestURI() + "]");
                     if (elapsed >= threshold) {

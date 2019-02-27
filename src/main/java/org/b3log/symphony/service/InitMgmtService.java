@@ -646,7 +646,7 @@ public class InitMgmtService {
             LOGGER.info("Initialized admin user");
 
             // Add tags
-            String tagTitle = Symphonys.get("systemAnnounce");
+            String tagTitle = Symphonys.SYS_ANNOUNCE_TAG;
             String tagId = tagMgmtService.addTag(adminId, tagTitle);
             JSONObject tag = tagRepository.get(tagId);
             tag.put(Tag.TAG_URI, "announcement");

@@ -57,7 +57,7 @@ public class Activity1A0001CollectValidation extends ProcessAdvice {
 
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        if (Symphonys.getBoolean("activity1A0001Closed")) {
+        if (Symphonys.ACTIVITY_1A0001_CLOSED) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityClosedLabel")));
         }
 
