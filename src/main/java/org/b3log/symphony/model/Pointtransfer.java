@@ -99,7 +99,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Initialization.
      */
-    public static final int TRANSFER_SUM_C_INIT = Symphonys.getInt("pointInit");
+    public static final int TRANSFER_SUM_C_INIT = Symphonys.POINT_INIT;
 
     /**
      * Transfer type - Add Article Outcome.
@@ -109,7 +109,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Add Article.
      */
-    public static final int TRANSFER_SUM_C_ADD_ARTICLE = Symphonys.getInt("pointAddArticle");
+    public static final int TRANSFER_SUM_C_ADD_ARTICLE = Symphonys.POINT_ADD_ARTICLE;
 
     /**
      * Transfer type - Update Article Outcome.
@@ -119,7 +119,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Update Article.
      */
-    public static final int TRANSFER_SUM_C_UPDATE_ARTICLE = Symphonys.getInt("pointUpdateArticle");
+    public static final int TRANSFER_SUM_C_UPDATE_ARTICLE = Symphonys.POINT_UPDATE_ARTICLE;
 
     /**
      * Transfer type - Add Comment Income/Outcome.
@@ -129,12 +129,12 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Add Comment.
      */
-    public static final int TRANSFER_SUM_C_ADD_COMMENT = Symphonys.getInt("pointAddComment");
+    public static final int TRANSFER_SUM_C_ADD_COMMENT = Symphonys.POINT_ADD_COMMENT;
 
     /**
      * Transfer sum - Add Self Article Comment.
      */
-    public static final int TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT = Symphonys.getInt("pointAddSelfArticleComment");
+    public static final int TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT = Symphonys.POINT_ADD_SELF_ARTICLE_COMMENT;
 
     /**
      * Transfer type - Add Article Reward Outcome.
@@ -144,7 +144,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Add Article Reward.
      */
-    public static final int TRANSFER_SUM_C_ADD_ARTICLE_REWARD = Symphonys.getInt("pointAddArticleReward");
+    public static final int TRANSFER_SUM_C_ADD_ARTICLE_REWARD = Symphonys.POINT_ADD_ARTICLE_REWARD;
 
     /**
      * Transfer type - Article Reward Income/Outcome.
@@ -164,7 +164,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Invite Register.
      */
-    public static final int TRANSFER_SUM_C_INVITE_REGISTER = Symphonys.getInt("pointInviteRegister");
+    public static final int TRANSFER_SUM_C_INVITE_REGISTER = Symphonys.POINT_INVITE_REGISTER;
 
     /**
      * Transfer type - Activity - Daily Checkin Income.
@@ -174,12 +174,12 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Activity - Daily Checkin Min.
      */
-    public static final int TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN = Symphonys.getInt("pointActivityCheckinMin");
+    public static final int TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN = Symphonys.POINT_ACTIVITY_CHECKIN_MIN;
 
     /**
      * Transfer sum - Activity - Daily Checkin Max.
      */
-    public static final int TRANSFER_SUM_C_ACTIVITY_CHECKIN_MAX = Symphonys.getInt("pointActivityCheckinMax");
+    public static final int TRANSFER_SUM_C_ACTIVITY_CHECKIN_MAX = Symphonys.POINT_ACTIVITY_CHECKIN_MAX;
 
     /**
      * Transfer type - User Account to User Account.
@@ -199,7 +199,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Activity - Daily Checkin Streak.
      */
-    public static final int TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK = Symphonys.getInt("pointActivityCheckinStreak");
+    public static final int TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK = Symphonys.POINT_ACTIVITY_CHECKINT_STREAK;
 
     /**
      * Transfer type - Activity - 1A0001 Income.
@@ -224,7 +224,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Add Article.
      */
-    public static final int TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST = Symphonys.getInt("pointAddArticleBroadcast");
+    public static final int TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST = Symphonys.POINT_ADD_ARTICLE_BROADCAST;
 
     /**
      * Transfer type - Exchange.
@@ -249,7 +249,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Stick Article.
      */
-    public static final int TRANSFER_SUM_C_STICK_ARTICLE = Symphonys.getInt("pointStickArticle");
+    public static final int TRANSFER_SUM_C_STICK_ARTICLE = Symphonys.POINT_STICK_ARTICLE;
 
     /**
      * Transfer type - At Participants.
@@ -259,7 +259,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - At Participants.
      */
-    public static final int TRANSFER_SUM_C_AT_PARTICIPANTS = Symphonys.getInt("pointAtParticipants");
+    public static final int TRANSFER_SUM_C_AT_PARTICIPANTS = Symphonys.POINT_AT_PARTICIPANTS;
 
     /**
      * Transfer type - Activity - Character.
@@ -269,7 +269,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Activity - Character.
      */
-    public static final int TRANSFER_SUM_C_ACTIVITY_CHARACTER = Symphonys.getInt("pointActivityCharacter");
+    public static final int TRANSFER_SUM_C_ACTIVITY_CHARACTER = Symphonys.POINT_ACTIVITY_CHAR;
 
     /**
      * Transfer type - Article Thank Income/Outcome.
@@ -279,7 +279,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Article Thank.
      */
-    public static final int TRANSFER_SUM_C_ARTICLE_THANK = Symphonys.getInt("pointThankArticle");
+    public static final int TRANSFER_SUM_C_ARTICLE_THANK = Symphonys.POINT_THANK_ARTICLE;
 
     /**
      * Transfer type - Data Export.
@@ -289,7 +289,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Data Export.
      */
-    public static final int TRANSFER_SUM_C_DATA_EXPORT = Symphonys.getInt("pointDataExport");
+    public static final int TRANSFER_SUM_C_DATA_EXPORT = Symphonys.POINT_DATA_EXPORT;
 
     /**
      * Transfer type - Buy Invitecode.
@@ -299,7 +299,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Buy Invitecode.
      */
-    public static final int TRANSFER_SUM_C_BUY_INVITECODE = Symphonys.getInt("pointInvitecode");
+    public static final int TRANSFER_SUM_C_BUY_INVITECODE = Symphonys.POINT_BUY_INVITECODE;
 
     /**
      * Transfer type - Invitecode Used.
@@ -309,7 +309,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Invitecode Used.
      */
-    public static final int TRANSFER_SUM_C_INVITECODE_USED = Symphonys.getInt("pointInvitecodeUsed");
+    public static final int TRANSFER_SUM_C_INVITECODE_USED = Symphonys.POINT_INVITECODE_USED;
 
     /**
      * Transfer type - Activity - Eating Snake.
@@ -319,7 +319,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Activity - Eating Snake.
      */
-    public static final int TRANSFER_SUM_C_ACTIVITY_EATINGSNAKE = Symphonys.getInt("pointActivityEatingSnake");
+    public static final int TRANSFER_SUM_C_ACTIVITY_EATINGSNAKE = Symphonys.POINT_ACTIVITY_EATINGSNAKE;
 
     /**
      * Transfer type - Activity - Eating Snake Income.
@@ -339,7 +339,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Perfect Article.
      */
-    public static final int TRANSFER_SUM_C_PERFECT_ARTICLE = Symphonys.getInt("pointPerfectArticle");
+    public static final int TRANSFER_SUM_C_PERFECT_ARTICLE = Symphonys.POINT_PERFECT_ARTICLE;
 
     /**
      * Transfer type - Activity - Gobang.
@@ -354,7 +354,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Activity - Start Gobang.
      */
-    public static final int TRANSFER_SUM_C_ACTIVITY_GOBANG_START = Symphonys.getInt("pointActivityGobang");
+    public static final int TRANSFER_SUM_C_ACTIVITY_GOBANG_START = Symphonys.POINT_ACTIVITY_GOBANG;
 
     /**
      * Transfer type - Update Comment Outcome.
@@ -364,7 +364,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Update Comment.
      */
-    public static final int TRANSFER_SUM_C_UPDATE_COMMENT = Symphonys.getInt("pointUpdateComment");
+    public static final int TRANSFER_SUM_C_UPDATE_COMMENT = Symphonys.POINT_UPDATE_COMMENT;
 
     /**
      * Transfer type - QnA Income/Outcome.
@@ -379,7 +379,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Report Handled.
      */
-    public static final int TRANSFER_SUM_C_REPORT_HANDLED = Symphonys.getInt("pointReportHandled");
+    public static final int TRANSFER_SUM_C_REPORT_HANDLED = Symphonys.POINT_REPORT_HANDLED;
 
     /**
      * Transfer type - Change Username.
@@ -389,7 +389,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Change Username.
      */
-    public static final int TRANSFER_SUM_C_CHANGE_USERNAME = Symphonys.getInt("pointChangeUsername");
+    public static final int TRANSFER_SUM_C_CHANGE_USERNAME = Symphonys.POINT_CHANGE_USERNAME;
 
     /**
      * Private constructor.

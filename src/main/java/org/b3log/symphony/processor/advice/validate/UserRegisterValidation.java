@@ -233,7 +233,7 @@ public class UserRegisterValidation extends ProcessAdvice {
 
         checkField(invalidUserName(name), "registerFailLabel", "invalidUserNameLabel");
         checkField(!Strings.isEmail(email), "registerFailLabel", "invalidEmailLabel");
-        checkField(!UserExt.isWhitelistMailDomain(email), "registerFailLabel", "invalidEmail1Label");
+        checkField(!UserExt.isValidMailDomain(email), "registerFailLabel", "invalidEmail1Label");
         checkField(UserExt.USER_APP_ROLE_C_HACKER != appRole
                 && UserExt.USER_APP_ROLE_C_PAINTER != appRole, "registerFailLabel", "invalidAppRoleLabel");
         //checkField(invalidUserPassword(password), "registerFailLabel", "invalidPasswordLabel");

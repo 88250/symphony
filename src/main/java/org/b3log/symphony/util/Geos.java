@@ -61,7 +61,7 @@ public final class Geos {
      * </pre>, returns {@code null} if not found
      */
     public static JSONObject getAddress(final String ip) {
-        final String ak = Symphonys.get("baidu.lbs.ak");
+        final String ak = Symphonys.BAIDU_LBS_AK;
         if (StringUtils.isBlank(ak) || !Strings.isIPv4(ip)) {
             return null;
         }

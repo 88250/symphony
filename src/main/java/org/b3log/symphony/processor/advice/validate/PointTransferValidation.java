@@ -103,7 +103,7 @@ public class PointTransferValidation extends ProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("cannotTransferSelfLabel")));
         }
 
-        final int balanceMinLimit = Symphonys.getInt("pointTransferMin");
+        final int balanceMinLimit = Symphonys.POINT_TRANSER_MIN;
         final int balance = currentUser.optInt(UserExt.USER_POINT);
         if (balance - amount < balanceMinLimit) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("insufficientBalanceLabel")));

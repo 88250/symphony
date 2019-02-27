@@ -206,7 +206,7 @@ public class PostExportService {
             final FileInputStream inputStream = new FileInputStream(zipFile);
             final byte[] zipData = IOUtils.toByteArray(inputStream);
 
-            if (FileUploadProcessor.QN_ENABLED) {
+            if (Symphonys.QN_ENABLED) {
                 final Auth auth = Auth.create(Symphonys.UPLOAD_QINIU_AK, Symphonys.UPLOAD_QINIU_SK);
                 final UploadManager uploadManager = new UploadManager(new Configuration());
                 uploadManager.put(zipData, fileKey, auth.uploadToken(Symphonys.UPLOAD_QINIU_BUCKET),
@@ -215,7 +215,7 @@ public class PostExportService {
                 return Symphonys.UPLOAD_QINIU_DOMAIN + "/" + fileKey;
             } else {
                 fileKey = FileUploadProcessor.genFilePath(fileKey);
-                final String filePath = FileUploadProcessor.UPLOAD_DIR + fileKey;
+                final String filePath = Symphonys.UPLOAD_LOCAL_DIR + fileKey;
 
                 FileUtils.copyFile(zipFile, new File(filePath));
 

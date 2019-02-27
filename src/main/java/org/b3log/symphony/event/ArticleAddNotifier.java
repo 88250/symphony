@@ -127,7 +127,7 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
             if (Article.ARTICLE_TYPE_C_DISCUSSION != originalArticle.optInt(Article.ARTICLE_TYPE)
                     && Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)
                     && !Tag.TAG_TITLE_C_SANDBOX.equals(tags)
-                    && !StringUtils.containsIgnoreCase(tags, Symphonys.get("systemAnnounce"))) {
+                    && !StringUtils.containsIgnoreCase(tags, Symphonys.SYS_ANNOUNCE_TAG)) {
                 final JSONObject followerUsersResult = followQueryService.getFollowerUsers(articleAuthorId, 1, Integer.MAX_VALUE);
                 final List<JSONObject> followerUsers = (List<JSONObject>) followerUsersResult.opt(Keys.RESULTS);
                 final long thirtyDaysAgo = DateUtils.addDays(new Date(), -30).getTime();
@@ -183,7 +183,7 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
             }
 
             // 'Sys Announce' Notification
-            if (StringUtils.containsIgnoreCase(tags, Symphonys.get("systemAnnounce"))) {
+            if (StringUtils.containsIgnoreCase(tags, Symphonys.SYS_ANNOUNCE_TAG)) {
                 final long latestLoginTime = DateUtils.addDays(new Date(), -15).getTime();
 
                 final JSONObject result = userQueryService.getLatestLoggedInUsers(

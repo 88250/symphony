@@ -63,7 +63,7 @@ public class AvatarQueryService {
      * @return the default avatar URL
      */
     public String getDefaultAvatarURL(final String size) {
-        if (!FileUploadProcessor.QN_ENABLED) {
+        if (!Symphonys.QN_ENABLED) {
             return DEFAULT_AVATAR_URL;
         }
 
@@ -96,7 +96,7 @@ public class AvatarQueryService {
 
         final String finerSize = String.valueOf(Integer.valueOf(size) + 32);
         String avatarURL = StringUtils.substringBeforeLast(originalURL, "?");
-        final boolean qiniuEnabled = FileUploadProcessor.QN_ENABLED;
+        final boolean qiniuEnabled = Symphonys.QN_ENABLED;
         if (UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL == viewMode) {
             if (qiniuEnabled) {
                 final String qiniuDomain = Symphonys.UPLOAD_QINIU_DOMAIN;

@@ -39,11 +39,11 @@ public final class Images {
     public static String qiniuImgProcessing(final String content) {
         String ret = content;
 
-        if (!FileUploadProcessor.QN_ENABLED) {
+        if (!Symphonys.QN_ENABLED) {
             return ret;
         }
 
-        final String qiniuDomain = Symphonys.get("qiniu.domain");
+        final String qiniuDomain = Symphonys.UPLOAD_QINIU_DOMAIN;
         final String html = Markdowns.toHTML(content);
 
         final String[] imgSrcs = StringUtils.substringsBetween(html, "<img src=\"", "\"");

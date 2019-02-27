@@ -753,7 +753,7 @@ public class SettingsProcessor {
         if (Strings.contains(userAvatarURL, new String[]{"<", ">", "\"", "'"})) {
             user.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
         } else {
-            if (FileUploadProcessor.QN_ENABLED) {
+            if (Symphonys.QN_ENABLED) {
                 final String qiniuDomain = Symphonys.UPLOAD_QINIU_DOMAIN;
 
                 if (!StringUtils.startsWith(userAvatarURL, qiniuDomain)) {

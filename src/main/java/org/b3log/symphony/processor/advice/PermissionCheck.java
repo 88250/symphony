@@ -41,7 +41,7 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.Set;
 
 /**
  * Permission check.
@@ -59,29 +59,6 @@ public class PermissionCheck extends ProcessAdvice {
     private static final Logger LOGGER = Logger.getLogger(PermissionCheck.class);
 
     /**
-     * URL permission rules.
-     * <p>
-     * &lt;"url:method", permissions&gt;
-     * </p>
-     */
-    private static final Map<String, Set<String>> URL_PERMISSION_RULES = new HashMap<>();
-
-    static {
-        // Loads permission URL rules
-        final String prefix = "permission.rule.url.";
-
-        final Set<String> keys = Symphonys.CFG.stringPropertyNames();
-        for (final String key : keys) {
-            if (key.startsWith(prefix)) {
-                final String value = Symphonys.CFG.getProperty(key);
-                final Set<String> permissions = new HashSet<>(Arrays.asList(value.split(",")));
-
-                URL_PERMISSION_RULES.put(key, permissions);
-            }
-        }
-    }
-
-    /**
      * Language service.
      */
     @Inject
@@ -97,8 +74,6 @@ public class PermissionCheck extends ProcessAdvice {
         Stopwatchs.start("Check Permissions");
 
         try {
-            final HttpServletRequest request = context.getRequest();
-
             final JSONObject exception = new JSONObject();
             exception.put(Keys.MSG, langPropsService.get("noPermissionLabel"));
             exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
@@ -117,7 +92,7 @@ public class PermissionCheck extends ProcessAdvice {
                 throw new RequestProcessAdviceException(exception);
             }
 
-            final Set<String> requisitePermissions = URL_PERMISSION_RULES.get(rule);
+            final Set<String> requisitePermissions = Symphonys.URL_PERMISSION_RULES.get(rule);
             if (null == requisitePermissions) {
                 return;
             }

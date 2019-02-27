@@ -216,7 +216,7 @@ public class ActivityProcessor {
         dataModel.put("pointActivityCheckinMin", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN);
         dataModel.put("pointActivityCheckinMax", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MAX);
         dataModel.put("pointActivityCheckinStreak", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK);
-        dataModel.put("activitYesterdayLivenessRewardMaxPoint", Symphonys.getInt("activitYesterdayLivenessReward.maxPoint"));
+        dataModel.put("activitYesterdayLivenessRewardMaxPoint", Symphonys.ACTIVITY_YESTERDAY_REWARD_MAX);
     }
 
     /**
@@ -294,7 +294,7 @@ public class ActivityProcessor {
         final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
-        final boolean closed = Symphonys.getBoolean("activity1A0001Closed");
+        final boolean closed = Symphonys.ACTIVITY_1A0001_CLOSED;
         dataModel.put(Common.CLOSED, closed);
 
         final Calendar calendar = Calendar.getInstance();

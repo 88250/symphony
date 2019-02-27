@@ -626,13 +626,13 @@ public final class UserExt {
 
 
     /**
-     * Checks the specified email whether in a whitelist mail domain.
+     * Checks the specified email whether in a valid mail domain.
      *
      * @param email the specified email
      * @return {@code true} if it is, returns {@code false} otherwise
      */
-    public static boolean isWhitelistMailDomain(final String email) {
-        final String whitelistMailDomains = Symphonys.get("whitelist.mailDomains");
+    public static boolean isValidMailDomain(final String email) {
+        final String whitelistMailDomains = Symphonys.MAIL_DOMAINS;
         if (StringUtils.isBlank(whitelistMailDomains)) {
             return true;
         }

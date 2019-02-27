@@ -54,6 +54,8 @@ import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static org.b3log.symphony.util.Symphonys.QN_ENABLED;
+
 /**
  * File upload to local.
  *
@@ -70,22 +72,12 @@ public class FileUploadProcessor {
      */
     private static final Logger LOGGER = Logger.getLogger(FileUploadProcessor.class);
 
-    /**
-     * Upload directory.
-     */
-    public static final String UPLOAD_DIR = Symphonys.get("upload.dir");
-
-    /**
-     * Qiniu enabled.
-     */
-    public static final Boolean QN_ENABLED = Symphonys.getBoolean("qiniu.enabled");
-
     static {
         if (!QN_ENABLED) {
-            final File file = new File(UPLOAD_DIR);
+            final File file = new File(Symphonys.UPLOAD_LOCAL_DIR);
             if (!FileUtil.isExistingFolder(file)) {
                 try {
-                    FileUtil.mkdirs(UPLOAD_DIR);
+                    FileUtil.mkdirs(Symphonys.UPLOAD_LOCAL_DIR);
                 } catch (IOException ex) {
                     LOGGER.log(Level.ERROR, "Init upload dir failed", ex);
 
@@ -121,13 +113,13 @@ public class FileUploadProcessor {
         key = StringUtils.substringBeforeLast(key, "?"); // Erase Qiniu template
         key = StringUtils.substringBeforeLast(key, "?"); // Erase Qiniu template
 
-        String path = UPLOAD_DIR + key;
+        String path = Symphonys.UPLOAD_LOCAL_DIR + key;
         path = URLs.decode(path);
 
         try {
             if (!FileUtil.isExistingFile(new File(path)) ||
-                    !FileUtil.isExistingFolder(new File(UPLOAD_DIR)) ||
-                    !new File(path).getCanonicalPath().startsWith(new File(UPLOAD_DIR).getCanonicalPath())) {
+                    !FileUtil.isExistingFolder(new File(Symphonys.UPLOAD_LOCAL_DIR)) ||
+                    !new File(path).getCanonicalPath().startsWith(new File(Symphonys.UPLOAD_LOCAL_DIR).getCanonicalPath())) {
                 context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return;
@@ -172,7 +164,7 @@ public class FileUploadProcessor {
         final JSONObject result = Results.newFail();
         context.renderJSONPretty(result);
 
-        final int maxSize = Symphonys.getInt("upload.file.maxSize");
+        final int maxSize = (int) Symphonys.UPLOAD_FILE_MAX;
         final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
         try {
             parser.parseRequestStream(context.getRequest().getInputStream(), "UTF-8");
@@ -190,8 +182,8 @@ public class FileUploadProcessor {
         UploadManager uploadManager = null;
         String uploadToken = null;
         if (QN_ENABLED) {
-            auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-            uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
+            auth = Auth.create(Symphonys.UPLOAD_QINIU_AK, Symphonys.UPLOAD_QINIU_SK);
+            uploadToken = auth.uploadToken(Symphonys.UPLOAD_QINIU_BUCKET);
             uploadManager = new UploadManager(new Configuration());
         }
 
@@ -200,7 +192,7 @@ public class FileUploadProcessor {
 
         boolean checkFailed = false;
         String suffix = "";
-        final String[] allowedSuffixArray = Symphonys.get("upload.suffix").split(",");
+        final String[] allowedSuffixArray = Symphonys.UPLOAD_SUFFIX.split(",");
         for (int i = 0; i < allFiles.length; i++) {
             final FileUpload file = allFiles[i];
             suffix = Headers.getSuffix(file);
@@ -235,7 +227,7 @@ public class FileUploadProcessor {
         }
 
         final List<byte[]> fileBytes = new ArrayList<>();
-        if (QN_ENABLED) { // 文件上传性能优化 https://github.com/b3log/symphony/issues/866
+        if (Symphonys.QN_ENABLED) { // 文件上传性能优化 https://github.com/b3log/symphony/issues/866
             for (final FileUpload file : files) {
                 try (final InputStream inputStream = file.getFileInputStream()) {
                     final byte[] bytes = IOUtils.toByteArray(inputStream);
@@ -265,10 +257,10 @@ public class FileUploadProcessor {
                         LOGGER.log(Level.TRACE, "Uploaded [" + key + "], response [" + r.toString() + "]");
                         countDownLatch.countDown();
                     });
-                    url = Symphonys.get("qiniu.domain") + "/" + fileName;
+                    url = Symphonys.UPLOAD_QINIU_DOMAIN + "/" + fileName;
                     succMap.put(originalName, url);
                 } else {
-                    final Path path = Paths.get(UPLOAD_DIR, fileName);
+                    final Path path = Paths.get(Symphonys.UPLOAD_LOCAL_DIR, fileName);
                     path.getParent().toFile().mkdirs();
                     try (final OutputStream output = new FileOutputStream(path.toFile());
                          final InputStream input = file.getFileInputStream()) {
