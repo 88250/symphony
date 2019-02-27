@@ -72,23 +72,6 @@ public class FileUploadProcessor {
      */
     private static final Logger LOGGER = Logger.getLogger(FileUploadProcessor.class);
 
-    static {
-        if (!QN_ENABLED) {
-            final File file = new File(Symphonys.UPLOAD_LOCAL_DIR);
-            if (!FileUtil.isExistingFolder(file)) {
-                try {
-                    FileUtil.mkdirs(Symphonys.UPLOAD_LOCAL_DIR);
-                } catch (IOException ex) {
-                    LOGGER.log(Level.ERROR, "Init upload dir failed", ex);
-
-                    System.exit(-1);
-                }
-            }
-
-            LOGGER.info("Uses dir [" + file.getAbsolutePath() + "] for file uploading");
-        }
-    }
-
     /**
      * Language service.
      */
