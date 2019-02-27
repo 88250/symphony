@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.processor;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -46,7 +45,6 @@ import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +61,7 @@ import static org.b3log.symphony.processor.channel.ChatroomChannel.SESSIONS;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.19, Feb 11, 2019
+ * @version 1.3.5.20, Feb 27, 2019
  * @since 1.4.0
  */
 @RequestProcessor
@@ -246,54 +244,5 @@ public class ChatroomProcessor {
         dataModelService.fillSideHotArticles(dataModel);
         dataModelService.fillSideTags(dataModel);
         dataModelService.fillLatestCmts(dataModel);
-    }
-
-    /**
-     * XiaoV push API.
-     *
-     * @param context the specified context
-     */
-    @RequestProcessing(value = "/community/push", method = HttpMethod.POST)
-    @Before(StopwatchStartAdvice.class)
-    @After(StopwatchEndAdvice.class)
-    public synchronized void receiveXiaoV(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final String key = Symphonys.get("xiaov.key");
-        if (!key.equals(context.param("key"))) {
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
-        final String msg = context.param("msg");
-        if (StringUtils.isBlank(msg)) {
-            context.sendError(HttpServletResponse.SC_BAD_REQUEST);
-
-            return;
-        }
-
-        String user = context.param("user");
-        if (StringUtils.isBlank("user")) {
-            user = "V";
-        }
-
-        final JSONObject ret = new JSONObject();
-        context.renderJSON(ret);
-
-        final JSONObject chatroomMsg = new JSONObject();
-        chatroomMsg.put(User.USER_NAME, user);
-        chatroomMsg.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
-        chatroomMsg.put(Common.CONTENT, msg);
-
-        ChatroomChannel.notifyChat(chatroomMsg);
-        messages.addFirst(chatroomMsg);
-        final int maxCnt = Symphonys.getInt("chatRoom.msgCnt");
-        if (messages.size() > maxCnt) {
-            messages.remove(maxCnt);
-        }
-
-        ret.put(Keys.STATUS_CODE, true);
     }
 }

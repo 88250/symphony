@@ -54,7 +54,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.10.30, Feb 22, 2019
+ * @version 3.19.10.31, Feb 27, 2019
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -97,9 +97,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         final ArticleBaiduSender articleBaiduSender = beanManager.getReference(ArticleBaiduSender.class);
         eventManager.registerListener(articleBaiduSender);
-
-        final ArticleQQSender articleQQSender = beanManager.getReference(ArticleQQSender.class);
-        eventManager.registerListener(articleQQSender);
 
         final CommentNotifier commentNotifier = beanManager.getReference(CommentNotifier.class);
         eventManager.registerListener(commentNotifier);
