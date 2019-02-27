@@ -17,26 +17,20 @@
  */
 package org.b3log.symphony.service;
 
-import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.model.*;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONObject;
-import org.jsoup.Jsoup;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Cron management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 2, 2018
+ * @version 1.0.0.1, Feb 27, 2019
  * @since 3.4.5
  */
 @Service
@@ -82,12 +76,6 @@ public class CronMgmtService {
      */
     @Inject
     private CommentMgmtService commentMgmtService;
-
-    /**
-     * Turing query service.
-     */
-    @Inject
-    private TuringQueryService turingQueryService;
 
     /**
      * Invitecode management service.
@@ -142,20 +130,6 @@ public class CronMgmtService {
         }, delay, 5 * 1000, TimeUnit.MILLISECONDS);
         delay += 2000;
 
-        final JSONObject xiaoV = userQueryService.getUserByName(TuringQueryService.ROBOT_NAME);
-        if (null != xiaoV) {
-            Symphonys.SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
-                try {
-                    xiaov();
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Executes cron failed", e);
-                } finally {
-                    Stopwatchs.release();
-                }
-            }, delay, 5 * 1000, TimeUnit.MILLISECONDS);
-            delay += 2000;
-        }
-
         Symphonys.SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
             try {
                 cacheMgmtService.refreshCache();
@@ -189,56 +163,5 @@ public class CronMgmtService {
             }
         }, delay, 2 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
         delay += 2000;
-    }
-
-    private void xiaov() {
-        try {
-            final JSONObject xiaoV = userQueryService.getUserByName(TuringQueryService.ROBOT_NAME);
-            final int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
-            final String xiaoVUserId = xiaoV.optString(Keys.OBJECT_ID);
-            final JSONObject atResult = notificationQueryService.getAtNotifications(xiaoVUserId, 1, 1); // Just get the latest one
-            final List<JSONObject> notifications = (List<JSONObject>) atResult.get(Keys.RESULTS);
-            final JSONObject replyResult = notificationQueryService.getReplyNotifications(xiaoVUserId, 1, 1); // Just get the latest one
-            notifications.addAll((List<JSONObject>) replyResult.get(Keys.RESULTS));
-            for (final JSONObject notification : notifications) {
-                if (notification.optBoolean(Notification.NOTIFICATION_HAS_READ)) {
-                    continue;
-                }
-
-                notificationMgmtService.makeRead(notification);
-
-                String articleId = notification.optString(Article.ARTICLE_T_ID);
-                String q = null;
-                final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
-                switch (dataType) {
-                    case Notification.DATA_TYPE_C_AT:
-                        q = notification.optString(Common.CONTENT);
-                        break;
-                    case Notification.DATA_TYPE_C_REPLY:
-                        q = notification.optString(Comment.COMMENT_CONTENT);
-                        break;
-                    default:
-                        LOGGER.warn("Unknown notification data type [" + dataType + "] for XiaoV reply");
-                }
-
-                String xiaoVSaid;
-                final JSONObject comment = new JSONObject();
-                if (StringUtils.isNotBlank(q)) {
-                    q = Jsoup.parse(q).text();
-                    q = StringUtils.replace(q, "@" + TuringQueryService.ROBOT_NAME + " ", "");
-
-                    xiaoVSaid = turingQueryService.chat(articleId, q);
-
-                    comment.put(Comment.COMMENT_CONTENT, xiaoVSaid);
-                    comment.put(Comment.COMMENT_AUTHOR_ID, xiaoVUserId);
-                    comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
-                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, notification.optString(Comment.COMMENT_T_ID));
-
-                    commentMgmtService.addComment(comment);
-                }
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "XiaoV cron execute failed", e);
-        }
     }
 }

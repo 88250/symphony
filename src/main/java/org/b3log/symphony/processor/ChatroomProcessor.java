@@ -61,7 +61,7 @@ import static org.b3log.symphony.processor.channel.ChatroomChannel.SESSIONS;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.20, Feb 27, 2019
+ * @version 1.3.5.21, Feb 27, 2019
  * @since 1.4.0
  */
 @RequestProcessor
@@ -82,12 +82,6 @@ public class ChatroomProcessor {
      */
     @Inject
     private DataModelService dataModelService;
-
-    /**
-     * Turing query service.
-     */
-    @Inject
-    private TuringQueryService turingQueryService;
 
     /**
      * User management service.
@@ -182,27 +176,6 @@ public class ChatroomProcessor {
         final JSONObject pushMsg = JSONs.clone(msg);
         pushMsg.put(Common.TIME, Times.getTimeAgo(msg.optLong(Common.TIME), Locales.getLocale()));
         ChatroomChannel.notifyChat(pushMsg);
-
-        if (content.contains("@" + TuringQueryService.ROBOT_NAME + " ")) {
-            content = content.replaceAll("@" + TuringQueryService.ROBOT_NAME + " ", "");
-            final String xiaoVSaid = turingQueryService.chat(currentUser.optString(User.USER_NAME), content);
-            if (null != xiaoVSaid) {
-                final JSONObject xiaoVMsg = new JSONObject();
-                xiaoVMsg.put(User.USER_NAME, TuringQueryService.ROBOT_NAME);
-                xiaoVMsg.put(UserExt.USER_AVATAR_URL, TuringQueryService.ROBOT_AVATAR + "?imageView2/1/w/48/h/48/interlace/0/q");
-                xiaoVMsg.put(Common.CONTENT, "<p>@" + userName + " " + xiaoVSaid + "</p>");
-                xiaoVMsg.put(Common.TIME, System.currentTimeMillis());
-
-                messages.addFirst(xiaoVMsg);
-                if (messages.size() > maxCnt) {
-                    messages.remove(maxCnt);
-                }
-
-                final JSONObject pushXiaoVMsg = JSONs.clone(xiaoVMsg);
-                pushXiaoVMsg.put(Common.TIME, Times.getTimeAgo(System.currentTimeMillis(), Locales.getLocale()));
-                ChatroomChannel.notifyChat(pushXiaoVMsg);
-            }
-        }
 
         context.renderTrueResult();
 

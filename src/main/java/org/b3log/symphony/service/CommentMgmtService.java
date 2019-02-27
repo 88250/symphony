@@ -47,7 +47,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.0.3, Jan 12, 2019
+ * @version 2.15.0.4, Feb 27, 2019
  * @since 0.2.0
  */
 @Service
@@ -438,18 +438,16 @@ public class CommentMgmtService {
 
             article = articleRepository.get(articleId);
 
-            if (!TuringQueryService.ROBOT_NAME.equals(commenterName)) {
-                int pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT;
+            int pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT;
 
-                // Point
-                final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-                if (articleAuthorId.equals(commentAuthorId)) {
-                    pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT;
-                }
+            // Point
+            final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            if (articleAuthorId.equals(commentAuthorId)) {
+                pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT;
+            }
 
-                if (balance - pointSum < 0) {
-                    throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
-                }
+            if (balance - pointSum < 0) {
+                throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
             }
         } catch (final RepositoryException e) {
             throw new ServiceException(e);
@@ -561,9 +559,7 @@ public class CommentMgmtService {
 
             transaction.commit();
 
-            if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous
-                    && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous
-                    && !TuringQueryService.ROBOT_NAME.equals(commenterName)) {
+            if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
                 if (articleAuthorId.equals(commentAuthorId)) {
@@ -690,9 +686,6 @@ public class CommentMgmtService {
             if (UserExt.USER_STATUS_C_VALID != author.optInt(UserExt.USER_STATUS)) {
                 return;
             }
-
-            final JSONObject oldComment = commentRepository.get(commentId);
-            final String oldContent = oldComment.optString(Comment.COMMENT_CONTENT);
 
             String content = comment.optString(Comment.COMMENT_CONTENT);
             content = Emotions.toAliases(content);
