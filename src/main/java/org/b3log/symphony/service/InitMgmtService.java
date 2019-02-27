@@ -655,7 +655,7 @@ public class InitMgmtService {
             tagTitle = "Sym";
             tagId = tagMgmtService.addTag(adminId, tagTitle);
             tag = tagRepository.get(tagId);
-            tag.put(Tag.TAG_URI, "Sym");
+            tag.put(Tag.TAG_URI, "sym");
             tag.put(Tag.TAG_ICON_PATH, "sym.png");
             tag.put(Tag.TAG_DESCRIPTION, "[Sym](https://github.com/b3log/symphony) 是一款用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）平台，“下一代的社区系统，为未来而构建”。");
             tagMgmtService.updateTag(tagId, tag);
