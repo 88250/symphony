@@ -34,5 +34,4 @@
 <#if !isAdminLoggedIn>
 ${siteVisitStatCode}
 </#if>
-${macroHeadPCCode}
 </#macro>

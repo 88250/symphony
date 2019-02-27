@@ -712,26 +712,6 @@ public final class Common {
     public static final String SITE_VISIT_STAT_CODE = "siteVisitStatCode";
 
     /**
-     * Key of macro head PC.
-     */
-    public static final String MACRO_HEAD_PC_CODE = "macroHeadPCCode";
-
-    /**
-     * Key of macro head mobile code.
-     */
-    public static final String MACRO_HEAD_MOBILE_CODE = "macroHeadMobileCode";
-
-    /**
-     * Key of footer PC code.
-     */
-    public static final String FOOTER_PC_CODE = "footerPCCode";
-
-    /**
-     * Key of footer mobile code.
-     */
-    public static final String FOOTER_MOBILE_CODE = "footerMobileCode";
-
-    /**
      * Key of footer bei an hao.
      */
     public static final String FOOTER_BEI_AN_HAO = "footerBeiAnHao";

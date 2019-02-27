@@ -32,5 +32,4 @@
 <#if !isAdminLoggedIn>
 ${siteVisitStatCode}
 </#if>
-${macroHeadMobileCode}
 </#macro>
