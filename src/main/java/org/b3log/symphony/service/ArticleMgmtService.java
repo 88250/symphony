@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.service;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -34,7 +33,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.*;
@@ -47,15 +45,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.FileTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Article management service.
