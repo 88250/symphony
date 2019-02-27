@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.5.5, Feb 18, 2019
+ * @version 2.18.5.6, Feb 27, 2019
  * @since 0.2.0
  */
 @Service
@@ -675,37 +675,18 @@ public class ArticleMgmtService {
 
             String articleTags = article.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
-            boolean sandboxEnv = false;
             if (StringUtils.containsIgnoreCase(articleTags, Tag.TAG_TITLE_C_SANDBOX)) {
                 articleTags = Tag.TAG_TITLE_C_SANDBOX;
-                sandboxEnv = true;
             }
-
-            String[] tagTitles = articleTags.split(",");
-            if (!sandboxEnv && tagTitles.length < TAG_MAX_CNT && tagTitles.length < 3
-                    && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
-                    && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(articleTags)) {
-                final String content = article.optString(Article.ARTICLE_TITLE)
-                        + " " + Jsoup.parse("<p>" + article.optString(Article.ARTICLE_CONTENT) + "</p>").text();
-
-                final List<String> genTags = tagQueryService.generateTags(content, 1);
-                if (!genTags.isEmpty()) {
-                    articleTags = articleTags + "," + StringUtils.join(genTags, ",");
-                    articleTags = Tag.formatTags(articleTags);
-                    articleTags = Tag.useHead(articleTags, TAG_MAX_CNT);
-                }
-            }
-
             if (StringUtils.isBlank(articleTags)) {
-                articleTags = "B3log";
+                articleTags = "待分类";
             }
-
             articleTags = Tag.formatTags(articleTags);
             if (Article.ARTICLE_TYPE_C_QNA == articleType && !StringUtils.contains(articleTags, "Q&A")) {
                 articleTags += ",Q&A";
             }
             article.put(Article.ARTICLE_TAGS, articleTags);
-            tagTitles = articleTags.split(",");
+            final String[] tagTitles = articleTags.split(",");
 
             tag(tagTitles, article, author);
 
@@ -1427,29 +1408,12 @@ public class ArticleMgmtService {
         final List<JSONObject> oldTags = tagRepository.getByArticleId(oldArticleId);
         String tagsString = newArticle.getString(Article.ARTICLE_TAGS);
         tagsString = Tag.formatTags(tagsString);
-        boolean sandboxEnv = false;
         if (StringUtils.containsIgnoreCase(tagsString, Tag.TAG_TITLE_C_SANDBOX)) {
             tagsString = Tag.TAG_TITLE_C_SANDBOX;
-            sandboxEnv = true;
         }
-
-        String[] tagStrings = tagsString.split(",");
         final int articleType = newArticle.optInt(Article.ARTICLE_TYPE);
-        if (!sandboxEnv && tagStrings.length < TAG_MAX_CNT && tagStrings.length < 3
-                && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
-                && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(tagsString)) {
-            final String content = newArticle.optString(Article.ARTICLE_TITLE)
-                    + " " + Jsoup.parse("<p>" + newArticle.optString(Article.ARTICLE_CONTENT) + "</p>").text();
-            final List<String> genTags = tagQueryService.generateTags(content, 1);
-            if (!genTags.isEmpty()) {
-                tagsString = tagsString + "," + StringUtils.join(genTags, ",");
-                tagsString = Tag.formatTags(tagsString);
-                tagsString = Tag.useHead(tagsString, TAG_MAX_CNT);
-            }
-        }
-
         if (StringUtils.isBlank(tagsString)) {
-            tagsString = "B3log";
+            tagsString = "待分类";
         }
 
         tagsString = Tag.formatTags(tagsString);
@@ -1457,7 +1421,7 @@ public class ArticleMgmtService {
             tagsString += ",Q&A";
         }
         newArticle.put(Article.ARTICLE_TAGS, tagsString);
-        tagStrings = tagsString.split(",");
+        String[] tagStrings = tagsString.split(",");
 
         final List<JSONObject> newTags = new ArrayList<>();
 
@@ -1793,32 +1757,16 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_CITY, "");
             String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
-            boolean sandboxEnv = false;
             if (StringUtils.containsIgnoreCase(articleTags, Tag.TAG_TITLE_C_SANDBOX)) {
                 articleTags = Tag.TAG_TITLE_C_SANDBOX;
-                sandboxEnv = true;
             }
-
-            String[] tagTitles = articleTags.split(",");
-            if (!sandboxEnv && tagTitles.length < TAG_MAX_CNT && tagTitles.length < 3
-                    && !Tag.containsReservedTags(articleTags)) {
-                final String content = article.optString(Article.ARTICLE_TITLE)
-                        + " " + Jsoup.parse("<p>" + article.optString(Article.ARTICLE_CONTENT) + "</p>").text();
-                final List<String> genTags = tagQueryService.generateTags(content, TAG_MAX_CNT);
-                if (!genTags.isEmpty()) {
-                    articleTags = articleTags + "," + StringUtils.join(genTags, ",");
-                    articleTags = Tag.formatTags(articleTags);
-                    articleTags = Tag.useHead(articleTags, TAG_MAX_CNT);
-                }
-            }
-
             if (StringUtils.isBlank(articleTags)) {
-                articleTags = "B3log";
+                articleTags = "待分类";
             }
 
             articleTags = Tag.formatTags(articleTags);
             article.put(Article.ARTICLE_TAGS, articleTags);
-            tagTitles = articleTags.split(",");
+            String[] tagTitles = articleTags.split(",");
 
             tag(tagTitles, article, author);
 

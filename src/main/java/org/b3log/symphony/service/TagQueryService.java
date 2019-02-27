@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.4, Oct 7, 2018
+ * @version 1.9.0.5, Feb 27, 2019
  * @since 0.2.0
  */
 @Service
@@ -245,48 +245,6 @@ public class TagQueryService {
         Collections.sort(subList, (t1, t2) -> t2.optInt(Tag.TAG_REFERENCE_CNT) - t1.optInt(Tag.TAG_REFERENCE_CNT));
 
         return subList.subList(0, subList.size() > fetchSize ? fetchSize : subList.size());
-    }
-
-    /**
-     * Generates tags for the specified content.
-     *
-     * @param content      the specified content
-     * @param tagFetchSize the specified tag fetch size
-     * @return tags
-     */
-    public List<String> generateTags(final String content, final int tagFetchSize) {
-        final List<String> ret = new ArrayList<>();
-
-        final String token = Symphonys.get("boson.token");
-        if (StringUtils.isBlank(token)) {
-            return ret;
-        }
-
-        try {
-            final HttpResponse response = HttpRequest.post("http://api.bosonnlp.com/keywords/analysis?top_k=" + tagFetchSize).
-                    header("Content-Type", "application/json").
-                    header("Accept", "application/json").
-                    header("X-Token", token).bodyText("\"" + content + "\"").timeout(5000).send();
-            response.charset("UTF-8");
-            final String str = response.bodyText();
-            try {
-                final JSONArray data = new JSONArray(str);
-                for (int i = 0; i < data.length(); i++) {
-                    final String tag = data.getJSONArray(i).optString(1);
-                    if (!StringUtils.isAlphanumericSpace(tag)) {
-                        ret.add(tag);
-                    }
-                }
-            } catch (final JSONException e) {
-                final JSONObject data = new JSONObject(str);
-
-                LOGGER.log(Level.ERROR, "Boson process failed [" + data.toString(4) + "]");
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Generates tags error: " + content, e);
-        }
-
-        return ret;
     }
 
     /**
