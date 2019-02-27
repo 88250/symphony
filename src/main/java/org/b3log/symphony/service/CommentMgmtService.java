@@ -406,7 +406,7 @@ public class CommentMgmtService {
         final int commentVisible = requestJSONObject.optInt(Comment.COMMENT_VISIBLE);
         final int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
 
-        if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")
+        if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.MIN_STEP_CMT_TIME
                 && !Role.ROLE_ID_C_ADMIN.equals(commenter.optString(User.USER_ROLE))
                 && !UserExt.COM_BOT_NAME.equals(commenter.optString(User.USER_NAME))) {
             LOGGER.log(Level.WARN, "Adds comment too frequent [userName={0}]", commenter.optString(User.USER_NAME));

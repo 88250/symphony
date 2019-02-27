@@ -123,6 +123,30 @@ public final class Symphonys {
         }
     }
 
+    /**
+     * 发帖最小时间间隔，用于防止刷屏，单位毫秒.
+     */
+    public static final long MIN_STEP_ARTICLE_TIME = getLong("minStepArticleTime");
+
+    /**
+     * 回帖最小时间间隔，用于防止刷屏，单位毫秒.
+     */
+    public static final long MIN_STEP_CMT_TIME = getLong("minStepCmtTime");
+
+    /**
+     * 聊天室最小发言时间间隔，用于防止刷屏，单位毫秒.
+     */
+    public static final long MIN_STEP_CHAT_TIME = getLong("minStepChatTime");
+
+    /**
+     * 用户发布帖子必须注册时间超过该设置，单位毫秒。默认 0 为不限制，刚注册完就可以发帖.
+     */
+    public static final long NEWBIE_FIRST_ARTICLE = getLong("newbieFirstArticle");
+
+
+
+
+
     static {
         // Loads reserved tags
         final String reservedTags = CFG.getProperty("reservedTags");

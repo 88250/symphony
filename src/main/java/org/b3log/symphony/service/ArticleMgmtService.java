@@ -544,16 +544,16 @@ public class ArticleMgmtService {
                 throw new ServiceException(langPropsService.get("userStatusInvalidLabel"));
             }
 
-            if (currentTimeMillis - author.optLong(Keys.OBJECT_ID) < Symphonys.getLong("newbieFirstArticle")) {
+            if (currentTimeMillis - author.optLong(Keys.OBJECT_ID) < Symphonys.NEWBIE_FIRST_ARTICLE) {
                 String tip = langPropsService.get("newbieFirstArticleLabel");
-                final long time = author.optLong(Keys.OBJECT_ID) + Symphonys.getLong("newbieFirstArticle");
+                final long time = author.optLong(Keys.OBJECT_ID) + Symphonys.NEWBIE_FIRST_ARTICLE;
                 final String timeStr = DateFormatUtils.format(time, "yyyy-MM-dd HH:mm:ss");
                 tip = tip.replace("${time}", timeStr);
 
                 throw new ServiceException(tip);
             }
 
-            if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.getLong("minStepArticleTime")
+            if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.MIN_STEP_ARTICLE_TIME
                     && !Role.ROLE_ID_C_ADMIN.equals(author.optString(User.USER_ROLE))) {
                 LOGGER.log(Level.WARN, "Adds article too frequent [userName={0}]", author.optString(User.USER_NAME));
                 throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
