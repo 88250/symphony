@@ -166,7 +166,7 @@ public class CityProcessor {
 
         final int pageNum = Paginator.getPage(request);
         final int pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
-        final int windowSize = Symphonys.getInt("cityArticlesWindowSize");
+        final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
 
         final JSONObject statistic = optionQueryService.getOption(queryCity + "-ArticleCount");
         if (null != statistic) {
@@ -248,8 +248,8 @@ public class CityProcessor {
         }
 
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("cityUserPageSize");
-        final int windowSize = Symphonys.getInt("cityUsersWindowSize");
+        final int pageSize = Symphonys.CITY_USERS_CNT;
+        final int windowSize = Symphonys.CITY_USERS_WIN_SIZE;
 
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));

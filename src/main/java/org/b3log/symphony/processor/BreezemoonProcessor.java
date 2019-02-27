@@ -111,7 +111,7 @@ public class BreezemoonProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "breezemoon.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int pageNum = Paginator.getPage(request);
-        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        int pageSize = Symphonys.ARTICLE_LIST_CNT;
         final JSONObject user = Sessions.getUser();
         String currentUserId = null;
         if (null != user) {
@@ -126,7 +126,7 @@ public class BreezemoonProcessor {
             currentUserId = user.optString(Keys.OBJECT_ID);
         }
 
-        final int windowSize = Symphonys.getInt("latestArticlesWindowSize");
+        final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
         final JSONObject result = breezemoonQueryService.getFollowingUserBreezemoons(currentUserId, pageNum, pageSize, windowSize);
         final List<JSONObject> bms = (List<JSONObject>) result.opt(Breezemoon.BREEZEMOONS);
         dataModel.put(Common.WATCHING_BREEZEMOONS, bms);

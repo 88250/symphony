@@ -57,17 +57,12 @@ public class SearchMgmtService {
     public static final String ES_INDEX_NAME = "symphony";
 
     /**
-     * Elasticsearch serve address.
-     */
-    public static final String ES_SERVER = Symphonys.get("es.server");
-
-    /**
      * Rebuilds ES index.
      */
     public void rebuildESIndex() {
         try {
-            HttpRequest.delete(ES_SERVER + "/" + ES_INDEX_NAME).timeout(3000).send();
-            HttpRequest.put(ES_SERVER + "/" + ES_INDEX_NAME).timeout(3000).send();
+            HttpRequest.delete(Symphonys.ES_SERVER + "/" + ES_INDEX_NAME).timeout(3000).send();
+            HttpRequest.put(Symphonys.ES_SERVER + "/" + ES_INDEX_NAME).timeout(3000).send();
 
             final JSONObject mapping = new JSONObject();
             final JSONObject article = new JSONObject();
@@ -85,7 +80,7 @@ public class SearchMgmtService {
             content.put("analyzer", "ik_smart");
             content.put("search_analyzer", "ik_smart");
 
-            HttpRequest.post(ES_SERVER + "/" + ES_INDEX_NAME + "/" + Article.ARTICLE + "/_mapping").bodyText(mapping.toString()).timeout(3000).contentTypeJson();
+            HttpRequest.post(Symphonys.ES_SERVER + "/" + ES_INDEX_NAME + "/" + Article.ARTICLE + "/_mapping").bodyText(mapping.toString()).timeout(3000).contentTypeJson();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes index failed", e);
         }
@@ -98,9 +93,9 @@ public class SearchMgmtService {
         final int maxRetries = 3;
         int retries = 1;
 
-        final String appId = Symphonys.get("algolia.appId");
-        final String index = Symphonys.get("algolia.index");
-        final String key = Symphonys.get("algolia.adminKey");
+        final String appId = Symphonys.ALGOLIA_APP_ID;
+        final String index = Symphonys.ALGOLIA_INDEX;
+        final String key = Symphonys.ALGOLIA_ADMIN_KEY;
 
         while (retries <= maxRetries) {
             String host = appId + "-" + retries + ".algolianet.com";
@@ -137,7 +132,7 @@ public class SearchMgmtService {
             payload.put("doc", doc);
             payload.put("upsert", doc);
 
-            HttpRequest.post(ES_SERVER + "/" + ES_INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID) + "/_update").
+            HttpRequest.post(Symphonys.ES_SERVER + "/" + ES_INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID) + "/_update").
                     bodyText(payload.toString()).contentTypeJson().timeout(5000).sendAsync();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates doc failed", e);
@@ -152,7 +147,7 @@ public class SearchMgmtService {
      */
     public void removeESDocument(final JSONObject doc, final String type) {
         try {
-            HttpRequest.delete(ES_SERVER + "/" + ES_INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID)).timeout(5000).sendAsync();
+            HttpRequest.delete(Symphonys.ES_SERVER + "/" + ES_INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID)).timeout(5000).sendAsync();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates doc failed", e);
         }
@@ -167,9 +162,9 @@ public class SearchMgmtService {
         final int maxRetries = 3;
         int retries = 1;
 
-        final String appId = Symphonys.get("algolia.appId");
-        final String index = Symphonys.get("algolia.index");
-        final String key = Symphonys.get("algolia.adminKey");
+        final String appId = Symphonys.ALGOLIA_APP_ID;
+        final String index = Symphonys.ALGOLIA_INDEX;
+        final String key = Symphonys.ALGOLIA_ADMIN_KEY;
 
         while (retries <= maxRetries) {
             String host = appId + "-" + retries + ".algolianet.com";
@@ -242,9 +237,9 @@ public class SearchMgmtService {
         final int maxRetries = 3;
         int retries = 1;
 
-        final String appId = Symphonys.get("algolia.appId");
-        final String index = Symphonys.get("algolia.index");
-        final String key = Symphonys.get("algolia.adminKey");
+        final String appId = Symphonys.ALGOLIA_APP_ID;
+        final String index = Symphonys.ALGOLIA_INDEX;
+        final String key = Symphonys.ALGOLIA_ADMIN_KEY;
 
         while (retries <= maxRetries) {
             String host = appId + "-" + retries + ".algolianet.com";

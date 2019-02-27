@@ -213,8 +213,8 @@ public class NotificationProcessor {
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("sysAnnounceNotificationsCnt");
-        final int windowSize = Symphonys.getInt("sysAnnounceNotificationsWindowSize");
+        final int pageSize = Symphonys.NOTIFICATION_LIST_CNT;
+        final int windowSize = Symphonys.NOTIFICATION_LIST_WIN_SIZE;
 
         final JSONObject result = notificationQueryService.getSysAnnounceNotifications(userId, pageNum, pageSize);
         final List<JSONObject> notifications = (List<JSONObject>) result.get(Keys.RESULTS);
@@ -426,8 +426,8 @@ public class NotificationProcessor {
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("pointNotificationsCnt");
-        final int windowSize = Symphonys.getInt("pointNotificationsWindowSize");
+        final int pageSize = Symphonys.NOTIFICATION_LIST_CNT;
+        final int windowSize = Symphonys.NOTIFICATION_LIST_WIN_SIZE;
 
         final JSONObject result = notificationQueryService.getPointNotifications(userId, pageNum, pageSize);
         final List<JSONObject> pointNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
@@ -518,8 +518,8 @@ public class NotificationProcessor {
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("commentedNotificationsCnt");
-        final int windowSize = Symphonys.getInt("commentedNotificationsWindowSize");
+        final int pageSize = Symphonys.NOTIFICATION_LIST_CNT;
+        final int windowSize = Symphonys.NOTIFICATION_LIST_WIN_SIZE;
 
         final JSONObject result = notificationQueryService.getCommentedNotifications(userId, pageNum, pageSize);
         final List<JSONObject> commentedNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
@@ -566,8 +566,8 @@ public class NotificationProcessor {
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("replyNotificationsCnt");
-        final int windowSize = Symphonys.getInt("replyNotificationsWindowSize");
+        final int pageSize = Symphonys.NOTIFICATION_LIST_CNT;
+        final int windowSize = Symphonys.NOTIFICATION_LIST_WIN_SIZE;
 
         final JSONObject result = notificationQueryService.getReplyNotifications(userId, pageNum, pageSize);
         final List<JSONObject> replyNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
@@ -614,8 +614,8 @@ public class NotificationProcessor {
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("atNotificationsCnt");
-        final int windowSize = Symphonys.getInt("atNotificationsWindowSize");
+        final int pageSize = Symphonys.NOTIFICATION_LIST_CNT;
+        final int windowSize = Symphonys.NOTIFICATION_LIST_WIN_SIZE;
 
         final JSONObject result = notificationQueryService.getAtNotifications(userId, pageNum, pageSize);
         final List<JSONObject> atNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
@@ -671,8 +671,8 @@ public class NotificationProcessor {
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("followingNotificationsCnt");
-        final int windowSize = Symphonys.getInt("followingNotificationsWindowSize");
+        final int pageSize = Symphonys.NOTIFICATION_LIST_CNT;
+        final int windowSize = Symphonys.NOTIFICATION_LIST_WIN_SIZE;
 
         final JSONObject result = notificationQueryService.getFollowingNotifications(userId, pageNum, pageSize);
         final List<JSONObject> followingNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
@@ -720,8 +720,8 @@ public class NotificationProcessor {
 
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("broadcastNotificationsCnt");
-        final int windowSize = Symphonys.getInt("broadcastNotificationsWindowSize");
+        final int pageSize = Symphonys.NOTIFICATION_LIST_CNT;
+        final int windowSize = Symphonys.NOTIFICATION_LIST_WIN_SIZE;
 
         final JSONObject result = notificationQueryService.getBroadcastNotifications(userId, pageNum, pageSize);
         final List<JSONObject> broadcastNotifications = (List<JSONObject>) result.get(Keys.RESULTS);

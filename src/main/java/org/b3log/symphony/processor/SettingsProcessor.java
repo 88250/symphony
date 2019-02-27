@@ -438,9 +438,9 @@ public class SettingsProcessor {
         final int invitedUserCount = userQueryService.getInvitedUserCount(userId);
         dataModel.put(Common.INVITED_USER_COUNT, invitedUserCount);
 
-        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        final long imgMaxSize = Symphonys.UPLOAD_IMG_MAX;
         dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        final long fileMaxSize = Symphonys.UPLOAD_FILE_MAX;
         dataModel.put("fileMaxSize", fileMaxSize);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
@@ -450,7 +450,7 @@ public class SettingsProcessor {
         dataModel.put("inviteTipLabel", inviteTipLabel);
 
         String pointTransferTipLabel = (String) dataModel.get("pointTransferTipLabel");
-        pointTransferTipLabel = pointTransferTipLabel.replace("{point}", Symphonys.get("pointTransferMin"));
+        pointTransferTipLabel = pointTransferTipLabel.replace("{point}", Symphonys.POINT_TRANSER_MIN + "");
         dataModel.put("pointTransferTipLabel", pointTransferTipLabel);
 
         String dataExportTipLabel = (String) dataModel.get("dataExportTipLabel");
@@ -469,14 +469,14 @@ public class SettingsProcessor {
         dataModel.put("buyInvitecodeLabel", buyInvitecodeLabel);
 
         String updateNameTipLabel = (String) dataModel.get("updateNameTipLabel");
-        updateNameTipLabel = updateNameTipLabel.replace("{point}", Symphonys.get("pointChangeUsername"));
+        updateNameTipLabel = updateNameTipLabel.replace("{point}", Symphonys.POINT_CHANGE_USERNAME + "");
         dataModel.put("updateNameTipLabel", updateNameTipLabel);
 
         final List<JSONObject> invitecodes = invitecodeQueryService.getValidInvitecodes(userId);
         for (final JSONObject invitecode : invitecodes) {
             String msg = langPropsService.get("expireTipLabel");
             msg = msg.replace("${time}", DateFormatUtils.format(invitecode.optLong(Keys.OBJECT_ID)
-                    + Symphonys.getLong("invitecode.expired"), "yyyy-MM-dd HH:mm"));
+                    + Symphonys.INVITECODE_EXPIRED, "yyyy-MM-dd HH:mm"));
             invitecode.put(Common.MEMO, msg);
         }
 
@@ -668,7 +668,7 @@ public class SettingsProcessor {
                 userListPageSize = 96;
             }
         } catch (final Exception e) {
-            userListPageSize = Symphonys.getInt("indexArticlesCnt");
+            userListPageSize = Symphonys.ARTICLE_LIST_CNT;
         }
 
         JSONObject user = Sessions.getUser();
@@ -754,7 +754,7 @@ public class SettingsProcessor {
             user.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
         } else {
             if (FileUploadProcessor.QN_ENABLED) {
-                final String qiniuDomain = Symphonys.get("qiniu.domain");
+                final String qiniuDomain = Symphonys.UPLOAD_QINIU_DOMAIN;
 
                 if (!StringUtils.startsWith(userAvatarURL, qiniuDomain)) {
                     user.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
@@ -916,7 +916,7 @@ public class SettingsProcessor {
                 case Invitecode.STATUS_C_UNUSED:
                     String msg = langPropsService.get("invitecodeOkLabel");
                     msg = msg.replace("${time}", DateFormatUtils.format(result.optLong(Keys.OBJECT_ID)
-                            + Symphonys.getLong("invitecode.expired"), "yyyy-MM-dd HH:mm"));
+                            + Symphonys.INVITECODE_EXPIRED, "yyyy-MM-dd HH:mm"));
 
                     ret.put(Keys.MSG, msg);
 
@@ -966,7 +966,7 @@ public class SettingsProcessor {
         } else {
             String msg = langPropsService.get("expireTipLabel");
             msg = msg.replace("${time}", DateFormatUtils.format(System.currentTimeMillis()
-                    + Symphonys.getLong("invitecode.expired"), "yyyy-MM-dd HH:mm"));
+                    + Symphonys.INVITECODE_EXPIRED, "yyyy-MM-dd HH:mm"));
             ret.put(Keys.MSG, invitecode + " " + msg);
         }
     }

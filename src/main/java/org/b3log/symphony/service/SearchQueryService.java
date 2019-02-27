@@ -111,7 +111,7 @@ public class SearchQueryService {
 
             LOGGER.debug(reqData.toString(4));
 
-            final HttpResponse response = HttpRequest.post(SearchMgmtService.ES_SERVER + "/" + SearchMgmtService.ES_INDEX_NAME + "/" + type
+            final HttpResponse response = HttpRequest.post(Symphonys.ES_SERVER + "/" + SearchMgmtService.ES_INDEX_NAME + "/" + type
                     + "/_search").bodyText(reqData.toString()).contentTypeJson().timeout(5000).send();
             response.charset("UTF-8");
             return new JSONObject(response.bodyText());
@@ -134,9 +134,9 @@ public class SearchQueryService {
         final int maxRetries = 3;
         int retries = 1;
 
-        final String appId = Symphonys.get("algolia.appId");
-        final String index = Symphonys.get("algolia.index");
-        final String key = Symphonys.get("algolia.adminKey");
+        final String appId = Symphonys.ALGOLIA_APP_ID;
+        final String index = Symphonys.ALGOLIA_INDEX;
+        final String key = Symphonys.ALGOLIA_ADMIN_KEY;
 
         while (retries <= maxRetries) {
             String host = appId + "-" + retries + ".algolianet.com";

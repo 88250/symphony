@@ -138,8 +138,8 @@ public class TagProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final List<JSONObject> trendTags = tagQueryService.getTrendTags(Symphonys.getInt("tagsWallTrendCnt"));
-        final List<JSONObject> coldTags = tagQueryService.getColdTags(Symphonys.getInt("tagsWallColdCnt"));
+        final List<JSONObject> trendTags = tagQueryService.getTrendTags(Symphonys.TAGS_CNT);
+        final List<JSONObject> coldTags = tagQueryService.getColdTags(Symphonys.TAGS_CNT);
 
         dataModel.put(Common.TREND_TAGS, trendTags);
         dataModel.put(Common.COLD_TAGS, coldTags);
@@ -164,7 +164,7 @@ public class TagProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
-        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        int pageSize = Symphonys.ARTICLE_LIST_CNT;
 
         final JSONObject user = Sessions.getUser();
         if (null != user) {
@@ -186,7 +186,7 @@ public class TagProcessor {
         tag.put(Common.IS_RESERVED, tagQueryService.isReservedTag(tag.optString(Tag.TAG_TITLE)));
         dataModel.put(Tag.TAG, tag);
         final String tagId = tag.optString(Keys.OBJECT_ID);
-        final List<JSONObject> relatedTags = tagQueryService.getRelatedTags(tagId, Symphonys.getInt("tagRelatedTagsCnt"));
+        final List<JSONObject> relatedTags = tagQueryService.getRelatedTags(tagId, Symphonys.TAG_RELATED_TAGS_CNT);
         tag.put(Tag.TAG_T_RELATED_TAGS, (Object) relatedTags);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
@@ -230,11 +230,11 @@ public class TagProcessor {
         final JSONObject tagCreator = tagQueryService.getCreator(tagId);
         tag.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, tagCreator.optString(Tag.TAG_T_CREATOR_THUMBNAIL_URL));
         tag.put(Tag.TAG_T_CREATOR_NAME, tagCreator.optString(Tag.TAG_T_CREATOR_NAME));
-        tag.put(Tag.TAG_T_PARTICIPANTS, (Object) tagQueryService.getParticipants(tagId, Symphonys.getInt("tagParticipantsCnt")));
+        tag.put(Tag.TAG_T_PARTICIPANTS, (Object) tagQueryService.getParticipants(tagId, Symphonys.ARTICLE_LIST_PARTICIPANTS_CNT));
 
         final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_CNT);
         final int pageCount = (int) Math.ceil(tagRefCnt / (double) pageSize);
-        final int windowSize = Symphonys.getInt("tagArticlesWindowSize");
+        final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));

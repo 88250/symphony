@@ -418,11 +418,11 @@ public class ArticleMgmtService {
             rewardRepository.removeByDataId(articleId);
             voteRepository.removeByDataId(articleId);
 
-            if (Symphonys.getBoolean("algolia.enabled")) {
+            if (Symphonys.ALGOLIA_ENABLED) {
                 searchMgmtService.removeAlgoliaDocument(article);
             }
 
-            if (Symphonys.getBoolean("es.enabled")) {
+            if (Symphonys.ES_ENABLED) {
                 searchMgmtService.removeESDocument(article, Article.ARTICLE);
             }
 
@@ -561,7 +561,7 @@ public class ArticleMgmtService {
 
             final int balance = author.optInt(UserExt.USER_POINT);
             if (Article.ARTICLE_ANONYMOUS_C_ANONYMOUS == articleAnonymous) {
-                final int anonymousPoint = Symphonys.getInt("anonymous.point");
+                final int anonymousPoint = Symphonys.ANONYMOUS_POST_POINT;
                 if (balance < anonymousPoint) {
                     String anonymousEnabelPointLabel = langPropsService.get("anonymousEnabelPointLabel");
                     anonymousEnabelPointLabel
@@ -1354,7 +1354,7 @@ public class ArticleMgmtService {
                 return;
             }
 
-            final long stepTime = Symphonys.getLong("stickArticleTime");
+            final long stepTime = Symphonys.STICK_ARTICLE_TIME;
             final long now = System.currentTimeMillis();
 
             for (int i = 0; i < articles.length(); i++) {
