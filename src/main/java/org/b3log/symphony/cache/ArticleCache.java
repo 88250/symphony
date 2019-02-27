@@ -83,11 +83,6 @@ public class ArticleCache {
      */
     private static final List<JSONObject> PERFECT_ARTICLES = new ArrayList<>();
 
-    static {
-        ARTICLE_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
-        ARTICLE_ABSTRACT_CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
-    }
-
     /**
      * Gets side hot articles.
      *

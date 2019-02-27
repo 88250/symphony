@@ -259,7 +259,7 @@ public final class Tag {
     /**
      * Max tag title length.
      */
-    public static final int MAX_TAG_TITLE_LENGTH = Symphonys.getInt("tag.maxTagTitleLength");
+    public static final int MAX_TAG_TITLE_LENGTH = 12;
 
     /**
      * Max tag count.

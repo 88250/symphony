@@ -41,10 +41,6 @@ public class CommentCache {
      */
     private static final Cache cache = CacheFactory.getCache(Comment.COMMENTS);
 
-    static {
-        cache.setMaxCount(Symphonys.getInt("cache.commentCnt"));
-    }
-
     /**
      * Gets a comment by the specified comment id.
      *
