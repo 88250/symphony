@@ -189,7 +189,7 @@ public class TagCache {
         final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
 
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setPage(1, Symphonys.TAGS_CNT).setPageCount(1);
+                setPage(1, Symphonys.SIDE_TAGS_CNT).setPageCount(1);
 
         query.setFilter(new PropertyFilter(Tag.TAG_REFERENCE_CNT, FilterOperator.GREATER_THAN, 0));
 

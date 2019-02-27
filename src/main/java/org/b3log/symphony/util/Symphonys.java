@@ -751,6 +751,11 @@ public final class Symphonys {
     public static final String ALGOLIA_ADMIN_KEY = get("algolia.adminKey");
 
     /**
+     * Algolia Index.
+     */
+    public static final String ALGOLIA_INDEX = get("algolia.index");
+
+    /**
      * 保留标签，只有管理员可以使用.
      */
     public static final String RESERVEDTAGS = get("reservedTags");

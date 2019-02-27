@@ -96,14 +96,14 @@ public final class Liveness {
      * @return point
      */
     public static int calcPoint(final JSONObject liveness) {
-        final float activityPer = Symphonys.getFloat("activitYesterdayLivenessReward.activity.perPoint");
-        final float articlePer = Symphonys.getFloat("activitYesterdayLivenessReward.article.perPoint");
-        final float commentPer = Symphonys.getFloat("activitYesterdayLivenessReward.comment.perPoint");
-        final float pvPer = Symphonys.getFloat("activitYesterdayLivenessReward.pv.perPoint");
-        final float rewardPer = Symphonys.getFloat("activitYesterdayLivenessReward.reward.perPoint");
-        final float thankPer = Symphonys.getFloat("activitYesterdayLivenessReward.thank.perPoint");
-        final float votePer = Symphonys.getFloat("activitYesterdayLivenessReward.vote.perPoint");
-        final float acceptAnswerPer = Symphonys.getFloat("activitYesterdayLivenessReward.acceptAnswer.perPoint");
+        final float activityPer = Symphonys.ACTIVITY_YESTERDAY_REWARD_ACTIVITY_PER;
+        final float articlePer = Symphonys.ACTIVITY_YESTERDAY_REWARD_ARTICLE_PER;
+        final float commentPer = Symphonys.ACTIVITY_YESTERDAY_REWARD_COMMENT_PER;
+        final float pvPer = Symphonys.ACTIVITY_YESTERDAY_REWARD_PV_PER;
+        final float rewardPer = Symphonys.ACTIVITY_YESTERDAY_REWARD_REWARD_PER;
+        final float thankPer = Symphonys.ACTIVITY_YESTERDAY_REWARD_THANK_PER;
+        final float votePer = Symphonys.ACTIVITY_YESTERDAY_REWARD_VOTE_PER;
+        final float acceptAnswerPer = Symphonys.ACTIVITY_YESTERDAY_REWARD_ACCEPT_ANSWER_PER;
 
         final int activity = liveness.optInt(Liveness.LIVENESS_ACTIVITY);
         final int article = liveness.optInt(Liveness.LIVENESS_ARTICLE);
@@ -131,7 +131,7 @@ public final class Liveness {
 
         int ret = activityPoint + articlePoint + commentPoint + pvPoint + rewardPoint + thankPoint + votePoint + acceptAnswerPoint;
 
-        final int max = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");
+        final int max = Symphonys.ACTIVITY_YESTERDAY_REWARD_MAX;
         if (ret > max) {
             ret = max;
         }

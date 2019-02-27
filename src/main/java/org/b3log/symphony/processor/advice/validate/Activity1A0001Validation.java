@@ -70,9 +70,9 @@ public class Activity1A0001Validation extends ProcessAdvice {
         final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int currentLiveness = livenessQueryService.getCurrentLivenessPoint(userId);
-        final int livenessMax = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");
+        final int livenessMax = Symphonys.ACTIVITY_YESTERDAY_REWARD_MAX;
         final float liveness = (float) currentLiveness / livenessMax * 100;
-        final float livenessThreshold = Symphonys.getFloat("activity1A0001LivenessThreshold");
+        final float livenessThreshold = Symphonys.ACTIVITY_1A0001_LIVENESS_THRESHOLD;
         if (liveness < livenessThreshold) {
             String msg = langPropsService.get("activityNeedLivenessLabel");
             msg = msg.replace("${liveness}", String.valueOf(livenessThreshold) + "%");
@@ -80,7 +80,7 @@ public class Activity1A0001Validation extends ProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, msg));
         }
 
-        if (Symphonys.getBoolean("activity1A0001Closed")) {
+        if (Symphonys.ACTIVITY_1A0001_CLOSED) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityClosedLabel")));
         }
 

@@ -151,7 +151,7 @@ public class DataModelService {
         Stopwatchs.start("Fills relevant articles");
         try {
             dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                    articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
+                    articleQueryService.getRelevantArticles(article, Symphonys.SIDE_RELEVANT_ARTICLES_CNT));
         } finally {
             Stopwatchs.end();
         }
@@ -208,7 +208,7 @@ public class DataModelService {
     public void fillSideTags(final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills side tags");
         try {
-            dataModel.put(Common.SIDE_TAGS, tagQueryService.getTags(Symphonys.getInt("sideTagsCnt")));
+            dataModel.put(Common.SIDE_TAGS, tagQueryService.getTags(Symphonys.SIDE_TAGS_CNT));
             fillNewTags(dataModel);
         } finally {
             Stopwatchs.end();
@@ -232,7 +232,7 @@ public class DataModelService {
                 dataModel.put(Tag.TAG + i, tag);
             }
 
-            final List<JSONObject> tags = tagQueryService.getTags(Symphonys.getInt("sideTagsCnt"));
+            final List<JSONObject> tags = tagQueryService.getTags(Symphonys.SIDE_TAGS_CNT);
             for (int i = 0; i < tags.size(); i++) {
                 dataModel.put(Tag.TAG + i, tags.get(i));
             }
@@ -252,11 +252,11 @@ public class DataModelService {
     private void fillHeader(final RequestContext context, final Map<String, Object> dataModel) {
         fillMinified(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-        dataModel.put("esEnabled", Symphonys.getBoolean("es.enabled"));
-        dataModel.put("algoliaEnabled", Symphonys.getBoolean("algolia.enabled"));
-        dataModel.put("algoliaAppId", Symphonys.get("algolia.appId"));
-        dataModel.put("algoliaSearchKey", Symphonys.get("algolia.searchKey"));
-        dataModel.put("algoliaIndex", Symphonys.get("algolia.index"));
+        dataModel.put("esEnabled", Symphonys.ES_ENABLED);
+        dataModel.put("algoliaEnabled", Symphonys.ALGOLIA_ENABLED);
+        dataModel.put("algoliaAppId", Symphonys.ALGOLIA_APP_ID);
+        dataModel.put("algoliaSearchKey", Symphonys.ALGOLIA_SEARCH_KEY);
+        dataModel.put("algoliaIndex", Symphonys.ALGOLIA_INDEX);
 
         fillPersonalNav(dataModel);
         fillLangs(dataModel);
@@ -292,9 +292,9 @@ public class DataModelService {
         fillSysInfo(dataModel);
 
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-        dataModel.put(Common.SITE_VISIT_STAT_CODE, Symphonys.get(Common.SITE_VISIT_STAT_CODE));
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, Symphonys.SITE_VISIT_STATISTIC_CODE);
         dataModel.put(Common.MOUSE_EFFECTS, RandomUtils.nextDouble() > 0.95);
-        dataModel.put(Common.FOOTER_BEI_AN_HAO, Symphonys.get(Common.FOOTER_BEI_AN_HAO));
+        dataModel.put(Common.FOOTER_BEI_AN_HAO, Symphonys.FOOTER_BEIANHAO);
     }
 
     /**
@@ -374,7 +374,7 @@ public class DataModelService {
 
             dataModel.put(Common.IS_DAILY_CHECKIN, activityQueryService.isCheckedinToday(userId));
 
-            final int livenessMax = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");
+            final int livenessMax = Symphonys.ACTIVITY_YESTERDAY_REWARD_MAX;
             final int currentLiveness = livenessQueryService.getCurrentLivenessPoint(userId);
             dataModel.put(Liveness.LIVENESS, (float) (Math.round((float) currentLiveness / livenessMax * 100 * 100)) / 100);
         } finally {

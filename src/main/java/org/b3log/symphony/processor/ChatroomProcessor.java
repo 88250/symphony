@@ -168,7 +168,7 @@ public class ChatroomProcessor {
         msg.put(Common.TIME, System.currentTimeMillis());
 
         messages.addFirst(msg);
-        final int maxCnt = Symphonys.getInt("chatRoom.msgCnt");
+        final int maxCnt = Symphonys.CHATROOMMSGS_CNT;
         if (messages.size() > maxCnt) {
             messages.remove(maxCnt);
         }
@@ -204,11 +204,11 @@ public class ChatroomProcessor {
         final List<JSONObject> msgs = messages.stream().
                 map(msg -> JSONs.clone(msg).put(Common.TIME, Times.getTimeAgo(msg.optLong(Common.TIME), Locales.getLocale()))).collect(Collectors.toList());
         dataModel.put(Common.MESSAGES, msgs);
-        dataModel.put("chatRoomMsgCnt", Symphonys.getInt("chatRoom.msgCnt"));
+        dataModel.put("chatRoomMsgCnt", Symphonys.CHATROOMMSGS_CNT);
 
-        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        final long imgMaxSize = Symphonys.UPLOAD_IMG_MAX;
         dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        final long fileMaxSize = Symphonys.UPLOAD_FILE_MAX;
         dataModel.put("fileMaxSize", fileMaxSize);
         dataModel.put(Common.ONLINE_CHAT_CNT, SESSIONS.size());
 

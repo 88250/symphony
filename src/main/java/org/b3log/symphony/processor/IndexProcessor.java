@@ -123,7 +123,7 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final int pageNum = Paginator.getPage(request);
-        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        int pageSize = Symphonys.ARTICLE_LIST_CNT;
         final JSONObject user = Sessions.getUser();
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
@@ -196,7 +196,7 @@ public class IndexProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "watch.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        int pageSize = Symphonys.ARTICLE_LIST_CNT;
         final JSONObject user = Sessions.getUser();
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
@@ -286,7 +286,7 @@ public class IndexProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "recent.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int pageNum = Paginator.getPage(request);
-        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        int pageSize = Symphonys.ARTICLE_LIST_CNT;
         final JSONObject user = Sessions.getUser();
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
@@ -372,7 +372,7 @@ public class IndexProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "hot.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        int pageSize = Symphonys.ARTICLE_LIST_CNT;
         final JSONObject user = Sessions.getUser();
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
@@ -408,7 +408,7 @@ public class IndexProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "perfect.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final int pageNum = Paginator.getPage(request);
-        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        int pageSize = Symphonys.ARTICLE_LIST_CNT;
         final JSONObject user = Sessions.getUser();
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
