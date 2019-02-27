@@ -664,9 +664,9 @@ public class InitMgmtService {
 
             // Hello World!
             final JSONObject article = new JSONObject();
-            article.put(Article.ARTICLE_TITLE, "Welcome to Sym community :gift_heart:");
-            article.put(Article.ARTICLE_TAGS, "Sym,Announcement");
-            article.put(Article.ARTICLE_CONTENT, "Hello, everyone!");
+            article.put(Article.ARTICLE_TITLE, "欢迎来到 Sym 社区 :gift_heart:");
+            article.put(Article.ARTICLE_TAGS, "系统公告,Sym");
+            article.put(Article.ARTICLE_CONTENT, "社区愿景、行为准则、功能等请在此进行描述介绍。");
             article.put(Article.ARTICLE_EDITOR_TYPE, 0);
             article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
 
