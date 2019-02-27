@@ -23,7 +23,6 @@ import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.util.JSONs;
-import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**

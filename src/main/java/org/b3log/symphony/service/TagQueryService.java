@@ -17,8 +17,6 @@
  */
 package org.b3log.symphony.service;
 
-import jodd.http.HttpRequest;
-import jodd.http.HttpResponse;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -39,7 +37,6 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.*;
