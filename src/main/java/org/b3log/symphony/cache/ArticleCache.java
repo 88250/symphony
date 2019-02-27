@@ -109,7 +109,7 @@ public class ArticleCache {
             final String id = String.valueOf(DateUtils.addDays(new Date(), -7).getTime());
             final Query query = new Query().addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
                     addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).
-                    setPage(1, Symphonys.getInt("sideHotArticlesCnt"));
+                    setPage(1, Symphonys.SIDE_HOT_ARTICLES_CNT);
 
             final List<Filter> filters = new ArrayList<>();
             filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
@@ -138,7 +138,7 @@ public class ArticleCache {
      * @return side random articles
      */
     public List<JSONObject> getSideRandomArticles() {
-        int size = Symphonys.getInt("sideRandomArticlesCnt");
+        int size = Symphonys.SIDE_RANDOM_ARTICLES_CNT;
         if (1 > size) {
             return Collections.emptyList();
         }
@@ -157,7 +157,7 @@ public class ArticleCache {
      * Loads side random articles.
      */
     public void loadSideRandomArticles() {
-        final int size = Symphonys.getInt("sideRandomArticlesCnt");
+        final int size = Symphonys.SIDE_RANDOM_ARTICLES_CNT;
         if (1 > size) {
             return;
         }
@@ -220,7 +220,7 @@ public class ArticleCache {
         try {
             final Query query = new Query().
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                    setPageCount(1).setPage(1, Symphonys.getInt("indexPerfectCnt"));
+                    setPageCount(1).setPage(1, 36);
             query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
             query.select(Keys.OBJECT_ID,
                     Article.ARTICLE_STICK,

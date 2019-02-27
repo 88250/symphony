@@ -40,11 +40,6 @@ import java.util.List;
 public class TagTagRepository extends AbstractRepository {
 
     /**
-     * Weight threshold.
-     */
-    private static final int WEIGHT = Symphonys.getInt("tagRelatedWeight");
-
-    /**
      * Public constructor.
      */
     public TagTagRepository() {
@@ -76,7 +71,7 @@ public class TagTagRepository extends AbstractRepository {
             throws RepositoryException {
         final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + "1_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tag1Id));
-        filters.add(new PropertyFilter(Common.WEIGHT, FilterOperator.GREATER_THAN_OR_EQUAL, WEIGHT));
+        filters.add(new PropertyFilter(Common.WEIGHT, FilterOperator.GREATER_THAN_OR_EQUAL, Symphonys.TAG_RELATED_WEIGHT));
 
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                 setPage(currentPageNum, pageSize).setPageCount(1).
@@ -110,7 +105,7 @@ public class TagTagRepository extends AbstractRepository {
             throws RepositoryException {
         final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + "2_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tag2Id));
-        filters.add(new PropertyFilter(Common.WEIGHT, FilterOperator.GREATER_THAN_OR_EQUAL, WEIGHT));
+        filters.add(new PropertyFilter(Common.WEIGHT, FilterOperator.GREATER_THAN_OR_EQUAL, Symphonys.TAG_RELATED_WEIGHT));
 
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                 setPage(currentPageNum, pageSize).setPageCount(1).

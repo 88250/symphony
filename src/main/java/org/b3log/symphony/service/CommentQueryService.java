@@ -164,7 +164,7 @@ public class CommentQueryService {
                 final JSONObject ret = comments.get(0);
                 organizeComment(ret);
 
-                final int pageSize = Symphonys.getInt("articleCommentsPageSize");
+                final int pageSize = Symphonys.ARTICLE_COMMENTS_CNT;
                 ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, getCommentPage(
                         articleId, ret.optString(Keys.OBJECT_ID), commentViewMode, pageSize));
 
@@ -235,7 +235,7 @@ public class CommentQueryService {
 
             organizeComment(comment);
 
-            final int pageSize = Symphonys.getInt("articleCommentsPageSize");
+            final int pageSize = Symphonys.ARTICLE_COMMENTS_CNT;
 
             final JSONObject ret = new JSONObject();
 
@@ -297,7 +297,7 @@ public class CommentQueryService {
 
             organizeComments(comments);
 
-            final int pageSize = Symphonys.getInt("articleCommentsPageSize");
+            final int pageSize = Symphonys.ARTICLE_COMMENTS_CNT;
 
             final List<JSONObject> ret = new ArrayList<>();
             for (final JSONObject comment : comments) {
@@ -368,7 +368,7 @@ public class CommentQueryService {
 
                 organizeComments(ret);
 
-                final int pageSize = Symphonys.getInt("articleCommentsPageSize");
+                final int pageSize = Symphonys.ARTICLE_COMMENTS_CNT;
 
                 for (final JSONObject comment : ret) {
                     comment.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, getCommentPage(
@@ -555,7 +555,7 @@ public class CommentQueryService {
 
                 final String commentId = comment.optString(Keys.OBJECT_ID);
                 final int cmtViewMode = UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL;
-                final int cmtPage = getCommentPage(articleId, commentId, cmtViewMode, Symphonys.getInt("articleCommentsPageSize"));
+                final int cmtPage = getCommentPage(articleId, commentId, cmtViewMode, Symphonys.ARTICLE_COMMENTS_CNT);
                 comment.put(Comment.COMMENT_SHARP_URL, "/article/" + articleId + "?p=" + cmtPage + "&m=" + cmtViewMode + "#" + commentId);
 
                 if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)

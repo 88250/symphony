@@ -482,9 +482,9 @@ public class ArticleProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        final long imgMaxSize = Symphonys.UPLOAD_IMG_MAX;
         dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        final long fileMaxSize = Symphonys.UPLOAD_FILE_MAX;
         dataModel.put("fileMaxSize", fileMaxSize);
 
         String tags = context.param(Tag.TAGS);
@@ -702,9 +702,9 @@ public class ArticleProcessor {
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
 
-        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        final long imgMaxSize = Symphonys.UPLOAD_IMG_MAX;
         dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        final long fileMaxSize = Symphonys.UPLOAD_FILE_MAX;
         dataModel.put("fileMaxSize", fileMaxSize);
 
         // Fill article thank
@@ -735,13 +735,13 @@ public class ArticleProcessor {
         dataModel.put(Article.ARTICLE_T_NEXT, next);
 
         String stickConfirmLabel = langPropsService.get("stickConfirmLabel");
-        stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));
+        stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.POINT_STICK_ARTICLE + "");
         dataModel.put("stickConfirmLabel", stickConfirmLabel);
-        dataModel.put("pointThankArticle", Symphonys.get("pointThankArticle"));
+        dataModel.put("pointThankArticle", Symphonys.POINT_THANK_ARTICLE);
 
         int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("articleCommentsPageSize");
-        final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
+        final int pageSize = Symphonys.ARTICLE_COMMENTS_CNT;
+        final int windowSize = Symphonys.ARTICLE_COMMENTS_WIN_SIZE;
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_CNT);
         final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
         // 回帖分页 SEO https://github.com/b3log/symphony/issues/813
@@ -782,7 +782,7 @@ public class ArticleProcessor {
 
             for (final JSONObject comment : niceComments) {
                 String thankTemplate = langPropsService.get("thankConfirmLabel");
-                thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
+                thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.POINT_THANK_COMMENT))
                         .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));
                 comment.put(Comment.COMMENT_T_THANK_LABEL, thankTemplate);
 
@@ -816,7 +816,7 @@ public class ArticleProcessor {
             for (final JSONObject comment : articleComments) {
                 comment.put(Comment.COMMENT_T_NICE, comment.optDouble(Comment.COMMENT_SCORE, 0D) >= niceCmtScore);
 
-                final String thankStr = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
+                final String thankStr = thankTemplate.replace("{point}", String.valueOf(Symphonys.POINT_THANK_COMMENT))
                         .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));
                 comment.put(Comment.COMMENT_T_THANK_LABEL, thankStr);
 
@@ -1000,9 +1000,9 @@ public class ArticleProcessor {
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
 
-        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        final long imgMaxSize = Symphonys.UPLOAD_IMG_MAX;
         dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        final long fileMaxSize = Symphonys.UPLOAD_FILE_MAX;
         dataModel.put("fileMaxSize", fileMaxSize);
 
         fillDomainsWithTags(dataModel);
