@@ -68,11 +68,11 @@ public class ArticleSearchAdder extends AbstractEventListener<JSONObject> {
             return;
         }
 
-        if (Symphonys.getBoolean("algolia.enabled")) {
+        if (Symphonys.ALGOLIA_ENABLED) {
             searchMgmtService.updateAlgoliaDocument(JSONs.clone(article));
         }
 
-        if (Symphonys.getBoolean("es.enabled")) {
+        if (Symphonys.ES_ENABLED) {
             searchMgmtService.updateESDocument(JSONs.clone(article), Article.ARTICLE);
         }
     }

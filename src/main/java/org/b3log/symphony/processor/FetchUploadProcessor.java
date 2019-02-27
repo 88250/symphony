@@ -128,7 +128,7 @@ public class FetchUploadProcessor {
         }
 
         final String suffix = Headers.getSuffix(contentType);
-        final String[] allowedSuffixArray = Symphonys.get("upload.suffix").split(",");
+        final String[] allowedSuffixArray = Symphonys.UPLOAD_SUFFIX.split(",");
         if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
             String msg = langPropsService.get("invalidFileSuffixLabel");
             msg = StringUtils.replace(msg, "${suffix}", suffix);
@@ -139,22 +139,22 @@ public class FetchUploadProcessor {
 
         String fileName = UUID.randomUUID().toString().replace("-", "") + "." + suffix;
 
-        if (FileUploadProcessor.QN_ENABLED) {
-            final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+        if (Symphonys.QN_ENABLED) {
+            final Auth auth = Auth.create(Symphonys.UPLOAD_QINIU_AK, Symphonys.UPLOAD_QINIU_SK);
             final UploadManager uploadManager = new UploadManager(new Configuration());
 
             try {
-                uploadManager.put(bytes, "e/" + fileName, auth.uploadToken(Symphonys.get("qiniu.bucket")),
+                uploadManager.put(bytes, "e/" + fileName, auth.uploadToken(Symphonys.UPLOAD_QINIU_BUCKET),
                         null, contentType, false);
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Uploads to Qiniu failed", e);
             }
 
-            data.put(Common.URL, Symphonys.get("qiniu.domain") + "/e/" + fileName);
+            data.put(Common.URL, Symphonys.UPLOAD_QINIU_DOMAIN + "/e/" + fileName);
             data.put("originalURL", originalURL);
         } else {
             fileName = FileUploadProcessor.genFilePath(fileName);
-            try (final OutputStream output = new FileOutputStream(FileUploadProcessor.UPLOAD_DIR + fileName)) {
+            try (final OutputStream output = new FileOutputStream(Symphonys.UPLOAD_LOCAL_DIR + fileName)) {
                 IOUtils.write(bytes, output);
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Writes output stream failed", e);
