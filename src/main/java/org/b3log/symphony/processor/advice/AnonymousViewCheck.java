@@ -115,7 +115,7 @@ public class AnonymousViewCheck extends ProcessAdvice {
         final HttpServletRequest request = context.getRequest();
         final String requestURI = context.requestURI();
 
-        final String[] skips = Symphonys.get("anonymousViewSkips").split(",");
+        final String[] skips = Symphonys.ANONYMOUS_VIEW_SKIPS.split(",");
         for (final String skip : skips) {
             if (AntPathMatcher.match(Latkes.getContextPath() + skip, requestURI)) {
                 return;
@@ -173,7 +173,7 @@ public class AnonymousViewCheck extends ProcessAdvice {
                         }
 
                         uris.put(requestURI);
-                        if (uris.length() > Symphonys.getInt("anonymousViewURIs")) {
+                        if (uris.length() > Symphonys.ANONYMOUS_VIEW_URIS) {
                             throw new RequestProcessAdviceException(exception401);
                         }
 

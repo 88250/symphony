@@ -1779,7 +1779,7 @@ public class AdminProcessor {
             final JSONObject user = userQueryService.getUser(userId);
             final int currentPoint = user.optInt(UserExt.USER_POINT);
 
-            if (currentPoint - point < Symphonys.getInt("pointExchangeMin")) {
+            if (currentPoint - point < Symphonys.POINT_EXCHANGE_MIN) {
                 final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/error.ftl");
                 final Map<String, Object> dataModel = renderer.getDataModel();
 
@@ -1789,7 +1789,7 @@ public class AdminProcessor {
                 return;
             }
 
-            final String memo = String.valueOf(Math.floor(point / (double) Symphonys.getInt("pointExchangeUnit")));
+            final String memo = String.valueOf(Math.floor(point / (double) Symphonys.POINT_EXCHANGE_UNIT));
 
             final String transferId = pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                     Pointtransfer.TRANSFER_TYPE_C_EXCHANGE, point, memo, System.currentTimeMillis(), "");
@@ -2584,11 +2584,11 @@ public class AdminProcessor {
     public void rebuildArticleSearchIndex(final RequestContext context) {
         context.renderJSON(true);
 
-        if (Symphonys.getBoolean("es.enabled")) {
+        if (Symphonys.ES_ENABLED) {
             searchMgmtService.rebuildESIndex();
         }
 
-        if (Symphonys.getBoolean("algolia.enabled")) {
+        if (Symphonys.ALGOLIA_ENABLED) {
             searchMgmtService.rebuildAlgoliaIndex();
         }
 
@@ -2602,11 +2602,11 @@ public class AdminProcessor {
                     final List<JSONObject> articles = articleQueryService.getValidArticles(pageNum, 50, Article.ARTICLE_TYPE_C_NORMAL, Article.ARTICLE_TYPE_C_CITY_BROADCAST);
 
                     for (final JSONObject article : articles) {
-                        if (Symphonys.getBoolean("algolia.enabled")) {
+                        if (Symphonys.ALGOLIA_ENABLED) {
                             searchMgmtService.updateAlgoliaDocument(article);
                         }
 
-                        if (Symphonys.getBoolean("es.enabled")) {
+                        if (Symphonys.ES_ENABLED) {
                             searchMgmtService.updateESDocument(article, Article.ARTICLE);
                         }
                     }
@@ -2647,11 +2647,11 @@ public class AdminProcessor {
             return;
         }
 
-        if (Symphonys.getBoolean("algolia.enabled")) {
+        if (Symphonys.ALGOLIA_ENABLED) {
             searchMgmtService.updateAlgoliaDocument(article);
         }
 
-        if (Symphonys.getBoolean("es.enabled")) {
+        if (Symphonys.ES_ENABLED) {
             searchMgmtService.updateESDocument(article, Article.ARTICLE);
         }
 

@@ -693,7 +693,7 @@ public class NotificationQueryService {
                 commentedNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                 commentedNotification.put(Comment.COMMENT_T_ARTICLE_PERFECT, articlePerfect);
                 final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
-                final int cmtPage = commentQueryService.getCommentPage(articleId, commentId, cmtViewMode, Symphonys.getInt("articleCommentsPageSize"));
+                final int cmtPage = commentQueryService.getCommentPage(articleId, commentId, cmtViewMode, Symphonys.ARTICLE_COMMENTS_CNT);
                 commentedNotification.put(Comment.COMMENT_SHARP_URL, "/article/" + articleId + "?p=" + cmtPage
                         + "&m=" + cmtViewMode + "#" + commentId);
 
@@ -998,7 +998,7 @@ public class NotificationQueryService {
 
                         String userLinkVote = UserExt.getUserLink(voterUserName);
                         description = description.replace("{user}", userLinkVote);
-                        final String cmtVoteURL = commentQueryService.getCommentURL(commentId, cmtViewMode, Symphonys.getInt("articleCommentsPageSize"));
+                        final String cmtVoteURL = commentQueryService.getCommentURL(commentId, cmtViewMode, Symphonys.ARTICLE_COMMENTS_CNT);
                         atNotification.put(Common.DESCRIPTION, description.replace("{article}", Emotions.convert(cmtVoteURL)));
                         rslts.add(atNotification);
 

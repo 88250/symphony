@@ -245,9 +245,9 @@ public class LoginProcessor {
         }
         dataModel.put(User.USERS, users);
 
-        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        final long imgMaxSize = Symphonys.UPLOAD_IMG_MAX;
         dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        final long fileMaxSize = Symphonys.UPLOAD_FILE_MAX;
         dataModel.put("fileMaxSize", fileMaxSize);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);

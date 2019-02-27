@@ -332,7 +332,7 @@ public final class Sessions {
             cookieJSONObject.put(Keys.TOKEN, user.optString(User.USER_PASSWORD) + COOKIE_ITEM_SEPARATOR + random);
             cookieJSONObject.put(Common.REMEMBER_LOGIN, rememberLogin);
 
-            final String ret = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.get("cookie.secret"));
+            final String ret = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.COOKIE_SECRET);
             final Cookie cookie = new Cookie(COOKIE_NAME, ret);
 
             cookie.setPath("/");
@@ -389,7 +389,7 @@ public final class Sessions {
                     continue;
                 }
 
-                final String value = Crypts.decryptByAES(cookie.getValue(), Symphonys.get("cookie.secret"));
+                final String value = Crypts.decryptByAES(cookie.getValue(), Symphonys.COOKIE_SECRET);
                 final JSONObject cookieJSONObject = new JSONObject(value);
 
                 final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);

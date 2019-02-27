@@ -164,7 +164,7 @@ public class ActivityMgmtService {
             return ret;
         }
 
-        final int max = Symphonys.getInt("pointActivityEatingSnakeCollectMax");
+        final int max = Symphonys.POINT_ACTIVITY_EATINGSNAKE_COLLECT_MAX;
         final int amout = score > max ? max : score;
 
         final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
@@ -251,7 +251,7 @@ public class ActivityMgmtService {
             record.put(org.b3log.symphony.model.Character.CHARACTER_IMG, characterImg);
             record.put(org.b3log.symphony.model.Character.CHARACTER_USER_ID, userId);
 
-            String characterId = "";
+            String characterId;
             final Transaction transaction = characterRepository.beginTransaction();
             try {
                 characterId = characterRepository.add(record);

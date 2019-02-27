@@ -115,7 +115,7 @@ public class TopProcessor {
     public void showLink(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/link.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final List<JSONObject> topLinks = linkQueryService.getTopLink(Symphonys.getInt("topCnt"));
+        final List<JSONObject> topLinks = linkQueryService.getTopLink(Symphonys.TOP_CNT);
         dataModel.put(Common.TOP_LINKS, topLinks);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
@@ -136,7 +136,7 @@ public class TopProcessor {
     public void showBalance(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/balance.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final List<JSONObject> users = pointtransferQueryService.getTopBalanceUsers(Symphonys.getInt("topCnt"));
+        final List<JSONObject> users = pointtransferQueryService.getTopBalanceUsers(Symphonys.TOP_CNT);
         dataModel.put(Common.TOP_BALANCE_USERS, users);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
@@ -157,7 +157,7 @@ public class TopProcessor {
     public void showConsumption(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/consumption.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final List<JSONObject> users = pointtransferQueryService.getTopConsumptionUsers(Symphonys.getInt("topCnt"));
+        final List<JSONObject> users = pointtransferQueryService.getTopConsumptionUsers(Symphonys.TOP_CNT);
         dataModel.put(Common.TOP_CONSUMPTION_USERS, users);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
@@ -178,7 +178,7 @@ public class TopProcessor {
     public void showCheckin(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/checkin.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final List<JSONObject> users = activityQueryService.getTopCheckinUsers(Symphonys.getInt("topCnt"));
+        final List<JSONObject> users = activityQueryService.getTopCheckinUsers(Symphonys.TOP_CNT);
         dataModel.put(Common.TOP_CHECKIN_USERS, users);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);

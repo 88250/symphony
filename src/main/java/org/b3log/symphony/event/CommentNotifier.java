@@ -180,7 +180,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 }
 
                 final long num = commentRepository.count(numQuery);
-                final int page = (int) ((num / Symphonys.getInt("articleCommentsPageSize")) + 1);
+                final int page = (int) ((num / Symphonys.ARTICLE_COMMENTS_CNT) + 1);
                 chData.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, page);
 
                 final JSONObject originalCmt = commentRepository.get(originalCmtId);
@@ -207,7 +207,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             chData.put(Common.TIME_AGO, langPropsService.get("justNowLabel"));
             chData.put(Comment.COMMENT_CREATE_TIME_STR, DateFormatUtils.format(chData.optLong(Comment.COMMENT_CREATE_TIME), "yyyy-MM-dd HH:mm:ss"));
             String thankTemplate = langPropsService.get("thankConfirmLabel");
-            thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
+            thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.POINT_THANK_COMMENT))
                     .replace("{user}", commenterName);
             chData.put(Comment.COMMENT_T_THANK_LABEL, thankTemplate);
             String cc = shortLinkQueryService.linkArticle(commentContent);

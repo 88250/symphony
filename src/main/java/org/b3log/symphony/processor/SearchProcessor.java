@@ -114,7 +114,7 @@ public class SearchProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "search-articles.ftl");
 
-        if (!Symphonys.getBoolean("es.enabled") && !Symphonys.getBoolean("algolia.enabled")) {
+        if (!Symphonys.ES_ENABLED && !Symphonys.ALGOLIA_ENABLED) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
@@ -128,7 +128,7 @@ public class SearchProcessor {
         dataModel.put(Common.KEY, Escapes.escapeHTML(keyword));
 
         final int pageNum = Paginator.getPage(request);
-        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        int pageSize = Symphonys.ARTICLE_LIST_CNT;
         final JSONObject user = Sessions.getUser();
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
@@ -136,7 +136,7 @@ public class SearchProcessor {
         final List<JSONObject> articles = new ArrayList<>();
         int total = 0;
 
-        if (Symphonys.getBoolean("es.enabled")) {
+        if (Symphonys.ES_ENABLED) {
             final JSONObject result = searchQueryService.searchElasticsearch(Article.ARTICLE, keyword, pageNum, pageSize);
             if (null == result || 0 != result.optInt("status")) {
                 context.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -155,7 +155,7 @@ public class SearchProcessor {
             total = result.optInt("total");
         }
 
-        if (Symphonys.getBoolean("algolia.enabled")) {
+        if (Symphonys.ALGOLIA_ENABLED) {
             final JSONObject result = searchQueryService.searchAlgolia(keyword, pageNum, pageSize);
             if (null == result) {
                 context.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -177,7 +177,7 @@ public class SearchProcessor {
         }
 
         articleQueryService.organizeArticles(articles);
-        final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
+        final Integer participantsCnt = Symphonys.ARTICLE_LIST_PARTICIPANTS_CNT;
         articleQueryService.genParticipants(articles, participantsCnt);
 
         dataModel.put(Article.ARTICLES, articles);

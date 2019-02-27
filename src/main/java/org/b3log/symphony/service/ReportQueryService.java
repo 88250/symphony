@@ -189,7 +189,7 @@ public class ReportQueryService {
                         if (null != comment) {
                             final String commentId = comment.optString(Keys.OBJECT_ID);
                             final int cmtViewMode = UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME;
-                            reportData = commentQueryService.getCommentURL(commentId, cmtViewMode, Symphonys.getInt("articleCommentsPageSize"));
+                            reportData = commentQueryService.getCommentURL(commentId, cmtViewMode, Symphonys.ARTICLE_COMMENTS_CNT);
                         }
 
                         break;

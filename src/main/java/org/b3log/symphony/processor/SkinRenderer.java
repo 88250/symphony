@@ -84,13 +84,13 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
             try {
                 ret = Skins.SKIN.getTemplate(templateDirName + "/" + templateName);
             } catch (final Exception e) {
-                if (Symphonys.get("skinDirName").equals(templateDirName) ||
-                        Symphonys.get("mobileSkinDirName").equals(templateDirName)) {
+                if (Symphonys.SKIN_DIR_NAME.equals(templateDirName) ||
+                        Symphonys.MOBILE_SKIN_DIR_NAME.equals(templateDirName)) {
                     throw e;
                 }
 
                 // Try to load default template
-                ret = Skins.SKIN.getTemplate(Symphonys.get("skinDirName") + "/" + templateName);
+                ret = Skins.SKIN.getTemplate(Symphonys.SKIN_DIR_NAME + "/" + templateName);
             }
 
             if (isSearchEngineBot) {

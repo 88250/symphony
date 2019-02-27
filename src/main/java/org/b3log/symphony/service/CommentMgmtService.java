@@ -314,7 +314,7 @@ public class CommentMgmtService {
                 throw new ServiceException(langPropsService.get("thankSelfLabel"));
             }
 
-            final int rewardPoint = Symphonys.getInt("pointThankComment");
+            final int rewardPoint = Symphonys.POINT_THANK_COMMENT;
 
             if (rewardQueryService.isRewarded(senderId, commentId, Reward.TYPE_C_COMMENT)) {
                 return;
@@ -427,7 +427,7 @@ public class CommentMgmtService {
             final int balance = commenter.optInt(UserExt.USER_POINT);
 
             if (Comment.COMMENT_ANONYMOUS_C_ANONYMOUS == commentAnonymous) {
-                final int anonymousPoint = Symphonys.getInt("anonymous.point");
+                final int anonymousPoint = Symphonys.ANONYMOUS_POST_POINT;
                 if (balance < anonymousPoint) {
                     String anonymousEnabelPointLabel = langPropsService.get("anonymousEnabelPointLabel");
                     anonymousEnabelPointLabel

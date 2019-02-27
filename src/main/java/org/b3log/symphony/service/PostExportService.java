@@ -98,7 +98,7 @@ public class PostExportService {
      * @return download URL, returns {@code "-1"} if in sufficient balance, returns {@code null} if other exceptions
      */
     public String exportPosts(final String userId) {
-        final int pointDataExport = Symphonys.getInt("pointDataExport");
+        final int pointDataExport = Symphonys.POINT_DATA_EXPORT;
         try {
             final JSONObject user = userRepository.get(userId);
             final int balance = user.optInt(UserExt.USER_POINT);
@@ -207,12 +207,12 @@ public class PostExportService {
             final byte[] zipData = IOUtils.toByteArray(inputStream);
 
             if (FileUploadProcessor.QN_ENABLED) {
-                final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+                final Auth auth = Auth.create(Symphonys.UPLOAD_QINIU_AK, Symphonys.UPLOAD_QINIU_SK);
                 final UploadManager uploadManager = new UploadManager(new Configuration());
-                uploadManager.put(zipData, fileKey, auth.uploadToken(Symphonys.get("qiniu.bucket")),
+                uploadManager.put(zipData, fileKey, auth.uploadToken(Symphonys.UPLOAD_QINIU_BUCKET),
                         null, "application/zip", false);
 
-                return Symphonys.get("qiniu.domain") + "/" + fileKey;
+                return Symphonys.UPLOAD_QINIU_DOMAIN + "/" + fileKey;
             } else {
                 fileKey = FileUploadProcessor.genFilePath(fileKey);
                 final String filePath = FileUploadProcessor.UPLOAD_DIR + fileKey;

@@ -60,7 +60,7 @@ public class InvitecodeMgmtService {
     @Transactional
     public void expireInvitecodes() {
         final long now = System.currentTimeMillis();
-        final long expired = now - Symphonys.getLong("invitecode.expired");
+        final long expired = now - Symphonys.INVITECODE_EXPIRED;
 
         final Query query = new Query().setPage(1, Integer.MAX_VALUE).
                 setFilter(CompositeFilterOperator.and(
