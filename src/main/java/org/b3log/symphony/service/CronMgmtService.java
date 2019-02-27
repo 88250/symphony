@@ -23,7 +23,6 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.Execs;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.util.Symphonys;
@@ -183,7 +182,6 @@ public class CronMgmtService {
         Symphonys.SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
             try {
                 userMgmtService.resetUnverifiedUsers();
-                publishIPFS();
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Executes cron failed", e);
             } finally {
@@ -242,33 +240,5 @@ public class CronMgmtService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "XiaoV cron execute failed", e);
         }
-    }
-
-    private void publishIPFS() {
-        final String dir = Symphonys.get("ipfs.dir");
-        final String bin = Symphonys.get("ipfs.bin");
-        if (StringUtils.isBlank(dir) || StringUtils.isBlank(bin)) {
-            return;
-        }
-
-        final long started = System.currentTimeMillis();
-        LOGGER.log(Level.INFO, "Adding articles to IPFS");
-        String output = Execs.exec(bin + " add -r " + dir, 1000 * 60 * 30);
-        if (StringUtils.isBlank(output) || !StringUtils.containsIgnoreCase(output, "added")) {
-            LOGGER.log(Level.ERROR, "Executes [ipfs add] failed: " + output);
-
-            return;
-        }
-        LOGGER.log(Level.INFO, "Publishing articles to IPFS");
-        final String[] lines = output.split("\n");
-        final String lastLine = lines[lines.length - 1];
-        final String hash = lastLine.split(" ")[1];
-        output = Execs.exec(bin + " name publish " + hash, 1000 * 60 * 30);
-        if (StringUtils.isBlank(output) || !StringUtils.containsIgnoreCase(output, "published")) {
-            LOGGER.log(Level.ERROR, "Executes [ipfs name publish] failed: " + output);
-
-            return;
-        }
-        LOGGER.log(Level.INFO, "Published articles to IPFS [" + (System.currentTimeMillis() - started) + "ms]");
     }
 }

@@ -865,10 +865,6 @@ public class ArticleProcessor {
         if (StringUtils.isBlank(article.optString(Article.ARTICLE_AUDIO_URL))) {
             articleMgmtService.genArticleAudio(article);
         }
-
-        if (StringUtils.isNotBlank(Symphonys.get("ipfs.dir"))) {
-            articleMgmtService.saveMarkdown(article);
-        }
     }
 
     /**
