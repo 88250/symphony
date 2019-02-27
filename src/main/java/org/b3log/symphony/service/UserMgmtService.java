@@ -421,8 +421,8 @@ public class UserMgmtService {
             user.put(UserExt.USER_JOIN_POINT_RANK, UserExt.USER_JOIN_XXX_C_JOIN);
             user.put(UserExt.USER_JOIN_USED_POINT_RANK, UserExt.USER_JOIN_XXX_C_JOIN);
             user.put(UserExt.USER_TAGS, "");
-            user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName"));
-            user.put(UserExt.USER_MOBILE_SKIN, Symphonys.get("mobileSkinDirName"));
+            user.put(UserExt.USER_SKIN, Symphonys.SKIN_DIR_NAME);
+            user.put(UserExt.USER_MOBILE_SKIN, Symphonys.MOBILE_SKIN_DIR_NAME);
             user.put(UserExt.USER_COUNTRY, "");
             user.put(UserExt.USER_PROVINCE, "");
             user.put(UserExt.USER_CITY, "");
@@ -444,7 +444,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_UA_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
             user.put(UserExt.USER_NOTIFY_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
             user.put(UserExt.USER_SUB_MAIL_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
-            user.put(UserExt.USER_LIST_PAGE_SIZE, Symphonys.getInt("indexArticlesCnt"));
+            user.put(UserExt.USER_LIST_PAGE_SIZE, Symphonys.ARTICLE_LIST_CNT);
             user.put(UserExt.USER_LIST_VIEW_MODE, UserExt.USER_LIST_VIEW_MODE_TITLE);
             user.put(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
             user.put(UserExt.USER_SUB_MAIL_SEND_TIME, System.currentTimeMillis());
@@ -469,7 +469,7 @@ public class UserMgmtService {
 
                 if (!AvatarQueryService.DEFAULT_AVATAR_URL.equals(avatarURL)) { // generate/upload avatar succ
                     if (FileUploadProcessor.QN_ENABLED) {
-                        user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
+                        user.put(UserExt.USER_AVATAR_URL, Symphonys.UPLOAD_QINIU_DOMAIN + "/avatar/" + ret + "?"
                                 + new Date().getTime());
                     } else {
                         user.put(UserExt.USER_AVATAR_URL, avatarURL + "?" + new Date().getTime());
@@ -507,12 +507,12 @@ public class UserMgmtService {
                         }
 
                         if (FileUploadProcessor.QN_ENABLED) {
-                            final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+                            final Auth auth = Auth.create(Symphonys.UPLOAD_QINIU_AK, Symphonys.UPLOAD_QINIU_SK);
                             final UploadManager uploadManager = new UploadManager(new Configuration());
 
-                            uploadManager.put(avatarData, "avatar/" + ret, auth.uploadToken(Symphonys.get("qiniu.bucket")),
+                            uploadManager.put(avatarData, "avatar/" + ret, auth.uploadToken(Symphonys.UPLOAD_QINIU_BUCKET),
                                     null, "image/jpeg", false);
-                            user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?" + new Date().getTime());
+                            user.put(UserExt.USER_AVATAR_URL, Symphonys.UPLOAD_QINIU_DOMAIN + "/avatar/" + ret + "?" + new Date().getTime());
                         } else {
                             String fileName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
                             fileName = FileUploadProcessor.genFilePath(fileName);

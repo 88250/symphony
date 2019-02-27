@@ -99,7 +99,7 @@ public class BreezemoonQueryService {
         try {
             final BeanManager beanManager = BeanManager.getInstance();
             final BreezemoonRepository breezemoonRepository = beanManager.getReference(BreezemoonRepository.class);
-            final Query query = new Query().setPage(1, Symphonys.getInt("sideBreezemoonsCnt") * 2).setPageCount(1).
+            final Query query = new Query().setPage(1, Symphonys.SIDE_BREEZEMOON_CNT * 2).setPageCount(1).
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
             List<JSONObject> ret = breezemoonRepository.getList(query);
 
@@ -119,8 +119,8 @@ public class BreezemoonQueryService {
                 bm.put(Breezemoon.BREEZEMOON_CONTENT, content);
             }
 
-            if (ret.size() > Symphonys.getInt("sideBreezemoonsCnt")) {
-                ret = ret.subList(0, Symphonys.getInt("sideBreezemoonsCnt"));
+            if (ret.size() > Symphonys.SIDE_BREEZEMOON_CNT) {
+                ret = ret.subList(0, Symphonys.SIDE_BREEZEMOON_CNT);
             }
 
             if (UserExt.USER_AVATAR_VIEW_MODE_C_STATIC == avatarViewMode) {

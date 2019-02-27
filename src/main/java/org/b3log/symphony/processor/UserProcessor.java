@@ -194,8 +194,8 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("userHomeBreezemoonsCnt");
-        final int windowSize = Symphonys.getInt("userHomeBreezemoonsWindowSize");
+        final int pageSize = Symphonys.USER_HOME_LIST_CNT;
+        final int windowSize = Symphonys.USER_HOME_LIST_WIN_SIZE;
 
         fillHomeUser(dataModel, user, roleQueryService);
 
@@ -282,8 +282,8 @@ public class UserProcessor {
         }
 
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("userHomeCmtsCnt");
-        final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
+        final int pageSize = Symphonys.USER_HOME_LIST_CNT;
+        final int windowSize = Symphonys.USER_HOME_LIST_WIN_SIZE;
 
         fillHomeUser(dataModel, user, roleQueryService);
 
@@ -371,8 +371,8 @@ public class UserProcessor {
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
-        final int pageSize = Symphonys.getInt("userHomeArticlesCnt");
-        final int windowSize = Symphonys.getInt("userHomeArticlesWindowSize");
+        final int pageSize = Symphonys.USER_HOME_LIST_CNT;
+        final int windowSize = Symphonys.USER_HOME_LIST_WIN_SIZE;
 
         final List<JSONObject> userArticles = articleQueryService.getUserArticles(user.optString(Keys.OBJECT_ID), Article.ARTICLE_ANONYMOUS_C_ANONYMOUS, pageNum, pageSize);
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
@@ -435,8 +435,8 @@ public class UserProcessor {
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
-        final int pageSize = Symphonys.getInt("userHomeArticlesCnt");
-        final int windowSize = Symphonys.getInt("userHomeArticlesWindowSize");
+        final int pageSize = Symphonys.USER_HOME_LIST_CNT;
+        final int windowSize = Symphonys.USER_HOME_LIST_WIN_SIZE;
 
         final List<JSONObject> userArticles = articleQueryService.getUserArticles(user.optString(Keys.OBJECT_ID), Article.ARTICLE_ANONYMOUS_C_PUBLIC, pageNum, pageSize);
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
@@ -487,8 +487,8 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("userHomeCmtsCnt");
-        final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
+        final int pageSize = Symphonys.USER_HOME_LIST_CNT;
+        final int windowSize = Symphonys.USER_HOME_LIST_WIN_SIZE;
 
         fillHomeUser(dataModel, user, roleQueryService);
 
@@ -549,8 +549,8 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("userHomeFollowingUsersCnt");
-        final int windowSize = Symphonys.getInt("userHomeFollowingUsersWindowSize");
+        final int pageSize = Symphonys.USER_HOME_LIST_CNT;
+        final int windowSize = Symphonys.USER_HOME_LIST_WIN_SIZE;
 
         fillHomeUser(dataModel, user, roleQueryService);
 
@@ -612,8 +612,8 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("userHomeFollowingTagsCnt");
-        final int windowSize = Symphonys.getInt("userHomeFollowingTagsWindowSize");
+        final int pageSize = Symphonys.USER_HOME_LIST_CNT;
+        final int windowSize = Symphonys.USER_HOME_LIST_WIN_SIZE;
 
         fillHomeUser(dataModel, user, roleQueryService);
 
@@ -676,8 +676,8 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("userHomeFollowingArticlesCnt");
-        final int windowSize = Symphonys.getInt("userHomeFollowingArticlesWindowSize");
+        final int pageSize = Symphonys.USER_HOME_LIST_CNT;
+        final int windowSize = Symphonys.USER_HOME_LIST_WIN_SIZE;
 
         fillHomeUser(dataModel, user, roleQueryService);
 
@@ -739,8 +739,8 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("userHomeFollowingArticlesCnt");
-        final int windowSize = Symphonys.getInt("userHomeFollowingArticlesWindowSize");
+        final int pageSize = Symphonys.USER_HOME_LIST_CNT;
+        final int windowSize = Symphonys.USER_HOME_LIST_WIN_SIZE;
 
         fillHomeUser(dataModel, user, roleQueryService);
 
@@ -802,8 +802,8 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("userHomeFollowersCnt");
-        final int windowSize = Symphonys.getInt("userHomeFollowersWindowSize");
+        final int pageSize = Symphonys.USER_HOME_LIST_CNT;
+        final int windowSize = Symphonys.USER_HOME_LIST_WIN_SIZE;
 
         fillHomeUser(dataModel, user, roleQueryService);
 
@@ -871,8 +871,8 @@ public class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModelService.fillHeaderAndFooter(context, dataModel);
         final int pageNum = Paginator.getPage(request);
-        final int pageSize = Symphonys.getInt("userHomePointsCnt");
-        final int windowSize = Symphonys.getInt("userHomePointsWindowSize");
+        final int pageSize = Symphonys.USER_HOME_LIST_CNT;
+        final int windowSize = Symphonys.USER_HOME_LIST_WIN_SIZE;
 
         fillHomeUser(dataModel, user, roleQueryService);
 

@@ -142,7 +142,7 @@ public class PointtransferQueryService {
                 setPage(1, fetchSize).
                 setFilter(new PropertyFilter(UserExt.USER_JOIN_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_JOIN_XXX_C_JOIN));
 
-        final int moneyUnit = Symphonys.getInt("pointExchangeUnit");
+        final int moneyUnit = Symphonys.POINT_EXCHANGE_UNIT;
         try {
             final JSONObject result = userRepository.get(query);
             final List<JSONObject> users = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -180,7 +180,7 @@ public class PointtransferQueryService {
                 setPage(1, fetchSize).
                 setFilter(new PropertyFilter(UserExt.USER_JOIN_USED_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_JOIN_XXX_C_JOIN));
 
-        final int moneyUnit = Symphonys.getInt("pointExchangeUnit");
+        final int moneyUnit = Symphonys.POINT_EXCHANGE_UNIT;
         try {
             final JSONObject result = userRepository.get(query);
             final List<JSONObject> users = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
