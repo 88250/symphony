@@ -183,7 +183,7 @@ public class SearchProcessor {
         dataModel.put(Article.ARTICLES, articles);
 
         final int pageCount = (int) Math.ceil(total / (double) pageSize);
-        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, Symphonys.getInt("defaultPaginationWindowSize"));
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, Symphonys.ARTICLE_LIST_WIN_SIZE);
         if (!pageNums.isEmpty()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
             dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));

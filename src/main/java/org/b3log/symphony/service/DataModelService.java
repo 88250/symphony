@@ -484,21 +484,6 @@ public class DataModelService {
     }
 
     /**
-     * Fills trend tags.
-     *
-     * @param dataModel the specified data model
-     */
-    private void fillTrendTags(final Map<String, Object> dataModel) {
-        Stopwatchs.start("Fills trend tags");
-        try {
-            // dataModel.put(Common.NAV_TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
-            dataModel.put(Common.NAV_TREND_TAGS, Collections.emptyList());
-        } finally {
-            Stopwatchs.end();
-        }
-    }
-
-    /**
      * Fils new tags.
      *
      * @param dataModel the specified data model

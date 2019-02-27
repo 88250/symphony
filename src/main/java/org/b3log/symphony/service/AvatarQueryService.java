@@ -99,7 +99,7 @@ public class AvatarQueryService {
         final boolean qiniuEnabled = FileUploadProcessor.QN_ENABLED;
         if (UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL == viewMode) {
             if (qiniuEnabled) {
-                final String qiniuDomain = Symphonys.get("qiniu.domain");
+                final String qiniuDomain = Symphonys.UPLOAD_QINIU_DOMAIN;
 
                 if (!StringUtils.startsWith(avatarURL, qiniuDomain)) {
                     return DEFAULT_AVATAR_URL + "?imageView2/1/w/" + finerSize + "/h/" + finerSize + "/interlace/0/q/85";
@@ -110,7 +110,7 @@ public class AvatarQueryService {
                 return avatarURL;
             }
         } else if (qiniuEnabled) {
-            final String qiniuDomain = Symphonys.get("qiniu.domain");
+            final String qiniuDomain = Symphonys.UPLOAD_QINIU_DOMAIN;
 
             if (!StringUtils.startsWith(avatarURL, qiniuDomain)) {
                 return DEFAULT_AVATAR_URL + "?imageView2/1/w/" + finerSize + "/h/" + finerSize + "/format/jpg/interlace/0/q/85";

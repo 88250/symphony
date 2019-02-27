@@ -634,7 +634,7 @@ public class ArticleProcessor {
         article.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_ARTICLE));
         article.put(Article.ARTICLE_REVISION_COUNT, revisionQueryService.count(articleId, Revision.DATA_TYPE_C_ARTICLE));
 
-        articleQueryService.processArticleContent(article, context);
+        articleQueryService.processArticleContent(article);
 
         String cmtViewModeStr = context.param("m");
         JSONObject currentUser;
@@ -1235,7 +1235,7 @@ public class ArticleProcessor {
         }
 
         final JSONObject article = articleQueryService.getArticle(articleId);
-        articleQueryService.processArticleContent(article, context);
+        articleQueryService.processArticleContent(article);
 
         final String rewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
         context.renderTrueResult().renderJSONValue(Article.ARTICLE_REWARD_CONTENT, rewardContent);

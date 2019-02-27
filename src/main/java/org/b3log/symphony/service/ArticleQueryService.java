@@ -250,7 +250,7 @@ public class ArticleQueryService {
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
 
-        final int windowSize = Symphonys.getInt("latestArticlesWindowSize");
+        final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
 
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, fetchSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
@@ -604,7 +604,7 @@ public class ArticleQueryService {
 
             final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
 
-            final int windowSize = Symphonys.getInt("latestArticlesWindowSize");
+            final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
 
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
@@ -623,7 +623,7 @@ public class ArticleQueryService {
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articleRepository.get(query).optJSONArray(Keys.RESULTS));
             organizeArticles(articles);
 
-            final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
+            final Integer participantsCnt = Symphonys.ARTICLE_LIST_PARTICIPANTS_CNT;
             genParticipants(articles, participantsCnt);
 
             ret.put(Article.ARTICLES, (Object) articles);
@@ -885,7 +885,7 @@ public class ArticleQueryService {
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(ret);
 
-            final Integer participantsCnt = Symphonys.getInt("cityArticleParticipantsCnt");
+            final Integer participantsCnt = Symphonys.ARTICLE_LIST_PARTICIPANTS_CNT;
             genParticipants(ret, participantsCnt);
 
             return ret;
@@ -1021,7 +1021,7 @@ public class ArticleQueryService {
 
             organizeArticles(ret);
 
-            final Integer participantsCnt = Symphonys.getInt("tagArticleParticipantsCnt");
+            final Integer participantsCnt = Symphonys.ARTICLE_LIST_PARTICIPANTS_CNT;
             genParticipants(ret, participantsCnt);
 
             return ret;
@@ -1368,7 +1368,7 @@ public class ArticleQueryService {
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
 
-        final int windowSize = Symphonys.getInt("latestArticlesWindowSize");
+        final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
 
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, fetchSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
@@ -1395,7 +1395,7 @@ public class ArticleQueryService {
         try {
             Stopwatchs.start("Query index recent articles");
             try {
-                final int fetchSize = Symphonys.getInt("indexListCnt");
+                final int fetchSize = 18;
                 Query query = new Query().
                         setFilter(CompositeFilterOperator.and(
                                 new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION),
@@ -1527,7 +1527,7 @@ public class ArticleQueryService {
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
 
-        final int windowSize = Symphonys.getInt("latestArticlesWindowSize");
+        final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
 
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, fetchSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
@@ -1652,7 +1652,7 @@ public class ArticleQueryService {
         final long stick = article.optLong(Article.ARTICLE_STICK);
         long expired;
         if (stick > 0) {
-            expired = stick + Symphonys.getLong("stickArticleTime");
+            expired = stick + Symphonys.STICK_ARTICLE_TIME;
             final long remainsMills = Math.abs(System.currentTimeMillis() - expired);
 
             article.put(Article.ARTICLE_T_STICK_REMAINS, (int) Math.floor((double) remainsMills / 1000 / 60));
@@ -1712,7 +1712,7 @@ public class ArticleQueryService {
         }
 
         if (FileUploadProcessor.QN_ENABLED) {
-            final String qiniuDomain = Symphonys.get("qiniu.domain");
+            final String qiniuDomain = Symphonys.UPLOAD_QINIU_DOMAIN;
             if (StringUtils.startsWith(ret, qiniuDomain)) {
                 ret = StringUtils.substringBefore(ret, "?");
                 ret += "?imageView2/1/w/" + 180 + "/h/" + 135 + "/format/jpg/interlace/1/q";
@@ -1894,9 +1894,8 @@ public class ArticleQueryService {
      *                "articleTitle": "",
      *                ....,
      *                "author": {}
-     * @param context the specified request context
      */
-    public void processArticleContent(final JSONObject article, final RequestContext context) {
+    public void processArticleContent(final JSONObject article) {
         Stopwatchs.start("Process content");
 
         try {

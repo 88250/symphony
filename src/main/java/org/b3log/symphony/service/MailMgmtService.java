@@ -173,7 +173,7 @@ public class MailMgmtService {
 
             // select nice articles
             final Query articleQuery = new Query();
-            articleQuery.setPage(1, Symphonys.getInt("mail.batch.articleSize")).setPageCount(1).
+            articleQuery.setPage(1, Symphonys.MAIL_BATCH_ARTICLE_SIZE).setPageCount(1).
                     setFilter(CompositeFilterOperator.and(
                             new PropertyFilter(Article.ARTICLE_CREATE_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, sevenDaysAgo),
                             new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.EQUAL, Article.ARTICLE_TYPE_C_NORMAL),
