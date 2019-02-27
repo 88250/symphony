@@ -17,7 +17,7 @@
  */
 package org.b3log.symphony.repository;
 
-import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Visit;
 
@@ -25,7 +25,7 @@ import org.b3log.symphony.model.Visit;
  * Visit repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 27, 2018
+ * @version 1.1.0.0, Feb 27, 2019
  * @since 3.2.0
  */
 @Repository
@@ -36,5 +36,15 @@ public class VisitRepository extends AbstractRepository {
      */
     public VisitRepository() {
         super(Visit.VISIT);
+    }
+
+    /**
+     * Remove visits by the specified user id.
+     *
+     * @param userId the specified user id
+     * @throws RepositoryException repository exception
+     */
+    public void removeByUserId(final String userId) throws RepositoryException {
+        remove(new Query().setFilter(new PropertyFilter(Visit.VISIT_USER_ID, FilterOperator.EQUAL, userId)));
     }
 }

@@ -95,6 +95,30 @@ public class UserMgmtService {
     private OptionRepository optionRepository;
 
     /**
+     * Notification repository.
+     */
+    @Inject
+    private NotificationRepository notificationRepository;
+
+    /**
+     * Liveness repository.
+     */
+    @Inject
+    private LivenessRepository livenessRepository;
+
+    /**
+     * Visit repository.
+     */
+    @Inject
+    private VisitRepository visitRepository;
+
+    /**
+     * Emotion repository.
+     */
+    @Inject
+    private EmotionRepository emotionRepository;
+
+    /**
      * Tag repository.
      */
     @Inject
@@ -156,8 +180,13 @@ public class UserMgmtService {
             user.put(User.USER_ROLE, Role.ROLE_ID_C_DEFAULT);
             user.put(UserExt.USER_ONLINE_FLAG, false);
             user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_DEACTIVATED);
-
             userRepository.update(userId, user);
+
+            notificationRepository.removeByUserId(userId);
+            livenessRepository.removeByUserId(userId);
+            visitRepository.removeByUserId(userId);
+            emotionRepository.removeByUserId(userId);
+
             transaction.commit();
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {

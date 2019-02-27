@@ -29,7 +29,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Aug 18, 2016
+ * @version 1.0.1.1, Feb 27, 2019
  * @since 1.5.0
  */
 @Repository
@@ -76,22 +76,12 @@ public class EmotionRepository extends AbstractRepository {
     }
 
     /**
-     * Clears a user's emotions.
+     * Remove emotions by the specified user id.
      *
      * @param userId the specified user id
      * @throws RepositoryException repository exception
      */
-    public void removeUserEmotions(final String userId) throws RepositoryException {
-        final PropertyFilter pf = new PropertyFilter(Emotion.EMOTION_USER_ID, FilterOperator.EQUAL, userId);
-        final Query query = new Query().setFilter(pf);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
-            return;
-        }
-
-        for (int i = 0; i < array.length(); i++) {
-            remove(array.optJSONObject(i).optString(Keys.OBJECT_ID));
-        }
+    public void removeByUserId(final String userId) throws RepositoryException {
+        remove(new Query().setFilter(new PropertyFilter(Emotion.EMOTION_USER_ID, FilterOperator.EQUAL, userId)));
     }
 }

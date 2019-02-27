@@ -27,7 +27,7 @@ import org.b3log.symphony.model.Notification;
  * Notification repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.0, Nov 17, 2018
+ * @version 2.2.0.0, Feb 27, 2019
  * @since 0.2.5
  */
 @Repository
@@ -74,5 +74,15 @@ public class NotificationRepository extends AbstractRepository {
 
             return false;
         }
+    }
+
+    /**
+     * Remove notifications by the specified user id.
+     *
+     * @param userId the specified user id
+     * @throws RepositoryException repository exception
+     */
+    public void removeByUserId(final String userId) throws RepositoryException {
+        remove(new Query().setFilter(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId)));
     }
 }

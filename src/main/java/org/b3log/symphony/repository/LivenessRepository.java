@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * Liveness repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 22, 2016
+ * @version 1.1.0.0, Feb 27, 2019
  * @since 1.4.0
  */
 @Repository
@@ -39,6 +39,16 @@ public class LivenessRepository extends AbstractRepository {
      */
     public LivenessRepository() {
         super(Liveness.LIVENESS);
+    }
+
+    /**
+     * Remove liveness by the specified user id.
+     *
+     * @param userId the specified user id
+     * @throws RepositoryException repository exception
+     */
+    public void removeByUserId(final String userId) throws RepositoryException {
+        remove(new Query().setFilter(new PropertyFilter(Liveness.LIVENESS_USER_ID, FilterOperator.EQUAL, userId)));
     }
 
     /**

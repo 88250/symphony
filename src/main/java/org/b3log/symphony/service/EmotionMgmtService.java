@@ -67,7 +67,7 @@ public class EmotionMgmtService {
 
         try {
             // clears the user all emotions
-            emotionRepository.removeUserEmotions(userId);
+            emotionRepository.removeByUserId(userId);
 
             final Set<String> emotionSet = new HashSet<>(); // for deduplication
             final String[] emotionArray = emotionList.split(",");
