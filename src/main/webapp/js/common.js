@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.47.0.0, Feb 11, 2019
+ * @version 1.47.0.1, Mar 5, 2019
  */
 
 /**
@@ -667,7 +667,11 @@ var Util = {
         cache: true,
         async: false,
         success: function (result) {
-          Label.emoji = Label.emoji = result.data
+          Label.emoji = {}
+          result.data.forEach(function (item) {
+            var key = Object.keys(item)[0]
+            Label.emoji[key] = item[key]
+          })
         },
       })
     }
@@ -695,7 +699,7 @@ var Util = {
         linkToImgUrl: Label.servePath + '/fetch-upload',
         filename: function (name) {
           return name.replace(/\?|\\|\/|:|\||<|>|\*|\[|\]|\s+/g, '-')
-        }
+        },
       },
       placeholder: data.placeholder,
       height: data.height,
