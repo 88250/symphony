@@ -69,7 +69,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.11, Feb 19, 2019
+ * @version 1.27.0.12, Mar 5, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -953,7 +953,7 @@ public class UserProcessor {
         final JSONObject result = Results.newSucc();
         context.renderJSON(result);
 
-        final JSONObject data = new JSONObject();
+        final List<JSONObject> data = new ArrayList<>();
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             result.put(Common.DATA, data);
@@ -971,7 +971,7 @@ public class UserProcessor {
                 emojiChar = Latkes.getStaticServePath() + "/emoji/graphics/" + emoji + suffix;
             }
 
-            data.put(emoji, emojiChar);
+            data.add(new JSONObject().put(emoji, emojiChar));
         }
 
         result.put(Common.DATA, data);

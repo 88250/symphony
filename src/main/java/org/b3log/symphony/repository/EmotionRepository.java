@@ -29,7 +29,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Feb 27, 2019
+ * @version 1.0.1.1, Mar 5, 2019
  * @since 1.5.0
  */
 @Repository
@@ -50,13 +50,10 @@ public class EmotionRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public String getUserEmojis(final String userId) throws RepositoryException {
-        final Query query = new Query();
-        query.setFilter(CompositeFilterOperator.and(
+        final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Emotion.EMOTION_USER_ID, FilterOperator.EQUAL, userId),
                 new PropertyFilter(Emotion.EMOTION_TYPE, FilterOperator.EQUAL, Emotion.EMOTION_TYPE_C_EMOJI)
-        ));
-
-        query.addSort(Emotion.EMOTION_SORT, SortDirection.ASCENDING);
+        )).addSort(Emotion.EMOTION_SORT, SortDirection.ASCENDING);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
