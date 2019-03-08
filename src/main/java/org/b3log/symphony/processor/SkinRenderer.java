@@ -28,12 +28,11 @@ import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.util.Sessions;
-import org.b3log.symphony.util.Skins;
 import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.Templates;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 import java.util.TimeZone;
@@ -82,7 +81,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
         try {
             Template ret;
             try {
-                ret = Skins.SKIN.getTemplate(templateDirName + "/" + templateName);
+                ret = Templates.getTemplate(templateDirName + "/" + templateName);
             } catch (final Exception e) {
                 if (Symphonys.SKIN_DIR_NAME.equals(templateDirName) ||
                         Symphonys.MOBILE_SKIN_DIR_NAME.equals(templateDirName)) {
@@ -90,7 +89,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
                 }
 
                 // Try to load default template
-                ret = Skins.SKIN.getTemplate(Symphonys.SKIN_DIR_NAME + "/" + templateName);
+                ret = Templates.getTemplate(Symphonys.SKIN_DIR_NAME + "/" + templateName);
             }
 
             if (isSearchEngineBot) {
@@ -106,7 +105,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
             }
 
             return ret;
-        } catch (final IOException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get template [dir=" + templateDirName + ", name=" + templateName + "] error", e);
 
             return null;

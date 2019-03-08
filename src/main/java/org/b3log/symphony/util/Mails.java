@@ -73,7 +73,7 @@ public final class Mails {
     /**
      * Template configuration.
      */
-    private static final Configuration TEMPLATE_CFG = new Configuration(Skins.FREEMARKER_VER);
+    private static final Configuration TEMPLATE_CFG = new Configuration(Templates.FREEMARKER_VER);
 
     /**
      * Domain - Channel mapping. &lt;163.com, aliyun&gt; https://github.com/b3log/symphony/issues/737
