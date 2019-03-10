@@ -169,7 +169,7 @@ public final class Mails {
                 case "sendcloud":
                     final Map<String, Object> formData = new HashMap<>();
                     formData.put("apiUser", Symphonys.MAIL_SENDCLOUD_API_USER);
-                    formData.put("apiKey", Symphonys.MAIL_SENDCLOUD_BATCH_API_KEY);
+                    formData.put("apiKey", Symphonys.MAIL_SENDCLOUD_API_KEY);
                     formData.put("from", Symphonys.MAIL_SENDCLOUD_FROM);
                     formData.put("fromName", fromName);
                     formData.put("subject", subject);
