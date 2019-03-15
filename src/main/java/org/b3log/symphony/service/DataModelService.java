@@ -320,7 +320,7 @@ public class DataModelService {
 
         final String serverScheme = Latkes.getServerScheme();
         dataModel.put(Common.WEBSOCKET_SCHEME, StringUtils.containsIgnoreCase(serverScheme, "https") ? "wss" : "ws");
-        dataModel.put(Common.MARKED_AVAILABLE, Markdowns.MARKED_AVAILABLE);
+        dataModel.put(Common.MARKDOWN_HTTP_AVAILABLE, Markdowns.MARKDOWN_HTTP_AVAILABLE);
     }
 
     /**

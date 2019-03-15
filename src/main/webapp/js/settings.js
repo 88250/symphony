@@ -171,7 +171,7 @@ var Settings = {
    * @returns {Boolean}
    */
   initHljs: function () {
-    if ($('pre code').length === 0 || Label.markedAvailable) {
+    if ($('pre code').length === 0 || Label.markdownHttpAvailable) {
       return false
     }
     $.ajax({

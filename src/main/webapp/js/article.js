@@ -1355,7 +1355,7 @@ var Article = {
    * @description 解析语法高亮
    */
   parseLanguage: function () {
-    if (Label.markedAvailable) {
+    if (Label.markdownHttpAvailable) {
       return
     }
     $('pre code').each(function (i, block) {

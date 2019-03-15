@@ -57,14 +57,14 @@ import java.util.concurrent.*;
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  * <p>
- * Uses the <a href="https://github.com/b3log/http-marked">http-marked</a> as the processor, if not found this service, try
+ * Uses the <a href="https://github.com/b3log/markdown-http">markdown-http</a> as the processor, if not found this service, try
  * built-in <a href="https://github.com/vsch/flexmark-java">flexmark</a> instead.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.11, Jan 10, 2019
+ * @version 1.11.21.12, Mar 15, 2019
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -80,9 +80,9 @@ public final class Markdowns {
     private static final Map<String, JSONObject> MD_CACHE = new ConcurrentHashMap<>();
 
     /**
-     * Marked engine serve path.
+     * Markdown engine serve path. https://github.com/b3log/markdown-http
      */
-    private static final String MARKED_ENGINE_URL = "http://localhost:8250";
+    private static final String MARKDOWN_ENGINE_URL = "http://localhost:8250";
 
     /**
      * Built-in MD engine options.
@@ -101,13 +101,13 @@ public final class Markdowns {
     private static final HtmlRenderer RENDERER = HtmlRenderer.builder(OPTIONS).build();
 
     /**
-     * Whether marked is available.
+     * Whether markdown-http is available.
      */
-    public static boolean MARKED_AVAILABLE;
+    public static boolean MARKDOWN_HTTP_AVAILABLE;
 
     static {
         try {
-            final URL url = new URL(MARKED_ENGINE_URL);
+            final URL url = new URL(MARKDOWN_ENGINE_URL);
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
 
@@ -122,15 +122,15 @@ public final class Markdowns {
 
             conn.disconnect();
 
-            MARKED_AVAILABLE = StringUtils.contains(html, "<p>再见理想</p>");
+            MARKDOWN_HTTP_AVAILABLE = StringUtils.contains(html, "<p>再见理想</p>");
 
-            if (MARKED_AVAILABLE) {
-                LOGGER.log(Level.INFO, "[marked] is available, uses it for markdown processing");
+            if (MARKDOWN_HTTP_AVAILABLE) {
+                LOGGER.log(Level.INFO, "[markdown-http] is available, uses it for markdown processing");
             } else {
-                LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [flexmark] for markdown processing");
+                LOGGER.log(Level.INFO, "[markdown-http] is not available, uses built-in [flexmark] for markdown processing");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.INFO, "[marked] is not available caused by [" + e.getMessage() + "], uses built-in [flexmark] for markdown processing");
+            LOGGER.log(Level.INFO, "[markdown-http] is not available caused by [" + e.getMessage() + "], uses built-in [flexmark] for markdown processing");
         }
     }
 
@@ -268,11 +268,11 @@ public final class Markdowns {
                 // 优化 Markdown 渲染 https://github.com/b3log/symphony/issues/841
                 html = toHtmlByFlexmark(markdownText);
             } else {
-                if (MARKED_AVAILABLE) {
+                if (MARKDOWN_HTTP_AVAILABLE) {
                     try {
-                        html = toHtmlByMarked(markdownText);
+                        html = toHtmlByMarkdownHTTP(markdownText);
                     } catch (final Exception e) {
-                        LOGGER.log(Level.WARN, "Failed to use [marked] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
+                        LOGGER.log(Level.WARN, "Failed to use [markdown-http] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
 
                         html = toHtmlByFlexmark(markdownText);
                     }
@@ -396,8 +396,8 @@ public final class Markdowns {
         return langPropsService.get("contentRenderFailedLabel");
     }
 
-    private static String toHtmlByMarked(final String markdownText) throws Exception {
-        final URL url = new URL(MARKED_ENGINE_URL);
+    private static String toHtmlByMarkdownHTTP(final String markdownText) throws Exception {
+        final URL url = new URL(MARKDOWN_ENGINE_URL);
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(100);
         conn.setReadTimeout(1000);

@@ -53,7 +53,7 @@ public class MarkdownsTestCase {
      */
     @Test
     public void tag() {
-        if (Markdowns.MARKED_AVAILABLE) {
+        if (Markdowns.MARKDOWN_HTTP_AVAILABLE) {
             final String kbd = "<kbd>DV</kbd>";
 
             String html = Markdowns.toHTML(kbd);
@@ -68,7 +68,7 @@ public class MarkdownsTestCase {
      */
     @Test
     public void clean() {
-        if (Markdowns.MARKED_AVAILABLE) {
+        if (Markdowns.MARKDOWN_HTTP_AVAILABLE) {
             final String md = "<a href='data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4K'>a link</a>";
 
             final String html = Markdowns.toHTML(md);
@@ -83,7 +83,7 @@ public class MarkdownsTestCase {
      */
     @Test
     public void space() {
-        if (Markdowns.MARKED_AVAILABLE) {
+        if (Markdowns.MARKDOWN_HTTP_AVAILABLE) {
             final String md = "Sym是一个用Java写的实时论坛，欢迎来[体验Sym](https://hacpai.com)！";
             final String html = Markdowns.toHTML(md);
 
@@ -96,7 +96,7 @@ public class MarkdownsTestCase {
      */
     @Test
     public void toHTML() {
-        if (Markdowns.MARKED_AVAILABLE) {
+        if (Markdowns.MARKDOWN_HTTP_AVAILABLE) {
             String md = "[b3log](https://b3log.org)";
             String html = Markdowns.toHTML(md);
             Assert.assertTrue(html.contains("href"));
@@ -114,7 +114,7 @@ public class MarkdownsTestCase {
      */
     @Test
     public void toHtml0() throws Exception {
-        if (Markdowns.MARKED_AVAILABLE) {
+        if (Markdowns.MARKDOWN_HTTP_AVAILABLE) {
             final URL mdResource = MarkdownsTestCase.class.getResource("/markdown_syntax.text");
             final String md = IOUtils.toString(new FileReader(mdResource.getPath()));
             final String html = Markdowns.toHTML(md);

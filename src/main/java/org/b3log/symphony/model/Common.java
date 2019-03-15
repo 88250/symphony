@@ -267,9 +267,9 @@ public final class Common {
     public static final String CSRF_TOKEN = "csrfToken";
 
     /**
-     * Key of marked engine available.
+     * Key of markdown-http engine available.
      */
-    public static final String MARKED_AVAILABLE = "markedAvailable";
+    public static final String MARKDOWN_HTTP_AVAILABLE = "markdownHttpAvailable";
 
     /**
      * Key of city.

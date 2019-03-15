@@ -61,7 +61,7 @@
     var Label = {
         commentEditorPlaceholderLabel: '${commentEditorPlaceholderLabel}',
         langLabel: '${langLabel}',
-        markedAvailable: ${markedAvailable?c},
+        markdownHttpAvailable: ${markdownHttpAvailable?c},
         reportSuccLabel: '${reportSuccLabel}',
         breezemoonLabel: '${breezemoonLabel}',
         confirmRemoveLabel: "${confirmRemoveLabel}",
