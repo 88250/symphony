@@ -404,7 +404,8 @@ public final class Markdowns {
         try (final InputStream inputStream = conn.getInputStream()) {
             ret = IOUtils.toString(inputStream, "UTF-8");
         }
-        //conn.disconnect();
+
+        conn.disconnect();
 
         return ret;
     }
