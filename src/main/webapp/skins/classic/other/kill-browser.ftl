@@ -18,7 +18,7 @@
 
 -->
 <div id="killBrowser" class="fn-none">
-    <div class="module content-reset">
+    <div class="module vditor-reset">
         ${killBrowserLabel}
     </div>
 </div>

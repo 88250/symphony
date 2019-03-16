@@ -36,5 +36,8 @@
     "gulp-sass": "^4.0.2",
     "gulp-uglify": "^3.0.1",
     "gulp-util": "^3.0.8"
+  },
+  "dependencies": {
+    "vditor": "^1.1.10"
   }
 }

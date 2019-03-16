@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.0.1, Feb 11, 2019
+ * @version 1.12.0.2, Mar 17, 2019
  */
 @import "variables";
 @import "common";
@@ -1525,7 +1525,7 @@ label.cmt-anonymous {
 /* end article list */
 /* start guide */
 .guide {
-  .intro.content-reset {
+  .intro.vditor-reset {
     padding: 10px;
     line-height: 24px;
   }

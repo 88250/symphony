@@ -40,7 +40,7 @@
                 </span>
             </div>
 
-            <div class="content-reset comment">
+            <div class="vditor-reset comment">
                 ${notification.commentContent}
             </div>
         </div>

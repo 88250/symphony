@@ -147,7 +147,7 @@
                          data-author="${article.articleAuthorName}" class="aplayer"></div>
                 </#if>
                 <#if 3 != article.articleType>
-                    <div class="content-reset article-content">
+                    <div class="vditor-reset article-content">
                         ${article.articleContent}
                     </div>
                     <#else>
@@ -156,7 +156,7 @@
                                 <use xlink:href="#video"></use>
                             </svg>
                         </div>
-                        <div class="content-reset article-content" id="articleThought" data-author="${article.articleAuthorName}"
+                        <div class="vditor-reset article-content" id="articleThought" data-author="${article.articleAuthorName}"
                              data-link="${servePath}${article.articlePermalink}"></div>
                 </#if>
 
@@ -166,7 +166,7 @@
                     <#if !article.rewarded>onclick="Article.reward(${article.oId})"</#if>>
                     ${article.rewardedCnt} ${rewardLabel}</span>
 
-                    <div class="content-reset">
+                    <div class="vditor-reset">
                     <#if !article.rewarded>
                          <span>
                             ${rewardTipLabel?replace("{articleId}", article.oId)?replace("{point}", article.articleRewardPoint)}
@@ -214,7 +214,7 @@
                                             <a class="ft-a-title fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
                                                href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${article.articleOfferedComment.paginationCurrentPageNum}&m=${userCommentViewMode}#${article.articleOfferedComment.oId}')"><svg><use xlink:href="#down"></use></svg></a>
                                         </div>
-                                        <div class="content-reset comment">
+                                        <div class="vditor-reset comment">
                                             ${article.articleOfferedComment.commentContent}
                                         </div>
                                     </div>
@@ -258,7 +258,7 @@
                                             <a class="ft-a-title fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
                                                href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}')"><svg><use xlink:href="#down"></use></svg></a>
                                         </div>
-                                        <div class="content-reset comment">
+                                        <div class="vditor-reset comment">
                                             ${comment.commentContent}
                                         </div>
                                     </div>

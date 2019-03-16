@@ -30,7 +30,7 @@
             <div class="wrapper">
                 <div class="fn-hr10"></div>
                 <div class="content activity">
-                    <div class="content-reset">
+                    <div class="vditor-reset">
                         ${activityCharacterTitleLabel}
                         <div class="fn-clear">
                             <div class="fn-left">

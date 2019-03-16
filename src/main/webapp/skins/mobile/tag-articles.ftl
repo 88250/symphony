@@ -60,7 +60,7 @@
                 </div>
                 <#if tag.tagIconPath != "">
                 <div class="fn-hr10"></div>
-                <div class="wrapper content-reset">
+                <div class="wrapper vditor-reset">
                     ${tag.tagDescription}
                 </div>
                 </#if>

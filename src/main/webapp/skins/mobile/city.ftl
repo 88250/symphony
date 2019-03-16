@@ -38,7 +38,7 @@
                     <@pagination url="${servePath}/city/${city?url('utf-8')}"/>
                 </div>
                 <#else>
-                <div class="content content-reset">
+                <div class="content vditor-reset">
                     <#if !userGeoStatus>
                     ${cityArticlesTipLabel}
                     <#else>

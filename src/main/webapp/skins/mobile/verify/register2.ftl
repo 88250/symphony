@@ -62,7 +62,7 @@
 
                     </div>
                 </div>
-                <div class="intro fn-flex-1 content-reset">
+                <div class="intro fn-flex-1 vditor-reset">
                     ${introLabel}
                 </div>
             </div>

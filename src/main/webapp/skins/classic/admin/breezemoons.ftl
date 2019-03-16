@@ -37,7 +37,7 @@
                             </span>
                         </h2>
 
-                        <div class="content-reset">
+                        <div class="vditor-reset">
                             ${item.breezemoonContent}
                         </div>
                     </div>

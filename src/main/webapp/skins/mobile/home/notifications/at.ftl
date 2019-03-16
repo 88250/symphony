@@ -41,7 +41,7 @@
                         ${notification.createTime?string('yyyy-MM-dd HH:mm')}
                     </span>
                 </div>
-                <div class="content-reset comment">
+                <div class="vditor-reset comment">
                     ${notification.content}
                 </div>
             </div>

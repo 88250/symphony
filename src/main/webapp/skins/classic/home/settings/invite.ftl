@@ -43,7 +43,7 @@
                 <div class="list" id="pointBuyInvitecode">
                     <ul>
                         <#list invitecodes as invitecode>
-                        <li class="content-reset"><code>${invitecode.code}</code> ${invitecode.memo}</li>
+                        <li class="vditor-reset"><code>${invitecode.code}</code> ${invitecode.memo}</li>
                         </#list>
                     </ul>
                 </div>

@@ -21,7 +21,7 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.14.0.2, Aug 20, 2018
+ * @version 1.14.0.3, Mar 17, 2019
  */
 
 /**
@@ -258,7 +258,7 @@ var ChatRoomChannel = {
             + '<div class="ft-smaller">'
             + namePart
             + '</div>'
-            + '<div class="content-reset comment">'
+            + '<div class="vditor-reset comment">'
             + data.content
             + '</div>'
             + '</div>'

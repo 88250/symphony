@@ -33,7 +33,7 @@
         <div class="content">
             <div class="module">
                 <h2 class="sub-head"><span class="ft-red">♦</span> ${chargePointLabel}</h2>
-                <div class="content-reset fn-content">
+                <div class="vditor-reset fn-content">
                     <ul>
                         <li>转账时请在备注里填写你的社区用户名</li>
                         <li>如果你忘记填写用户名（扫码转账可能无法输入备注），可以<a href="${servePath}/post?type=1&tags=充值积分&at=admin">点此发帖</a>：

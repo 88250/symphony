@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.1, Feb 11, 2019
+ * @version 1.8.0.2, Mar 17, 2019
  */
 
 'use strict'
@@ -35,7 +35,8 @@ var del = require('del')
 
 function sassProcess () {
   return gulp.src('./src/main/webapp/scss/*.scss').
-    pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)).
+    pipe(sass({outputStyle: 'compressed', includePaths: ['node_modules']}).
+      on('error', sass.logError)).
     pipe(gulp.dest('./src/main/webapp/css'))
 }
 
@@ -52,7 +53,6 @@ function cleanProcess () {
 function minArticleCSS () {
   // min article css
   return gulp.src([
-    './src/main/webapp/js/lib/vditor-0.3.0/index.classic.css',
     './src/main/webapp/js/lib/highlight/styles/github.css',
     './src/main/webapp/js/lib/diff2html/diff2html.min.css']).
     pipe(cleanCSS()).
@@ -91,6 +91,7 @@ function minLibs () {
     './src/main/webapp/js/lib/ua-parser.min.js',
     './src/main/webapp/js/lib/jquery/jquery.hotkeys.js',
     './src/main/webapp/js/lib/jquery/jquery.pjax.js',
+    './src/main/webapp/js/lib/vditor-1.1.10/index.min.js',
     './src/main/webapp/js/lib/nprogress/nprogress.js']
   return gulp.src(jsCommonLib).
     pipe(uglify()).
@@ -100,7 +101,6 @@ function minLibs () {
 
 function minArticleLibs () {
   var jsArticleLib = [
-    './src/main/webapp/js/lib/vditor-0.3.0/index.min.js',
     './src/main/webapp/js/lib/highlight/highlight.pack.js',
     './src/main/webapp/js/lib/sound-recorder/SoundRecorder.js',
     './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js',
@@ -116,4 +116,5 @@ function minArticleLibs () {
 
 gulp.task('default',
   gulp.series(cleanProcess, sassProcess,
-    gulp.parallel(minJS, minUpload, minLibs), gulp.parallel(minArticleCSS, minArticleLibs)))
+    gulp.parallel(minJS, minUpload, minLibs),
+    gulp.parallel(minArticleCSS, minArticleLibs)))

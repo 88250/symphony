@@ -28,7 +28,7 @@
 <#include "header.ftl">
 <div class="main">
     <div class="wrapper">
-        <div class="content content-reset">
+        <div class="content vditor-reset">
             <h2><span class="ft-red">♦</span> ${chargePointLabel}</h2>
             <ul>
                 <li>转账时请在备注里填写你的社区用户名</li>

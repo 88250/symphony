@@ -65,7 +65,7 @@
                             </span>
                         </div>
                         <#if tag.tagIconPath != "">
-                        <div class="content-reset desc">
+                        <div class="vditor-reset desc">
                             ${tag.tagDescription}
                         </div>
                         </#if>

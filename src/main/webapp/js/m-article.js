@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 0.5.0.0, Feb 11, 2019
+ * @version 0.5.0.1, Mar 17, 2019
  * @since 2.1.0
  */
 
@@ -439,7 +439,7 @@ var Comment = {
             data.paginationCurrentPageNum
             + '&m=' + Label.userCommentViewMode + '#' + data.oId
             +
-            '\')"><svg><use xlink:href="#quote"></use></svg></a></div><div class="content-reset comment">'
+            '\')"><svg><use xlink:href="#quote"></use></svg></a></div><div class="vditor-reset comment">'
             + data.commentContent + '</div></div></div></li>'
         }
         $commentReplies.html('<ul>' + template + '</ul>')
@@ -505,7 +505,7 @@ var Comment = {
         if (0 === result.sc) {
           // edit cmt
           if (commentId) {
-            $('#' + commentId + ' > .fn-flex > .fn-flex-1 > .content-reset').
+            $('#' + commentId + ' > .fn-flex > .fn-flex-1 > .vditor-reset').
               html(result.commentContent)
           }
 
@@ -740,7 +740,7 @@ var Article = {
 
     // img preview
     var fixDblclick = null
-    $('.article').on('dblclick', '.content-reset img', function () {
+    $('.article').on('dblclick', '.vditor-reset img', function () {
       clearTimeout(fixDblclick)
       if ($(this).hasClass('emoji') ||
         $(this).closest('.editor-panel').length === 1 ||
@@ -748,7 +748,7 @@ var Article = {
         return
       }
       window.open($(this).attr('src'))
-    }).on('click', '.content-reset img', function (event) {
+    }).on('click', '.vditor-reset img', function (event) {
       clearTimeout(fixDblclick)
       if ($(this).hasClass('emoji') ||
         $(this).closest('.editor-panel').length === 1 ||
@@ -1283,7 +1283,7 @@ var Article = {
     }
 
     $('#thoughtProgressPreview').
-      html('<div class="content-reset">' + articleHTML + '</div>')
+      html('<div class="vditor-reset">' + articleHTML + '</div>')
 
     $('#thoughtProgressPreview').dialog({
       'modal': true,

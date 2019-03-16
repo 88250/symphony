@@ -40,7 +40,7 @@
                     <div id="pointBuyInvitecodeTip" class="tip"></div> <br/>
                     <button class="red fn-right" onclick="Settings.pointBuyInvitecode('${csrfToken}')">${confirmExchangeLabel}</button>
                 </div>
-                <ul class="content-reset">
+                <ul class="vditor-reset">
                     <#list invitecodes as invitecode>
                         <li><kbd>${invitecode.code}</kbd> ${invitecode.memo}</li>
                     </#list>

@@ -96,7 +96,7 @@
                                             <textarea style="position: fixed;left: -10000px;">${servePath}/watch/breezemoons#${item.oId}</textarea>
                                         </div>
                                     </div>
-                                    <div class="content-reset">${item.breezemoonContent}</div>
+                                    <div class="vditor-reset">${item.breezemoonContent}</div>
                                 </div>
                             </li>
                         </#list>

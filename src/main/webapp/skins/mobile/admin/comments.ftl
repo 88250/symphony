@@ -37,7 +37,7 @@
                 ${createTimeLabel} ${item.commentCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;
             </div>
             <div class="fn-hr5"></div>
-            <div class="content-reset">
+            <div class="vditor-reset">
                  ${item.commentContent}
             </div>
         </li>

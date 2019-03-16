@@ -28,7 +28,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content content-reset">
+                <div class="content vditor-reset">
                     <h1>${dataStatLabel}</h1>
                     <i class="ft-gray">${dataStatSubLabel}</i>
                     <br><br>

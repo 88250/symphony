@@ -31,7 +31,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper verify guide">
-                <div class="intro content-reset">
+                <div class="intro vditor-reset">
                     <dl>
                         <dt class="current"><span class="index">1</span>${guideUploadAvatarLabel}</dt>
                         <dd class="ft-gray ft-smaller">${guideUploadAvatarTipLabel}</dd>

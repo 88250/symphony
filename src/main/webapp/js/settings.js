@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.0.0, Nov 5, 2018
+ * @version 1.27.0.1, Mar 17, 2019
  */
 
 /**
@@ -383,7 +383,7 @@ var Settings = {
       success: function (result, textStatus) {
         if (result.sc) {
           $('.list ul').
-            prepend('<li class="content-reset"><code>' +
+            prepend('<li class="vditor-reset"><code>' +
               result.msg.split(' ')[0] + '</code>' + result.msg.substr(16) +
               '</li>')
         } else {

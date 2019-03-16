@@ -25,7 +25,6 @@
         <@head title="${chatRoomLabel} - ${symphonyLabel}">
         <meta name="description" content="${chatRoomLabel}"/>
         </@head>
-        <link rel="stylesheet" href="${staticServePath}/js/lib/vditor-0.3.0/index.classic.css">
     </head>
     <body>
         <#include "header.ftl">
@@ -67,7 +66,7 @@
                                          • ${msg.time}
                                     </span>
                                         </div>
-                                        <div class="content-reset comment">
+                                        <div class="vditor-reset comment">
                                             ${msg.content}
                                         </div>
                                     </div>
@@ -85,7 +84,6 @@
         <script>
             Label.uploadLabel = "${uploadLabel}";
         </script>
-        <script src="${staticServePath}/js/lib/vditor-0.3.0/index.min.js"></script>
         <script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/chat-room${miniPostfix}.js?${staticResourceVersion}"></script>

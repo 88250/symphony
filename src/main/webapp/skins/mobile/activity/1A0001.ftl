@@ -30,7 +30,7 @@
             <div class="wrapper">
                 <div class="content activity">
                     <div class="fn-hr10"></div>
-                    <div class="content-reset">
+                    <div class="vditor-reset">
                     ${activity1A0001TitleLabel}
                     ${activity1A0001GuideLabel}
 

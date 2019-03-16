@@ -53,7 +53,7 @@
                                                 ${cmtLabel} ${tag.tagCommentCount?c}
                                             </span>
                                         </div>
-                                        <div class="content-reset">${tag.tagDescription}</div>
+                                        <div class="vditor-reset">${tag.tagDescription}</div>
                                     </div>
                                 </li>
                                 </#list>
@@ -77,7 +77,7 @@
                                     <div class="avatar-small" style="background-image: url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                                     </#if>
                                     <a class="ft-a-title" rel="tag" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
-                                    <div class="content-reset">${tag.tagDescription}</div>
+                                    <div class="vditor-reset">${tag.tagDescription}</div>
                                 </li>
                                 </#list>
                             </ul>

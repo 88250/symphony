@@ -30,7 +30,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="verify guide">
-                <div class="intro content-reset">
+                <div class="intro vditor-reset">
                     <dl>
                         <dt class="current"><b>1. </b>${guideUploadAvatarLabel}</dt>
                         <dt><b>2. </b>${guideFollowTagLabel}</dt>

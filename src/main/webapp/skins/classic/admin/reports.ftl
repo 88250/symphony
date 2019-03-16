@@ -49,7 +49,7 @@
                 </div>
                 </#if>
                     </div>
-                    <div class="content-reset">
+                    <div class="vditor-reset">
                         ${item.reportMemo}
                     </div>
                 </li>

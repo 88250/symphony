@@ -61,7 +61,7 @@
                         <button onclick="Util.goLogin()">${loginLabel}</button>
                     </div>
                 </div>
-                <div class="intro content-reset">
+                <div class="intro vditor-reset">
                     ${introLabel}
                 </div>
             </div>

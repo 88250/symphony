@@ -44,7 +44,7 @@
                     </span>
                 </div>
 
-                <div class="content-reset comment">
+                <div class="vditor-reset comment">
                     ${comment.commentContent}
                 </div>
             </div>

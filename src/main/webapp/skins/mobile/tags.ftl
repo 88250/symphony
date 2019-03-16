@@ -52,7 +52,7 @@
                                             ${cmtLabel} ${tag.tagCommentCount?c} 
                                         </span>
                                     </div>
-                                    <div class="content-reset">${tag.tagDescription}</div>
+                                    <div class="vditor-reset">${tag.tagDescription}</div>
                                 </li>
                                 </#list>
                             </ul>
@@ -92,7 +92,7 @@
                                         ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
                                         ${cmtLabel} ${tag.tagCommentCount?c} 
                                     </span>
-                                    <div class="content-reset">${tag.tagDescription}</div>
+                                    <div class="vditor-reset">${tag.tagDescription}</div>
                                 </li>
                                 </#list>
                             </ul>

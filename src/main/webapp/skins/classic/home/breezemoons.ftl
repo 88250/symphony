@@ -96,7 +96,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="content-reset">${item.breezemoonContent}</div>
+                        <div class="vditor-reset">${item.breezemoonContent}</div>
                     </div>
                 </li>
                 <#if isSingleBreezemoonURL>

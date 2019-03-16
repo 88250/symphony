@@ -58,7 +58,7 @@
                         <button onclick="Util.goRegister()">${registerLabel}</button>
                     </div>
                 </div>
-                <div class="intro content-reset">
+                <div class="intro vditor-reset">
                     ${introLabel}
                 </div>
             </div>

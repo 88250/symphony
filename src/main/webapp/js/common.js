@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.47.0.1, Mar 5, 2019
+ * @version 1.47.0.2, Mar 17, 2019
  */
 
 /**
@@ -36,17 +36,17 @@ var Util = {
       testImage.addEventListener('load', function () {
         if (!$(it).attr('style') && !$(it).attr('class') &&
           !$(it).attr('width') && !$(it).attr('height') &&
-          $(it).closest('.content-reset').length === 1) {
+          $(it).closest('.vditor-reset').length === 1) {
           if (testImage.naturalHeight > testImage.naturalWidth &&
             testImage.naturalWidth / testImage.naturalHeight <
-            $(it).closest('.content-reset').width() /
+            $(it).closest('.vditor-reset').width() /
             ($(window).height() - 40) &&
             testImage.naturalHeight > ($(window).height() - 40)) {
             it.style.height = ($(window).height() - 40) + 'px'
           }
         }
 
-        if (!$(it).attr('class') && $(it).closest('.content-reset').length ===
+        if (!$(it).attr('class') && $(it).closest('.vditor-reset').length ===
           1) {
           _processPreview($(it))
         }
@@ -98,7 +98,7 @@ var Util = {
     var hasMathJax = false
     var hasFlow = false
     var hasLivePhoto = false
-    $('.content-reset').each(function () {
+    $('.vditor-reset').each(function () {
       $(this).find('p').each(function () {
         if ($(this).text().split('$').length > 2 ||
           ($(this).text().split('\\(').length > 1 &&
@@ -150,7 +150,7 @@ var Util = {
 
     if (hasFlow) {
       var initFlow = function () {
-        $('.content-reset code.lang-flow, .content-reset code.language-flow').
+        $('.vditor-reset code.lang-flow, .vditor-reset code.language-flow').
           each(function (index) {
             var $it = $(this)
             var id = 'symFlow' + (new Date()).getTime() + index
@@ -177,7 +177,7 @@ var Util = {
     }
     if (hasLivePhoto) {
       var initLivePhoto = function () {
-        $('.content-reset').each(function () {
+        $('.vditor-reset').each(function () {
           $(this).find('a').each(function () {
             var $it = $(this)
             var href = $(this).attr('href')
@@ -710,7 +710,7 @@ var Util = {
       },
       lang: Label.langLabel,
       classes: {
-        preview: 'content-reset',
+        preview: 'vditor-reset',
       },
       hint: {
         emojiPath: Label.staticServePath + '/emoji/graphics',
