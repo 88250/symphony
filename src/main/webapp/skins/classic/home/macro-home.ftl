@@ -74,7 +74,6 @@
             </@head>
         </#if>
     <link rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}"/>
-    <link rel="stylesheet" href="${staticServePath}/js/lib/highlight/styles/github.css">
 </head>
 <body>
         <#include "../header.ftl">

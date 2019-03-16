@@ -28,7 +28,6 @@
         <meta name="robots" content="none" />
         </@head>
         <link rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
-        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight/styles/github.css">
     </head>
     <body>
         <#include "../../header.ftl">
@@ -168,7 +167,8 @@
         <#include "../../footer.ftl">
         <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            Settings.initHljs();
+            Util.parseHljs()
+            Util.parseMarkdown()
             $(document).bind('keyup', 'e', function assets() {
                 if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
                     return false;

@@ -183,7 +183,8 @@
     <#if type == "comments">
         <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            Settings.initHljs();
+            Util.parseHljs()
+            Util.parseMarkdown()
         </script>
     <#elseif type == 'reports'>
         <script>

@@ -85,10 +85,6 @@ var ArticleChannel = {
             Comment._bgFade($('#' + data.commentId))
           }
 
-          // 代码高亮
-          hljs.initHighlighting.called = false
-          hljs.initHighlighting()
-
           // 更新回复的回帖
           if (data.commentOriginalCommentId !== '') {
             var $originalComment = $('#' + data.commentOriginalCommentId),
@@ -111,6 +107,7 @@ var ArticleChannel = {
                 ' <svg class="icon-chevron-down"><use xlink:href="#chevron-down"></use></svg>')
             }
           }
+          Util.parseHljs()
           Util.parseMarkdown()
           break
         case 'articleHeat':

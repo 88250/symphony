@@ -222,6 +222,7 @@ var Comment = {
       titleSuffix: '',
       callback: function () {
         Util.parseMarkdown()
+        Util.parseHljs()
       },
     })
     NProgress.configure({showSpinner: false})
@@ -443,7 +444,8 @@ var Comment = {
             + data.commentContent + '</div></div></div></li>'
         }
         $commentReplies.html('<ul>' + template + '</ul>')
-        Article.parseLanguage()
+        Util.parseHljs()
+        Util.parseMarkdown()
 
         // 如果是回帖的回复需要处理下样式
         $(it).
@@ -736,7 +738,8 @@ var Article = {
    */
   init: function () {
     this.share()
-    this.parseLanguage()
+    Util.parseHljs()
+    Util.parseMarkdown()
 
     // img preview
     var fixDblclick = null
@@ -1017,17 +1020,6 @@ var Article = {
         $('#shareClipboard').attr('aria-label', Label.copiedLabel)
       })
   },
-  /*
-   * @description 解析语法高亮
-   */
-  parseLanguage: function () {
-    if (Label.markdownHttpAvailable) {
-      return
-    }
-    $('pre code').each(function (i, block) {
-      hljs.highlightBlock(block)
-    })
-  },
   /**
    * @description 打赏
    */
@@ -1042,7 +1034,8 @@ var Article = {
         success: function (result, textStatus) {
           if (result.sc) {
             $('#articleRewardContent').html(result.articleRewardContent)
-            Article.parseLanguage()
+            Util.parseHljs()
+            Util.parseMarkdown()
 
             var cnt = parseInt(
               $('.article-actions .icon-points').parent().text())

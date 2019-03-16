@@ -36,7 +36,6 @@
         </#if>
         <#if type == "comments">
         <@head title="${commentAdminLabel} - ${symphonyLabel}">
-        <link rel="stylesheet" href="${staticServePath}/js/lib/highlight/styles/github.css">
         </@head>
         </#if>
         <#if type == "breezemoons">
@@ -144,7 +143,8 @@
         <#if type == "comments">
         <script src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            Settings.initHljs();
+            Util.parseHljs()
+            Util.parseMarkdown()
         </script>
         <#elseif type == 'reports'>
         <script>

@@ -167,25 +167,6 @@ var Settings = {
     })
   },
   /**
-   * 有代码片段时，需要进行高亮
-   * @returns {Boolean}
-   */
-  initHljs: function () {
-    if ($('pre code').length === 0 || Label.markdownHttpAvailable) {
-      return false
-    }
-    $.ajax({
-      method: 'GET',
-      url: Label.servePath + '/js/lib/highlight/highlight.pack.js',
-      dataType: 'script',
-    }).done(function () {
-      $('pre code').each(function (i, block) {
-        hljs.highlightBlock(block)
-        $(this).css('max-height', $(window).height() - 68)
-      })
-    })
-  },
-  /**
    * 初始化个人设置中的头像图片上传.
    *
    * @returns {Boolean}
@@ -751,7 +732,8 @@ var Settings = {
    */
   initHome: function () {
     if (Label.type === 'commentsAnonymous' || 'comments' === Label.type) {
-      Settings.initHljs()
+      Util.parseHljs()
+      Util.parseMarkdown()
     }
 
     $('#reportDialog').dialog({
@@ -785,10 +767,12 @@ var Settings = {
             switch (location.pathname) {
               case '/member/' + Label.userName:
               case '/member/' + Label.userName + '/comments':
-                Settings.initHljs()
+                Util.parseHljs()
+                Util.parseMarkdown()
               case '/member/' + Label.userName + '/articles/anonymous':
               case '/member/' + Label.userName + '/comments/anonymous':
-                Settings.initHljs()
+                Util.parseHljs()
+                Util.parseMarkdown()
                 $('.home-menu a:eq(0)').addClass('current')
                 break
               case '/member/' + Label.userName + '/watching/articles':
@@ -813,6 +797,7 @@ var Settings = {
         }
         $('.nav-tabs').html($('.home-menu').html())
         Util.parseMarkdown()
+        Util.parseHljs()
       },
     })
     NProgress.configure({showSpinner: false})

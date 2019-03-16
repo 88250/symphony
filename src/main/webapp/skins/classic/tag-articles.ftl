@@ -159,6 +159,7 @@
                 },
                 callback: function () {
                     Util.parseMarkdown();
+                    Util.parseHljs()
                 }
             });
             NProgress.configure({ showSpinner: false });

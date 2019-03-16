@@ -440,6 +440,7 @@ var Comment = {
       titleSuffix: '',
       callback: function () {
         Util.parseMarkdown()
+        Util.parseHljs()
       },
     })
     NProgress.configure({showSpinner: false})
@@ -659,7 +660,8 @@ var Comment = {
             + data.commentContent + '</div></div></div></li>'
         }
         $commentReplies.html('<ul>' + template + '</ul>')
-        Article.parseLanguage()
+        Util.parseHljs()
+        Util.parseMarkdown()
 
         // 如果是回帖的回复需要处理下样式
         $(it).
@@ -983,7 +985,8 @@ var Article = {
   init: function () {
     this.initToc()
     this.share()
-    this.parseLanguage()
+    Util.parseHljs()
+    Util.parseMarkdown()
 
     // img preview
     var fixDblclick = null
@@ -1351,18 +1354,6 @@ var Article = {
         $('#shareClipboard').attr('aria-label', Label.copiedLabel)
       })
   },
-  /*
-   * @description 解析语法高亮
-   */
-  parseLanguage: function () {
-    if (Label.markdownHttpAvailable) {
-      return
-    }
-    $('pre code').each(function (i, block) {
-      $(this).css('max-height', $(window).height() - 68)
-      hljs.highlightBlock(block)
-    })
-  },
   /**
    * @description 打赏
    */
@@ -1378,7 +1369,8 @@ var Article = {
           if (result.sc) {
             $('#articleRewardContent .vditor-reset').
               html(result.articleRewardContent)
-            Article.parseLanguage()
+            Util.parseHljs()
+            Util.parseMarkdown()
 
             var $rewarcCnt = $('#articleRewardContent > span'),
               cnt = parseInt($rewarcCnt.text())

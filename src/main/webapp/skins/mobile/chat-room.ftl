@@ -84,7 +84,6 @@
         <script>
             Label.uploadLabel = "${uploadLabel}";
         </script>
-        <script src="${staticServePath}/js/lib/highlight/highlight.pack.js"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/chat-room${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>

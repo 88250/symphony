@@ -90,26 +90,46 @@ var Util = {
       })
     }
   },
+  addStyle: function (url, id) {
+    if (!document.getElementById(id)) {
+      var styleElement = document.createElement('link')
+      styleElement.id = id
+      styleElement.setAttribute('rel', 'stylesheet')
+      styleElement.setAttribute('type', 'text/css')
+      styleElement.setAttribute('href', url)
+      document.getElementsByTagName('head')[0].appendChild(styleElement)
+    }
+  },
+  parseHljs: function () {
+    Util.addStyle('https://cdn.jsdelivr.net/npm/highlight.js@9.15.6/styles/github.min.css', 'vditorHljsStyle')
+    if (!Label.markdownHttpAvailable) {
+      if (typeof hljs === 'undefined') {
+        $.ajax({
+          url: 'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.6/build/highlight.min.js',
+          dataType: 'script',
+          cache: true,
+          success: function () {
+            hljs.initHighlighting.called = false
+            hljs.initHighlighting()
+          },
+        })
+      } else {
+        hljs.initHighlighting.called = false
+        hljs.initHighlighting()
+      }
+    }
+  },
   /**
    * 按需加载 MathJax 及 flow、live photo
    * @returns {undefined}
    */
   parseMarkdown: function () {
-    var hasMathJax = false
-    var hasFlow = false
+    Vditor.mermaidRender(document.body)
+    Vditor.mathRender(document.body)
+    Vditor.codeRender(document.body, Label.langLabel)
+
     var hasLivePhoto = false
     $('.vditor-reset').each(function () {
-      $(this).find('p').each(function () {
-        if ($(this).text().split('$').length > 2 ||
-          ($(this).text().split('\\(').length > 1 &&
-            $(this).text().split('\\)').length > 1)) {
-          hasMathJax = true
-        }
-      })
-      if ($(this).find('code.lang-flow, code.language-flow').length > 0) {
-        hasFlow = true
-      }
-
       $(this).find('a').each(function () {
         var href = $(this).attr('href')
         if (href && href.substr(href.length - 4).toLowerCase() === '.mov') {
@@ -118,63 +138,6 @@ var Util = {
       })
     })
 
-    if (hasMathJax) {
-      var initMathJax = function () {
-        MathJax.Hub.Config({
-          tex2jax: {
-            inlineMath: [['$', '$'], ['\\(', '\\)']],
-            displayMath: [['$$', '$$']],
-            processEscapes: true,
-            processEnvironments: true,
-            skipTags: ['pre', 'code', 'script'],
-          },
-          asciimath2jax: {
-            delimiters: [['$', '$']],
-          },
-        })
-        MathJax.Hub.Typeset()
-      }
-
-      if (typeof MathJax !== 'undefined') {
-        initMathJax()
-      } else {
-        $.ajax({
-          method: 'GET',
-          url: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML',
-          dataType: 'script',
-        }).done(function () {
-          initMathJax()
-        })
-      }
-    }
-
-    if (hasFlow) {
-      var initFlow = function () {
-        $('.vditor-reset code.lang-flow, .vditor-reset code.language-flow').
-          each(function (index) {
-            var $it = $(this)
-            var id = 'symFlow' + (new Date()).getTime() + index
-            $it.hide()
-            var diagram = flowchart.parse($.trim($it.text()))
-            $it.parent().after('<div class="ft-center" id="' + id + '"></div>')
-            diagram.drawSVG(id)
-            $it.parent().remove()
-            $('#' + id).find('svg').height('auto').width('auto')
-          })
-      }
-
-      if (typeof (flowchart) !== 'undefined') {
-        initFlow()
-      } else {
-        $.ajax({
-          method: 'GET',
-          url: Label.staticServePath + '/js/lib/flowchart/flowchart.min.js',
-          dataType: 'script',
-        }).done(function () {
-          initFlow()
-        })
-      }
-    }
     if (hasLivePhoto) {
       var initLivePhoto = function () {
         $('.vditor-reset').each(function () {
@@ -687,9 +650,7 @@ var Util = {
           if (element.style.display === 'none') {
             return
           }
-          hljs.initHighlighting.called = false
-          hljs.initHighlighting()
-          Util.parseMarkdown()
+          Util.parseHljs()
           Util.LazyLoadImage()
         },
       },
@@ -709,9 +670,6 @@ var Util = {
         position: data.resize.position,
       },
       lang: Label.langLabel,
-      classes: {
-        preview: 'vditor-reset',
-      },
       hint: {
         emojiPath: Label.staticServePath + '/emoji/graphics',
         emojiTail: '<a href="' + Label.servePath +
@@ -1273,6 +1231,7 @@ var Util = {
     })
 
     Util.parseMarkdown()
+    Util.parseHljs()
 
     if (isLoggedIn) { // 如果登录了
       if (!window.localStorage.hadNotificate) {

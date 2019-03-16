@@ -92,6 +92,7 @@
                                 }
                             });
                             Util.parseMarkdown();
+                            Util.parseHljs()
                         case 'error':
                             break;
                         case 'hash':

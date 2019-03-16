@@ -53,7 +53,6 @@ function cleanProcess () {
 function minArticleCSS () {
   // min article css
   return gulp.src([
-    './src/main/webapp/js/lib/highlight/styles/github.css',
     './src/main/webapp/js/lib/diff2html/diff2html.min.css']).
     pipe(cleanCSS()).
     pipe(concat('article.min.css')).
@@ -101,7 +100,6 @@ function minLibs () {
 
 function minArticleLibs () {
   var jsArticleLib = [
-    './src/main/webapp/js/lib/highlight/highlight.pack.js',
     './src/main/webapp/js/lib/sound-recorder/SoundRecorder.js',
     './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js',
     './src/main/webapp/js/lib/aplayer/APlayer.min.js',
