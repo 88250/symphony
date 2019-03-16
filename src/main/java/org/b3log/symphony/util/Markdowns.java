@@ -64,7 +64,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.12, Mar 15, 2019
+ * @version 1.11.21.13, Mar 16, 2019
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -262,23 +262,16 @@ public final class Markdowns {
             threadId[0] = Thread.currentThread().getId();
 
             String html = langPropsService.get("contentRenderFailedLabel");
+            if (MARKDOWN_HTTP_AVAILABLE) {
+                try {
+                    html = toHtmlByMarkdownHTTP(markdownText);
+                } catch (final Exception e) {
+                    LOGGER.log(Level.WARN, "Failed to use [markdown-http] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
 
-            final int count = StringUtils.countMatches(markdownText, "\n");
-            if (3 >= count) {
-                // 优化 Markdown 渲染 https://github.com/b3log/symphony/issues/841
-                html = toHtmlByFlexmark(markdownText);
-            } else {
-                if (MARKDOWN_HTTP_AVAILABLE) {
-                    try {
-                        html = toHtmlByMarkdownHTTP(markdownText);
-                    } catch (final Exception e) {
-                        LOGGER.log(Level.WARN, "Failed to use [markdown-http] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
-
-                        html = toHtmlByFlexmark(markdownText);
-                    }
-                } else {
                     html = toHtmlByFlexmark(markdownText);
                 }
+            } else {
+                html = toHtmlByFlexmark(markdownText);
             }
 
             if (!StringUtils.startsWith(html, "<p>")) {
