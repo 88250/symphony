@@ -1312,7 +1312,7 @@
         {
           "name": "userName",
           "type": "String",
-          "length": 20,
+          "length": 64,
           "description": "用户名"
         },
         {
