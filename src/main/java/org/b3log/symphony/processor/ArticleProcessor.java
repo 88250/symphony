@@ -580,11 +580,6 @@ public class ArticleProcessor {
         boolean requisite = false;
         String requisiteMsg = "";
 
-//        if (!UserExt.updatedAvatar(currentUser)) {
-//            requisite = true;
-//            requisiteMsg = langPropsService.get("uploadAvatarThenPostLabel");
-//        }
-
         dataModel.put(Common.REQUISITE, requisite);
         dataModel.put(Common.REQUISITE_MSG, requisiteMsg);
     }

@@ -660,16 +660,6 @@ public final class UserExt {
     }
 
     /**
-     * Checks whether the specified user updated avatar.
-     *
-     * @param user the specified user
-     * @return {@code true} if the specified user updated avatar, returns {@code false} otherwise
-     */
-    public static boolean updatedAvatar(final JSONObject user) {
-        return user.optString(UserExt.USER_AVATAR_URL).contains("_");
-    }
-
-    /**
      * Checks whether the specified user finshed guide.
      *
      * @param user the specified user
