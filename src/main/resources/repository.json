@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "4.41.0.2, Jan 30, 2019",
+  "version": "4.41.0.3, Mar 23, 2019",
   "authors": [
     "Liang Ding",
     "Zephyr",
