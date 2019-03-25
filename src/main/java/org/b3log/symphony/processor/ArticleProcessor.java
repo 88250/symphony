@@ -83,7 +83,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.2.12, Feb 11, 2019
+ * @version 1.27.3.0, Mar 25, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -713,6 +713,12 @@ public class ArticleProcessor {
                 final JSONObject offeredComment = commentQueryService.getOfferedComment(cmtViewMode, articleId);
                 article.put(Article.ARTICLE_T_OFFERED_COMMENT, offeredComment);
                 if (null != offeredComment) {
+                    if (Comment.COMMENT_VISIBLE_C_AUTHOR == offeredComment.optInt(Comment.COMMENT_VISIBLE)) {
+                        final String commentAuthorId = offeredComment.optString(Comment.COMMENT_AUTHOR_ID);
+                        if (!isLoggedIn || (!StringUtils.equals(currentUserId, commentAuthorId) && !StringUtils.equals(currentUserId, authorId))) {
+                            offeredComment.put(Comment.COMMENT_CONTENT, langPropsService.get("onlySelfAndArticleAuthorVisibleLabel"));
+                        }
+                    }
                     final String offeredCmtId = offeredComment.optString(Keys.OBJECT_ID);
                     final int rewardCount = offeredComment.optInt(Comment.COMMENT_THANK_CNT);
                     offeredComment.put(Common.REWARED_COUNT, rewardCount);
