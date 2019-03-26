@@ -40,10 +40,6 @@ public class OptionCache {
      */
     private static final Cache CACHE = CacheFactory.getCache(Option.OPTIONS);
 
-    static {
-        CACHE.setMaxCount(1024);
-    }
-
     /**
      * Gets an option by the specified option id.
      *
