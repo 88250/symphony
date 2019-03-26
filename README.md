@@ -8,6 +8,7 @@
 <a title="AGPLv3" target="_blank" href="https://www.gnu.org/licenses/agpl-3.0.txt"><img src="http://img.shields.io/badge/license-AGPLv3-orange.svg?style=flat-square"></a>
 <a title="Releases" target="_blank" href="https://github.com/b3log/symphony/releases"><img src="https://img.shields.io/github/release/b3log/symphony.svg?style=flat-square"></a>
 <a title="Downloads" target="_blank" href="https://github.com/b3log/symphony/releases"><img src="https://img.shields.io/github/downloads/b3log/symphony/total.svg?style=flat-square"></a>
+<a title="Docker Pulls" target="_blank" href="https://hub.docker.com/r/b3log/symphony"><img src="https://img.shields.io/docker/pulls/b3log/symphony.svg?style=flat-square&color=blueviolet"></a>
 </p>
 
 ## 简介
