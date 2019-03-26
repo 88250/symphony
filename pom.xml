@@ -12,7 +12,7 @@
     <groupId>org.b3log</groupId>
     <artifactId>symphony</artifactId>
     <packaging>war</packaging>
-    <version>3.4.7</version>
+    <version>3.4.8</version>
     <name>Symphony</name>
     <url>https://sym.b3log.org</url>
     <description>
@@ -21,7 +21,7 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>2.4.47</latke.version>
+        <latke.version>2.4.48</latke.version>
 
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.4.14.v20181114</jetty.version>
