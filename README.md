@@ -84,6 +84,48 @@
 
 ![home](https://user-images.githubusercontent.com/873584/52256096-629ba200-2950-11e9-87de-31d3e235578d.png)
 
+## 安装
+
+先在 MySQL 中手动建库（字符集使用 `utf8mb4`，排序规则 `utf8mb4_general_ci`），然后按照如下方式之一启动服务。
+
+### war 包启动
+
+[下载](https://github.com/b3log/symphony/releases)最新的 Sym 包解压，进入解压目录执行：
+
+* Windows: `java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.symphony.Starter`
+* Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.symphony.Starter`
+
+也可以将 war 包部署到 Servlet 容器中启动。
+
+### Docker 部署
+
+获取最新镜像：
+
+```shell
+docker pull b3log/symphony
+```
+
+启动容器：
+
+```shell
+docker run --detach --name sym --network=host \
+    --env RUNTIME_DB="MYSQL" \
+    --env JDBC_USERNAME="root" \
+    --env JDBC_PASSWORD="123456" \
+    --env JDBC_DRIVER="com.mysql.cj.jdbc.Driver" \
+    --env JDBC_URL="jdbc:mysql://127.0.0.1:3306/symphony?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC" \
+    b3log/symphony --listen_port=8080 --server_scheme=http --server_host=localhost 
+```
+为了简单，使用了主机网络模式来连接主机上的 MySQL。
+ 
+启动参数说明：
+
+* `--listen_port`：进程监听端口
+* `--server_scheme`：最终访问协议，如果反代服务启用了 HTTPS 这里也需要改为 `https`
+* `--server_host`：最终访问域名或公网 IP，不要带端口号
+
+完整启动参数的说明可以使用 `-h` 来查看。
+
 ## 文档
 
 * [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
