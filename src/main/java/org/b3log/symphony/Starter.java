@@ -22,10 +22,13 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.processor.channel.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Slf4jLog;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.websocket.jsr356.server.ServerContainer;
+import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
 
 import java.io.File;
 
@@ -180,6 +183,13 @@ public final class Starter {
         root.setResourceBase(webappDirLocation);
         server.setHandler(root);
         try {
+            final ServerContainer container = WebSocketServerContainerInitializer.configureContext(root);
+            container.addEndpoint(ArticleChannel.class);
+            container.addEndpoint(ArticleListChannel.class);
+            container.addEndpoint(ChatroomChannel.class);
+            container.addEndpoint(GobangChannel.class);
+            container.addEndpoint(UserChannel.class);
+
             server.start();
         } catch (final Exception e) {
             logger.log(Level.ERROR, "Server start failed", e);
