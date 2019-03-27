@@ -87,7 +87,7 @@
 
 ## 安装
 
-先在 MySQL 中手动建库（字符集使用 `utf8mb4`，排序规则 `utf8mb4_general_ci`），然后按照如下方式之一启动服务。
+先在 MySQL 中手动建库（库名 `symphony`，字符集使用 `utf8mb4`，排序规则 `utf8mb4_general_ci`），然后按照如下方式之一启动服务。
 
 ### war 包启动
 
