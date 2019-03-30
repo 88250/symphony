@@ -596,7 +596,6 @@ public class LoginProcessor {
                 final JSONObject referralUser = userQueryService.getUserByName(referral);
                 if (null != referralUser) {
                     final String referralId = referralUser.optString(Keys.OBJECT_ID);
-                    // Point
                     pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                             Pointtransfer.TRANSFER_TYPE_C_INVITED_REGISTER,
                             Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, referralId, System.currentTimeMillis(), "");
@@ -607,7 +606,6 @@ public class LoginProcessor {
                     final JSONObject notification = new JSONObject();
                     notification.put(Notification.NOTIFICATION_USER_ID, referralId);
                     notification.put(Notification.NOTIFICATION_DATA_ID, userId);
-
                     notificationMgmtService.addInvitationLinkUsedNotification(notification);
                 }
             }

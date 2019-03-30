@@ -544,7 +544,6 @@ public class UserMgmtService {
             transaction.commit();
 
             if (UserExt.USER_STATUS_C_VALID == status) {
-                // Point
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, ret,
                         Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, ret, System.currentTimeMillis(), "");
 

@@ -440,7 +440,6 @@ public class CommentMgmtService {
 
             int pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT;
 
-            // Point
             final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
             if (articleAuthorId.equals(commentAuthorId)) {
                 pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT;
@@ -560,7 +559,6 @@ public class CommentMgmtService {
             transaction.commit();
 
             if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
-                // Point
                 final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
                 if (articleAuthorId.equals(commentAuthorId)) {
                     pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
@@ -646,7 +644,6 @@ public class CommentMgmtService {
 
             if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous
                     && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
-                // Point
                 if (notIn5m) {
                     pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_UPDATE_COMMENT,

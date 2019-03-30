@@ -571,7 +571,6 @@ public class ArticleMgmtService {
             }
 
             if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
-                // Point
                 final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
                 final int addition = (int) Math.round(Math.sqrt(followerCnt));
                 final int broadcast = Article.ARTICLE_TYPE_C_CITY_BROADCAST == articleType ?
@@ -746,7 +745,6 @@ public class ArticleMgmtService {
             tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
 
             if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
-                // Point
                 final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
                 final int addition = (int) Math.round(Math.sqrt(followerCnt));
 
@@ -842,7 +840,6 @@ public class ArticleMgmtService {
             articleAnonymous = articleToUpdate.optInt(Article.ARTICLE_ANONYMOUS);
 
             if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
-                // Point
                 final int balance = author.optInt(UserExt.USER_POINT);
                 if (balance - updatePointSum < 0) {
                     throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
