@@ -41,7 +41,7 @@ import java.util.Map;
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.11, Jan 5, 2019
+ * @version 1.2.1.0, Mar 30, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -69,7 +69,7 @@ public class ErrorProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/error/{statusCode}", method = {HttpMethod.GET, HttpMethod.POST})
+    @RequestProcessing(value = "/error/{statusCode}", method = {HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE})
     @Before(StopwatchStartAdvice.class)
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void handleErrorPage(final RequestContext context) {
