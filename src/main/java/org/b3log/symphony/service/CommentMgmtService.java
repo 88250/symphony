@@ -36,6 +36,7 @@ import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Runes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -47,7 +48,7 @@ import java.util.Locale;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.0.4, Feb 27, 2019
+ * @version 2.15.0.5, Apr 1, 2019
  * @since 0.2.0
  */
 @Service
@@ -616,6 +617,7 @@ public class CommentMgmtService {
             content += " "; // in case of tailing @user
             content = content.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             content = content.replace(langPropsService.get("uploadingLabel", Locale.US), "");
+            content = Runes.removeControlChars(content);
             comment.put(Comment.COMMENT_CONTENT, content);
 
             commentRepository.update(commentId, comment);
@@ -690,6 +692,7 @@ public class CommentMgmtService {
             content += " "; // in case of tailing @user
             content = content.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             content = content.replace(langPropsService.get("uploadingLabel", Locale.US), "");
+            content = Runes.removeControlChars(content);
             comment.put(Comment.COMMENT_CONTENT, content);
 
             commentRepository.update(commentId, comment);
