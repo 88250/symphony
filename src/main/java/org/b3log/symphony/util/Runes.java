@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.util;
 
+import com.google.common.base.CharMatcher;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.regex.Matcher;
@@ -26,7 +27,7 @@ import java.util.regex.Pattern;
  * Rune utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 19, 2017
+ * @version 1.1.0.0, Mar 31, 2019
  * @since 2.1.0
  */
 public final class Runes {
@@ -38,6 +39,20 @@ public final class Runes {
 //    public static void main(final String[] args) {
 //        System.out.println(getChinesePercent("123abc这个中文cde123abc也要提取123ab"));
 //    }
+
+    /**
+     * Removes control characters for the specified string.
+     *
+     * @param str the specified string
+     * @return str removed control characters
+     */
+    public static String removeControlChars(final String str) {
+        final CharMatcher charsToPreserve = CharMatcher.anyOf("\r\n\t");
+        final CharMatcher allButPreserved = charsToPreserve.negate();
+        final CharMatcher controlCharactersToRemove = CharMatcher.javaIsoControl().and(allButPreserved);
+
+        return controlCharactersToRemove.removeFrom(str);
+    }
 
     /**
      * Gets chinese percentage of the specified string.

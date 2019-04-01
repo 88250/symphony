@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.5.6, Feb 27, 2019
+ * @version 2.18.5.7, Apr 1, 2019
  * @since 0.2.0
  */
 @Service
@@ -623,10 +623,14 @@ public class ArticleMgmtService {
             //articleContent = StringUtils.trim(articleContent) + " "; https://github.com/b3log/symphony/issues/389
             articleContent = StringUtils.replace(articleContent, langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             articleContent = StringUtils.replace(articleContent, langPropsService.get("uploadingLabel", Locale.US), "");
+            if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+                articleContent = Runes.removeControlChars(articleContent);
+            }
             article.put(Article.ARTICLE_CONTENT, articleContent);
 
             String rewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
             rewardContent = Emotions.toAliases(rewardContent);
+            rewardContent = Runes.removeControlChars(rewardContent);
             article.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
 
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optInt(Article.ARTICLE_EDITOR_TYPE));
@@ -901,6 +905,9 @@ public class ArticleMgmtService {
             //articleContent = StringUtils.trim(articleContent) + " "; https://github.com/b3log/symphony/issues/389
             articleContent = articleContent.replace(langPropsService.get("uploadingLabel", Locale.SIMPLIFIED_CHINESE), "");
             articleContent = articleContent.replace(langPropsService.get("uploadingLabel", Locale.US), "");
+            if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+                articleContent = Runes.removeControlChars(articleContent);
+            }
 
             final String oldContent = articleToUpdate.optString(Article.ARTICLE_CONTENT);
             articleToUpdate.put(Article.ARTICLE_CONTENT, articleContent);
@@ -920,6 +927,7 @@ public class ArticleMgmtService {
 
                 String rewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
                 rewardContent = Emotions.toAliases(rewardContent);
+                rewardContent = Runes.removeControlChars(rewardContent);
                 articleToUpdate.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
                 articleToUpdate.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
             }
@@ -1021,6 +1029,7 @@ public class ArticleMgmtService {
             } else {
                 String articleContent = article.optString(Article.ARTICLE_CONTENT);
                 articleContent = Emotions.toAliases(articleContent);
+                articleContent = Runes.removeControlChars(articleContent);
                 article.put(Article.ARTICLE_CONTENT, articleContent);
             }
 
