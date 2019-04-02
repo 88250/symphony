@@ -395,8 +395,8 @@
                     </mapping>
                     <useDefaultMapping>true</useDefaultMapping>
                     <properties>
-                        <year>2012-2019</year>
-                        <devTeam>b3log.org &amp; hacpai.com</devTeam>
+                        <year>2012-present</year>
+                        <devTeam>b3log.org</devTeam>
                     </properties>
                     <encoding>UTF-8</encoding>
                 </configuration>
