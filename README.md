@@ -55,6 +55,7 @@
 * [艺术家与艺术爱好者](http://www.dizmix.com)
 * [乾学院](http://c.raqsoft.com.cn)
 * [GeeCall极客社区](http://geecall.com)
+* [金蝶精斗云社区](https://cs.jdy.com)
 * ......
 
 ## 功能
