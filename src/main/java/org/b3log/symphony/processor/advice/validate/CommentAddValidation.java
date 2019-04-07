@@ -20,7 +20,6 @@ package org.b3log.symphony.processor.advice.validate;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.RequestContext;
@@ -40,35 +39,19 @@ import javax.servlet.http.HttpServletRequest;
  * Validates for comment adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, Jan 30, 2019
+ * @version 1.3.0.4, Apr 7, 2019
  * @since 0.2.0
  */
 @Singleton
 public class CommentAddValidation extends ProcessAdvice {
 
-    /**
-     * Language service.
-     */
-    @Inject
-    private LangPropsService langPropsService;
-
-    /**
-     * Comment query service.
-     */
-    @Inject
-    private CommentQueryService commentQueryService;
-
-    /**
-     * Article query service.
-     */
-    @Inject
-    private ArticleQueryService articleQueryService;
-
-    /**
-     * Option query service.
-     */
-    @Inject
-    private OptionQueryService optionQueryService;
+    @Override
+    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
+        final HttpServletRequest request = context.getRequest();
+        final JSONObject requestJSONObject = context.requestJSON();
+        request.setAttribute(Keys.REQUEST, requestJSONObject);
+        validateCommentFields(requestJSONObject);
+    }
 
     /**
      * Validates comment fields.
@@ -116,21 +99,5 @@ public class CommentAddValidation extends ProcessAdvice {
                 throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
             }
         }
-    }
-
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final HttpServletRequest request = context.getRequest();
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = context.requestJSON();
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()).
-                    put(Keys.STATUS_CODE, StatusCodes.ERR));
-        }
-
-        validateCommentFields(requestJSONObject);
     }
 }
