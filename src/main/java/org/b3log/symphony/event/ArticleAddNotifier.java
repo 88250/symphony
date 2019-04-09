@@ -48,7 +48,7 @@ import java.util.Set;
  * Sends article add related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.18, Dec 10, 2018
+ * @version 1.3.4.19, Apr 9, 2019
  * @since 0.2.0
  */
 @Singleton
@@ -124,7 +124,9 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
             final String tags = originalArticle.optString(Article.ARTICLE_TAGS);
 
             // 'following - user' Notification
-            if (Article.ARTICLE_TYPE_C_DISCUSSION != originalArticle.optInt(Article.ARTICLE_TYPE)
+            final boolean articleNotifyFollowers = data.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS);
+            if (articleNotifyFollowers
+                    && Article.ARTICLE_TYPE_C_DISCUSSION != originalArticle.optInt(Article.ARTICLE_TYPE)
                     && Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)
                     && !Tag.TAG_TITLE_C_SANDBOX.equals(tags)
                     && !StringUtils.containsIgnoreCase(tags, Symphonys.SYS_ANNOUNCE_TAG)) {

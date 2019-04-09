@@ -42,7 +42,7 @@ import java.util.Set;
  * Sends article update related notifications.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Feb 18, 2019
+ * @version 1.0.0.6, Apr 9, 2019
  * @since 2.0.0
  */
 @Singleton
@@ -136,24 +136,22 @@ public class ArticleUpdateNotifier extends AbstractEventListener<JSONObject> {
             }
 
             // 'following - article update' Notification
-            final JSONObject followerUsersResult =
-                    followQueryService.getArticleWatchers(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL,
-                            articleId, 1, Integer.MAX_VALUE);
+            final boolean articleNotifyFollowers = data.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS);
+            if (articleNotifyFollowers) {
+                final JSONObject followerUsersResult = followQueryService.getArticleWatchers(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleId, 1, Integer.MAX_VALUE);
+                final List<JSONObject> watcherUsers = (List<JSONObject>) followerUsersResult.opt(Keys.RESULTS);
+                for (final JSONObject watcherUser : watcherUsers) {
+                    final String watcherName = watcherUser.optString(User.USER_NAME);
+                    if ((isDiscussion && !atUserNames.contains(watcherName)) || articleAuthorName.equals(watcherName)) {
+                        continue;
+                    }
 
-            final List<JSONObject> watcherUsers = (List<JSONObject>) followerUsersResult.opt(Keys.RESULTS);
-            for (final JSONObject watcherUser : watcherUsers) {
-                final String watcherName = watcherUser.optString(User.USER_NAME);
-                if ((isDiscussion && !atUserNames.contains(watcherName)) || articleAuthorName.equals(watcherName)) {
-                    continue;
+                    final JSONObject requestJSONObject = new JSONObject();
+                    final String watcherUserId = watcherUser.optString(Keys.OBJECT_ID);
+                    requestJSONObject.put(Notification.NOTIFICATION_USER_ID, watcherUserId);
+                    requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
+                    notificationMgmtService.addFollowingArticleUpdateNotification(requestJSONObject);
                 }
-
-                final JSONObject requestJSONObject = new JSONObject();
-                final String watcherUserId = watcherUser.optString(Keys.OBJECT_ID);
-
-                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, watcherUserId);
-                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
-
-                notificationMgmtService.addFollowingArticleUpdateNotification(requestJSONObject);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article update notification failed", e);

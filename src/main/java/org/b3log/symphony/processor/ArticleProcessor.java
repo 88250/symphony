@@ -83,7 +83,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.27.3.0, Mar 25, 2019
+ * @version 1.27.3.1, Apr 9, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -882,7 +882,8 @@ public class ArticleProcessor {
      *   "articleRewardContent": "",
      *   "articleRewardPoint": int,
      *   "articleQnAOfferPoint": int,
-     *   "articleAnonymous": boolean
+     *   "articleAnonymous": boolean,
+     *   "articleNotifyFollowers": boolean
      * }
      * </pre>
      * </p>
@@ -908,8 +909,8 @@ public class ArticleProcessor {
         final String ip = Requests.getRemoteAddr(request);
         final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
         final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
-        final int articleAnonymous = isAnonymous
-                ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;
+        final int articleAnonymous = isAnonymous ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;
+        final boolean articleNotifyFollowers = requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS);
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
@@ -926,6 +927,7 @@ public class ArticleProcessor {
         }
         article.put(Article.ARTICLE_UA, ua);
         article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
+        article.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, articleNotifyFollowers);
 
         try {
             final JSONObject currentUser = Sessions.getUser();
@@ -1030,7 +1032,8 @@ public class ArticleProcessor {
      *   "articleType": int,
      *   "articleRewardContent": "",
      *   "articleRewardPoint": int,
-     *    "articleQnAOfferPoint": int
+     *   "articleQnAOfferPoint": int,
+     *   "articleNotifyFollowers": boolean
      * }
      * </pre>
      * </p>
@@ -1076,6 +1079,7 @@ public class ArticleProcessor {
         final int articleQnAOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT);
         final String ip = Requests.getRemoteAddr(request);
         final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
+        final boolean articleNotifyFollowers = requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS);
 
         final JSONObject article = new JSONObject();
         article.put(Keys.OBJECT_ID, id);
@@ -1092,6 +1096,7 @@ public class ArticleProcessor {
             article.put(Article.ARTICLE_IP, ip);
         }
         article.put(Article.ARTICLE_UA, ua);
+        article.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, articleNotifyFollowers);
 
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser

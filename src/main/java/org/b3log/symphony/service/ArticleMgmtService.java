@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.18.5.7, Apr 1, 2019
+ * @version 2.18.5.8, Apr 9, 2019
  * @since 0.2.0
  */
 @Service
@@ -502,8 +502,8 @@ public class ArticleMgmtService {
      *                          "articleIP": "", // optional, default to ""
      *                          "articleUA": "", // optional, default to ""
      *                          "articleAnonymous": int, // optional, default to 0 (public)
-     *                          "articleAnonymousView": int // optional, default to 0 (use global)
-     *                          , see {@link Article} for more details
+     *                          "articleAnonymousView": int, // optional, default to 0 (use global)
+     *                          "articleNotifyFollowers": boolean
      * @return generated article id
      * @throws ServiceException service exception
      */
@@ -774,6 +774,7 @@ public class ArticleMgmtService {
 
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, article);
+            eventData.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS));
             eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
 
             return ret;
@@ -803,7 +804,7 @@ public class ArticleMgmtService {
      *                          "articleQnAOfferPoint": int, // optional, default to 0
      *                          "articleIP": "", // optional, default to ""
      *                          "articleUA": "", // optional default to ""
-     *                          , see {@link Article} for more details
+     *                          "articleNotifyFollowers": boolean
      * @throws ServiceException service exception
      */
     public synchronized void updateArticle(final JSONObject requestJSONObject) throws ServiceException {
@@ -983,6 +984,7 @@ public class ArticleMgmtService {
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, articleToUpdate);
             eventData.put(Common.OLD_ARTICLE, oldArticle);
+            eventData.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS));
             eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
         } catch (final Exception e) {
             if (transaction.isActive()) {

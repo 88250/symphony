@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.34.0.0, Feb 18, 2019
+ * @version 1.34.0.1, Apr 9, 2019
  * @since 0.2.0
  */
 public final class Article {
@@ -379,6 +379,11 @@ public final class Article {
      * Key of article original content.
      */
     public static final String ARTICLE_T_ORIGINAL_CONTENT = "articleOriginalContent";
+
+    /**
+     * Key of flag of notifying followers.
+     */
+    public static final String ARTICLE_T_NOTIFY_FOLLOWERS = "articleNotifyFollowers";
 
     // Anonymous constants
     /**
