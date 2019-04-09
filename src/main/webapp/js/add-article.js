@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.26.0.0, Feb 11, 2019
+ * @version 2.26.0.1, Apr 9, 2019
  */
 
 /**
@@ -170,6 +170,7 @@ var AddArticle = {
         articleContent: this.editor.getValue(),
         articleTags: articleTags,
         articleCommentable: $('#articleCommentable').prop('checked'),
+        articleNotifyFollowers: $('#articleNotifyFollowers').prop('checked'),
         articleType: articleType,
       }
 

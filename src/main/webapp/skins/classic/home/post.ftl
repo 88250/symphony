@@ -155,8 +155,8 @@
                                 type="checkbox" id="articleAnonymous"></label>
                         </#if>
                         <label class="article-anonymous">&nbsp;  ${commentableLabel}<input
-                                <#if (article?? && article.articleCommentable) || !article??> checked="checked"</#if>
-                                                                                              type="checkbox" id="articleCommentable"></label>
+                                <#if (article?? && article.articleCommentable) || !article??> checked="checked"</#if> type="checkbox" id="articleCommentable"></label>
+                        <label class="article-anonymous">&nbsp;  ${notifyFollowersLabel}<input type="checkbox" id="articleNotifyFollowers"></label>
                         <#if article?? && permissions["commonRemoveArticle"].permissionGrant>
                             <button class="red" tabindex="11" onclick="AddArticle.remove('${csrfToken}', this)">${removeArticleLabel}</button>
                         </#if>
