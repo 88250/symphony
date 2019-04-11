@@ -98,7 +98,7 @@
 * Windows: `java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.symphony.Starter`
 * Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.symphony.Starter`
 
-也可以将 war 包部署到 Servlet 容器中启动。
+如果要将 war 包部署到 Servlet 容器中启动请参考[安装指南](https://hacpai.com/article/1486188905847)。
 
 ### Docker 部署
 
