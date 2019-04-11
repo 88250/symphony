@@ -47,7 +47,7 @@ import java.util.Set;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.12.5, Nov 17, 2018
+ * @version 1.7.13.0, Apr 11, 2019
  * @since 0.2.0
  */
 @Singleton
@@ -352,6 +352,11 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                     final String watcherName = watcher.optString(User.USER_NAME);
                     if ((isDiscussion && !articleContentAtUserNames.contains(watcherName)) || commenterName.equals(watcherName)
                             || repliedIds.contains(userId) || atIds.contains(userId)) {
+                        continue;
+                    }
+
+                    // 仅楼主可见回帖不发通知给帖子关注者 https://github.com/b3log/symphony/issues/904
+                    if (Comment.COMMENT_VISIBLE_C_AUTHOR == originalComment.optInt(Comment.COMMENT_VISIBLE)) {
                         continue;
                     }
 
