@@ -144,7 +144,7 @@ docker run --detach --name sym --network=host \
 
 **关于商业版和社区版的对比请看[这里](https://hacpai.com/article/1500543226433)，企业网站、经营性网站、以营利为目的或实现盈利的网站请购买商业版。**
 
-欢迎联系 <a href="tencent://message/?uin=845765">QQ845765</a> 进行细节咨询。
+欢迎联系 QQ `845765` 或邮箱 `d@b3log.org` 进行细节咨询。
 
 ## 社区
 
