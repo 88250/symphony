@@ -9,7 +9,7 @@
 <a title="Releases" target="_blank" href="https://github.com/b3log/symphony/releases"><img src="https://img.shields.io/github/release/b3log/symphony.svg?style=flat-square"></a>
 <a title="Downloads" target="_blank" href="https://github.com/b3log/symphony/releases"><img src="https://img.shields.io/github/downloads/b3log/symphony/total.svg?style=flat-square"></a>
 <a title="Docker Pulls" target="_blank" href="https://hub.docker.com/r/b3log/symphony"><img src="https://img.shields.io/docker/pulls/b3log/symphony.svg?style=flat-square&color=blueviolet"></a>
-<a title="Hits" target="_blank" href="http://hits.dwyl.io/b3log/symphony"><img src="http://hits.dwyl.io/b3log/symphony.svg"></a>
+<a title="Hits" target="_blank" href="https://github.com/b3log/hits"><img src="https://hits.b3log.org/b3log/symphony.svg"></a>
 </p>
 
 ## 简介
