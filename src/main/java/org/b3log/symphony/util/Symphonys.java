@@ -50,7 +50,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.4, Feb 27, 2019
+ * @version 1.9.0.5, Apr 17, 2019
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -327,9 +327,11 @@ public final class Symphonys {
      * 本地上传目录，如果启用了七牛云的话该项配置会被忽略.
      * 使用绝对路径指定文件存放路径，不要指定到容器下，以免留下安全隐患.
      */
-    public static final String UPLOAD_LOCAL_DIR = get("upload.local.dir");
+    public static String UPLOAD_LOCAL_DIR = get("upload.local.dir");
 
     static {
+        final String userHome = System.getProperty("user.home");
+        UPLOAD_LOCAL_DIR = StringUtils.replace(UPLOAD_LOCAL_DIR, "~", userHome);
         // 初始化上传目录，请注意服务器上文件读写权限
         if (!Symphonys.QN_ENABLED) {
             final File file = new File(Symphonys.UPLOAD_LOCAL_DIR);
