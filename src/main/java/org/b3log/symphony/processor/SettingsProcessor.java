@@ -80,7 +80,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.2, Feb 11, 2019
+ * @version 1.3.2.3, Apr 18, 2019
  * @since 2.4.0
  */
 @RequestProcessor
@@ -415,9 +415,6 @@ public class SettingsProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showSettings(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, null);
         context.setRenderer(renderer);
         String page = context.pathVar("page");
@@ -505,6 +502,9 @@ public class SettingsProcessor {
         }
 
         dataModel.put(Common.TYPE, "settings");
+
+        // “感谢加入”系统通知已读置位 https://github.com/b3log/symphony/issues/907
+        notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_SYS_ANNOUNCE_NEW_USER);
     }
 
     /**
