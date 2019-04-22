@@ -101,11 +101,11 @@ var Util = {
     }
   },
   parseHljs: function () {
-    Util.addStyle('https://cdn.jsdelivr.net/npm/highlight.js@9.15.6/styles/github.min.css', 'vditorHljsStyle')
+    Util.addStyle('https://cdn.jsdelivr.net/npm/vditor@1.3.3/dist/js/highlight.js@9.15.6/styles/github.css', 'vditorHljsStyle')
     if (!Label.markdownHttpAvailable) {
       if (typeof hljs === 'undefined') {
         $.ajax({
-          url: 'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.6/build/highlight.min.js',
+          url: 'https://cdn.jsdelivr.net/npm/vditor@1.3.3/dist/js/highlight.js@9.15.6/highlight.pack.js',
           dataType: 'script',
           cache: true,
           success: function () {

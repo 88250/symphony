@@ -90,7 +90,6 @@ function minLibs () {
     './src/main/webapp/js/lib/ua-parser.min.js',
     './src/main/webapp/js/lib/jquery/jquery.hotkeys.js',
     './src/main/webapp/js/lib/jquery/jquery.pjax.js',
-    './src/main/webapp/js/lib/vditor-1.1.10/index.min.js',
     './src/main/webapp/js/lib/nprogress/nprogress.js']
   return gulp.src(jsCommonLib).
     pipe(uglify()).
