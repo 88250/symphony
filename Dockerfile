@@ -11,7 +11,7 @@ LABEL maintainer="Liang Ding<d@b3log.org>"
 
 WORKDIR /opt/sym/
 COPY --from=MVN_BUILD /opt/sym/ /opt/sym/
-RUN apk add --no-cache ca-certificates tzdata
+RUN apk add --no-cache ca-certificates tzdata ttf-dejavu
 
 ENV TZ=Asia/Shanghai
 EXPOSE 8080
