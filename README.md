@@ -172,3 +172,11 @@ docker run --detach --name sym --network=host \
 * [@gh0stkey](https://github.com/gh0stkey)
 * [@SeagullGR](https://github.com/SeagullGR)
 * [长亭科技](https://www.chaitin.cn)
+
+---
+
+## 开源项目推荐
+
+* 如果你需要搭建一个个人博客系统，可以考虑使用 [Solo](https://github.com/b3log/solo)
+* 如果你需要搭建一个多用户博客平台，可以考虑使用 [Pipe](https://github.com/b3log/pipe)
+* 欢迎加入我们的小众开源社区，详情请看[这里](https://hacpai.com/article/1463025124998)
