@@ -71,19 +71,19 @@
 
 **首页**
 
-![index](https://user-images.githubusercontent.com/873584/54031688-6e49e500-41ea-11e9-8679-78c9953698e9.png)
+![index](https://user-images.githubusercontent.com/970828/56900939-96a6df00-6ac9-11e9-8ccd-11c632f20506.png)
 
 **列表**
 
-![list](https://user-images.githubusercontent.com/873584/52256098-629ba200-2950-11e9-8641-3122e59db229.png)
+![list](https://user-images.githubusercontent.com/970828/56900944-96a6df00-6ac9-11e9-9eb4-3d0b65472e87.png)
 
 **帖子**
 
-![article](https://user-images.githubusercontent.com/873584/52264908-b799e100-296d-11e9-81e7-ed5e3e2c101a.png)
+![article](https://user-images.githubusercontent.com/970828/56900937-960e4880-6ac9-11e9-9044-4ed88d073892.png)
 
 **发帖**
 
-![post](https://user-images.githubusercontent.com/873584/52256100-63343880-2950-11e9-9bba-38bf9c8bc8f2.png)
+![post](https://user-images.githubusercontent.com/970828/56900946-973f7580-6ac9-11e9-93e4-2c195952e427.png)
 
 **用户**
 
