@@ -19,7 +19,7 @@
  * Common style for mobile and web.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.0, Mar 17, 2019
+ * @version 1.8.0.0, Apr 29, 2019
  */
 @import "vditor/src/assets/scss/classic";
 /* start reset */
@@ -28,6 +28,7 @@ html {
   -ms-text-size-adjust: 100%;
   height: 100%;
   background-color: $theme-primary;
+  height: 100%;
 }
 
 body {
@@ -341,6 +342,12 @@ blockquote {
 .fn-flex,
 .fn__flex {
   display: flex;
+}
+
+.fn__flex-column {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .fn-flex-1,

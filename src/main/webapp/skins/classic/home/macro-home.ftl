@@ -75,9 +75,9 @@
         </#if>
     <link rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}"/>
 </head>
-<body>
+<body class="fn__flex-column">
         <#include "../header.ftl">
-<div class="main">
+<div class="main fn__flex-1">
     <div class="wrapper">
         <div class="content" id="home-pjax-container">
                     <#if pjax><!---- pjax {#home-pjax-container} start ----></#if>
