@@ -85,10 +85,14 @@
 
 ![post](https://user-images.githubusercontent.com/970828/56900946-973f7580-6ac9-11e9-93e4-2c195952e427.png)
 
-**用户**
+**用户 - PC 端**
+
+![pc home](https://user-images.githubusercontent.com/970828/56903351-b7256800-6ace-11e9-8ca8-3152d79e78b5.png)
+
+**用户 - 移动端**
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/970828/56901849-a1fb0a00-6acb-11e9-86f0-4f0a22ef6fca.png" alt="home">
+    <img src="https://user-images.githubusercontent.com/970828/56901849-a1fb0a00-6acb-11e9-86f0-4f0a22ef6fca.png" alt="mobile home">
 </p>
 
 ## 安装
