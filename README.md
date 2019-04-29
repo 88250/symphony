@@ -75,7 +75,7 @@
 
 **列表**
 
-![list](https://user-images.githubusercontent.com/970828/56900944-96a6df00-6ac9-11e9-9eb4-3d0b65472e87.png)
+![list](https://user-images.githubusercontent.com/970828/56901344-89d6bb00-6aca-11e9-8123-ba71866b0427.png)
 
 **帖子**
 
