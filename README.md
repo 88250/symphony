@@ -87,7 +87,9 @@
 
 **用户**
 
-![home](https://user-images.githubusercontent.com/970828/56901849-a1fb0a00-6acb-11e9-86f0-4f0a22ef6fca.png)
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/970828/56901849-a1fb0a00-6acb-11e9-86f0-4f0a22ef6fca.png" alt="home">
+</p>
 
 ## 安装
 
