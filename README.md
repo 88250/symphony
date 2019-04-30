@@ -18,9 +18,9 @@
 <a title="GitHub Pull Requests" target="_blank" href=""><img src="https://img.shields.io/github/issues-pr-closed/b3log/symphony.svg?style=flat-square&color=FF9966"></a>
 <a title="Release Date" target="_blank" href="https://github.com/b3log/symphony/releases"><img src="https://img.shields.io/github/release-date/b3log/symphony.svg?style=flat-square&color=99CCFF"></a>
 <br><br>
-<a title="GitHub Watchers" target="_blank" href="https://github.com/b3log/symphony/watchers"><img src="https://img.shields.io/github/watchers/b3log/symphony.svg?label=Watchers&style=social"></a>
-<a title="GitHub Stars" target="_blank" href="https://github.com/b3log/symphony/stargazers"><img src="https://img.shields.io/github/stars/b3log/symphony.svg?label=Stars&style=social"></a>
-<a title="GitHub Forks" target="_blank" href="https://github.com/b3log/symphony/network/members"><img src="https://img.shields.io/github/forks/b3log/symphony.svg?label=Forks&style=social"></a>
+<a title="GitHub Watchers" target="_blank" href="https://github.com/b3log/symphony/watchers"><img src="https://img.shields.io/github/watchers/b3log/symphony.svg?label=Watchers&style=social"></a>&nbsp;&nbsp;
+<a title="GitHub Stars" target="_blank" href="https://github.com/b3log/symphony/stargazers"><img src="https://img.shields.io/github/stars/b3log/symphony.svg?label=Stars&style=social"></a>&nbsp;&nbsp;
+<a title="GitHub Forks" target="_blank" href="https://github.com/b3log/symphony/network/members"><img src="https://img.shields.io/github/forks/b3log/symphony.svg?label=Forks&style=social"></a>&nbsp;&nbsp;
 <a title="Author GitHub Followers" target="_blank" href="https://github.com/88250"><img src="https://img.shields.io/github/followers/88250.svg?label=Followers&style=social"></a>
 </p>
 
