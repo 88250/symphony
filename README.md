@@ -71,23 +71,29 @@
 
 **首页**
 
-![index](https://user-images.githubusercontent.com/873584/54031688-6e49e500-41ea-11e9-8679-78c9953698e9.png)
+![index](https://user-images.githubusercontent.com/970828/56900939-96a6df00-6ac9-11e9-8ccd-11c632f20506.png)
 
 **列表**
 
-![list](https://user-images.githubusercontent.com/873584/52256098-629ba200-2950-11e9-8641-3122e59db229.png)
+![list](https://user-images.githubusercontent.com/970828/56901344-89d6bb00-6aca-11e9-8123-ba71866b0427.png)
 
 **帖子**
 
-![article](https://user-images.githubusercontent.com/873584/52264908-b799e100-296d-11e9-81e7-ed5e3e2c101a.png)
+![article](https://user-images.githubusercontent.com/970828/56900937-960e4880-6ac9-11e9-9044-4ed88d073892.png)
 
 **发帖**
 
-![post](https://user-images.githubusercontent.com/873584/52256100-63343880-2950-11e9-9bba-38bf9c8bc8f2.png)
+![post](https://user-images.githubusercontent.com/970828/56900946-973f7580-6ac9-11e9-93e4-2c195952e427.png)
 
-**用户**
+**用户 - PC 端**
 
-![home](https://user-images.githubusercontent.com/873584/52256096-629ba200-2950-11e9-87de-31d3e235578d.png)
+![pc home](https://user-images.githubusercontent.com/970828/56903351-b7256800-6ace-11e9-8ca8-3152d79e78b5.png)
+
+**用户 - 移动端**
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/970828/56901849-a1fb0a00-6acb-11e9-86f0-4f0a22ef6fca.png" alt="mobile home">
+</p>
 
 ## 安装
 
