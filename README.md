@@ -14,7 +14,7 @@
 <a title="Docker Image Size" target="_blank" href="https://hub.docker.com/r/b3log/symphony"><img src="https://img.shields.io/microbadger/image-size/b3log/symphony.svg?style=flat-square&color=ff96b4"></a>
 <br>
 <a title="GitHub Commits" target="_blank" href="https://github.com/b3log/symphony/commits/master"><img src="https://img.shields.io/github/commit-activity/m/b3log/symphony.svg?style=flat-square"></a>
-<a title="Last Commit" target="_blank" href="https://github.com/b3log/symphony/commits/master"><img src="https://img.shields.io/github/last-commit/b3log/symphony.svg?style=flat-square"></a>
+<a title="Last Commit" target="_blank" href="https://github.com/b3log/symphony/commits/master"><img src="https://img.shields.io/github/last-commit/b3log/symphony.svg?style=flat-square&color=FF9900"></a>
 <a title="GitHub Pull Requests" target="_blank" href="https://github.com/b3log/symphony/pulls"><img src="https://img.shields.io/github/issues-pr-closed/b3log/symphony.svg?style=flat-square&color=FF9966"></a>
 <a title="Hits" target="_blank" href="https://github.com/b3log/hits"><img src="https://hits.b3log.org/b3log/symphony.svg"></a>
 <br><br>
