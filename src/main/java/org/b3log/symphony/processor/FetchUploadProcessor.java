@@ -50,6 +50,8 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 /**
@@ -61,7 +63,7 @@ import java.util.UUID;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Feb 10, 2019
+ * @version 1.0.2.0, May 8, 2019
  * @since 1.5.0
  */
 @RequestProcessor
@@ -154,6 +156,8 @@ public class FetchUploadProcessor {
             data.put("originalURL", originalURL);
         } else {
             fileName = FileUploadProcessor.genFilePath(fileName);
+            final Path path = Paths.get(Symphonys.UPLOAD_LOCAL_DIR, fileName);
+            path.getParent().toFile().mkdirs();
             try (final OutputStream output = new FileOutputStream(Symphonys.UPLOAD_LOCAL_DIR + fileName)) {
                 IOUtils.write(bytes, output);
             } catch (final Exception e) {
