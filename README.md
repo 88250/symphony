@@ -49,13 +49,14 @@
 社区版：
 
 * [AIQ-机器学习](http://www.6aiq.com)
-* [宽客网](http://www.cnq.net)
 * [许昌IT圈](http://www.xcitq.com)
-* [艺赛旗 RPA](http://support.i-search.com.cn)
 * [凤凰匯](https://www.fengd.com)
 * [猪玩派 | 喜欢游玩  热爱生活  乐于分享！](http://pigplay.net)
 * [俩猴网](http://www.xfx77.cn)
 * [听雨轩](http://nucode.cn)
+* [艺赛旗 RPA](http://support.i-search.com.cn)（商用授权）
+* [北极社区](https://begeek.bwae.org)（商用授权）
+* [神州邦邦](https://c.shenzhoubb.com)（商用授权）
 * ......
 
 商业版：
@@ -63,8 +64,6 @@
 * [黑客派](https://hacpai.com)
 * [IT遇岛](https://www.ityudao.com)
 * [汇桔网](https://bbs.wtoip.com)
-* [TapDealing](http://www.tapdealing.com)
-* [艺术家与艺术爱好者](http://www.dizmix.com)
 * [乾学院](http://c.raqsoft.com.cn)
 * [GeeCall极客社区](http://geecall.com)
 * [金蝶精斗云社区](https://cs.jdy.com)
