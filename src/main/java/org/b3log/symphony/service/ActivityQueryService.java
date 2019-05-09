@@ -42,7 +42,7 @@ import java.util.List;
  * Activity query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.6, May 27, 2018
+ * @version 1.5.2.0, May 9, 2018
  * @since 1.3.0
  */
 @Service
@@ -206,8 +206,20 @@ public class ActivityQueryService {
         try {
             final JSONObject user = userRepository.get(userId);
             final long time = user.optLong(UserExt.USER_CHECKIN_TIME);
+            if (DateUtils.isSameDay(new Date(), new Date(time))) {
+                return true;
+            }
 
-            return DateUtils.isSameDay(new Date(), new Date(time));
+            // 使用缓存检查在某个竞态条件下会有问题。如果缓存检查没有签到，则再查库判断
+            final List<JSONObject> latestPointtransfers = pointtransferQueryService.getLatestPointtransfers(userId, Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN, 1);
+            if (latestPointtransfers.isEmpty()) {
+                return false;
+            }
+
+            final JSONObject latestPointtransfer = latestPointtransfers.get(0);
+            final long checkinTime = latestPointtransfer.optLong(Pointtransfer.TIME);
+
+            return DateUtils.isSameDay(new Date(), new Date(checkinTime));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Checks checkin failed", e);
 
