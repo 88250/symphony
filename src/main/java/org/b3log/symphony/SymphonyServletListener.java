@@ -79,6 +79,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         System.setProperty("java.awt.headless", "true");
 
+        Stopwatchs.start("Context Initialized");
+        Latkes.setScanPath("org.b3log.symphony");
+        super.contextInitialized(servletContextEvent);
+
         final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
         final Latkes.RuntimeMode runtimeMode = Latkes.getRuntimeMode();
         final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
@@ -88,10 +92,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
         LOGGER.log(Level.INFO, "Sym is booting [ver=" + VERSION + ", servletContainer=" + Latkes.getServletInfo(servletContextEvent.getServletContext())
                 + ", os=" + Latkes.getOperatingSystemName() + ", isDocker=" + Latkes.isDocker() + ", markdownHttpAvailable=" + markdownHttpAvailable + ", pid=" + Latkes.currentPID()
                 + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode + ", jdbc.username=" + jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
-
-        Stopwatchs.start("Context Initialized");
-        Latkes.setScanPath("org.b3log.symphony");
-        super.contextInitialized(servletContextEvent);
 
         beanManager = BeanManager.getInstance();
 
