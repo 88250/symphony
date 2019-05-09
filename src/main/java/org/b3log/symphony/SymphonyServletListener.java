@@ -38,6 +38,7 @@ import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.service.CronMgmtService;
 import org.b3log.symphony.service.InitMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -78,7 +79,16 @@ public final class SymphonyServletListener extends AbstractServletListener {
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         System.setProperty("java.awt.headless", "true");
 
-        LOGGER.log(Level.INFO, "Sym process [pid=" + Symphonys.currentPID() + "]");
+        final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
+        final Latkes.RuntimeMode runtimeMode = Latkes.getRuntimeMode();
+        final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
+        final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
+        final boolean markdownHttpAvailable = Markdowns.MARKDOWN_HTTP_AVAILABLE;
+
+        LOGGER.log(Level.INFO, "Sym is booting [ver=" + VERSION + ", servletContainer=" + Latkes.getServletInfo(servletContextEvent.getServletContext())
+                + ", os=" + Latkes.getOperatingSystemName() + ", isDocker=" + Latkes.isDocker() + ", markdownHttpAvailable=" + markdownHttpAvailable + ", pid=" + Latkes.currentPID()
+                + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode + ", jdbc.username=" + jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
+
         Stopwatchs.start("Context Initialized");
         Latkes.setScanPath("org.b3log.symphony");
         super.contextInitialized(servletContextEvent);
