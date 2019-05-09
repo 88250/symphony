@@ -64,7 +64,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.13, Mar 16, 2019
+ * @version 1.11.21.14, May 9, 2019
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -456,6 +456,10 @@ public final class Markdowns {
                 addAttributes("input", "type", "disabled", "checked").
                 addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking").
                 addAttributes("code", "class").
-                addAttributes("span", "class");
+                addAttributes("span", "class").
+                addAttributes("p", "align");
+        for (int i = 1; i <= 6; i++) {
+            whitelist.addAttributes("h" + i, "align");
+        }
     }
 }
