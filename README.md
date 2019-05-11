@@ -48,6 +48,7 @@
 
 社区版：
 
+* [宽客网](http://www.cnq.net)
 * [AIQ-机器学习](http://www.6aiq.com)
 * [许昌IT圈](http://www.xcitq.com)
 * [凤凰匯](https://www.fengd.com)
