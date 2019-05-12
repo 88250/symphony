@@ -1960,15 +1960,14 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
-        final Map<String, Class<?>> commentFields = new HashMap<>();
-        commentFields.put(Keys.OBJECT_ID, String.class);
-        commentFields.put(Comment.COMMENT_CREATE_TIME, String.class);
-        commentFields.put(Comment.COMMENT_AUTHOR_ID, String.class);
-        commentFields.put(Comment.COMMENT_ON_ARTICLE_ID, String.class);
-        commentFields.put(Comment.COMMENT_SHARP_URL, String.class);
-        commentFields.put(Comment.COMMENT_STATUS, Integer.class);
-        commentFields.put(Comment.COMMENT_CONTENT, String.class);
-
+        final List<String> commentFields = new ArrayList<>();
+        commentFields.add(Keys.OBJECT_ID);
+        commentFields.add(Comment.COMMENT_CREATE_TIME);
+        commentFields.add(Comment.COMMENT_AUTHOR_ID);
+        commentFields.add(Comment.COMMENT_ON_ARTICLE_ID);
+        commentFields.add(Comment.COMMENT_SHARP_URL);
+        commentFields.add(Comment.COMMENT_STATUS);
+        commentFields.add(Comment.COMMENT_CONTENT);
         final JSONObject result = commentQueryService.getComments(requestJSONObject, commentFields);
         dataModel.put(Comment.COMMENTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Comment.COMMENTS)));
 

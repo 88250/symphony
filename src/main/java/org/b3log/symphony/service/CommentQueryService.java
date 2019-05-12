@@ -46,7 +46,7 @@ import java.util.concurrent.TimeUnit;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.2.6, Dec 25, 2018
+ * @version 2.12.2.7, May 12, 2019
  * @since 0.2.0
  */
 @Service
@@ -712,7 +712,7 @@ public class CommentQueryService {
      * @see Pagination
      */
 
-    public JSONObject getComments(final JSONObject requestJSONObject, final Map<String, Class<?>> commentFields) {
+    public JSONObject getComments(final JSONObject requestJSONObject, final List<String> commentFields) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -720,8 +720,8 @@ public class CommentQueryService {
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
         final Query query = new Query().setPage(currentPageNum, pageSize).
                 addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING);
-        for (final Map.Entry<String, Class<?>> commentField : commentFields.entrySet()) {
-            query.select(commentField.getKey());
+        for (final String commentField : commentFields) {
+            query.select(commentField);
         }
 
         JSONObject result;

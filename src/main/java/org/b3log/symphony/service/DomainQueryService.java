@@ -45,7 +45,7 @@ import java.util.List;
  * Domain query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Apr 1, 2018
+ * @version 1.1.0.1, May 12, 2019
  * @since 1.4.0
  */
 @Service
