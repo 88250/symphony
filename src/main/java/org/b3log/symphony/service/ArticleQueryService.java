@@ -59,7 +59,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.28.0.9, Dec 17, 2018
+ * @version 2.28.0.10, May 12, 2019
  * @since 0.2.0
  */
 @Service
@@ -334,25 +334,25 @@ public class ArticleQueryService {
             return Collections.emptyList();
         }
 
-        final Map<String, Class<?>> articleFields = new HashMap<>();
-        articleFields.put(Keys.OBJECT_ID, String.class);
-        articleFields.put(Article.ARTICLE_STICK, Long.class);
-        articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
-        articleFields.put(Article.ARTICLE_UPDATE_TIME, Long.class);
-        articleFields.put(Article.ARTICLE_LATEST_CMT_TIME, Long.class);
-        articleFields.put(Article.ARTICLE_AUTHOR_ID, String.class);
-        articleFields.put(Article.ARTICLE_TITLE, String.class);
-        articleFields.put(Article.ARTICLE_STATUS, Integer.class);
-        articleFields.put(Article.ARTICLE_VIEW_CNT, Integer.class);
-        articleFields.put(Article.ARTICLE_TYPE, Integer.class);
-        articleFields.put(Article.ARTICLE_PERMALINK, String.class);
-        articleFields.put(Article.ARTICLE_TAGS, String.class);
-        articleFields.put(Article.ARTICLE_LATEST_CMTER_NAME, String.class);
-        articleFields.put(Article.ARTICLE_COMMENT_CNT, Integer.class);
-        articleFields.put(Article.ARTICLE_ANONYMOUS, Integer.class);
-        articleFields.put(Article.ARTICLE_PERFECT, Integer.class);
-        articleFields.put(Article.ARTICLE_CONTENT, String.class);
-        articleFields.put(Article.ARTICLE_QNA_OFFER_POINT, Integer.class);
+        final List<String> articleFields = new ArrayList<>();
+        articleFields.add(Keys.OBJECT_ID);
+        articleFields.add(Article.ARTICLE_STICK);
+        articleFields.add(Article.ARTICLE_CREATE_TIME);
+        articleFields.add(Article.ARTICLE_UPDATE_TIME);
+        articleFields.add(Article.ARTICLE_LATEST_CMT_TIME);
+        articleFields.add(Article.ARTICLE_AUTHOR_ID);
+        articleFields.add(Article.ARTICLE_TITLE);
+        articleFields.add(Article.ARTICLE_STATUS);
+        articleFields.add(Article.ARTICLE_VIEW_CNT);
+        articleFields.add(Article.ARTICLE_TYPE);
+        articleFields.add(Article.ARTICLE_PERMALINK);
+        articleFields.add(Article.ARTICLE_TAGS);
+        articleFields.add(Article.ARTICLE_LATEST_CMTER_NAME);
+        articleFields.add(Article.ARTICLE_COMMENT_CNT);
+        articleFields.add(Article.ARTICLE_ANONYMOUS);
+        articleFields.add(Article.ARTICLE_PERFECT);
+        articleFields.add(Article.ARTICLE_CONTENT);
+        articleFields.add(Article.ARTICLE_QNA_OFFER_POINT);
 
         return getArticlesByTags(currentPageNum, pageSize, articleFields, tags.toArray(new JSONObject[0]));
     }
@@ -729,17 +729,15 @@ public class ArticleQueryService {
                 tagList.add(tag);
             }
 
-            final Map<String, Class<?>> articleFields = new HashMap<>();
-            articleFields.put(Article.ARTICLE_TITLE, String.class);
-            articleFields.put(Article.ARTICLE_PERMALINK, String.class);
-            articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
-            articleFields.put(Article.ARTICLE_AUTHOR_ID, String.class);
+            final List<String> articleFields = new ArrayList<>();
+            articleFields.add(Article.ARTICLE_TITLE);
+            articleFields.add(Article.ARTICLE_PERMALINK);
+            articleFields.add(Article.ARTICLE_CREATE_TIME);
+            articleFields.add(Article.ARTICLE_AUTHOR_ID);
 
             final List<JSONObject> ret = new ArrayList<>();
-
             if (!tagList.isEmpty()) {
                 final List<JSONObject> tagArticles = getArticlesByTags(currentPageNum, pageSize, articleFields, tagList.toArray(new JSONObject[0]));
-
                 ret.addAll(tagArticles);
             }
 
@@ -751,8 +749,8 @@ public class ArticleQueryService {
                 final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setPageCount(currentPageNum).
                         setPage(1, pageSize);
                 query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-                for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
-                    query.select(articleField.getKey());
+                for (final String articleField : articleFields) {
+                    query.select(articleField);
                 }
 
                 final JSONObject result = articleRepository.get(query);
@@ -820,7 +818,7 @@ public class ArticleQueryService {
      * @return articles, return an empty list if not found
      */
     public List<JSONObject> getArticlesByTags(final int currentPageNum, final int pageSize,
-                                              final Map<String, Class<?>> articleFields, final JSONObject... tags) {
+                                              final List<String> articleFields, final JSONObject... tags) {
         try {
             final List<Filter> filters = new ArrayList<>();
             for (final JSONObject tag : tags) {
@@ -848,8 +846,8 @@ public class ArticleQueryService {
 
             query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-            for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
-                query.select(articleField.getKey());
+            for (final String articleField : articleFields) {
+                query.select(articleField);
             }
 
             result = articleRepository.get(query);
