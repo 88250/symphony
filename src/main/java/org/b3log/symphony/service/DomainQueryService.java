@@ -40,7 +40,6 @@ import org.jsoup.Jsoup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Domain query service.
@@ -286,7 +285,7 @@ public class DomainQueryService {
      * </pre>
      * @see Pagination
      */
-    public JSONObject getDomains(final JSONObject requestJSONObject, final Map<String, Class<?>> domainFields) {
+    public JSONObject getDomains(final JSONObject requestJSONObject, final List<String> domainFields) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -296,8 +295,8 @@ public class DomainQueryService {
                 addSort(Domain.DOMAIN_SORT, SortDirection.ASCENDING).
                 addSort(Domain.DOMAIN_TAG_COUNT, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-        for (final Map.Entry<String, Class<?>> field : domainFields.entrySet()) {
-            query.select(field.getKey());
+        for (final String field : domainFields) {
+            query.select(field);
         }
 
         if (requestJSONObject.has(Domain.DOMAIN_TITLE)) {

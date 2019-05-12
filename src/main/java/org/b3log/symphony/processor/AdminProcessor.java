@@ -2274,14 +2274,13 @@ public class AdminProcessor {
             requestJSONObject.put(Domain.DOMAIN_TITLE, domainTitle);
         }
 
-        final Map<String, Class<?>> domainFields = new HashMap<>();
-        domainFields.put(Keys.OBJECT_ID, String.class);
-        domainFields.put(Domain.DOMAIN_TITLE, String.class);
-        domainFields.put(Domain.DOMAIN_DESCRIPTION, String.class);
-        domainFields.put(Domain.DOMAIN_ICON_PATH, String.class);
-        domainFields.put(Domain.DOMAIN_STATUS, String.class);
-        domainFields.put(Domain.DOMAIN_URI, String.class);
-
+        final List<String> domainFields = new ArrayList<>();
+        domainFields.add(Keys.OBJECT_ID);
+        domainFields.add(Domain.DOMAIN_TITLE);
+        domainFields.add(Domain.DOMAIN_DESCRIPTION);
+        domainFields.add(Domain.DOMAIN_ICON_PATH);
+        domainFields.add(Domain.DOMAIN_STATUS);
+        domainFields.add(Domain.DOMAIN_URI);
         final JSONObject result = domainQueryService.getDomains(requestJSONObject, domainFields);
         dataModel.put(Common.ALL_DOMAINS, CollectionUtils.jsonArrayToList(result.optJSONArray(Domain.DOMAINS)));
 
