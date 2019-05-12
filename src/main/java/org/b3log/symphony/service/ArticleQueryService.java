@@ -2006,7 +2006,7 @@ public class ArticleQueryService {
      * </pre>
      * @see Pagination
      */
-    public JSONObject getArticles(final JSONObject requestJSONObject, final Map<String, Class<?>> articleFields) {
+    public JSONObject getArticles(final JSONObject requestJSONObject, final List<String> articleFields) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -2015,8 +2015,8 @@ public class ArticleQueryService {
         final Query query = new Query().setPage(currentPageNum, pageSize).
                 addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-        for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
-            query.select(articleField.getKey());
+        for (final String articleField : articleFields) {
+            query.select(articleField);
         }
 
         if (requestJSONObject.has(Keys.OBJECT_ID)) {

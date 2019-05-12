@@ -1837,18 +1837,17 @@ public class AdminProcessor {
             requestJSONObject.put(Keys.OBJECT_ID, articleId);
         }
 
-        final Map<String, Class<?>> articleFields = new HashMap<>();
-        articleFields.put(Keys.OBJECT_ID, String.class);
-        articleFields.put(Article.ARTICLE_TITLE, String.class);
-        articleFields.put(Article.ARTICLE_PERMALINK, String.class);
-        articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
-        articleFields.put(Article.ARTICLE_VIEW_CNT, Integer.class);
-        articleFields.put(Article.ARTICLE_COMMENT_CNT, Integer.class);
-        articleFields.put(Article.ARTICLE_AUTHOR_ID, String.class);
-        articleFields.put(Article.ARTICLE_TAGS, String.class);
-        articleFields.put(Article.ARTICLE_STATUS, Integer.class);
-        articleFields.put(Article.ARTICLE_STICK, Long.class);
-
+        final List<String> articleFields = new ArrayList<>();
+        articleFields.add(Keys.OBJECT_ID);
+        articleFields.add(Article.ARTICLE_TITLE);
+        articleFields.add(Article.ARTICLE_PERMALINK);
+        articleFields.add(Article.ARTICLE_CREATE_TIME);
+        articleFields.add(Article.ARTICLE_VIEW_CNT);
+        articleFields.add(Article.ARTICLE_COMMENT_CNT);
+        articleFields.add(Article.ARTICLE_AUTHOR_ID);
+        articleFields.add(Article.ARTICLE_TAGS);
+        articleFields.add(Article.ARTICLE_STATUS);
+        articleFields.add(Article.ARTICLE_STICK);
         final JSONObject result = articleQueryService.getArticles(requestJSONObject, articleFields);
         dataModel.put(Article.ARTICLES, CollectionUtils.jsonArrayToList(result.optJSONArray(Article.ARTICLES)));
 
