@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.5, Feb 27, 2019
+ * @version 1.9.0.6, May 12, 2019
  * @since 0.2.0
  */
 @Service
@@ -634,16 +634,15 @@ public class TagQueryService {
      * </pre>
      * @see Pagination
      */
-    public JSONObject getTags(final JSONObject requestJSONObject, final Map<String, Class<?>> tagFields) {
+    public JSONObject getTags(final JSONObject requestJSONObject, final List<String> tagFields) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
-        final Query query = new Query().setPage(currentPageNum, pageSize).
-                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-        for (final Map.Entry<String, Class<?>> tagField : tagFields.entrySet()) {
-            query.select(tagField.getKey());
+        final Query query = new Query().setPage(currentPageNum, pageSize).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        for (final String tagField : tagFields) {
+            query.select(tagField);
         }
 
         if (requestJSONObject.has(Tag.TAG_TITLE)) {

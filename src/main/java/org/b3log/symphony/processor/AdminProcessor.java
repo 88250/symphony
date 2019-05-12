@@ -119,7 +119,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.30.1.1, Jan 5, 2019
+ * @version 2.30.1.2, May 12, 2019
  * @since 1.1.0
  */
 @RequestProcessor
@@ -469,13 +469,12 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
-        final Map<String, Class<?>> fields = new HashMap<>();
-        fields.put(Keys.OBJECT_ID, String.class);
-        fields.put(Breezemoon.BREEZEMOON_CONTENT, String.class);
-        fields.put(Breezemoon.BREEZEMOON_CREATED, Long.class);
-        fields.put(Breezemoon.BREEZEMOON_AUTHOR_ID, String.class);
-        fields.put(Breezemoon.BREEZEMOON_STATUS, Integer.class);
-
+        final List<String> fields = new ArrayList<>();
+        fields.add(Keys.OBJECT_ID);
+        fields.add(Breezemoon.BREEZEMOON_CONTENT);
+        fields.add(Breezemoon.BREEZEMOON_CREATED);
+        fields.add(Breezemoon.BREEZEMOON_AUTHOR_ID);
+        fields.add(Breezemoon.BREEZEMOON_STATUS);
         final JSONObject result = breezemoonQueryService.getBreezemoons(requestJSONObject, fields);
         dataModel.put(Breezemoon.BREEZEMOONS, CollectionUtils.jsonArrayToList(result.optJSONArray(Breezemoon.BREEZEMOONS)));
 
@@ -2134,20 +2133,19 @@ public class AdminProcessor {
             requestJSONObject.put(Tag.TAG_TITLE, tagTitle);
         }
 
-        final Map<String, Class<?>> tagFields = new HashMap<>();
-        tagFields.put(Keys.OBJECT_ID, String.class);
-        tagFields.put(Tag.TAG_TITLE, String.class);
-        tagFields.put(Tag.TAG_DESCRIPTION, String.class);
-        tagFields.put(Tag.TAG_ICON_PATH, String.class);
-        tagFields.put(Tag.TAG_COMMENT_CNT, Integer.class);
-        tagFields.put(Tag.TAG_REFERENCE_CNT, Integer.class);
-        tagFields.put(Tag.TAG_FOLLOWER_CNT, Integer.class);
-        tagFields.put(Tag.TAG_STATUS, Integer.class);
-        tagFields.put(Tag.TAG_GOOD_CNT, Integer.class);
-        tagFields.put(Tag.TAG_BAD_CNT, Integer.class);
-        tagFields.put(Tag.TAG_URI, String.class);
-        tagFields.put(Tag.TAG_CSS, String.class);
-
+        final List<String> tagFields = new ArrayList<>();
+        tagFields.add(Keys.OBJECT_ID);
+        tagFields.add(Tag.TAG_TITLE);
+        tagFields.add(Tag.TAG_DESCRIPTION);
+        tagFields.add(Tag.TAG_ICON_PATH);
+        tagFields.add(Tag.TAG_COMMENT_CNT);
+        tagFields.add(Tag.TAG_REFERENCE_CNT);
+        tagFields.add(Tag.TAG_FOLLOWER_CNT);
+        tagFields.add(Tag.TAG_STATUS);
+        tagFields.add(Tag.TAG_GOOD_CNT);
+        tagFields.add(Tag.TAG_BAD_CNT);
+        tagFields.add(Tag.TAG_URI);
+        tagFields.add(Tag.TAG_CSS);
         final JSONObject result = tagQueryService.getTags(requestJSONObject, tagFields);
         dataModel.put(Tag.TAGS, CollectionUtils.jsonArrayToList(result.optJSONArray(Tag.TAGS)));
 

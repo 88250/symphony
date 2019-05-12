@@ -48,7 +48,7 @@ import java.util.*;
  * Breezemoon query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Dec 27, 2018
+ * @version 1.0.0.9, May 12, 2019
  * @since 2.8.0
  */
 @Service
@@ -294,15 +294,15 @@ public class BreezemoonQueryService {
      * @see Pagination
      */
 
-    public JSONObject getBreezemoons(final JSONObject requestJSONObject, final Map<String, Class<?>> fields) {
+    public JSONObject getBreezemoons(final JSONObject requestJSONObject, final List<String> fields) {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
         final Query query = new Query().setPage(currentPageNum, pageSize).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-        for (final Map.Entry<String, Class<?>> field : fields.entrySet()) {
-            query.select(field.getKey());
+        for (final String field : fields) {
+            query.select(field);
         }
 
         JSONObject result;
