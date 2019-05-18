@@ -29,7 +29,5 @@
 <link rel="stylesheet" href="${staticServePath}/css/mobile-base.css?${staticResourceVersion}" />
 <link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" />
 <link rel="apple-touch-icon" href="${staticServePath}/images/faviconH.png">
-<#if !isAdminLoggedIn>
 ${siteVisitStatCode}
-</#if>
 </#macro>

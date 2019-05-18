@@ -31,7 +31,5 @@
 <link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" />
 <link rel="apple-touch-icon" href="${staticServePath}/images/faviconH.png">
 <link rel="search" type="application/opensearchdescription+xml" title="Sym" href="/opensearch.xml">
-<#if !isAdminLoggedIn>
 ${siteVisitStatCode}
-</#if>
 </#macro>
