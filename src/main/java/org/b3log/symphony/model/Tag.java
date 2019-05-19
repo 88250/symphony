@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.18.0.3, Nov 15, 2018
+ * @version 1.18.0.4, May 19, 2019
  * @since 0.2.0
  */
 public final class Tag {
@@ -211,16 +211,6 @@ public final class Tag {
      * Key of tag title lower case.
      */
     public static final String TAG_T_TITLE_LOWER_CASE = "tagTitleLowerCase";
-
-    /**
-     * Key of tag links.
-     */
-    public static final String TAG_T_LINKS = "tagLinks";
-
-    /**
-     * Key of tag links count.
-     */
-    public static final String TAG_T_LINKS_CNT = "tagLinksCnt";
 
     //// Tag type constants
     /**
