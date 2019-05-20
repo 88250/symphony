@@ -24,7 +24,8 @@ import org.json.JSONObject;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.34.0.1, Apr 9, 2019
+ * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
+ * @version 1.34.0.2, May 20, 2019
  * @since 0.2.0
  */
 public final class Article {
@@ -470,10 +471,6 @@ public final class Article {
     public static final int ARTICLE_TYPE_C_QNA = 5;
     // articleDisplayable constants
     /**
-     * create by: qiankunpingtai
-     * create time: 2019/5/14 22:42
-     * website：https://qiankunpingtai.cn
-     * description:
      * 不展示false
      * 展示true
      */
@@ -481,10 +478,6 @@ public final class Article {
     public static final Integer ARTICLE_DISPLAYABLE_YES = 1;
     // articleDisplayable es and algolia constants
     /**
-     * create by: qiankunpingtai
-     * create time: 2019/5/14 22:42
-     * website：https://qiankunpingtai.cn
-     * description:
      * 0 删除
      * 1 创建
      * 2 更新

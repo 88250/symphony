@@ -63,7 +63,8 @@ import java.util.UUID;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.0, May 8, 2019
+ * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
+ * @version 1.0.2.1, May 20, 2019
  * @since 1.5.0
  */
 @RequestProcessor

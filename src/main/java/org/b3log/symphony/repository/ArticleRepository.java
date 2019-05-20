@@ -33,7 +33,8 @@ import java.util.List;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.6, Aug 27, 2018
+ * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
+ * @version 1.1.1.7, May 14, 2018
  * @since 0.2.0
  */
 @Repository
@@ -90,10 +91,6 @@ public class ArticleRepository extends AbstractRepository {
 
         final double mid = Math.random();
         /**
-         * create by: qiankunpingtai
-         * create time: 2019/5/14 22:45
-         * website：https://qiankunpingtai.cn
-         * description:
          * 过滤不展示的帖子
          */
         Query query = new Query().
@@ -110,10 +107,6 @@ public class ArticleRepository extends AbstractRepository {
         final int reminingSize = fetchSize - list1.size();
         if (0 != reminingSize) { // Query for remains
             /**
-             * create by: qiankunpingtai
-             * create time: 2019/5/14 22:45
-             * website：https://qiankunpingtai.cn
-             * description:
              * 过滤不展示的帖子
              */
             query = new Query().

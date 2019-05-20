@@ -21,7 +21,8 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 2.26.0.1, Apr 9, 2019
+ * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
+ * @version 2.26.0.2, May 20, 2019
  */
 
 /**
@@ -166,10 +167,6 @@ var AddArticle = {
       })
 
         /**
-         * create by: qiankunpingtai
-         * create time: 2019/5/14 18:11
-         * website：https://qiankunpingtai.cn
-         * description:
          * 添加是否在列表中展示项
          */
         var requestJSONObject = {

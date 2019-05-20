@@ -46,7 +46,8 @@ import java.util.List;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.1, Oct 23, 2018
+ * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
+ * @version 1.3.1.2, May 20, 2019
  * @since 1.4.0
  */
 @Singleton
@@ -116,10 +117,6 @@ public class ArticleCache {
             filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
             filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
             /**
-             * create by: qiankunpingtai
-             * create time: 2019/5/14 22:45
-             * website：https://qiankunpingtai.cn
-             * description:
              * 过滤不展示的帖子
              */
             filters.add( new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT));
@@ -226,10 +223,6 @@ public class ArticleCache {
         Stopwatchs.start("Query perfect articles");
         try {
             /**
-             * create by: qiankunpingtai
-             * create time: 2019/5/14 22:45
-             * website：https://qiankunpingtai.cn
-             * description:
              * 过滤不展示的帖子
              */
             final Query query = new Query().

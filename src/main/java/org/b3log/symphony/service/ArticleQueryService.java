@@ -59,7 +59,8 @@ import java.util.concurrent.TimeUnit;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.28.0.10, May 12, 2019
+ * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
+ * @version 2.28.0.11, May 20, 2019
  * @since 0.2.0
  */
 @Service
@@ -354,10 +355,6 @@ public class ArticleQueryService {
         articleFields.add(Article.ARTICLE_CONTENT);
         articleFields.add(Article.ARTICLE_QNA_OFFER_POINT);
         /**
-         * create by: qiankunpingtai
-         * create time: 2019/5/14 22:45
-         * website：https://qiankunpingtai.cn
-         * description:
          * 添加帖子是否展示字段
          */
         articleFields.add(Article.ARTICLE_DISPLAYABLE);
@@ -554,10 +551,6 @@ public class ArticleQueryService {
                 filters.add(typeFilter);
                 filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
                 /**
-                 * create by: qiankunpingtai
-                 * create time: 2019/5/14 22:45
-                 * website：https://qiankunpingtai.cn
-                 * description:
                  * 过滤不展示的帖子
                  */
                 filters.add( new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT));
@@ -607,10 +600,6 @@ public class ArticleQueryService {
             }
 
             /**
-             * create by: qiankunpingtai
-             * create time: 2019/5/14 22:45
-             * website：https://qiankunpingtai.cn
-             * description:
              * 过滤不展示的帖子
              * 这个地方过滤的字段在多个表中，只能使用原生sql进行处理
              *
@@ -854,10 +843,6 @@ public class ArticleQueryService {
                                               final List<String> articleFields, final JSONObject... tags) {
         try {
             /**
-             * create by: qiankunpingtai
-             * create time: 2019/5/14 22:45
-             * website：https://qiankunpingtai.cn
-             * description:
              * 过滤不展示的帖子
              * 这个地方过滤的字段在多个表中，只能使用原生sql进行处理
              *
@@ -921,10 +906,6 @@ public class ArticleQueryService {
     public List<JSONObject> getArticlesByCity(final String city, final int currentPageNum, final int pageSize) {
         try {
             /**
-             * create by: qiankunpingtai
-             * create time: 2019/5/14 22:45
-             * website：https://qiankunpingtai.cn
-             * description:
              * 过滤不展示的帖子
              */
             final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
@@ -960,10 +941,6 @@ public class ArticleQueryService {
     public List<JSONObject> getArticlesByTag(final int sortMode, final JSONObject tag, final int currentPageNum, final int pageSize) {
         try {
             /**
-             * create by: qiankunpingtai
-             * create time: 2019/5/14 22:45
-             * website：https://qiankunpingtai.cn
-             * description:
              * 过滤不展示的帖子
              * 这个地方过滤的字段在多个表中，只能使用原生sql进行处理
              *
@@ -1302,10 +1279,6 @@ public class ArticleQueryService {
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, "B3log%"));
         /**
-         * create by: qiankunpingtai
-         * create time: 2019/5/14 22:45
-         * website：https://qiankunpingtai.cn
-         * description:
          * 过滤不展示的帖子
          */
         filters.add(new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT));
@@ -1323,10 +1296,6 @@ public class ArticleQueryService {
         filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
         /**
-         * create by: qiankunpingtai
-         * create time: 2019/5/14 22:45
-         * website：https://qiankunpingtai.cn
-         * description:
          * 过滤不展示的帖子
          */
         filters.add(new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT));
@@ -1466,10 +1435,6 @@ public class ArticleQueryService {
             try {
                 final int fetchSize = 18;
                 /**
-                 * create by: qiankunpingtai
-                 * create time: 2019/5/14 22:45
-                 * website：https://qiankunpingtai.cn
-                 * description:
                  * 过滤不展示的帖子
                  */
                 Query query = new Query().
@@ -1583,10 +1548,6 @@ public class ArticleQueryService {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setPage(currentPageNum, fetchSize);
         /**
-         * create by: qiankunpingtai
-         * create time: 2019/5/14 22:45
-         * website：https://qiankunpingtai.cn
-         * description:
          * 过滤不展示的帖子
          */
         query.setFilter(CompositeFilterOperator.and(
@@ -2360,10 +2321,6 @@ public class ArticleQueryService {
 
     private void addListProjections(final Query query) {
         /**
-         * create by: qiankunpingtai
-         * create time: 2019/5/14 22:45
-         * website：https://qiankunpingtai.cn
-         * description:
          * 添加帖子是否展示字段
          */
         query.select(Keys.OBJECT_ID,

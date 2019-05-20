@@ -119,7 +119,8 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.30.1.2, May 12, 2019
+ * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
+ * @version 2.30.1.3, May 20, 2019
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1064,10 +1065,6 @@ public class AdminProcessor {
         String rewardContent = context.param(Article.ARTICLE_REWARD_CONTENT);
         final String rewardPoint = context.param(Article.ARTICLE_REWARD_POINT);
         /**
-         * create by: qiankunpingtai
-         * create time: 2019/5/14 18:11
-         * website：https://qiankunpingtai.cn
-         * description:
          * 添加是否在列表中展示项
          * 管理员添加的帖子默认在列表中展示，如果不需要在列表中展示，可以在帖子修改页面进行修改。
          */
@@ -1913,10 +1910,6 @@ public class AdminProcessor {
             final String name = parameterNames.nextElement();
             final String value = context.param(name);
             /**
-             * create by: qiankunpingtai
-             * create time: 2019/5/14 22:45
-             * website：https://qiankunpingtai.cn
-             * description:
              * int类型，值由字符串更新为int
              */
             if (name.equals(Article.ARTICLE_REWARD_POINT)
@@ -1949,14 +1942,10 @@ public class AdminProcessor {
         dataModel.put(Article.ARTICLE, article);
 
         /**
-         * create by: qiankunpingtai
-         * create time: 2019/5/15 10:45
-         * website：https://qiankunpingtai.cn
-         * description:
          * 如果是不在列表中显示的帖子，直接跳过
          */
         final Integer articleDisplayable = article.optInt(Article.ARTICLE_DISPLAYABLE);
-        if(Article.ARTICLE_DISPLAYABLE_YES.equals(articleDisplayable)){
+        if(Article.ARTICLE_DISPLAYABLE_YES.equals(articleDisplayable)||Symphonys.ARTICLE_DISPLAYABLE_NOT_TO_SEARCH_ENABLED){
             updateArticleSearchIndex(article);
         }
         dataModelService.fillHeaderAndFooter(context, dataModel);
@@ -2654,14 +2643,10 @@ public class AdminProcessor {
         final String articleId = context.getRequest().getParameter(Article.ARTICLE_T_ID);
         final JSONObject article = articleQueryService.getArticle(articleId);
         /**
-         * create by: qiankunpingtai
-         * create time: 2019/5/15 10:45
-         * website：https://qiankunpingtai.cn
-         * description:
          * 如果是不在列表中显示的帖子，直接跳过
          */
         final Integer articleDisplayable = article.optInt(Article.ARTICLE_DISPLAYABLE);
-        if(!Article.ARTICLE_DISPLAYABLE_YES.equals(articleDisplayable)){
+        if(!Article.ARTICLE_DISPLAYABLE_YES.equals(articleDisplayable)&&!Symphonys.ARTICLE_DISPLAYABLE_NOT_TO_SEARCH_ENABLED){
             return;
         }
         updateArticleSearchIndex(article);
