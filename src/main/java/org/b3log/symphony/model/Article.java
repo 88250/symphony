@@ -471,13 +471,14 @@ public final class Article {
      */
     public static final int ARTICLE_TYPE_C_QNA = 5;
 
+    // Show in list constants
     /**
-     * Article displayable - not.
+     * Article show in list - not.
      */
-    public static final Integer ARTICLE_DISPLAYABLE_C_NOT = 0;
+    public static final Integer ARTICLE_SHOW_IN_LIST_C_NOT = 0;
 
     /**
-     * Article displayable - yes.
+     * Article show in list - yes.
      */
     public static final Integer ARTICLE_SHOW_IN_LIST_C_YES = 1;
 

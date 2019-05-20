@@ -209,7 +209,7 @@
                         <input type="text" name="articleQnAOfferPoint" value="${article.articleQnAOfferPoint?c}"/>
                     </label>
                     <label class="mid">
-                        <div>${displayableLabel}</div>
+                        <div>${showInListLabel}</div>
                         <select id="articleShowInList" name="articleShowInList">
                             <option value="1"<#if 1==article.articleShowInList> selected</#if>>${yesLabel}</option>
                             <option value="0"<#if 0==article.articleShowInList> selected</#if>>${noLabel}</option>

@@ -115,7 +115,7 @@ public class ArticleCache {
             filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
             filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
             filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
-            filters.add(new PropertyFilter(Article.ARTICLE_SHOW_IN_LIST, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_C_NOT));
+            filters.add(new PropertyFilter(Article.ARTICLE_SHOW_IN_LIST, FilterOperator.NOT_EQUAL, Article.ARTICLE_SHOW_IN_LIST_C_NOT));
             query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                     select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_AUTHOR_ID, Article.ARTICLE_ANONYMOUS);
             final JSONObject result = articleRepository.get(query);
@@ -222,7 +222,7 @@ public class ArticleCache {
                     setPageCount(1).setPage(1, 36);
             query.setFilter(CompositeFilterOperator.and(
                     new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT),
-                    new PropertyFilter(Article.ARTICLE_SHOW_IN_LIST, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_C_NOT)));
+                    new PropertyFilter(Article.ARTICLE_SHOW_IN_LIST, FilterOperator.NOT_EQUAL, Article.ARTICLE_SHOW_IN_LIST_C_NOT)));
             query.select(Keys.OBJECT_ID,
                     Article.ARTICLE_STICK,
                     Article.ARTICLE_CREATE_TIME,
