@@ -59,7 +59,8 @@ import java.util.concurrent.TimeUnit;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.28.0.10, May 12, 2019
+ * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
+ * @version 2.28.0.11, May 20, 2019
  * @since 0.2.0
  */
 @Service
@@ -353,6 +354,10 @@ public class ArticleQueryService {
         articleFields.add(Article.ARTICLE_PERFECT);
         articleFields.add(Article.ARTICLE_CONTENT);
         articleFields.add(Article.ARTICLE_QNA_OFFER_POINT);
+        /**
+         * 添加帖子是否展示字段
+         */
+        articleFields.add(Article.ARTICLE_DISPLAYABLE);
 
         return getArticlesByTags(currentPageNum, pageSize, articleFields, tags.toArray(new JSONObject[0]));
     }
@@ -545,7 +550,10 @@ public class ArticleQueryService {
                 final List<Filter> filters = new ArrayList<>();
                 filters.add(typeFilter);
                 filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
-
+                /**
+                 * 过滤不展示的帖子
+                 */
+                filters.add( new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT));
                 query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
             } else {
                 query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
@@ -591,34 +599,48 @@ public class ArticleQueryService {
                 tagIds.add(domainTags.optJSONObject(i).optString(Tag.TAG + "_" + Keys.OBJECT_ID));
             }
 
-            Query query = new Query().setFilter(
-                    new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.IN, tagIds)).
-                    setPage(currentPageNum, pageSize).
-                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-            JSONObject result = tagArticleRepository.get(query);
-            final JSONArray tagArticles = result.optJSONArray(Keys.RESULTS);
-            if (tagArticles.length() <= 0) {
+            /**
+             * 过滤不展示的帖子
+             * 这个地方过滤的字段在多个表中，只能使用原生sql进行处理
+             *
+             */
+            StringBuffer queryCount=new StringBuffer("select count(0) ").append(" from ");
+            StringBuffer queryList=new StringBuffer("select symphony_article.oId ").append(" from ");
+            StringBuffer queryStr=new StringBuffer(articleRepository.getName()+" symphony_article, ").append(tagArticleRepository.getName()+" symphony_tag_article ");
+            queryStr.append(" where symphony_article.oId=symphony_tag_article.article_oId and symphony_article.articleDisplayable != ? ")
+                    .append(" and symphony_article.").append(Article.ARTICLE_STATUS).append("!=?");
+            queryStr.append(" and ").append( "symphony_tag_article."+Tag.TAG + '_' + Keys.OBJECT_ID).append(" in ( ");
+            for(int i=0;i<tagIds.size();i++){
+                queryStr.append(" ").append(tagIds.get(i));
+                if(i<(tagIds.size()-1)){
+                    queryStr.append(",");
+                }
+            }
+            queryStr.append(")");
+            queryStr.append(" order by ").append("symphony_tag_article."+Keys.OBJECT_ID+" ").append(" desc ");
+
+            final List<JSONObject> tagArticlesCount=articleRepository.
+                    select(queryCount.append(queryStr.toString()).toString(),Article.ARTICLE_DISPLAYABLE_NOT,Article.ARTICLE_STATUS_C_INVALID);
+            queryStr.append(" limit ").append((currentPageNum-1)*pageSize).append(",")
+                    .append(currentPageNum*pageSize);
+            final List<JSONObject> tagArticles=articleRepository.
+                    select(queryList.append(queryStr.toString()).toString(),Article.ARTICLE_DISPLAYABLE_NOT,Article.ARTICLE_STATUS_C_INVALID);
+            if(tagArticles.size()<=0){
                 return ret;
             }
-
-            final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
             final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
+            final int pageCount=(int) Math.ceil((tagArticlesCount==null?0:tagArticlesCount.get(0).optInt("count(0)")) / (double) pageSize);
 
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
 
             final Set<String> articleIds = new HashSet<>();
-            for (int i = 0; i < tagArticles.length(); i++) {
-                articleIds.add(tagArticles.optJSONObject(i).optString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
+            for (int i = 0; i < tagArticles.size(); i++) {
+                articleIds.add(tagArticles.get(i).optString( Keys.OBJECT_ID));
             }
-
-            query = new Query().setFilter(CompositeFilterOperator.and(
-                    new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds),
-                    new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID))).
+            Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articleRepository.get(query).optJSONArray(Keys.RESULTS));
             organizeArticles(articles);
 
@@ -820,37 +842,47 @@ public class ArticleQueryService {
     public List<JSONObject> getArticlesByTags(final int currentPageNum, final int pageSize,
                                               final List<String> articleFields, final JSONObject... tags) {
         try {
-            final List<Filter> filters = new ArrayList<>();
-            for (final JSONObject tag : tags) {
-                filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)));
+            /**
+             * 过滤不展示的帖子
+             * 这个地方过滤的字段在多个表中，只能使用原生sql进行处理
+             *
+             */
+            StringBuffer queryCount=new StringBuffer("select count(0) ").append(" from ");
+            StringBuffer queryList=new StringBuffer("select symphony_article.oId ").append(" from ");
+            StringBuffer queryStr=new StringBuffer(articleRepository.getName()+" symphony_article, ").append(tagArticleRepository.getName()+" symphony_tag_article ");
+            queryStr.append(" where symphony_article.oId=symphony_tag_article.article_oId and symphony_article.articleDisplayable != ? ");
+            if(tags!=null&&tags.length>0){
+                queryStr.append(" and ").append( "symphony_tag_article."+Tag.TAG + '_' + Keys.OBJECT_ID).append(" in ( ");
+                for(int i=0;i<tags.length; i++){
+                    queryStr.append(" ").append(tags[i].optString(Keys.OBJECT_ID));
+                    if(i<(tags.length-1)){
+                        queryStr.append(",");
+                    }
+                }
+                queryStr.append(")");
             }
+            queryStr.append(" order by ").append("symphony_tag_article."+Keys.OBJECT_ID+" ").append(" desc ");
+            final List<JSONObject> tagArticlesCount=articleRepository.
+                    select(queryCount.append(queryStr.toString()).toString(),Article.ARTICLE_DISPLAYABLE_NOT);
+            queryStr.append(" limit ").append((currentPageNum-1)*pageSize).append(",")
+                    .append(currentPageNum*pageSize);
+            final List<JSONObject> tagArticles=articleRepository.
+                    select(queryList.append(queryStr.toString()).toString(),Article.ARTICLE_DISPLAYABLE_NOT);
 
-            Filter filter;
-            if (filters.size() >= 2) {
-                filter = new CompositeFilter(CompositeFilterOperator.OR, filters);
-            } else {
-                filter = filters.get(0);
-            }
-
-            // XXX: 这里的分页是有问题的，后面取文章的时候会少（因为一篇文章可以有多个标签，但是文章 id 一样）
-            Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                    setFilter(filter).setPageCount(1).setPage(currentPageNum, pageSize);
-
-            JSONObject result = tagArticleRepository.get(query);
-            final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
 
             final Set<String> articleIds = new HashSet<>();
-            for (int i = 0; i < tagArticleRelations.length(); i++) {
-                articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
+            for (int i = 0; i < tagArticles.size(); i++) {
+                articleIds.add(tagArticles.get(i).optString( Keys.OBJECT_ID));
             }
 
-            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
+            Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
             for (final String articleField : articleFields) {
                 query.select(articleField);
             }
 
-            result = articleRepository.get(query);
+            JSONObject result = articleRepository.get(query);
+
 
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(ret);
@@ -873,9 +905,13 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getArticlesByCity(final String city, final int currentPageNum, final int pageSize) {
         try {
-            final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                    setFilter(new PropertyFilter(Article.ARTICLE_CITY, FilterOperator.EQUAL, city)).
-                    setPageCount(1).setPage(currentPageNum, pageSize);
+            /**
+             * 过滤不展示的帖子
+             */
+            final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                    .setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_CITY, FilterOperator.EQUAL, city),
+                            new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT)))
+                    .setPageCount(1).setPage(currentPageNum, pageSize);
 
             final JSONObject result = articleRepository.get(query);
 
@@ -904,61 +940,60 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getArticlesByTag(final int sortMode, final JSONObject tag, final int currentPageNum, final int pageSize) {
         try {
-            Query query = new Query();
+            /**
+             * 过滤不展示的帖子
+             * 这个地方过滤的字段在多个表中，只能使用原生sql进行处理
+             *
+             */
+            StringBuffer queryCount=new StringBuffer("select count(0) ").append(" from ");
+            StringBuffer queryList=new StringBuffer("select symphony_article.oId").append(" from ");
+            StringBuffer queryStr=new StringBuffer(articleRepository.getName()+" symphony_article, ").append(tagArticleRepository.getName()+" symphony_tag_article ");
+            queryStr.append("where symphony_article.oId=symphony_tag_article.article_oId and symphony_article.articleDisplayable != ? ");
             switch (sortMode) {
                 case 0:
-                    query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))).
-                            setPageCount(1).setPage(currentPageNum, pageSize);
+                    queryStr.append(" and ").append( "symphony_tag_article."+Tag.TAG + '_' + Keys.OBJECT_ID).append("=").append(tag.optString(Keys.OBJECT_ID))
+                            .append(" order by ").append("symphony_tag_article."+Keys.OBJECT_ID+" ").append(" desc ");
 
                     break;
                 case 1:
-                    query.addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
-                            addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))).
-                            setPageCount(1).setPage(currentPageNum, pageSize);
-
+                    queryStr.append(" and ").append( "symphony_tag_article."+Tag.TAG + '_' + Keys.OBJECT_ID).append("=").append(tag.optString(Keys.OBJECT_ID))
+                            .append(" order by ").append("symphony_tag_article."+Article.ARTICLE_COMMENT_CNT+" ").append(" desc ")
+                            .append(",").append("symphony_tag_article."+Keys.OBJECT_ID+" ").append(" desc ");
                     break;
                 case 2:
-                    query.addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING).
-                            addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))).
-                            setPageCount(1).setPage(currentPageNum, pageSize);
-
+                    queryStr.append(" and ").append( "symphony_tag_article."+Tag.TAG + '_' + Keys.OBJECT_ID).append("=").append(tag.optString(Keys.OBJECT_ID))
+                            .append(" order by ").append("symphony_tag_article."+Article.REDDIT_SCORE+" ").append(" desc ")
+                            .append(",").append("symphony_tag_article."+Keys.OBJECT_ID+" ").append(" desc ");
                     break;
                 case 3:
-                    query.addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING).
-                            addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))).
-                            setPageCount(1).setPage(currentPageNum, pageSize);
-
+                    queryStr.append(" and ").append( "symphony_tag_article."+Tag.TAG + '_' + Keys.OBJECT_ID).append("=").append(tag.optString(Keys.OBJECT_ID))
+                            .append(" order by ").append("symphony_tag_article."+Article.ARTICLE_LATEST_CMT_TIME+" ").append(" desc ")
+                            .append(",").append("symphony_tag_article."+Keys.OBJECT_ID+" ").append(" desc ");
                     break;
                 case 4:
-                    query.addSort(Article.ARTICLE_PERFECT, SortDirection.DESCENDING).
-                            addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))).
-                            setPageCount(1).setPage(currentPageNum, pageSize);
-
+                    queryStr.append(" and ").append( "symphony_tag_article."+Tag.TAG + '_' + Keys.OBJECT_ID).append("=").append(tag.optString(Keys.OBJECT_ID))
+                            .append(" order by ").append("symphony_tag_article."+Article.ARTICLE_PERFECT+" ").append(" desc ")
+                            .append(",").append("symphony_tag_article."+Keys.OBJECT_ID+" ").append(" desc ");
                     break;
                 default:
                     LOGGER.warn("Unknown sort mode [" + sortMode + "]");
-                    query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))).
-                            setPageCount(1).setPage(currentPageNum, pageSize);
+                    queryStr.append(" and ").append( "symphony_tag_article."+Tag.TAG + '_' + Keys.OBJECT_ID).append("=").append(tag.optString(Keys.OBJECT_ID))
+                            .append(" order by ").append(",").append("symphony_tag_article."+Keys.OBJECT_ID+" ").append(" desc ");
+
             }
-
-            JSONObject result = tagArticleRepository.get(query);
-            final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
-
+            final List<JSONObject> tagArticleTotalCount=articleRepository.select(queryCount.append(queryStr.toString()).toString(),Article.ARTICLE_DISPLAYABLE_NOT);
+            tag.put(Tag.TAG_REFERENCE_CNT,tagArticleTotalCount==null?0:tagArticleTotalCount.get(0).optInt("count(0)"));
+            queryStr.append(" limit ").append((currentPageNum-1)*pageSize).append(",")
+                    .append(currentPageNum*pageSize);
+            final List<JSONObject> tagArticleRelations=articleRepository.select(queryList.append(queryStr.toString()).toString(),Article.ARTICLE_DISPLAYABLE_NOT);
             final List<String> articleIds = new ArrayList<>();
-            for (int i = 0; i < tagArticleRelations.length(); i++) {
-                articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
+            for (int i = 0; i < tagArticleRelations.size(); i++) {
+                articleIds.add(tagArticleRelations.get(i).optString(Keys.OBJECT_ID));
             }
-
-            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
+            Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
             addListProjections(query);
 
-            result = articleRepository.get(query);
+            JSONObject result = articleRepository.get(query);
 
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
@@ -1243,7 +1278,10 @@ public class ArticleQueryService {
         filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, "B3log%"));
-
+        /**
+         * 过滤不展示的帖子
+         */
+        filters.add(new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT));
         return new CompositeFilter(CompositeFilterOperator.AND, filters);
     }
 
@@ -1257,7 +1295,10 @@ public class ArticleQueryService {
         filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.EQUAL, Article.ARTICLE_TYPE_C_QNA));
         filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
-
+        /**
+         * 过滤不展示的帖子
+         */
+        filters.add(new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT));
         return new CompositeFilter(CompositeFilterOperator.AND, filters);
     }
 
@@ -1393,10 +1434,14 @@ public class ArticleQueryService {
             Stopwatchs.start("Query index recent articles");
             try {
                 final int fetchSize = 18;
+                /**
+                 * 过滤不展示的帖子
+                 */
                 Query query = new Query().
                         setFilter(CompositeFilterOperator.and(
                                 new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION),
-                                new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID))).
+                                new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID),
+                                new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT))).
                         setPageCount(1).setPage(1, fetchSize).
                         addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING);
                 ret = articleRepository.getList(query);
@@ -1502,7 +1547,12 @@ public class ArticleQueryService {
     public JSONObject getPerfectArticles(final int currentPageNum, final int fetchSize) {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setPage(currentPageNum, fetchSize);
-        query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
+        /**
+         * 过滤不展示的帖子
+         */
+        query.setFilter(CompositeFilterOperator.and(
+                new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT),
+                new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT)));
 
         final JSONObject ret = new JSONObject();
 
@@ -2270,6 +2320,9 @@ public class ArticleQueryService {
     }
 
     private void addListProjections(final Query query) {
+        /**
+         * 添加帖子是否展示字段
+         */
         query.select(Keys.OBJECT_ID,
                 Article.ARTICLE_STICK,
                 Article.ARTICLE_CREATE_TIME,
@@ -2293,7 +2346,9 @@ public class ArticleQueryService {
                 Article.ARTICLE_WATCH_CNT,
                 Article.ARTICLE_UA,
                 Article.ARTICLE_CONTENT,
-                Article.ARTICLE_QNA_OFFER_POINT);
+                Article.ARTICLE_QNA_OFFER_POINT,
+                Article.ARTICLE_DISPLAYABLE
+        );
     }
 
     private List<JSONObject> getStickArticles() {

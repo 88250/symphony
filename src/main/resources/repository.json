@@ -1840,6 +1840,11 @@
           "type": "String",
           "length": 255,
           "description": "帖子首图地址"
+        },
+        {
+          "name": "articleDisplayable",
+          "type": "int",
+          "description": "帖子是否展示,0不展示，1展示"
         }
       ]
     },

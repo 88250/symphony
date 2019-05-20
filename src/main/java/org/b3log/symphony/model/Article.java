@@ -24,7 +24,8 @@ import org.json.JSONObject;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.34.0.1, Apr 9, 2019
+ * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
+ * @version 1.34.0.2, May 20, 2019
  * @since 0.2.0
  */
 public final class Article {
@@ -384,6 +385,10 @@ public final class Article {
      * Key of flag of notifying followers.
      */
     public static final String ARTICLE_T_NOTIFY_FOLLOWERS = "articleNotifyFollowers";
+    /**
+     * Key of article dispalyable.
+     */
+    public static final String ARTICLE_DISPLAYABLE = "articleDisplayable";
 
     // Anonymous constants
     /**
@@ -464,6 +469,25 @@ public final class Article {
      * Article type - <a href="https://github.com/b3log/symphony/issues/486">QnA</a>.
      */
     public static final int ARTICLE_TYPE_C_QNA = 5;
+    // articleDisplayable constants
+    /**
+     * 不展示false
+     * 展示true
+     */
+    public static final Integer ARTICLE_DISPLAYABLE_NOT =0 ;
+    public static final Integer ARTICLE_DISPLAYABLE_YES = 1;
+    // articleDisplayable es and algolia constants
+    /**
+     * 0 删除
+     * 1 创建
+     * 2 更新
+     * 3 不操作
+     */
+    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT="articleDisplayableIndexOpt";
+    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT_DELETE = "0";
+    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT_ADD = "1";
+    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT_UPDATE = "2";
+    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT_NOTHING = "3";
 
     /**
      * Checks the specified article1 is different from the specified article2.
