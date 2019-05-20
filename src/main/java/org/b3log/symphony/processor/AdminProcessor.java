@@ -120,7 +120,7 @@ import java.util.*;
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.30.1.3, May 20, 2019
+ * @version 2.30.1.4, May 20, 2019
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1064,11 +1064,7 @@ public class AdminProcessor {
         final String articleContent = context.param(Article.ARTICLE_CONTENT);
         String rewardContent = context.param(Article.ARTICLE_REWARD_CONTENT);
         final String rewardPoint = context.param(Article.ARTICLE_REWARD_POINT);
-        /**
-         * 添加是否在列表中展示项
-         * 管理员添加的帖子默认在列表中展示，如果不需要在列表中展示，可以在帖子修改页面进行修改。
-         */
-        final Integer articleDisplayable = Article.ARTICLE_DISPLAYABLE_YES;
+        final int articleShowInList = Article.ARTICLE_SHOW_IN_LIST_C_YES;
         long time = System.currentTimeMillis();
 
         try {
@@ -1089,7 +1085,7 @@ public class AdminProcessor {
         article.put(Article.ARTICLE_REWARD_POINT, Integer.valueOf(rewardPoint));
         article.put(User.USER_NAME, userName);
         article.put(Common.TIME, time);
-        article.put(Article.ARTICLE_DISPLAYABLE,articleDisplayable);
+        article.put(Article.ARTICLE_SHOW_IN_LIST, articleShowInList);
         try {
             final String articleId = articleMgmtService.addArticleByAdmin(article);
             operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_ADD_ARTICLE, articleId));
@@ -1909,9 +1905,6 @@ public class AdminProcessor {
         while (parameterNames.hasMoreElements()) {
             final String name = parameterNames.nextElement();
             final String value = context.param(name);
-            /**
-             * int类型，值由字符串更新为int
-             */
             if (name.equals(Article.ARTICLE_REWARD_POINT)
                     || name.equals(Article.ARTICLE_QNA_OFFER_POINT)
                     || name.equals(Article.ARTICLE_STATUS)
@@ -1922,7 +1915,7 @@ public class AdminProcessor {
                     || name.equals(Article.ARTICLE_PERFECT)
                     || name.equals(Article.ARTICLE_ANONYMOUS_VIEW)
                     || name.equals(Article.ARTICLE_PUSH_ORDER)
-                    ||name.equals(Article.ARTICLE_DISPLAYABLE)) {
+                    || name.equals(Article.ARTICLE_SHOW_IN_LIST)) {
                 article.put(name, Integer.valueOf(value));
             } else {
                 article.put(name, value);
@@ -1941,13 +1934,8 @@ public class AdminProcessor {
         article.put(Article.ARTICLE_TITLE, title);
         dataModel.put(Article.ARTICLE, article);
 
-        /**
-         * 如果是不在列表中显示的帖子，直接跳过
-         */
-        final Integer articleDisplayable = article.optInt(Article.ARTICLE_DISPLAYABLE);
-        if(Article.ARTICLE_DISPLAYABLE_YES.equals(articleDisplayable)||Symphonys.ARTICLE_DISPLAYABLE_NOT_TO_SEARCH_ENABLED){
-            updateArticleSearchIndex(article);
-        }
+        updateArticleSearchIndex(article);
+
         dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
@@ -2642,13 +2630,7 @@ public class AdminProcessor {
     public void rebuildOneArticleSearchIndex(final RequestContext context) {
         final String articleId = context.getRequest().getParameter(Article.ARTICLE_T_ID);
         final JSONObject article = articleQueryService.getArticle(articleId);
-        /**
-         * 如果是不在列表中显示的帖子，直接跳过
-         */
-        final Integer articleDisplayable = article.optInt(Article.ARTICLE_DISPLAYABLE);
-        if(!Article.ARTICLE_DISPLAYABLE_YES.equals(articleDisplayable)&&!Symphonys.ARTICLE_DISPLAYABLE_NOT_TO_SEARCH_ENABLED){
-            return;
-        }
+
         updateArticleSearchIndex(article);
         operationMgmtService.addOperation(Operation.newOperation(context.getRequest(), Operation.OPERATION_CODE_C_REBUILD_ARTICLE_SEARCH, articleId));
 

@@ -34,7 +34,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 1.1.1.7, May 14, 2018
+ * @version 1.1.1.8, May 20, 2018
  * @since 0.2.0
  */
 @Repository
@@ -90,15 +90,12 @@ public class ArticleRepository extends AbstractRepository {
         final List<JSONObject> ret = new ArrayList<>();
 
         final double mid = Math.random();
-        /**
-         * 过滤不展示的帖子
-         */
         Query query = new Query().
                 setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
                         new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
                         new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID),
                         new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION),
-                        new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT))).
+                        new PropertyFilter(Article.ARTICLE_SHOW_IN_LIST, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_C_NOT))).
                 select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_AUTHOR_ID).
                 setPage(1, fetchSize).setPageCount(1);
         final List<JSONObject> list1 = getList(query);
@@ -106,15 +103,12 @@ public class ArticleRepository extends AbstractRepository {
 
         final int reminingSize = fetchSize - list1.size();
         if (0 != reminingSize) { // Query for remains
-            /**
-             * 过滤不展示的帖子
-             */
             query = new Query().
                     setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
                             new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
                             new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID),
                             new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION),
-                            new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT))).
+                            new PropertyFilter(Article.ARTICLE_SHOW_IN_LIST, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_C_NOT))).
                     select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_AUTHOR_ID).
                     setPage(1, reminingSize).setPageCount(1);
             final List<JSONObject> list2 = getList(query);

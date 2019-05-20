@@ -4,7 +4,8 @@
   "authors": [
     "Liang Ding",
     "Zephyr",
-    "Bill Ho"
+    "Bill Ho",
+    "qiankunpingtai"
   ],
   "since": "0.2.0",
   "repositories": [
@@ -1842,9 +1843,9 @@
           "description": "帖子首图地址"
         },
         {
-          "name": "articleDisplayable",
+          "name": "articleShowInList",
           "type": "int",
-          "description": "帖子是否展示,0不展示，1展示"
+          "description": "帖子是否在列表展示：0 不展示，1 展示 https://github.com/b3log/symphony/issues/927"
         }
       ]
     },

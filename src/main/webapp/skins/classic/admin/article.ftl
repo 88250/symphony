@@ -208,12 +208,11 @@
                         <div>${qnaOfferPointLabel}</div>
                         <input type="text" name="articleQnAOfferPoint" value="${article.articleQnAOfferPoint?c}"/>
                     </label>
-                    <#--添加是否列表展示的控制-->
                     <label class="mid">
                         <div>${displayableLabel}</div>
-                        <select id="articleDisplayable" name="articleDisplayable">
-                            <option value="1"<#if 1==article.articleDisplayable> selected</#if>>${yesLabel}</option>
-                            <option value="0"<#if 0==article.articleDisplayable> selected</#if>>${noLabel}</option>
+                        <select id="articleShowInList" name="articleShowInList">
+                            <option value="1"<#if 1==article.articleShowInList> selected</#if>>${yesLabel}</option>
+                            <option value="0"<#if 0==article.articleShowInList> selected</#if>>${noLabel}</option>
                         </select>
                     </label>
                 </div>

@@ -756,14 +756,6 @@ public final class Symphonys {
      * Algolia Index.
      */
     public static final String ALGOLIA_INDEX = get("algolia.index");
-    /**
-     * articleDisplayableNotToSearch
-     * 不在列表中展示的帖子是否上传到搜索引擎es或者Algolia
-     * 请不要随意修改该设置
-     * 修改后最好重建索引，以保证索引中的所有数据和articleDisplayableNotToSearch规则相匹配
-     *
-     */
-    public static final boolean ARTICLE_DISPLAYABLE_NOT_TO_SEARCH_ENABLED = getBoolean("articleDisplayableNotToSearch.enabled");
 
     /**
      * 保留标签，只有管理员可以使用.

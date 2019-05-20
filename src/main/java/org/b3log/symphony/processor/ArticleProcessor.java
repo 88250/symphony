@@ -84,7 +84,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 1.27.3.2, May 20, 2019
+ * @version 1.27.3.3, May 20, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -912,10 +912,8 @@ public class ArticleProcessor {
         final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
         final int articleAnonymous = isAnonymous ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;
         final boolean articleNotifyFollowers = requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS);
-        /**
-         * 添加是否在列表中展示项
-         */
-        final Integer articleDisplayable = requestJSONObject.optInt(Article.ARTICLE_DISPLAYABLE,Article.ARTICLE_DISPLAYABLE_YES);
+        final Integer articleShowInList = requestJSONObject.optInt(Article.ARTICLE_SHOW_IN_LIST, Article.ARTICLE_SHOW_IN_LIST_C_YES);
+
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_CONTENT, articleContent);
@@ -932,10 +930,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_UA, ua);
         article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
         article.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, articleNotifyFollowers);
-        /**
-         * 添加是否在列表中展示项
-         */
-        article.put(Article.ARTICLE_DISPLAYABLE, articleDisplayable);
+        article.put(Article.ARTICLE_SHOW_IN_LIST, articleShowInList);
         try {
             final JSONObject currentUser = Sessions.getUser();
 
@@ -1087,40 +1082,8 @@ public class ArticleProcessor {
         final String ip = Requests.getRemoteAddr(request);
         final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
         final boolean articleNotifyFollowers = requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS);
-        /**
-         * 添加是否在列表中展示项
-         */
-        final Integer articleDisplayable = requestJSONObject.optInt(Article.ARTICLE_DISPLAYABLE,Article.ARTICLE_DISPLAYABLE_YES);
+        final Integer articleShowInList = requestJSONObject.optInt(Article.ARTICLE_SHOW_IN_LIST, Article.ARTICLE_SHOW_IN_LIST_C_YES);
         final JSONObject article = new JSONObject();
-        /**
-         * 获取文章原始是否在列表中展示标记
-         * 如果原始是在列表展示，现在修改为不在列表中展示，需要删除es和algolia索引
-         *
-         */
-        if(Article.ARTICLE_DISPLAYABLE_YES.equals(oldArticle.optInt(Article.ARTICLE_DISPLAYABLE))){
-            if(Article.ARTICLE_DISPLAYABLE_YES.equals(articleDisplayable)){
-                //以前在列表展示，现在也在列表展示，更新索引
-                article.put(Article.ARTICLE_DISPLAYABLE_INDEX_OPT,Article.ARTICLE_DISPLAYABLE_INDEX_OPT_UPDATE);
-            }else if(Article.ARTICLE_DISPLAYABLE_NOT.equals(articleDisplayable)&&Symphonys.ARTICLE_DISPLAYABLE_NOT_TO_SEARCH_ENABLED){
-                //以前在列表展示，现在不在列表展示，但设置了需要上传索引，更新索引
-                article.put(Article.ARTICLE_DISPLAYABLE_INDEX_OPT,Article.ARTICLE_DISPLAYABLE_INDEX_OPT_UPDATE);
-            }else {
-                //以前在列表展示，现在不在列表展示，并且设置不需要上传索引，删除索引
-                article.put(Article.ARTICLE_DISPLAYABLE_INDEX_OPT,Article.ARTICLE_DISPLAYABLE_INDEX_OPT_DELETE);
-
-            }
-        }else if(Article.ARTICLE_DISPLAYABLE_NOT.equals(oldArticle.optInt(Article.ARTICLE_DISPLAYABLE))&&Symphonys.ARTICLE_DISPLAYABLE_NOT_TO_SEARCH_ENABLED){
-            //以前不在列表展示，但设置了需要上传索引，现在不管如何设置，都更新索引
-            article.put(Article.ARTICLE_DISPLAYABLE_INDEX_OPT,Article.ARTICLE_DISPLAYABLE_INDEX_OPT_UPDATE);
-        }else{
-            if(Article.ARTICLE_DISPLAYABLE_YES.equals(articleDisplayable)){
-                //以前不在列表展示，并且设置不需要上传索引，现在在列表展示，新建索引
-                article.put(Article.ARTICLE_DISPLAYABLE_INDEX_OPT,Article.ARTICLE_DISPLAYABLE_INDEX_OPT_ADD);
-            }else{
-                //以前不在列表展示，并且设置不需要上传索引，现在也不在列表展示，不操作索引
-                article.put(Article.ARTICLE_DISPLAYABLE_INDEX_OPT,Article.ARTICLE_DISPLAYABLE_INDEX_OPT_NOTHING);
-            }
-        }
         article.put(Keys.OBJECT_ID, id);
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_CONTENT, articleContent);
@@ -1136,10 +1099,7 @@ public class ArticleProcessor {
         }
         article.put(Article.ARTICLE_UA, ua);
         article.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, articleNotifyFollowers);
-        /**
-         * 添加是否在列表中展示项
-         */
-        article.put(Article.ARTICLE_DISPLAYABLE, articleDisplayable);
+        article.put(Article.ARTICLE_SHOW_IN_LIST, articleShowInList);
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser
                 || !currentUser.optString(Keys.OBJECT_ID).equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {

@@ -54,7 +54,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.18.5.9, May 20, 2019
+ * @version 2.18.5.10, May 20, 2019
  * @since 0.2.0
  */
 @Service
@@ -695,11 +695,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_UA, ua);
 
             article.put(Article.ARTICLE_STICK, 0L);
-            /**
-             * 添加是否在列表中展示项
-             */
-            final Integer articleDisplayable=requestJSONObject.optInt(Article.ARTICLE_DISPLAYABLE, Article.ARTICLE_DISPLAYABLE_YES);
-            article.put(Article.ARTICLE_DISPLAYABLE, articleDisplayable);
+            article.put(Article.ARTICLE_SHOW_IN_LIST, requestJSONObject.optInt(Article.ARTICLE_SHOW_IN_LIST, Article.ARTICLE_SHOW_IN_LIST_C_YES));
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
             articleCntOption.put(Option.OPTION_VALUE, articleCnt + 1);
@@ -777,15 +773,10 @@ public class ArticleMgmtService {
                 livenessMgmtService.incLiveness(authorId, Liveness.LIVENESS_ARTICLE);
             }
 
-            /**
-             * 在列表中展示的建立索引
-             */
-            if(Article.ARTICLE_DISPLAYABLE_YES.equals(articleDisplayable)||Symphonys.ARTICLE_DISPLAYABLE_NOT_TO_SEARCH_ENABLED){
-                final JSONObject eventData = new JSONObject();
-                eventData.put(Article.ARTICLE, article);
-                eventData.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS));
-                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
-            }
+            final JSONObject eventData = new JSONObject();
+            eventData.put(Article.ARTICLE, article);
+            eventData.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS));
+            eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
 
             return ret;
         } catch (final RepositoryException e) {
@@ -910,10 +901,7 @@ public class ArticleMgmtService {
             articleToUpdate.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
             articleToUpdate.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
             articleToUpdate.put(Article.ARTICLE_TYPE, articleType);
-            /**
-             * 添加帖子是否展示字段
-             */
-            articleToUpdate.put(Article.ARTICLE_DISPLAYABLE,requestJSONObject.optInt(Article.ARTICLE_DISPLAYABLE, Article.ARTICLE_DISPLAYABLE_YES));
+            articleToUpdate.put(Article.ARTICLE_SHOW_IN_LIST, requestJSONObject.optInt(Article.ARTICLE_SHOW_IN_LIST, Article.ARTICLE_SHOW_IN_LIST_C_YES));
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
             articleContent = Emotions.toAliases(articleContent);
             //articleContent = StringUtils.trim(articleContent) + " "; https://github.com/b3log/symphony/issues/389
@@ -995,35 +983,10 @@ public class ArticleMgmtService {
             }
 
             final JSONObject eventData = new JSONObject();
-            /**
-             * 这里根据之前的判断，选择调用新建、删除、更新还是不操作索引
-             */
-            String opt=requestJSONObject.optString(Article.ARTICLE_DISPLAYABLE_INDEX_OPT);
-            if(Article.ARTICLE_DISPLAYABLE_INDEX_OPT_DELETE.equals(opt)){
-                //删除
-                if (Symphonys.ALGOLIA_ENABLED) {
-                    searchMgmtService.removeAlgoliaDocument(articleToUpdate);
-                }
-
-                if (Symphonys.ES_ENABLED) {
-                    searchMgmtService.removeESDocument(articleToUpdate, Article.ARTICLE);
-                }
-            }else if(Article.ARTICLE_DISPLAYABLE_INDEX_OPT_ADD.equals(opt)){
-                //新建
-                eventData.put(Article.ARTICLE, articleToUpdate);
-                eventData.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS));
-                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
-            }else if(Article.ARTICLE_DISPLAYABLE_INDEX_OPT_UPDATE.equals(opt)){
-                //更新
-                eventData.put(Article.ARTICLE, articleToUpdate);
-                eventData.put(Common.OLD_ARTICLE, oldArticle);
-                eventData.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS));
-                eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
-            }else{
-                //不操作
-                return;
-            }
-
+            eventData.put(Article.ARTICLE, articleToUpdate);
+            eventData.put(Common.OLD_ARTICLE, oldArticle);
+            eventData.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS));
+            eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -1821,11 +1784,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_PERFECT, Article.ARTICLE_PERFECT_C_NOT_PERFECT);
             article.put(Article.ARTICLE_ANONYMOUS_VIEW, Article.ARTICLE_ANONYMOUS_VIEW_C_USE_GLOBAL);
             article.put(Article.ARTICLE_AUDIO_URL, "");
-            /**
-             * 添加是否在列表中展示项
-             */
-            final Integer articleDisplayable=requestJSONObject.optInt(Article.ARTICLE_DISPLAYABLE, Article.ARTICLE_DISPLAYABLE_YES);
-            article.put(Article.ARTICLE_DISPLAYABLE, articleDisplayable);
+            article.put(Article.ARTICLE_SHOW_IN_LIST, requestJSONObject.optInt(Article.ARTICLE_SHOW_IN_LIST, Article.ARTICLE_SHOW_IN_LIST_C_YES));
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
             articleCntOption.put(Option.OPTION_VALUE, articleCnt + 1);
@@ -1842,14 +1801,11 @@ public class ArticleMgmtService {
 
             // Grows the tag graph
             tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
-            /**
-             * 在列表中展示的建立索引
-             */
-            if(Article.ARTICLE_DISPLAYABLE_YES.equals(articleDisplayable)||Symphonys.ARTICLE_DISPLAYABLE_NOT_TO_SEARCH_ENABLED){
-                final JSONObject eventData = new JSONObject();
-                eventData.put(Article.ARTICLE, article);
-                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
-            }
+
+            final JSONObject eventData = new JSONObject();
+            eventData.put(Article.ARTICLE, article);
+            eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
+
             return ret;
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {

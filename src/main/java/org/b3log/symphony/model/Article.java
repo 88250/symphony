@@ -25,7 +25,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 1.34.0.2, May 20, 2019
+ * @version 1.34.0.3, May 20, 2019
  * @since 0.2.0
  */
 public final class Article {
@@ -385,10 +385,11 @@ public final class Article {
      * Key of flag of notifying followers.
      */
     public static final String ARTICLE_T_NOTIFY_FOLLOWERS = "articleNotifyFollowers";
+
     /**
-     * Key of article dispalyable.
+     * Key of article show in list. https://github.com/b3log/symphony/issues/927
      */
-    public static final String ARTICLE_DISPLAYABLE = "articleDisplayable";
+    public static final String ARTICLE_SHOW_IN_LIST = "articleShowInList";
 
     // Anonymous constants
     /**
@@ -469,25 +470,16 @@ public final class Article {
      * Article type - <a href="https://github.com/b3log/symphony/issues/486">QnA</a>.
      */
     public static final int ARTICLE_TYPE_C_QNA = 5;
-    // articleDisplayable constants
+
     /**
-     * 不展示false
-     * 展示true
+     * Article displayable - not.
      */
-    public static final Integer ARTICLE_DISPLAYABLE_NOT =0 ;
-    public static final Integer ARTICLE_DISPLAYABLE_YES = 1;
-    // articleDisplayable es and algolia constants
+    public static final Integer ARTICLE_DISPLAYABLE_C_NOT = 0;
+
     /**
-     * 0 删除
-     * 1 创建
-     * 2 更新
-     * 3 不操作
+     * Article displayable - yes.
      */
-    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT="articleDisplayableIndexOpt";
-    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT_DELETE = "0";
-    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT_ADD = "1";
-    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT_UPDATE = "2";
-    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT_NOTHING = "3";
+    public static final Integer ARTICLE_SHOW_IN_LIST_C_YES = 1;
 
     /**
      * Checks the specified article1 is different from the specified article2.
