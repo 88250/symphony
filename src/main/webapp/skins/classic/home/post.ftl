@@ -154,6 +154,9 @@
                                 <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
                                 type="checkbox" id="articleAnonymous"></label>
                         </#if>
+                        <#--添加是否列表展示的控制-->
+                        <label class="article-anonymous">&nbsp;  ${displayableLabel}<input
+                                <#if (article?? && (1 == article.articleDisplayable)) || !article??> checked="checked"</#if> type="checkbox" id="articleDisplayable"></label>
                         <label class="article-anonymous">&nbsp;  ${commentableLabel}<input
                                 <#if (article?? && article.articleCommentable) || !article??> checked="checked"</#if> type="checkbox" id="articleCommentable"></label>
                         <label class="article-anonymous">&nbsp;  ${notifyFollowersLabel}<input type="checkbox" id="articleNotifyFollowers"></label>

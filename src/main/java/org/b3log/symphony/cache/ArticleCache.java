@@ -115,7 +115,14 @@ public class ArticleCache {
             filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
             filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
             filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_EQUAL, Tag.TAG_TITLE_C_SANDBOX));
-
+            /**
+             * create by: qiankunpingtai
+             * create time: 2019/5/14 22:45
+             * website：https://qiankunpingtai.cn
+             * description:
+             * 过滤不展示的帖子
+             */
+            filters.add( new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT));
             query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                     select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_AUTHOR_ID, Article.ARTICLE_ANONYMOUS);
 
@@ -218,10 +225,18 @@ public class ArticleCache {
 
         Stopwatchs.start("Query perfect articles");
         try {
+            /**
+             * create by: qiankunpingtai
+             * create time: 2019/5/14 22:45
+             * website：https://qiankunpingtai.cn
+             * description:
+             * 过滤不展示的帖子
+             */
             final Query query = new Query().
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                     setPageCount(1).setPage(1, 36);
-            query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
+            query.setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT),
+                    new PropertyFilter(Article.ARTICLE_DISPLAYABLE, FilterOperator.NOT_EQUAL, Article.ARTICLE_DISPLAYABLE_NOT)));
             query.select(Keys.OBJECT_ID,
                     Article.ARTICLE_STICK,
                     Article.ARTICLE_CREATE_TIME,
@@ -238,7 +253,8 @@ public class ArticleCache {
                     Article.ARTICLE_COMMENT_CNT,
                     Article.ARTICLE_ANONYMOUS,
                     Article.ARTICLE_PERFECT,
-                    Article.ARTICLE_QNA_OFFER_POINT);
+                    Article.ARTICLE_QNA_OFFER_POINT,
+                    Article.ARTICLE_DISPLAYABLE);
 
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));

@@ -384,6 +384,10 @@ public final class Article {
      * Key of flag of notifying followers.
      */
     public static final String ARTICLE_T_NOTIFY_FOLLOWERS = "articleNotifyFollowers";
+    /**
+     * Key of article dispalyable.
+     */
+    public static final String ARTICLE_DISPLAYABLE = "articleDisplayable";
 
     // Anonymous constants
     /**
@@ -464,6 +468,33 @@ public final class Article {
      * Article type - <a href="https://github.com/b3log/symphony/issues/486">QnA</a>.
      */
     public static final int ARTICLE_TYPE_C_QNA = 5;
+    // articleDisplayable constants
+    /**
+     * create by: qiankunpingtai
+     * create time: 2019/5/14 22:42
+     * website：https://qiankunpingtai.cn
+     * description:
+     * 不展示false
+     * 展示true
+     */
+    public static final Integer ARTICLE_DISPLAYABLE_NOT =0 ;
+    public static final Integer ARTICLE_DISPLAYABLE_YES = 1;
+    // articleDisplayable es and algolia constants
+    /**
+     * create by: qiankunpingtai
+     * create time: 2019/5/14 22:42
+     * website：https://qiankunpingtai.cn
+     * description:
+     * 0 删除
+     * 1 创建
+     * 2 更新
+     * 3 不操作
+     */
+    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT="articleDisplayableIndexOpt";
+    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT_DELETE = "0";
+    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT_ADD = "1";
+    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT_UPDATE = "2";
+    public static final String ARTICLE_DISPLAYABLE_INDEX_OPT_NOTHING = "3";
 
     /**
      * Checks the specified article1 is different from the specified article2.

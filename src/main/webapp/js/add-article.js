@@ -165,13 +165,21 @@ var AddArticle = {
         articleTags += $(this).text() + ','
       })
 
-      var requestJSONObject = {
-        articleTitle: $('#articleTitle').val().replace(/(^\s*)|(\s*$)/g, ''),
-        articleContent: this.editor.getValue(),
-        articleTags: articleTags,
-        articleCommentable: $('#articleCommentable').prop('checked'),
-        articleNotifyFollowers: $('#articleNotifyFollowers').prop('checked'),
-        articleType: articleType,
+        /**
+         * create by: qiankunpingtai
+         * create time: 2019/5/14 18:11
+         * website：https://qiankunpingtai.cn
+         * description:
+         * 添加是否在列表中展示项
+         */
+        var requestJSONObject = {
+            articleTitle: $('#articleTitle').val().replace(/(^\s*)|(\s*$)/g, ''),
+            articleContent: this.editor.getValue(),
+            articleTags: articleTags,
+            articleCommentable: $('#articleCommentable').prop('checked'),
+            articleNotifyFollowers: $('#articleNotifyFollowers').prop('checked'),
+            articleType: articleType,
+            articleDisplayable: Boolean($('#articleDisplayable').prop('checked'))?1:0
       }
 
       if (articleType !== 5) {

@@ -694,7 +694,15 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_UA, ua);
 
             article.put(Article.ARTICLE_STICK, 0L);
-
+            /**
+             * create by: qiankunpingtai
+             * create time: 2019/5/14 18:11
+             * website：https://qiankunpingtai.cn
+             * description:
+             * 添加是否在列表中展示项
+             */
+            final Integer articleDisplayable=requestJSONObject.optInt(Article.ARTICLE_DISPLAYABLE, Article.ARTICLE_DISPLAYABLE_YES);
+            article.put(Article.ARTICLE_DISPLAYABLE, articleDisplayable);
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
             articleCntOption.put(Option.OPTION_VALUE, articleCnt + 1);
@@ -772,10 +780,19 @@ public class ArticleMgmtService {
                 livenessMgmtService.incLiveness(authorId, Liveness.LIVENESS_ARTICLE);
             }
 
-            final JSONObject eventData = new JSONObject();
-            eventData.put(Article.ARTICLE, article);
-            eventData.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS));
-            eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
+            /**
+             * create by: qiankunpingtai
+             * create time: 2019/5/14 18:11
+             * website：https://qiankunpingtai.cn
+             * description:
+             * 在列表中展示的建立索引
+             */
+            if(Article.ARTICLE_DISPLAYABLE_YES.equals(articleDisplayable)){
+                final JSONObject eventData = new JSONObject();
+                eventData.put(Article.ARTICLE, article);
+                eventData.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS));
+                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
+            }
 
             return ret;
         } catch (final RepositoryException e) {
@@ -900,7 +917,14 @@ public class ArticleMgmtService {
             articleToUpdate.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
             articleToUpdate.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
             articleToUpdate.put(Article.ARTICLE_TYPE, articleType);
-
+            /**
+             * create by: qiankunpingtai
+             * create time: 2019/5/14 22:45
+             * website：https://qiankunpingtai.cn
+             * description:
+             * 添加帖子是否展示字段
+             */
+            articleToUpdate.put(Article.ARTICLE_DISPLAYABLE,requestJSONObject.optInt(Article.ARTICLE_DISPLAYABLE, Article.ARTICLE_DISPLAYABLE_YES));
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
             articleContent = Emotions.toAliases(articleContent);
             //articleContent = StringUtils.trim(articleContent) + " "; https://github.com/b3log/symphony/issues/389
@@ -982,10 +1006,39 @@ public class ArticleMgmtService {
             }
 
             final JSONObject eventData = new JSONObject();
-            eventData.put(Article.ARTICLE, articleToUpdate);
-            eventData.put(Common.OLD_ARTICLE, oldArticle);
-            eventData.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS));
-            eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
+            /**
+             * create by: qiankunpingtai
+             * create time: 2019/5/15 11:34
+             * website：https://qiankunpingtai.cn
+             * description:
+             * 这里根据之前的判断，选择调用新建、删除、更新还是不操作索引
+             */
+            String opt=requestJSONObject.optString(Article.ARTICLE_DISPLAYABLE_INDEX_OPT);
+            if(Article.ARTICLE_DISPLAYABLE_INDEX_OPT_DELETE.equals(opt)){
+                //删除
+                if (Symphonys.ALGOLIA_ENABLED) {
+                    searchMgmtService.removeAlgoliaDocument(articleToUpdate);
+                }
+
+                if (Symphonys.ES_ENABLED) {
+                    searchMgmtService.removeESDocument(articleToUpdate, Article.ARTICLE);
+                }
+            }else if(Article.ARTICLE_DISPLAYABLE_INDEX_OPT_ADD.equals(opt)){
+                //新建
+                eventData.put(Article.ARTICLE, articleToUpdate);
+                eventData.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS));
+                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
+            }else if(Article.ARTICLE_DISPLAYABLE_INDEX_OPT_UPDATE.equals(opt)){
+                //更新
+                eventData.put(Article.ARTICLE, articleToUpdate);
+                eventData.put(Common.OLD_ARTICLE, oldArticle);
+                eventData.put(Article.ARTICLE_T_NOTIFY_FOLLOWERS, requestJSONObject.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS));
+                eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
+            }else{
+                //不操作
+                return;
+            }
+
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -1783,7 +1836,15 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_PERFECT, Article.ARTICLE_PERFECT_C_NOT_PERFECT);
             article.put(Article.ARTICLE_ANONYMOUS_VIEW, Article.ARTICLE_ANONYMOUS_VIEW_C_USE_GLOBAL);
             article.put(Article.ARTICLE_AUDIO_URL, "");
-
+            /**
+             * create by: qiankunpingtai
+             * create time: 2019/5/14 18:11
+             * website：https://qiankunpingtai.cn
+             * description:
+             * 添加是否在列表中展示项
+             */
+            final Integer articleDisplayable=requestJSONObject.optInt(Article.ARTICLE_DISPLAYABLE, Article.ARTICLE_DISPLAYABLE_YES);
+            article.put(Article.ARTICLE_DISPLAYABLE, articleDisplayable);
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
             articleCntOption.put(Option.OPTION_VALUE, articleCnt + 1);
@@ -1800,11 +1861,18 @@ public class ArticleMgmtService {
 
             // Grows the tag graph
             tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
-
-            final JSONObject eventData = new JSONObject();
-            eventData.put(Article.ARTICLE, article);
-            eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
-
+            /**
+             * create by: qiankunpingtai
+             * create time: 2019/5/14 18:11
+             * website：https://qiankunpingtai.cn
+             * description:
+             * 在列表中展示的建立索引
+             */
+            if(Article.ARTICLE_DISPLAYABLE_YES.equals(articleDisplayable)) {
+                final JSONObject eventData = new JSONObject();
+                eventData.put(Article.ARTICLE, article);
+                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
+            }
             return ret;
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
