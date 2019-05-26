@@ -639,7 +639,8 @@ public class ArticleProcessor {
         if (isLoggedIn) {
             currentUser = Sessions.getUser();
             currentUserId = currentUser.optString(Keys.OBJECT_ID);
-            article.put(Common.IS_MY_ARTICLE, currentUserId.equals(articleAuthorId));
+            final boolean isMyArticle = currentUserId.equals(articleAuthorId);
+            article.put(Common.IS_MY_ARTICLE, isMyArticle);
 
             final boolean isFollowing = followQueryService.isFollowing(currentUserId, articleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
@@ -650,7 +651,7 @@ public class ArticleProcessor {
             final int articleVote = voteQueryService.isVoted(currentUserId, articleId);
             article.put(Article.ARTICLE_T_VOTE, articleVote);
 
-            if (currentUserId.equals(author.optString(Keys.OBJECT_ID))) {
+            if (isMyArticle) {
                 article.put(Common.REWARDED, true);
             } else {
                 article.put(Common.REWARDED, rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_ARTICLE));
