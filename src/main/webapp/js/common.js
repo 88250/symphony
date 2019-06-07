@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.47.0.2, Mar 17, 2019
+ * @version 1.47.0.3, Jun 7, 2019
  */
 
 /**
@@ -101,11 +101,11 @@ var Util = {
     }
   },
   parseHljs: function () {
-    Util.addStyle('https://cdn.jsdelivr.net/npm/vditor@1.3.3/dist/js/highlight.js@9.15.6/styles/github.css', 'vditorHljsStyle')
+    Util.addStyle('https://cdn.jsdelivr.net/npm/vditor@1.5.2/dist/js/highlight.js@9.15.8/styles/github.css', 'vditorHljsStyle')
     if (!Label.markdownHttpAvailable) {
       if (typeof hljs === 'undefined') {
         $.ajax({
-          url: 'https://cdn.jsdelivr.net/npm/vditor@1.3.3/dist/js/highlight.js@9.15.6/highlight.pack.js',
+          url: 'https://cdn.jsdelivr.net/npm/vditor@1.5.2/dist/js/highlight.js@9.15.8/highlight.pack.js',
           dataType: 'script',
           cache: true,
           success: function () {

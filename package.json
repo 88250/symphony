@@ -38,6 +38,6 @@
     "gulp-util": "^3.0.8"
   },
   "dependencies": {
-    "vditor": "^1.3.3"
+    "vditor": "^1.5.2"
   }
 }
