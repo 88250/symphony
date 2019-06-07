@@ -35,7 +35,7 @@ import java.util.List;
  * Tag repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.2, Aug 27, 2018
+ * @version 1.2.0.3, Jun 6, 2018
  * @since 0.2.0
  */
 @Repository
@@ -82,8 +82,8 @@ public class TagRepository extends AbstractRepository {
     }
 
     @Override
-    public void update(final String id, final JSONObject article) throws RepositoryException {
-        super.update(id, article);
+    public void update(final String id, final JSONObject article, final String... propertyNames) throws RepositoryException {
+        super.update(id, article, propertyNames);
 
         article.put(Keys.OBJECT_ID, id);
         tagCache.putTag(article);

@@ -33,7 +33,7 @@ import java.util.List;
  * User repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.2.2, Aug 27, 2018
+ * @version 2.1.2.3, Jun 6, 2019
  * @since 0.2.0
  */
 @Repository
@@ -71,14 +71,14 @@ public class UserRepository extends AbstractRepository {
     }
 
     @Override
-    public void update(final String id, final JSONObject user) throws RepositoryException {
+    public void update(final String id, final JSONObject user, final String... propertyNames) throws RepositoryException {
         final JSONObject old = get(id);
         if (null == old) {
             return;
         }
 
         userCache.removeUser(old);
-        super.update(id, user);
+        super.update(id, user, propertyNames);
         user.put(Keys.OBJECT_ID, id);
         userCache.putUser(user);
     }

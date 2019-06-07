@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Comment repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.2, Jan 25, 2019
+ * @version 1.1.1.3, Jun 6, 2019
  * @since 0.2.0
  */
 @Repository
@@ -175,8 +175,8 @@ public class CommentRepository extends AbstractRepository {
     }
 
     @Override
-    public void update(final String id, final JSONObject comment) throws RepositoryException {
-        super.update(id, comment);
+    public void update(final String id, final JSONObject comment, final String... propertyNames) throws RepositoryException {
+        super.update(id, comment, propertyNames);
 
         comment.put(Keys.OBJECT_ID, id);
         commentCache.putComment(comment);

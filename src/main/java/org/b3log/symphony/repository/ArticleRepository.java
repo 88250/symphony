@@ -34,7 +34,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 1.1.1.8, May 20, 2018
+ * @version 1.1.1.9, Jun 6, 2019
  * @since 0.2.0
  */
 @Repository
@@ -78,8 +78,8 @@ public class ArticleRepository extends AbstractRepository {
     }
 
     @Override
-    public void update(final String id, final JSONObject article) throws RepositoryException {
-        super.update(id, article);
+    public void update(final String id, final JSONObject article, final String... propertyNames) throws RepositoryException {
+        super.update(id, article, propertyNames);
 
         article.put(Keys.OBJECT_ID, id);
         articleCache.putArticle(article);
