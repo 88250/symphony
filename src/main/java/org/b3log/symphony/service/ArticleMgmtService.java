@@ -54,7 +54,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.18.5.10, May 20, 2019
+ * @version 2.18.5.11, Jun 6, 2019
  * @since 0.2.0
  */
 @Service
@@ -375,7 +375,7 @@ public class ArticleMgmtService {
                 articleCount = 0;
             }
             author.put(UserExt.USER_ARTICLE_COUNT, articleCount);
-            userRepository.update(author.optString(Keys.OBJECT_ID), author);
+            userRepository.update(author.optString(Keys.OBJECT_ID), author, UserExt.USER_ARTICLE_COUNT);
 
             final String city = article.optString(Article.ARTICLE_CITY);
             final String cityStatId = city + "-ArticleCount";

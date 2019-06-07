@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.16.0.7, Feb 25, 2019
+ * @version 1.16.0.8, Jun 6, 2019
  * @since 0.2.0
  */
 @Service
@@ -237,7 +237,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_ONLINE_FLAG, onlineFlag);
             user.put(UserExt.USER_LATEST_LOGIN_TIME, now);
             user.put(UserExt.USER_UPDATE_TIME, now);
-            userRepository.update(userId, user);
+            userRepository.update(userId, user, UserExt.USER_COUNTRY, UserExt.USER_PROVINCE, UserExt.USER_CITY, UserExt.USER_LATEST_LOGIN_IP, UserExt.USER_ONLINE_FLAG, UserExt.USER_LATEST_LOGIN_TIME, UserExt.USER_UPDATE_TIME);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Updates user online status failed [id=" + userId + ", ip=" + ip + ", flag=" + onlineFlag + "]", e);
         }
@@ -321,7 +321,7 @@ public class UserMgmtService {
             // Update
             oldUser.put(User.USER_PASSWORD, requestJSONObject.optString(User.USER_PASSWORD));
 
-            userRepository.update(oldUserId, oldUser);
+            userRepository.update(oldUserId, oldUser, User.USER_PASSWORD);
             transaction.commit();
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
@@ -687,7 +687,7 @@ public class UserMgmtService {
                 throw new ServiceException(langPropsService.get("duplicatedEmailLabel") + " [" + newEmail + "]");
             }
 
-            userRepository.update(userId, user);
+            userRepository.update(userId, user, User.USER_EMAIL);
 
             transaction.commit();
         } catch (final RepositoryException e) {
@@ -721,7 +721,7 @@ public class UserMgmtService {
                 throw new ServiceException(langPropsService.get("duplicatedUserNameLabel") + " [" + newUserName + "]");
             }
 
-            userRepository.update(userId, user);
+            userRepository.update(userId, user, User.USER_NAME);
 
             transaction.commit();
         } catch (final RepositoryException e) {

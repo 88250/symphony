@@ -46,7 +46,7 @@ import java.util.*;
  * Mail management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Jun 19, 2018
+ * @version 1.0.1.3, Jun 6, 2019
  * @since 1.6.0
  */
 @Service
@@ -158,7 +158,7 @@ public class MailMgmtService {
                     toMails.add(email);
 
                     user.put(UserExt.USER_SUB_MAIL_SEND_TIME, now);
-                    userRepository.update(user.optString(Keys.OBJECT_ID), user);
+                    userRepository.update(user.optString(Keys.OBJECT_ID), user, UserExt.USER_SUB_MAIL_SEND_TIME);
                 }
             }
             transaction.commit();

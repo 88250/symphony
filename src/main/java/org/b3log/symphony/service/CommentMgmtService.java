@@ -414,8 +414,6 @@ public class CommentMgmtService {
             throw new ServiceException(langPropsService.get("tooFrequentCmtLabel"));
         }
 
-        final String commenterName = commenter.optString(User.USER_NAME);
-
         JSONObject article;
         try {
             // check if admin allow to add comment

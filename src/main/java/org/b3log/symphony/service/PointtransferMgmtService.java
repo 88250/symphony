@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * Pointtransfer management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.6, Oct 1, 2018
+ * @version 1.2.1.7, Jun 6, 2019
  * @since 1.3.0
  */
 @Service
@@ -88,7 +88,7 @@ public class PointtransferMgmtService {
 
                 fromUser.put(UserExt.USER_POINT, fromBalance);
                 fromUser.put(UserExt.USER_USED_POINT, fromUser.optInt(UserExt.USER_USED_POINT) + sum);
-                userRepository.update(fromId, fromUser);
+                userRepository.update(fromId, fromUser, UserExt.USER_POINT, UserExt.USER_USED_POINT);
             }
 
             int toBalance = 0;
@@ -96,8 +96,7 @@ public class PointtransferMgmtService {
                 final JSONObject toUser = userRepository.get(toId);
                 toBalance = toUser.optInt(UserExt.USER_POINT) + sum;
                 toUser.put(UserExt.USER_POINT, toBalance);
-
-                userRepository.update(toId, toUser);
+                userRepository.update(toId, toUser, UserExt.USER_POINT);
             }
 
             final JSONObject pointtransfer = new JSONObject();
