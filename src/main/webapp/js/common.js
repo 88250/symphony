@@ -125,6 +125,7 @@ var Util = {
    */
   parseMarkdown: function () {
     Vditor.mermaidRender(document.body)
+    Vditor.chartRender()
     Vditor.mathRender(document.body)
     Vditor.codeRender(document.body, Label.langLabel)
 
