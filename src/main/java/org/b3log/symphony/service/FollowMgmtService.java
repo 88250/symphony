@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Follow management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.2, Jan 18, 2017
+ * @version 1.3.1.3, Jun 6, 2019
  * @since 0.2.5
  */
 @Service
@@ -228,7 +228,7 @@ public class FollowMgmtService {
 
             article.put(Article.ARTICLE_COLLECT_CNT, article.optInt(Article.ARTICLE_COLLECT_CNT) + 1);
 
-            articleRepository.update(followingId, article);
+            articleRepository.update(followingId, article, Article.ARTICLE_COLLECT_CNT);
         } else if (Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH == followingType) {
             final JSONObject article = articleRepository.get(followingId);
             if (null == article) {
@@ -239,7 +239,7 @@ public class FollowMgmtService {
 
             article.put(Article.ARTICLE_WATCH_CNT, article.optInt(Article.ARTICLE_WATCH_CNT) + 1);
 
-            articleRepository.update(followingId, article);
+            articleRepository.update(followingId, article, Article.ARTICLE_WATCH_CNT);
         }
 
         final JSONObject follow = new JSONObject();
@@ -290,7 +290,7 @@ public class FollowMgmtService {
                 article.put(Article.ARTICLE_COLLECT_CNT, 0);
             }
 
-            articleRepository.update(followingId, article);
+            articleRepository.update(followingId, article, Article.ARTICLE_COLLECT_CNT);
         } else if (Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH == followingType) {
             final JSONObject article = articleRepository.get(followingId);
             if (null == article) {
@@ -304,7 +304,7 @@ public class FollowMgmtService {
                 article.put(Article.ARTICLE_WATCH_CNT, 0);
             }
 
-            articleRepository.update(followingId, article);
+            articleRepository.update(followingId, article, Article.ARTICLE_WATCH_CNT);
         }
     }
 }

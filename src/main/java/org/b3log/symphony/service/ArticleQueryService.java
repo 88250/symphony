@@ -60,7 +60,7 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.28.0.12, May 20, 2019
+ * @version 2.28.0.13, Jun 6, 2019
  * @since 0.2.0
  */
 @Service
@@ -961,7 +961,7 @@ public class ArticleQueryService {
                 try {
                     final Transaction transaction = articleRepository.beginTransaction();
                     articleDO.put(Article.ARTICLE_IMG1_URL, generatedThumb);
-                    articleRepository.update(articleId, articleDO);
+                    articleRepository.update(articleId, articleDO, Article.ARTICLE_IMG1_URL);
                     transaction.commit();
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Saves article img1 URL failed", e);

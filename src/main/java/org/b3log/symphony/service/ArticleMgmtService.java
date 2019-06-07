@@ -335,7 +335,7 @@ public class ArticleMgmtService {
                 final JSONObject toUpdate = articleRepository.get(articleId);
                 toUpdate.put(Article.ARTICLE_AUDIO_URL, audioURL);
                 final Transaction transaction = articleRepository.beginTransaction();
-                articleRepository.update(articleId, toUpdate);
+                articleRepository.update(articleId, toUpdate, Article.ARTICLE_AUDIO_URL);
                 transaction.commit();
                 LOGGER.debug("Generated article [id=" + articleId + "] audio");
             } catch (final Exception e) {
@@ -473,7 +473,7 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_VIEW_CNT, viewCnt + 1);
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
-                articleRepository.update(articleId, article);
+                articleRepository.update(articleId, article, Article.ARTICLE_VIEW_CNT, Article.ARTICLE_RANDOM_DOUBLE);
 
                 transaction.commit();
             } catch (final RepositoryException e) {
@@ -1171,7 +1171,6 @@ public class ArticleMgmtService {
     public void thank(final String articleId, final String senderId) throws ServiceException {
         try {
             final JSONObject article = articleRepository.get(articleId);
-
             if (null == article) {
                 return;
             }
@@ -1222,7 +1221,7 @@ public class ArticleMgmtService {
             final int thankCnt = article.optInt(Article.ARTICLE_THANK_CNT);
             article.put(Article.ARTICLE_THANK_CNT, thankCnt + 1);
             final Transaction transaction = articleRepository.beginTransaction();
-            articleRepository.update(articleId, article);
+            articleRepository.update(articleId, article, Article.ARTICLE_THANK_CNT);
             transaction.commit();
 
             final JSONObject reward = new JSONObject();
@@ -1285,7 +1284,7 @@ public class ArticleMgmtService {
 
             article.put(Article.ARTICLE_STICK, System.currentTimeMillis());
 
-            articleRepository.update(articleId, article);
+            articleRepository.update(articleId, article, Article.ARTICLE_STICK);
 
             transaction.commit();
 
@@ -1321,7 +1320,7 @@ public class ArticleMgmtService {
 
             article.put(Article.ARTICLE_STICK, Long.MAX_VALUE);
 
-            articleRepository.update(articleId, article);
+            articleRepository.update(articleId, article, Article.ARTICLE_STICK);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Admin sticks an article[id=" + articleId + "] failed", e);
         }
@@ -1342,7 +1341,7 @@ public class ArticleMgmtService {
 
             article.put(Article.ARTICLE_STICK, 0L);
 
-            articleRepository.update(articleId, article);
+            articleRepository.update(articleId, article, Article.ARTICLE_STICK);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Admin cancel sticks an article[id=" + articleId + "] failed", e);
         }
@@ -1377,7 +1376,7 @@ public class ArticleMgmtService {
 
                 if (expired < now) {
                     article.put(Article.ARTICLE_STICK, 0L);
-                    articleRepository.update(article.optString(Keys.OBJECT_ID), article);
+                    articleRepository.update(article.optString(Keys.OBJECT_ID), article, Article.ARTICLE_STICK);
                 }
             }
         } catch (final RepositoryException e) {

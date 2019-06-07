@@ -40,7 +40,7 @@ import java.util.List;
  * Vote management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Jul 31, 2016
+ * @version 1.1.1.1, Jun 6, 2019
  * @since 1.3.0
  */
 @Service
@@ -149,7 +149,7 @@ public class VoteMgmtService {
 
                 updateTagArticleScore(article);
 
-                articleRepository.update(dataId, article);
+                articleRepository.update(dataId, article, Article.ARTICLE_GOOD_CNT, Article.ARTICLE_BAD_CNT, Article.REDDIT_SCORE);
             } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
                 final JSONObject comment = commentRepository.get(dataId);
                 if (null == comment) {
@@ -251,7 +251,7 @@ public class VoteMgmtService {
 
             updateTagArticleScore(article);
 
-            articleRepository.update(dataId, article);
+            articleRepository.update(dataId, article, Article.ARTICLE_GOOD_CNT, Article.ARTICLE_BAD_CNT, Article.REDDIT_SCORE);
         } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
             final JSONObject comment = commentRepository.get(dataId);
             if (null == comment) {
@@ -322,7 +322,7 @@ public class VoteMgmtService {
 
             updateTagArticleScore(article);
 
-            articleRepository.update(dataId, article);
+            articleRepository.update(dataId, article, Article.ARTICLE_GOOD_CNT, Article.ARTICLE_BAD_CNT, Article.REDDIT_SCORE);
         } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
             final JSONObject comment = commentRepository.get(dataId);
             if (null == comment) {
