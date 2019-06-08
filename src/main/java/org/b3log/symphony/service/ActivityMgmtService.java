@@ -306,8 +306,8 @@ public class ActivityMgmtService {
         try {
             final JSONObject user = userQueryService.getUser(userId);
 
-            final int currentStreakStart = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_START);
-            final int currentStreakEnd = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_END);
+            int currentStreakStart = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_START);
+            int currentStreakEnd = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_END);
 
             final Date today = new Date();
             user.put(UserExt.USER_CHECKIN_TIME, today.getTime());
@@ -335,6 +335,9 @@ public class ActivityMgmtService {
                 user.put(UserExt.USER_CURRENT_CHECKIN_STREAK_START, todayInt);
             }
             user.put(UserExt.USER_CURRENT_CHECKIN_STREAK_END, todayInt);
+
+            currentStreakStart = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_START);
+            currentStreakEnd = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_END);
 
             final Date currentStreakStartDate = DateUtils.parseDate(String.valueOf(currentStreakStart), new String[]{datePattern});
             final Date currentStreakEndDate = DateUtils.parseDate(String.valueOf(currentStreakEnd), new String[]{datePattern});
