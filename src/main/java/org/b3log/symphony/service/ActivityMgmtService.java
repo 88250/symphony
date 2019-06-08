@@ -52,7 +52,7 @@ import java.util.Random;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.6.10.1, Jan 30, 2018
+ * @version 1.6.10.2, Jun 8, 2019
  * @since 1.3.0
  */
 @Service
@@ -306,13 +306,14 @@ public class ActivityMgmtService {
         try {
             final JSONObject user = userQueryService.getUser(userId);
 
-            int currentStreakStart = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_START);
-            int currentStreakEnd = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_END);
+            final int currentStreakStart = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_START);
+            final int currentStreakEnd = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_END);
 
             final Date today = new Date();
             user.put(UserExt.USER_CHECKIN_TIME, today.getTime());
 
-            final String todayStr = DateFormatUtils.format(today, "yyyyMMdd");
+            final String datePattern = "yyyyMMdd";
+            final String todayStr = DateFormatUtils.format(today, datePattern);
             final int todayInt = Integer.valueOf(todayStr);
 
             if (0 == currentStreakStart) {
@@ -328,36 +329,23 @@ public class ActivityMgmtService {
                 return sum;
             }
 
-            final Date endDate = DateUtils.parseDate(String.valueOf(currentStreakEnd), new String[]{"yyyyMMdd"});
+            final Date endDate = DateUtils.parseDate(String.valueOf(currentStreakEnd), new String[]{datePattern});
             final Date nextDate = DateUtils.addDays(endDate, 1);
-
-            if (DateUtils.isSameDay(nextDate, today)) {
-                user.put(UserExt.USER_CURRENT_CHECKIN_STREAK_END, todayInt);
-            } else {
+            if (!DateUtils.isSameDay(nextDate, today)) {
                 user.put(UserExt.USER_CURRENT_CHECKIN_STREAK_START, todayInt);
-                user.put(UserExt.USER_CURRENT_CHECKIN_STREAK_END, todayInt);
             }
+            user.put(UserExt.USER_CURRENT_CHECKIN_STREAK_END, todayInt);
 
-            currentStreakStart = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_START);
-            currentStreakEnd = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_END);
+            final Date currentStreakStartDate = DateUtils.parseDate(String.valueOf(currentStreakStart), new String[]{datePattern});
+            final Date currentStreakEndDate = DateUtils.parseDate(String.valueOf(currentStreakEnd), new String[]{datePattern});
+            final int currentStreakDays = (int) ((currentStreakEndDate.getTime() - currentStreakStartDate.getTime()) / 86400000) + 1;
+            user.put(UserExt.USER_CURRENT_CHECKIN_STREAK, currentStreakDays);
+
             final int longestStreakStart = user.optInt(UserExt.USER_LONGEST_CHECKIN_STREAK_START);
             final int longestStreakEnd = user.optInt(UserExt.USER_LONGEST_CHECKIN_STREAK_END);
-
-            final Date currentStreakStartDate
-                    = DateUtils.parseDate(String.valueOf(currentStreakStart), new String[]{"yyyyMMdd"});
-            final Date currentStreakEndDate
-                    = DateUtils.parseDate(String.valueOf(currentStreakEnd), new String[]{"yyyyMMdd"});
-            final Date longestStreakStartDate
-                    = DateUtils.parseDate(String.valueOf(longestStreakStart), new String[]{"yyyyMMdd"});
-            final Date longestStreakEndDate
-                    = DateUtils.parseDate(String.valueOf(longestStreakEnd), new String[]{"yyyyMMdd"});
-
-            final int currentStreakDays
-                    = (int) ((currentStreakEndDate.getTime() - currentStreakStartDate.getTime()) / 86400000) + 1;
-            final int longestStreakDays
-                    = (int) ((longestStreakEndDate.getTime() - longestStreakStartDate.getTime()) / 86400000) + 1;
-
-            user.put(UserExt.USER_CURRENT_CHECKIN_STREAK, currentStreakDays);
+            final Date longestStreakStartDate = DateUtils.parseDate(String.valueOf(longestStreakStart), new String[]{datePattern});
+            final Date longestStreakEndDate = DateUtils.parseDate(String.valueOf(longestStreakEnd), new String[]{datePattern});
+            final int longestStreakDays = (int) ((longestStreakEndDate.getTime() - longestStreakStartDate.getTime()) / 86400000) + 1;
             user.put(UserExt.USER_LONGEST_CHECKIN_STREAK, longestStreakDays);
 
             if (longestStreakDays < currentStreakDays) {
