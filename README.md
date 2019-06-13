@@ -73,7 +73,9 @@
 ## 功能
 
 * [Sym 简介幻灯片](https://sym.b3log.org/syme-intro.pptx)
-* [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
+* [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
+
+[![Sym功能点](https://user-images.githubusercontent.com/873584/59412885-07dbf080-8df1-11e9-8088-266d6eaf7dbc.jpg)](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
 
 ## 界面
 
