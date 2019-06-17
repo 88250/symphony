@@ -50,7 +50,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://blog.thinkjava.top">VirutalPier</a>
  * @author <a href="https://github.com/snowflake3721">snowflake</a>
- * @version 1.2.6.8, Feb 27, 2019
+ * @version 1.2.6.9, Jun 17, 2019
  * @since 1.3.0
  */
 public final class Mails {
@@ -427,7 +427,7 @@ public final class Mails {
  *
  * @author <a href="https://github.com/snowflake3721">snowflake</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.1, May 23, 2017
+ * @version 1.0.2.2, Jun 17, 2019
  * @since 2.1.0
  */
 final class MailSender implements java.io.Serializable {
@@ -444,7 +444,7 @@ final class MailSender implements java.io.Serializable {
     private static final String mail_host = Symphonys.MAIL_LOCAL_HOST;
     private static final String mail_port = Symphonys.MAIL_LOCAL_PORT;
     private static final String mail_smtp_auth = Symphonys.MAIL_LOCAL_SMTP_AUTH;
-    private static final String mail_smtp_ssl = Symphonys.MAIL_LOCAL_SMTP_SSL;
+    private static final String mail_smtp_ssl_enable = Symphonys.MAIL_LOCAL_SMTP_SSL;
     private static final String mail_smtp_starttls_enable = Symphonys.MAIL_LOCAL_SMTP_STARTTLS;
     private static MailSender mailSender;
     private static Properties prop = new Properties();
@@ -454,7 +454,7 @@ final class MailSender implements java.io.Serializable {
         prop.setProperty("mail.host", mail_host);
         prop.setProperty("mail.port", mail_port);
         prop.setProperty("mail.smtp.auth", mail_smtp_auth);
-        prop.setProperty("mail.smtp.ssl", mail_smtp_ssl);
+        prop.setProperty("mail.smtp.ssl.enable", mail_smtp_ssl_enable);
         prop.setProperty("mail.smtp.starttls.enable", mail_smtp_starttls_enable);
         prop.setProperty("mail.smtp.sender", sender);
         prop.setProperty("mail.smtp.username", username);

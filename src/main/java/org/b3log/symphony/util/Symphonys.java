@@ -680,7 +680,7 @@ public final class Symphonys {
     /**
      * 邮件渠道 {@code local} SMTP 是否启用 SSL.
      */
-    public static final String MAIL_LOCAL_SMTP_SSL = get("mail.local.smtp.ssl");
+    public static final String MAIL_LOCAL_SMTP_SSL = get("mail.local.smtp.ssl.enable");
 
     /**
      * 邮件渠道 {@code local} SMTP 是否启用 TLS.
