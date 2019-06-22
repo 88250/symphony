@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.3.0.4, Mar 5, 2019
+ * @version 1.3.0.5, Jun 22, 2019
  * @since 0.2.0
  */
 public final class Emotions {
@@ -36,15 +36,7 @@ public final class Emotions {
     /**
      * Emoji pattern.
      */
-    public static final Pattern EMOJI_PATTERN = Pattern.compile(":.+:");
-    /**
-     * Emotion count.
-     */
-    private static final int EMOTION_CNT = 15;
-    /**
-     * Ten.
-     */
-    private static final int TEN = 10;
+    private static final Pattern EMOJI_PATTERN = Pattern.compile(":.+:");
 
     /**
      * Determines whether the specified string is a emoji or not.
@@ -103,33 +95,13 @@ public final class Emotions {
     }
 
     /**
-     * Converts the specified content with emotions.
-     * <p>
-     * <ol>
-     * <li>{@literal [em00]} into content with {@literal <img src='em00.png'/>}</li>
-     * <li>Emoji: http://www.emoji-cheat-sheet.com</li>
-     * </ol>
-     * </p>
+     * Converts the specified content with emotions. Replaces the emoji's alias by its unicode. Example: ":smile:" gives "😄".
      *
      * @param content the specified content
      * @return converted content
      */
     public static String convert(final String content) {
         String ret = content;
-
-        // Compatible legacy code
-        String emotionName;
-        for (int i = 0; i < EMOTION_CNT; i++) {
-            if (i < TEN) {
-                emotionName = "em0" + i;
-            } else {
-                emotionName = "em" + i;
-            }
-
-            ret = ret.replace("[" + emotionName + "]",
-                    "<img class=\"emoji\" src='" + Latkes.getStaticServePath() + "/images/emotions/" + emotionName + ".png" + "' />");
-        }
-
         if (!EMOJI_PATTERN.matcher(ret).find()) {
             return ret;
         }
