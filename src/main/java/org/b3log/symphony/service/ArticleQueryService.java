@@ -60,7 +60,7 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.28.0.13, Jun 6, 2019
+ * @version 2.28.1.0, Jun 28, 2019
  * @since 0.2.0
  */
 @Service
@@ -611,7 +611,7 @@ public class ArticleQueryService {
 
             final List<JSONObject> tagArticlesCount = articleRepository.
                     select(queryCount.append(queryStr.toString()).toString(), Article.ARTICLE_SHOW_IN_LIST_C_NOT, Article.ARTICLE_STATUS_C_INVALID);
-            queryStr.append(" limit ").append((currentPageNum - 1) * pageSize).append(",").append(currentPageNum * pageSize);
+            queryStr.append(" limit ").append((currentPageNum - 1) * pageSize).append(",").append(pageSize);
             final List<JSONObject> tagArticles = articleRepository.
                     select(queryList.append(queryStr.toString()).toString(), Article.ARTICLE_SHOW_IN_LIST_C_NOT, Article.ARTICLE_STATUS_C_INVALID);
             if (tagArticles.size() <= 0) {
@@ -745,7 +745,7 @@ public class ArticleQueryService {
             queryStr.append(" order by ").append("symphony_tag_article." + Keys.OBJECT_ID + " ").append(" desc ");
 //            final List<JSONObject> tagArticlesCount = articleRepository.
 //                    select(queryCount.append(queryStr.toString()).toString(), Article.ARTICLE_SHOW_IN_LIST_C_NOT);
-            queryStr.append(" limit ").append((currentPageNum - 1) * pageSize).append(",").append(currentPageNum * pageSize);
+            queryStr.append(" limit ").append((currentPageNum - 1) * pageSize).append(",").append(pageSize);
             final List<JSONObject> tagArticles = articleRepository.
                     select(queryList.append(queryStr.toString()).toString(), Article.ARTICLE_SHOW_IN_LIST_C_NOT);
 
@@ -854,7 +854,7 @@ public class ArticleQueryService {
             }
             final List<JSONObject> tagArticleTotalCount = articleRepository.select(queryCount.append(queryStr.toString()).toString(), Article.ARTICLE_SHOW_IN_LIST_C_NOT);
             tag.put(Tag.TAG_REFERENCE_CNT, tagArticleTotalCount == null ? 0 : tagArticleTotalCount.get(0).optInt("count(0)"));
-            queryStr.append(" limit ").append((currentPageNum - 1) * pageSize).append(",").append(currentPageNum * pageSize);
+            queryStr.append(" limit ").append((currentPageNum - 1) * pageSize).append(",").append(pageSize);
             final List<JSONObject> tagArticleRelations = articleRepository.select(queryList.append(queryStr.toString()).toString(), Article.ARTICLE_SHOW_IN_LIST_C_NOT);
             final List<String> articleIds = new ArrayList<>();
             for (int i = 0; i < tagArticleRelations.size(); i++) {
