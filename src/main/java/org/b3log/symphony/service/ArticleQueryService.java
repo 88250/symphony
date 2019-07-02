@@ -60,7 +60,7 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.28.1.0, Jun 28, 2019
+ * @version 2.28.1.1, Jul 2, 2019
  * @since 0.2.0
  */
 @Service
@@ -706,6 +706,10 @@ public class ArticleQueryService {
 
             final int size = ret.size() > fetchSize ? fetchSize : ret.size();
             ret = ret.subList(0, size);
+            if (ret.size() < fetchSize) {
+                final List<JSONObject> hotArticles = getHotArticles(fetchSize - ret.size());
+                ret.addAll(0, hotArticles);
+            }
 
             organizeArticles(ret);
 
