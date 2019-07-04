@@ -69,7 +69,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.27.0.12, Mar 5, 2019
+ * @version 1.27.1.0, Jul 7, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -921,7 +921,8 @@ public class UserProcessor {
         final JSONObject result = Results.newSucc();
         context.renderJSON(result);
 
-        final String namePrefix = context.param("name");
+        final JSONObject requestJSON = context.requestJSON();
+        final String namePrefix = requestJSON.optString("name");
         if (StringUtils.isBlank(namePrefix)) {
             final List<JSONObject> admins = userQueryService.getAdmins();
             final List<JSONObject> userNames = new ArrayList<>();
