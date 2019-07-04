@@ -77,7 +77,7 @@
                         <#if "" != article.articleAuthorIntro>
                             <span class="ft-gray">${article.articleAuthorIntro}</span>
                         <#else>
-                            <span class="ft-gray">${symphonyLabel} <#if article.articleAnonymous == 0>${article.articleAuthor.userNo?c}<#else>?</#if> ${numVIPLabel}</span>
+                            <span class="ft-gray">${symphonyLabel} <#if article.articleAnonymous == 0>${article.articleAuthor.userNo?c}<#else>?</#if> ${numMemberLabel}</span>
                         </#if>
                         <br/>
                         <#list article.articleTagObjs as articleTag>

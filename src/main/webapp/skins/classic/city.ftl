@@ -95,7 +95,7 @@
                                                 <#else>
                                                 <span class="ft-gray">${symphonyLabel}</span>
                                                 ${user.userNo?c}
-                                                <span class="ft-gray">${numVIPLabel}</span>
+                                                <span class="ft-gray">${numMemberLabel}</span>
                                                 </#if>
                                                 <#else>
                                                 <span class="ft-gray">${articleLabel}</span> ${user.userArticleCount?c} &nbsp;

@@ -54,7 +54,7 @@
                         </div>
                         </#if>
                         <div>
-                            ${symphonyLabel} ${user.userNo?c} ${numVIPLabel},
+                            ${symphonyLabel} ${user.userNo?c} ${numMemberLabel},
                             <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
                         </div>
                     </div>

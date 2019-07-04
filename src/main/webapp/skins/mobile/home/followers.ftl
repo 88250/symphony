@@ -50,7 +50,7 @@
                     <#else>
                     <span class="ft-gray">${symphonyLabel}</span>
                     ${follower.userNo?c}
-                    <span class="ft-gray">${numVIPLabel}</span>
+                    <span class="ft-gray">${numMemberLabel}</span>
                     </#if>
                     <#else>
                     <span class="ft-gray">${articleLabel}</span> ${follower.userArticleCount?c} &nbsp;
