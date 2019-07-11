@@ -122,7 +122,7 @@
             <li>
                 <a rel="nofollow" href="${servePath}/tag/${tag.tagURI}">
                     <#if tag.tagIconPath!="">
-                    <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if>
+                    <img src="${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if>
                     ${tag.tagTitle}
                 </a>
                 <div<#if tag.tagDescription == ''> style="width:auto"</#if>>

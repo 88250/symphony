@@ -33,7 +33,7 @@
             <li>
                 <div class="fn-flex">
                     <#if item.tagIconPath != ''>
-                        <div class="avatar" style="background-image:url('${staticServePath}/images/tags/${item.tagIconPath}')"></div>
+                        <div class="avatar" style="background-image:url('${item.tagIconPath}')"></div>
                     </#if>
                     <div class="fn-flex-1">
                         <h2>

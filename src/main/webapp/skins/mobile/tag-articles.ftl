@@ -34,7 +34,7 @@
             <div class="content">
                 <div class="fn-clear title wrapper">
                     <#if tag.tagIconPath != "">
-                    <div class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
+                    <div class="avatar fn-left" style="background-image:url('${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                     </#if>
                     <h1 class="fn-inline">
                         <a rel="tag" 
@@ -69,7 +69,7 @@
                     <li>
                         <a rel="tag" href="${servePath}/tag/${relatedTag.tagURI}">
                             <#if relatedTag.tagIconPath != "">
-                            <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
+                            <img src="${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
                             ${relatedTag.tagTitle}</a>
                         <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
                             <div>${relatedTag.tagDescription}</div>

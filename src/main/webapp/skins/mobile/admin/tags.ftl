@@ -40,7 +40,7 @@
             </div>
             <div>
                 <#if item.tagIconPath != ''>
-                <div class="avatar" style="background-image:url('${staticServePath}/images/tags/${item.tagIconPath}')"></div>
+                <div class="avatar" style="background-image:url('${item.tagIconPath}')"></div>
                 </#if>
                 ${item.tagDescription}
                 <div class="ft-gray fn-clear">

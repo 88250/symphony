@@ -85,7 +85,7 @@
                     <li>
                         <a rel="nofollow" href="${servePath}/tag/${tag.tagURI}">
                             <#if tag.tagIconPath!="">
-                            <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" />
+                            <img src="${tag.tagIconPath}" alt="${tag.tagTitle}" />
                             </#if>
                             ${tag.tagTitle}
                         </a>

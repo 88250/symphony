@@ -41,7 +41,7 @@
                 <a href="${servePath}/tag/${followingTag.tagURI}">
                     <#if "" != followingTag.tagIconPath>
                     <div class="avatar fn-left ft-gray tooltipped tooltipped-se"  
-                         aria-label="${followingTag.tagTitle}" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
+                         aria-label="${followingTag.tagTitle}" style="background-image:url('${followingTag.tagIconPath}')"></div>
                     <#else>
                         <div class="tooltipped tooltipped-se fn-left ft-a-title" aria-label="${followingTag.tagTitle}">
                             <svg class="avatar"><use xlink:href="#tags"></use></svg>

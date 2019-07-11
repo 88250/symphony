@@ -27,7 +27,7 @@
         <li class="fn-flex">
             <a href="${servePath}/tag/${followingTag.tagURI}">
                 <#if "" != followingTag.tagIconPath>
-                <div title="${followingTag.tagTitle}" class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
+                <div title="${followingTag.tagTitle}" class="avatar fn-left" style="background-image:url('${followingTag.tagIconPath}')"></div>
                 <#else>
                 <svg class="avatar"><use xlink:href="#tags"></use></svg>
                 </#if>

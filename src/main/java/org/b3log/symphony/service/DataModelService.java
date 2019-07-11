@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.38, Jan 24, 2019
+ * @version 1.12.2.39, Jul 11, 2019
  * @since 0.2.0
  */
 @Service
@@ -225,8 +225,8 @@ public class DataModelService {
         try {
             for (int i = 0; i < 13; i++) {
                 final JSONObject tag = new JSONObject();
-                tag.put(Tag.TAG_URI, "Sym");
-                tag.put(Tag.TAG_ICON_PATH, "sym.png");
+                tag.put(Tag.TAG_URI, "sym");
+                tag.put(Tag.TAG_ICON_PATH, Latkes.getStaticServePath() + "/images/tags/sym.png");
                 tag.put(Tag.TAG_TITLE, "Sym");
 
                 dataModel.put(Tag.TAG + i, tag);

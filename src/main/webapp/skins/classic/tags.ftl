@@ -43,7 +43,7 @@
                                 <#list trendTags as tag>
                                 <li class="fn-flex">
                                     <#if tag.tagIconPath!="">
-                                    <div class="avatar" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
+                                    <div class="avatar" style="background-image:url('${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                                     </#if>
                                     <div class="fn-flex-1">
                                         <div class="fn-clear">
@@ -74,7 +74,7 @@
                                 <#list coldTags as tag>
                                 <li>
                                     <#if tag.tagIconPath!="">
-                                    <div class="avatar-small" style="background-image: url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
+                                    <div class="avatar-small" style="background-image: url('${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                                     </#if>
                                     <a class="ft-a-title" rel="tag" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
                                     <div class="vditor-reset">${tag.tagDescription}</div>

@@ -72,7 +72,7 @@
                                     <li data-id="${tag.oId}">
                                         <a rel="nofollow" href="javascript:void(0)">
                                             <#if tag.tagIconPath!="">
-                                                <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if>
+                                                <img src="${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if>
                                             ${tag.tagTitle}
                                         </a>
                                         <div<#if tag.tagDescription == ''> style="width:auto"</#if>>

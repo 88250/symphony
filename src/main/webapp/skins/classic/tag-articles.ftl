@@ -38,7 +38,7 @@
                         ${tag.tagCSS}
                         <div class="article-info fn-flex">
                             <#if tag.tagIconPath != "">
-                            <div class="avatar" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
+                            <div class="avatar" style="background-image:url('${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                             </#if>
 
                             <div class="fn-flex-1">
@@ -74,7 +74,7 @@
                             <li>
                                 <a pjax-title="${relatedTag.tagTitle} - ${tagLabel} - ${symphonyLabel}" rel="tag" href="${servePath}/tag/${relatedTag.tagURI}">
                                     <#if relatedTag.tagIconPath != "">
-                                    <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
+                                    <img src="${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
                                     ${relatedTag.tagTitle}</a>
                                 <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
                                     <div>${relatedTag.tagDescription}</div>

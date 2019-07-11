@@ -42,7 +42,7 @@ import java.util.Set;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.2, Feb 24, 2019
+ * @version 1.2.2.3, Jul 11, 2019
  * @since 1.8.0
  */
 @Service
@@ -656,7 +656,7 @@ public class InitMgmtService {
             tagId = tagMgmtService.addTag(adminId, tagTitle);
             tag = tagRepository.get(tagId);
             tag.put(Tag.TAG_URI, "sym");
-            tag.put(Tag.TAG_ICON_PATH, "sym.png");
+            tag.put(Tag.TAG_ICON_PATH, Latkes.getStaticServePath() + "/images/tags/sym.png");
             tag.put(Tag.TAG_DESCRIPTION, "[Sym](https://github.com/b3log/symphony) 是一款用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）平台，“下一代的社区系统，为未来而构建”。");
             tagMgmtService.updateTag(tagId, tag);
 
