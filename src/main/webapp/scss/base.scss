@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.38.0.1, Feb 11, 2019
+ * @version 2.38.0.2, Jul 11, 2019
  */
 @import "variables";
 @import "common";
@@ -770,9 +770,9 @@ a[class*=" icon-"]:hover {
   }
 
   h1 svg {
-    color: #fff;
-    height: 48px;
-    width: 48px;
+    height: 38px;
+    width: 38px;
+    margin-top: 5px;
   }
 
   .nav-tabs {
