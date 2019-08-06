@@ -22,7 +22,7 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.26.0.3, May 20, 2019
+ * @version 2.26.0.4, Aug 6, 2019
  */
 
 /**
@@ -260,7 +260,7 @@ var AddArticle = {
       id: 'articleContent',
       cache: Label.articleOId ? false : true,
       preview: {
-        show: true,
+        mode: 'both',
       },
       resize: {
         enable: false,
@@ -385,7 +385,7 @@ var AddArticle = {
         id: 'articleRewardContent',
         cache: Label.articleOId ? false : true,
         preview: {
-          show: false,
+          mode: 'editor',
         },
         resize: {
           enable: false,

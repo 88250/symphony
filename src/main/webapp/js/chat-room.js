@@ -19,7 +19,7 @@
  * @fileoverview 聊天室
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.0.0, Feb 11, 2019
+ * @version 1.3.0.1, Aug 6, 2019
  */
 
 /**
@@ -46,7 +46,7 @@ var ChatRoom = {
       id: 'chatContent',
       cache: true,
       preview: {
-        show: false,
+        mode: 'editor',
       },
       resize: {
         enable: true,
