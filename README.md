@@ -24,7 +24,7 @@
 <a title="Author GitHub Followers" target="_blank" href="https://github.com/88250"><img src="https://img.shields.io/github/followers/88250.svg?label=Followers&style=social"></a>
 </p>
 
-## 简介
+## 💡 简介
 
 [Symphony](https://sym.b3log.org)（[ˈsɪmfəni]，n.交响乐）是一个现代化的社区平台，因为它：
 
@@ -35,7 +35,7 @@
 
 欢迎到 [Sym 官方讨论区](https://hacpai.com/tag/sym)了解更多。
 
-## 动机
+## ⚡ 动机
 
 很多社区论坛系统：
 
@@ -44,7 +44,7 @@
 * 缺乏考虑实际运营需求，管理功能过于单一
 * 细节不够精致、缺乏长期维护 
 
-## 客户案例
+## 🗃 案例
 
 社区版：
 
@@ -70,14 +70,14 @@
 * [金蝶精斗云社区](https://cs.jdy.com)
 * ......
 
-## 功能
+## ✨  特性
 
 * [Sym 简介幻灯片](https://sym.b3log.org/syme-intro.pptx)
 * [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
 
 [![Sym功能点](https://user-images.githubusercontent.com/873584/59412885-07dbf080-8df1-11e9-8088-266d6eaf7dbc.jpg)](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
 
-## 界面
+## 🎨 界面
 
 以下截图来自 Sym 商业版。
 
@@ -105,7 +105,7 @@
 
 ![theme](https://user-images.githubusercontent.com/970828/61682153-09c79680-ad43-11e9-9eba-d6957fb0361e.png)
 
-## 安装
+## 🛠️ 安装
 
 先在 MySQL 中手动建库（库名 `symphony`，字符集使用 `utf8mb4`，排序规则 `utf8mb4_general_ci`），然后按照如下方式之一启动服务。
 
@@ -147,14 +147,14 @@ docker run --detach --name sym --network=host \
 
 完整启动参数的说明可以使用 `-h` 来查看。
 
-## 文档
+## 📜 文档
 
 * [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
 * [Sym 安装指南](https://hacpai.com/article/1486188905847)
 * [Sym 配置项说明](https://hacpai.com/article/1524715380797)
 * [Sym 贡献指南](https://github.com/b3log/symphony/blob/master/CONTRIBUTING.md)
 
-## 授权
+## 📄 授权
 
 * 社区版：使用 AGPLv3 开源，如果你选择使用社区版，则必须完全遵守 AGPLv3 的相关条款
 * 商业版：提供完整源码以便二开，报价 ¥20000
@@ -164,12 +164,12 @@ docker run --detach --name sym --network=host \
 
 欢迎联系 QQ `845765` 或邮箱 `d@b3log.org` 进行细节咨询。
 
-## 社区
+## 🏘️ 社区
 
 * [讨论区](https://hacpai.com/tag/sym)
 * [报告问题](https://github.com/b3log/symphony/issues/new/choose)
 
-## 鸣谢
+## 🙏 鸣谢
 
 * [jQuery](https://github.com/jquery/jquery)：前端 JavaScript 工具库
 * [Vditor](https://github.com/b3log/vditor)： 浏览器端的 Markdown 编辑器
@@ -192,7 +192,7 @@ docker run --detach --name sym --network=host \
 
 ---
 
-## 开源项目推荐
+## 👍 开源项目推荐
 
 * 如果你需要搭建一个个人博客系统，可以考虑使用 [Solo](https://github.com/b3log/solo)
 * 如果你需要搭建一个多用户博客平台，可以考虑使用 [Pipe](https://github.com/b3log/pipe)
