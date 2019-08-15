@@ -61,7 +61,7 @@ public class NotificationRepository extends AbstractRepository {
      * @param userId               the given user id
      * @param dataId               the specified the specified data id
      * @param notificationDataType the specified notification data type
-     * @return {@code ture} if sent, returns {@code false} otherwise
+     * @return {@code true} if sent, returns {@code false} otherwise
      */
     public boolean hasSentByDataIdAndType(final String userId, final String dataId, final int notificationDataType) {
         try {
