@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.17.0.9, Jul 29, 2019
+    Version: 2.17.0.10, Aug 19, 2019
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -12,7 +12,7 @@
     <groupId>org.b3log</groupId>
     <artifactId>symphony</artifactId>
     <packaging>war</packaging>
-    <version>3.5.0</version>
+    <version>3.5.1</version>
     <name>Symphony</name>
     <url>https://sym.b3log.org</url>
     <description>
