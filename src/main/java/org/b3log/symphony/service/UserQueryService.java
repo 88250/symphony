@@ -443,7 +443,7 @@ public class UserQueryService {
      * Gets user names from the specified text.
      * <p>
      * A user name is between &#64; and a punctuation, a blank or a line break (\n). For example, the specified text is
-     * <pre>&#64;88250 It is a nice day. &#64;Vanessa, we are on the way.</pre> There are two user names in the text,
+     * <pre>&#64;88250 It is a nice day. &#64;Vanessa, we are on the road.</pre> There are two user names in the text,
      * 88250 and Vanessa.
      * </p>
      *
