@@ -43,7 +43,7 @@ import java.util.List;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.4.2, Jan 10, 2019
+ * @version 1.21.4.3, Aug 19, 2019
  * @since 1.3.0
  */
 @Service
@@ -344,17 +344,17 @@ public class PointtransferQueryService {
 
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD:
-                        final JSONObject addArticleReword = articleRepository.get(dataId);
-                        if (null == addArticleReword) {
+                        final JSONObject addArticleReward = articleRepository.get(dataId);
+                        if (null == addArticleReward) {
                             desTemplate = langPropsService.get("removedLabel");
 
                             break;
                         }
 
-                        final String addArticleRewordLink = "<a href=\""
-                                + addArticleReword.optString(Article.ARTICLE_PERMALINK) + "\">"
-                                + Escapes.escapeHTML(addArticleReword.optString(Article.ARTICLE_TITLE)) + "</a>";
-                        desTemplate = desTemplate.replace("{article}", addArticleRewordLink);
+                        final String addArticleRewardLink = "<a href=\""
+                                + addArticleReward.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + Escapes.escapeHTML(addArticleReward.optString(Article.ARTICLE_TITLE)) + "</a>";
+                        desTemplate = desTemplate.replace("{article}", addArticleRewardLink);
 
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD:
