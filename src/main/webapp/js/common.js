@@ -126,8 +126,9 @@ var Util = {
   parseMarkdown: function () {
     Vditor.mermaidRender(document.body)
     Vditor.chartRender()
-    Vditor.mathRender(document.body)
+    Vditor.mathRender(document.body, Label.langLabel)
     Vditor.codeRender(document.body, Label.langLabel)
+    Vditor.abcRender()
 
     var hasLivePhoto = false
     $('.vditor-reset').each(function () {
