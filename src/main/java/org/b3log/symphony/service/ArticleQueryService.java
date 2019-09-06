@@ -60,7 +60,7 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.28.1.1, Jul 2, 2019
+ * @version 2.28.2.0, Sep 6, 2019
  * @since 0.2.0
  */
 @Service
@@ -599,6 +599,7 @@ public class ArticleQueryService {
                     append(tagArticleRepository.getName() + " symphony_tag_article ").
                     append(" where symphony_article.oId=symphony_tag_article.article_oId and symphony_article.articleShowInList != ? ").
                     append(" and symphony_article.").append(Article.ARTICLE_STATUS).append("!=?").
+                    append(" and symphony_article.").append(Article.ARTICLE_TYPE).append("!=?").
                     append(" and ").append("symphony_tag_article." + Tag.TAG + '_' + Keys.OBJECT_ID).append(" in ( ");
             for (int i = 0; i < tagIds.size(); i++) {
                 queryStr.append(" ").append(tagIds.get(i));
@@ -610,10 +611,10 @@ public class ArticleQueryService {
             queryStr.append(" order by ").append("symphony_tag_article." + Keys.OBJECT_ID + " ").append(" desc ");
 
             final List<JSONObject> tagArticlesCount = articleRepository.
-                    select(queryCount.append(queryStr.toString()).toString(), Article.ARTICLE_SHOW_IN_LIST_C_NOT, Article.ARTICLE_STATUS_C_INVALID);
+                    select(queryCount.append(queryStr.toString()).toString(), Article.ARTICLE_SHOW_IN_LIST_C_NOT, Article.ARTICLE_STATUS_C_INVALID, Article.ARTICLE_TYPE_C_DISCUSSION);
             queryStr.append(" limit ").append((currentPageNum - 1) * pageSize).append(",").append(pageSize);
             final List<JSONObject> tagArticles = articleRepository.
-                    select(queryList.append(queryStr.toString()).toString(), Article.ARTICLE_SHOW_IN_LIST_C_NOT, Article.ARTICLE_STATUS_C_INVALID);
+                    select(queryList.append(queryStr.toString()).toString(), Article.ARTICLE_SHOW_IN_LIST_C_NOT, Article.ARTICLE_STATUS_C_INVALID, Article.ARTICLE_TYPE_C_DISCUSSION);
             if (tagArticles.size() <= 0) {
                 return ret;
             }
