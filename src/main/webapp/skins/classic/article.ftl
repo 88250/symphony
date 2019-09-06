@@ -579,8 +579,6 @@
             Label.commonAtUser = '${permissions["commonAtUser"].permissionGrant?c}';
             Label.noPermissionLabel = '${noPermissionLabel}';
             Label.rewardLabel = '${rewardLabel}';
-            Label.imgMaxSize = ${imgMaxSize?c};
-            Label.fileMaxSize = ${fileMaxSize?c};
             Label.articleChannel = "${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}";
             <#if isLoggedIn>
                 Label.currentUserName = '${currentUser.userName}';

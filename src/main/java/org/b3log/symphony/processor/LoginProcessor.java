@@ -48,7 +48,6 @@ import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
-import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,7 +66,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.13.12.7, Feb 11, 2019
+ * @version 1.13.12.8, Sep 6, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -244,11 +243,6 @@ public class LoginProcessor {
             }
         }
         dataModel.put(User.USERS, users);
-
-        final long imgMaxSize = Symphonys.UPLOAD_IMG_MAX;
-        dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.UPLOAD_FILE_MAX;
-        dataModel.put("fileMaxSize", fileMaxSize);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
     }

@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.39, Jul 11, 2019
+ * @version 1.12.2.40, Sep 6, 2019
  * @since 0.2.0
  */
 @Service
@@ -295,6 +295,8 @@ public class DataModelService {
         dataModel.put(Common.SITE_VISIT_STAT_CODE, Symphonys.SITE_VISIT_STATISTIC_CODE);
         dataModel.put(Common.MOUSE_EFFECTS, RandomUtils.nextDouble() > 0.95);
         dataModel.put(Common.FOOTER_BEI_AN_HAO, Symphonys.FOOTER_BEIANHAO);
+        dataModel.put(Common.IMAGE_MAX_SIZE, Symphonys.UPLOAD_IMG_MAX);
+        dataModel.put(Common.FILE_MAX_SIZE, Symphonys.UPLOAD_FILE_MAX);
     }
 
     /**

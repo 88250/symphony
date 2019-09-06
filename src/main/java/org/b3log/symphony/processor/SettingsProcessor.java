@@ -80,7 +80,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.3, Apr 18, 2019
+ * @version 1.3.2.4, Sep 6, 2019
  * @since 2.4.0
  */
 @RequestProcessor
@@ -434,11 +434,6 @@ public class SettingsProcessor {
 
         final int invitedUserCount = userQueryService.getInvitedUserCount(userId);
         dataModel.put(Common.INVITED_USER_COUNT, invitedUserCount);
-
-        final long imgMaxSize = Symphonys.UPLOAD_IMG_MAX;
-        dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.UPLOAD_FILE_MAX;
-        dataModel.put("fileMaxSize", fileMaxSize);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
 

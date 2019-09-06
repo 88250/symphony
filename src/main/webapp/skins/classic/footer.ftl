@@ -90,6 +90,8 @@
         systemLabel: '${systemLabel}',
         newFollowerLabel: '${newFollowerLabel}',
         makeAsReadLabel: '${makeAsReadLabel}',
+        imgMaxSize: ${imgMaxSize?c},
+        fileMaxSize: ${fileMaxSize?c},
         <#if isLoggedIn>
             currentUserName: '${currentUser.userName}',
         </#if>

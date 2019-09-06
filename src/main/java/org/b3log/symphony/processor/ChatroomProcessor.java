@@ -60,7 +60,7 @@ import static org.b3log.symphony.processor.channel.ChatroomChannel.SESSIONS;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.21, Feb 27, 2019
+ * @version 1.3.5.22, Sep 6, 2019
  * @since 1.4.0
  */
 @RequestProcessor
@@ -204,11 +204,6 @@ public class ChatroomProcessor {
                 map(msg -> JSONs.clone(msg).put(Common.TIME, Times.getTimeAgo(msg.optLong(Common.TIME), Locales.getLocale()))).collect(Collectors.toList());
         dataModel.put(Common.MESSAGES, msgs);
         dataModel.put("chatRoomMsgCnt", Symphonys.CHATROOMMSGS_CNT);
-
-        final long imgMaxSize = Symphonys.UPLOAD_IMG_MAX;
-        dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.UPLOAD_FILE_MAX;
-        dataModel.put("fileMaxSize", fileMaxSize);
         dataModel.put(Common.ONLINE_CHAT_CNT, SESSIONS.size());
 
         dataModelService.fillHeaderAndFooter(context, dataModel);

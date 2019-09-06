@@ -74,8 +74,10 @@
         sameCityLabel: '${sameCityLabel}',
         systemLabel: '${systemLabel}',
         newFollowerLabel: '${newFollowerLabel}',
-        makeAsReadLabel: '${makeAsReadLabel}'
-        <#if isLoggedIn>,
+        makeAsReadLabel: '${makeAsReadLabel}',
+        imgMaxSize: ${imgMaxSize?c},
+        fileMaxSize: ${fileMaxSize?c},
+        <#if isLoggedIn>
         currentUserName: '${currentUser.userName}'</#if>
          <#if csrfToken??>,
             csrfToken: '${csrfToken}'

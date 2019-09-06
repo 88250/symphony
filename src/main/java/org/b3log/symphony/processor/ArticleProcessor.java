@@ -84,7 +84,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 1.27.3.4, May 26, 2019
+ * @version 1.27.3.5, Sep 6, 2019
  * @since 0.2.0
  */
 @RequestProcessor
@@ -483,11 +483,6 @@ public class ArticleProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final long imgMaxSize = Symphonys.UPLOAD_IMG_MAX;
-        dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.UPLOAD_FILE_MAX;
-        dataModel.put("fileMaxSize", fileMaxSize);
-
         String tags = context.param(Tag.TAGS);
         final JSONObject currentUser = Sessions.getUser();
 
@@ -698,11 +693,6 @@ public class ArticleProcessor {
         dataModelService.fillRelevantArticles(dataModel, article);
         dataModelService.fillRandomArticles(dataModel);
         dataModelService.fillSideHotArticles(dataModel);
-
-        final long imgMaxSize = Symphonys.UPLOAD_IMG_MAX;
-        dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.UPLOAD_FILE_MAX;
-        dataModel.put("fileMaxSize", fileMaxSize);
 
         // Fill article thank
         Stopwatchs.start("Fills article thank");
@@ -1004,11 +994,6 @@ public class ArticleProcessor {
         dataModel.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
-
-        final long imgMaxSize = Symphonys.UPLOAD_IMG_MAX;
-        dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.UPLOAD_FILE_MAX;
-        dataModel.put("fileMaxSize", fileMaxSize);
 
         fillDomainsWithTags(dataModel);
 

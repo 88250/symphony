@@ -21,7 +21,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.73.0.9, Feb 18, 2019
+ * @version 1.73.0.10, Sep 6, 2019
  * @since 0.2.0
  */
 public final class Common {
@@ -715,6 +715,16 @@ public final class Common {
      * Key of footer bei an hao.
      */
     public static final String FOOTER_BEI_AN_HAO = "footerBeiAnHao";
+
+    /**
+     * Key of image max size.
+     */
+    public static final String IMAGE_MAX_SIZE = "imgMaxSize";
+
+    /**
+     * Key of file max size.
+     */
+    public static final String FILE_MAX_SIZE = "fileMaxSize";
 
     /**
      * Key of online visitor count.

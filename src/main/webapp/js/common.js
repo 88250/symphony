@@ -657,7 +657,7 @@ var Util = {
         },
       },
       upload: {
-        max: 10 * 1024 * 1024,
+        max: Label.fileMaxSize,
         url: Label.servePath + '/upload',
         linkToImgUrl: Label.servePath + '/fetch-upload',
         filename: function (name) {
