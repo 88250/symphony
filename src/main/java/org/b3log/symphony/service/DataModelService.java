@@ -44,7 +44,7 @@ import java.util.*;
  * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.2.40, Sep 6, 2019
+ * @version 1.12.2.41, Sep 16, 2019
  * @since 0.2.0
  */
 @Service
@@ -322,7 +322,7 @@ public class DataModelService {
 
         final String serverScheme = Latkes.getServerScheme();
         dataModel.put(Common.WEBSOCKET_SCHEME, StringUtils.containsIgnoreCase(serverScheme, "https") ? "wss" : "ws");
-        dataModel.put(Common.MARKDOWN_HTTP_AVAILABLE, Markdowns.MARKDOWN_HTTP_AVAILABLE);
+        dataModel.put(Common.LUTE_AVAILABLE, Markdowns.LUTE_AVAILABLE);
     }
 
     /**

@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.47.0.4, Aug 6, 2019
+ * @version 1.47.0.5, Sep 16, 2019
  */
 
 /**
@@ -102,7 +102,7 @@ var Util = {
   },
   parseHljs: function () {
     Util.addStyle('https://cdn.jsdelivr.net/npm/vditor/dist/js/highlight.js/styles/github.css', 'vditorHljsStyle')
-    if (!Label.markdownHttpAvailable) {
+    if (!Label.luteAvailable) {
       if (typeof hljs === 'undefined') {
         $.ajax({
           url: 'https://cdn.jsdelivr.net/npm/vditor/dist/js/highlight.js/highlight.pack.js',

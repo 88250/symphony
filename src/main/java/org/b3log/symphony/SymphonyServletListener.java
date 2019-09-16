@@ -55,7 +55,7 @@ import java.util.Locale;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 3.19.10.35, Aug 19, 2019
+ * @version 3.19.10.36, Sep 16, 2019
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -87,10 +87,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final Latkes.RuntimeMode runtimeMode = Latkes.getRuntimeMode();
         final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
         final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
-        final boolean markdownHttpAvailable = Markdowns.MARKDOWN_HTTP_AVAILABLE;
+        final boolean luteAvailable = Markdowns.LUTE_AVAILABLE;
 
         LOGGER.log(Level.INFO, "Sym is booting [ver=" + VERSION + ", servletContainer=" + Latkes.getServletInfo(servletContextEvent.getServletContext())
-                + ", os=" + Latkes.getOperatingSystemName() + ", isDocker=" + Latkes.isDocker() + ", markdownHttpAvailable=" + markdownHttpAvailable + ", pid=" + Latkes.currentPID()
+                + ", os=" + Latkes.getOperatingSystemName() + ", isDocker=" + Latkes.isDocker() + ", luteAvailable=" + luteAvailable + ", pid=" + Latkes.currentPID()
                 + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode + ", jdbc.username=" + jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
 
         beanManager = BeanManager.getInstance();
