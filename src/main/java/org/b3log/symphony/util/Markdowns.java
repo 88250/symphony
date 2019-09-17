@@ -450,7 +450,9 @@ public final class Markdowns {
                 addAttributes("param", "name", "value").
                 addAttributes("input", "type", "disabled", "checked").
                 addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking").
+                addAttributes("pre", "class").
                 addAttributes("code", "class").
+                addAttributes("div", "class").
                 addAttributes("span", "class").
                 addAttributes("p", "align");
         for (int i = 1; i <= 6; i++) {
