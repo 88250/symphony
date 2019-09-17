@@ -56,7 +56,7 @@
 
 <script src="${staticServePath}/js/symbol-defs${miniPostfix}.js?${staticResourceVersion}"></script>
 <script src="${staticServePath}/js/lib/compress/libs.min.js?${staticResourceVersion}"></script>
-<script src="https://cdn.jsdelivr.net/npm/vditor@1.7.15/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vditor@1.8.7/dist/index.min.js Vditor.mathRender(document.body)"></script>
 <script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     var Label = {

@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.47.0.5, Sep 16, 2019
+ * @version 1.47.0.6, Sep 17, 2019
  */
 
 /**
@@ -126,7 +126,12 @@ var Util = {
   parseMarkdown: function () {
     Vditor.mermaidRender(document.body)
     Vditor.chartRender()
-    Vditor.mathRender(document.body, Label.langLabel)
+    if (Label.luteAvailable) {
+      Vditor.mathRenderByLute(document.body)
+    } else {
+      Vditor.mathRender(document.body)
+    }
+
     Vditor.codeRender(document.body, Label.langLabel)
     Vditor.abcRender()
 
