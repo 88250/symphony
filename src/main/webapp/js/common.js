@@ -101,22 +101,13 @@ var Util = {
     }
   },
   parseHljs: function () {
-    Util.addStyle('https://cdn.jsdelivr.net/npm/vditor/dist/js/highlight.js/styles/github.css', 'vditorHljsStyle')
-    if (!Label.luteAvailable) {
-      if (typeof hljs === 'undefined') {
-        $.ajax({
-          url: 'https://cdn.jsdelivr.net/npm/vditor/dist/js/highlight.js/highlight.pack.js',
-          dataType: 'script',
-          cache: true,
-          success: function () {
-            hljs.initHighlighting.called = false
-            hljs.initHighlighting()
-          },
-        })
-      } else {
-        hljs.initHighlighting.called = false
-        hljs.initHighlighting()
-      }
+    if ($('.vditor-reset pre > code').length === 0) {
+      return
+    }
+    if (Label.luteAvailable) {
+      Util.addStyle('https://cdn.jsdelivr.net/npm/vditor/dist/js/chroma/github.css', 'vditorHljsStyle')
+    } else {
+      Vditor.highlightRender(Label.hljsStyle, true, document)
     }
   },
   /**
@@ -657,9 +648,8 @@ var Util = {
           if (element.style.display === 'none') {
             return
           }
-          Util.parseHljs()
           Util.LazyLoadImage()
-        },
+        }
       },
       upload: {
         max: Label.fileMaxSize,
