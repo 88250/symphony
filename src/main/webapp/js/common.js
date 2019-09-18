@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.47.0.6, Sep 17, 2019
+ * @version 1.47.0.7, Sep 18, 2019
  */
 
 /**
@@ -101,14 +101,7 @@ var Util = {
     }
   },
   parseHljs: function () {
-    if ($('.vditor-reset pre > code').length === 0) {
-      return
-    }
-    if (Label.luteAvailable) {
-      Util.addStyle('https://cdn.jsdelivr.net/npm/vditor/dist/js/chroma/github.css', 'vditorHljsStyle')
-    } else {
-      Vditor.highlightRender(Label.hljsStyle, true, document)
-    }
+    Vditor.highlightRender('github', !Label.luteAvailable, document)
   },
   /**
    * 按需加载 MathJax 及 flow、live photo
@@ -649,6 +642,9 @@ var Util = {
             return
           }
           Util.LazyLoadImage()
+        },
+        hljs: {
+          enable: !Label.luteAvailable
         }
       },
       upload: {
