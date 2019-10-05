@@ -20,8 +20,6 @@ package org.b3log.symphony.util;
 import jodd.io.upload.FileUpload;
 import jodd.net.MimeTypes;
 import org.apache.commons.lang.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  * HTTP header utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Feb 10, 2018
+ * @version 1.1.1.0, Oct 5, 2018
  * @since 2.8.0
  */
 public final class Headers {
@@ -84,7 +82,7 @@ public final class Headers {
             return defaultVal;
         }
 
-        return Jsoup.clean(value, Whitelist.none());
+        return Escapes.escapeHTML(value);
     }
 
     /**
