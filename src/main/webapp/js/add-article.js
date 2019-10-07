@@ -22,7 +22,7 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.26.0.4, Aug 6, 2019
+ * @version 2.26.1.0, Oct 7, 2019
  */
 
 /**
@@ -32,63 +32,54 @@
 var AddArticle = {
   editor: undefined,
   rewardEditor: undefined,
-  recordThought: function (prevValue, postData) {
-    var diff = JsDiff.diffChars(prevValue, event.target.value)
-    var sameLength = 0
-    var hasRemoved = false, hasAdded = false, addedValue = ''
+  /**
+   * 记录思绪过程
+   * @param {string} currentValue 当前内容
+   * @param {string} prevValue 输入前的上一次值
+   * @param {Object} postData 发贴本地缓存数据
+   */
+  recordThought: function (currentValue, prevValue, postData) {
+    var diff = JsDiff.diffChars(prevValue, currentValue)
+    var unitSep = String.fromCharCode(31) // Unit Separator (单元分隔符)
+    var change = ''
+    var fromCh = 0
+    var fromLine = 0
+    var toCh = 0
+    var toLine = 0
     for (var iMax = diff.length, i = 0; i < iMax; i++) {
+      var time = (new Date()).getTime() - postData.thoughtTime
+      var valueArr = diff[i].value.split('\n')
+
+      if (!diff[i].removed && !diff[i].added) {
+        toLine = fromLine = valueArr.length - 1 + fromLine
+        if (valueArr.length === 1) {
+          toCh = fromCh = fromCh + valueArr[valueArr.length - 1].length
+        } else {
+          toCh = fromCh = valueArr[valueArr.length - 1].length
+        }
+      }
+
       if (diff[i].removed) {
-        hasRemoved = true
+        toCh += diff[i].count
+        toLine += valueArr.length - 1
+
+        change += String.fromCharCode(24) + unitSep + time // cancel
+          + unitSep + fromCh + '-' + fromLine
+          + unitSep + toCh + '-' + toLine
+          + String.fromCharCode(30)  // Record Separator (记录分隔符)
       } else if (diff[i].added) {
-        hasAdded = true
-        addedValue += diff[i].value
-      } else if (!hasRemoved && !hasAdded) {
-        sameLength += diff[i].count
-      }
-      if (!diff[i].removed && !diff[i].added && i !== iMax - 1 &&
-        i !== 0) {
-        addedValue += diff[i].value
-      }
-    }
-    if (!hasRemoved && !hasAdded) {
-      return
-    }
+        change += diff[i].value + unitSep + time
+          + unitSep + fromCh + '-' + fromLine
+          + unitSep + toCh + '-' + toLine
+          + String.fromCharCode(30)  // Record Separator (记录分隔符)
 
-    var getPosition = function (value, length) {
-      var getPosition = {ch: 0, line: 0}
-      var valueArray = value.substr(0, length).split('\n')
-      getPosition.line = valueArray.length - 1
-      getPosition.ch = valueArray.slice(-1).pop().length
-      return getPosition
-    }
-
-    var change = '',
-      changes = {
-        from: getPosition(prevValue, sameLength),
-        to: getPosition(prevValue, prevValue.length -
-          (diff.slice(-1).pop().removed ? 0 : diff.slice(-1).pop().count) // 删除最后一个元素时，to 为 0
-        ),
-      },
-      unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
-      time = (new Date()).getTime() - postData.thoughtTime
-
-    if (hasRemoved && !hasAdded) {
-      // delete
-      change = String.fromCharCode(24) + unitSep + time // cancel
-        + unitSep + changes.from.ch + '-' + changes.from.line
-        + unitSep + changes.to.ch + '-' + changes.to.line
-        + String.fromCharCode(30)  // Record Separator (记录分隔符)
-    } else {
-      if (hasAdded) {
-        change += addedValue
+        if (valueArr[valueArr.length - 1].length === 0) {
+          toCh = fromCh = 0
+        } else {
+          toCh = fromCh = valueArr[valueArr.length - 1].length + fromCh
+        }
+        toLine = fromLine = valueArr.length - 1 + fromLine
       }
-      if (hasRemoved) {
-        change += String.fromCharCode(29) // group separator
-      }
-      change += unitSep + time
-        + unitSep + changes.from.ch + '-' + changes.from.line
-        + unitSep + changes.to.ch + '-' + changes.to.line
-        + String.fromCharCode(30)  // Record Separator (记录分隔符)
     }
 
     postData.thoughtContent += change
@@ -272,7 +263,7 @@ var AddArticle = {
         if (Label.articleType === 3) {
           var postData = JSON.parse(localStorage.postData)
           prevValue = localStorage.getItem('vditorarticleContent') || ''
-          AddArticle.recordThought(prevValue, postData)
+          AddArticle.recordThought(AddArticle.editor.getValue(), prevValue, postData)
           localStorage.postData = JSON.stringify(postData)
         }
       },
