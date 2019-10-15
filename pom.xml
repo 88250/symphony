@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.17.0.11, Oct 5, 2019
+    Version: 2.17.0.12, Oct 15, 2019
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -26,7 +26,7 @@
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.4.14.v20181114</jetty.version>
         <slf4j.version>1.7.28</slf4j.version>
-        <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
         <jsoup.version>1.12.1</jsoup.version>
         <flexmark.version>0.50.40</flexmark.version>
         <qiniu.version>7.2.23</qiniu.version>
