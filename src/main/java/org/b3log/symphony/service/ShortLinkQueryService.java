@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.3.2, Nov 10, 2018
+ * @version 1.2.3.3, Nov 1, 2019
  * @since 1.3.0
  */
 @Service
@@ -86,7 +86,7 @@ public class ShortLinkQueryService {
                     final String url = StringUtils.trim(matcher.group());
                     if (0 < matcher.start()) {
                         final char c = content.charAt(matcher.start() - 1); // look back one char
-                        if ('(' == c || ']' == c || '\'' == c || '"' == c) {
+                        if ('(' == c || ']' == c || '\'' == c || '"' == c || '`' == c) {
                             continue;
                         }
                     }
