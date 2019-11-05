@@ -204,7 +204,7 @@ public class LinkMgmtService {
                         + "elapsed [" + elapsed + "]");
 
                 link.put(Link.LINK_PING_CNT, link.optInt(Link.LINK_PING_CNT) + 1);
-                if (HttpServletResponse.SC_OK != responseCode) {
+                if (200 != responseCode) {
                     link.put(Link.LINK_PING_ERR_CNT, link.optInt(Link.LINK_PING_ERR_CNT) + 1);
                 }
                 link.put(Link.LINK_PING_TIME, System.currentTimeMillis());

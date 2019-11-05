@@ -20,6 +20,7 @@ package org.b3log.symphony.processor;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.annotation.After;
 import org.b3log.latke.http.annotation.Before;
@@ -39,7 +40,6 @@ import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -98,7 +98,6 @@ public class DomainProcessor {
     public void showDomainArticles(final RequestContext context) {
         final String domainURI = context.pathVar("domainURI");
         final Request request = context.getRequest();
-        final Response response = context.getResponse();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "domain-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

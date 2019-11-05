@@ -23,7 +23,9 @@ import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
 import org.b3log.latke.http.annotation.After;
 import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.annotation.RequestProcessing;
@@ -50,7 +52,6 @@ import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -181,7 +182,6 @@ public class LoginProcessor {
             return;
         }
 
-        final Request request = context.getRequest();
         JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
 
@@ -213,9 +213,6 @@ public class LoginProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showGuide(final RequestContext context) {
-        final Request request = context.getRequest();
-        final Response response = context.getResponse();
-
         final JSONObject currentUser = Sessions.getUser();
         final int step = currentUser.optInt(UserExt.USER_GUIDE_STEP);
         if (UserExt.USER_GUIDE_STEP_FIN == step) {
@@ -301,7 +298,6 @@ public class LoginProcessor {
     public void forgetPwd(final RequestContext context) {
         context.renderJSON();
 
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
 
@@ -492,7 +488,6 @@ public class LoginProcessor {
     @Before(UserRegisterValidation.class)
     public void register(final RequestContext context) {
         context.renderJSON();
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);

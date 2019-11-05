@@ -104,7 +104,7 @@ public final class Links {
 
                 // Get meta info of the URL
                 final Connection.Response res = Jsoup.connect(url).timeout(TIMEOUT).followRedirects(true).execute();
-                if (HttpServletResponse.SC_OK != res.statusCode()) {
+                if (200 != res.statusCode()) {
                     return null;
                 }
 

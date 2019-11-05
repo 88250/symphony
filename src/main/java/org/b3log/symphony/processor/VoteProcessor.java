@@ -19,6 +19,7 @@ package org.b3log.symphony.processor;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.annotation.RequestProcessing;
@@ -111,7 +112,6 @@ public class VoteProcessor {
     public void voteUpComment(final RequestContext context) {
         context.renderJSON();
 
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
 

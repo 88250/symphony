@@ -19,6 +19,7 @@ package org.b3log.symphony.processor;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.annotation.RequestProcessing;
@@ -101,7 +102,6 @@ public class FollowProcessor {
     public void followUser(final RequestContext context) {
         context.renderJSON();
 
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingUserId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();

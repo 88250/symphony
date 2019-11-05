@@ -23,7 +23,10 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
+import org.b3log.latke.http.Cookie;
+import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -36,8 +39,7 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.UserMgmtService;
 import org.json.JSONObject;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
 
 /**
  * Session utilities.
@@ -306,8 +308,7 @@ public final class Sessions {
      * @param rememberLogin remember login or not
      * @return token, returns {@code null} if login failed
      */
-    public static String login(final Response response,
-                               final String userId, final boolean rememberLogin) {
+    public static String login(final Response response, final String userId, final boolean rememberLogin) {
         try {
             final BeanManager beanManager = BeanManager.getInstance();
             final UserRepository userRepository = beanManager.getReference(UserRepository.class);
@@ -333,7 +334,6 @@ public final class Sessions {
 
             final String ret = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.COOKIE_SECRET);
             final Cookie cookie = new Cookie(COOKIE_NAME, ret);
-
             cookie.setPath("/");
             cookie.setMaxAge(rememberLogin ? COOKIE_EXPIRY : -1);
             cookie.setHttpOnly(true); // HTTP Only
@@ -377,8 +377,8 @@ public final class Sessions {
      * @return the current user, returns {@code null} if not logged in
      */
     public static JSONObject currentUser(final Request request) {
-        final Cookie[] cookies = request.getCookies();
-        if (null == cookies || 0 == cookies.length) {
+        final Set<Cookie> cookies = request.getCookies();
+        if (cookies.isEmpty()) {
             return null;
         }
 

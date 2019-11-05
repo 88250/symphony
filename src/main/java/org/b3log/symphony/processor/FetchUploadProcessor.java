@@ -45,7 +45,6 @@ import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
@@ -117,7 +116,7 @@ public class FetchUploadProcessor {
             final HttpRequest req = HttpRequest.get(originalURL).header(Common.USER_AGENT, Symphonys.USER_AGENT_BOT);
             final HttpResponse res = req.connectionTimeout(3000).timeout(5000).send();
             res.close();
-            if (HttpServletResponse.SC_OK != res.statusCode()) {
+            if (200 != res.statusCode()) {
                 return;
             }
 

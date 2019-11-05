@@ -28,9 +28,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.sitemap.Sitemap;
 import org.b3log.symphony.service.SitemapQueryService;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 /**
  * Sitemap processor.
  *
@@ -80,11 +77,7 @@ public class SitemapProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get blog article feed error", e);
 
-            try {
-                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            } catch (final IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            context.getResponse().sendError(500);
         }
     }
 }

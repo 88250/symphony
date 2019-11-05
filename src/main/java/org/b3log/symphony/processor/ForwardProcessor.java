@@ -20,6 +20,7 @@ package org.b3log.symphony.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.annotation.After;
 import org.b3log.latke.http.annotation.Before;
@@ -39,7 +40,6 @@ import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -78,7 +78,6 @@ public class ForwardProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showForward(final RequestContext context) {
         final Request request = context.getRequest();
-        final Response response = context.getResponse();
 
         String to = context.param(Common.GOTO);
         if (StringUtils.isBlank(to)) {

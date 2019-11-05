@@ -24,7 +24,9 @@ import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
 import org.b3log.latke.http.annotation.After;
 import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.annotation.RequestProcessing;
@@ -52,7 +54,6 @@ import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -196,7 +197,6 @@ public class SettingsProcessor {
     public void deactivateUser(final RequestContext context) {
         context.renderJSON();
 
-        final Request request = context.getRequest();
         final Response response = context.getResponse();
         final JSONObject currentUser = Sessions.getUser();
         try {
@@ -219,7 +219,6 @@ public class SettingsProcessor {
     public void updateUserName(final RequestContext context) {
         context.renderJSON();
 
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);

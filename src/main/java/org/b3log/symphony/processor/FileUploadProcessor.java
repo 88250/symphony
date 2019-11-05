@@ -33,6 +33,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
 import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.Inject;
@@ -41,12 +42,11 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.URLs;
-import org.b3log.symphony.Starter;
+import org.b3log.symphony.Server;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -115,7 +115,7 @@ public class FileUploadProcessor {
 
             context.setHeader("Cache-Control", "public, max-age=31536000");
             context.setHeader("ETag", etag);
-            context.setHeader("Server", "Sym File Server (v" + Starter.VERSION + ")");
+            context.setHeader("Server", "Sym File Server (v" + Server.VERSION + ")");
             context.setHeader("Access-Control-Allow-Origin", "*");
             final String ext = StringUtils.substringAfterLast(path, ".");
             final String mimeType = MimeTypes.getMimeType(ext);
@@ -123,7 +123,7 @@ public class FileUploadProcessor {
 
             if (etag.equals(ifNoneMatch)) {
                 context.addHeader("If-None-Match", "false");
-                context.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                context.setStatus(304);
             } else {
                 context.addHeader("If-None-Match", "true");
             }
