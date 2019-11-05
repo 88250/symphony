@@ -74,7 +74,7 @@ public class BeforeRequestHandler implements Handler {
     }
 
     /**
-     * Resolve skin (template) for the specified HTTP servlet request.
+     * Resolve skin (template) for the specified HTTP request.
      *
      * @param context the specified HTTP request context
      */

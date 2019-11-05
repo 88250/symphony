@@ -79,7 +79,7 @@ public class ArticleAddValidation extends ProcessAdvice {
     /**
      * Validates article fields.
      *
-     * @param context           the specified HTTP servlet request context
+     * @param context           the specified HTTP request context
      * @param requestJSONObject the specified request object
      * @throws RequestProcessAdviceException if validate failed
      */

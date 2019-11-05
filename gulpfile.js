@@ -34,81 +34,81 @@ var rename = require('gulp-rename')
 var del = require('del')
 
 function sassProcess () {
-  return gulp.src('./src/main/webapp/scss/*.scss').
+  return gulp.src('./src/main/resources/scss/*.scss').
     pipe(sass({outputStyle: 'compressed', includePaths: ['node_modules']}).
       on('error', sass.logError)).
-    pipe(gulp.dest('./src/main/webapp/css'))
+    pipe(gulp.dest('./src/main/resources/css'))
 }
 
 function sassProcessWatch () {
-  gulp.watch('./src/main/webapp/scss/*.scss', sassProcess)
+  gulp.watch('./src/main/resources/scss/*.scss', sassProcess)
 }
 
 gulp.task('watch', gulp.series(sassProcessWatch))
 
 function cleanProcess () {
-  return del(['./src/main/webapp/js/*.min.js'])
+  return del(['./src/main/resources/js/*.min.js'])
 }
 
 function minArticleCSS () {
   // min article css
   return gulp.src([
-    './src/main/webapp/js/lib/diff2html/diff2html.min.css']).
+    './src/main/resources/js/lib/diff2html/diff2html.min.css']).
     pipe(cleanCSS()).
     pipe(concat('article.min.css')).
-    pipe(gulp.dest('./src/main/webapp/js/lib/compress/'))
+    pipe(gulp.dest('./src/main/resources/js/lib/compress/'))
 }
 
 function minJS () {
   // min js
-  return gulp.src('./src/main/webapp/js/*.js').
+  return gulp.src('./src/main/resources/js/*.js').
     pipe(uglify()).
     pipe(rename({suffix: '.min'})).
-    pipe(gulp.dest('./src/main/webapp/js/'))
+    pipe(gulp.dest('./src/main/resources/js/'))
 }
 
 function minUpload () {
   // concat js
   var jsJqueryUpload = [
-    './src/main/webapp/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js',
-    './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js',
-    './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js',
-    './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-process.js',
-    './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-validate.js']
+    './src/main/resources/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js',
+    './src/main/resources/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js',
+    './src/main/resources/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js',
+    './src/main/resources/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-process.js',
+    './src/main/resources/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-validate.js']
   return gulp.src(jsJqueryUpload).
     pipe(uglify()).
     pipe(concat('jquery.fileupload.min.js')).
-    pipe(gulp.dest('./src/main/webapp/js/lib/jquery/file-upload-9.10.1/'))
+    pipe(gulp.dest('./src/main/resources/js/lib/jquery/file-upload-9.10.1/'))
 }
 
 function minLibs () {
   var jsCommonLib = [
-    './src/main/webapp/js/lib/jquery/jquery-3.1.0.min.js',
-    './src/main/webapp/js/lib/md5.js',
-    './src/main/webapp/js/lib/reconnecting-websocket.min.js',
-    './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
-    './src/main/webapp/js/lib/ua-parser.min.js',
-    './src/main/webapp/js/lib/jquery/jquery.hotkeys.js',
-    './src/main/webapp/js/lib/jquery/jquery.pjax.js',
-    './src/main/webapp/js/lib/nprogress/nprogress.js']
+    './src/main/resources/js/lib/jquery/jquery-3.1.0.min.js',
+    './src/main/resources/js/lib/md5.js',
+    './src/main/resources/js/lib/reconnecting-websocket.min.js',
+    './src/main/resources/js/lib/jquery/jquery.bowknot.min.js',
+    './src/main/resources/js/lib/ua-parser.min.js',
+    './src/main/resources/js/lib/jquery/jquery.hotkeys.js',
+    './src/main/resources/js/lib/jquery/jquery.pjax.js',
+    './src/main/resources/js/lib/nprogress/nprogress.js']
   return gulp.src(jsCommonLib).
     pipe(uglify()).
     pipe(concat('libs.min.js')).
-    pipe(gulp.dest('./src/main/webapp/js/lib/compress/'))
+    pipe(gulp.dest('./src/main/resources/js/lib/compress/'))
 }
 
 function minArticleLibs () {
   var jsArticleLib = [
-    './src/main/webapp/js/lib/sound-recorder/SoundRecorder.js',
-    './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js',
-    './src/main/webapp/js/lib/aplayer/APlayer.min.js',
-    './src/main/webapp/js/lib/diff2html/diff2html.min.js',
-    './src/main/webapp/js/lib/diff2html/diff2html-ui.min.js',
-    './src/main/webapp/js/lib/diff2html/diff.min.js']
+    './src/main/resources/js/lib/sound-recorder/SoundRecorder.js',
+    './src/main/resources/js/lib/jquery/jquery.qrcode.min.js',
+    './src/main/resources/js/lib/aplayer/APlayer.min.js',
+    './src/main/resources/js/lib/diff2html/diff2html.min.js',
+    './src/main/resources/js/lib/diff2html/diff2html-ui.min.js',
+    './src/main/resources/js/lib/diff2html/diff.min.js']
   return gulp.src(jsArticleLib).
     pipe(uglify()).
     pipe(concat('article-libs.min.js')).
-    pipe(gulp.dest('./src/main/webapp/js/lib/compress/'))
+    pipe(gulp.dest('./src/main/resources/js/lib/compress/'))
 }
 
 gulp.task('default',

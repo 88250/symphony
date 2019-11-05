@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.b3log</groupId>
     <artifactId>symphony</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <version>3.5.1</version>
     <name>Symphony</name>
     <url>https://sym.b3log.org</url>
@@ -288,15 +288,6 @@
             </resource>
         </resources>
 
-        <testResources>
-            <testResource>
-                <directory>src/main/webapp</directory>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-        </testResources>
-
         <plugins>
 
             <plugin>
@@ -321,22 +312,22 @@
                     <strictCheck>true</strictCheck>
                     <includes>
                         <include>**/src/*/java/**/*.java</include>
-                        <include>**/src/*/webapp/js/*.js</include>
-                        <include>**/src/*/webapp/css/*.css</include>
-                        <include>**/src/*/webapp/scss/*.scss</include>
+                        <include>**/src/*/resources/js/*.js</include>
+                        <include>**/src/*/resources/css/*.css</include>
+                        <include>**/src/*/resources/scss/*.scss</include>
                         <include>**/src/*/resources/*.properties</include>
-                        <include>**/src/*/webapp/skins/*/*.properties</include>
-                        <include>**/src/*/webapp/WEB-INF/*.xml</include>
-                        <include>**/src/*/webapp/*.xml</include>
+                        <include>**/src/*/resources/skins/*/*.properties</include>
+                        <include>**/src/*/resources/WEB-INF/*.xml</include>
+                        <include>**/src/*/resources/*.xml</include>
                         <include>gulpfile.js</include>
-                        <include>**/src/*/webapp/**/*.ftl</include>
+                        <include>**/src/*/resources/**/*.ftl</include>
                     </includes>
                     <excludes>
                         <exclude>**/src/main/java/**/package-info.java</exclude>
                         <exclude>**/src/main/java/**/Pangu.java</exclude>
-                        <exclude>**/src/*/webapp/js/lib/*.js</exclude>
-                        <exclude>**/src/*/webapp/js/*.min.js</exclude>
-                        <exclude>**/src/*/webapp/css/*.css</exclude>
+                        <exclude>**/src/*/resources/js/lib/*.js</exclude>
+                        <exclude>**/src/*/resources/js/*.min.js</exclude>
+                        <exclude>**/src/*/resources/css/*.css</exclude>
                     </excludes>
 
                     <useDefaultExcludes>true</useDefaultExcludes>
