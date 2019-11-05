@@ -22,19 +22,19 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.After;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.After;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.*;
@@ -50,7 +50,6 @@ import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -182,7 +181,7 @@ public class LoginProcessor {
             return;
         }
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
 
@@ -214,8 +213,8 @@ public class LoginProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showGuide(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
+        final Response response = context.getResponse();
 
         final JSONObject currentUser = Sessions.getUser();
         final int step = currentUser.optInt(UserExt.USER_GUIDE_STEP);
@@ -302,7 +301,7 @@ public class LoginProcessor {
     public void forgetPwd(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
 
@@ -375,7 +374,7 @@ public class LoginProcessor {
     public void resetPwd(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletResponse response = context.getResponse();
+        final Response response = context.getResponse();
         final JSONObject requestJSONObject = context.requestJSON();
         final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
         final String userId = requestJSONObject.optString(UserExt.USER_T_ID);
@@ -493,7 +492,7 @@ public class LoginProcessor {
     @Before(UserRegisterValidation.class)
     public void register(final RequestContext context) {
         context.renderJSON();
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
@@ -553,8 +552,8 @@ public class LoginProcessor {
     public void register2(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
+        final Response response = context.getResponse();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
 
         final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
@@ -645,8 +644,8 @@ public class LoginProcessor {
      */
     @RequestProcessing(value = "/login", method = HttpMethod.POST)
     public void login(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
+        final Response response = context.getResponse();
 
         context.renderJSON().renderMsg(langPropsService.get("loginFailLabel"));
 
@@ -747,7 +746,7 @@ public class LoginProcessor {
      */
     @RequestProcessing(value = "/logout", method = HttpMethod.GET)
     public void logout(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject user = Sessions.getUser();
         if (null != user) {

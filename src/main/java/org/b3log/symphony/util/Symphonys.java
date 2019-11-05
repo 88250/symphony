@@ -26,7 +26,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.Starter;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.service.OptionQueryService;
@@ -68,7 +68,7 @@ public final class Symphonys {
     /**
      * User-Agent.
      */
-    public static final String USER_AGENT_BOT = "Sym/" + SymphonyServletListener.VERSION + "; +https://github.com/b3log/symphony";
+    public static final String USER_AGENT_BOT = "Sym/" + Starter.VERSION + "; +https://github.com/b3log/symphony";
 
     /**
      * Reserved tags.

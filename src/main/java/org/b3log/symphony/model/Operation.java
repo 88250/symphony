@@ -18,12 +18,11 @@
 package org.b3log.symphony.model;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.Request;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.util.Headers;
 import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * This class defines all operation model relevant keys. https://github.com/b3log/symphony/issues/786
@@ -330,7 +329,7 @@ public final class Operation {
      * @param dataId  the specified data id
      * @return an operation
      */
-    public static JSONObject newOperation(final HttpServletRequest request, final int code, final String dataId) {
+    public static JSONObject newOperation(final Request request, final int code, final String dataId) {
         final String ip = Requests.getRemoteAddr(request);
         final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
         final JSONObject user = Sessions.getUser();

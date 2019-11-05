@@ -21,10 +21,10 @@ import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.util.Sessions;
@@ -32,7 +32,6 @@ import org.b3log.symphony.util.Symphonys;
 import org.b3log.symphony.util.Templates;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.StringWriter;
 import java.util.Map;
 import java.util.TimeZone;
@@ -129,7 +128,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
      * @return generated HTML
      * @throws Exception exception
      */
-    protected String genHTML(final HttpServletRequest request, final Map<String, Object> dataModel, final Template template)
+    protected String genHTML(final Request request, final Map<String, Object> dataModel, final Template template)
             throws Exception {
         final boolean isPJAX = isPJAX(context);
         dataModel.put("pjax", isPJAX);

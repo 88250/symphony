@@ -18,19 +18,19 @@
 package org.b3log.symphony.processor.advice.validate;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.advice.ProcessAdvice;
+import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.ProcessAdvice;
-import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
 
 /**
@@ -73,7 +73,7 @@ public class Activity1A0001CollectValidation extends ProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityCollectNotOpenLabel")));
         }
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         JSONObject requestJSONObject;
         try {

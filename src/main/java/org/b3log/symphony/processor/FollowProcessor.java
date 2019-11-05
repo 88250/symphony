@@ -18,13 +18,13 @@
 package org.b3log.symphony.processor;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Notification;
@@ -36,7 +36,6 @@ import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -102,7 +101,7 @@ public class FollowProcessor {
     public void followUser(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingUserId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
@@ -141,7 +140,7 @@ public class FollowProcessor {
     public void unfollowUser(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingUserId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
@@ -169,7 +168,7 @@ public class FollowProcessor {
     @Before(LoginCheck.class)
     public void followTag(final RequestContext context) {
         context.renderJSON();
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingTagId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
@@ -198,7 +197,7 @@ public class FollowProcessor {
     public void unfollowTag(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingTagId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
@@ -227,7 +226,7 @@ public class FollowProcessor {
     public void followArticle(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
@@ -270,7 +269,7 @@ public class FollowProcessor {
     public void unfollowArticle(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
@@ -299,7 +298,7 @@ public class FollowProcessor {
     public void watchArticle(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
@@ -342,7 +341,7 @@ public class FollowProcessor {
     public void unwatchArticle(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();

@@ -23,6 +23,15 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
+import org.b3log.latke.http.annotation.After;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -30,13 +39,6 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.After;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
@@ -55,8 +57,6 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.*;
 
@@ -318,7 +318,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAuditlog(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/auditlog.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
@@ -356,7 +356,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void makeReportIgnored(final RequestContext context) {
         final String reportId = context.pathVar("reportId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         reportMgmtService.makeReportIgnored(reportId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_MAKE_REPORT_IGNORED, reportId));
 
@@ -373,7 +373,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void makeReportHandled(final RequestContext context) {
         final String reportId = context.pathVar("reportId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         reportMgmtService.makeReportHandled(reportId);
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_MAKE_REPORT_HANDLED, reportId));
 
@@ -389,7 +389,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showReports(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/reports.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -428,7 +428,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void removeRole(final RequestContext context) {
         final String roleId = context.pathVar("roleId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final int count = roleQueryService.countUser(roleId);
         if (0 < count) {
@@ -457,7 +457,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showBreezemoons(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/breezemoons.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -522,16 +522,16 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateBreezemoon(final RequestContext context) {
         final String breezemoonId = context.pathVar("breezemoonId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/breezemoon.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         JSONObject breezemoon = breezemoonQueryService.getBreezemoon(breezemoonId);
 
-        final Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            final String name = parameterNames.nextElement();
+        final Iterator<String> parameterNames = request.getParameterNames().iterator();
+        while (parameterNames.hasNext()) {
+            final String name = parameterNames.next();
             final String value = context.param(name);
 
             if (name.equals(Breezemoon.BREEZEMOON_STATUS)) {
@@ -565,7 +565,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
     public void removeBreezemoon(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final String id = context.param(Common.ID);
 
         try {
@@ -602,7 +602,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
     public void addRole(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final String roleName = context.param(Role.ROLE_NAME);
         if (StringUtils.isBlank(roleName)) {
             context.sendRedirect(Latkes.getServePath() + "/admin/roles");
@@ -632,10 +632,9 @@ public class AdminProcessor {
     @After(StopwatchEndAdvice.class)
     public void updateRolePermissions(final RequestContext context) {
         final String roleId = context.pathVar("roleId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
-        final Map<String, String[]> parameterMap = request.getParameterMap();
-        final Set<String> permissionIds = parameterMap.keySet();
+        final Set<String> permissionIds = request.getParameterNames();
 
         roleMgmtService.updateRolePermissions(roleId, permissionIds);
         final JSONObject role = roleQueryService.getRole(roleId);
@@ -711,7 +710,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateSideAd(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final String sideFullAd = context.param("sideFullAd");
 
         JSONObject adOption = optionQueryService.getOption(Option.ID_C_SIDE_FULL_AD);
@@ -740,7 +739,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateBanner(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final String headerBanner = context.param("headerBanner");
 
         JSONObject adOption = optionQueryService.getOption(Option.ID_C_HEADER_BANNER);
@@ -812,7 +811,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void addTag(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         String title = StringUtils.trim(context.param(Tag.TAG_TITLE));
         try {
@@ -871,7 +870,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
     public void stickArticle(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final String articleId = context.param(Article.ARTICLE_T_ID);
         articleMgmtService.adminStick(articleId);
@@ -888,7 +887,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
     public void stickCancelArticle(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final String articleId = context.param(Article.ARTICLE_T_ID);
         articleMgmtService.adminCancelStick(articleId);
@@ -905,7 +904,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
     public void generateInvitecodes(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final String quantityStr = context.param("quantity");
         int quantity = 20;
@@ -935,7 +934,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showInvitecodes(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/invitecodes.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -992,16 +991,16 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateInvitecode(final RequestContext context) {
         final String invitecodeId = context.pathVar("invitecodeId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/invitecode.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         JSONObject invitecode = invitecodeQueryService.getInvitecodeById(invitecodeId);
 
-        final Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            final String name = parameterNames.nextElement();
+        final Iterator<String> parameterNames = request.getParameterNames().iterator();
+        while (parameterNames.hasNext()) {
+            final String name = parameterNames.next();
             final String value = context.param(name);
 
             invitecode.put(name, value);
@@ -1045,7 +1044,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void addArticle(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final String userName = context.param(User.USER_NAME);
         final JSONObject author = userQueryService.getUserByName(userName);
@@ -1110,7 +1109,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
     public void addReservedWord(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         String word = context.param(Common.WORD);
         word = StringUtils.trim(word);
@@ -1172,7 +1171,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateReservedWord(final RequestContext context) {
         final String id = context.pathVar("id");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/reserved-word.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -1180,9 +1179,9 @@ public class AdminProcessor {
         final JSONObject word = optionQueryService.getOption(id);
         dataModel.put(Common.WORD, word);
 
-        final Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            final String name = parameterNames.nextElement();
+        final Iterator<String> parameterNames = request.getParameterNames().iterator();
+        while (parameterNames.hasNext()) {
+            final String name = parameterNames.next();
             final String value = context.param(name);
 
             word.put(name, value);
@@ -1239,7 +1238,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
     public void removeReservedWord(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final String id = context.param("id");
         final JSONObject option = optionQueryService.getOption(id);
@@ -1259,8 +1258,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
     public void removeComment(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
 
         final String commentId = context.param(Comment.COMMENT_T_ID);
         commentMgmtService.removeCommentByAdmin(commentId);
@@ -1278,7 +1276,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
     public void removeArticle(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final String articleId = context.param(Article.ARTICLE_T_ID);
         articleMgmtService.removeArticleByAdmin(articleId);
@@ -1317,7 +1315,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showUsers(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -1396,7 +1394,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void addUser(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final String userName = context.param(User.USER_NAME);
         final String email = context.param(User.USER_EMAIL);
@@ -1461,7 +1459,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateUser(final RequestContext context) {
         final String userId = context.pathVar("userId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/user.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -1474,9 +1472,9 @@ public class AdminProcessor {
         final List<JSONObject> roles = (List<JSONObject>) result.opt(Role.ROLES);
         dataModel.put(Role.ROLES, roles);
 
-        final Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            final String name = parameterNames.nextElement();
+        final Iterator<String> parameterNames = request.getParameterNames().iterator();
+        while (parameterNames.hasNext()) {
+            final String name = parameterNames.next();
             final String value = context.param(name);
 
             switch (name) {
@@ -1550,7 +1548,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateUserEmail(final RequestContext context) {
         final String userId = context.pathVar("userId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject user = userQueryService.getUser(userId);
         final String oldEmail = user.optString(User.USER_EMAIL);
@@ -1590,7 +1588,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateUserName(final RequestContext context) {
         final String userId = context.pathVar("userId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject user = userQueryService.getUser(userId);
         final String oldUserName = user.optString(User.USER_NAME);
@@ -1630,7 +1628,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void chargePoint(final RequestContext context) {
         final String userId = context.pathVar("userId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final String pointStr = context.param(Common.POINT);
         final String memo = context.param("memo");
@@ -1677,7 +1675,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void abusePoint(final RequestContext context) {
         final String userId = context.pathVar("userId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final String pointStr = context.param(Common.POINT);
 
@@ -1728,8 +1726,8 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void initPoint(final RequestContext context) {
         final String userId = context.pathVar("userId");
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
+        final Response response = context.getResponse();
 
         try {
             final JSONObject user = userQueryService.getUser(userId);
@@ -1770,7 +1768,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void exchangePoint(final RequestContext context) {
         final String userId = context.pathVar("userId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final String pointStr = context.param(Common.POINT);
 
         try {
@@ -1820,7 +1818,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showArticles(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -1894,16 +1892,16 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateArticle(final RequestContext context) {
         final String articleId = context.pathVar("articleId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         JSONObject article = articleQueryService.getArticle(articleId);
 
-        final Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            final String name = parameterNames.nextElement();
+        final Iterator<String> parameterNames = request.getParameterNames().iterator();
+        while (parameterNames.hasNext()) {
+            final String name = parameterNames.next();
             final String value = context.param(name);
             if (name.equals(Article.ARTICLE_REWARD_POINT)
                     || name.equals(Article.ARTICLE_QNA_OFFER_POINT)
@@ -1948,7 +1946,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showComments(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -2015,17 +2013,16 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateComment(final RequestContext context) {
         final String commentId = context.pathVar("commentId");
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/comment.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         JSONObject comment = commentQueryService.getComment(commentId);
 
-        final Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            final String name = parameterNames.nextElement();
+        final Iterator<String> parameterNames = request.getParameterNames().iterator();
+        while (parameterNames.hasNext()) {
+            final String name = parameterNames.next();
             final String value = context.param(name);
 
             if (name.equals(Comment.COMMENT_STATUS)
@@ -2074,16 +2071,16 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateMisc(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/misc.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         List<JSONObject> misc = new ArrayList<>();
 
-        final Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            final String name = parameterNames.nextElement();
+        final Iterator<String> parameterNames = request.getParameterNames().iterator();
+        while (parameterNames.hasNext()) {
+            final String name = parameterNames.next();
             final String value = context.param(name);
 
             final JSONObject option = new JSONObject();
@@ -2114,7 +2111,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTags(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -2200,7 +2197,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateTag(final RequestContext context) {
         final String tagId = context.pathVar("tagId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/tag.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -2209,9 +2206,9 @@ public class AdminProcessor {
 
         final String oldTitle = tag.optString(Tag.TAG_TITLE);
 
-        final Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            final String name = parameterNames.nextElement();
+        final Iterator<String> parameterNames = request.getParameterNames().iterator();
+        while (parameterNames.hasNext()) {
+            final String name = parameterNames.next();
             final String value = context.param(name);
 
             if (name.equals(Tag.TAG_REFERENCE_CNT)
@@ -2256,7 +2253,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDomains(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/domains.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -2327,7 +2324,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateDomain(final RequestContext context) {
         final String domainId = context.pathVar("domainId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/domain.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -2335,9 +2332,9 @@ public class AdminProcessor {
         JSONObject domain = domainQueryService.getDomain(domainId);
         final String oldTitle = domain.optString(Domain.DOMAIN_TITLE);
 
-        final Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            final String name = parameterNames.nextElement();
+        final Iterator<String> parameterNames = request.getParameterNames().iterator();
+        while (parameterNames.hasNext()) {
+            final String name = parameterNames.next();
             String value = context.param(name);
 
             if (Domain.DOMAIN_ICON_PATH.equals(name)) {
@@ -2385,7 +2382,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void addDomain(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final String domainTitle = context.param(Domain.DOMAIN_TITLE);
 
@@ -2440,7 +2437,7 @@ public class AdminProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
     public void removeDomain(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final String domainId = context.param(Domain.DOMAIN_T_ID);
         domainMgmtService.removeDomain(domainId);
@@ -2459,7 +2456,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void addDomainTag(final RequestContext context) {
         final String domainId = context.pathVar("domainId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         String tagTitle = context.param(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
@@ -2543,7 +2540,7 @@ public class AdminProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void removeDomainTag(final RequestContext context) {
         final String domainId = context.pathVar("domainId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final String tagTitle = context.param(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);

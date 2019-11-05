@@ -22,32 +22,22 @@ import eu.bitwalker.useragentutils.UserAgent;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.event.EventManager;
-import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.http.AbstractServletListener;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.*;
-import org.b3log.symphony.cache.DomainCache;
-import org.b3log.symphony.cache.TagCache;
-import org.b3log.symphony.event.*;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
-import org.b3log.symphony.service.CronMgmtService;
-import org.b3log.symphony.service.InitMgmtService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
 import java.util.Locale;
 
 /**
@@ -65,104 +55,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
      */
     private static final Logger LOGGER = Logger.getLogger(SymphonyServletListener.class);
 
-    /**
-     * Symphony version.
-     */
-    public static final String VERSION = "3.5.1";
-
-    /**
-     * Bean manager.
-     */
-    private BeanManager beanManager;
-
-    @Override
-    public void contextInitialized(final ServletContextEvent servletContextEvent) {
-        System.setProperty("java.awt.headless", "true");
-
-        Stopwatchs.start("Context Initialized");
-        Latkes.setScanPath("org.b3log.symphony");
-        super.contextInitialized(servletContextEvent);
-
-        final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
-        final Latkes.RuntimeMode runtimeMode = Latkes.getRuntimeMode();
-        final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
-        final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
-        final boolean luteAvailable = Markdowns.LUTE_AVAILABLE;
-
-        LOGGER.log(Level.INFO, "Sym is booting [ver=" + VERSION + ", servletContainer=" + Latkes.getServletInfo(servletContextEvent.getServletContext())
-                + ", os=" + Latkes.getOperatingSystemName() + ", isDocker=" + Latkes.isDocker() + ", luteAvailable=" + luteAvailable + ", pid=" + Latkes.currentPID()
-                + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode + ", jdbc.username=" + jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
-
-        beanManager = BeanManager.getInstance();
-
-        final InitMgmtService initMgmtService = beanManager.getReference(InitMgmtService.class);
-        initMgmtService.initSym();
-
-        // Register event listeners
-        final EventManager eventManager = beanManager.getReference(EventManager.class);
-
-        final ArticleAddNotifier articleAddNotifier = beanManager.getReference(ArticleAddNotifier.class);
-        eventManager.registerListener(articleAddNotifier);
-
-        final ArticleUpdateNotifier articleUpdateNotifier = beanManager.getReference(ArticleUpdateNotifier.class);
-        eventManager.registerListener(articleUpdateNotifier);
-
-        final ArticleBaiduSender articleBaiduSender = beanManager.getReference(ArticleBaiduSender.class);
-        eventManager.registerListener(articleBaiduSender);
-
-        final CommentNotifier commentNotifier = beanManager.getReference(CommentNotifier.class);
-        eventManager.registerListener(commentNotifier);
-
-        final CommentUpdateNotifier commentUpdateNotifier = beanManager.getReference(CommentUpdateNotifier.class);
-        eventManager.registerListener(commentUpdateNotifier);
-
-        final ArticleSearchAdder articleSearchAdder = beanManager.getReference(ArticleSearchAdder.class);
-        eventManager.registerListener(articleSearchAdder);
-
-        final ArticleSearchUpdater articleSearchUpdater = beanManager.getReference(ArticleSearchUpdater.class);
-        eventManager.registerListener(articleSearchUpdater);
-
-        final ArticleAddAudioHandler articleAddAudioHandler = beanManager.getReference(ArticleAddAudioHandler.class);
-        eventManager.registerListener(articleAddAudioHandler);
-
-        final ArticleUpdateAudioHandler articleUpdateAudioHandler = beanManager.getReference(ArticleUpdateAudioHandler.class);
-        eventManager.registerListener(articleUpdateAudioHandler);
-
-        final TagCache tagCache = beanManager.getReference(TagCache.class);
-        tagCache.loadTags();
-
-        final DomainCache domainCache = beanManager.getReference(DomainCache.class);
-        domainCache.loadDomains();
-
-        final CronMgmtService cronMgmtService = beanManager.getReference(CronMgmtService.class);
-        cronMgmtService.start();
-
-        LOGGER.info("Initialized the context");
-
-        Stopwatchs.end();
-        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
-        Stopwatchs.release();
-    }
-
-    @Override
-    public void contextDestroyed(final ServletContextEvent servletContextEvent) {
-        super.contextDestroyed(servletContextEvent);
-
-        Symphonys.SCHEDULED_EXECUTOR_SERVICE.shutdown();
-        Symphonys.EXECUTOR_SERVICE.shutdown();
-
-        LOGGER.info("Destroyed the context");
-    }
-
-    @Override
-    public void sessionCreated(final HttpSessionEvent httpSessionEvent) {
-    }
-
-    @Override
-    public void sessionDestroyed(final HttpSessionEvent httpSessionEvent) {
-        super.sessionDestroyed(httpSessionEvent);
-    }
-
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
         Locales.setLocale(Latkes.getLocale());
@@ -171,7 +63,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         Sessions.setMobile(false);
         Sessions.setAvatarViewMode(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
 
-        final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
+        final Request httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
         final String userAgentStr = httpServletRequest.getHeader(Common.USER_AGENT);
 
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
@@ -229,7 +121,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         try {
             super.requestDestroyed(servletRequestEvent);
 
-            final HttpServletRequest request = (HttpServletRequest) servletRequestEvent.getServletRequest();
+            final Request request = (HttpServletRequest) servletRequestEvent.getServletRequest();
             final Object isStaticObj = request.getAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE);
             if (null != isStaticObj && !(Boolean) isStaticObj) {
                 Stopwatchs.end();
@@ -253,7 +145,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
      *
      * @param request the specified HTTP servlet request
      */
-    private void resolveSkinDir(final HttpServletRequest request) {
+    private void resolveSkinDir(final Request request) {
         Stopwatchs.start("Resolve skin");
 
         final String templateDirName = Sessions.isMobile() ? "mobile" : "classic";

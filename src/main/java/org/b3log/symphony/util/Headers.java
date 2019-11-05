@@ -20,8 +20,7 @@ package org.b3log.symphony.util;
 import jodd.io.upload.FileUpload;
 import jodd.net.MimeTypes;
 import org.apache.commons.lang.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
+import org.b3log.latke.http.Request;
 
 /**
  * HTTP header utilities.
@@ -76,7 +75,7 @@ public final class Headers {
      * @param defaultVal the specified default value
      * @return header value, returns {@code defaultVal} if not found this header
      */
-    public static String getHeader(final HttpServletRequest request, final String name, final String defaultVal) {
+    public static String getHeader(final Request request, final String name, final String defaultVal) {
         String value = request.getHeader(name);
         if (StringUtils.isBlank(value)) {
             return defaultVal;

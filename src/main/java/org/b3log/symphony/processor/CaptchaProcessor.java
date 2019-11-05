@@ -18,13 +18,14 @@
 package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.PngRenderer;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.PngRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
@@ -37,8 +38,6 @@ import org.patchca.service.ConfigurableCaptchaService;
 import org.patchca.word.RandomWordFactory;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -138,10 +137,10 @@ public class CaptchaProcessor {
 
             CAPTCHAS.add(challenge);
 
-            final HttpServletResponse response = context.getResponse();
+            final Response response = context.getResponse();
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
+            response.setHeader("Expires", "0");
 
             renderImg(renderer, bufferedImage);
         } catch (final Exception e) {
@@ -157,8 +156,7 @@ public class CaptchaProcessor {
     @RequestProcessing(value = "/captcha/login", method = HttpMethod.GET)
     public void getLoginCaptcha(final RequestContext context) {
         try {
-            final HttpServletRequest request = context.getRequest();
-            final HttpServletResponse response = context.getResponse();
+            final Response response = context.getResponse();
 
             final String userId = context.param(Common.NEED_CAPTCHA);
             if (StringUtils.isBlank(userId)) {
@@ -197,7 +195,7 @@ public class CaptchaProcessor {
 
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
+            response.setHeader("Expires", "0");
 
             renderImg(renderer, bufferedImage);
         } catch (final Exception e) {
@@ -209,7 +207,7 @@ public class CaptchaProcessor {
         try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             ImageIO.write(bufferedImage, "png", baos);
             final byte[] data = baos.toByteArray();
-            renderer.setImage(data);
+            renderer.setData(data);
         }
     }
 

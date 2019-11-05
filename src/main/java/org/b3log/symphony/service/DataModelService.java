@@ -21,16 +21,16 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.Starter;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.util.Markdowns;
@@ -500,6 +500,6 @@ public class DataModelService {
      * @param dataModel the specified data model
      */
     private void fillSysInfo(final Map<String, Object> dataModel) {
-        dataModel.put(Common.VERSION, SymphonyServletListener.VERSION);
+        dataModel.put(Common.VERSION, Starter.VERSION);
     }
 }

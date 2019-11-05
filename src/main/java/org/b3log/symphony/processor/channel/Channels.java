@@ -17,10 +17,8 @@
  */
 package org.b3log.symphony.processor.channel;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 
-import javax.servlet.http.HttpSession;
 import javax.websocket.HandshakeResponse;
 import javax.websocket.Session;
 import javax.websocket.server.HandshakeRequest;
@@ -53,10 +51,11 @@ public final class Channels {
 
         @Override
         public void modifyHandshake(final ServerEndpointConfig config, final HandshakeRequest request, final HandshakeResponse response) {
-            final HttpSession httpSession = (HttpSession) request.getHttpSession();
-            config.getUserProperties().put(HttpSession.class.getName(), httpSession);
-            final String skin = (String) httpSession.getAttribute(Keys.TEMAPLTE_DIR_NAME);
-            config.getUserProperties().put(Keys.TEMAPLTE_DIR_NAME, skin);
+            // TODO: ws
+//            final Session httpSession = (Session) request.getHttpSession();
+//            config.getUserProperties().put(Session.class.getName(), httpSession);
+//            final String skin = (String) httpSession.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+//            config.getUserProperties().put(Keys.TEMAPLTE_DIR_NAME, skin);
         }
     }
 
@@ -91,16 +90,18 @@ public final class Channels {
      * @return attribute, returns {@code null} if not found or occurred exception
      */
     public static Object getHttpSessionAttribute(final Session session, final String attributeName) {
-        final HttpSession httpSession = (HttpSession) session.getUserProperties().get(HttpSession.class.getName());
-        if (null == httpSession) {
-            return null;
-        }
-
-        try {
-            return httpSession.getAttribute(attributeName);
-        } catch (final Exception e) {
-            return null;
-        }
+        // TODO: ws
+//        final HttpSession httpSession = (HttpSession) session.getUserProperties().get(HttpSession.class.getName());
+//        if (null == httpSession) {
+//            return null;
+//        }
+//
+//        try {
+//            return httpSession.getAttribute(attributeName);
+//        } catch (final Exception e) {
+//            return null;
+//        }
+        return null;
     }
 
     /**

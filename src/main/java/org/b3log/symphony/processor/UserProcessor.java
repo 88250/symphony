@@ -20,18 +20,18 @@ package org.b3log.symphony.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.After;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.After;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.*;
@@ -45,7 +45,6 @@ import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
@@ -186,7 +185,7 @@ public class UserProcessor {
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeBreezemoons(final RequestContext context) {
         final String breezemoonId = context.pathVar("breezemoonId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
@@ -238,7 +237,7 @@ public class UserProcessor {
             dataModel.put(Common.IS_SINGLE_BREEZEMOON_URL, true);
             final JSONObject breezemoon = breezemoonQueryService.getBreezemoon(breezemoonId);
             if (null == breezemoon) {
-                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(404);
 
                 return;
             }
@@ -260,7 +259,7 @@ public class UserProcessor {
     @Before({StopwatchStartAdvice.class, UserBlockCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeAnonymousComments(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -276,7 +275,7 @@ public class UserProcessor {
 
         if (null == currentUser || (!currentUser.optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID)))
                 && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
@@ -335,7 +334,7 @@ public class UserProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAnonymousArticles(final RequestContext context) {
         final String userName = context.pathVar("userName");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/home.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -351,7 +350,7 @@ public class UserProcessor {
 
         if (null == currentUser || (!currentUser.optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID)))
                 && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
@@ -411,7 +410,7 @@ public class UserProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHome(final RequestContext context) {
         final String userName = context.pathVar("userName");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
         final int pageNum = Paginator.getPage(request);
@@ -479,7 +478,7 @@ public class UserProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeComments(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
@@ -541,7 +540,7 @@ public class UserProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingUsers(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
@@ -604,7 +603,7 @@ public class UserProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingTags(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
@@ -667,8 +666,8 @@ public class UserProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingArticles(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
+        final Response response = context.getResponse();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
@@ -731,7 +730,7 @@ public class UserProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeWatchingArticles(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
@@ -794,7 +793,7 @@ public class UserProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowers(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 
@@ -863,7 +862,7 @@ public class UserProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomePoints(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject user = (JSONObject) context.attr(User.USER);
 

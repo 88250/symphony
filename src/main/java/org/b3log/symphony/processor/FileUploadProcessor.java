@@ -31,17 +31,17 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.URLs;
-import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.Starter;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
@@ -89,7 +89,7 @@ public class FileUploadProcessor {
             return;
         }
 
-        final HttpServletResponse response = context.getResponse();
+        final Response response = context.getResponse();
 
         final String uri = context.requestURI();
         String key = StringUtils.substringAfter(uri, "/upload/");
@@ -103,7 +103,7 @@ public class FileUploadProcessor {
             if (!FileUtil.isExistingFile(new File(path)) ||
                     !FileUtil.isExistingFolder(new File(Symphonys.UPLOAD_LOCAL_DIR)) ||
                     !new File(path).getCanonicalPath().startsWith(new File(Symphonys.UPLOAD_LOCAL_DIR).getCanonicalPath())) {
-                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(404);
 
                 return;
             }
@@ -115,7 +115,7 @@ public class FileUploadProcessor {
 
             context.setHeader("Cache-Control", "public, max-age=31536000");
             context.setHeader("ETag", etag);
-            context.setHeader("Server", "Sym File Server (v" + SymphonyServletListener.VERSION + ")");
+            context.setHeader("Server", "Sym File Server (v" + Starter.VERSION + ")");
             context.setHeader("Access-Control-Allow-Origin", "*");
             final String ext = StringUtils.substringAfterLast(path, ".");
             final String mimeType = MimeTypes.getMimeType(ext);

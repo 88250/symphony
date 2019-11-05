@@ -23,11 +23,11 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
+import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.Crypts;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
@@ -37,7 +37,6 @@ import org.b3log.symphony.service.UserMgmtService;
 import org.json.JSONObject;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -307,7 +306,7 @@ public final class Sessions {
      * @param rememberLogin remember login or not
      * @return token, returns {@code null} if login failed
      */
-    public static String login(final HttpServletResponse response,
+    public static String login(final Response response,
                                final String userId, final boolean rememberLogin) {
         try {
             final BeanManager beanManager = BeanManager.getInstance();
@@ -356,7 +355,7 @@ public final class Sessions {
      * @param userId   the specified user id
      * @param response the specified response
      */
-    public static void logout(final String userId, final HttpServletResponse response) {
+    public static void logout(final String userId, final Response response) {
         if (null != response) {
             final Cookie cookie = new Cookie(COOKIE_NAME, null);
             cookie.setMaxAge(0);
@@ -377,7 +376,7 @@ public final class Sessions {
      * @param request the specified request
      * @return the current user, returns {@code null} if not logged in
      */
-    public static JSONObject currentUser(final HttpServletRequest request) {
+    public static JSONObject currentUser(final Request request) {
         final Cookie[] cookies = request.getCookies();
         if (null == cookies || 0 == cookies.length) {
             return null;
@@ -443,7 +442,7 @@ public final class Sessions {
      * @return returns user if logged in, returns {@code null} otherwise
      */
     private static JSONObject tryLogInWithCookie(final JSONObject cookieJSONObject,
-                                                 final HttpServletRequest request) {
+                                                 final Request request) {
         final BeanManager beanManager = BeanManager.getInstance();
         final UserRepository userRepository = beanManager.getReference(UserRepository.class);
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);

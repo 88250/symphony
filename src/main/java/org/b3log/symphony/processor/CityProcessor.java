@@ -21,17 +21,18 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.After;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.After;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
@@ -47,7 +48,6 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -114,7 +114,7 @@ public class CityProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCityArticles(final RequestContext context) {
         final String city = context.pathVar("city");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "city.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -198,7 +198,7 @@ public class CityProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCityUsers(final RequestContext context) {
         final String city = context.pathVar("city");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "city.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

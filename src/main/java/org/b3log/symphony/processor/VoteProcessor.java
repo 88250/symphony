@@ -18,14 +18,14 @@
 package org.b3log.symphony.processor;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.PermissionCheck;
@@ -33,7 +33,6 @@ import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -112,7 +111,7 @@ public class VoteProcessor {
     public void voteUpComment(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
 
@@ -167,7 +166,7 @@ public class VoteProcessor {
     public void voteDownComment(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
 
@@ -223,7 +222,7 @@ public class VoteProcessor {
     public void voteUpArticle(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
 
@@ -278,7 +277,7 @@ public class VoteProcessor {
     public void voteDownArticle(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
 

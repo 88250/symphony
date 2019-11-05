@@ -19,15 +19,15 @@ package org.b3log.symphony.processor;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.After;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.After;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
@@ -39,7 +39,6 @@ import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -98,8 +97,8 @@ public class DomainProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDomainArticles(final RequestContext context) {
         final String domainURI = context.pathVar("domainURI");
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
+        final Response response = context.getResponse();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "domain-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -119,7 +118,7 @@ public class DomainProcessor {
 
         final JSONObject domain = domainQueryService.getByURI(domainURI);
         if (null == domain) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }

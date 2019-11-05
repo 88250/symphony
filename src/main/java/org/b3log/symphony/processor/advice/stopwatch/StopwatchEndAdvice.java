@@ -17,12 +17,12 @@
  */
 package org.b3log.symphony.processor.advice.stopwatch;
 
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.advice.ProcessAdvice;
+import org.b3log.latke.http.renderer.AbstractResponseRenderer;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.ProcessAdvice;
-import org.b3log.latke.servlet.renderer.AbstractResponseRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;

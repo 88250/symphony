@@ -17,11 +17,11 @@
  */
 package org.b3log.symphony.processor.advice;
 
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.advice.ProcessAdvice;
+import org.b3log.latke.http.renderer.AbstractResponseRenderer;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.ProcessAdvice;
-import org.b3log.latke.servlet.renderer.AbstractResponseRenderer;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.util.Sessions;
 

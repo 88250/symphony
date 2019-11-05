@@ -41,7 +41,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -374,7 +373,7 @@ public class UserQueryService {
      * @return the current user, {@code null} if not found
      * @throws ServiceException service exception
      */
-    public JSONObject getCurrentUser(final HttpServletRequest request) throws ServiceException {
+    public JSONObject getCurrentUser(final Request request) throws ServiceException {
         final JSONObject currentUser = Sessions.currentUser(request);
         if (null == currentUser) {
             return null;

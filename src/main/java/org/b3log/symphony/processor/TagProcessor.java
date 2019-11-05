@@ -20,15 +20,15 @@ package org.b3log.symphony.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.After;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.After;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.*;
@@ -41,7 +41,6 @@ import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +100,7 @@ public class TagProcessor {
     @RequestProcessing(value = "/tags/query", method = HttpMethod.GET)
     public void queryTags(final RequestContext context) {
         if (!Sessions.isLoggedIn()) {
-            context.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            context.setStatus(403);
 
             return;
         }
@@ -158,7 +157,7 @@ public class TagProcessor {
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTagArticles(final RequestContext context) {
         final String tagURI = context.pathVar("tagURI");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "tag-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -179,7 +178,7 @@ public class TagProcessor {
 
         final JSONObject tag = tagQueryService.getTagByURI(tagURI);
         if (null == tag) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }

@@ -18,19 +18,18 @@
 package org.b3log.symphony.processor.advice.validate;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.advice.ProcessAdvice;
+import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.ProcessAdvice;
-import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.OptionQueryService;
 import org.json.JSONObject;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * UserRegister2Validation for validate {@link org.b3log.symphony.processor.LoginProcessor} register2(Type POST) method.
@@ -70,7 +69,7 @@ public class UserRegister2Validation extends ProcessAdvice {
 
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         JSONObject requestJSONObject;
         try {

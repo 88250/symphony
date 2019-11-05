@@ -17,9 +17,9 @@
  */
 package org.b3log.symphony.processor.advice.stopwatch;
 
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.advice.ProcessAdvice;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.util.Stopwatchs;
 
 /**

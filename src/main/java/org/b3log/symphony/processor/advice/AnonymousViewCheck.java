@@ -20,14 +20,17 @@ package org.b3log.symphony.processor.advice;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.Cookie;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
+import org.b3log.latke.http.advice.ProcessAdvice;
+import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.ProcessAdvice;
-import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.AntPathMatcher;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.Article;
@@ -41,9 +44,7 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
 
 /**
  * Anonymous view check.
@@ -84,14 +85,13 @@ public class AnonymousViewCheck extends ProcessAdvice {
     @Inject
     private OptionQueryService optionQueryService;
 
-    private static Cookie getCookie(final HttpServletRequest request, final String name) {
-        final Cookie[] cookies = request.getCookies();
-        if (null == cookies || 0 == cookies.length) {
+    private static Cookie getCookie(final Request request, final String name) {
+        final Set<Cookie> cookies = request.getCookies();
+        if (cookies.isEmpty()) {
             return null;
         }
 
-        for (int i = 0; i < cookies.length; i++) {
-            final Cookie cookie = cookies[i];
+        for (final Cookie cookie : cookies) {
             if (cookie.getName().equals(name)) {
                 return cookie;
             }
@@ -100,7 +100,7 @@ public class AnonymousViewCheck extends ProcessAdvice {
         return null;
     }
 
-    private static void addCookie(final HttpServletResponse response, final String name, final String value) {
+    private static void addCookie(final Response response, final String name, final String value) {
         final Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24); // 24 hours
@@ -112,7 +112,7 @@ public class AnonymousViewCheck extends ProcessAdvice {
 
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final String requestURI = context.requestURI();
 
         final String[] skips = Symphonys.ANONYMOUS_VIEW_SKIPS.split(",");
@@ -123,12 +123,12 @@ public class AnonymousViewCheck extends ProcessAdvice {
         }
 
         final JSONObject exception404 = new JSONObject();
-        exception404.put(Keys.MSG, HttpServletResponse.SC_NOT_FOUND + ", " + context.requestURI());
-        exception404.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
+        exception404.put(Keys.MSG, "404, " + context.requestURI());
+        exception404.put(Keys.STATUS_CODE, 404);
 
         final JSONObject exception401 = new JSONObject();
-        exception401.put(Keys.MSG, HttpServletResponse.SC_UNAUTHORIZED + ", " + context.requestURI());
-        exception401.put(Keys.STATUS_CODE, HttpServletResponse.SC_UNAUTHORIZED);
+        exception401.put(Keys.MSG, "401, " + context.requestURI());
+        exception401.put(Keys.STATUS_CODE, 401);
 
         if (requestURI.startsWith(Latkes.getContextPath() + "/article/")) {
             final String articleId = StringUtils.substringAfter(requestURI, Latkes.getContextPath() + "/article/");

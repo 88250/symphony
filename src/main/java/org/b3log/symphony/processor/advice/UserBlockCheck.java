@@ -18,19 +18,17 @@
 package org.b3log.symphony.processor.advice;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.advice.ProcessAdvice;
+import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.ProcessAdvice;
-import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * User block check. Gets user from request attribute named "user".
@@ -55,11 +53,11 @@ public class UserBlockCheck extends ProcessAdvice {
 
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject exception = new JSONObject();
-        exception.put(Keys.MSG, HttpServletResponse.SC_NOT_FOUND);
-        exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
+        exception.put(Keys.MSG, 404);
+        exception.put(Keys.STATUS_CODE, 404);
 
         final String userName = context.pathVar("userName");
         if (UserExt.NULL_USER_NAME.equals(userName)) {

@@ -19,12 +19,13 @@ package org.b3log.symphony.processor.advice.validate;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.advice.ProcessAdvice;
+import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.ProcessAdvice;
-import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -32,8 +33,6 @@ import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Validates for comment adding locally.
@@ -47,7 +46,7 @@ public class CommentAddValidation extends ProcessAdvice {
 
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         request.setAttribute(Keys.REQUEST, requestJSONObject);
         validateCommentFields(requestJSONObject);

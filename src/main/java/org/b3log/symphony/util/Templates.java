@@ -21,8 +21,8 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
+import org.b3log.latke.http.AbstractServletListener;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.AbstractServletListener;
 
 import javax.servlet.ServletContext;
 import java.util.TimeZone;

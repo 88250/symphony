@@ -19,54 +19,49 @@ package org.b3log.symphony;
 
 import org.apache.commons.cli.*;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.event.EventManager;
+import org.b3log.latke.http.BaseServer;
+import org.b3log.latke.http.Dispatcher;
+import org.b3log.latke.http.handler.StopwatchEndHandler;
+import org.b3log.latke.http.handler.StopwatchStartHandler;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.processor.channel.*;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.util.log.Log;
-import org.eclipse.jetty.util.log.Slf4jLog;
-import org.eclipse.jetty.webapp.WebAppContext;
-import org.eclipse.jetty.websocket.jsr356.server.ServerContainer;
-import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
-
-import java.io.File;
+import org.b3log.symphony.cache.DomainCache;
+import org.b3log.symphony.cache.TagCache;
+import org.b3log.symphony.event.*;
+import org.b3log.symphony.service.CronMgmtService;
+import org.b3log.symphony.service.InitMgmtService;
+import org.b3log.symphony.util.Markdowns;
+import org.b3log.symphony.util.Symphonys;
 
 /**
- * Sym with embedded Jetty.
- * <ul>
- * <li>Windows: java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.symphony.Starter</li>
- * <li>Unix-like: java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.symphony.Starter</li>
- * </ul>
+ * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 26, 2019
+ * @version 2.0.0.0, Nov 5, 2019
  * @since 3.4.8
  */
-public final class Starter {
-
-    static {
-        try {
-            Log.setLog(new Slf4jLog());
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-    }
+public final class Server extends BaseServer {
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Server.class);
 
     /**
-     * Private constructor.
+     * Symphony version.
      */
-    private Starter() {
-    }
+    public static final String VERSION = "3.5.1";
 
     /**
      * Main.
      *
      * @param args the specified arguments
-     * @throws Exception if start failed
      */
-    public static void main(final String[] args) throws Exception {
-        final Logger logger = Logger.getLogger(Starter.class);
+    public static void main(final String[] args) {
+        Stopwatchs.start("Booting");
 
         final Options options = new Options();
         final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT")
@@ -108,8 +103,8 @@ public final class Starter {
         CommandLine commandLine;
 
         final boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
-        final String cmdSyntax = isWindows ? "java -cp \"WEB-INF/lib/*;WEB-INF/classes\" org.b3log.symphony.Starter"
-                : "java -cp \"WEB-INF/lib/*:WEB-INF/classes\" org.b3log.symphony.Starter";
+        final String cmdSyntax = isWindows ? "java -cp \"lib/*;.\" org.b3log.symphony.Server"
+                : "java -cp \"lib/*:.\" org.b3log.symphony.Server";
         final String header = "\nSym 是一款用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）平台。\n\n";
         final String footer = "\n提需求或报告缺陷请到项目网站: https://github.com/b3log/symphony\n\n";
         try {
@@ -132,9 +127,10 @@ public final class Starter {
         }
 
         try {
+            Latkes.setScanPath("org.b3log.symphony");
             Latkes.init();
         } catch (final Exception e) {
-            logger.log(Level.ERROR, "Latke init failed, please configure latke.props or run with args, visit https://hacpai.com/article/1492881378588 for more details");
+            LOGGER.log(Level.ERROR, "Latke init failed, please configure latke.props or run with args, visit https://hacpai.com/article/1492881378588 for more details");
 
             System.exit(-1);
         }
@@ -168,45 +164,66 @@ public final class Starter {
             Latkes.setRuntimeMode(Latkes.RuntimeMode.valueOf(runtimeMode));
         }
 
-        String webappDirLocation = "src/main/webapp/"; // POM structure in dev env
-        final File file = new File(webappDirLocation);
-        if (!file.exists()) {
-            webappDirLocation = "."; // production environment
-        }
+        Dispatcher.HANDLERS.add(0, new StopwatchStartHandler());
 
-        final int port = Integer.valueOf(portArg);
-        final Server server = new Server(port);
-        final WebAppContext root = new WebAppContext();
-        root.setParentLoaderPriority(true); // Use parent class loader
-        root.setContextPath("/");
-        root.setDescriptor(webappDirLocation + "/WEB-INF/web.xml");
-        root.setResourceBase(webappDirLocation);
-        server.setHandler(root);
-        try {
-            final ServerContainer container = WebSocketServerContainerInitializer.configureContext(root);
-            container.addEndpoint(ArticleChannel.class);
-            container.addEndpoint(ArticleListChannel.class);
-            container.addEndpoint(ChatroomChannel.class);
-            container.addEndpoint(GobangChannel.class);
-            container.addEndpoint(UserChannel.class);
+        Dispatcher.HANDLERS.add(new StopwatchEndHandler());
 
-            server.start();
-        } catch (final Exception e) {
-            logger.log(Level.ERROR, "Server start failed", e);
+        final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
+        final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
+        final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
+        final boolean luteAvailable = Markdowns.LUTE_AVAILABLE;
 
-            System.exit(-1);
-        }
+        LOGGER.log(Level.INFO, "Sym is booting [ver=" + VERSION + ", os=" + Latkes.getOperatingSystemName() +
+                ", isDocker=" + Latkes.isDocker() + ", luteAvailable=" + luteAvailable + ", pid=" + Latkes.currentPID() +
+                ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + Latkes.getRuntimeMode() + ", jdbc.username=" +
+                jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
 
+        final BeanManager beanManager = BeanManager.getInstance();
+
+        final InitMgmtService initMgmtService = beanManager.getReference(InitMgmtService.class);
+        initMgmtService.initSym();
+
+        // Register event listeners
+        final EventManager eventManager = beanManager.getReference(EventManager.class);
+        final ArticleAddNotifier articleAddNotifier = beanManager.getReference(ArticleAddNotifier.class);
+        eventManager.registerListener(articleAddNotifier);
+        final ArticleUpdateNotifier articleUpdateNotifier = beanManager.getReference(ArticleUpdateNotifier.class);
+        eventManager.registerListener(articleUpdateNotifier);
+        final ArticleBaiduSender articleBaiduSender = beanManager.getReference(ArticleBaiduSender.class);
+        eventManager.registerListener(articleBaiduSender);
+        final CommentNotifier commentNotifier = beanManager.getReference(CommentNotifier.class);
+        eventManager.registerListener(commentNotifier);
+        final CommentUpdateNotifier commentUpdateNotifier = beanManager.getReference(CommentUpdateNotifier.class);
+        eventManager.registerListener(commentUpdateNotifier);
+        final ArticleSearchAdder articleSearchAdder = beanManager.getReference(ArticleSearchAdder.class);
+        eventManager.registerListener(articleSearchAdder);
+        final ArticleSearchUpdater articleSearchUpdater = beanManager.getReference(ArticleSearchUpdater.class);
+        eventManager.registerListener(articleSearchUpdater);
+        final ArticleAddAudioHandler articleAddAudioHandler = beanManager.getReference(ArticleAddAudioHandler.class);
+        eventManager.registerListener(articleAddAudioHandler);
+        final ArticleUpdateAudioHandler articleUpdateAudioHandler = beanManager.getReference(ArticleUpdateAudioHandler.class);
+        eventManager.registerListener(articleUpdateAudioHandler);
+
+        final TagCache tagCache = beanManager.getReference(TagCache.class);
+        tagCache.loadTags();
+        final DomainCache domainCache = beanManager.getReference(DomainCache.class);
+        domainCache.loadDomains();
+        final CronMgmtService cronMgmtService = beanManager.getReference(CronMgmtService.class);
+        cronMgmtService.start();
+
+        Stopwatchs.end();
+        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
+        Stopwatchs.release();
+
+        final Server server = new Server();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                server.stop();
-            } catch (final Exception e) {
-                logger.log(Level.ERROR, "Server stop failed", e);
+            cronMgmtService.stop();
+            server.shutdown();
+            Latkes.shutdown();
 
-                System.exit(-1);
-            }
+            Symphonys.SCHEDULED_EXECUTOR_SERVICE.shutdown();
+            Symphonys.EXECUTOR_SERVICE.shutdown();
         }));
-
-        server.join();
+        server.start(Integer.valueOf(portArg));
     }
 }

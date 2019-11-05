@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  * Cron management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Feb 27, 2019
+ * @version 1.0.0.2, Nov 5, 2019
  * @since 3.4.5
  */
 @Service
@@ -163,5 +163,12 @@ public class CronMgmtService {
             }
         }, delay, 2 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
         delay += 2000;
+    }
+
+    /**
+     * Stop all cron tasks.
+     */
+    public void stop() {
+        Symphonys.SCHEDULED_EXECUTOR_SERVICE.shutdown();
     }
 }

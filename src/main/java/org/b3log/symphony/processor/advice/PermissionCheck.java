@@ -20,17 +20,17 @@ package org.b3log.symphony.processor.advice;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.advice.ProcessAdvice;
+import org.b3log.latke.http.advice.RequestProcessAdviceException;
+import org.b3log.latke.http.handler.MatchResult;
+import org.b3log.latke.http.handler.RouteHandler;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.ProcessAdvice;
-import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
-import org.b3log.latke.servlet.handler.MatchResult;
-import org.b3log.latke.servlet.handler.RouteHandler;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.Role;
@@ -39,8 +39,6 @@ import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 
 /**
@@ -76,7 +74,7 @@ public class PermissionCheck extends ProcessAdvice {
         try {
             final JSONObject exception = new JSONObject();
             exception.put(Keys.MSG, langPropsService.get("noPermissionLabel"));
-            exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+            exception.put(Keys.STATUS_CODE, 403);
 
             final String prefix = "permission.rule.url.";
             final String requestURI = StringUtils.substringAfter(context.requestURI(), Latkes.getContextPath());
