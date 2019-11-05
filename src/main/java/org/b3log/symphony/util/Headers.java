@@ -17,16 +17,16 @@
  */
 package org.b3log.symphony.util;
 
-import jodd.io.upload.FileUpload;
 import jodd.net.MimeTypes;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.http.FileUpload;
 import org.b3log.latke.http.Request;
 
 /**
  * HTTP header utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Oct 5, 2018
+ * @version 1.1.1.1, Nov 5, 2019
  * @since 2.8.0
  */
 public final class Headers {
@@ -38,13 +38,13 @@ public final class Headers {
      * @return suffix
      */
     public static String getSuffix(final FileUpload file) {
-        final String fileName = file.getHeader().getFileName();
+        final String fileName = file.getFilename();
         String ret = StringUtils.substringAfterLast(fileName, ".");
         if (StringUtils.isNotBlank(ret)) {
             return ret;
         }
 
-        final String contentType = file.getHeader().getContentType();
+        final String contentType = file.getContentType();
         return getSuffix(contentType);
     }
 

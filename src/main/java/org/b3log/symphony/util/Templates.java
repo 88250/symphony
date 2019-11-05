@@ -62,7 +62,7 @@ public final class Templates {
                 path = StringUtils.replace(path, "/target/classes/", "/src/main/resources/");
                 path = StringUtils.replace(path, "/target/test-classes/", "/src/main/resources/");
             }
-            path += "/skins";
+            path += "skins";
             TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(path));
             LOGGER.log(Level.INFO, "Loaded template from directory [" + path + "]");
         } catch (final Exception e) {
