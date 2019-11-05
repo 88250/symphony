@@ -26,12 +26,19 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Permission;
+import org.b3log.symphony.model.Role;
 import org.b3log.symphony.processor.advice.PermissionGrant;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
+import org.b3log.symphony.service.RoleQueryService;
+import org.b3log.symphony.util.Sessions;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -63,6 +70,12 @@ public class ErrorProcessor {
     private DataModelService dataModelService;
 
     /**
+     * Role query service.
+     */
+    @Inject
+    private RoleQueryService roleQueryService;
+
+    /**
      * Handles the error.
      *
      * @param context the specified context
@@ -83,6 +96,13 @@ public class ErrorProcessor {
             dataModelService.fillSideHotArticles(dataModel);
             dataModelService.fillRandomArticles(dataModel);
             dataModelService.fillSideTags(dataModel);
+
+            final JSONObject user = Sessions.getUser();
+            final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
+            final Map<String, JSONObject> permissionsGrant = roleQueryService.getPermissionsGrantMap(roleId);
+            dataModel.put(Permission.PERMISSIONS, permissionsGrant);
+
+            dataModel.put(Common.ELAPSED, 0);
         } else {
             context.renderJSON().renderMsg(statusCode);
         }

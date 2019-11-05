@@ -357,7 +357,7 @@ public final class Sessions {
      */
     public static void logout(final String userId, final Response response) {
         if (null != response) {
-            final Cookie cookie = new Cookie(COOKIE_NAME, null);
+            final Cookie cookie = new Cookie(COOKIE_NAME, "");
             cookie.setMaxAge(0);
             cookie.setPath("/");
             response.addCookie(cookie);

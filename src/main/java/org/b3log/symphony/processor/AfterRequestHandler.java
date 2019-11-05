@@ -25,8 +25,11 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
+
+import java.util.Map;
 
 /**
  * After request handler.
@@ -48,9 +51,13 @@ public class AfterRequestHandler implements Handler {
         Sessions.clearThreadLocalData();
         Stopwatchs.end();
         final Request request = context.getRequest();
+        final long elapsed = Stopwatchs.getElapsed("Request initialized [" + request.getRequestURI() + "]");
+        final Map<String, Object> dataModel = context.getDataModel();
+        if (null != dataModel) {
+            dataModel.put(Common.ELAPSED, elapsed);
+        }
         final int threshold = Symphonys.PERFORMANCE_THRESHOLD;
         if (0 < threshold) {
-            final long elapsed = Stopwatchs.getElapsed("Request initialized [" + request.getRequestURI() + "]");
             if (elapsed >= threshold) {
                 LOGGER.log(Level.INFO, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
             }

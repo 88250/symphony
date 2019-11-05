@@ -189,7 +189,7 @@ public class AnonymousViewCheck extends ProcessAdvice {
                     }
                 } else { // logged in
                     if (null != visitsCookie) {
-                        final Cookie cookie = new Cookie(cookieNameVisits, null);
+                        final Cookie cookie = new Cookie(cookieNameVisits, "");
                         cookie.setMaxAge(0);
                         cookie.setPath("/");
 
