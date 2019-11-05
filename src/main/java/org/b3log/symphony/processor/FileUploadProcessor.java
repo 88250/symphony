@@ -128,10 +128,11 @@ public class FileUploadProcessor {
                 context.addHeader("If-None-Match", "true");
             }
 
-            try (final OutputStream output = response.getOutputStream()) {
-                IOUtils.write(data, output);
-                output.flush();
-            }
+            // TODO file download
+//            try (final OutputStream output = response.getOutputStream()) {
+//                IOUtils.write(data, output);
+//                output.flush();
+//            }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets a file failed", e);
         }
@@ -150,7 +151,8 @@ public class FileUploadProcessor {
         final int maxSize = (int) Symphonys.UPLOAD_FILE_MAX;
         final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
         try {
-            parser.parseRequestStream(context.getRequest().getInputStream(), "UTF-8");
+            // TODO: file upload
+//            parser.parseRequestStream(context.getRequest().getInputStream(), "UTF-8");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Parses request stream failed", e);
 
