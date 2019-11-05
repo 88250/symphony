@@ -30,7 +30,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.Starter;
+import org.b3log.symphony.Server;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.util.Markdowns;
@@ -39,6 +39,7 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 import java.util.*;
+
 
 /**
  * Data model service.
@@ -500,6 +501,6 @@ public class DataModelService {
      * @param dataModel the specified data model
      */
     private void fillSysInfo(final Map<String, Object> dataModel) {
-        dataModel.put(Common.VERSION, Starter.VERSION);
+        dataModel.put(Common.VERSION, Server.VERSION);
     }
 }

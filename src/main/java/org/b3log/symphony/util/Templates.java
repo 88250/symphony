@@ -21,10 +21,8 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
-import org.b3log.latke.http.AbstractServletListener;
 import org.b3log.latke.logging.Logger;
 
-import javax.servlet.ServletContext;
 import java.util.TimeZone;
 
 /**
@@ -52,11 +50,10 @@ public final class Templates {
     public static final Version FREEMARKER_VER = Configuration.VERSION_2_3_28;
 
     static {
-        final ServletContext servletContext = AbstractServletListener.getServletContext();
         TEMPLATES = new Configuration(FREEMARKER_VER);
         TEMPLATES.setDefaultEncoding("UTF-8");
         TEMPLATES.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-        TEMPLATES.setServletContextForTemplateLoading(servletContext, "skins");
+        TEMPLATES.setClassForTemplateLoading(Templates.class, "skins");
         TEMPLATES.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         TEMPLATES.setLogTemplateExceptions(false);
     }

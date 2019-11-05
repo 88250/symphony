@@ -25,8 +25,6 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * Gravatar (http://www.gravatar.com) utilities.
  *

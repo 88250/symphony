@@ -20,6 +20,7 @@ package org.b3log.symphony.service;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.Request;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -371,9 +372,8 @@ public class UserQueryService {
      *
      * @param request the specified request
      * @return the current user, {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getCurrentUser(final Request request) throws ServiceException {
+    public JSONObject getCurrentUser(final Request request) {
         final JSONObject currentUser = Sessions.currentUser(request);
         if (null == currentUser) {
             return null;
