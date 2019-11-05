@@ -22,8 +22,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.http.BaseServer;
 import org.b3log.latke.http.Dispatcher;
-import org.b3log.latke.http.handler.StopwatchEndHandler;
-import org.b3log.latke.http.handler.StopwatchStartHandler;
+import org.b3log.latke.http.handler.AfterHandleHandler;
+import org.b3log.latke.http.handler.BeforeHandleHandler;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -32,6 +32,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.event.*;
+import org.b3log.symphony.processor.ErrorProcessor;
 import org.b3log.symphony.service.CronMgmtService;
 import org.b3log.symphony.service.InitMgmtService;
 import org.b3log.symphony.util.Markdowns;
@@ -164,9 +165,8 @@ public final class Server extends BaseServer {
             Latkes.setRuntimeMode(Latkes.RuntimeMode.valueOf(runtimeMode));
         }
 
-        Dispatcher.HANDLERS.add(0, new StopwatchStartHandler());
-
-        Dispatcher.HANDLERS.add(new StopwatchEndHandler());
+        Dispatcher.HANDLERS.add(1, new BeforeHandleHandler());
+        Dispatcher.HANDLERS.add(new AfterHandleHandler());
 
         final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
         final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
@@ -179,6 +179,9 @@ public final class Server extends BaseServer {
                 jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
 
         final BeanManager beanManager = BeanManager.getInstance();
+
+        final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
+        Dispatcher.error("/error/{statusCode}", errorProcessor::handleErrorPage);
 
         final InitMgmtService initMgmtService = beanManager.getReference(InitMgmtService.class);
         initMgmtService.initSym();
