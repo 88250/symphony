@@ -114,8 +114,12 @@ public class ArticleChannel implements WebSocketChannel {
 
             final int articleType = Integer.valueOf(session.getParameter(Article.ARTICLE_TYPE));
             final Session httpSession = session.getHttpSession();
-            final JSONObject user = (JSONObject) httpSession.getAttribute(User.USER);
-            final boolean isLoggedIn = null != user;
+            final String userStr = httpSession.getAttribute(User.USER);
+            final boolean isLoggedIn = null != userStr;
+            JSONObject user = null;
+            if (isLoggedIn) {
+                user = new JSONObject(userStr);
+            }
 
             try {
                 if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType) {
@@ -179,7 +183,7 @@ public class ArticleChannel implements WebSocketChannel {
                     dataModel.put(Permission.PERMISSIONS, permissions);
                 }
 
-                final String templateDirName = (String) httpSession.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+                final String templateDirName = httpSession.getAttribute(Keys.TEMAPLTE_DIR_NAME);
                 final Template template = Templates.getTemplate(templateDirName + "/common/comment.ftl");
                 final StringWriter stringWriter = new StringWriter();
                 template.process(dataModel, stringWriter);

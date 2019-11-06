@@ -95,10 +95,12 @@ public class GobangChannel implements WebSocketChannel {
      */
     @Override
     public void onConnect(final WebSocketSession session) {
-        final JSONObject user = (JSONObject) session.getHttpSession().getAttribute(User.USER);
-        if (null == user) {
+        final String userStr = session.getHttpSession().getAttribute(User.USER);
+        if (null == userStr) {
             return;
         }
+
+        final JSONObject user = new JSONObject(userStr);
         final String userId = user.optString(Keys.OBJECT_ID);
         final String userName = user.optString(User.USER_NAME);
         boolean playing = false;

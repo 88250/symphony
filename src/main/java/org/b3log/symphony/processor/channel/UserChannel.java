@@ -65,7 +65,7 @@ public class UserChannel implements WebSocketChannel {
     public void onConnect(final WebSocketSession session) {
         final Session httpSession = session.getHttpSession();
 
-        final JSONObject user = (JSONObject) httpSession.getAttribute(User.USER);
+        final JSONObject user = new JSONObject(httpSession.getAttribute(User.USER));
         if (null == user) {
             return;
         }
@@ -78,7 +78,7 @@ public class UserChannel implements WebSocketChannel {
 
         final BeanManager beanManager = BeanManager.getInstance();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-        final String ip = (String) httpSession.getAttribute(Common.IP);
+        final String ip = httpSession.getAttribute(Common.IP);
         userMgmtService.updateOnlineStatus(userId, ip, true, true);
     }
 
@@ -100,15 +100,16 @@ public class UserChannel implements WebSocketChannel {
     @Override
     public void onMessage(final Message message) {
         final Session session = message.session.getHttpSession();
-        JSONObject user = (JSONObject) session.getAttribute(User.USER);
-        if (null == user) {
+        final String userStr = session.getAttribute(User.USER);
+        if (null == userStr) {
             return;
         }
+        final JSONObject user = new JSONObject(userStr);
 
         final String userId = user.optString(Keys.OBJECT_ID);
         final BeanManager beanManager = BeanManager.getInstance();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-        final String ip = (String) session.getAttribute(Common.IP);
+        final String ip = session.getAttribute(Common.IP);
         userMgmtService.updateOnlineStatus(userId, ip, true, true);
     }
 
@@ -144,15 +145,15 @@ public class UserChannel implements WebSocketChannel {
      */
     private void removeSession(final WebSocketSession session) {
         final Session httpSession = session.getHttpSession();
-        final JSONObject user = (JSONObject) httpSession.getAttribute(User.USER);
-        if (null == user) {
+        final String userStr = httpSession.getAttribute(User.USER);
+        if (null == userStr) {
             return;
         }
-
+        final JSONObject user = new JSONObject(userStr);
         final String userId = user.optString(Keys.OBJECT_ID);
         final BeanManager beanManager = BeanManager.getInstance();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-        final String ip = (String) httpSession.getAttribute(Common.IP);
+        final String ip = httpSession.getAttribute(Common.IP);
 
         Set<WebSocketSession> userSessions = SESSIONS.get(userId);
         if (null == userSessions) {
