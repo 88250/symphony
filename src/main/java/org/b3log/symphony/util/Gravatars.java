@@ -25,8 +25,6 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * Gravatar (http://www.gravatar.com) utilities.
  *
@@ -61,7 +59,7 @@ public final class Gravatars {
 
             final HttpResponse response = HttpRequest.get("http://www.gravatar.com/avatar/" + h + "?s=256&d=" + d[RandomUtils.nextInt(d.length)]).
                     connectionTimeout(5000).timeout(5000).send();
-            if (HttpServletResponse.SC_OK != response.statusCode()) {
+            if (200 != response.statusCode()) {
                 LOGGER.log(Level.WARN, "Gets avatar data failed [sc=" + response.statusCode() + "]");
 
                 return null;

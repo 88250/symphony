@@ -20,18 +20,16 @@ package org.b3log.symphony.processor.advice;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.advice.ProcessAdvice;
+import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.ProcessAdvice;
-import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * CSRF check.
@@ -56,8 +54,6 @@ public class CSRFCheck extends ProcessAdvice {
 
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final HttpServletRequest request = context.getRequest();
-
         final JSONObject exception = new JSONObject();
         exception.put(Keys.MSG, langPropsService.get("csrfCheckFailedLabel"));
         exception.put(Keys.STATUS_CODE, false);

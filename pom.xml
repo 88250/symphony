@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.17.0.12, Oct 15, 2019
+    Version: 2.17.0.13, Nov 5, 2019
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.b3log</groupId>
     <artifactId>symphony</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <version>3.5.1</version>
     <name>Symphony</name>
     <url>https://sym.b3log.org</url>
@@ -21,10 +21,8 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>2.5.8</latke.version>
+        <latke.version>3.0.3-SNAPSHOT</latke.version>
 
-        <servlet.version>3.1.0</servlet.version>
-        <jetty.version>9.4.14.v20181114</jetty.version>
         <slf4j.version>1.7.28</slf4j.version>
         <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
         <jsoup.version>1.12.1</jsoup.version>
@@ -152,18 +150,6 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.websocket</groupId>
-            <artifactId>javax.websocket-api</artifactId>
-            <version>1.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-repository-mysql</artifactId>
             <version>${latke.version}</version>
@@ -186,18 +172,6 @@
             <groupId>commons-cli</groupId>
             <artifactId>commons-cli</artifactId>
             <version>${commons-cli.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <version>${jetty.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.jetty.websocket</groupId>
-            <artifactId>javax-websocket-server-impl</artifactId>
-            <version>${jetty.version}</version>
         </dependency>
 
         <dependency>
@@ -308,31 +282,7 @@
             </resource>
         </resources>
 
-        <testResources>
-            <testResource>
-                <directory>src/main/webapp</directory>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-        </testResources>
-
         <plugins>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>${jetty.version}</version>
-                <configuration>
-                    <httpConnector>
-                        <port>8080</port>
-                    </httpConnector>
-                    <stopKey>stop</stopKey>
-                    <stopPort>4501</stopPort>
-                    <webAppConfig>
-                        <contextPath>/</contextPath>
-                    </webAppConfig>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -356,22 +306,22 @@
                     <strictCheck>true</strictCheck>
                     <includes>
                         <include>**/src/*/java/**/*.java</include>
-                        <include>**/src/*/webapp/js/*.js</include>
-                        <include>**/src/*/webapp/css/*.css</include>
-                        <include>**/src/*/webapp/scss/*.scss</include>
+                        <include>**/src/*/resources/js/*.js</include>
+                        <include>**/src/*/resources/css/*.css</include>
+                        <include>**/src/*/resources/scss/*.scss</include>
                         <include>**/src/*/resources/*.properties</include>
-                        <include>**/src/*/webapp/skins/*/*.properties</include>
-                        <include>**/src/*/webapp/WEB-INF/*.xml</include>
-                        <include>**/src/*/webapp/*.xml</include>
+                        <include>**/src/*/resources/skins/*/*.properties</include>
+                        <include>**/src/*/resources/WEB-INF/*.xml</include>
+                        <include>**/src/*/resources/*.xml</include>
                         <include>gulpfile.js</include>
-                        <include>**/src/*/webapp/**/*.ftl</include>
+                        <include>**/src/*/resources/**/*.ftl</include>
                     </includes>
                     <excludes>
                         <exclude>**/src/main/java/**/package-info.java</exclude>
                         <exclude>**/src/main/java/**/Pangu.java</exclude>
-                        <exclude>**/src/*/webapp/js/lib/*.js</exclude>
-                        <exclude>**/src/*/webapp/js/*.min.js</exclude>
-                        <exclude>**/src/*/webapp/css/*.css</exclude>
+                        <exclude>**/src/*/resources/js/lib/*.js</exclude>
+                        <exclude>**/src/*/resources/js/*.min.js</exclude>
+                        <exclude>**/src/*/resources/css/*.css</exclude>
                     </excludes>
 
                     <useDefaultExcludes>true</useDefaultExcludes>
@@ -387,34 +337,45 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
                 <executions>
-                    <!-- 
-                    eclipse sucks!!
                     <execution>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>format</goal>
                         </goals>
                     </execution>
-                    -->
                 </executions>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>${maven-war-plugin.version}</version>
+                <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <webResources>
-                        <resource>
-                            <directory>${project.basedir}/src/main/resources/lib/net/pusuo</directory>
-                            <targetPath>WEB-INF/lib</targetPath>
-                            <filtering>false</filtering>
-                            <includes>
-                                <include>**/*.jar</include>
-                            </includes>
-                        </resource>
-                    </webResources>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.b3log.symphony.Server</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/bin.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>

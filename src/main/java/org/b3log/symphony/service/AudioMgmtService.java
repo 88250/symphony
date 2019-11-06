@@ -34,7 +34,6 @@ import org.b3log.symphony.processor.FileUploadProcessor;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -127,7 +126,7 @@ public class AudioMgmtService {
                 final int responseCode = conn.getResponseCode();
                 final String contentType = conn.getContentType();
 
-                if (HttpServletResponse.SC_OK != responseCode || !"audio/mp3".equals(contentType)) {
+                if (200 != responseCode || !"audio/mp3".equals(contentType)) {
                     final String msg = IOUtils.toString(inputStream, "UTF-8");
                     LOGGER.warn("Baidu Yuyin TTS failed: " + msg);
                     conn.disconnect();

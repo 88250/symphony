@@ -23,19 +23,21 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
+import org.b3log.latke.http.annotation.After;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.After;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.TimeZones;
 import org.b3log.symphony.model.*;
@@ -52,8 +54,6 @@ import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -197,8 +197,7 @@ public class SettingsProcessor {
     public void deactivateUser(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Response response = context.getResponse();
         final JSONObject currentUser = Sessions.getUser();
         try {
             userMgmtService.deactivateUser(currentUser.optString(Keys.OBJECT_ID));
@@ -220,7 +219,6 @@ public class SettingsProcessor {
     public void updateUserName(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
@@ -256,7 +254,7 @@ public class SettingsProcessor {
     public void sendEmailVC(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String email = StringUtils.lowerCase(StringUtils.trim(requestJSONObject.optString(User.USER_EMAIL)));
         if (!Strings.isEmail(email)) {
@@ -324,7 +322,7 @@ public class SettingsProcessor {
     public void updateEmail(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
         final JSONObject currentUser = Sessions.getUser();
@@ -369,7 +367,7 @@ public class SettingsProcessor {
     public void updateI18n(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         JSONObject requestJSONObject;
         try {
             requestJSONObject = context.requestJSON();
@@ -512,7 +510,7 @@ public class SettingsProcessor {
     public void updateGeoStatus(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         JSONObject requestJSONObject;
         try {
             requestJSONObject = context.requestJSON();
@@ -552,7 +550,7 @@ public class SettingsProcessor {
     public void updatePrivacy(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         JSONObject requestJSONObject;
         try {
             requestJSONObject = context.requestJSON();
@@ -614,7 +612,7 @@ public class SettingsProcessor {
     public void updateFunction(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         JSONObject requestJSONObject;
         try {
             requestJSONObject = context.requestJSON();
@@ -735,7 +733,7 @@ public class SettingsProcessor {
     public void updateAvatar(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
         final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
 
@@ -780,7 +778,7 @@ public class SettingsProcessor {
     public void updatePassword(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
 
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
@@ -843,7 +841,7 @@ public class SettingsProcessor {
         final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
         context.renderJSON(ret);
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
 
         final int amount = requestJSONObject.optInt(Common.AMOUNT);

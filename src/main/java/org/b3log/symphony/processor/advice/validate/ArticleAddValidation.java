@@ -20,13 +20,13 @@ package org.b3log.symphony.processor.advice.validate;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.advice.ProcessAdvice;
+import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.advice.ProcessAdvice;
-import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Tag;
@@ -79,7 +79,7 @@ public class ArticleAddValidation extends ProcessAdvice {
     /**
      * Validates article fields.
      *
-     * @param context           the specified HTTP servlet request context
+     * @param context           the specified HTTP request context
      * @param requestJSONObject the specified request object
      * @throws RequestProcessAdviceException if validate failed
      */

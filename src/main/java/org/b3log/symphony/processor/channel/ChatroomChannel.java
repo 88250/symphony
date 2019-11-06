@@ -17,12 +17,13 @@
  */
 package org.b3log.symphony.processor.channel;
 
+import org.b3log.latke.http.WebSocketChannel;
+import org.b3log.latke.http.WebSocketSession;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
 
-import javax.websocket.*;
-import javax.websocket.server.ServerEndpoint;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
@@ -32,11 +33,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * Chatroom channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Apr 25, 2016
+ * @version 2.0.0.0, Nov 6, 2019
  * @since 1.4.0
  */
-@ServerEndpoint(value = "/chat-room-channel", configurator = Channels.WebSocketConfigurator.class)
-public class ChatroomChannel {
+@Singleton
+public class ChatroomChannel implements WebSocketChannel {
 
     /**
      * Logger.
@@ -46,26 +47,23 @@ public class ChatroomChannel {
     /**
      * Session set.
      */
-    public static final Set<Session> SESSIONS = Collections.newSetFromMap(new ConcurrentHashMap());
+    public static final Set<WebSocketSession> SESSIONS = Collections.newSetFromMap(new ConcurrentHashMap());
 
     /**
      * Called when the socket connection with the browser is established.
      *
      * @param session session
      */
-    @OnOpen
-    public void onConnect(final Session session) {
+    @Override
+    public void onConnect(final WebSocketSession session) {
         SESSIONS.add(session);
 
         synchronized (SESSIONS) {
-            final Iterator<Session> i = SESSIONS.iterator();
+            final Iterator<WebSocketSession> i = SESSIONS.iterator();
             while (i.hasNext()) {
-                final Session s = i.next();
-
-                if (s.isOpen()) {
-                    final String msgStr = new JSONObject().put(Common.ONLINE_CHAT_CNT, SESSIONS.size()).put(Common.TYPE, "online").toString();
-                    s.getAsyncRemote().sendText(msgStr);
-                }
+                final WebSocketSession s = i.next();
+                final String msgStr = new JSONObject().put(Common.ONLINE_CHAT_CNT, SESSIONS.size()).put(Common.TYPE, "online").toString();
+                s.sendText(msgStr);
             }
         }
     }
@@ -73,11 +71,10 @@ public class ChatroomChannel {
     /**
      * Called when the connection closed.
      *
-     * @param session     session
-     * @param closeReason close reason
+     * @param session session
      */
-    @OnClose
-    public void onClose(final Session session, final CloseReason closeReason) {
+    @Override
+    public void onClose(final WebSocketSession session) {
         removeSession(session);
     }
 
@@ -86,19 +83,8 @@ public class ChatroomChannel {
      *
      * @param message message
      */
-    @OnMessage
-    public void onMessage(final String message) {
-    }
-
-    /**
-     * Called in case of an error.
-     *
-     * @param session session
-     * @param error   error
-     */
-    @OnError
-    public void onError(final Session session, final Throwable error) {
-        removeSession(session);
+    @Override
+    public void onMessage(final Message message) {
     }
 
     /**
@@ -115,13 +101,10 @@ public class ChatroomChannel {
         final String msgStr = message.toString();
 
         synchronized (SESSIONS) {
-            final Iterator<Session> i = SESSIONS.iterator();
+            final Iterator<WebSocketSession> i = SESSIONS.iterator();
             while (i.hasNext()) {
-                final Session session = i.next();
-
-                if (session.isOpen()) {
-                    session.getAsyncRemote().sendText(msgStr);
-                }
+                final WebSocketSession session = i.next();
+                session.sendText(msgStr);
             }
         }
     }
@@ -131,18 +114,15 @@ public class ChatroomChannel {
      *
      * @param session the specified session
      */
-    private void removeSession(final Session session) {
+    private void removeSession(final WebSocketSession session) {
         SESSIONS.remove(session);
 
         synchronized (SESSIONS) {
-            final Iterator<Session> i = SESSIONS.iterator();
+            final Iterator<WebSocketSession> i = SESSIONS.iterator();
             while (i.hasNext()) {
-                final Session s = i.next();
-
-                if (s.isOpen()) {
-                    final String msgStr = new JSONObject().put(Common.ONLINE_CHAT_CNT, SESSIONS.size()).put(Common.TYPE, "online").toString();
-                    s.getAsyncRemote().sendText(msgStr);
-                }
+                final WebSocketSession s = i.next();
+                final String msgStr = new JSONObject().put(Common.ONLINE_CHAT_CNT, SESSIONS.size()).put(Common.TYPE, "online").toString();
+                s.sendText(msgStr);
             }
         }
     }

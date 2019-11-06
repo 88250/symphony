@@ -20,16 +20,17 @@ package org.b3log.symphony.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.After;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.After;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Breezemoon;
@@ -45,7 +46,6 @@ import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -106,7 +106,7 @@ public class BreezemoonProcessor {
     @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showWatchBreezemoon(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "breezemoon.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -160,7 +160,7 @@ public class BreezemoonProcessor {
     public void addBreezemoon(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         if (isInvalid(context, requestJSONObject)) {
             return;
@@ -210,7 +210,7 @@ public class BreezemoonProcessor {
     public void updateBreezemoon(final RequestContext context) {
         final String id = context.pathVar("id");
         context.renderJSON();
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         if (isInvalid(context, requestJSONObject)) {
             return;

@@ -19,17 +19,18 @@ package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.After;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.After;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.advice.CSRFCheck;
@@ -43,8 +44,6 @@ import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -138,7 +137,7 @@ public class CommentProcessor {
     public void acceptComment(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
@@ -184,9 +183,9 @@ public class CommentProcessor {
     @After({StopwatchEndAdvice.class})
     public void removeComment(final RequestContext context) {
         final String id = context.pathVar("id");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         if (StringUtils.isBlank(id)) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
@@ -195,14 +194,14 @@ public class CommentProcessor {
         final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
         final JSONObject comment = commentQueryService.getComment(id);
         if (null == comment) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
 
         final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
         if (!authorId.equals(currentUserId)) {
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(403);
 
             return;
         }
@@ -258,11 +257,9 @@ public class CommentProcessor {
             return;
         }
 
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
         final JSONObject currentUser = Sessions.getUser();
         if (!currentUser.optString(Keys.OBJECT_ID).equals(comment.optString(Comment.COMMENT_AUTHOR_ID))) {
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(403);
 
             return;
         }
@@ -292,8 +289,7 @@ public class CommentProcessor {
         final String id = context.pathVar("id");
         context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
 
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
 
         try {
             final JSONObject comment = commentQueryService.getComment(id);
@@ -305,7 +301,7 @@ public class CommentProcessor {
 
             final JSONObject currentUser = Sessions.getUser();
             if (!currentUser.optString(Keys.OBJECT_ID).equals(comment.optString(Comment.COMMENT_AUTHOR_ID))) {
-                context.sendError(HttpServletResponse.SC_FORBIDDEN);
+                context.sendError(403);
 
                 return;
             }
@@ -354,7 +350,7 @@ public class CommentProcessor {
      */
     @RequestProcessing(value = "/comment/original", method = HttpMethod.POST)
     public void getOriginalComment(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
@@ -442,8 +438,7 @@ public class CommentProcessor {
     public void addComment(final RequestContext context) {
         context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
 
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
 
         final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
@@ -492,7 +487,7 @@ public class CommentProcessor {
                 }
 
                 if (!invited) {
-                    context.sendError(HttpServletResponse.SC_FORBIDDEN);
+                    context.sendError(403);
 
                     return;
                 }
@@ -529,7 +524,6 @@ public class CommentProcessor {
     public void thankComment(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final JSONObject currentUser = Sessions.getUser();
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);

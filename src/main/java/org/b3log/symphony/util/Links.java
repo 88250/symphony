@@ -29,7 +29,6 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
@@ -104,7 +103,7 @@ public final class Links {
 
                 // Get meta info of the URL
                 final Connection.Response res = Jsoup.connect(url).timeout(TIMEOUT).followRedirects(true).execute();
-                if (HttpServletResponse.SC_OK != res.statusCode()) {
+                if (200 != res.statusCode()) {
                     return null;
                 }
 

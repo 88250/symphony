@@ -19,17 +19,17 @@ package org.b3log.symphony.processor;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.RssRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.RssRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.Server;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.feed.RSSCategory;
@@ -44,8 +44,6 @@ import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -121,7 +119,7 @@ public class FeedProcessor {
             channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/rss/recent.xml");
-            channel.setGenerator("Symphony v" + SymphonyServletListener.VERSION + ", https://sym.b3log.org");
+            channel.setGenerator("Symphony v" + Server.VERSION + ", https://sym.b3log.org");
             final String localeString = optionQueryService.getOption("miscLanguage").optString(Option.OPTION_VALUE);
             final String country = Locales.getCountry(localeString).toLowerCase();
             final String language = Locales.getLanguage(localeString).toLowerCase();
@@ -131,12 +129,7 @@ public class FeedProcessor {
             renderer.setContent(channel.toString());
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates recent articles' RSS failed", e);
-
-            try {
-                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            } catch (final IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            context.getResponse().sendError(500);
         }
     }
 
@@ -154,7 +147,7 @@ public class FeedProcessor {
         try {
             final JSONObject domain = domainQueryService.getByURI(domainURI);
             if (null == domain) {
-                context.getResponse().sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.getResponse().sendError(404);
 
                 return;
             }
@@ -171,7 +164,7 @@ public class FeedProcessor {
             channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/rss/" + domainURI + ".xml");
-            channel.setGenerator("Symphony v" + SymphonyServletListener.VERSION + ", https://sym.b3log.org");
+            channel.setGenerator("Symphony v" + Server.VERSION + ", https://sym.b3log.org");
             final String localeString = optionQueryService.getOption("miscLanguage").optString(Option.OPTION_VALUE);
             final String country = Locales.getCountry(localeString).toLowerCase();
             final String language = Locales.getLanguage(localeString).toLowerCase();
@@ -182,11 +175,7 @@ public class FeedProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates recent articles' RSS failed", e);
 
-            try {
-                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            } catch (final IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            context.getResponse().sendError(500);
         }
     }
 

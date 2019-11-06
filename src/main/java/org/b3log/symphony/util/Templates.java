@@ -21,17 +21,17 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
+import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.AbstractServletListener;
 
-import javax.servlet.ServletContext;
-import java.util.TimeZone;
+import java.io.File;
 
 /**
  * Templates utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Jan 17, 2018
+ * @version 2.0.0.1, Nov 5, 2019
  * @since 1.3.0
  */
 public final class Templates {
@@ -44,7 +44,7 @@ public final class Templates {
     /**
      * FreeMarker template configurations.
      */
-    private static final Configuration TEMPLATES;
+    private static final Configuration TEMPLATE_CFG;
 
     /**
      * Freemarker version.
@@ -52,13 +52,24 @@ public final class Templates {
     public static final Version FREEMARKER_VER = Configuration.VERSION_2_3_28;
 
     static {
-        final ServletContext servletContext = AbstractServletListener.getServletContext();
-        TEMPLATES = new Configuration(FREEMARKER_VER);
-        TEMPLATES.setDefaultEncoding("UTF-8");
-        TEMPLATES.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-        TEMPLATES.setServletContextForTemplateLoading(servletContext, "skins");
-        TEMPLATES.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-        TEMPLATES.setLogTemplateExceptions(false);
+        TEMPLATE_CFG = new Configuration(FREEMARKER_VER);
+        TEMPLATE_CFG.setDefaultEncoding("UTF-8");
+        try {
+            String path = Templates.class.getResource("/").getPath();
+            if (StringUtils.contains(path, "/target/classes/") || StringUtils.contains(path, "/target/test-classes/")) {
+                // 开发时使用源码目录
+                path = StringUtils.replace(path, "/target/classes/", "/src/main/resources/");
+                path = StringUtils.replace(path, "/target/test-classes/", "/src/main/resources/");
+            }
+            path += "skins";
+            TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(path));
+            LOGGER.log(Level.INFO, "Loaded template from directory [" + path + "]");
+        } catch (final Exception e) {
+            TEMPLATE_CFG.setClassForTemplateLoading(Templates.class, "/skins");
+            LOGGER.log(Level.INFO, "Loaded template from classpath");
+        }
+        TEMPLATE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        TEMPLATE_CFG.setLogTemplateExceptions(false);
     }
 
     /**
@@ -69,7 +80,7 @@ public final class Templates {
      * @throws Exception exception
      */
     public static Template getTemplate(final String name) throws Exception {
-        return TEMPLATES.getTemplate(name);
+        return TEMPLATE_CFG.getTemplate(name);
     }
 
     /**

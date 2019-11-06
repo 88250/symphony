@@ -22,6 +22,14 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.After;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -29,13 +37,6 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.After;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
@@ -53,8 +54,6 @@ import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -207,11 +206,8 @@ public class ArticleProcessor {
     @After({StopwatchEndAdvice.class})
     public void removeArticle(final RequestContext context) {
         final String id = context.pathVar("id");
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
         if (StringUtils.isBlank(id)) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
@@ -220,14 +216,14 @@ public class ArticleProcessor {
         final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
         final JSONObject article = articleQueryService.getArticle(id);
         if (null == article) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
 
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
         if (!authorId.equals(currentUserId)) {
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(403);
 
             return;
         }
@@ -255,7 +251,7 @@ public class ArticleProcessor {
     @Before({StopwatchStartAdvice.class, LoginCheck.class})
     @After({StopwatchEndAdvice.class})
     public void checkArticleTitle(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final JSONObject currentUser = Sessions.getUser();
         final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
@@ -590,14 +586,14 @@ public class ArticleProcessor {
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showArticle(final RequestContext context) {
         final String articleId = context.pathVar("articleId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject article = articleQueryService.getArticleById(articleId);
         if (null == article) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
@@ -887,7 +883,7 @@ public class ArticleProcessor {
     public void addArticle(final RequestContext context) {
         context.renderJSON();
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
@@ -964,14 +960,14 @@ public class ArticleProcessor {
     public void showUpdateArticle(final RequestContext context) {
         final String articleId = context.param("id");
         if (StringUtils.isBlank(articleId)) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
 
         final JSONObject article = articleQueryService.getArticle(articleId);
         if (null == article) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
@@ -979,7 +975,7 @@ public class ArticleProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser
                 || !currentUser.optString(Keys.OBJECT_ID).equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(403);
 
             return;
         }
@@ -1032,16 +1028,16 @@ public class ArticleProcessor {
     @After(StopwatchEndAdvice.class)
     public void updateArticle(final RequestContext context) {
         final String id = context.pathVar("id");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         if (StringUtils.isBlank(id)) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
 
         final JSONObject oldArticle = articleQueryService.getArticleById(id);
         if (null == oldArticle) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
@@ -1088,7 +1084,7 @@ public class ArticleProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser
                 || !currentUser.optString(Keys.OBJECT_ID).equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(403);
 
             return;
         }
@@ -1180,7 +1176,7 @@ public class ArticleProcessor {
     @After(StopwatchEndAdvice.class)
     public void getArticlePreviewContent(final RequestContext context) {
         final String articleId = context.pathVar("articleId");
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final String content = articleQueryService.getArticlePreviewContent(articleId, context);
         if (StringUtils.isBlank(content)) {
             context.renderJSON().renderFalseResult();
@@ -1200,19 +1196,18 @@ public class ArticleProcessor {
     @Before(StopwatchStartAdvice.class)
     @After(StopwatchEndAdvice.class)
     public void reward(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
 
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(403);
 
             return;
         }
 
         final String articleId = context.param(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
-            context.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            context.sendError(400);
 
             return;
         }
@@ -1243,19 +1238,18 @@ public class ArticleProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
     public void thank(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
 
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(403);
 
             return;
         }
 
         final String articleId = context.param(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
-            context.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            context.sendError(400);
 
             return;
         }
@@ -1282,32 +1276,31 @@ public class ArticleProcessor {
     @Before({StopwatchStartAdvice.class, PermissionCheck.class})
     @After(StopwatchEndAdvice.class)
     public void stickArticle(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+        final Request request = context.getRequest();
 
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(403);
 
             return;
         }
 
         final String articleId = context.param(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
-            context.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            context.sendError(400);
 
             return;
         }
 
         final JSONObject article = articleQueryService.getArticle(articleId);
         if (null == article) {
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
 
         if (!currentUser.optString(Keys.OBJECT_ID).equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(403);
 
             return;
         }

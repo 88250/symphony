@@ -17,19 +17,16 @@
  */
 package org.b3log.symphony.processor;
 
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.TextXmlRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.TextXmlRenderer;
 import org.b3log.symphony.model.sitemap.Sitemap;
 import org.b3log.symphony.service.SitemapQueryService;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * Sitemap processor.
@@ -80,11 +77,7 @@ public class SitemapProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get blog article feed error", e);
 
-            try {
-                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            } catch (final IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            context.getResponse().sendError(500);
         }
     }
 }
