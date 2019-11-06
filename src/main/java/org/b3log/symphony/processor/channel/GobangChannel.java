@@ -19,6 +19,7 @@ package org.b3log.symphony.processor.channel;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.WebSocketChannel;
+import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Logger;
@@ -29,8 +30,6 @@ import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.websocket.*;
-import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,10 +44,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Jul 24, 2017
+ * @version 2.0.0.0, Nov 6, 2019
  * @since 2.1.0
  */
-@ServerEndpoint(value = "/gobang-game-channel", configurator = Channels.WebSocketConfigurator.class)
 public class GobangChannel implements WebSocketChannel {
 
     /**
@@ -59,7 +57,7 @@ public class GobangChannel implements WebSocketChannel {
     /**
      * Session set.
      */
-    public static final Map<String, Session> SESSIONS = new ConcurrentHashMap<>();
+    public static final Map<String, WebSocketSession> SESSIONS = new ConcurrentHashMap<>();
 
     /**
      * 正在进行中的棋局.
@@ -93,9 +91,9 @@ public class GobangChannel implements WebSocketChannel {
      *
      * @param session session
      */
-    @OnOpen
-    public void onConnect(final Session session) {
-        final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
+    @Override
+    public void onConnect(final WebSocketSession session) {
+        final JSONObject user = (JSONObject) session.getHttpSession().getAttribute(User.USER);
         if (null == user) {
             return;
         }
@@ -107,7 +105,7 @@ public class GobangChannel implements WebSocketChannel {
             JSONObject sendText = new JSONObject();
             sendText.put("type", 6);
             sendText.put("message", "【系统】：您已在匹配队列中，请勿开始多个游戏，如需打开新的窗口，请先关闭原窗口再开始");
-            session.getAsyncRemote().sendText(sendText.toString());
+            session.sendText(sendText.toString());
             return;
         } else {
             SESSIONS.put(userId, session);
@@ -140,13 +138,13 @@ public class GobangChannel implements WebSocketChannel {
                 sendText.put("type", 3);
                 sendText.put("playerName", userName);
                 sendText.put("message", "【系统】：请等待另一名玩家加入游戏");
-                session.getAsyncRemote().sendText(sendText.toString());
+                session.sendText(sendText.toString());
             } else if (userId.equals(chessGame.getPlayer1())) { //仍然在匹配队列中
                 chessRandomWait.add(chessGame);//重新入队
                 sendText.put("type", 3);
                 sendText.put("playerName", userName);
                 sendText.put("message", "【系统】：请等待另一名玩家加入游戏");
-                session.getAsyncRemote().sendText(sendText.toString());
+                session.sendText(sendText.toString());
             } else {
                 final BeanManager beanManager = BeanManager.getInstance();
                 chessGame.setPlayer2(userId);
@@ -165,11 +163,11 @@ public class GobangChannel implements WebSocketChannel {
                 sendText.put("message", "【系统】：玩家 [" + userName + "] 已加入，游戏开始，请落子");
                 sendText.put("player", chessGame.getPlayer1());
 
-                SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
+                SESSIONS.get(chessGame.getPlayer1()).sendText(sendText.toString());
                 //针对参与玩家的消息
                 sendText.put("message", "游戏开始~！您正在与 [" + chessGame.getName1() + "] 对战");
                 sendText.put("player", chessGame.getPlayer2());
-                session.getAsyncRemote().sendText(sendText.toString());
+                session.sendText(sendText.toString());
 
                 JSONObject r1 = activityMgmtService.startGobang(chessGame.getPlayer1());
                 JSONObject r2 = activityMgmtService.startGobang(chessGame.getPlayer2());
@@ -180,11 +178,10 @@ public class GobangChannel implements WebSocketChannel {
     /**
      * Called when the connection closed.
      *
-     * @param session     session
-     * @param closeReason close reason
+     * @param session session
      */
-    @OnClose
-    public void onClose(final Session session, final CloseReason closeReason) {
+    @Override
+    public void onClose(final WebSocketSession session) {
         removeSession(session);
     }
 
@@ -193,8 +190,8 @@ public class GobangChannel implements WebSocketChannel {
      *
      * @param message message
      */
-    @OnMessage
-    public void onMessage(final String message) throws JSONException {
+    @Override
+    public void onMessage(final Message message) throws JSONException {
         JSONObject jsonObject = new JSONObject(message);
         final String player = jsonObject.optString("player");
         final String anti = getAntiPlayer(player);
@@ -207,7 +204,7 @@ public class GobangChannel implements WebSocketChannel {
                 sendText.put("type", 1);
                 sendText.put("player", userQueryService.getUser(player).optString(User.USER_NAME));
                 sendText.put("message", jsonObject.optString("message"));
-                SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
+                SESSIONS.get(anti).sendText(sendText.toString());
                 break;
             case 2: //落子
                 ChessGame chessGame = chessPlaying.keySet().contains(player) ? chessPlaying.get(player) : chessPlaying.get(anti);
@@ -252,12 +249,12 @@ public class GobangChannel implements WebSocketChannel {
                         sendText.put("result", "You Win");
                         chessPlaying.remove(player);
                     }
-                    SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
+                    SESSIONS.get(player).sendText(sendText.toString());
                     if (flag) {
                         sendText.put("result", "You Lose");
                         chessPlaying.remove(anti);
                     }
-                    SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
+                    SESSIONS.get(anti).sendText(sendText.toString());
                     if (flag) {
                         final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
                         activityMgmtService.collectGobang(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START * 2);
@@ -269,7 +266,7 @@ public class GobangChannel implements WebSocketChannel {
             case 7://和棋
                 if ("request".equals(jsonObject.optString("drawType"))) {
                     sendText.put("type", 7);
-                    SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
+                    SESSIONS.get(anti).sendText(sendText.toString());
                 } else if ("yes".equals(jsonObject.optString("drawType"))) {
                     sendText.put("type", 6);
                     sendText.put("message", "【系统】：双方和棋，积分返还，游戏结束");
@@ -280,28 +277,17 @@ public class GobangChannel implements WebSocketChannel {
                     final ActivityMgmtService activityMgmtService = beanManager.getReference(ActivityMgmtService.class);
                     activityMgmtService.collectGobang(player, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START);
                     activityMgmtService.collectGobang(anti, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START);
-                    SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
-                    SESSIONS.get(anti).getAsyncRemote().sendText(sendText.toString());
+                    SESSIONS.get(player).sendText(sendText.toString());
+                    SESSIONS.get(anti).sendText(sendText.toString());
                     SESSIONS.remove(player);
                     SESSIONS.remove(anti);
                 } else if ("no".equals(jsonObject.optString("drawType"))) {
                     sendText.put("type", 6);
                     sendText.put("message", "【系统】：对手拒绝和棋，请继续下棋");
-                    SESSIONS.get(player).getAsyncRemote().sendText(sendText.toString());
+                    SESSIONS.get(player).sendText(sendText.toString());
                 }
                 break;
         }
-    }
-
-    /**
-     * Called in case of an error.
-     *
-     * @param session session
-     * @param error   error
-     */
-    @OnError
-    public void onError(final Session session, final Throwable error) {
-        removeSession(session);
     }
 
     /**
@@ -309,7 +295,7 @@ public class GobangChannel implements WebSocketChannel {
      *
      * @param session the specified session
      */
-    private void removeSession(final Session session) {
+    private void removeSession(final WebSocketSession session) {
         for (String player : SESSIONS.keySet()) {
             if (session.equals(SESSIONS.get(player))) {
                 if (getAntiPlayer(player) == null) {
@@ -333,7 +319,7 @@ public class GobangChannel implements WebSocketChannel {
                             JSONObject sendText = new JSONObject();
                             sendText.put("type", 6);
                             sendText.put("message", "【系统】：对手离开了棋局");
-                            SESSIONS.get(chessGame.getPlayer2()).getAsyncRemote().sendText(sendText.toString());
+                            SESSIONS.get(chessGame.getPlayer2()).sendText(sendText.toString());
                         }
                     } else if (chessPlaying.get(getAntiPlayer(player)) != null) { //说明玩家2断开了链接
                         String player1 = getAntiPlayer(player);
@@ -350,7 +336,7 @@ public class GobangChannel implements WebSocketChannel {
                             JSONObject sendText = new JSONObject();
                             sendText.put("type", 6);
                             sendText.put("message", "【系统】：对手离开了棋局");
-                            SESSIONS.get(chessGame.getPlayer1()).getAsyncRemote().sendText(sendText.toString());
+                            SESSIONS.get(chessGame.getPlayer1()).sendText(sendText.toString());
                         }
                     }
                 }
@@ -378,11 +364,11 @@ public class GobangChannel implements WebSocketChannel {
         sendText.put("message", "【系统】：恢复棋盘，当前轮到玩家 [" + (chessGame.getStep() == 1 ? chessGame.getName1() : chessGame.getName2()) + "] 落子");
         sendText.put("playerName", userName);
         sendText.put("player", userId);
-        SESSIONS.get(userId).getAsyncRemote().sendText(sendText.toString());
+        SESSIONS.get(userId).sendText(sendText.toString());
         sendText = new JSONObject();
         sendText.put("type", 6);
         sendText.put("message", "【系统】：对手返回了棋局，当前轮到玩家 [" + (chessGame.getStep() == 1 ? chessGame.getName1() : chessGame.getName2()) + "] 落子");
-        SESSIONS.get(antiUserId).getAsyncRemote().sendText(sendText.toString());
+        SESSIONS.get(antiUserId).sendText(sendText.toString());
     }
 }
 

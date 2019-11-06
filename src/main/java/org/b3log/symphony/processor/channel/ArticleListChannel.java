@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Article list channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.3.1, Apr 25, 2016
+ * @version 2.0.0.0, Nov 6, 2019
  * @since 1.3.0
  */
 public class ArticleListChannel implements WebSocketChannel {

@@ -26,7 +26,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 
 import java.io.File;
-import java.util.TimeZone;
 
 /**
  * Templates utilities.
