@@ -21,7 +21,7 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>3.0.2-SNAPSHOT</latke.version>
+        <latke.version>3.0.3-SNAPSHOT</latke.version>
 
         <slf4j.version>1.7.28</slf4j.version>
         <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
@@ -348,20 +348,34 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>${maven-war-plugin.version}</version>
+                <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <webResources>
-                        <resource>
-                            <directory>${project.basedir}/src/main/resources/lib/net/pusuo</directory>
-                            <targetPath>WEB-INF/lib</targetPath>
-                            <filtering>false</filtering>
-                            <includes>
-                                <include>**/*.jar</include>
-                            </includes>
-                        </resource>
-                    </webResources>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.b3log.symphony.Server</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/bin.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
