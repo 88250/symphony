@@ -33,7 +33,7 @@ import org.b3log.symphony.event.*;
 import org.b3log.symphony.processor.AfterRequestHandler;
 import org.b3log.symphony.processor.BeforeRequestHandler;
 import org.b3log.symphony.processor.ErrorProcessor;
-import org.b3log.symphony.processor.channel.UserChannel;
+import org.b3log.symphony.processor.channel.*;
 import org.b3log.symphony.service.CronMgmtService;
 import org.b3log.symphony.service.InitMgmtService;
 import org.b3log.symphony.util.Markdowns;
@@ -184,6 +184,14 @@ public final class Server extends BaseServer {
         final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
         Dispatcher.error("/error/{statusCode}", errorProcessor::handleErrorPage);
 
+        final ArticleChannel articleChannel = beanManager.getReference(ArticleChannel.class);
+        Dispatcher.webSocket("/article-channel", articleChannel);
+        final ArticleListChannel articleListChannel = beanManager.getReference(ArticleListChannel.class);
+        Dispatcher.webSocket("/article-list-channel", articleListChannel);
+        final ChatroomChannel chatroomChannel = beanManager.getReference(ChatroomChannel.class);
+        Dispatcher.webSocket("/chat-room-channel", chatroomChannel);
+        final GobangChannel gobangChannel = beanManager.getReference(GobangChannel.class);
+        Dispatcher.webSocket("/gobang-game-channel", gobangChannel);
         final UserChannel userChannel = beanManager.getReference(UserChannel.class);
         Dispatcher.webSocket("/user-channel", userChannel);
 

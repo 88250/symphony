@@ -19,6 +19,7 @@ package org.b3log.symphony.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -35,7 +36,6 @@ import org.b3log.symphony.repository.OptionRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.websocket.Session;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -74,7 +74,7 @@ public class OptionQueryService {
      */
     public int getOnlineMemberCount() {
         int ret = 0;
-        for (final Set<Session> value : UserChannel.SESSIONS.values()) {
+        for (final Set<WebSocketSession> value : UserChannel.SESSIONS.values()) {
             ret += value.size();
         }
 

@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.processor.channel;
 
+import org.b3log.latke.http.WebSocketChannel;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
@@ -36,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.4.0
  */
 @ServerEndpoint(value = "/chat-room-channel", configurator = Channels.WebSocketConfigurator.class)
-public class ChatroomChannel {
+public class ChatroomChannel implements WebSocketChannel {
 
     /**
      * Logger.

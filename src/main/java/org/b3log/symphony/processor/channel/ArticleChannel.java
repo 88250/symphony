@@ -20,6 +20,9 @@ package org.b3log.symphony.processor.channel;
 import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.Session;
+import org.b3log.latke.http.WebSocketChannel;
+import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -32,8 +35,6 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Templates;
 import org.json.JSONObject;
 
-import javax.websocket.*;
-import javax.websocket.server.ServerEndpoint;
 import java.io.StringWriter;
 import java.util.Collections;
 import java.util.HashMap;
@@ -45,11 +46,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.9.9, Sep 27, 2018
+ * @version 2.0.0.0, Nov 6, 2019
  * @since 1.3.0
  */
-@ServerEndpoint(value = "/article-channel", configurator = Channels.WebSocketConfigurator.class)
-public class ArticleChannel {
+public class ArticleChannel implements WebSocketChannel {
 
     /**
      * Logger.
@@ -59,7 +59,7 @@ public class ArticleChannel {
     /**
      * Session set.
      */
-    public static final Set<Session> SESSIONS = Collections.newSetFromMap(new ConcurrentHashMap());
+    public static final Set<WebSocketSession> SESSIONS = Collections.newSetFromMap(new ConcurrentHashMap());
 
     /**
      * Article viewing map &lt;articleId, count&gt;.
@@ -78,16 +78,14 @@ public class ArticleChannel {
 
         final String msgStr = message.toString();
 
-        for (final Session session : SESSIONS) {
-            final String viewingArticleId = Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
+        for (final WebSocketSession session : SESSIONS) {
+            final String viewingArticleId = session.getParameter(Article.ARTICLE_T_ID);
             if (StringUtils.isBlank(viewingArticleId)
                     || !viewingArticleId.equals(message.optString(Article.ARTICLE_T_ID))) {
                 continue;
             }
 
-            if (session.isOpen()) {
-                session.getAsyncRemote().sendText(msgStr);
-            }
+            session.sendText(msgStr);
         }
     }
 
@@ -105,15 +103,16 @@ public class ArticleChannel {
         final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
         final JSONObject article = message.optJSONObject(Article.ARTICLE);
 
-        for (final Session session : SESSIONS) {
-            final String viewingArticleId = Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
+        for (final WebSocketSession session : SESSIONS) {
+            final String viewingArticleId = session.getParameter(Article.ARTICLE_T_ID);
             if (StringUtils.isBlank(viewingArticleId)
                     || !viewingArticleId.equals(message.optString(Article.ARTICLE_T_ID))) {
                 continue;
             }
 
-            final int articleType = Integer.valueOf(Channels.getHttpParameter(session, Article.ARTICLE_TYPE));
-            final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
+            final int articleType = Integer.valueOf(session.getParameter(Article.ARTICLE_TYPE));
+            final Session httpSession = session.getHttpSession();
+            final JSONObject user = (JSONObject) httpSession.getAttribute(User.USER);
             final boolean isLoggedIn = null != user;
 
             try {
@@ -161,7 +160,7 @@ public class ArticleChannel {
                 dataModel.put(Common.CURRENT_USER, user);
                 article.put(Common.OFFERED, false);
                 dataModel.put(Article.ARTICLE, article);
-                dataModel.put(Common.CSRF_TOKEN, Channels.getHttpSessionAttribute(session, Common.CSRF_TOKEN));
+                dataModel.put(Common.CSRF_TOKEN, httpSession.getAttribute(Common.CSRF_TOKEN));
                 Keys.fillServer(dataModel);
                 dataModel.put(Comment.COMMENT, message);
 
@@ -178,7 +177,7 @@ public class ArticleChannel {
                     dataModel.put(Permission.PERMISSIONS, permissions);
                 }
 
-                final String templateDirName = (String) session.getUserProperties().get(Keys.TEMAPLTE_DIR_NAME);
+                final String templateDirName = (String) httpSession.getAttribute(Keys.TEMAPLTE_DIR_NAME);
                 final Template template = Templates.getTemplate(templateDirName + "/common/comment.ftl");
                 final StringWriter stringWriter = new StringWriter();
                 template.process(dataModel, stringWriter);
@@ -186,9 +185,7 @@ public class ArticleChannel {
 
                 message.put("cmtTpl", stringWriter.toString());
                 final String msgStr = message.toString();
-                if (session.isOpen()) {
-                    session.getAsyncRemote().sendText(msgStr);
-                }
+                session.sendText(msgStr);
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Notify comment error", e);
             }
@@ -200,9 +197,9 @@ public class ArticleChannel {
      *
      * @param session session
      */
-    @OnOpen
-    public void onConnect(final Session session) {
-        final String articleId = Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
+    @Override
+    public void onConnect(final WebSocketSession session) {
+        final String articleId = session.getParameter(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
             return;
         }
@@ -229,11 +226,10 @@ public class ArticleChannel {
     /**
      * Called when the connection closed.
      *
-     * @param session     session
-     * @param closeReason close reason
+     * @param session session
      */
-    @OnClose
-    public void onClose(final Session session, final CloseReason closeReason) {
+    @Override
+    public void onClose(final WebSocketSession session) {
         removeSession(session);
     }
 
@@ -242,19 +238,8 @@ public class ArticleChannel {
      *
      * @param message message
      */
-    @OnMessage
-    public void onMessage(final String message) {
-    }
-
-    /**
-     * Called in case of an error.
-     *
-     * @param session session
-     * @param error   error
-     */
-    @OnError
-    public void onError(final Session session, final Throwable error) {
-        removeSession(session);
+    @Override
+    public void onMessage(final Message message) {
     }
 
     /**
@@ -262,10 +247,10 @@ public class ArticleChannel {
      *
      * @param session the specified session
      */
-    private void removeSession(final Session session) {
+    private void removeSession(final WebSocketSession session) {
         SESSIONS.remove(session);
 
-        final String articleId = Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
+        final String articleId = session.getParameter(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
             return;
         }

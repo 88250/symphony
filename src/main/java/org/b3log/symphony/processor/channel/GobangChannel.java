@@ -18,6 +18,7 @@
 package org.b3log.symphony.processor.channel;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.WebSocketChannel;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Logger;
@@ -48,7 +49,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @since 2.1.0
  */
 @ServerEndpoint(value = "/gobang-game-channel", configurator = Channels.WebSocketConfigurator.class)
-public class GobangChannel {
+public class GobangChannel implements WebSocketChannel {
 
     /**
      * Logger.
