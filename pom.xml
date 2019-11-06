@@ -21,7 +21,7 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>3.0.3-SNAPSHOT</latke.version>
+        <latke.version>3.0.3</latke.version>
 
         <slf4j.version>1.7.28</slf4j.version>
         <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
