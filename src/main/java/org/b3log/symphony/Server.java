@@ -33,6 +33,7 @@ import org.b3log.symphony.event.*;
 import org.b3log.symphony.processor.AfterRequestHandler;
 import org.b3log.symphony.processor.BeforeRequestHandler;
 import org.b3log.symphony.processor.ErrorProcessor;
+import org.b3log.symphony.processor.channel.UserChannel;
 import org.b3log.symphony.service.CronMgmtService;
 import org.b3log.symphony.service.InitMgmtService;
 import org.b3log.symphony.util.Markdowns;
@@ -182,6 +183,9 @@ public final class Server extends BaseServer {
 
         final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
         Dispatcher.error("/error/{statusCode}", errorProcessor::handleErrorPage);
+
+        final UserChannel userChannel = beanManager.getReference(UserChannel.class);
+        Dispatcher.webSocket("/user-channel", userChannel);
 
         final InitMgmtService initMgmtService = beanManager.getReference(InitMgmtService.class);
         initMgmtService.initSym();

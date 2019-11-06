@@ -19,6 +19,9 @@ package org.b3log.symphony.processor.channel;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.Session;
+import org.b3log.latke.http.WebSocketChannel;
+import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -27,8 +30,6 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserMgmtService;
 import org.json.JSONObject;
 
-import javax.websocket.*;
-import javax.websocket.server.ServerEndpoint;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -38,11 +39,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * User channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Sep 3, 2018
+ * @version 2.0.0.0, Nov 6, 2019
  * @since 1.4.0
  */
-@ServerEndpoint(value = "/user-channel", configurator = Channels.WebSocketConfigurator.class)
-public class UserChannel {
+public class UserChannel implements WebSocketChannel {
 
     /**
      * Logger.
@@ -52,44 +52,41 @@ public class UserChannel {
     /**
      * Session set.
      */
-    public static final Map<String, Set<Session>> SESSIONS = new ConcurrentHashMap();
+    public static final Map<String, Set<WebSocketSession>> SESSIONS = new ConcurrentHashMap();
 
     /**
      * Called when the socket connection with the browser is established.
      *
      * @param session session
      */
-    @OnOpen
-    public void onConnect(final Session session) {
-        final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
+    @Override
+    public void onConnect(final WebSocketSession session) {
+        final Session httpSession = session.getHttpSession();
+
+        final JSONObject user = (JSONObject) httpSession.getAttribute(User.USER);
         if (null == user) {
             return;
         }
 
         final String userId = user.optString(Keys.OBJECT_ID);
-
-        Set<Session> userSessions = SESSIONS.get(userId);
-        if (null == userSessions) {
-            userSessions = Collections.newSetFromMap(new ConcurrentHashMap());
-        }
+        final Set<WebSocketSession> userSessions = SESSIONS.getOrDefault(userId, Collections.newSetFromMap(new ConcurrentHashMap()));
         userSessions.add(session);
 
         SESSIONS.put(userId, userSessions);
 
         final BeanManager beanManager = BeanManager.getInstance();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-        final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
+        final String ip = (String) httpSession.getAttribute(Common.IP);
         userMgmtService.updateOnlineStatus(userId, ip, true, true);
     }
 
     /**
      * Called when the connection closed.
      *
-     * @param session     session
-     * @param closeReason close reason
+     * @param session session
      */
-    @OnClose
-    public void onClose(final Session session, final CloseReason closeReason) {
+    @Override
+    public void onClose(final WebSocketSession session) {
         removeSession(session);
     }
 
@@ -97,11 +94,11 @@ public class UserChannel {
      * Called when a message received from the browser.
      *
      * @param message message
-     * @param session session
      */
-    @OnMessage
-    public void onMessage(final String message, final Session session) {
-        JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
+    @Override
+    public void onMessage(final Message message) {
+        final Session session = message.session.getHttpSession();
+        JSONObject user = (JSONObject) session.getAttribute(User.USER);
         if (null == user) {
             return;
         }
@@ -109,19 +106,8 @@ public class UserChannel {
         final String userId = user.optString(Keys.OBJECT_ID);
         final BeanManager beanManager = BeanManager.getInstance();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-        final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
+        final String ip = (String) session.getAttribute(Common.IP);
         userMgmtService.updateOnlineStatus(userId, ip, true, true);
-    }
-
-    /**
-     * Called in case of an error.
-     *
-     * @param session session
-     * @param error   error
-     */
-    @OnError
-    public void onError(final Session session, final Throwable error) {
-        removeSession(session);
     }
 
     /**
@@ -141,12 +127,9 @@ public class UserChannel {
 
         for (final String userId : SESSIONS.keySet()) {
             if (userId.equals(recvUserId)) {
-                final Set<Session> sessions = SESSIONS.get(userId);
-
-                for (final Session session : sessions) {
-                    if (session.isOpen()) {
-                        session.getAsyncRemote().sendText(msgStr);
-                    }
+                final Set<WebSocketSession> sessions = SESSIONS.get(userId);
+                for (final WebSocketSession session : sessions) {
+                    session.sendText(msgStr);
                 }
             }
         }
@@ -157,8 +140,9 @@ public class UserChannel {
      *
      * @param session the specified session
      */
-    private void removeSession(final Session session) {
-        final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
+    private void removeSession(final WebSocketSession session) {
+        final Session httpSession = session.getHttpSession();
+        final JSONObject user = (JSONObject) httpSession.getAttribute(User.USER);
         if (null == user) {
             return;
         }
@@ -166,9 +150,9 @@ public class UserChannel {
         final String userId = user.optString(Keys.OBJECT_ID);
         final BeanManager beanManager = BeanManager.getInstance();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-        final String ip = (String) Channels.getHttpSessionAttribute(session, Common.IP);
+        final String ip = (String) httpSession.getAttribute(Common.IP);
 
-        Set<Session> userSessions = SESSIONS.get(userId);
+        Set<WebSocketSession> userSessions = SESSIONS.get(userId);
         if (null == userSessions) {
             userMgmtService.updateOnlineStatus(userId, ip, false, false);
 
