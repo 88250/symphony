@@ -22,6 +22,7 @@ import org.b3log.latke.http.WebSocketChannel;
 import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.symphony.model.Pointtransfer;
@@ -47,6 +48,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @version 2.0.0.0, Nov 6, 2019
  * @since 2.1.0
  */
+@Singleton
 public class GobangChannel implements WebSocketChannel {
 
     /**

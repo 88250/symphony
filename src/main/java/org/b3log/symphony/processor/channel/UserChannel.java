@@ -23,6 +23,7 @@ import org.b3log.latke.http.Session;
 import org.b3log.latke.http.WebSocketChannel;
 import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.symphony.model.Common;
@@ -42,6 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version 2.0.0.0, Nov 6, 2019
  * @since 1.4.0
  */
+@Singleton
 public class UserChannel implements WebSocketChannel {
 
     /**
