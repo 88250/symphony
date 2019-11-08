@@ -88,6 +88,16 @@ public class ChatroomChannel implements WebSocketChannel {
     }
 
     /**
+     * Called when a error received.
+     *
+     * @param error error
+     */
+    @Override
+    public void onError(final Error error) {
+        removeSession(error.session);
+    }
+
+    /**
      * Notifies the specified chat message to browsers.
      *
      * @param message the specified message, for example,

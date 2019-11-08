@@ -249,6 +249,16 @@ public class ArticleChannel implements WebSocketChannel {
     }
 
     /**
+     * Called when a error received.
+     *
+     * @param error error
+     */
+    @Override
+    public void onError(final Error error) {
+        removeSession(error.session);
+    }
+
+    /**
      * Removes the specified session.
      *
      * @param session the specified session

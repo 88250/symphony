@@ -105,4 +105,14 @@ public class ArticleListChannel implements WebSocketChannel {
     @Override
     public void onMessage(final Message message) {
     }
+
+    /**
+     * Called when a error received.
+     *
+     * @param error error
+     */
+    @Override
+    public void onError(final Error error) {
+        SESSIONS.remove(error.session);
+    }
 }

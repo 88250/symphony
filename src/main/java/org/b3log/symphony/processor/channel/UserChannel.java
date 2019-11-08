@@ -114,6 +114,16 @@ public class UserChannel implements WebSocketChannel {
     }
 
     /**
+     * Called when a error received.
+     *
+     * @param error error
+     */
+    @Override
+    public void onError(final Error error) {
+        removeSession(error.session);
+    }
+
+    /**
      * Sends command to browsers.
      *
      * @param message the specified message, for example,
