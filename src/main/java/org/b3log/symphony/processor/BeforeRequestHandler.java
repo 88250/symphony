@@ -69,8 +69,6 @@ public class BeforeRequestHandler implements Handler {
 
         fillBotAttrs(context);
         resolveSkinDir(context);
-
-        context.handle();
     }
 
     /**

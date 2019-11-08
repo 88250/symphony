@@ -22,6 +22,7 @@ import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.handler.Handler;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
@@ -49,6 +50,8 @@ public class AfterRequestHandler implements Handler {
     public void handle(final RequestContext context) {
         Locales.setLocale(null);
         Sessions.clearThreadLocalData();
+        JdbcRepository.dispose();
+
         Stopwatchs.end();
         final Request request = context.getRequest();
         final long elapsed = Stopwatchs.getElapsed("Request initialized [" + request.getRequestURI() + "]");
@@ -63,8 +66,6 @@ public class AfterRequestHandler implements Handler {
             }
         }
         Stopwatchs.release();
-
-        context.handle();
     }
 
 

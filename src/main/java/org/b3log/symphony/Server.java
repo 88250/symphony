@@ -166,8 +166,8 @@ public final class Server extends BaseServer {
             Latkes.setRuntimeMode(Latkes.RuntimeMode.valueOf(runtimeMode));
         }
 
-        Dispatcher.HANDLERS.add(1, new BeforeRequestHandler());
-        Dispatcher.HANDLERS.add(new AfterRequestHandler());
+        Dispatcher.startRequestHandler = new BeforeRequestHandler();
+        Dispatcher.endRequestHandler = new AfterRequestHandler();
 
         final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
         final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
