@@ -126,7 +126,7 @@ public class FileUploadProcessor {
                 context.addHeader("If-None-Match", "true");
             }
 
-            response.sendContent(data);
+            response.sendBytes(data);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets a file failed", e);
         }
