@@ -47,7 +47,7 @@ import java.util.Locale;
  * Before request handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 3, 2019
+ * @version 1.0.0.1, Nov 11, 2019
  * @since 3.6.0
  */
 public class BeforeRequestHandler implements Handler {
@@ -77,7 +77,7 @@ public class BeforeRequestHandler implements Handler {
      * @param context the specified HTTP request context
      */
     private void resolveSkinDir(final RequestContext context) {
-        if (Sessions.isBot()) {
+        if (Sessions.isBot() || context.getRequest().isStaticResource()) {
             return;
         }
 
