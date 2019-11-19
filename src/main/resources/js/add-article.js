@@ -22,7 +22,7 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.26.1.0, Oct 7, 2019
+ * @version 2.26.1.1, Nov 19, 2019
  */
 
 /**
@@ -248,6 +248,7 @@ var AddArticle = {
     var prevValue = postData.content
     // 初始化文章编辑器
     AddArticle.editor = Util.newVditor({
+      typewriterMode: true,
       id: 'articleContent',
       cache: Label.articleOId ? false : true,
       preview: {

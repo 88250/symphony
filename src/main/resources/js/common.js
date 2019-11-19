@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.47.0.7, Sep 18, 2019
+ * @version 1.47.1.0, Nov 19, 2019
  */
 
 /**
@@ -101,7 +101,10 @@ var Util = {
     }
   },
   parseHljs: function () {
-    Vditor.highlightRender('github', !Label.luteAvailable, document)
+    Vditor.highlightRender({
+      style: 'github',
+      enable: !Label.luteAvailable,
+    }, document)
   },
   /**
    * 按需加载 MathJax 及 flow、live photo
@@ -586,8 +589,9 @@ var Util = {
       hint: false,
       templates: {
         footer: '<div class="fn-right fn-pointer" onclick="window.open(\'https://www.algolia.com\')">'
-        + '<span class="ft-gray">With &hearts; from</span> <img src="' +
-        Label.staticServePath + '/images/services/algolia128x40.png" /> </div>',
+          + '<span class="ft-gray">With &hearts; from</span> <img src="' +
+          Label.staticServePath +
+          '/images/services/algolia128x40.png" /> </div>',
       },
     }, [
       {
@@ -631,6 +635,7 @@ var Util = {
     }
 
     var options = {
+      typewriterMode: data.typewriterMode || false,
       cache: data.cache || false,
       input: data.input,
       preview: {
@@ -644,8 +649,8 @@ var Util = {
           Util.LazyLoadImage()
         },
         hljs: {
-          enable: !Label.luteAvailable
-        }
+          enable: !Label.luteAvailable,
+        },
       },
       upload: {
         max: Label.fileMaxSize,
@@ -666,7 +671,7 @@ var Util = {
       hint: {
         emojiPath: Label.staticServePath + '/emoji/graphics',
         emojiTail: '<a href="' + Label.servePath +
-        '/settings/function" target="_blank">设置常用表情</a>',
+          '/settings/function" target="_blank">设置常用表情</a>',
         emoji: Label.emoji,
         at: function (key) {
           var atUsers = []
@@ -681,13 +686,13 @@ var Util = {
                   atUsers.push({
                     value: '@' + result.data[i].userName,
                     html: '<img src="' + result.data[i].userAvatarURL + '"/>' +
-                    result.data[i].userName,
+                      result.data[i].userName,
                   })
                 }
                 if (key === '') {
                   atUsers.push({
                     html: '<img src="' + Label.staticServePath +
-                    '/images/user-thumbnail.png"/> 参与者',
+                      '/images/user-thumbnail.png"/> 参与者',
                     value: '@participants',
                   })
                 }
@@ -850,7 +855,8 @@ var Util = {
               return false
             }
             $('.main:first').
-              prepend('<div id="notificationsPanel" class="tab-current fn-clear fn-none"><ul class="tab fn-clear">' +
+              prepend(
+                '<div id="notificationsPanel" class="tab-current fn-clear fn-none"><ul class="tab fn-clear">' +
                 notiHTML + '</ul></div>')
 
             $('#aNotifications').click(function () {
@@ -889,7 +895,8 @@ var Util = {
           }
 
           $('#aNotifications').
-            after('<div id="notificationsPanel" class="module person-list"><ul>' +
+            after(
+              '<div id="notificationsPanel" class="module person-list"><ul>' +
               notiHTML + '</ul></div>')
 
           $('#aNotifications').click(function () {
@@ -947,7 +954,8 @@ var Util = {
           if (typeof (index) !== 'undefined') {
             if ('article' === type || 'tag' === type) {
               $(it).
-                html('<svg class="icon-star"><use xlink:href="#star"></use></svg> ' +
+                html(
+                  '<svg class="icon-star"><use xlink:href="#star"></use></svg> ' +
                   (index + 1)).
                 attr('onclick', 'Util.unfollow(this, \'' + id + '\', \'' +
                   type +
@@ -956,7 +964,8 @@ var Util = {
                 addClass('ft-red')
             } else if ('article-watch' === type) {
               $(it).
-                html('<svg class="icon-view"><use xlink:href="#view"></use></svg> ' +
+                html(
+                  '<svg class="icon-view"><use xlink:href="#view"></use></svg> ' +
                   (index + 1)).
                 attr('onclick', 'Util.unfollow(this, \'' + id + '\', \'' +
                   type +
@@ -1006,7 +1015,8 @@ var Util = {
             if ('article' === type || 'tag' === type) {
               $(it).
                 removeClass('ft-red').
-                html('<svg class="icon-star"><use xlink:href="#star"></use></svg> ' +
+                html(
+                  '<svg class="icon-star"><use xlink:href="#star"></use></svg> ' +
                   (index - 1)).
                 attr('onclick', 'Util.follow(this, \'' + id + '\', \'' + type +
                   '\',' + (index - 1) + ')').
@@ -1014,7 +1024,8 @@ var Util = {
             } else if ('article-watch' === type) {
               $(it).
                 removeClass('ft-red').
-                html('<svg class="icon-view"><use xlink:href="#view"></use></svg> ' +
+                html(
+                  '<svg class="icon-view"><use xlink:href="#view"></use></svg> ' +
                   (index - 1)).
                 attr('onclick', 'Util.follow(this, \'' + id + '\', \'' + type +
                   '\',' + (index - 1) + ')').
