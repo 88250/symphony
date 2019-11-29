@@ -1,0 +1,56 @@
+/*
+ * Symphony - A modern community (forum/BBS/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-present, b3log.org
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+/**
+ * 错误样式.
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.0.4.2, Mar 28, 2017
+ */
+
+@import "variables";
+/* start error */
+.error .block {
+    display: block;
+}
+
+.article-module {
+    padding: 30px 15px;
+}
+/* end error */
+
+/* start 403 */
+.error-403 {
+    .wrapper > .module.article-module {
+        margin-bottom: 20px;
+    }
+
+    .need-login {
+        padding: 15px;
+        color: #767676;
+        text-align: center;
+    }
+
+    .need-login a {
+        color: #767676;
+    }
+
+    .list > ul {
+        padding-top: 0;
+    }
+}
+/* end 403 */

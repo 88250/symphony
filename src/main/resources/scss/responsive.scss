@@ -1,0 +1,209 @@
+/*
+ * Symphony - A modern community (forum/BBS/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-present, b3log.org
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+/**
+ * Base style.
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.2.6.12, May 7, 2017
+ */
+
+@import "variables";
+
+@media (max-width: 1024px) {
+    .avatar-big {
+        height: 140px;
+        width: 140px;
+    }
+
+    .avatar-mid {
+        height: 80px;
+        width: 80px;
+    }
+
+    #articleToC,
+    .user-nav > span:first-child {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    /* start itself */
+    /* framework */
+    html .wrapper {
+        display: block;
+        padding: 0 10px;
+        min-width: 300px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .main {
+        padding: 0.5rem 0;
+    }
+
+    .wrapper .side {
+        margin-top: 2rem;
+        width: 100%;
+    }
+
+    .wrapper .tags > li:hover > span {
+        border-bottom-style: solid;
+        border-radius: 3px;
+    }
+
+
+    /* header */
+    .nav .nav-tabs {
+        display: none;
+    }
+
+    .nav .user-nav {
+        position: absolute;
+        right: 10px;
+    }
+
+    .nav div > a.current {
+        border-bottom: 0;
+        padding-bottom: 11px;
+        color: $theme-accent;
+    }
+
+    .nav .form {
+        top: 38px;
+        right: 0;
+    }
+
+    /* index */
+    html .index .index-main,
+    html .index .index-side {
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 20px;
+    }
+
+    /* article */
+    .article div.article-header {
+        display: none;
+    }
+
+    .wrapper.article-footer > .module {
+        margin-left: 0;
+    }
+
+    .list .avatar {
+        height: 25px;
+        width: 25px;
+    }
+
+    .wrapper .tag-artile-user {
+        margin: 0.5rem 0 0.5rem 0.5rem;
+    }
+
+    .tag-artile-user .avatar {
+        height: 45px;
+        width: 45px;
+    }
+
+
+    /* register */
+    .wrapper.register .intro {
+        border-left-width: 0;
+        padding: 0;
+        margin-left: 0;
+    }
+
+    /* home */
+    .wrapper .points .name {
+        padding: 10px 0;
+        font-size: 12px;
+    }
+
+    .wrapper .tab > li.current {
+        border-width: 0;
+        border-bottom: 2px solid $theme-accent;
+    }
+
+    .wrapper .tab > li.current > a {
+        padding-bottom: 7px;
+        padding-top: 8px;
+    }
+
+    .comment-list-item h2 {
+        margin-bottom: 0;
+    }
+
+    .wrapper.pre-post > div {
+        display: block;
+        font-size: 16px;
+        margin: 15px auto;
+        padding: 20px 50px;
+        background-color: #F7F7F7;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .wrapper.pre-post > div > a {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .wrapper.pre-post div.ft-fade,
+    .wrapper.pre-post a div {
+        margin: 20px 0;
+    }
+    /* end itself */
+
+    .responsive-show,
+    .person-info .avatar{
+        display: inherit;
+    }
+
+    #comments li .thx {
+        display: inline-block;
+    }
+
+    .responsive-hide,
+    .wrapper .tags > li:hover > div {
+        display: none;
+    }
+
+    .content, 
+    .side,
+    .register .form,
+    .post .form,
+    .wrapper.register .intro,
+    .nav .head-fn {
+        width: 100%;
+    }
+
+    .content {
+        max-width: 100%;
+    }
+
+    .article-title,
+    .tag-articles .content > .fn-flex,
+    .comment-list-item .fn-flex {
+        display: block;
+    }
+
+    .footer .fn-right,
+    .article-info .fn-right,
+    .article-info .fn-left {
+        float: none;
+    }
+}

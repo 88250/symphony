@@ -1,0 +1,594 @@
+/*
+ * Symphony - A modern community (forum/BBS/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-present, b3log.org
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+/**
+ * 后台样式.
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 2.13.0.2, Mar 17, 2019
+ */
+@import "variables";
+
+/* start home common */
+.home-menu {
+  list-style: none;
+  background-color: #fff;
+
+  a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    text-shadow: 0 1px 0 #fff;
+    border-bottom: 1px solid #eee;
+    color: $theme-secondary;
+  }
+
+  a:last-child {
+    border-bottom: 0;
+  }
+
+  a:hover {
+    text-decoration: none;
+    background-color: #f9f9f9;
+  }
+
+  a.current {
+    font-weight: bold;
+    color: #222;
+    cursor: default;
+    background-color: #fff;
+  }
+
+  a .todo {
+    position: absolute;
+    border-style: solid;
+    right: 0px;
+    top: 0px;
+    border-width: 10px 10px 10px 10px;
+    border-color: $theme-accent $theme-accent transparent transparent;
+  }
+
+  a.current::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    content: "";
+    background-color: $theme-accent;
+  }
+}
+
+.home-side-read {
+  color: #222;
+}
+
+.home-menu a span:last-child:hover,
+.home-side-read:hover {
+  color: $blue;
+}
+
+/* end home common */
+
+/* start home side */
+#avatarURLDom {
+  margin-top: 30px;
+}
+
+.user-name {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 26px;
+  margin-bottom: 20px;
+  padding: 20px 10px 25px 10px;
+
+  #userNicknameDom {
+    font-size: 26px;
+    line-height: 30px;
+  }
+
+  .online,
+  .offline {
+    background-color: $theme-accent;
+    color: #fff;
+    font-size: 12px;
+    line-height: 20px;
+    border-radius: 3px;
+    height: 20px;
+    display: inline-block;
+    padding: 0 5px;
+    vertical-align: middle;
+    box-sizing: border-box;
+  }
+
+  .offline {
+    background-color: $gray;
+  }
+
+  button.follow {
+    font-size: 14px;
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
+.user-details {
+  margin: 0 10px;
+}
+
+.user-info {
+  line-height: 24px;
+  font-size: 12px;
+  color: $theme-secondary;
+}
+
+.user-intro {
+  line-height: 26px;
+  margin-bottom: 5px;
+}
+
+/* end home side */
+
+/* start add article */
+.pre-post-wrap {
+  background-color: #fff;
+}
+
+.pre-post > div {
+  width: 25%;
+  margin: 100px 0px;
+  text-align: center;
+  font-size: 30px;
+}
+
+.pre-post > div > a {
+  color: #404040;
+  margin: 0 10px;
+  display: block;
+}
+
+.pre-post a:hover {
+  text-decoration: none;
+  color: $blue;
+}
+
+.pre-post a svg {
+  height: 50px;
+  width: 50px;
+  margin-bottom: 50px;
+}
+
+.pre-post div.ft-gray {
+  font-size: 15px;
+  margin: 20px 30px 0;
+  text-align: left;
+}
+
+.tip-add-article {
+  color: #777777;
+  list-style: circle outside none;
+  margin-left: 20px;
+  line-height: 22px;
+}
+
+.fn-right > .article-anonymous {
+  margin: 7px 15px 0 0;
+  line-height: 20px;
+  float: left;
+}
+
+.post {
+  background-color: #FFF;
+  padding-top: 0;
+
+  &__info {
+    float: left;
+    margin: 2px 5px 0 0;
+  }
+
+  .wrapper {
+    display: block;
+  }
+
+  input[type=text],
+  input[type=text]:focus,
+  input[type=number],
+  input[type=number]:focus {
+    border: 0;
+    background-color: #FFF;
+    box-shadow: 0 0 0;
+    border-radius: 0;
+  }
+
+  #articleTitle {
+    font-size: 26px;
+    padding: 20px 10px 10px;
+  }
+
+  #articleTitleTip {
+    position: absolute;
+    top: 10px;
+    padding: 10px;
+    z-index: 10;
+    color: #999;
+    margin-bottom: 0;
+    width: auto;
+    right: 10px;
+    background-color: $blue-lighter;
+  }
+
+  #showReward {
+    color: #999;
+    width: 75%;
+    margin: 20px auto 0;
+    display: block;
+  }
+
+  #articleAskPoint {
+    border-bottom: 1px solid #f2f2f2;
+  }
+
+  #tip {
+    position: inherit;
+    white-space: pre-wrap;
+  }
+  .tags-wrap {
+    position: relative;
+  }
+
+  .tags-input,
+  #articleRewardPoint,
+  #articleAskPoint {
+    background-color: #fff;
+    padding: 5px 10px;
+    width: 100%;
+    line-height: 20px;
+    border-bottom: 1px solid #f2f2f2;
+    border-top: 1px solid #f2f2f2;
+    box-sizing: border-box;
+  }
+
+  .tags-input span.tag {
+    margin: 0 5px 0 0px;
+    padding: 0 5px;
+    background: #eee;
+    color: #999;
+    line-height: 22px;
+  }
+
+  .tags-input .tag > span.close {
+    cursor: pointer;
+    padding-left: 5px;
+    color: $theme-secondary;
+
+    &:hover {
+      color: $theme-accent;
+    }
+  }
+
+  .tags-input span.tag.haved {
+    color: $black-text;
+    background-color: #ccc;
+    transition: background 0.5s ease-in, color 0.3s ease-out;
+  }
+
+  .tags-input input {
+    border: 0;
+    outline: none;
+    box-shadow: 0 0 0 transparent;
+    border-radius: 0;
+    padding: 2px;
+  }
+
+  .tags-input input:focus {
+    border: 0;
+    background-color: transparent;
+    box-shadow: 0 0 0 transparent;
+  }
+
+  .domains-tags {
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    border: 1px solid #eee;
+    z-index: 82;
+    border-radius: 0 0 3px 3px;
+    width: 50%;
+    top: 33px;
+    box-sizing: border-box;
+    padding: 10px;
+  }
+
+  .domain-tags {
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+
+  .domains-tags .tag {
+    cursor: pointer;
+    color: #999;
+    margin: 0 5px 5px 0;
+    padding: 2px 5px;
+    border: 1px solid #DDDDDD;
+    background-color: #f7f7f7;
+    border-radius: 3px;
+  }
+
+  .domains-tags .tag:hover {
+    opacity: 0.7;
+  }
+}
+
+/* end add article */
+
+/* start home */
+.home-invisible {
+  padding: 50px 0;
+}
+
+.tabs {
+  display: flex;
+}
+
+.tabs a {
+  line-height: 18px;
+  flex: 1;
+  padding: 7px 10px 5px;
+  color: #616161;
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+  text-align: center
+}
+
+.tabs a.selected {
+  border-color: $theme-accent;
+  color: #212121;
+}
+
+.tabs a:hover {
+  background-color: rgba(0, 0, 0, .02);
+}
+
+.tabs-sub > a > .count {
+  transform: scale(0.8);
+}
+
+.home-account {
+  &__captch {
+    position: relative;
+    img {
+      position: absolute;
+      height: 31px;
+      top: 42px;
+      right: 1px;
+      border-radius: 0 3px 3px 0;
+    }
+  }
+}
+
+/* end home */
+
+/* start notifications */
+.notification .read {
+  background-color: #FAFAFA;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+
+.notification li {
+  background-color: #F8F8FF;
+}
+
+.notification .vditor-reset > p {
+  margin-bottom: 0;
+}
+
+/* end notifications */
+
+/* start follow */
+.follow.list h2 {
+  margin-bottom: 6px;
+}
+
+/* end follow */
+
+/* start admin */
+.admin {
+  .form {
+    padding: 8px 15px;
+  }
+
+  .tags {
+    display: inline-block;
+    width: 50%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: bottom;
+  }
+
+  .domains {
+    display: inline-block;
+    width: 50%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: bottom;
+  }
+
+  .form input[type=text],
+  .form input[type=number] {
+    width: 50%;
+    margin-right: 10px;
+  }
+
+  #rolesTitle {
+    width: 150px;
+  }
+
+  #rolesDesc {
+    width: 250px;
+  }
+}
+
+.form--admin {
+  label {
+    flex: 1;
+    div {
+      float: left;
+      font-size: 12px;
+      line-height: 12px;
+      color: $fade;
+    }
+
+    &.mid {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
+    input,
+    select,
+    textarea {
+      margin-top: 5px;
+    }
+
+    input[readonly] {
+      border: 0;
+      color: $gray;
+      box-shadow: 0 0 0;
+      background-color: #fff;
+      padding: 0;
+      border-radius: 0;
+      &:focus {
+        border-width: 0;
+        box-shadow: 0 0 0;
+      }
+    }
+  }
+
+  .btn--admin {
+    margin-top: 28px;
+  }
+
+  .input--admin-readonly {
+    height: 26px;
+    line-height: 26px;
+  }
+}
+
+/* end admin */
+
+/* start points */
+.points {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.points tr:last-child td {
+  border-bottom: 0;
+}
+
+.points td {
+  border-bottom: 1px solid #eee;
+}
+
+.points .date {
+  width: 75px;
+  padding: 15px 10px 15px 15px;
+}
+
+.points .name {
+  padding: 15px 10px;
+  word-break: break-all;
+}
+
+.points .name a {
+  color: $theme-secondary;
+}
+
+.points .name a:hover {
+  color: $black-text;
+}
+
+.points .type {
+  width: 60px;
+  padding: 0 10px;
+}
+
+.points .sum {
+  text-align: center;
+  width: 35px;
+  padding: 0 10px;
+  color: $theme-accent;
+  font-weight: 700;
+}
+
+.points .sum.plus {
+  color: #569e3d;
+}
+
+.points .balance {
+  width: 40px;
+  padding: 15px 15px 15px 10px;
+}
+
+.top-ranking {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+/* end points */
+
+/* start settings */
+#avatarUpload {
+  overflow: hidden;
+}
+
+#shareClipboard {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  border-radius: 0 3px 3px 0;
+}
+
+.settings-secret > div {
+  float: left;
+  width: 50%
+}
+
+#homeSidePanel {
+  margin-bottom: 20px;
+}
+
+#emojiGrid img {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+#emotionList {
+  margin-bottom: 15px;
+}
+
+#pointBuyInvitecode {
+  padding: 0;
+}
+
+/* end settings */

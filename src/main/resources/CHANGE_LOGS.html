@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)">
+    <title>Sym Change Logs</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="icon" type="image/png" href="https://static.hacpai.com/images/favicon.png" />
+    <link rel="apple-touch-icon" href="https://static.hacpai.com/images/apple-touch-icon.png">
+    <style>
+        a {
+            color: #4285f4;
+        }
+
+        h2 {
+            margin: 20px 10px 0;
+            font-size: 20px;
+        }
+
+        ul {
+            margin-top: 0;
+        }
+
+        ul span {
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<h2>Release 3.6.0 - Nov 12, 2019</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/959">959</a> Markdown HTTP 渲染引擎切换为 Lute <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/969">969</a> Vditor 升级至 1.8.7，支持 devtool <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/974">974</a> 脱离 Servlet 规范 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/963">963</a> RSS 暴露“机要”内容 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/966">966</a> 限制上传文件大小失效问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/968">968</a> 移动端登录注册入口问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/970">970</a> User-Agent XSS 漏洞 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/971">971</a> 思绪修复 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/973">973</a> Code Span 快链解析问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.5.1 - Aug 19, 2019</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/927">927</a> 可设置帖子在列表中是否展示 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/935">935</a> 支持图表 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/923">923</a> 不把管理员排除在第三方统计外 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/941">941</a> 升级 Vditor <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/942">942</a> 改进标签校验规则 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/943">943</a> 没有相关帖子时用热议帖子填充 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/946">946</a> 标签图标使用绝对路径 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/949">949</a> 升级 vditor 至 1.5.12 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/954">954</a> Markdown 支持向 GFM 靠拢 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/934">934</a> 数据对象字段更新优化 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/936">936</a> 优化签到实现 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/937">937</a> 升级 MySQL 驱动 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/940">940</a> 删除历史表情兼容 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/939">939</a> 本地邮件渠道 SSL 配置问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/944">944</a> 艾特用户自动完成失效 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.5.0 - May 17, 2019</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/903">903</a> 发帖、更新帖是否通知关注者开关 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/906">906</a> 调整默认上传目录路径 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/907">907</a> “感谢加入”系统通知已读置位 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/908">908</a> vditor 升级到 1.3.3 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/910">910</a> 设置页面页脚太高 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/914">914</a> Markdown 支持 align 属性 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/912">912</a> Upgrade tar to version 4.4.2 or later <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/915">915</a> 细化启动日志 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/919">919</a> 重构查询 select 字段 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/900">900</a> Error page loop /error/404 问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/901">901</a> 帖子需要过滤大部分控制字符 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/904">904</a> 仅楼主可见回帖不发通知给帖子关注者 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/909">909</a> Docker 启动验证码报错 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/913">913</a> 自动获取图片上传创建目录问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/916">916</a> 签到判断竞态条件问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.4.8 - Mar 26, 2019</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/898">898</a> 支持内嵌 Jetty 容器启动 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/879">879</a> 停用账号需重置密码 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/883">883</a> 移除小薇 QQ 群推送 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/884">884</a> 移除 IPFS、图灵机器人等特性 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/888">888</a> 保留词改为违禁词 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/889">889</a> Vditor 升级到 0.3.0 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/890">890</a> 表情按照设置顺序进行排列 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/893">893</a> vditor 升级到 1.1.10，支持甘特图、流程图、时序图、任务列表、代码复制等 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/894">894</a> Docker 镜像改进 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/895">895</a> 用户名可包含横线 - <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/896">896</a> 改善头像质量 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/877">877</a> 黑客派相关硬编码改造 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/880">880</a> sym.props 配置统一 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/882">882</a> 简化本地邮件渠道实现 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/885">885</a> latke.props 调整 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/891">891</a> 修复 SendCloud 邮件发送问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/892">892</a> Markdown 渲染问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/897">897</a> 采纳仅楼主可见的回答泄露 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.4.7 - Feb 22, 2019</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/865">865</a> 迁移到新编辑器 Vditor <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/846">846</a> Markdown 支持 &lt;details&gt; 标签 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/849">849</a> 优化编辑历史对比 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/850">850</a> 推送百度搜索引擎判断 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/854">854</a> 移除极验签到 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/861">861</a> 更新小贴士 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/863">863</a> 增大回帖内容长度限制 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/864">864</a> 文件名脱敏 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/866">866</a> 文件上传性能优化 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/872">872</a> 更新帖子通知改进 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/873">873</a> 支持滑稽表情 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/847">847</a> 重构参与榜单开关常量值 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/852">852</a> ORM 层接口优化 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/853">853</a> 重构当前用户会话上下文 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/874">874</a> 改进初始化判断机制 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/857">857</a> 任意用户登录漏洞 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/858">858</a> 自动获取图片上传路径问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/859">859</a> 数据导出问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/860">860</a> 个性签名 XSS 漏洞 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/862">862</a> 删除数据溢出问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/867">867</a> 发文 tag 显示不全 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.4.6 - Jan 10, 2019</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/818">818</a> 侧边栏加入清风明月发布入口 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/820">820</a> 30 天未登录的用户不发关注发帖通知 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/821">821</a> 帖子和回帖加入感谢计数字段 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/824">824</a> 删除帖子时一并删除语音文件 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/825">825</a>  优化相关帖子算法 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/826">826</a> 优化清理未使用标签 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/827">827</a>  修复不正确参数导致的异常 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/829">829</a> 更新 Markdown 教程 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/830">830</a> 通知标题转义问题 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/835">835</a> 小黑屋重命名为机要 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/838">838</a> Forward 页加入确认按钮 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/839">839</a> 移除 marked <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/841">841</a> 优化 Markdown 渲染 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/842">842</a> 发布后 5 分钟内修改内容不产生历史版本 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/828">828</a> 重构请求取参 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/843">843</a> 重构模板渲染构造器 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/822">822</a> 缩略图获取问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/832">832</a> 更新帖子标题转义 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/833">833</a> 删除保留词问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.4.5 - Dec 7, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/808">808</a> 清风明月 UA 头处理 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/809">809</a> 清风明月每条独立链接 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/811">811</a> 发帖时标签改为非必填 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/812">812</a> 清理未使用标签改进 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/813">813</a> 回帖分页 SEO <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/815">815</a> 封禁回帖后不显示历史修订 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/816">816</a> 定时任务重构 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/817">817</a> 重构控制器层 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/814">814</a> 生成语音摘要导致连接泄露 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.4.4 - Nov 22, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/786">786</a> 管理功能操作日志 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/803">803</a> 支持 webm 视频播放 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/804">804</a> 更新帖子、回帖时艾特改进 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/807">807</a> 校验 forward 页面来源 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 3.4.3 - Nov 8, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/774">774</a> 自定义首页跳转 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/788">788</a> 根据 serverScheme 自动配置 ws 协议 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/791">791</a> 小薇语音预览更新 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/793">793</a> 优化首页最新帖子列表查询 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/794">794</a> 优化帖子列表查询 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/792">792</a> 使用统一线程池 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/787">787</a> IE 图片渲染问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.4.2 - Oct 24, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/782">782</a> 支持 Live Photo <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/756">756</a> 积分转账加入备注 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/773">773</a> 链接查询优化 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/778">778</a> 标签自动完成进行过滤 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/781">781</a> 从环境变量指定 sym.props 路径 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/783">783</a> 重写文件上传本地服务器 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/784">784</a> 不允许匿名浏览时的 SEO <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/785">785</a> 优化七牛云图片样式 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/772">772</a> 重构获取登录用户 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/777">777</a> 升级不安全的前端库 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/775">775</a> 帖子快链问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.4.1 - Sep 27, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/747">747</a> 初始化时管理员头像使用默认头像 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/748">748</a> 清风明月快链处理 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/749">749</a> 首页横向滚动条问题 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/759">759</a> 增强验证码 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/770">770</a> 通知相关 URL 规范化 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/771">771</a> 重写模板渲染机制 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/751">751</a> 删除 JDBC 连接池配置项 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/753">753</a> 升级 MySQL 驱动 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/767">767</a> 使用 HikariCP 作为数据库连接池 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/769">769</a> 重写会话管理 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/745">745</a> 侧栏近期热议泄露匿名帖作者 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/752">752</a> 管理删帖时遗漏关联删除 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/765">765</a> 编辑器乱码 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.4.0 - Sep 6, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/732">732</a> 标签侧栏广告位 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/733">733</a> 页脚可配置备案号 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/737">737</a> 可按邮箱域名配置邮件发送渠道 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/735">735</a> 可配置关闭跳转页展现 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/736">736</a> 验证码改进 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/738">738</a> 可配置 markdown 渲染超时时间 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/739">739</a> Algolia 索引调整 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/741">741</a> 更实时的在线状态标识 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/740">740</a> 清风明月更新漏洞 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.3.0 - Aug 29, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/686">686</a> 链接榜单 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/706">706</a> 支持停用账号 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/710">710</a> 更新用户名 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/715">715</a> 帖子可关闭回帖 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/718">718</a> 注册邮件后缀白名单 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/721">721</a> 聊天室加入时间 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/722">722</a> 版权相关修改 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/723">723</a> RSS 改为全文输出 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/724">724</a> 支持 MATLAB 语法高亮 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/731">731</a> 后台更新回帖不生成版本 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/705">705</a> 持久化帖子首图地址 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/707">707</a> 查看回帖的回复和原回复时泄漏仅楼主可见内容 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/708">708</a> 重置密码漏洞 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/719">719</a> 连续签到积分显示问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/728">728</a> 腾讯视频分享被过滤的问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/729">729</a> 用户主页 XSS 漏洞 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.2.0 - Aug 2, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/682">682</a> 回帖可选择仅楼主和自己可见 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/694">694</a> 帖子浏览数可配置为使用排重机制计数 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/677">677</a> 问答帖列表入口 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/679">679</a> 举报处理优化 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/688">688</a> 聊天室重构 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/690">690</a> 清风明月记录地理位置 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/693">693</a> 消息提示重构 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/696">696</a> 清风明月图片处理优化 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/699">699</a> 减少验证码字母 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/687">687</a> 链接访问排重机制 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/691">691</a> 取消关注 HTTP 请求方法调整 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/697">697</a> 重构系统机器人账号 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/701">701</a> 删除 B3 构思相关实现 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/703">703</a> 工具类重构 <span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/684">684</a> 修复视频播放器渲染问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/692">692</a> 带锚点的帖子快链生成问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.1.0 - Jul 12, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/174">174</a> RSS 订阅 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/537">537</a> 周邮件推送帖可后台设置 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/638">638</a> 举报系统 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/664">664</a> 删除通知 <span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/658">658</a> DomainCache 可能引发并发的问题 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/663">663</a> 删除角色 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/666">666</a> 后台管理界面优化 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/672">672</a> 问答帖悬赏积分必须大于 20 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/673">673</a> 数学公式渲染改进 <span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/642">642</a> 超过 30 天的帖子置顶无效 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/659">659</a> Input 标签注入问题 <span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 3.0.0 - Jun 13, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/486">486 新的帖子类型：问答帖</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/643">643 细分 401 及 403</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/644">644 去掉签到时间限制</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/646">646 个人设置位置移到隐私中</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/654">654 更新 IP 定位</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/655">655 更新邮箱</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/652">652 帖子快链时丢失查询参数</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.8.0 - May 25, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/507">507 清风明月</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/640">640 分页工具方法抽取重构</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/641">641 开源协议从 GPLv3 变更为 AGPLv3</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/627">627 删除回帖后最新回帖时间错误</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/632">632 打赏后回显图片不显示</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/636">636 带上下文路径时通知链接报错</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.7.0 - May 4, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/610">610 小薇支持回复</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/611">611 反对帖子、回帖不发通知</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/612">612 首页改版</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/621">621 发帖无法选择非导航领域的标签</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/626">626 小薇升级到图灵 API v2.0</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/618">618 sym.props 配置项说明文档</a>&nbsp;<span style='background: #006b75 !important;color:#FFFFFF !important;padding: 1px 4px;'>doc</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/609">609 重构用户主页链接生成</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/619">619 URL Redirect vulnerability</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/620">620 Any File Upload</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/622">622 非管理员访问 /admin 路径报错</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.6.0 - Apr 10, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/568">568 帖子列表显示方式</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/592">592 帖子锁定</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/596">596 领域可设置是否渲染导航</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/588">588 数据库使用 utf8mb4 字符集</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/591">591 默认使用中文初始化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/602">602 性能优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/607">607 用户可配置回帖后是否关注该帖</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/589">589 数据库表、字段注释</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/603">603 合并缓存定时任务</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/604">604 数据统计定时任务 404</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/606">606 限制登录用户后注册同名用户</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.5.0 - Mar 14, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/520">520 当关注的文章有更新时会收到通知</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/547">547 邀请链接改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/561">561 发帖可选性优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/564">564 删掉熔炉入口</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/565">565 禁止 LTX71 爬虫</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/566">566 标题太长，列表截断</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/569">569 改进头像生成</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/580">580 重置密码链接可以重复使用</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/196">196 站内快链 URL 被截断</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/575">575 发生每周精选为空的情况</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/583">583 删除帖子提示文案报错</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.4.0 - Feb 7, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/546">546 IPFS 帖子渲染</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/557">557 使用原生的 Emoji</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/525">525 性能优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/540">540 密码强度校验</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/543">543 Markdown 处理超时改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/549">549 用户管理可通过 id 搜索</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/555">555 【此刻】功能下架</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/558">558 分类 BUbiNG 爬虫</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/527">527 Setting Process 拆分</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/524">524 忘记密码提权漏洞</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/526">526 本地文件 GET 头 Content-Type 为空</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/545">545 打赏区存在表情报错</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.3.0 - Dec 13, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/499">499 流程图支持</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/505">505 帖子使用 IPFS 保存</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/501">501 回帖后自动关注</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/511">511 验证码优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/516">516 权限相关安全更新</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/503">503 XSS 漏洞</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/512">512 缓存哈希算法问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.2.0 - Nov 1, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/456">456 MD 添加 TODO</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/457">457 视频上传与播放</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/231">231 font icon 迁移到 svg</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/359">359 新人发首帖时间限制</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/463">463 替换内置 MD 处理引擎</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/469">469 小薇语音摘要改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/471">471 消息改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/476">476 Elasticsearch 搜索实现改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/477">477 同城改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/484">484 Chrome 消息提醒重复</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/490">490 MD 中文标题问题</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/497">497 改进内容历史渲染</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/487">487 mp3 异步渲染错误</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/494">494 用户名缓存刷新</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.1.0 - May 18, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/416">416 客户端 API</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/419">419 本地邮件发送</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/424">424 帖子语音预览</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/428">428 新活动 - 小游戏【五子棋】</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/450">450 删除自己发布的帖子</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/451">451 删除自己发布的回帖</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/452">452 更新自己的回帖</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/293">293 帖子编辑器显示关注的标签</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/373">373 未登录访问帖子权限改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/384">384 编辑器上增加表情弹出框链接</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/420">420 帖子/回帖赞同、反对发通知</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/429">429 帖子页大改版</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/442">442 删除未被使用的标签</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/447">447 编辑器内容和预览同步滚动</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 2.0.0 - Mar 7, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/388">388 关注帖子</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/392">392 帖子被设置为优选处理</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/383">383 内容编辑器改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/387">387 用户角色变更通知</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/393">393 帖子列表摘要改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/400">400 发帖时标题、标签本地存储防丢失</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/408">408 帖子收藏、关注发通知</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/411">411 PJAX 优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 1.9.0 - Jan 12, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/332">332 新手向导</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/371">371 小贴士</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/372">372 关注人通知</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/376">376 疯狂的想法 C：书籍共享计划</a>&nbsp;<span style='background: #fbca04 !important;color:#FFFFFF !important;padding: 1px 4px;'>crazy</span>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/382">382 提供缩略摘要</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/320">320 Markdown 教程页面</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/369">369 搜索结果为空页面优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 1.8.0 - Dec 26, 2016</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/280">280 顶部 Banner 展位</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/330">330 接入阿里云邮件推送服务</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/337">337 功能级权限</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/352">352 Emoji 图标改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/353">353 私信标题检测重复的问题</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 1.7.0 - Dec 7, 2016</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/290">290 全屏写作－分屏模式</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/301">301 同城中加入用户列表</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/313">313 国际化 - 多语言/时区</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/319">319 上一篇/下一篇</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/349">349 marked 引擎支持</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/306">306 Markdown 解析问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/339">339 邮件解析问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/286">286 改进移动端页面翻页</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/324">324 登录安全性增强</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/331">331 登录/注册页面改版</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/334">334 验证码改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/336">336 首页改版</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/338">338 个人主页发布/关注条目计数</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/343">343 客户端同步开关</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 1.6.0 - Oct 19, 2016</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/44">44 邮件推送热门帖子</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/205">205 可配置登录后才能浏览</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/228">228 回复和引用</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/239">239 添加新活动 - 小游戏【贪吃蛇】</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/265">265 快捷键支持</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/268">268 链接熔炉</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/288">288 系统通知</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/289">289 注册后系统自动发出引导通知</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/294">294 输出 sitemap </a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/300">300 帖子列表多种排序</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/254">254 编辑器中的 HTML 转义字符处理问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/249">249 常用表情设置优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/260">260 回帖编辑改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/269">269 SEO - 添加 Canonical </a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/287">287 后台管理用户相关字段补全</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/295">295 新版 PC 端 UI</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/299">299 Mark all unread notifications as read</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 1.5.0 - Aug 19, 2016</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/95">95 评论赞同/反对</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/229">229 帖子优选</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/235">235 积分购买邀请码</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/220">220 Cookie 加密</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/221">221 广告位管理</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/222">222 头像上传改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/223">223 个人后台设置拆分</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/224">224 个人主页建立二级导航</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/225">225 首页改版</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/227">227 图标统一配置</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/232">232 静态头像配置</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/242">242 更有趣的 404 页面</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 1.4.0 - Jul 29, 2016</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/125">125 评论浏览模式</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/139">139 手机端上传图片</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/140">140 管理员添加用户</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/141">141 支持上传文件到本地</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/143">143 站内搜索</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/144">144 积分兑换</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/147">147 HTTPS 支持</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/151">151 违规积分扣除</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/158">158 消费排行榜</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/161">161 帖子置顶</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/162">162 板块/栏目/分类 -> 领域</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/163">163 标签自动提取</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/165">165 每日活跃度奖励</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/166">166 @ 所有回帖者</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/176">176 保留词检查</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/177">177 聊天室 & 机器人</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/180">180 移动端皮肤分离</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/181">181 帖子编辑历史</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/182">182 生成帖子内容目录</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/183">183 数据统计图表化</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/187">187 后台手动导入帖子</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/193">193 QQ 群机器人</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/194">194 音频播放器</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/198">198 新活动 - 字</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/200">200 感谢文章</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/203">203 Sandbox 机制</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/206">206 数学公式支持</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/209">209 匿名发帖回帖</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/134">134 更新文章时类型丢失</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/135">135 标签检查问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/136">136 手机 QQ 签到问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/148">148 最新文章分页不正确</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/137">137 讨论组通知规则</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/138">138 忘记密码</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/145">145 编辑器加入工具条</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/146">146 当前在线数调整</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/152">152 Emoji 说明页本地化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/154">154 支持 Tomcat 不限定 Servlet 容器</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/155">155 管理后台易用性改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/156">156 标签描述支持 MD 和站内快链</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/159">159 标签封禁管理</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/160">160 SEO 改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/168">168 发布帖子时标题重复检测</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/169">169 删除帖子、评论</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/170">170 移动端浏览帖子体验改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/171">171 签到方式增强</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/175">175 文章、评论保存 UA</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/178">178 B3log 文章同步标识</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/179">179 支持 GFM 语法</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/185">185 支持上传非图片文件</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/186">186 halt 页面改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/189">189 附加功能个人配置</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/197">197 Tool tip</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/199">199 加入用户昵称</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/202">202 用户状态 - 禁止登录</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/211">211 自定义分页每页条目数</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/212">212 编辑器粘贴优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/213">213 帖子编辑标签录入优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 1.3.0 - Oct 15, 2015</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/42">42 修改邮箱地址、用户名</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/47">47 邀请</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/52">52 积分</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/73">73 加入管理员后台</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/74">74 定时刷新未读提醒数目</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/75">75 头像外链</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/77">77 关联标签</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/78">78 关注文章</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/79">79 支持 emoji</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/80">80 Hover 帖子标题时预览内容</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/81">81 讨论组</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/83">83 帖子评论实时推送</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/84">84 @ 时用户名自动完成</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/85">85 Emoji 表情自动完成</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/86">86 文章热度动态</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/88">88 图片上传</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/90">90 文章快捷链接</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/91">91 帖子打赏</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/92">92 黑客与画家</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/97">97 活动 - 每日签到</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/100">100 积分转账</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/102">102 活动 - 上证博彩</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/111">111 标签快捷链接</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/118">118 文章赞同/反对</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/120">120 时间线</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/122">122 离线语音支持</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/126">126 广播</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/130">130 思绪</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/132">132 私信</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/41">41 改进预览</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/94">94 打赏者积分列表消息异常</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/60">60 编辑器全屏显示</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/76">76 通知自动导航</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/89">89 加入本地存储</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/93">93 改进初始化数据库方式</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/96">96 注册邮件验证</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/106">106 登陆面板“账户”输入框求优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/108">108 使用百度搜索</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/112">112 独立首页</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 1.0.0 - Jan 18, 2015</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/69">69 [API] 根据标签获取文章</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/65">65 编辑器加载问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 0.2.5 - Mar 28, 2014</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/53">53 URL 转链接</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/54">54 关注与通知功能</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/58">58 加入站点访问统计代码</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/64">64 评论加入预览</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/22">22 回复字数提示与实际不符</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/57">57 @消息提醒模式匹配问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/33">33 社区同步丢失字体颜色信息</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/56">56 对 JS, CSS 文件进行压缩</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 0.2.1 - Aug 25, 2013</h2>
+<ul>
+    <li><a href="https://github.com/b3log/symphony/issues/26">26 社区文章可更新</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/45">45 用户广播特性</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/symphony/issues/43">43 注册时用户名校验提示文案</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+</body>
+</html>

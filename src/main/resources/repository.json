@@ -1,0 +1,1887 @@
+{
+  "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
+  "version": "4.41.0.3, Mar 23, 2019",
+  "authors": [
+    "Liang Ding",
+    "Zephyr",
+    "Bill Ho",
+    "qiankunpingtai"
+  ],
+  "since": "0.2.0",
+  "repositories": [
+    {
+      "name": "operation",
+      "description": "关键操作记录表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "operationUserId",
+          "type": "String",
+          "length": 19,
+          "description": "操作用户 id"
+        },
+        {
+          "name": "operationCode",
+          "type": "int",
+          "description": "具体操作码，具体参考 Operation 模型中的操作码常量定义"
+        },
+        {
+          "name": "operationDataId",
+          "type": "String",
+          "length": 255,
+          "description": "操作数据 id"
+        },
+        {
+          "name": "operationCreated",
+          "type": "long",
+          "description": "操作时间"
+        },
+        {
+          "name": "operationIP",
+          "type": "String",
+          "length": 128,
+          "description": "操作 IP"
+        },
+        {
+          "name": "operationUA",
+          "type": "String",
+          "length": 255,
+          "description": "User-Agent"
+        }
+      ]
+    },
+    {
+      "name": "visit",
+      "description": "浏览表 https://github.com/b3log/symphony/issues/687",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "visitURL",
+          "type": "String",
+          "length": 255,
+          "description": "浏览链接"
+        },
+        {
+          "name": "visitIP",
+          "type": "String",
+          "length": 128,
+          "description": "IP"
+        },
+        {
+          "name": "visitUA",
+          "type": "String",
+          "length": 255,
+          "description": "User-Agent"
+        },
+        {
+          "name": "visitCity",
+          "type": "String",
+          "length": 32,
+          "description": "城市"
+        },
+        {
+          "name": "visitDeviceId",
+          "type": "String",
+          "length": 255,
+          "description": "设备唯一标识"
+        },
+        {
+          "name": "visitUserId",
+          "type": "String",
+          "length": 19,
+          "description": "浏览者 id"
+        },
+        {
+          "name": "visitRefererURL",
+          "type": "String",
+          "length": 255,
+          "description": "上游链接"
+        },
+        {
+          "name": "visitCreated",
+          "type": "long",
+          "description": "统计时间"
+        },
+        {
+          "name": "visitExpired",
+          "type": "long",
+          "description": "统计过期时间"
+        }
+      ]
+    },
+    {
+      "name": "report",
+      "description": "举报表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "reportUserId",
+          "type": "String",
+          "length": 19,
+          "description": "举报人 id"
+        },
+        {
+          "name": "reportDataId",
+          "type": "String",
+          "length": 19,
+          "description": "举报数据 id"
+        },
+        {
+          "name": "reportDataType",
+          "type": "int",
+          "description": "0：帖子，1：回帖，2：用户"
+        },
+        {
+          "name": "reportType",
+          "type": "int",
+          "description": "0：（内容）垃圾广告，1：（内容）色情低俗，2：（内容）违法违规，3：（内容）涉嫌侵权，4：（内容）人身攻击，5：（用户）冒充账号，6：（用户）垃圾广告账号，7：（用户）个人信息违规，49：其他"
+        },
+        {
+          "name": "reportMemo",
+          "type": "String",
+          "length": 10240,
+          "description": "举报情况备注"
+        },
+        {
+          "name": "reportHandled",
+          "type": "int",
+          "description": "0：未处理，1：已处理"
+        }
+      ]
+    },
+    {
+      "name": "breezemoon",
+      "description": "清风明月表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "breezemoonContent",
+          "type": "String",
+          "length": 102400,
+          "description": "清风明月正文"
+        },
+        {
+          "name": "breezemoonAuthorId",
+          "type": "String",
+          "length": 19,
+          "description": "作者 id"
+        },
+        {
+          "name": "breezemoonCreated",
+          "type": "long",
+          "description": "创建时间"
+        },
+        {
+          "name": "breezemoonUpdated",
+          "type": "long",
+          "description": "更新时间"
+        },
+        {
+          "name": "breezemoonIP",
+          "type": "String",
+          "length": 128,
+          "description": "IP"
+        },
+        {
+          "name": "breezemoonUA",
+          "type": "String",
+          "length": 255,
+          "description": "User-Agent"
+        },
+        {
+          "name": "breezemoonStatus",
+          "type": "int",
+          "description": "0：正常，1：封禁"
+        },
+        {
+          "name": "breezemoonCity",
+          "type": "String",
+          "length": 32,
+          "description": "发布时所在城市"
+        }
+      ]
+    },
+    {
+      "name": "permission",
+      "description": "权限表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 32,
+          "description": "主键"
+        },
+        {
+          "name": "permissionCategory",
+          "type": "int",
+          "description": "权限分类"
+        }
+      ]
+    },
+    {
+      "name": "role",
+      "description": "角色表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 32,
+          "description": "主键"
+        },
+        {
+          "name": "roleName",
+          "type": "String",
+          "length": 32,
+          "description": "角色名称"
+        },
+        {
+          "name": "roleDescription",
+          "type": "String",
+          "length": 2048,
+          "description": "角色描述"
+        }
+      ]
+    },
+    {
+      "name": "role_permission",
+      "description": "角色 - 权限关联表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "roleId",
+          "type": "String",
+          "length": 32,
+          "description": "角色 id"
+        },
+        {
+          "name": "permissionId",
+          "type": "String",
+          "length": 32,
+          "description": "权限 id"
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "description": "链接表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "linkAddrHash",
+          "type": "String",
+          "length": 64,
+          "description": "链接地址 Hash https://github.com/b3log/symphony/issues/773"
+        },
+        {
+          "name": "linkAddr",
+          "type": "String",
+          "length": 512,
+          "description": "链接地址"
+        },
+        {
+          "name": "linkTitle",
+          "type": "String",
+          "length": 512,
+          "description": "链接标题"
+        },
+        {
+          "name": "linkSubmitCnt",
+          "type": "int",
+          "description": "提交计数"
+        },
+        {
+          "name": "linkClickCnt",
+          "type": "int",
+          "description": "点击计数"
+        },
+        {
+          "name": "linkGoodCnt",
+          "type": "int",
+          "description": "点赞计数"
+        },
+        {
+          "name": "linkBadCnt",
+          "type": "int",
+          "description": "点踩计数"
+        },
+        {
+          "name": "linkBaiduRefCnt",
+          "type": "int",
+          "description": "百度引用计数"
+        },
+        {
+          "name": "linkScore",
+          "type": "double",
+          "description": "评分"
+        },
+        {
+          "name": "linkPingCnt",
+          "type": "int",
+          "description": "Ping 计数"
+        },
+        {
+          "name": "linkPingErrCnt",
+          "type": "int",
+          "description": "Ping 失败计数"
+        },
+        {
+          "name": "linkPingTime",
+          "type": "long",
+          "description": "Ping 时间"
+        },
+        {
+          "name": "linkCardHTML",
+          "type": "String",
+          "length": 10240,
+          "description": "链接卡片 HTML"
+        }
+      ]
+    },
+    {
+      "name": "invitecode",
+      "description": "邀请码表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "length": 16,
+          "description": "邀请码"
+        },
+        {
+          "name": "generatorId",
+          "type": "String",
+          "length": 19,
+          "description": "生成者 id"
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "length": 19,
+          "description": "使用者 id"
+        },
+        {
+          "name": "useTime",
+          "type": "long",
+          "description": "使用时间"
+        },
+        {
+          "name": "status",
+          "type": "int",
+          "description": "0：已使用，1：未使用，2：停用"
+        },
+        {
+          "name": "memo",
+          "type": "String",
+          "length": 512,
+          "description": "备注"
+        }
+      ]
+    },
+    {
+      "name": "character",
+      "description": "字表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "characterUserId",
+          "type": "String",
+          "length": 19,
+          "description": "用户 id"
+        },
+        {
+          "name": "characterImg",
+          "type": "String",
+          "length": 1048576,
+          "description": "图片 BASE64 编码"
+        },
+        {
+          "name": "characterContent",
+          "type": "String",
+          "length": 16,
+          "description": "字"
+        }
+      ]
+    },
+    {
+      "name": "referral",
+      "description": "推介记录表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "referralUser",
+          "type": "String",
+          "length": 19,
+          "description": "推介用户名"
+        },
+        {
+          "name": "referralDataId",
+          "type": "String",
+          "length": 19,
+          "description": "数据实体 id"
+        },
+        {
+          "name": "referralType",
+          "type": "int",
+          "description": "0：帖子"
+        },
+        {
+          "name": "referralIP",
+          "type": "String",
+          "length": 128,
+          "description": "点击 IP"
+        },
+        {
+          "name": "referralClick",
+          "type": "int",
+          "description": "推介点击计数"
+        },
+        {
+          "name": "referralUserHasPoint",
+          "type": "boolean"
+        },
+        {
+          "name": "referralAuthorHasPoint",
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "name": "revision",
+      "description": "修订变更表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "revisionDataType",
+          "type": "int",
+          "description": "0：帖子，1：回帖"
+        },
+        {
+          "name": "revisionDataId",
+          "type": "String",
+          "length": 19,
+          "description": "数据实体 id"
+        },
+        {
+          "name": "revisionData",
+          "type": "String",
+          "length": 1048576,
+          "description": "修订数据"
+        },
+        {
+          "name": "revisionAuthorId",
+          "type": "String",
+          "length": 19,
+          "description": "作者 id"
+        }
+      ]
+    },
+    {
+      "name": "liveness",
+      "description": "活跃度表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "livenessUserId",
+          "type": "String",
+          "length": 19,
+          "description": "用户 id"
+        },
+        {
+          "name": "livenessDate",
+          "type": "String",
+          "length": 8,
+          "description": "活跃度记录日期"
+        },
+        {
+          "name": "livenessPoint",
+          "type": "int",
+          "description": "积分计数"
+        },
+        {
+          "name": "livenessArticle",
+          "type": "int",
+          "description": "发帖计数"
+        },
+        {
+          "name": "livenessComment",
+          "type": "int",
+          "description": "回帖计数"
+        },
+        {
+          "name": "livenessActivity",
+          "type": "int",
+          "description": "活动计数"
+        },
+        {
+          "name": "livenessThank",
+          "type": "int",
+          "description": "感谢计数"
+        },
+        {
+          "name": "livenessVote",
+          "type": "int",
+          "description": "投票计数"
+        },
+        {
+          "name": "livenessReward",
+          "type": "int",
+          "description": "打赏计数"
+        },
+        {
+          "name": "livenessPV",
+          "type": "int",
+          "description": "PV 计数"
+        },
+        {
+          "name": "livenessAcceptAnswer",
+          "type": "int",
+          "description": "采纳回答计数"
+        }
+      ]
+    },
+    {
+      "name": "domain",
+      "description": "领域表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "domainTitle",
+          "type": "String",
+          "length": 50,
+          "description": "领域标题"
+        },
+        {
+          "name": "domainURI",
+          "type": "String",
+          "length": 32,
+          "description": "领域访问路径"
+        },
+        {
+          "name": "domainDescription",
+          "type": "String",
+          "length": 512,
+          "description": "领域描述"
+        },
+        {
+          "name": "domainType",
+          "type": "String",
+          "length": 16,
+          "description": "领域类型"
+        },
+        {
+          "name": "domainSort",
+          "type": "int",
+          "description": "领域排序"
+        },
+        {
+          "name": "domainNav",
+          "type": "int",
+          "description": "0：作为导航，1：不作为导航"
+        },
+        {
+          "name": "domainTagCnt",
+          "type": "int",
+          "description": "领域标签计数"
+        },
+        {
+          "name": "domainIconPath",
+          "type": "String",
+          "length": 1024,
+          "description": "领域图片路径"
+        },
+        {
+          "name": "domainCSS",
+          "type": "String",
+          "length": 1048576,
+          "description": "领域 CSS"
+        },
+        {
+          "name": "domainStatus",
+          "type": "int",
+          "description": "0：正常，1：封禁"
+        },
+        {
+          "name": "domainSeoTitle",
+          "type": "String",
+          "length": 128,
+          "description": "领域 SEO 标题"
+        },
+        {
+          "name": "domainSeoKeywords",
+          "type": "String",
+          "length": 128,
+          "description": "领域 SEO 关键字"
+        },
+        {
+          "name": "domainSeoDesc",
+          "type": "String",
+          "length": 512,
+          "description": "领域 SEO 描述"
+        }
+      ]
+    },
+    {
+      "name": "domain_tag",
+      "description": "领域 - 标签关联表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "domain_oId",
+          "type": "String",
+          "length": 19,
+          "description": "领域 id"
+        },
+        {
+          "name": "tag_oId",
+          "type": "String",
+          "length": 19,
+          "description": "标签 id"
+        }
+      ]
+    },
+    {
+      "name": "vote",
+      "description": "投票表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "length": 19,
+          "description": "投票者 id"
+        },
+        {
+          "name": "type",
+          "type": "int",
+          "description": "0：赞成，1：反对"
+        },
+        {
+          "name": "dataType",
+          "type": "int",
+          "description": "0：帖子，1：回帖，2：用户，3：标签"
+        },
+        {
+          "name": "dataId",
+          "type": "String",
+          "length": 19,
+          "description": "数据实体 id"
+        }
+      ]
+    },
+    {
+      "name": "verifycode",
+      "description": "验证码表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "length": 19,
+          "description": "接收用户 id"
+        },
+        {
+          "name": "type",
+          "type": "int",
+          "description": "0：邮件"
+        },
+        {
+          "name": "bizType",
+          "type": "int",
+          "description": "0：注册，1：重置密码"
+        },
+        {
+          "name": "receiver",
+          "type": "String",
+          "length": 64,
+          "description": "接收者"
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "length": 64,
+          "description": "验证码"
+        },
+        {
+          "name": "status",
+          "type": "int",
+          "description": "0：未发送，1：已发送"
+        },
+        {
+          "name": "expired",
+          "type": "long",
+          "description": "过期时间"
+        }
+      ]
+    },
+    {
+      "name": "reward",
+      "description": "打赏表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "senderId",
+          "type": "String",
+          "length": 19,
+          "description": "打赏人 id"
+        },
+        {
+          "name": "dataId",
+          "type": "String",
+          "length": 19,
+          "description": "数据实体 id"
+        },
+        {
+          "name": "type",
+          "type": "int",
+          "description": "0：帖子，1：回帖，2：用户"
+        }
+      ]
+    },
+    {
+      "name": "pointtransfer",
+      "description": "积分转账表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "fromId",
+          "type": "String",
+          "length": 19,
+          "description": "源账户 id"
+        },
+        {
+          "name": "toId",
+          "type": "String",
+          "length": 19,
+          "description": "目标账户 id"
+        },
+        {
+          "name": "sum",
+          "type": "int",
+          "description": "转账金额"
+        },
+        {
+          "name": "fromBalance",
+          "type": "int",
+          "description": "源账户余额"
+        },
+        {
+          "name": "toBalance",
+          "type": "int",
+          "description": "目标账户余额"
+        },
+        {
+          "name": "time",
+          "type": "long",
+          "description": "转账时间"
+        },
+        {
+          "name": "type",
+          "type": "int",
+          "description": "转账类型"
+        },
+        {
+          "name": "dataId",
+          "type": "String",
+          "length": 19,
+          "description": "数据实体 id"
+        },
+        {
+          "name": "memo",
+          "type": "String",
+          "length": 255,
+          "description": "备注"
+        }
+      ]
+    },
+    {
+      "name": "notification",
+      "description": "通知表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "length": 19,
+          "description": "用户 id"
+        },
+        {
+          "name": "dataId",
+          "type": "String",
+          "length": 64,
+          "description": "数据实体 id"
+        },
+        {
+          "name": "dataType",
+          "type": "int",
+          "description": "数据类型"
+        },
+        {
+          "name": "hasRead",
+          "type": "boolean",
+          "description": "是否已读"
+        }
+      ]
+    },
+    {
+      "name": "follow",
+      "description": "关注表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "followerId",
+          "type": "String",
+          "length": 19,
+          "description": "关注者 id"
+        },
+        {
+          "name": "followingId",
+          "type": "String",
+          "length": 19,
+          "description": "关注实体 id"
+        },
+        {
+          "name": "followingType",
+          "type": "int",
+          "description": "0：用户，1：标签，2：帖子收藏，3：帖子关注"
+        }
+      ]
+    },
+    {
+      "name": "comment",
+      "description": "回帖表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "commentContent",
+          "type": "String",
+          "length": 102400,
+          "description": "回帖正文内容"
+        },
+        {
+          "name": "commentCreateTime",
+          "type": "long",
+          "description": "回帖创建时间"
+        },
+        {
+          "name": "commentAuthorId",
+          "type": "String",
+          "length": 19,
+          "description": "回帖作者 id"
+        },
+        {
+          "name": "commentOnArticleId",
+          "type": "String",
+          "length": 19,
+          "description": "回帖的帖子 id"
+        },
+        {
+          "name": "commentSharpURL",
+          "type": "String",
+          "length": 255,
+          "description": "回帖带锚点 URL"
+        },
+        {
+          "name": "commentOriginalCommentId",
+          "type": "String",
+          "length": 19,
+          "description": "回复针对回帖 id，即 父回帖 id"
+        },
+        {
+          "name": "commentStatus",
+          "type": "int",
+          "description": "0：正常，1：封禁"
+        },
+        {
+          "name": "commentIP",
+          "type": "String",
+          "length": 128,
+          "description": "回帖 IP"
+        },
+        {
+          "name": "commentUA",
+          "type": "String",
+          "length": 255,
+          "description": "User-Agent"
+        },
+        {
+          "name": "commentAnonymous",
+          "type": "int",
+          "description": "0：公开回帖，1：匿名回帖"
+        },
+        {
+          "name": "commentThankCnt",
+          "type": "int",
+          "description": "回帖感谢计数"
+        },
+        {
+          "name": "commentGoodCnt",
+          "type": "int",
+          "description": "回帖点赞计数"
+        },
+        {
+          "name": "commentBadCnt",
+          "type": "int",
+          "description": "回帖点踩计数"
+        },
+        {
+          "name": "commentScore",
+          "type": "double",
+          "description": "回帖 Reddit 算法评分"
+        },
+        {
+          "name": "commentReplyCnt",
+          "type": "int",
+          "description": "回复计数"
+        },
+        {
+          "name": "commentAudioURL",
+          "type": "String",
+          "length": 255,
+          "description": "回帖语音文件 URL"
+        },
+        {
+          "name": "commentQnAOffered",
+          "type": "int",
+          "description": "0：回帖未被采纳，1：回帖已被采纳（仅作用于问答帖）"
+        },
+        {
+          "name": "commentVisible",
+          "type": "int",
+          "description": "0：所有人可见，1：仅楼主和自己可见"
+        }
+      ]
+    },
+    {
+      "name": "tag",
+      "description": "标签表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "tagReferenceCount",
+          "type": "int",
+          "description": "标签引用（帖子/用户自评等）计数"
+        },
+        {
+          "name": "tagCommentCount",
+          "type": "int",
+          "description": "标签回帖计数"
+        },
+        {
+          "name": "tagFollowerCount",
+          "type": "int",
+          "description": "标签关注者计数"
+        },
+        {
+          "name": "tagLinkCount",
+          "type": "int",
+          "description": "标签链接引用计数"
+        },
+        {
+          "name": "tagTitle",
+          "type": "String",
+          "length": 50,
+          "description": "标签标题"
+        },
+        {
+          "name": "tagURI",
+          "type": "String",
+          "length": 255,
+          "description": "标签访问路径"
+        },
+        {
+          "name": "tagDescription",
+          "type": "String",
+          "length": 512,
+          "description": "标签描述"
+        },
+        {
+          "name": "tagIconPath",
+          "type": "String",
+          "length": 128,
+          "description": "标签图标路径"
+        },
+        {
+          "name": "tagCSS",
+          "type": "String",
+          "length": 1048576,
+          "description": "标签 CSS"
+        },
+        {
+          "name": "tagStatus",
+          "type": "int",
+          "description": "0：正常，1：封禁"
+        },
+        {
+          "name": "tagGoodCnt",
+          "type": "int",
+          "description": "标签点赞计数"
+        },
+        {
+          "name": "tagBadCnt",
+          "type": "int",
+          "description": "标签点踩计数"
+        },
+        {
+          "name": "tagSeoTitle",
+          "type": "String",
+          "length": 128,
+          "description": "标签 SEO 标题"
+        },
+        {
+          "name": "tagSeoKeywords",
+          "type": "String",
+          "length": 128,
+          "description": "标签 SEO 关键字"
+        },
+        {
+          "name": "tagSeoDesc",
+          "type": "String",
+          "length": 512,
+          "description": "标签 SEO 描述"
+        },
+        {
+          "name": "tagRandomDouble",
+          "type": "double",
+          "description": "标签随机数，用于快速选择随机标签"
+        },
+        {
+          "name": "tagAd",
+          "type": "String",
+          "length": 1024,
+          "description": "标签广告"
+        },
+        {
+          "name": "tagShowSideAd",
+          "type": "int",
+          "description": "是否显示全站侧边栏广告"
+        }
+      ]
+    },
+    {
+      "name": "tag_tag",
+      "description": "标签 - 标签关联表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "tag1_oId",
+          "type": "String",
+          "length": 19,
+          "description": "标签1 id"
+        },
+        {
+          "name": "tag2_oId",
+          "type": "String",
+          "length": 19,
+          "description": "标签2 id"
+        },
+        {
+          "name": "weight",
+          "type": "int",
+          "description": "关联权重"
+        }
+      ]
+    },
+    {
+      "name": "option",
+      "description": "参数配置表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 64,
+          "description": "主键"
+        },
+        {
+          "name": "optionValue",
+          "type": "String",
+          "length": 512,
+          "description": "参数配置值"
+        },
+        {
+          "name": "optionCategory",
+          "type": "String",
+          "legnth": 20,
+          "description": "参数配置分类"
+        }
+      ]
+    },
+    {
+      "name": "tag_article",
+      "description": "标签 - 帖子关联表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "article_oId",
+          "type": "String",
+          "length": 19,
+          "description": "帖子 id"
+        },
+        {
+          "name": "tag_oId",
+          "type": "String",
+          "length": 19,
+          "description": "标签 id"
+        },
+        {
+          "name": "articleCommentCount",
+          "type": "int",
+          "description": "帖子回帖计数"
+        },
+        {
+          "name": "articleLatestCmtTime",
+          "type": "long",
+          "description": "帖子最近一次回帖时间"
+        },
+        {
+          "name": "redditScore",
+          "type": "double",
+          "description": "帖子 Reddit 算法评分"
+        },
+        {
+          "name": "articlePerfect",
+          "type": "int",
+          "description": "0：帖子不是优选，1：帖子是优选"
+        }
+      ]
+    },
+    {
+      "name": "user_tag",
+      "description": "用户 - 标签关联表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "user_oId",
+          "type": "String",
+          "length": 19,
+          "description": "用户 id"
+        },
+        {
+          "name": "tag_oId",
+          "type": "String",
+          "length": 19,
+          "description": "标签 id"
+        },
+        {
+          "name": "type",
+          "type": "int",
+          "description": "0：创建者，1：帖子使用，2：用户自评标签"
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "description": "用户表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "userNo",
+          "type": "int",
+          "description": "用户编号"
+        },
+        {
+          "name": "userEmail",
+          "type": "String",
+          "length": 255,
+          "description": "用户邮箱"
+        },
+        {
+          "name": "userName",
+          "type": "String",
+          "length": 64,
+          "description": "用户名"
+        },
+        {
+          "name": "userPassword",
+          "type": "String",
+          "length": 32,
+          "description": "密码（MD5）"
+        },
+        {
+          "name": "userNickname",
+          "type": "String",
+          "length": 20,
+          "description": "昵称"
+        },
+        {
+          "name": "userTags",
+          "type": "String",
+          "length": 128,
+          "description": "用户自评标签"
+        },
+        {
+          "name": "userURL",
+          "type": "String",
+          "length": 100,
+          "description": "用户链接"
+        },
+        {
+          "name": "userQQ",
+          "type": "String",
+          "length": 12,
+          "description": "用户 QQ"
+        },
+        {
+          "name": "userIntro",
+          "type": "String",
+          "length": 255,
+          "description": "用户简介"
+        },
+        {
+          "name": "userAvatarType",
+          "type": "int",
+          "description": "0：Gravatar，1：外链"
+        },
+        {
+          "name": "userAvatarURL",
+          "type": "String",
+          "length": 255,
+          "description": "头像图片 URL"
+        },
+        {
+          "name": "userOnlineFlag",
+          "type": "boolean",
+          "description": "用户是否在线"
+        },
+        {
+          "name": "userRole",
+          "type": "String",
+          "length": 20,
+          "description": "用户角色"
+        },
+        {
+          "name": "userArticleCount",
+          "type": "int",
+          "description": "发帖计数"
+        },
+        {
+          "name": "userCommentCount",
+          "type": "int",
+          "description": "回帖计数"
+        },
+        {
+          "name": "userTagCount",
+          "type": "int",
+          "description": "用户标签计数"
+        },
+        {
+          "name": "userStatus",
+          "type": "int",
+          "description": "0：正常，1：封禁"
+        },
+        {
+          "name": "userPoint",
+          "type": "int",
+          "description": "积分余额"
+        },
+        {
+          "name": "userUsedPoint",
+          "type": "int",
+          "description": "累计消费积分"
+        },
+        {
+          "name": "userJoinPointRank",
+          "type": "int",
+          "description": "0：参与积分余额排行榜，1：不参与积分余额排行榜"
+        },
+        {
+          "name": "userJoinUsedPointRank",
+          "type": "int",
+          "description": "0：参与积分消费排行榜，1：不参与积分消费排行榜"
+        },
+        {
+          "name": "userLatestArticleTime",
+          "type": "long",
+          "description": "最近一次发帖时间"
+        },
+        {
+          "name": "userLatestCmtTime",
+          "type": "long",
+          "description": "最近一次回帖时间"
+        },
+        {
+          "name": "userLatestLoginTime",
+          "type": "long",
+          "description": "最近一次登录时间"
+        },
+        {
+          "name": "userLatestLoginIP",
+          "type": "String",
+          "length": 128,
+          "description": "最近一次登录 IP"
+        },
+        {
+          "name": "userAppRole",
+          "type": "int",
+          "description": "0：应用角色 - 黑客，1：应用角色 - 画家"
+        },
+        {
+          "name": "userCheckinTime",
+          "type": "long",
+          "description": "最近一次签到时间"
+        },
+        {
+          "name": "userLongestCheckinStreakStart",
+          "type": "int",
+          "description": "最长连续签到开始日期"
+        },
+        {
+          "name": "userLongestCheckinStreakEnd",
+          "type": "int",
+          "description": "最长连续签到结束日期"
+        },
+        {
+          "name": "userCurrentCheckinStreakStart",
+          "type": "int",
+          "description": "当前连续签到开始日期"
+        },
+        {
+          "name": "userCurrentCheckinStreakEnd",
+          "type": "int",
+          "description": "当前连续签到结束日期"
+        },
+        {
+          "name": "userLongestCheckinStreak",
+          "type": "int",
+          "description": "最长连续签到天数"
+        },
+        {
+          "name": "userCurrentCheckinStreak",
+          "type": "int",
+          "description": "当前连续签到天数"
+        },
+        {
+          "name": "userSkin",
+          "type": "String",
+          "length": 32,
+          "description": "用户皮肤"
+        },
+        {
+          "name": "userMobileSkin",
+          "type": "String",
+          "length": 32,
+          "description": "用户移动端皮肤"
+        },
+        {
+          "name": "userCountry",
+          "type": "String",
+          "length": 32,
+          "description": "用户所在国家"
+        },
+        {
+          "name": "userProvince",
+          "type": "String",
+          "length": 32,
+          "description": "用户所在省份"
+        },
+        {
+          "name": "userCity",
+          "type": "String",
+          "length": 32,
+          "description": "用户所在城市"
+        },
+        {
+          "name": "userUpdateTime",
+          "type": "long",
+          "description": "用户更新时间"
+        },
+        {
+          "name": "userGeoStatus",
+          "type": "int",
+          "description": "0：公开地理位置，1：不公开地理位置"
+        },
+        {
+          "name": "userCommentViewMode",
+          "type": "int",
+          "description": "0：传统回帖浏览模式（按时间升序），1：实时回帖浏览模式（按时间降序）"
+        },
+        {
+          "name": "userUAStatus",
+          "type": "int",
+          "description": "0：公开 User-Agent，1：不公开 User-Agent"
+        },
+        {
+          "name": "userNotifyStatus",
+          "type": "int",
+          "description": "0：启用 Web 通知，1：禁用 Web 通知"
+        },
+        {
+          "name": "userPointStatus",
+          "type": "int",
+          "description": "0：公开积分列表，1：不公开积分列表"
+        },
+        {
+          "name": "userBreezemoonStatus",
+          "type": "int",
+          "description": "0：公开清风明月列表，1：不公开清风明月列表"
+        },
+        {
+          "name": "userFollowerStatus",
+          "type": "int",
+          "description": "0：公开关注者列表，1：不公开关注者列表"
+        },
+        {
+          "name": "userFollowingArticleStatus",
+          "type": "int",
+          "description": "0：公开收藏帖子列表，1：不公开收藏帖子列表"
+        },
+        {
+          "name": "userWatchingArticleStatus",
+          "type": "int",
+          "description": "0：公开关注帖子列表，1：不公开关注帖子列表"
+        },
+        {
+          "name": "userFollowingTagStatus",
+          "type": "int",
+          "description": "0：公开关注标签列表，1：不公开关注标签列表"
+        },
+        {
+          "name": "userFollowingUserStatus",
+          "type": "int",
+          "description": "0：公开关注用户列表，1：不公开关注用户列表"
+        },
+        {
+          "name": "userCommentStatus",
+          "type": "int",
+          "description": "0：公开回帖列表，1：不公开回帖列表"
+        },
+        {
+          "name": "userArticleStatus",
+          "type": "int",
+          "description": "0：公开帖子列表，1：不公开帖子列表"
+        },
+        {
+          "name": "userOnlineStatus",
+          "type": "int",
+          "description": "0：公开在线状态，1：不公开在线状态"
+        },
+        {
+          "name": "userListPageSize",
+          "type": "int",
+          "description": "帖子列表每页显示条数"
+        },
+        {
+          "name": "userListViewMode",
+          "type": "int",
+          "description": "0：仅标题，1：标题+摘要"
+        },
+        {
+          "name": "userAvatarViewMode",
+          "type": "int",
+          "description": "0：原始头像图片，比如 gif 动图，1：静态头像图片"
+        },
+        {
+          "name": "userSubMailStatus",
+          "type": "int",
+          "description": "0：启用邮件订阅，1：禁用邮件订阅"
+        },
+        {
+          "name": "userSubMailSendTime",
+          "type": "long",
+          "description": "用户订阅邮件最近推送时间"
+        },
+        {
+          "name": "userKeyboardShortcutsStatus",
+          "type": "int",
+          "description": "0：启用键盘快捷键，1：禁用键盘快捷键"
+        },
+        {
+          "name": "userReplyWatchArticleStatus",
+          "type": "int",
+          "description": "0：回帖后自动关注帖子，1：回帖后不自动关注帖子"
+        },
+        {
+          "name": "userLanguage",
+          "type": "String",
+          "length": 64,
+          "description": "用户所选语言"
+        },
+        {
+          "name": "userTimezone",
+          "type": "String",
+          "length": 64,
+          "description": "用户所在时区"
+        },
+        {
+          "name": "userGuideStep",
+          "type": "int",
+          "description": "新注册后向导到达第几步"
+        },
+        {
+          "name": "userForwardPageStatus",
+          "type": "int",
+          "description": "0：使用重定向页面，1：禁用重定向页面"
+        },
+        {
+          "name": "userIndexRedirectURL",
+          "type": "String",
+          "length": 255,
+          "description": "自定义首页跳转 https://github.com/b3log/symphony/issues/774"
+        }
+      ]
+    },
+    {
+      "name": "article",
+      "description": "帖子表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "articleTitle",
+          "type": "String",
+          "length": 255,
+          "description": "帖子标题"
+        },
+        {
+          "name": "articleTags",
+          "type": "String",
+          "length": 255,
+          "description": "帖子表情，英文状态逗号分隔"
+        },
+        {
+          "name": "articleAuthorId",
+          "type": "String",
+          "length": 19,
+          "description": "帖子作者 id"
+        },
+        {
+          "name": "articleCommentCount",
+          "type": "int",
+          "description": "帖子回帖计数"
+        },
+        {
+          "name": "articleViewCount",
+          "type": "int",
+          "description": "帖子浏览计数"
+        },
+        {
+          "name": "articleContent",
+          "type": "String",
+          "length": 102400,
+          "description": "帖子正文内容"
+        },
+        {
+          "name": "articleRewardContent",
+          "type": "String",
+          "length": 102400,
+          "description": "帖子打赏区内容"
+        },
+        {
+          "name": "articleRewardPoint",
+          "type": "int",
+          "description": "帖子打赏积分"
+        },
+        {
+          "name": "articlePermalink",
+          "type": "String",
+          "length": 255,
+          "description": "帖子访问路径"
+        },
+        {
+          "name": "articleCreateTime",
+          "type": "long",
+          "description": "帖子创建时间"
+        },
+        {
+          "name": "articleUpdateTime",
+          "type": "long",
+          "description": "帖子更新时间"
+        },
+        {
+          "name": "articleLatestCmtTime",
+          "type": "long",
+          "description": "帖子最新回帖时间"
+        },
+        {
+          "name": "articleLatestCmterName",
+          "type": "String",
+          "length": 20,
+          "description": "帖子最新回帖者用户名"
+        },
+        {
+          "name": "articleRandomDouble",
+          "type": "double",
+          "description": "帖子随机数，用于快速选择随机帖子"
+        },
+        {
+          "name": "articleCommentable",
+          "type": "boolean",
+          "description": "帖子是否可回帖"
+        },
+        {
+          "name": "articleEditorType",
+          "type": "int",
+          "description": "0：CodeMirror-Markdown"
+        },
+        {
+          "name": "articleStatus",
+          "type": "int",
+          "description": "0：正常，1：封禁，2：锁定"
+        },
+        {
+          "name": "articleType",
+          "type": "int",
+          "description": "0：普通帖子，1：机要，2：同城广播，3：思绪"
+        },
+        {
+          "name": "articleThankCnt",
+          "type": "int",
+          "description": "帖子感谢计数"
+        },
+        {
+          "name": "articleGoodCnt",
+          "type": "int",
+          "description": "帖子点赞计数"
+        },
+        {
+          "name": "articleBadCnt",
+          "type": "int",
+          "description": "帖子点踩计数"
+        },
+        {
+          "name": "articleCollectCnt",
+          "type": "int",
+          "description": "帖子收藏计数"
+        },
+        {
+          "name": "articleWatchCnt",
+          "type": "int",
+          "description": "帖子关注计数"
+        },
+        {
+          "name": "redditScore",
+          "type": "double",
+          "description": "帖子 Reddit 算法评分"
+        },
+        {
+          "name": "articleCity",
+          "type": "String",
+          "length": 32,
+          "description": "发帖 IP 所在城市"
+        },
+        {
+          "name": "articleIP",
+          "type": "String",
+          "length": 128,
+          "description": "发帖 IP"
+        },
+        {
+          "name": "articleUA",
+          "type": "String",
+          "length": 255,
+          "description": "User-Agent"
+        },
+        {
+          "name": "articleStick",
+          "type": "long",
+          "description": "帖子置顶时间"
+        },
+        {
+          "name": "articleAnonymous",
+          "type": "int",
+          "description": "0：公开，1：匿名"
+        },
+        {
+          "name": "articlePerfect",
+          "type": "int",
+          "description": "0：非优选，1：优选"
+        },
+        {
+          "name": "articleAnonymousView",
+          "type": "int",
+          "description": "0：允许不登录浏览， 1：登录才可浏览"
+        },
+        {
+          "name": "articleAudioURL",
+          "type": "String",
+          "length": 255,
+          "description": "帖子语音文件 URL"
+        },
+        {
+          "name": "articleQnAOfferPoint",
+          "type": "int",
+          "description": "问答悬赏积分（仅作用于问答帖）"
+        },
+        {
+          "name": "articlePushOrder",
+          "type": "int",
+          "description": "周/月邮件推送优先级"
+        },
+        {
+          "name": "articleImg1URL",
+          "type": "String",
+          "length": 255,
+          "description": "帖子首图地址"
+        },
+        {
+          "name": "articleShowInList",
+          "type": "int",
+          "description": "帖子是否在列表展示：0 不展示，1 展示 https://github.com/b3log/symphony/issues/927"
+        }
+      ]
+    },
+    {
+      "name": "emotion",
+      "description": "用户常用表情表",
+      "keys": [
+        {
+          "name": "oId",
+          "type": "String",
+          "length": 19,
+          "description": "主键"
+        },
+        {
+          "name": "emotionUserId",
+          "type": "String",
+          "length": 19,
+          "description": "用户 Id"
+        },
+        {
+          "name": "emotionContent",
+          "type": "String",
+          "length": 64,
+          "description": "表情内容，emoji 的 ASCII，比如 smile"
+        },
+        {
+          "name": "emotionSort",
+          "type": "int",
+          "description": "排序"
+        },
+        {
+          "name": "emotionType",
+          "type": "int",
+          "description": "0：emoji"
+        }
+      ]
+    }
+  ]
+}

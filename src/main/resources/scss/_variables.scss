@@ -1,0 +1,70 @@
+/*
+ * Symphony - A modern community (forum/BBS/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-present, b3log.org
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+/**
+ * variables.
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.5.0.2, Mar 7, 2017
+ */
+
+/**
+z-index rule
+footer 40~59
+article-toc 79
+article-editor-preview 81
+add article tag tip 82
+header 83
+heatBar 84
+go-top 110
+img-preview 111
+article-editor 120~121
+editor-fullscreen 122
+editor-hints 123
+editor-toolbar-emoji 124
+dialog 200~209
+*/
+
+// Table of Contents
+// Colors
+$blue: #4285f4 !default;
+$blue-light: #dbedff !default;
+$blue-lighter: #f1f7fe !default;
+$red: #d23f31 !default;
+$red-light: #ffdce0 !default;
+$green: #569e3d !default;
+$fade: rgba(0, 0, 0, .38)!default;
+$gray: rgba(0, 0, 0, .54) !default;
+$black: #3b3e43 !default;
+$black-text: rgba(0, 0, 0, .87) !default;
+$black-light: #616161 !default;
+
+// Fonts
+$font-family-base: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif !default;
+$font-family-code: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monospace !default;
+
+// shadow
+$shadow-tip: 0 1px 2px rgba(0,0,0,.2) !default;
+
+// theme
+$theme-primary: $black;
+$theme-accent: $red;
+$theme-secondary: $black-light;
+$theme-info: $blue-lighter;
+$theme-warning: undefined;
+$theme-error: $red-light;
+$theme-success: $blue-light;

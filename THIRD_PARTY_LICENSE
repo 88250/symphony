@@ -1,0 +1,46 @@
+# Backend
+
+autolink: MIT
+commons*: APL
+hikaricp: APL
+emoji-java: MIT
+flexmark*: BSD
+freemarker: APL
+gson: APL
+javassist: APL
+jodd*: BSD
+jsoup: MIT
+latke*: APL
+log4j: APL
+mysql-connector-java: GPL
+ok*: APL
+patchca: GPL
+qiniu-java-sdk: MIT
+slf4j*: MIT
+UserAgentUtils: BSD
+
+# Frontend
+
+aplayer: SATA
+algolia*: MIT
+echarts: BSD
+emojify.js: MIT
+codemirror: MIT
+highlight.js: BSD
+jquery: MIT
+jquery.fileupload: MIT
+isotope: GPL/C
+jquery.bowknot: APL
+jquery.hotkeys: MIT
+jquery.linkify: MIT
+jquery.pjax: MIT
+jquery.qrcode: MIT
+nprogress: MIT
+SoundRecorder: CC BY-NC-SA/C
+MathJax: APL
+md5: BSD
+reconnecting-websocket: MIT
+to-markdown: MIT
+ua-parser: MIT
+diff2html: MIT
+flowchart: MIT
