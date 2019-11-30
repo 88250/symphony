@@ -143,8 +143,8 @@
                 </exclusion>
 
                 <exclusion>
-                    <groupId>org.jboss</groupId>
-                    <artifactId>jboss-vfs</artifactId>
+                    <groupId>redis.clients</groupId>
+                    <artifactId>jedis</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
