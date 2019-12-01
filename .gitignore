@@ -1,5 +1,6 @@
 target/
 *.log
+upload/
 node_modules/
 **/.DS_store
 .idea/
