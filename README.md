@@ -2,7 +2,7 @@
 
 以下截图来自 Sym 商业版。
 
-![index](https://user-images.githubusercontent.com/970828/68215287-edade380-0019-11ea-8af3-877f6cec716e.png)
+![index](https://user-images.githubusercontent.com/970828/69924838-4d4bc180-14e8-11ea-9e10-af481505cc3d.png)
 
 ![list](https://user-images.githubusercontent.com/970828/61682145-08966980-ad43-11e9-9d90-b70c194e3d8b.png)
 
