@@ -108,7 +108,7 @@ public final class Server extends BaseServer {
         final String cmdSyntax = isWindows ? "java -cp \"lib/*;.\" org.b3log.symphony.Server"
                 : "java -cp \"lib/*:.\" org.b3log.symphony.Server";
         final String header = "\nSym 是一款用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）平台。\n\n";
-        final String footer = "\n提需求或报告缺陷请到项目网站: https://github.com/b3log/symphony\n\n";
+        final String footer = "\n提需求或报告缺陷请到项目网站: https://github.com/88250/symphony\n\n";
         try {
             commandLine = commandLineParser.parse(options, args);
         } catch (final ParseException e) {
