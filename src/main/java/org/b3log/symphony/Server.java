@@ -43,7 +43,7 @@ import org.b3log.symphony.util.Symphonys;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.1, Nov 12, 2019
+ * @version 2.0.1.0, Dec 1, 2019
  * @since 3.4.8
  */
 public final class Server extends BaseServer {
@@ -139,7 +139,7 @@ public final class Server extends BaseServer {
 
         String serverScheme = commandLine.getOptionValue("server_scheme");
         if (null != serverScheme) {
-            Latkes.setLatkeProperty("serveScheme", serverScheme);
+            Latkes.setLatkeProperty("serverScheme", serverScheme);
         }
         String serverHost = commandLine.getOptionValue("server_host");
         if (null != serverHost) {
@@ -239,6 +239,6 @@ public final class Server extends BaseServer {
             Symphonys.SCHEDULED_EXECUTOR_SERVICE.shutdown();
             Symphonys.EXECUTOR_SERVICE.shutdown();
         }));
-        server.start(Integer.valueOf(portArg));
+        server.start(Integer.parseInt(portArg));
     }
 }
