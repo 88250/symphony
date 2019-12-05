@@ -57,7 +57,7 @@ import java.util.concurrent.*;
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  * <p>
- * Uses the <a href="https://github.com/b3log/markdown-http">markdown-http</a> as the processor, if not found this service, try
+ * Uses the <a href="https://github.com/88250/markdown-http">markdown-http</a> as the processor, if not found this service, try
  * built-in <a href="https://github.com/vsch/flexmark-java">flexmark</a> instead.
  * </p>
  *
@@ -80,7 +80,7 @@ public final class Markdowns {
     private static final Map<String, JSONObject> MD_CACHE = new ConcurrentHashMap<>();
 
     /**
-     * Lute engine serve path. https://github.com/b3log/lute
+     * Lute engine serve path. https://github.com/88250/lute
      */
     private static final String LUTE_ENGINE_URL = "http://localhost:8249";
 

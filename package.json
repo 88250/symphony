@@ -5,10 +5,10 @@
   "homepage": "https://sym.b3log.org",
   "repository": {
     "type": "git",
-    "url": "git://github.com/b3log/symphony.git"
+    "url": "git://github.com/88250/symphony.git"
   },
   "bugs": {
-    "url": "https://github.com/b3log/symphony/issues"
+    "url": "https://github.com/88250/symphony/issues"
   },
   "license": "AGPLv3",
   "private": true,
