@@ -28,7 +28,7 @@ import org.b3log.symphony.repository.EmotionRepository;
 /**
  * Emotion query service.
  *
- * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.2, Apr 25, 2017
  * @since 1.5.0

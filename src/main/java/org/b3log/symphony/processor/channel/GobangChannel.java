@@ -43,7 +43,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * 1：聊天，2：下子，3：创建游戏，等待加入，4：加入游戏，游戏开始，5：断线重连，恢复棋盘，6：系统通知，7：请求和棋
  * </p>
  *
- * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 2.0.0.0, Nov 6, 2019
  * @since 2.1.0

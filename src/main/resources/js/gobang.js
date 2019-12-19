@@ -18,7 +18,7 @@
 /**
  * @fileOverview
  *
- * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.0.0.3, Jul 29, 2017
  * @since 2.1.0

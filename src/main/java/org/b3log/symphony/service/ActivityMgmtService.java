@@ -51,7 +51,7 @@ import java.util.Random;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @version 1.6.10.2, Jun 8, 2019
  * @since 1.3.0
  */
