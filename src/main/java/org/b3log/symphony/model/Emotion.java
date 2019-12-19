@@ -20,7 +20,7 @@ package org.b3log.symphony.model;
 /**
  * This class defines all emotion model relevant keys.
  *
- * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @version 1.0.0.1, Dec 13, 2016
  * @since 1.5.0
  */

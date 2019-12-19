@@ -27,7 +27,7 @@ import java.util.Random;
 /**
  * Reddit score algorithm test.
  *
- * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @version 1.0.0.0, Mar 27, 2017
  * @since 2.1.0
  */
