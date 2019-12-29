@@ -669,7 +669,6 @@ var Util = {
       },
       lang: Label.langLabel,
       hint: {
-        emojiPath: Label.staticServePath + '/emoji/graphics',
         emojiTail: '<a href="' + Label.servePath +
           '/settings/function" target="_blank">设置常用表情</a>',
         emoji: Label.emoji,
@@ -711,21 +710,15 @@ var Util = {
     if ($(window).width() < 768) {
       options.toolbar = [
         'emoji',
-        'headings',
-        'quote',
-        '|',
-        'list',
-        'ordered-list',
-        'check',
-        '|',
-        'upload',
+        'bold',
+        'italic',
         'link',
-        'table',
-        'record',
-        '|',
-        'both',
+        'list',
+        'check',
+        'upload',
+        'wysiwyg',
         'preview',
-        'info',
+        'fullscreen',
         'help',
       ]
       options.resize.enable = false

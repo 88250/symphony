@@ -37,6 +37,6 @@
     "gulp-uglify": "^3.0.2"
   },
   "dependencies": {
-    "vditor": "^1.10.0"
+    "vditor": "^2.0.3"
   }
 }
