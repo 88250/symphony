@@ -56,7 +56,7 @@
 
 <script src="${staticServePath}/js/symbol-defs${miniPostfix}.js?${staticResourceVersion}"></script>
 <script src="${staticServePath}/js/lib/compress/libs.min.js?${staticResourceVersion}"></script>
-<script src="https://cdn.jsdelivr.net/npm/vditor@2.0.13/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vditor@2.0.14/dist/index.min.js"></script>
 <script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     var Label = {
