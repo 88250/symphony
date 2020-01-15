@@ -234,10 +234,8 @@ public final class Server extends BaseServer {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             cronMgmtService.stop();
             server.shutdown();
-            Latkes.shutdown();
-
-            Symphonys.SCHEDULED_EXECUTOR_SERVICE.shutdown();
             Symphonys.EXECUTOR_SERVICE.shutdown();
+            Latkes.shutdown();
         }));
         server.start(Integer.parseInt(portArg));
     }
