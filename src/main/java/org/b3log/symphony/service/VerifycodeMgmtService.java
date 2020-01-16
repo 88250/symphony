@@ -17,11 +17,12 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Transactional;
@@ -51,7 +52,7 @@ public class VerifycodeMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(VerifycodeMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(VerifycodeMgmtService.class);
 
     /**
      * Verifycode repository.

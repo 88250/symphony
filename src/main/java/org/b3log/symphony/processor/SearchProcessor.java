@@ -27,7 +27,6 @@ import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Paginator;
@@ -64,11 +63,6 @@ import java.util.Map;
  */
 @RequestProcessor
 public class SearchProcessor {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(SearchProcessor.class);
 
     /**
      * Search query service.

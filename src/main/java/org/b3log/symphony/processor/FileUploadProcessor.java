@@ -26,14 +26,15 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.*;
 import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.URLs;
@@ -68,7 +69,7 @@ public class FileUploadProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FileUploadProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(FileUploadProcessor.class);
 
     /**
      * Language service.

@@ -21,7 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.http.WebSocketChannel;
 import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Article;
 import org.json.JSONObject;
 
@@ -37,11 +36,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Singleton
 public class ArticleListChannel implements WebSocketChannel {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ArticleListChannel.class);
 
     /**
      * Session articles &lt;session, "articleId1,articleId2"&gt;.

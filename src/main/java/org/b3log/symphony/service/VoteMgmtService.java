@@ -17,10 +17,11 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.annotation.Service;
@@ -49,7 +50,7 @@ public class VoteMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(VoteMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(VoteMgmtService.class);
 
     /**
      * Vote repository.
@@ -129,7 +130,7 @@ public class VoteMgmtService {
             if (Vote.DATA_TYPE_C_ARTICLE == dataType) {
                 final JSONObject article = articleRepository.get(dataId);
                 if (null == article) {
-                    LOGGER.log(Level.ERROR, "Not found article [id={0}] to vote cancel", dataId);
+                    LOGGER.log(Level.ERROR, "Not found article [id={}] to vote cancel", dataId);
 
                     return;
                 }
@@ -153,7 +154,7 @@ public class VoteMgmtService {
             } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
                 final JSONObject comment = commentRepository.get(dataId);
                 if (null == comment) {
-                    LOGGER.log(Level.ERROR, "Not found comment [id={0}] to vote cancel", dataId);
+                    LOGGER.log(Level.ERROR, "Not found comment [id={}] to vote cancel", dataId);
 
                     return;
                 }
@@ -230,7 +231,7 @@ public class VoteMgmtService {
         if (Vote.DATA_TYPE_C_ARTICLE == dataType) {
             final JSONObject article = articleRepository.get(dataId);
             if (null == article) {
-                LOGGER.log(Level.ERROR, "Not found article [id={0}] to vote up", dataId);
+                LOGGER.log(Level.ERROR, "Not found article [id={}] to vote up", dataId);
 
                 return;
             }
@@ -255,7 +256,7 @@ public class VoteMgmtService {
         } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
             final JSONObject comment = commentRepository.get(dataId);
             if (null == comment) {
-                LOGGER.log(Level.ERROR, "Not found comment [id={0}] to vote up", dataId);
+                LOGGER.log(Level.ERROR, "Not found comment [id={}] to vote up", dataId);
 
                 return;
             }
@@ -301,7 +302,7 @@ public class VoteMgmtService {
         if (Vote.DATA_TYPE_C_ARTICLE == dataType) {
             final JSONObject article = articleRepository.get(dataId);
             if (null == article) {
-                LOGGER.log(Level.ERROR, "Not found article [id={0}] to vote down", dataId);
+                LOGGER.log(Level.ERROR, "Not found article [id={}] to vote down", dataId);
 
                 return;
             }
@@ -326,7 +327,7 @@ public class VoteMgmtService {
         } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
             final JSONObject comment = commentRepository.get(dataId);
             if (null == comment) {
-                LOGGER.log(Level.ERROR, "Not found comment [id={0}] to vote up", dataId);
+                LOGGER.log(Level.ERROR, "Not found comment [id={}] to vote up", dataId);
 
                 return;
             }

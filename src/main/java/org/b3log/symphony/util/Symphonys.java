@@ -20,10 +20,11 @@ package org.b3log.symphony.util;
 import jodd.io.FileUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.Server;
@@ -58,7 +59,7 @@ public final class Symphonys {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Symphonys.class);
+    private static final Logger LOGGER = LogManager.getLogger(Symphonys.class);
 
     /**
      * Configurations.

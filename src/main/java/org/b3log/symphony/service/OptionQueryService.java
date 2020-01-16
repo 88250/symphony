@@ -18,11 +18,12 @@
 package org.b3log.symphony.service;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
@@ -53,7 +54,7 @@ public class OptionQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(OptionQueryService.class);
+    private static final Logger LOGGER = LogManager.getLogger(OptionQueryService.class);
 
     /**
      * Option repository.
@@ -265,10 +266,6 @@ public class OptionQueryService {
     public JSONObject getOption(final String optionId) {
         try {
             final JSONObject ret = optionRepository.get(optionId);
-
-            if (null == ret) {
-                return null;
-            }
 
             return ret;
         } catch (final RepositoryException e) {

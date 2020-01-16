@@ -17,8 +17,9 @@
  */
 package org.b3log.symphony.repository;
 
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Notification;
@@ -36,7 +37,7 @@ public class NotificationRepository extends AbstractRepository {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(NotificationRepository.class);
+    private static final Logger LOGGER = LogManager.getLogger(NotificationRepository.class);
 
     /**
      * Public constructor.

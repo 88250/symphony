@@ -17,10 +17,11 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Article;
@@ -48,7 +49,7 @@ public class VoteQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(VoteQueryService.class);
+    private static final Logger LOGGER = LogManager.getLogger(VoteQueryService.class);
 
     /**
      * Vote repository.
@@ -113,7 +114,7 @@ public class VoteQueryService {
             if (Vote.DATA_TYPE_C_ARTICLE == dataType) {
                 final JSONObject article = articleRepository.get(dataId);
                 if (null == article) {
-                    LOGGER.log(Level.ERROR, "Not found article [id={0}]", dataId);
+                    LOGGER.log(Level.ERROR, "Not found article [id={}]", dataId);
 
                     return false;
                 }
@@ -122,7 +123,7 @@ public class VoteQueryService {
             } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
                 final JSONObject comment = commentRepository.get(dataId);
                 if (null == comment) {
-                    LOGGER.log(Level.ERROR, "Not found comment [id={0}]", dataId);
+                    LOGGER.log(Level.ERROR, "Not found comment [id={}]", dataId);
 
                     return false;
                 }

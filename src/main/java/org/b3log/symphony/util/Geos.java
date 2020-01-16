@@ -19,14 +19,16 @@ package org.b3log.symphony.util;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Geography utilities.
@@ -40,7 +42,7 @@ public final class Geos {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Geos.class);
+    private static final Logger LOGGER = LogManager.getLogger(Geos.class);
 
     /**
      * Private constructor.
@@ -72,7 +74,7 @@ public final class Geos {
             conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(1000);
             conn.setReadTimeout(1000);
-            final JSONObject data = new JSONObject(IOUtils.toString(conn.getInputStream(), "UTF-8"));
+            final JSONObject data = new JSONObject(IOUtils.toString(conn.getInputStream(), StandardCharsets.UTF_8));
             if (0 != data.optInt("status")) {
                 return getAddressTaobao(ip);
             }
@@ -132,7 +134,7 @@ public final class Geos {
             conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(1000);
             conn.setReadTimeout(1000);
-            final JSONObject data = new JSONObject(IOUtils.toString(conn.getInputStream(), "UTF-8"));
+            final JSONObject data = new JSONObject(IOUtils.toString(conn.getInputStream(), StandardCharsets.UTF_8));
             if (0 != data.optInt("code")) {
                 return null;
             }

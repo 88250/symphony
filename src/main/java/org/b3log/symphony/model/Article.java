@@ -504,11 +504,7 @@ public final class Article {
 
         final String content1 = a1.optString(Article.ARTICLE_CONTENT);
         final String content2 = a2.optString(Article.ARTICLE_CONTENT);
-        if (!StringUtils.equalsIgnoreCase(content1, content2)) {
-            return true;
-        }
-
-        return false;
+        return !StringUtils.equalsIgnoreCase(content1, content2);
     }
 
     /**

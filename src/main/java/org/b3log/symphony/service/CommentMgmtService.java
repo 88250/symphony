@@ -18,12 +18,13 @@
 package org.b3log.symphony.service;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Transactional;
@@ -57,7 +58,7 @@ public class CommentMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(CommentMgmtService.class);
 
     /**
      * Revision repository.
@@ -410,7 +411,7 @@ public class CommentMgmtService {
         if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.MIN_STEP_CMT_TIME
                 && !Role.ROLE_ID_C_ADMIN.equals(commenter.optString(User.USER_ROLE))
                 && !UserExt.COM_BOT_NAME.equals(commenter.optString(User.USER_NAME))) {
-            LOGGER.log(Level.WARN, "Adds comment too frequent [userName={0}]", commenter.optString(User.USER_NAME));
+            LOGGER.log(Level.WARN, "Adds comment too frequent [userName={}]", commenter.optString(User.USER_NAME));
             throw new ServiceException(langPropsService.get("tooFrequentCmtLabel"));
         }
 

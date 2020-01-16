@@ -17,11 +17,12 @@
  */
 package org.b3log.symphony.processor;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.handler.Handler;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
@@ -44,7 +45,7 @@ public class AfterRequestHandler implements Handler {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(AfterRequestHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(AfterRequestHandler.class);
 
     @Override
     public void handle(final RequestContext context) {
@@ -62,7 +63,7 @@ public class AfterRequestHandler implements Handler {
         final int threshold = Symphonys.PERFORMANCE_THRESHOLD;
         if (0 < threshold) {
             if (elapsed >= threshold) {
-                LOGGER.log(Level.INFO, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
+                LOGGER.log(Level.INFO, "Stopwatch: {}{}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
             }
         }
         Stopwatchs.release();

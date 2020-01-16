@@ -18,11 +18,12 @@
 package org.b3log.symphony.service;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
@@ -51,7 +52,7 @@ public class InitMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(InitMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(InitMgmtService.class);
 
     /**
      * Default language.
@@ -236,11 +237,11 @@ public class InitMgmtService {
         LOGGER.info("It's your first time setup Sym, initializes Sym....");
 
         try {
-            LOGGER.log(Level.INFO, "Database [{0}], creating all tables", Latkes.getRuntimeDatabase());
+            LOGGER.log(Level.INFO, "Database [{}], creating all tables", Latkes.getRuntimeDatabase());
 
             final List<JdbcRepositories.CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
             for (final JdbcRepositories.CreateTableResult createTableResult : createTableResults) {
-                LOGGER.log(Level.TRACE, "Creates table result [tableName={0}, isSuccess={1}]",
+                LOGGER.log(Level.TRACE, "Creates table result [tableName={}, isSuccess={}]",
                         createTableResult.getName(), createTableResult.isSuccess());
             }
 

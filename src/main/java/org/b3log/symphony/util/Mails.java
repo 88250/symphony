@@ -23,9 +23,10 @@ import freemarker.template.TemplateExceptionHandler;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Crypts;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.Common;
@@ -58,7 +59,7 @@ public final class Mails {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Mails.class);
+    private static final Logger LOGGER = LogManager.getLogger(Mails.class);
 
     /**
      * Template name - verifycode.
@@ -438,7 +439,7 @@ final class MailSender implements java.io.Serializable {
 
     private static final long serialVersionUID = -1000794424345267933L;
     private static final String CHARSET = "text/html;charset=UTF-8";
-    private static final Logger LOGGER = Logger.getLogger(Markdowns.class);
+    private static final Logger LOGGER = LogManager.getLogger(Markdowns.class);
     private static final boolean is_debug = Boolean.valueOf(Symphonys.MAIL_LOCAL_ISDEBUG);
     private static final String mail_transport_protocol = Symphonys.MAIL_LOCAL_TRANSPORT_PROTOCOL;
     private static final String mail_host = Symphonys.MAIL_LOCAL_HOST;

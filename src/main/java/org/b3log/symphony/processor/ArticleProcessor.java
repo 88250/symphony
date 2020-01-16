@@ -21,6 +21,9 @@ import jodd.util.Base64;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.Request;
@@ -31,8 +34,6 @@ import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -92,7 +93,7 @@ public class ArticleProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(ArticleProcessor.class);
 
     /**
      * Revision query service.
@@ -942,7 +943,7 @@ public class ArticleProcessor {
             context.renderJSONValue(Article.ARTICLE_T_ID, articleId);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
-            LOGGER.log(Level.ERROR, "Adds article [title=" + articleTitle + "] failed: {0}", e.getMessage());
+            LOGGER.log(Level.ERROR, "Adds article [title=" + articleTitle + "] failed: {}", e.getMessage());
 
             context.renderMsg(msg);
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
@@ -1112,7 +1113,7 @@ public class ArticleProcessor {
             context.renderJSONValue(Article.ARTICLE_T_ID, id);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
-            LOGGER.log(Level.ERROR, "Adds article [title=" + articleTitle + "] failed: {0}", e.getMessage());
+            LOGGER.log(Level.ERROR, "Adds article [title=" + articleTitle + "] failed: {}", e.getMessage());
 
             context.renderMsg(msg);
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);

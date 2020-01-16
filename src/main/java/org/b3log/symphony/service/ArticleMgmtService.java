@@ -20,12 +20,13 @@ package org.b3log.symphony.service;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Transactional;
@@ -63,7 +64,7 @@ public class ArticleMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(ArticleMgmtService.class);
 
     /**
      * Tag max count.
@@ -556,7 +557,7 @@ public class ArticleMgmtService {
 
             if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.MIN_STEP_ARTICLE_TIME
                     && !Role.ROLE_ID_C_ADMIN.equals(author.optString(User.USER_ROLE))) {
-                LOGGER.log(Level.WARN, "Adds article too frequent [userName={0}]", author.optString(User.USER_NAME));
+                LOGGER.log(Level.WARN, "Adds article too frequent [userName={}]", author.optString(User.USER_NAME));
                 throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
             }
 
@@ -1442,7 +1443,7 @@ public class ArticleMgmtService {
             final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(newTagTitle, oldTags)) {
-                LOGGER.log(Level.DEBUG, "Tag need to add [title={0}]", newTagTitle);
+                LOGGER.log(Level.DEBUG, "Tag need to add [title={}]", newTagTitle);
                 tagsNeedToAdd.add(newTag);
             }
         }
@@ -1450,7 +1451,7 @@ public class ArticleMgmtService {
             final String oldTagTitle = oldTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(oldTagTitle, newTags)) {
-                LOGGER.log(Level.DEBUG, "Tag dropped [title={0}]", oldTag);
+                LOGGER.log(Level.DEBUG, "Tag dropped [title={}]", oldTag);
                 tagsDropped.add(oldTag);
             }
         }
@@ -1558,7 +1559,7 @@ public class ArticleMgmtService {
             int userTagType;
             final int articleCmtCnt = article.optInt(Article.ARTICLE_COMMENT_CNT);
             if (null == tag) {
-                LOGGER.log(Level.TRACE, "Found a new tag [title={0}] in article [title={1}]",
+                LOGGER.log(Level.TRACE, "Found a new tag [title={}] in article [title={}]",
                         tagTitle, article.optString(Article.ARTICLE_TITLE));
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
@@ -1593,7 +1594,7 @@ public class ArticleMgmtService {
                 author.put(UserExt.USER_TAG_COUNT, author.optInt(UserExt.USER_TAG_COUNT) + 1);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
-                LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
+                LOGGER.log(Level.TRACE, "Found a existing tag[title={}, id={}] in article[title={}]",
                         tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID), article.optString(Article.ARTICLE_TITLE));
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);

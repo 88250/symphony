@@ -18,11 +18,12 @@
 package org.b3log.symphony.service;
 
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -52,7 +53,7 @@ public class SitemapQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SitemapQueryService.class);
+    private static final Logger LOGGER = LogManager.getLogger(SitemapQueryService.class);
 
     /**
      * Article repository.

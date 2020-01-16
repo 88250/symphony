@@ -24,7 +24,6 @@ import org.b3log.latke.http.advice.ProcessAdvice;
 import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserMgmtService;
@@ -41,11 +40,6 @@ import org.json.JSONObject;
  */
 @Singleton
 public class LoginCheck extends ProcessAdvice {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(LoginCheck.class);
 
     /**
      * User query service.

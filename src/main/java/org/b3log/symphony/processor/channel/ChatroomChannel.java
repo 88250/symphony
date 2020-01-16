@@ -20,7 +20,6 @@ package org.b3log.symphony.processor.channel;
 import org.b3log.latke.http.WebSocketChannel;
 import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
 
@@ -38,11 +37,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Singleton
 public class ChatroomChannel implements WebSocketChannel {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ChatroomChannel.class);
 
     /**
      * Session set.

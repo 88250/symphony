@@ -20,12 +20,13 @@ package org.b3log.symphony.processor;
 import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Locales;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.util.Sessions;
@@ -49,7 +50,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SkinRenderer.class);
+    private static final Logger LOGGER = LogManager.getLogger(SkinRenderer.class);
 
     /**
      * HTTP request context.

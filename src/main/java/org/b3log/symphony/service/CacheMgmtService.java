@@ -17,13 +17,14 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.cache.ArticleCache;
@@ -50,7 +51,7 @@ public class CacheMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CacheMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(CacheMgmtService.class);
 
     /**
      * Global locks

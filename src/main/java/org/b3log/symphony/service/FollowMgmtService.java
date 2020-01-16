@@ -17,9 +17,10 @@
  */
 package org.b3log.symphony.service;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.annotation.Service;
@@ -44,7 +45,7 @@ public class FollowMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FollowMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(FollowMgmtService.class);
 
     /**
      * Follow repository.
@@ -209,7 +210,7 @@ public class FollowMgmtService {
         if (Follow.FOLLOWING_TYPE_C_TAG == followingType) {
             final JSONObject tag = tagRepository.get(followingId);
             if (null == tag) {
-                LOGGER.log(Level.ERROR, "Not found tag [id={0}] to follow", followingId);
+                LOGGER.log(Level.ERROR, "Not found tag [id={}] to follow", followingId);
 
                 return;
             }
@@ -221,7 +222,7 @@ public class FollowMgmtService {
         } else if (Follow.FOLLOWING_TYPE_C_ARTICLE == followingType) {
             final JSONObject article = articleRepository.get(followingId);
             if (null == article) {
-                LOGGER.log(Level.ERROR, "Not found article [id={0}] to follow", followingId);
+                LOGGER.log(Level.ERROR, "Not found article [id={}] to follow", followingId);
 
                 return;
             }
@@ -232,7 +233,7 @@ public class FollowMgmtService {
         } else if (Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH == followingType) {
             final JSONObject article = articleRepository.get(followingId);
             if (null == article) {
-                LOGGER.log(Level.ERROR, "Not found article [id={0}] to watch", followingId);
+                LOGGER.log(Level.ERROR, "Not found article [id={}] to watch", followingId);
 
                 return;
             }
@@ -264,7 +265,7 @@ public class FollowMgmtService {
         if (Follow.FOLLOWING_TYPE_C_TAG == followingType) {
             final JSONObject tag = tagRepository.get(followingId);
             if (null == tag) {
-                LOGGER.log(Level.ERROR, "Not found tag [id={0}] to unfollow", followingId);
+                LOGGER.log(Level.ERROR, "Not found tag [id={}] to unfollow", followingId);
 
                 return;
             }
@@ -280,7 +281,7 @@ public class FollowMgmtService {
         } else if (Follow.FOLLOWING_TYPE_C_ARTICLE == followingType) {
             final JSONObject article = articleRepository.get(followingId);
             if (null == article) {
-                LOGGER.log(Level.ERROR, "Not found article [id={0}] to unfollow", followingId);
+                LOGGER.log(Level.ERROR, "Not found article [id={}] to unfollow", followingId);
 
                 return;
             }
@@ -294,7 +295,7 @@ public class FollowMgmtService {
         } else if (Follow.FOLLOWING_TYPE_C_ARTICLE_WATCH == followingType) {
             final JSONObject article = articleRepository.get(followingId);
             if (null == article) {
-                LOGGER.log(Level.ERROR, "Not found article [id={0}] to unwatch", followingId);
+                LOGGER.log(Level.ERROR, "Not found article [id={}] to unwatch", followingId);
 
                 return;
             }

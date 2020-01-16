@@ -17,13 +17,14 @@
  */
 package org.b3log.symphony.event;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
@@ -51,7 +52,7 @@ public class CommentUpdateNotifier extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentUpdateNotifier.class);
+    private static final Logger LOGGER = LogManager.getLogger(CommentUpdateNotifier.class);
 
     /**
      * Notification repository.
@@ -80,7 +81,7 @@ public class CommentUpdateNotifier extends AbstractEventListener<JSONObject> {
     @Override
     public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
-        LOGGER.log(Level.TRACE, "Processing an event [type={0}, data={1}]", event.getType(), data);
+        LOGGER.log(Level.TRACE, "Processing an event [type={}, data={}]", event.getType(), data);
 
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);

@@ -22,7 +22,6 @@ import org.b3log.latke.http.advice.ProcessAdvice;
 import org.b3log.latke.http.renderer.AbstractResponseRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Stopwatchs;
@@ -43,11 +42,6 @@ import java.util.Map;
  */
 @Singleton
 public class PermissionGrant extends ProcessAdvice {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(PermissionGrant.class);
 
     /**
      * Role query service.

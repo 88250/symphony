@@ -19,8 +19,9 @@ package org.b3log.symphony.service;
 
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.Article;
@@ -46,7 +47,7 @@ public class SearchQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SearchQueryService.class);
+    private static final Logger LOGGER = LogManager.getLogger(SearchQueryService.class);
 
     /**
      * Searches by Elasticsearch.

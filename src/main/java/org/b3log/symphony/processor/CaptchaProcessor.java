@@ -18,14 +18,15 @@
 package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Response;
 import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.PngRenderer;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
@@ -61,7 +62,7 @@ public class CaptchaProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CaptchaProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(CaptchaProcessor.class);
 
     /**
      * Key of captcha.

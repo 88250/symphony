@@ -19,6 +19,9 @@ package org.b3log.symphony.util;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.Cache;
@@ -28,8 +31,6 @@ import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Response;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.Crypts;
 import org.b3log.latke.util.Requests;
@@ -52,7 +53,7 @@ public final class Sessions {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Sessions.class);
+    private static final Logger LOGGER = LogManager.getLogger(Sessions.class);
 
     /**
      * Session cache.

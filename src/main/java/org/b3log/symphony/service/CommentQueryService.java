@@ -19,11 +19,12 @@ package org.b3log.symphony.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
@@ -55,7 +56,7 @@ public class CommentQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentQueryService.class);
+    private static final Logger LOGGER = LogManager.getLogger(CommentQueryService.class);
 
     /**
      * Revision query service.
@@ -472,9 +473,6 @@ public class CommentQueryService {
     public JSONObject getComment(final String commentId) {
         try {
             final JSONObject ret = commentRepository.get(commentId);
-            if (null == ret) {
-                return null;
-            }
 
             return ret;
         } catch (final RepositoryException e) {
@@ -788,7 +786,7 @@ public class CommentQueryService {
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Organizes comment [" + comment.optString(Keys.OBJECT_ID) + "] failed", e);
                 } finally {
-                    // LOGGER.log(Level.INFO, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
+                    // LOGGER.log(Level.INFO, "Stopwatch: {}{}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
                     Stopwatchs.release();
                 }
             }));

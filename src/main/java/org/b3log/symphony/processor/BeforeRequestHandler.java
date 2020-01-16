@@ -20,6 +20,9 @@ package org.b3log.symphony.processor;
 import eu.bitwalker.useragentutils.BrowserType;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.Request;
@@ -27,8 +30,6 @@ import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Session;
 import org.b3log.latke.http.handler.Handler;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
@@ -55,7 +56,7 @@ public class BeforeRequestHandler implements Handler {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(BeforeRequestHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(BeforeRequestHandler.class);
 
     @Override
     public void handle(final RequestContext context) {
@@ -152,7 +153,7 @@ public class BeforeRequestHandler implements Handler {
         }
 
         if (BrowserType.ROBOT == browserType) {
-            LOGGER.log(Level.DEBUG, "Request made from a search engine [User-Agent={0}]", context.header(Common.USER_AGENT));
+            LOGGER.log(Level.DEBUG, "Request made from a search engine [User-Agent={}]", context.header(Common.USER_AGENT));
             Sessions.setBot(true);
 
             return;
