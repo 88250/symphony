@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.util;
 
-
 import org.apache.commons.lang.StringUtils;
 
 /**

@@ -20,6 +20,9 @@ package org.b3log.symphony.processor;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
@@ -32,8 +35,6 @@ import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -83,7 +84,7 @@ public class LoginProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(LoginProcessor.class);
 
     /**
      * User management service.
@@ -401,7 +402,7 @@ public class LoginProcessor {
             Sessions.login(response, userId, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("resetPwdLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);
+            LOGGER.log(Level.ERROR, msg + "[name={}, email={}]", name, email);
 
             context.renderMsg(msg);
         }
@@ -531,7 +532,7 @@ public class LoginProcessor {
             context.renderTrueResult().renderMsg(langPropsService.get("verifycodeSentLabel"));
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);
+            LOGGER.log(Level.ERROR, msg + "[name={}, email={}]", name, email);
 
             context.renderMsg(msg);
         }
@@ -623,10 +624,10 @@ public class LoginProcessor {
 
             context.renderTrueResult();
 
-            LOGGER.log(Level.INFO, "Registered a user [name={0}, email={1}]", name, email);
+            LOGGER.log(Level.INFO, "Registered a user [name={}, email={}]", name, email);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.ERROR, msg + " [name={0}, email={1}]", name, email);
+            LOGGER.log(Level.ERROR, msg + " [name={}, email={}]", name, email);
 
             context.renderMsg(msg);
         }

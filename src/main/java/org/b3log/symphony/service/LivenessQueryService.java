@@ -19,9 +19,10 @@ package org.b3log.symphony.service;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Stopwatchs;
@@ -44,7 +45,7 @@ public class LivenessQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LivenessQueryService.class);
+    private static final Logger LOGGER = LogManager.getLogger(LivenessQueryService.class);
 
     /**
      * Liveness repository.

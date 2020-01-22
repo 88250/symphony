@@ -25,7 +25,6 @@ import org.b3log.latke.http.advice.ProcessAdvice;
 import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.util.Sessions;
@@ -40,11 +39,6 @@ import org.json.JSONObject;
  */
 @Singleton
 public class CSRFCheck extends ProcessAdvice {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(CSRFCheck.class);
 
     /**
      * Language service.

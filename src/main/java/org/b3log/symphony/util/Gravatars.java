@@ -22,8 +22,9 @@ import jodd.http.HttpResponse;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Gravatar (http://www.gravatar.com) utilities.
@@ -37,7 +38,7 @@ public final class Gravatars {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Gravatars.class);
+    private static final Logger LOGGER = LogManager.getLogger(Gravatars.class);
 
     /**
      * Styles.

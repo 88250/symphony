@@ -18,13 +18,14 @@
 package org.b3log.symphony;
 
 import org.apache.commons.cli.*;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.http.BaseServer;
 import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.DomainCache;
@@ -47,10 +48,11 @@ import org.b3log.symphony.util.Symphonys;
  * @since 3.4.8
  */
 public final class Server extends BaseServer {
+
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Server.class);
+    private static final Logger LOGGER = LogManager.getLogger(Server.class);
 
     /**
      * Symphony version.
@@ -227,17 +229,15 @@ public final class Server extends BaseServer {
         cronMgmtService.start();
 
         Stopwatchs.end();
-        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
+        LOGGER.log(Level.DEBUG, "Stopwatch: {}{}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
         Stopwatchs.release();
 
         final Server server = new Server();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             cronMgmtService.stop();
             server.shutdown();
-            Latkes.shutdown();
-
-            Symphonys.SCHEDULED_EXECUTOR_SERVICE.shutdown();
             Symphonys.EXECUTOR_SERVICE.shutdown();
+            Latkes.shutdown();
         }));
         server.start(Integer.parseInt(portArg));
     }

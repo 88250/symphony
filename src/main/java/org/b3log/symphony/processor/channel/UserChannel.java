@@ -24,7 +24,6 @@ import org.b3log.latke.http.WebSocketChannel;
 import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
@@ -45,11 +44,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Singleton
 public class UserChannel implements WebSocketChannel {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(UserChannel.class);
 
     /**
      * Session set.

@@ -17,8 +17,9 @@
  */
 package org.b3log.symphony.util;
 
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
@@ -36,7 +37,7 @@ public final class Networks {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Networks.class);
+    private static final Logger LOGGER = LogManager.getLogger(Networks.class);
 
     /**
      * Checks the specified hostname is an inner address.

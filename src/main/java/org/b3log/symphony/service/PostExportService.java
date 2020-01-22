@@ -23,11 +23,12 @@ import com.qiniu.util.Auth;
 import jodd.io.ZipUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -65,7 +66,7 @@ public class PostExportService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PostExportService.class);
+    private static final Logger LOGGER = LogManager.getLogger(PostExportService.class);
 
     /**
      * User repository.

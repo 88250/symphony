@@ -25,9 +25,10 @@ import com.qiniu.util.Auth;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.processor.FileUploadProcessor;
@@ -40,6 +41,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
@@ -55,7 +57,7 @@ public class AudioMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(AudioMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(AudioMgmtService.class);
 
     private static final String BAIDU_API_KEY = Symphonys.BAIDU_YUYIN_API_KEY;
     private static final String BAIDU_SECRET_KEY = Symphonys.BAIDU_YUYIN_SECRET_KEY;
@@ -80,7 +82,7 @@ public class AudioMgmtService {
             conn.setRequestMethod("POST");
 
             try (final InputStream inputStream = conn.getInputStream()) {
-                final String content = IOUtils.toString(inputStream, "UTF-8");
+                final String content = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 
                 conn.disconnect();
 
@@ -127,7 +129,7 @@ public class AudioMgmtService {
                 final String contentType = conn.getContentType();
 
                 if (200 != responseCode || !"audio/mp3".equals(contentType)) {
-                    final String msg = IOUtils.toString(inputStream, "UTF-8");
+                    final String msg = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                     LOGGER.warn("Baidu Yuyin TTS failed: " + msg);
                     conn.disconnect();
 

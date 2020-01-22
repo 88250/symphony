@@ -23,6 +23,7 @@ import org.b3log.latke.util.Execs;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Tesseract-OCR utilities.
@@ -43,7 +44,7 @@ public final class Tesseracts {
         Execs.exec("tesseract " + imagePath + " " + imagePath + " -l chi_sim -psm 10", 1000 * 10);
 
         try {
-            return StringUtils.trim(IOUtils.toString(new FileInputStream(imagePath + ".txt"), "UTF-8"));
+            return StringUtils.trim(IOUtils.toString(new FileInputStream(imagePath + ".txt"), StandardCharsets.UTF_8));
         } catch (final IOException e) {
             return "";
         }

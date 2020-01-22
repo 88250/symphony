@@ -18,6 +18,9 @@
 package org.b3log.symphony.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
@@ -29,8 +32,6 @@ import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.Common;
@@ -81,7 +82,7 @@ public class ActivityProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ActivityProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(ActivityProcessor.class);
 
     /**
      * Activity management service.

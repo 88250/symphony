@@ -25,7 +25,6 @@ import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Notification;
@@ -60,10 +59,6 @@ import java.util.Set;
 @RequestProcessor
 public class FollowProcessor {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(FollowProcessor.class);
     /**
      * Holds follows.
      */

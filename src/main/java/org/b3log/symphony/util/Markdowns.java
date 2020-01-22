@@ -27,10 +27,11 @@ import com.vladsch.flexmark.util.data.MutableDataSet;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Callstacks;
 import org.b3log.latke.util.Stopwatchs;
@@ -51,6 +52,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -72,7 +74,7 @@ public final class Markdowns {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Markdowns.class);
+    private static final Logger LOGGER = LogManager.getLogger(Markdowns.class);
 
     /**
      * Markdown cache.
@@ -396,7 +398,7 @@ public final class Markdowns {
 
         String ret;
         try (final InputStream inputStream = conn.getInputStream()) {
-            ret = IOUtils.toString(inputStream, "UTF-8");
+            ret = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
         }
 
         conn.disconnect();

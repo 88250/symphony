@@ -18,6 +18,9 @@
 package org.b3log.symphony.processor.advice;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.Cookie;
@@ -28,8 +31,6 @@ import org.b3log.latke.http.advice.ProcessAdvice;
 import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.util.AntPathMatcher;
 import org.b3log.latke.util.URLs;
@@ -59,7 +60,7 @@ public class AnonymousViewCheck extends ProcessAdvice {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(AnonymousViewCheck.class);
+    private static final Logger LOGGER = LogManager.getLogger(AnonymousViewCheck.class);
 
     /**
      * Article repository.

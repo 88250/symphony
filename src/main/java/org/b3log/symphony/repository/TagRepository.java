@@ -19,7 +19,6 @@ package org.b3log.symphony.repository;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.URLs;
@@ -40,11 +39,6 @@ import java.util.List;
  */
 @Repository
 public class TagRepository extends AbstractRepository {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(TagRepository.class);
 
     /**
      * Tag cache.

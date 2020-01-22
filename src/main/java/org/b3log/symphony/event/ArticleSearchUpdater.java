@@ -18,12 +18,13 @@
 package org.b3log.symphony.event;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.service.SearchMgmtService;
@@ -44,7 +45,7 @@ public class ArticleSearchUpdater extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleSearchUpdater.class);
+    private static final Logger LOGGER = LogManager.getLogger(ArticleSearchUpdater.class);
 
     /**
      * Search management service.
@@ -55,7 +56,7 @@ public class ArticleSearchUpdater extends AbstractEventListener<JSONObject> {
     @Override
     public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
-        LOGGER.log(Level.TRACE, "Processing an event [type={0}, data={1}]", event.getType(), data);
+        LOGGER.log(Level.TRACE, "Processing an event [type={}, data={}]", event.getType(), data);
 
         final JSONObject article = data.optJSONObject(Article.ARTICLE);
         if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)

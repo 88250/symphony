@@ -22,12 +22,13 @@ import jodd.http.HttpResponse;
 import jodd.net.MimeTypes;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
@@ -47,7 +48,7 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleBaiduSender.class);
+    private static final Logger LOGGER = LogManager.getLogger(ArticleBaiduSender.class);
 
     /**
      * Sends the specified URLs to Baidu.
@@ -82,7 +83,7 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
     @Override
     public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
-        LOGGER.log(Level.TRACE, "Processing an event [type={0}, data={1}]", event.getType(), data);
+        LOGGER.log(Level.TRACE, "Processing an event [type={}, data={}]", event.getType(), data);
 
         if (Latkes.RuntimeMode.PRODUCTION != Latkes.getRuntimeMode() || StringUtils.isBlank(Symphonys.BAIDU_DATA_TOKEN)) {
             return;

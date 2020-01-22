@@ -75,7 +75,7 @@ public class Activity1A0001Validation extends ProcessAdvice {
         final float livenessThreshold = Symphonys.ACTIVITY_1A0001_LIVENESS_THRESHOLD;
         if (liveness < livenessThreshold) {
             String msg = langPropsService.get("activityNeedLivenessLabel");
-            msg = msg.replace("${liveness}", String.valueOf(livenessThreshold) + "%");
+            msg = msg.replace("${liveness}", livenessThreshold + "%");
             msg = msg.replace("${current}", String.format("%.2f", liveness) + "%");
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, msg));
         }

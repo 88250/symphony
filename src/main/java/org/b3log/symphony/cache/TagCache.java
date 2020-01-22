@@ -18,11 +18,12 @@
 package org.b3log.symphony.cache;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Tag;
@@ -47,7 +48,7 @@ public class TagCache {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagCache.class);
+    private static final Logger LOGGER = LogManager.getLogger(TagCache.class);
 
     /**
      * Icon tags.

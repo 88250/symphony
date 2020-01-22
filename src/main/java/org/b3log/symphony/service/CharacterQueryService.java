@@ -19,10 +19,11 @@ package org.b3log.symphony.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
@@ -47,7 +48,7 @@ public class CharacterQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CharacterQueryService.class);
+    private static final Logger LOGGER = LogManager.getLogger(CharacterQueryService.class);
 
     /**
      * Character repository.

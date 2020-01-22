@@ -19,8 +19,9 @@ package org.b3log.symphony.util;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Link;
@@ -33,6 +34,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,7 +51,7 @@ public final class Links {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Links.class);
+    private static final Logger LOGGER = LogManager.getLogger(Links.class);
 
     /**
      * Gets link from the specified URL.
@@ -139,7 +141,7 @@ public final class Links {
 
                 String baiduRes;
                 try (final InputStream inputStream = conn.getInputStream()) {
-                    baiduRes = IOUtils.toString(inputStream, "UTF-8");
+                    baiduRes = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                 }
                 conn.disconnect();
 
@@ -157,7 +159,7 @@ public final class Links {
                     conn.addRequestProperty(Common.USER_AGENT, Symphonys.USER_AGENT_BOT);
 
                     try (final InputStream inputStream = conn.getInputStream()) {
-                        baiduRes = IOUtils.toString(inputStream, "UTF-8");
+                        baiduRes = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                     }
                     conn.disconnect();
 

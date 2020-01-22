@@ -22,8 +22,9 @@ import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
@@ -39,7 +40,7 @@ public final class Templates {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Templates.class);
+    private static final Logger LOGGER = LogManager.getLogger(Templates.class);
 
     /**
      * FreeMarker template configurations.

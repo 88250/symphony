@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.17.0.16, Jan 14, 2020
+    Version: 2.17.0.17, Jan 16, 2020
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -21,10 +21,8 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>3.1.0</latke.version>
+        <latke.version>3.2.1</latke.version>
 
-        <slf4j.version>1.7.28</slf4j.version>
-        <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
         <jsoup.version>1.12.1</jsoup.version>
         <flexmark.version>0.50.40</flexmark.version>
         <qiniu.version>7.2.23</qiniu.version>
@@ -127,38 +125,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-core</artifactId>
             <version>${latke.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.h2database</groupId>
-                    <artifactId>h2</artifactId>
-                </exclusion>
-
-                <exclusion>
-                    <groupId>redis.clients</groupId>
-                    <artifactId>jedis</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-repository-mysql</artifactId>
             <version>${latke.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java.version}</version>
         </dependency>
 
         <dependency>
@@ -311,7 +286,6 @@
                         <include>**/src/*/resources/scss/*.scss</include>
                         <include>**/src/*/resources/*.properties</include>
                         <include>**/src/*/resources/skins/*/*.properties</include>
-                        <include>**/src/*/resources/WEB-INF/*.xml</include>
                         <include>**/src/*/resources/*.xml</include>
                         <include>gulpfile.js</include>
                         <include>**/src/*/resources/**/*.ftl</include>

@@ -17,13 +17,14 @@
  */
 package org.b3log.symphony.processor.channel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.WebSocketChannel;
 import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.service.ActivityMgmtService;
@@ -54,7 +55,7 @@ public class GobangChannel implements WebSocketChannel {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(GobangChannel.class);
+    private static final Logger LOGGER = LogManager.getLogger(GobangChannel.class);
 
     /**
      * Session set.
@@ -211,7 +212,7 @@ public class GobangChannel implements WebSocketChannel {
                 SESSIONS.get(anti).sendText(sendText.toString());
                 break;
             case 2: //落子
-                ChessGame chessGame = chessPlaying.keySet().contains(player) ? chessPlaying.get(player) : chessPlaying.get(anti);
+                ChessGame chessGame = chessPlaying.containsKey(player) ? chessPlaying.get(player) : chessPlaying.get(anti);
                 int x = jsonObject.optInt("x");
                 int y = jsonObject.optInt("y");
                 int size = jsonObject.optInt("size");

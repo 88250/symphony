@@ -18,9 +18,10 @@
 package org.b3log.symphony.repository;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
@@ -43,7 +44,7 @@ public class LinkRepository extends AbstractRepository {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LinkRepository.class);
+    private static final Logger LOGGER = LogManager.getLogger(LinkRepository.class);
 
     /**
      * Gets a link with the specified address.
