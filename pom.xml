@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.17.0.17, Jan 16, 2020
+    Version: 2.17.0.18, Jan 25, 2020
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -12,7 +12,7 @@
     <groupId>org.b3log</groupId>
     <artifactId>symphony</artifactId>
     <packaging>jar</packaging>
-    <version>3.6.0</version>
+    <version>3.6.1</version>
     <name>Symphony</name>
     <url>https://sym.b3log.org</url>
     <description>
@@ -21,7 +21,7 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>3.2.1</latke.version>
+        <latke.version>3.2.2</latke.version>
 
         <jsoup.version>1.12.1</jsoup.version>
         <flexmark.version>0.50.40</flexmark.version>

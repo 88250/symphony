@@ -17,6 +17,7 @@
  */
 package org.b3log.symphony.processor;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -28,6 +29,7 @@ import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.latke.http.renderer.TextHtmlRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
@@ -45,10 +47,13 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -101,6 +106,25 @@ public class IndexProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Show changelogs.
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing("/CHANGE_LOGS.html")
+    public void showChangelogs(final RequestContext context) {
+        try {
+            final TextHtmlRenderer renderer = new TextHtmlRenderer();
+            context.setRenderer(renderer);
+            try (final InputStream resourceAsStream = IndexProcessor.class.getResourceAsStream("/CHANGE_LOGS.md")) {
+                final String content = IOUtils.toString(resourceAsStream, StandardCharsets.UTF_8);
+                renderer.setContent(Markdowns.toHTML(content));
+            }
+        } catch (final Exception e) {
+            context.sendStatus(500);
+        }
+    }
 
     /**
      * Shows question articles.
