@@ -20,7 +20,7 @@
 -->
 <!--
     Description: Static resources definition.
-    Version: 1.7.0.0, May 24, 2017
+    Version: 1.7.0.1, Jan 25, 2020
     Author: Liang Ding
     Author: Liyuan Li
 -->
@@ -105,5 +105,4 @@
     <include path="/emoji/**/*.*" />
     <include path="/halt.html" />
     <include path="/opensearch.xml" />
-    <include path="/CHANGE_LOGS.html" />
 </static-files>
