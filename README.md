@@ -26,7 +26,7 @@
 </p>
 
 * [一款用 Java 实现的现代化社区（论坛 /BBS/ 社交网络 / 博客）平台](https://hacpai.com/article/1570193280819)
-* [Sym 按照指南](https://hacpai.com/article/1486188905847)
+* [Sym 安装指南](https://hacpai.com/article/1486188905847)
 
 欢迎关注 B3log 开源社区微信公众号 `B3log开源`：
 
