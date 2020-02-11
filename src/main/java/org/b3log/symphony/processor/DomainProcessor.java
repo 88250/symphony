@@ -31,10 +31,9 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.AnonymousViewCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
@@ -93,7 +92,7 @@ public class DomainProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/domain/{domainURI}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDomainArticles(final RequestContext context) {
         final String domainURI = context.pathVar("domainURI");
@@ -160,7 +159,7 @@ public class DomainProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/domains", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDomains(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "domains.ftl");

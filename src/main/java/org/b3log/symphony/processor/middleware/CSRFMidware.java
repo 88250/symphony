@@ -15,14 +15,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.processor.advice;
+package org.b3log.symphony.processor.middleware;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
+import org.b3log.latke.http.renderer.AbstractResponseRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
@@ -30,15 +29,17 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 /**
- * CSRF check.
+ * Fills and checks CSRF token.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Aug 4, 2018
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 1.3.0
  */
 @Singleton
-public class CSRFCheck extends ProcessAdvice {
+public class CSRFMidware {
 
     /**
      * Language service.
@@ -46,8 +47,18 @@ public class CSRFCheck extends ProcessAdvice {
     @Inject
     private LangPropsService langPropsService;
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
+    public void fill(final RequestContext context) {
+        context.handle();
+
+        final AbstractResponseRenderer renderer = context.getRenderer();
+        if (null == renderer) {
+            return;
+        }
+        final Map<String, Object> dataModel = renderer.getRenderDataModel();
+        dataModel.put(Common.CSRF_TOKEN, Sessions.getCSRFToken(context));
+    }
+
+    public void check(final RequestContext context) {
         final JSONObject exception = new JSONObject();
         exception.put(Keys.MSG, langPropsService.get("csrfCheckFailedLabel"));
         exception.put(Keys.STATUS_CODE, false);
@@ -55,7 +66,10 @@ public class CSRFCheck extends ProcessAdvice {
         // 1. Check Referer
         final String referer = context.header("Referer");
         if (!StringUtils.startsWith(referer, StringUtils.substringBeforeLast(Latkes.getServePath(), ":"))) {
-            throw new RequestProcessAdviceException(exception);
+            context.renderJSON(exception);
+            context.abort();
+
+            return;
         }
 
         // 2. Check Token
@@ -63,7 +77,12 @@ public class CSRFCheck extends ProcessAdvice {
         final String serverToken = Sessions.getCSRFToken(context);
 
         if (!StringUtils.equals(clientToken, serverToken)) {
-            throw new RequestProcessAdviceException(exception);
+            context.renderJSON(exception);
+            context.abort();
+
+            return;
         }
+
+        context.handle();
     }
 }

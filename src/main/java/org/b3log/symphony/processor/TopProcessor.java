@@ -26,10 +26,9 @@ import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.processor.advice.AnonymousViewCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -90,7 +89,7 @@ public class TopProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/top", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTop(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/index.ftl");
@@ -110,7 +109,7 @@ public class TopProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/top/link", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showLink(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/link.ftl");
@@ -131,7 +130,7 @@ public class TopProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/top/balance", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showBalance(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/balance.ftl");
@@ -152,7 +151,7 @@ public class TopProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/top/consumption", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showConsumption(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/consumption.ftl");
@@ -173,7 +172,7 @@ public class TopProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/top/checkin", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCheckin(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "top/checkin.ftl");

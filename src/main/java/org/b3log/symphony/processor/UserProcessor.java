@@ -35,12 +35,10 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.AnonymousViewCheck;
-import org.b3log.symphony.processor.advice.CSRFToken;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.UserBlockCheck;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
+import org.b3log.symphony.processor.middleware.UserCheckMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
@@ -175,7 +173,7 @@ public class UserProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = {"/member/{userName}/breezemoons", "/member/{userName}/breezemoons/{breezemoonId}"}, method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class, UserCheckMidware.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeBreezemoons(final RequestContext context) {
         final String breezemoonId = context.pathVar("breezemoonId");
@@ -250,7 +248,7 @@ public class UserProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/member/{userName}/comments/anonymous", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, UserBlockCheck.class})
+    @Before({StopwatchStartAdvice.class, UserCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeAnonymousComments(final RequestContext context) {
         final Request request = context.getRequest();
@@ -324,7 +322,7 @@ public class UserProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/member/{userName}/articles/anonymous", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, UserBlockCheck.class})
+    @Before({StopwatchStartAdvice.class, UserCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAnonymousArticles(final RequestContext context) {
         final String userName = context.pathVar("userName");
@@ -400,7 +398,7 @@ public class UserProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/member/{userName}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class, UserCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHome(final RequestContext context) {
         final String userName = context.pathVar("userName");
@@ -469,7 +467,7 @@ public class UserProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/member/{userName}/comments", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class, UserCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeComments(final RequestContext context) {
         final Request request = context.getRequest();
@@ -531,7 +529,7 @@ public class UserProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/member/{userName}/following/users", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class, UserCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingUsers(final RequestContext context) {
         final Request request = context.getRequest();
@@ -594,7 +592,7 @@ public class UserProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/member/{userName}/following/tags", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class, UserCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingTags(final RequestContext context) {
         final Request request = context.getRequest();
@@ -657,7 +655,7 @@ public class UserProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/member/{userName}/following/articles", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class, UserCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowingArticles(final RequestContext context) {
         final Request request = context.getRequest();
@@ -720,7 +718,7 @@ public class UserProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/member/{userName}/watching/articles", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class, UserCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeWatchingArticles(final RequestContext context) {
         final Request request = context.getRequest();
@@ -783,7 +781,7 @@ public class UserProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/member/{userName}/followers", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class, UserCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomeFollowers(final RequestContext context) {
         final Request request = context.getRequest();
@@ -852,7 +850,7 @@ public class UserProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/member/{userName}/points", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class, UserBlockCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class, UserCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHomePoints(final RequestContext context) {
         final Request request = context.getRequest();

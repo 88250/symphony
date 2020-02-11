@@ -25,10 +25,9 @@ import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.symphony.processor.advice.AnonymousViewCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
 
 import java.util.Map;
@@ -58,7 +57,7 @@ public class ChargeProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/charge/point", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showChargePoint(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "charge-point.ftl");

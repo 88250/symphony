@@ -39,10 +39,9 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.advice.AnonymousViewCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -132,7 +131,7 @@ public class IndexProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = {"/qna", "/qna/unanswered", "/qna/reward", "/qna/hot"}, method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showQnA(final RequestContext context) {
         final Request request = context.getRequest();
@@ -208,7 +207,7 @@ public class IndexProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = {"/watch", "/watch/users"}, method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showWatch(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "watch.ftl");
@@ -296,7 +295,7 @@ public class IndexProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = {"/recent", "/recent/hot", "/recent/good", "/recent/reply"}, method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showRecent(final RequestContext context) {
         final Request request = context.getRequest();
@@ -384,7 +383,7 @@ public class IndexProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/hot", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showHotArticles(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "hot.ftl");
@@ -418,7 +417,7 @@ public class IndexProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/perfect", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showPerfectArticles(final RequestContext context) {
         final Request request = context.getRequest();

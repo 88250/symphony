@@ -15,8 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.processor.advice;
+package org.b3log.symphony.processor.middleware.validate;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
@@ -24,56 +25,52 @@ import org.b3log.latke.http.advice.ProcessAdvice;
 import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.model.User;
-import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.service.UserMgmtService;
-import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Sessions;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.symphony.model.Article;
+import org.b3log.symphony.service.ArticleQueryService;
 import org.json.JSONObject;
 
 /**
- * Login check. Gets user from request attribute named "user" if logged in.
+ * Validates for show article update.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.3, Jun 2, 2018
- * @since 0.2.5
+ * @version 1.0.0.0, Mar 11, 2013
+ * @since 0.2.0
  */
 @Singleton
-public class LoginCheck extends ProcessAdvice {
+public class ShowArticleUpdateValidation extends ProcessAdvice {
 
     /**
-     * User query service.
+     * Language service.
      */
     @Inject
-    private UserQueryService userQueryService;
+    private LangPropsService langPropsService;
 
     /**
-     * User management service.
+     * Article query service.
      */
     @Inject
-    private UserMgmtService userMgmtService;
+    private ArticleQueryService articleQueryService;
 
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final Request request = context.getRequest();
 
-        final JSONObject exception = new JSONObject();
-        exception.put(Keys.MSG, "401, " + context.requestURI());
-        exception.put(Keys.STATUS_CODE, 401);
+        JSONObject article;
+        try {
+            final String articleId = context.param("id");
+            if (StringUtils.isBlank(articleId)) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("updateArticleNotFoundLabel")));
+            }
 
-        JSONObject currentUser = Sessions.getUser();
-        if (null == currentUser) {
-            throw new RequestProcessAdviceException(exception);
+            article = articleQueryService.getArticleById(articleId);
+            if (null == article) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("updateArticleNotFoundLabel")));
+            }
+        } catch (final Exception e) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
 
-        final int point = currentUser.optInt(UserExt.USER_POINT);
-        final int appRole = currentUser.optInt(UserExt.USER_APP_ROLE);
-        if (UserExt.USER_APP_ROLE_C_HACKER == appRole) {
-            currentUser.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(point));
-        } else {
-            currentUser.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(point));
-        }
-
-        request.setAttribute(User.USER, currentUser);
+        request.setAttribute(Article.ARTICLE, article);
     }
 }

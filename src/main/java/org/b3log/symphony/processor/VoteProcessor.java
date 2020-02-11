@@ -28,8 +28,8 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.LoginCheck;
-import org.b3log.symphony.processor.advice.PermissionCheck;
+import org.b3log.symphony.processor.middleware.LoginCheckMidware;
+import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
@@ -108,7 +108,7 @@ public class VoteProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/vote/up/comment", method = HttpMethod.POST)
-    @Before({LoginCheck.class, PermissionCheck.class})
+    @Before({LoginCheckMidware.class, PermissionMidware.class})
     public void voteUpComment(final RequestContext context) {
         context.renderJSON();
 
@@ -162,7 +162,7 @@ public class VoteProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/vote/down/comment", method = HttpMethod.POST)
-    @Before({LoginCheck.class, PermissionCheck.class})
+    @Before({LoginCheckMidware.class, PermissionMidware.class})
     public void voteDownComment(final RequestContext context) {
         context.renderJSON();
 
@@ -218,7 +218,7 @@ public class VoteProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/vote/up/article", method = HttpMethod.POST)
-    @Before({LoginCheck.class, PermissionCheck.class})
+    @Before({LoginCheckMidware.class, PermissionMidware.class})
     public void voteUpArticle(final RequestContext context) {
         context.renderJSON();
 
@@ -273,7 +273,7 @@ public class VoteProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/vote/down/article", method = HttpMethod.POST)
-    @Before({LoginCheck.class, PermissionCheck.class})
+    @Before({LoginCheckMidware.class, PermissionMidware.class})
     public void voteDownArticle(final RequestContext context) {
         context.renderJSON();
 

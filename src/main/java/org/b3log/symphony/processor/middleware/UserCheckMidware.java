@@ -15,13 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.processor.advice;
+package org.b3log.symphony.processor.middleware;
 
-import org.b3log.latke.Keys;
-import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
@@ -30,14 +26,14 @@ import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
 /**
- * User block check. Gets user from request attribute named "user".
+ * User check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.2, Apr 23, 2017
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 0.2.5
  */
 @Singleton
-public class UserBlockCheck extends ProcessAdvice {
+public class UserCheckMidware {
 
     /**
      * User query service.
@@ -45,36 +41,36 @@ public class UserBlockCheck extends ProcessAdvice {
     @Inject
     private UserQueryService userQueryService;
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final Request request = context.getRequest();
-
-        final JSONObject exception = new JSONObject();
-        exception.put(Keys.MSG, 404);
-        exception.put(Keys.STATUS_CODE, 404);
-
+    public void handle(final RequestContext context) {
         final String userName = context.pathVar("userName");
         if (UserExt.NULL_USER_NAME.equals(userName)) {
-            exception.put(Keys.MSG, "Nil User [" + userName + ", requestURI=" + context.requestURI() + "]");
-            throw new RequestProcessAdviceException(exception);
+            context.sendError(404);
+            context.abort();
         }
 
         final JSONObject user = userQueryService.getUserByName(userName);
         if (null == user) {
-            exception.put(Keys.MSG, "Not found user [" + userName + ", requestURI=" + context.requestURI() + "]");
-            throw new RequestProcessAdviceException(exception);
+            context.sendError(404);
+            context.abort();
+
+            return;
         }
 
         if (UserExt.USER_STATUS_C_NOT_VERIFIED == user.optInt(UserExt.USER_STATUS)) {
-            exception.put(Keys.MSG, "Unverified User [" + userName + ", requestURI=" + context.requestURI() + "]");
-            throw new RequestProcessAdviceException(exception);
+            context.sendError(404);
+            context.abort();
+
+            return;
         }
 
         if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
-            exception.put(Keys.MSG, "Blocked User [" + userName + ", requestURI=" + context.requestURI() + "]");
-            throw new RequestProcessAdviceException(exception);
+            context.sendError(404);
+            context.abort();
+
+            return;
         }
 
-        request.setAttribute(User.USER, user);
+        context.attr(User.USER, user);
+        context.handle();
     }
 }

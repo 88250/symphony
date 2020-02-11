@@ -34,12 +34,11 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Times;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.advice.AnonymousViewCheck;
-import org.b3log.symphony.processor.advice.LoginCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
+import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
+import org.b3log.symphony.processor.middleware.LoginCheckMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.validate.ChatMsgAddValidation;
 import org.b3log.symphony.processor.channel.ChatroomChannel;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
@@ -144,7 +143,7 @@ public class ChatroomProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/chat-room/send", method = HttpMethod.POST)
-    @Before({LoginCheck.class, ChatMsgAddValidation.class})
+    @Before({LoginCheckMidware.class, ChatMsgAddValidation.class})
     public synchronized void addChatRoomMsg(final RequestContext context) {
         context.renderJSON();
 
@@ -193,7 +192,7 @@ public class ChatroomProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/cr", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showChatRoom(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "chat-room.ftl");

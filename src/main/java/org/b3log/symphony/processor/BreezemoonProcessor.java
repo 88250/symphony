@@ -36,9 +36,9 @@ import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Breezemoon;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.advice.*;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.*;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.BreezemoonMgmtService;
 import org.b3log.symphony.service.BreezemoonQueryService;
 import org.b3log.symphony.service.DataModelService;
@@ -103,7 +103,7 @@ public class BreezemoonProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/watch/breezemoons", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showWatchBreezemoon(final RequestContext context) {
         final Request request = context.getRequest();
@@ -155,7 +155,7 @@ public class BreezemoonProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/breezemoon", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class, CSRFMidware.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void addBreezemoon(final RequestContext context) {
         context.renderJSON();
@@ -205,7 +205,7 @@ public class BreezemoonProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/breezemoon/{id}", method = HttpMethod.PUT)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class, CSRFMidware.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void updateBreezemoon(final RequestContext context) {
         final String id = context.pathVar("id");
@@ -251,7 +251,7 @@ public class BreezemoonProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/breezemoon/{id}", method = HttpMethod.DELETE)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class, CSRFMidware.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void removeBreezemoon(final RequestContext context) {
         final String id = context.pathVar("id");

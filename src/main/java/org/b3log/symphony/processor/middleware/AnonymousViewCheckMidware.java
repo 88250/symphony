@@ -15,20 +15,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.processor.advice;
+package org.b3log.symphony.processor.middleware;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.Cookie;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Response;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.repository.RepositoryException;
@@ -51,16 +47,16 @@ import java.util.Set;
  * Anonymous view check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.1, Oct 21, 2018
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 1.6.0
  */
 @Singleton
-public class AnonymousViewCheck extends ProcessAdvice {
+public class AnonymousViewCheckMidware {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LogManager.getLogger(AnonymousViewCheck.class);
+    private static final Logger LOGGER = LogManager.getLogger(AnonymousViewCheckMidware.class);
 
     /**
      * Article repository.
@@ -111,8 +107,7 @@ public class AnonymousViewCheck extends ProcessAdvice {
         response.addCookie(cookie);
     }
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
+    public void handle(final RequestContext context) {
         final Request request = context.getRequest();
         final String requestURI = context.requestURI();
 
@@ -123,87 +118,90 @@ public class AnonymousViewCheck extends ProcessAdvice {
             }
         }
 
-        final JSONObject exception404 = new JSONObject();
-        exception404.put(Keys.MSG, "404, " + context.requestURI());
-        exception404.put(Keys.STATUS_CODE, 404);
-
-        final JSONObject exception401 = new JSONObject();
-        exception401.put(Keys.MSG, "401, " + context.requestURI());
-        exception401.put(Keys.STATUS_CODE, 401);
-
         if (requestURI.startsWith(Latkes.getContextPath() + "/article/")) {
             final String articleId = StringUtils.substringAfter(requestURI, Latkes.getContextPath() + "/article/");
 
             try {
                 final JSONObject article = articleRepository.get(articleId);
                 if (null == article) {
-                    throw new RequestProcessAdviceException(exception404);
+                    context.sendError(404);
+                    context.abort();
+
+                    return;
                 }
 
-                if (Article.ARTICLE_ANONYMOUS_VIEW_C_NOT_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)
-                        && !Sessions.isLoggedIn()) {
-                    throw new RequestProcessAdviceException(exception401);
+                if (Article.ARTICLE_ANONYMOUS_VIEW_C_NOT_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW) && !Sessions.isLoggedIn()) {
+                    context.sendError(401);
+                    context.abort();
+
+                    return;
                 } else if (Article.ARTICLE_ANONYMOUS_VIEW_C_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)) {
+                    context.handle();
+
                     return;
                 }
             } catch (final RepositoryException e) {
-                LOGGER.log(Level.ERROR, "Get article [id=" + articleId + "] failed", e);
+                context.sendError(500);
+                context.abort();
 
-                throw new RequestProcessAdviceException(exception404);
+                return;
             }
         }
 
-        try {
-            // Check if admin allow to anonymous view
-            final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
-            if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
-                final JSONObject currentUser = Sessions.getUser();
 
-                // https://github.com/b3log/symphony/issues/373
-                final String cookieNameVisits = "anonymous-visits";
-                final Cookie visitsCookie = getCookie(request, cookieNameVisits);
+        // Check if admin allow to anonymous view
+        final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
+        if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
+            final JSONObject currentUser = Sessions.getUser();
 
-                if (null == currentUser) {
-                    if (null != visitsCookie) {
-                        final JSONArray uris = new JSONArray(URLs.decode(visitsCookie.getValue()));
-                        for (int i = 0; i < uris.length(); i++) {
-                            final String uri = uris.getString(i);
-                            if (uri.equals(requestURI)) {
-                                return;
-                            }
+            // https://github.com/b3log/symphony/issues/373
+            final String cookieNameVisits = "anonymous-visits";
+            final Cookie visitsCookie = getCookie(request, cookieNameVisits);
+
+            if (null == currentUser) {
+                if (null != visitsCookie) {
+                    final JSONArray uris = new JSONArray(URLs.decode(visitsCookie.getValue()));
+                    for (int i = 0; i < uris.length(); i++) {
+                        final String uri = uris.getString(i);
+                        if (uri.equals(requestURI)) {
+                            return;
                         }
+                    }
 
-                        uris.put(requestURI);
-                        if (uris.length() > Symphonys.ANONYMOUS_VIEW_URIS) {
-                            throw new RequestProcessAdviceException(exception401);
-                        }
-
-                        addCookie(context.getResponse(), cookieNameVisits, URLs.encode(uris.toString()));
-
-                        return;
-                    } else {
-                        final JSONArray uris = new JSONArray();
-                        uris.put(requestURI);
-                        addCookie(context.getResponse(), cookieNameVisits, URLs.encode(uris.toString()));
+                    uris.put(requestURI);
+                    if (uris.length() > Symphonys.ANONYMOUS_VIEW_URIS) {
+                        context.sendError(401);
+                        context.abort();
 
                         return;
                     }
-                } else { // logged in
-                    if (null != visitsCookie) {
-                        final Cookie cookie = new Cookie(cookieNameVisits, "");
-                        cookie.setMaxAge(0);
-                        cookie.setPath("/");
 
-                        context.getResponse().addCookie(cookie);
-                    }
+                    addCookie(context.getResponse(), cookieNameVisits, URLs.encode(uris.toString()));
+                    context.handle();
+
+                    return;
+                } else {
+                    final JSONArray uris = new JSONArray();
+                    uris.put(requestURI);
+                    addCookie(context.getResponse(), cookieNameVisits, URLs.encode(uris.toString()));
+                    context.handle();
+
+                    return;
+                }
+            } else { // logged in
+                if (null != visitsCookie) {
+                    final Cookie cookie = new Cookie(cookieNameVisits, "");
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+
+                    context.getResponse().addCookie(cookie);
+                    context.handle();
+
+                    return;
                 }
             }
-        } catch (final RequestProcessAdviceException e) {
-            throw e;
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Anonymous view check failed: " + e.getMessage());
-
-            throw new RequestProcessAdviceException(exception401);
         }
+
+        context.handle();
     }
 }

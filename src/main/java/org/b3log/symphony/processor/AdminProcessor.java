@@ -45,12 +45,11 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.ArticleBaiduSender;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.PermissionCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
-import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
+import org.b3log.symphony.processor.middleware.PermissionMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.validate.UserRegister2Validation;
+import org.b3log.symphony.processor.middleware.validate.UserRegisterValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Sessions;
@@ -316,7 +315,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/auditlog", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAuditlog(final RequestContext context) {
         final Request request = context.getRequest();
@@ -353,7 +352,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/report/ignore/{reportId}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void makeReportIgnored(final RequestContext context) {
         final String reportId = context.pathVar("reportId");
@@ -370,7 +369,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/report/{reportId}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void makeReportHandled(final RequestContext context) {
         final String reportId = context.pathVar("reportId");
@@ -387,7 +386,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/reports", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showReports(final RequestContext context) {
         final Request request = context.getRequest();
@@ -425,7 +424,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/role/{roleId}/remove", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void removeRole(final RequestContext context) {
         final String roleId = context.pathVar("roleId");
@@ -455,7 +454,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/breezemoons", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showBreezemoons(final RequestContext context) {
         final Request request = context.getRequest();
@@ -498,7 +497,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/breezemoon/{breezemoonId}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showBreezemoon(final RequestContext context) {
         final String breezemoonId = context.pathVar("breezemoonId");
@@ -519,7 +518,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/breezemoon/{breezemoonId}", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateBreezemoon(final RequestContext context) {
         final String breezemoonId = context.pathVar("breezemoonId");
@@ -563,7 +562,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/remove-breezemoon", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void removeBreezemoon(final RequestContext context) {
         final Request request = context.getRequest();
@@ -585,7 +584,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/tags/remove-unused", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void removeUnusedTags(final RequestContext context) {
         context.renderJSON(true);
@@ -600,7 +599,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/role", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void addRole(final RequestContext context) {
         final Request request = context.getRequest();
@@ -629,7 +628,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/role/{roleId}/permissions", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void updateRolePermissions(final RequestContext context) {
         final String roleId = context.pathVar("roleId");
@@ -651,7 +650,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/role/{roleId}/permissions", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showRolePermissions(final RequestContext context) {
         final String roleId = context.pathVar("roleId");
@@ -687,7 +686,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/roles", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showRoles(final RequestContext context) {
 
@@ -708,7 +707,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/ad/side", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateSideAd(final RequestContext context) {
         final Request request = context.getRequest();
@@ -737,7 +736,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/ad/banner", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateBanner(final RequestContext context) {
         final Request request = context.getRequest();
@@ -766,7 +765,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/ad", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAd(final RequestContext context) {
 
@@ -795,7 +794,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-tag", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddTag(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/add-tag.ftl");
@@ -809,7 +808,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-tag", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void addTag(final RequestContext context) {
         final Request request = context.getRequest();
@@ -868,7 +867,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/stick-article", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void stickArticle(final RequestContext context) {
         final Request request = context.getRequest();
@@ -885,7 +884,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/cancel-stick-article", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void stickCancelArticle(final RequestContext context) {
         final Request request = context.getRequest();
@@ -902,7 +901,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/invitecodes/generate", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void generateInvitecodes(final RequestContext context) {
         final Request request = context.getRequest();
@@ -932,7 +931,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/invitecodes", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showInvitecodes(final RequestContext context) {
         final Request request = context.getRequest();
@@ -969,7 +968,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/invitecode/{invitecodeId}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showInvitecode(final RequestContext context) {
         final String invitecodeId = context.pathVar("invitecodeId");
@@ -988,7 +987,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/invitecode/{invitecodeId}", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateInvitecode(final RequestContext context) {
         final String invitecodeId = context.pathVar("invitecodeId");
@@ -1028,7 +1027,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-article", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddArticle(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/add-article.ftl");
@@ -1042,7 +1041,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-article", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void addArticle(final RequestContext context) {
         final Request request = context.getRequest();
@@ -1107,7 +1106,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-reserved-word", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void addReservedWord(final RequestContext context) {
         final Request request = context.getRequest();
@@ -1154,7 +1153,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-reserved-word", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddReservedWord(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/add-reserved-word.ftl");
@@ -1168,7 +1167,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/reserved-word/{id}", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateReservedWord(final RequestContext context) {
         final String id = context.pathVar("id");
@@ -1200,7 +1199,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/reserved-words", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showReservedWords(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/reserved-words.ftl");
@@ -1217,7 +1216,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/reserved-word/{id}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showReservedWord(final RequestContext context) {
         final String id = context.pathVar("id");
@@ -1236,7 +1235,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/remove-reserved-word", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void removeReservedWord(final RequestContext context) {
         final Request request = context.getRequest();
@@ -1256,7 +1255,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/remove-comment", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void removeComment(final RequestContext context) {
         final Request request = context.getRequest();
@@ -1274,7 +1273,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/remove-article", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void removeArticle(final RequestContext context) {
         final Request request = context.getRequest();
@@ -1292,7 +1291,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAdminIndex(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/index.ftl");
@@ -1313,7 +1312,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/users", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showUsers(final RequestContext context) {
         final Request request = context.getRequest();
@@ -1354,7 +1353,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/user/{userId}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showUser(final RequestContext context) {
         final String userId = context.pathVar("userId");
@@ -1378,7 +1377,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-user", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddUser(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/add-user.ftl");
@@ -1392,7 +1391,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-user", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void addUser(final RequestContext context) {
         final Request request = context.getRequest();
@@ -1456,7 +1455,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/user/{userId}", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateUser(final RequestContext context) {
         final String userId = context.pathVar("userId");
@@ -1545,7 +1544,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/user/{userId}/email", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateUserEmail(final RequestContext context) {
         final String userId = context.pathVar("userId");
@@ -1585,7 +1584,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/user/{userId}/username", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateUserName(final RequestContext context) {
         final String userId = context.pathVar("userId");
@@ -1625,7 +1624,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/user/{userId}/charge-point", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void chargePoint(final RequestContext context) {
         final String userId = context.pathVar("userId");
@@ -1672,7 +1671,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/user/{userId}/abuse-point", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void abusePoint(final RequestContext context) {
         final String userId = context.pathVar("userId");
@@ -1723,7 +1722,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/user/{userId}/init-point", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void initPoint(final RequestContext context) {
         final String userId = context.pathVar("userId");
@@ -1765,7 +1764,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/user/{userId}/exchange-point", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void exchangePoint(final RequestContext context) {
         final String userId = context.pathVar("userId");
@@ -1816,7 +1815,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/articles", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showArticles(final RequestContext context) {
         final Request request = context.getRequest();
@@ -1869,7 +1868,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/article/{articleId}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showArticle(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/article.ftl");
@@ -1889,7 +1888,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/article/{articleId}", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateArticle(final RequestContext context) {
         final String articleId = context.pathVar("articleId");
@@ -1944,7 +1943,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/comments", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showComments(final RequestContext context) {
         final Request request = context.getRequest();
@@ -1989,7 +1988,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/comment/{commentId}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showComment(final RequestContext context) {
         final String commentId = context.pathVar("commentId");
@@ -2010,7 +2009,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/comment/{commentId}", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateComment(final RequestContext context) {
         final String commentId = context.pathVar("commentId");
@@ -2051,7 +2050,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/misc", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showMisc(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/misc.ftl");
@@ -2069,7 +2068,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/misc", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateMisc(final RequestContext context) {
         final Request request = context.getRequest();
@@ -2109,7 +2108,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/tags", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTags(final RequestContext context) {
         final Request request = context.getRequest();
@@ -2164,7 +2163,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTag(final RequestContext context) {
         final String tagId = context.pathVar("tagId");
@@ -2194,7 +2193,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateTag(final RequestContext context) {
         final String tagId = context.pathVar("tagId");
@@ -2251,7 +2250,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/domains", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDomains(final RequestContext context) {
         final Request request = context.getRequest();
@@ -2300,7 +2299,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/domain/{domainId}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDomain(final RequestContext context) {
         final String domainId = context.pathVar("domainId");
@@ -2321,7 +2320,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/domain/{domainId}", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void updateDomain(final RequestContext context) {
         final String domainId = context.pathVar("domainId");
@@ -2366,7 +2365,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-domain", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddDomain(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/add-domain.ftl");
@@ -2380,7 +2379,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/add-domain", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void addDomain(final RequestContext context) {
         final Request request = context.getRequest();
@@ -2435,7 +2434,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/remove-domain", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void removeDomain(final RequestContext context) {
         final Request request = context.getRequest();
@@ -2453,7 +2452,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/domain/{domainId}/add-tag", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void addDomainTag(final RequestContext context) {
         final String domainId = context.pathVar("domainId");
@@ -2537,7 +2536,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/domain/{domainId}/remove-tag", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void removeDomainTag(final RequestContext context) {
         final String domainId = context.pathVar("domainId");
@@ -2573,7 +2572,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/search/index", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void rebuildArticleSearchIndex(final RequestContext context) {
         context.renderJSON(true);
@@ -2623,7 +2622,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin/search-index-article", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void rebuildOneArticleSearchIndex(final RequestContext context) {
         final String articleId = context.getRequest().getParameter(Article.ARTICLE_T_ID);

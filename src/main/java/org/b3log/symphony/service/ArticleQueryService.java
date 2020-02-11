@@ -37,7 +37,7 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.*;
 import org.b3log.symphony.cache.ArticleCache;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
+import org.b3log.symphony.processor.middleware.validate.UserRegisterValidation;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.*;

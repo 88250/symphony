@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.processor.advice;
+package org.b3log.symphony.processor.middleware;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Level;
@@ -24,10 +24,9 @@ import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
-import org.b3log.latke.http.handler.MatchResult;
 import org.b3log.latke.http.handler.RouteHandler;
+import org.b3log.latke.http.handler.RouteResolution;
+import org.b3log.latke.http.renderer.AbstractResponseRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
@@ -40,22 +39,24 @@ import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * Permission check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Dec 19, 2018
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 1.8.0
  */
 @Singleton
-public class PermissionCheck extends ProcessAdvice {
+public class PermissionMidware {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LogManager.getLogger(PermissionCheck.class);
+    private static final Logger LOGGER = LogManager.getLogger(PermissionMidware.class);
 
     /**
      * Language service.
@@ -68,10 +69,33 @@ public class PermissionCheck extends ProcessAdvice {
     @Inject
     private RoleQueryService roleQueryService;
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        Stopwatchs.start("Check Permissions");
+    public void grant(final RequestContext context) {
+        final AbstractResponseRenderer renderer = context.getRenderer();
+        if (null == renderer) {
+            return;
+        }
 
+        Stopwatchs.start("Grant permissions");
+        try {
+            final Map<String, Object> dataModel = context.getRenderer().getRenderDataModel();
+
+            final JSONObject user = Sessions.getUser();
+            final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
+            final Map<String, JSONObject> permissionsGrant = roleQueryService.getPermissionsGrantMap(roleId);
+            dataModel.put(Permission.PERMISSIONS, permissionsGrant);
+
+            final JSONObject role = roleQueryService.getRole(roleId);
+
+            String noPermissionLabel = langPropsService.get("noPermissionLabel");
+            noPermissionLabel = noPermissionLabel.replace("{roleName}", role.optString(Role.ROLE_NAME));
+            dataModel.put("noPermissionLabel", noPermissionLabel);
+        } finally {
+            Stopwatchs.end();
+        }
+    }
+
+    public void check(final RequestContext context) {
+        Stopwatchs.start("Check Permissions");
         try {
             final JSONObject exception = new JSONObject();
             exception.put(Keys.MSG, langPropsService.get("noPermissionLabel"));
@@ -83,26 +107,44 @@ public class PermissionCheck extends ProcessAdvice {
             String rule = prefix;
 
             try {
-                final MatchResult matchResult = RouteHandler.doMatch(requestURI, method);
-                rule += matchResult.getMatchedUriTemplate() + "." + method;
+                final RouteResolution routeResolution = RouteHandler.doMatch(requestURI, method);
+                rule += routeResolution.getMatchedUriTemplate() + "." + method;
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Match method failed", e);
 
-                throw new RequestProcessAdviceException(exception);
+                context.sendError(500);
+                context.abort();
+
+                return;
             }
 
             final Set<String> requisitePermissions = Symphonys.URL_PERMISSION_RULES.get(rule);
             if (null == requisitePermissions) {
+                context.handle();
+
                 return;
             }
 
             final JSONObject user = Sessions.getUser();
             final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
+            final String userName = null != user ? " " + user.optString(User.USER_NAME) + " " : "";
             final Set<String> grantPermissions = roleQueryService.getPermissions(roleId);
 
             if (!Permission.hasPermission(requisitePermissions, grantPermissions)) {
-                throw new RequestProcessAdviceException(exception);
+                final Map<String, Object> errDataModel = new HashMap<>();
+                String noPermissionLabel = langPropsService.get("noPermissionLabel");
+                final JSONObject role = roleQueryService.getRole(roleId);
+                noPermissionLabel = noPermissionLabel.replace("{roleName}", role.optString(Role.ROLE_NAME));
+                noPermissionLabel = noPermissionLabel.replace("{user}", userName);
+                errDataModel.put("noPermissionLabel", noPermissionLabel);
+
+                context.sendError(403, errDataModel);
+                context.abort();
+
+                return;
             }
+
+            context.handle();
         } finally {
             Stopwatchs.end();
         }

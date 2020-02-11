@@ -31,10 +31,9 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.LoginCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.LoginCheckMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
@@ -101,7 +100,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/remove/{type}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After(StopwatchEndAdvice.class)
     public void removeNotifications(final RequestContext context) {
         final String type = context.pathVar("type"); // commented/reply/at/following/point/broadcast
@@ -167,7 +166,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/remove", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After(StopwatchEndAdvice.class)
     public void removeNotification(final RequestContext context) {
         context.renderJSON(true);
@@ -195,7 +194,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/sys-announce", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showSysAnnounceNotifications(final RequestContext context) {
         final Request request = context.getRequest();
@@ -238,7 +237,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/all-read", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After(StopwatchEndAdvice.class)
     public void makeAllNotificationsRead(final RequestContext context) {
         final JSONObject currentUser = Sessions.getUser();
@@ -255,7 +254,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/read/{type}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After(StopwatchEndAdvice.class)
     public void makeNotificationReadByType(final RequestContext context) {
         final String type = context.pathVar("type"); // "commented"/"at"/"following"
@@ -304,7 +303,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/read", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After(StopwatchEndAdvice.class)
     public void makeNotificationRead(final RequestContext context) {
         final JSONObject requestJSONObject = context.requestJSON();
@@ -324,7 +323,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After(StopwatchEndAdvice.class)
     public void navigateNotifications(final RequestContext context) {
         final JSONObject currentUser = Sessions.getUser();
@@ -402,7 +401,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/point", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showPointNotifications(final RequestContext context) {
         final Request request = context.getRequest();
@@ -495,7 +494,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/commented", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCommentedNotifications(final RequestContext context) {
         final Request request = context.getRequest();
@@ -542,7 +541,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/reply", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showReplyNotifications(final RequestContext context) {
         final Request request = context.getRequest();
@@ -590,7 +589,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/at", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAtNotifications(final RequestContext context) {
         final Request request = context.getRequest();
@@ -647,7 +646,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/following", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showFollowingNotifications(final RequestContext context) {
         final Request request = context.getRequest();
@@ -696,7 +695,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/broadcast", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showBroadcastNotifications(final RequestContext context) {
         final Request request = context.getRequest();
@@ -745,7 +744,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/notifications/unread/count", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({StopwatchEndAdvice.class})
     public void getUnreadNotificationCount(final RequestContext context) {
         final JSONObject currentUser = Sessions.getUser();

@@ -15,9 +15,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.processor.advice.validate;
+package org.b3log.symphony.processor.middleware.validate;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
@@ -25,20 +24,21 @@ import org.b3log.latke.http.advice.ProcessAdvice;
 import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.latke.util.Strings;
+import org.b3log.symphony.processor.CaptchaProcessor;
 import org.json.JSONObject;
 
 /**
- * Validates for show article update.
+ * User forget password form validation.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 11, 2013
- * @since 0.2.0
+ * @version 1.0.1.0, Mar 10, 2016
+ * @since 1.4.0
  */
 @Singleton
-public class ShowArticleUpdateValidation extends ProcessAdvice {
+public class UserForgetPwdValidation extends ProcessAdvice {
 
     /**
      * Language service.
@@ -46,31 +46,38 @@ public class ShowArticleUpdateValidation extends ProcessAdvice {
     @Inject
     private LangPropsService langPropsService;
 
-    /**
-     * Article query service.
-     */
-    @Inject
-    private ArticleQueryService articleQueryService;
-
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final Request request = context.getRequest();
 
-        JSONObject article;
+        JSONObject requestJSONObject;
         try {
-            final String articleId = context.param("id");
-            if (StringUtils.isBlank(articleId)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("updateArticleNotFoundLabel")));
-            }
-
-            article = articleQueryService.getArticleById(articleId);
-            if (null == article) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("updateArticleNotFoundLabel")));
-            }
+            requestJSONObject = context.requestJSON();
+            request.setAttribute(Keys.REQUEST, requestJSONObject);
         } catch (final Exception e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
 
-        request.setAttribute(Article.ARTICLE, article);
+        final String email = requestJSONObject.optString(User.USER_EMAIL);
+        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
+
+        checkField(CaptchaProcessor.invalidCaptcha(captcha), "submitFailedLabel", "captchaErrorLabel");
+        checkField(!Strings.isEmail(email), "submitFailedLabel", "invalidEmailLabel");
+    }
+
+    /**
+     * Checks field.
+     *
+     * @param invalid    the specified invalid flag
+     * @param failLabel  the specified fail label
+     * @param fieldLabel the specified field label
+     * @throws RequestProcessAdviceException request process advice exception
+     */
+    private void checkField(final boolean invalid, final String failLabel, final String fieldLabel)
+            throws RequestProcessAdviceException {
+        if (invalid) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get(failLabel)
+                    + " - " + langPropsService.get(fieldLabel)));
+        }
     }
 }

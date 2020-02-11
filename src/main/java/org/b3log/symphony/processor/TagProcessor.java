@@ -33,10 +33,9 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.AnonymousViewCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
@@ -131,7 +130,7 @@ public class TagProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/tags", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTagsWall(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "tags.ftl");
@@ -153,7 +152,7 @@ public class TagProcessor {
      */
     @RequestProcessing(value = {"/tag/{tagURI}", "/tag/{tagURI}/hot", "/tag/{tagURI}/good", "/tag/{tagURI}/reply",
             "/tag/{tagURI}/perfect"}, method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showTagArticles(final RequestContext context) {
         final String tagURI = context.pathVar("tagURI");

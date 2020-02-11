@@ -44,12 +44,12 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.*;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.advice.validate.ArticleAddValidation;
-import org.b3log.symphony.processor.advice.validate.ArticleUpdateValidation;
-import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
+import org.b3log.symphony.processor.middleware.*;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.validate.ArticleAddValidation;
+import org.b3log.symphony.processor.middleware.validate.ArticleUpdateValidation;
+import org.b3log.symphony.processor.middleware.validate.UserRegisterValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
@@ -203,7 +203,7 @@ public class ArticleProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/article/{id}/remove", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class, PermissionMidware.class})
     @After({StopwatchEndAdvice.class})
     public void removeArticle(final RequestContext context) {
         final String id = context.pathVar("id");
@@ -249,7 +249,7 @@ public class ArticleProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/article/check-title", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({StopwatchEndAdvice.class})
     public void checkArticleTitle(final RequestContext context) {
         final Request request = context.getRequest();
@@ -330,7 +330,7 @@ public class ArticleProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/article/{articleId}/image", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({StopwatchEndAdvice.class})
     public void getArticleImage(final RequestContext context) {
         final String articleId = context.pathVar("articleId");
@@ -405,7 +405,7 @@ public class ArticleProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/article/{id}/revisions", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class, PermissionMidware.class})
     @After({StopwatchEndAdvice.class})
     public void getArticleRevisions(final RequestContext context) {
         final String id = context.pathVar("id");
@@ -423,7 +423,7 @@ public class ArticleProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/pre-post", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showPreAddArticle(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/pre-post.ftl");
@@ -474,7 +474,7 @@ public class ArticleProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/post", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showAddArticle(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/post.ftl");
@@ -583,7 +583,7 @@ public class ArticleProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/article/{articleId}", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showArticle(final RequestContext context) {
         final String articleId = context.pathVar("articleId");
@@ -879,7 +879,7 @@ public class ArticleProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/article", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleAddValidation.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class, CSRFMidware.class, ArticleAddValidation.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void addArticle(final RequestContext context) {
         context.renderJSON();
@@ -956,7 +956,7 @@ public class ArticleProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/update", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showUpdateArticle(final RequestContext context) {
         final String articleId = context.param("id");
@@ -1025,7 +1025,7 @@ public class ArticleProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/article/{id}", method = HttpMethod.PUT)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleUpdateValidation.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class, CSRFMidware.class, ArticleUpdateValidation.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void updateArticle(final RequestContext context) {
         final String id = context.pathVar("id");
@@ -1236,7 +1236,7 @@ public class ArticleProcessor {
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/article/thank", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void thank(final RequestContext context) {
         final Request request = context.getRequest();
@@ -1274,7 +1274,7 @@ public class ArticleProcessor {
      * @param context the specified HTTP request context
      */
     @RequestProcessing(value = "/article/stick", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
     public void stickArticle(final RequestContext context) {
         final Request request = context.getRequest();

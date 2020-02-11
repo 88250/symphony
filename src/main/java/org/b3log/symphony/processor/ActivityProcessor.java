@@ -23,28 +23,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.After;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.advice.CSRFCheck;
-import org.b3log.symphony.processor.advice.CSRFToken;
-import org.b3log.symphony.processor.advice.LoginCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.advice.validate.Activity1A0001CollectValidation;
-import org.b3log.symphony.processor.advice.validate.Activity1A0001Validation;
+import org.b3log.symphony.processor.middleware.CSRFMidware;
+import org.b3log.symphony.processor.middleware.LoginCheckMidware;
+import org.b3log.symphony.processor.middleware.PermissionMidware;
+import org.b3log.symphony.processor.middleware.validate.Activity1A0001CollectValidationMidware;
+import org.b3log.symphony.processor.middleware.validate.Activity1A0001ValidationMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
@@ -73,10 +68,10 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
- * @version 1.9.1.15, Jan 21, 2019
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 1.3.0
  */
-@RequestProcessor
+@Singleton
 public class ActivityProcessor {
 
     /**
@@ -121,13 +116,38 @@ public class ActivityProcessor {
     private LangPropsService langPropsService;
 
     /**
+     * Register request handlers.
+     */
+    public static void register() {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
+        final CSRFMidware csrfMidware = beanManager.getReference(CSRFMidware.class);
+        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
+        final Activity1A0001ValidationMidware activity1A0001ValidationMidware = beanManager.getReference(Activity1A0001ValidationMidware.class);
+        final Activity1A0001CollectValidationMidware activity1A0001CollectValidationMidware = beanManager.getReference(Activity1A0001CollectValidationMidware.class);
+
+        final ActivityProcessor activityProcessor = beanManager.getReference(ActivityProcessor.class);
+        Dispatcher.get("/activity/character", activityProcessor::showCharacter, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.post("/activity/character/submit", activityProcessor::submitCharacter, loginCheck::handle);
+        Dispatcher.get("/activities", activityProcessor::showActivities, permissionMidware::grant);
+        Dispatcher.get("/activity/checkin", activityProcessor::showDailyCheckin, permissionMidware::grant);
+        Dispatcher.get("/activity/daily-checkin", activityProcessor::dailyCheckin, loginCheck::handle);
+        Dispatcher.get("/activity/yesterday-liveness-reward", activityProcessor::yesterdayLivenessReward, loginCheck::handle);
+        Dispatcher.get("/activity/1A0001", activityProcessor::show1A0001, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.post("/activity/1A0001/bet", activityProcessor::bet1A0001, loginCheck::handle, csrfMidware::check, activity1A0001ValidationMidware::handle);
+        Dispatcher.post("/activity/1A0001/collect", activityProcessor::collect1A0001, loginCheck::handle, activity1A0001CollectValidationMidware::handle);
+        Dispatcher.get("/activity/eating-snake", activityProcessor::showEatingSnake, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.post("/activity/eating-snake/start", activityProcessor::startEatingSnake, loginCheck::handle, csrfMidware::check);
+        Dispatcher.post("/activity/eating-snake/collect", activityProcessor::collectEatingSnake, loginCheck::handle, csrfMidware::fill);
+        Dispatcher.get("/activity/gobang", activityProcessor::showGobang, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.post("/activity/gobang/start", activityProcessor::startGobang, loginCheck::handle);
+    }
+
+    /**
      * Shows 1A0001.
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/character", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
-    @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCharacter(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/character.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -168,9 +188,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/character/submit", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
-    @After({StopwatchEndAdvice.class})
     public void submitCharacter(final RequestContext context) {
         final Request request = context.getRequest();
         context.renderJSON().renderFalseResult();
@@ -202,9 +219,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activities", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
-    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showActivities(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "home/activities.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -225,9 +239,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/checkin", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
-    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showDailyCheckin(final RequestContext context) {
         final JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
@@ -251,9 +262,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/daily-checkin", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
-    @After(StopwatchEndAdvice.class)
     public void dailyCheckin(final RequestContext context) {
         final JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
@@ -267,9 +275,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/yesterday-liveness-reward", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
-    @After(StopwatchEndAdvice.class)
     public void yesterdayLivenessReward(final RequestContext context) {
         final Request request = context.getRequest();
         final JSONObject user = Sessions.getUser();
@@ -285,9 +290,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/1A0001", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
-    @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void show1A0001(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/1A0001.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -370,9 +372,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/1A0001/bet", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, Activity1A0001Validation.class})
-    @After(StopwatchEndAdvice.class)
     public void bet1A0001(final RequestContext context) {
         context.renderJSON().renderFalseResult();
 
@@ -401,9 +400,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/1A0001/collect", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class, Activity1A0001CollectValidation.class})
-    @After(StopwatchEndAdvice.class)
     public void collect1A0001(final RequestContext context) {
         final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
@@ -418,9 +414,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/eating-snake", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
-    @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showEatingSnake(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/eating-snake.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -450,9 +443,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/eating-snake/start", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class})
-    @After(StopwatchEndAdvice.class)
     public void startEatingSnake(final RequestContext context) {
         final Request request = context.getRequest();
         final JSONObject currentUser = Sessions.getUser();
@@ -468,9 +458,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/eating-snake/collect", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
-    @After({CSRFToken.class, StopwatchEndAdvice.class})
     public void collectEatingSnake(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/eating-snake.ftl");
 
@@ -494,9 +481,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/gobang", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
-    @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showGobang(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/gobang.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -515,9 +499,6 @@ public class ActivityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/activity/gobang/start", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
-    @After(StopwatchEndAdvice.class)
     public void startGobang(final RequestContext context) {
         final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
         final JSONObject currentUser = Sessions.getUser();

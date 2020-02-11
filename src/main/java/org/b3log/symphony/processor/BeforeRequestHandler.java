@@ -28,7 +28,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Session;
-import org.b3log.latke.http.handler.Handler;
+import org.b3log.latke.http.function.Handler;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;

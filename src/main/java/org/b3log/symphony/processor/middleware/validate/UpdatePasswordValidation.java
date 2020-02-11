@@ -15,8 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.processor.advice.validate;
+package org.b3log.symphony.processor.middleware.validate;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
@@ -26,19 +27,17 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.Strings;
-import org.b3log.symphony.processor.CaptchaProcessor;
 import org.json.JSONObject;
 
 /**
- * User forget password form validation.
+ * Validates for user password update.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Mar 10, 2016
- * @since 1.4.0
+ * @version 1.0.0.1, Oct 29, 2012
+ * @since 0.2.0
  */
 @Singleton
-public class UserForgetPwdValidation extends ProcessAdvice {
+public class UpdatePasswordValidation extends ProcessAdvice {
 
     /**
      * Language service.
@@ -58,26 +57,14 @@ public class UserForgetPwdValidation extends ProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
 
-        final String email = requestJSONObject.optString(User.USER_EMAIL);
-        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
+        final String oldPwd = requestJSONObject.optString(User.USER_PASSWORD);
+        if (StringUtils.isBlank(oldPwd)) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("emptyOldPwdLabel")));
+        }
 
-        checkField(CaptchaProcessor.invalidCaptcha(captcha), "submitFailedLabel", "captchaErrorLabel");
-        checkField(!Strings.isEmail(email), "submitFailedLabel", "invalidEmailLabel");
-    }
-
-    /**
-     * Checks field.
-     *
-     * @param invalid    the specified invalid flag
-     * @param failLabel  the specified fail label
-     * @param fieldLabel the specified field label
-     * @throws RequestProcessAdviceException request process advice exception
-     */
-    private void checkField(final boolean invalid, final String failLabel, final String fieldLabel)
-            throws RequestProcessAdviceException {
-        if (invalid) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get(failLabel)
-                    + " - " + langPropsService.get(fieldLabel)));
+        final String pwd = requestJSONObject.optString(User.USER_PASSWORD);
+        if (UserRegisterValidation.invalidUserPassword(pwd)) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidPasswordLabel")));
         }
     }
 }

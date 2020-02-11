@@ -15,13 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.processor.advice.validate;
+package org.b3log.symphony.processor.middleware.validate;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
@@ -37,11 +34,11 @@ import java.util.Calendar;
  * Validates for activity 1A0001 collect.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Jun 2, 2018
+ * @version 2.0.0.0, Feb 10, 2020
  * @since 1.3.0
  */
 @Singleton
-public class Activity1A0001CollectValidation extends ProcessAdvice {
+public class Activity1A0001CollectValidationMidware {
 
     /**
      * Language service.
@@ -55,41 +52,47 @@ public class Activity1A0001CollectValidation extends ProcessAdvice {
     @Inject
     private ActivityQueryService activityQueryService;
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
+    public void handle(final RequestContext context) {
         if (Symphonys.ACTIVITY_1A0001_CLOSED) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityClosedLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityClosedLabel")));
+            context.abort();
+
+            return;
         }
 
         final Calendar calendar = Calendar.getInstance();
 
         final int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activity1A0001CloseLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activity1A0001CloseLabel")));
+            context.abort();
+
+            return;
         }
 
         final int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (hour < 16) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityCollectNotOpenLabel")));
-        }
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityCollectNotOpenLabel")));
+            context.abort();
 
-        final Request request = context.getRequest();
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = context.requestJSON();
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
+            return;
         }
 
         final JSONObject currentUser = Sessions.getUser();
         if (UserExt.USER_STATUS_C_VALID != currentUser.optInt(UserExt.USER_STATUS)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
+            context.abort();
+
+            return;
         }
 
         if (!activityQueryService.is1A0001Today(currentUser.optString(Keys.OBJECT_ID))) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityNotParticipatedLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityNotParticipatedLabel")));
+            context.abort();
+
+            return;
         }
+
+        context.handle();
     }
 }

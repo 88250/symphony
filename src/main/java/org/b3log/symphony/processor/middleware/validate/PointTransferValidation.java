@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.processor.advice.validate;
+package org.b3log.symphony.processor.middleware.validate;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;

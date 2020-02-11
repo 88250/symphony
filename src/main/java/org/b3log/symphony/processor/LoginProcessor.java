@@ -41,14 +41,12 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.CSRFToken;
-import org.b3log.symphony.processor.advice.LoginCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.advice.validate.UserForgetPwdValidation;
-import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
-import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
+import org.b3log.symphony.processor.middleware.LoginCheckMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.validate.UserForgetPwdValidation;
+import org.b3log.symphony.processor.middleware.validate.UserRegister2Validation;
+import org.b3log.symphony.processor.middleware.validate.UserRegisterValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
@@ -170,7 +168,7 @@ public class LoginProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/guide/next", method = HttpMethod.POST)
-    @Before({LoginCheck.class})
+    @Before({LoginCheckMidware.class})
     public void nextGuideStep(final RequestContext context) {
         context.renderJSON();
 
@@ -211,7 +209,7 @@ public class LoginProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/guide", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showGuide(final RequestContext context) {
         final JSONObject currentUser = Sessions.getUser();

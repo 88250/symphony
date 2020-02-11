@@ -15,13 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.processor.advice.validate;
+package org.b3log.symphony.processor.middleware.validate;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
@@ -39,11 +36,11 @@ import java.util.Calendar;
  * Validates for activity 1A0001.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Jun 2, 2018
+ * @version 2.0.0.0, Feb 10, 2020
  * @since 1.3.0
  */
 @Singleton
-public class Activity1A0001Validation extends ProcessAdvice {
+public class Activity1A0001ValidationMidware {
 
     /**
      * Language service.
@@ -63,10 +60,7 @@ public class Activity1A0001Validation extends ProcessAdvice {
     @Inject
     private LivenessQueryService livenessQueryService;
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final Request request = context.getRequest();
-
+    public void handle(final RequestContext context) {
         final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int currentLiveness = livenessQueryService.getCurrentLivenessPoint(userId);
@@ -77,55 +71,74 @@ public class Activity1A0001Validation extends ProcessAdvice {
             String msg = langPropsService.get("activityNeedLivenessLabel");
             msg = msg.replace("${liveness}", livenessThreshold + "%");
             msg = msg.replace("${current}", String.format("%.2f", liveness) + "%");
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, msg));
+            context.renderJSON(new JSONObject().put(Keys.MSG, msg));
+            context.abort();
+
+            return;
         }
 
         if (Symphonys.ACTIVITY_1A0001_CLOSED) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityClosedLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityClosedLabel")));
+            context.abort();
+
+            return;
         }
 
         final Calendar calendar = Calendar.getInstance();
 
         final int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activity1A0001CloseLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activity1A0001CloseLabel")));
+            context.abort();
+
+            return;
         }
 
         final int hour = calendar.get(Calendar.HOUR_OF_DAY);
         final int minute = calendar.get(Calendar.MINUTE);
         if (hour > 14 || (hour == 14 && minute > 55)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityEndLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityEndLabel")));
+            context.abort();
+
+            return;
         }
 
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = context.requestJSON();
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
-        }
-
+        final JSONObject requestJSONObject = context.requestJSON();
         final int amount = requestJSONObject.optInt(Common.AMOUNT);
         if (200 != amount && 300 != amount && 400 != amount && 500 != amount) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityBetFailLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityBetFailLabel")));
+            context.abort();
+
+            return;
         }
 
         final int smallOrLarge = requestJSONObject.optInt(Common.SMALL_OR_LARGE);
         if (0 != smallOrLarge && 1 != smallOrLarge) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityBetFailLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityBetFailLabel")));
+            context.abort();
+
+            return;
         }
 
         if (UserExt.USER_STATUS_C_VALID != currentUser.optInt(UserExt.USER_STATUS)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
+            context.abort();
+
+            return;
         }
 
         if (activityQueryService.is1A0001Today(userId)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityParticipatedLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityParticipatedLabel")));
         }
 
         final int balance = currentUser.optInt(UserExt.USER_POINT);
         if (balance - amount < 0) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("insufficientBalanceLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("insufficientBalanceLabel")));
+            context.abort();
+
+            return;
         }
+
+        context.handle();
     }
 }

@@ -34,13 +34,13 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.advice.CSRFCheck;
-import org.b3log.symphony.processor.advice.LoginCheck;
-import org.b3log.symphony.processor.advice.PermissionCheck;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.advice.validate.CommentAddValidation;
-import org.b3log.symphony.processor.advice.validate.CommentUpdateValidation;
+import org.b3log.symphony.processor.middleware.CSRFMidware;
+import org.b3log.symphony.processor.middleware.LoginCheckMidware;
+import org.b3log.symphony.processor.middleware.PermissionMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.validate.CommentAddValidation;
+import org.b3log.symphony.processor.middleware.validate.CommentUpdateValidation;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
@@ -134,7 +134,7 @@ public class CommentProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/comment/accept", method = HttpMethod.POST)
-    @Before({LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
+    @Before({LoginCheckMidware.class, CSRFMidware.class, PermissionMidware.class})
     public void acceptComment(final RequestContext context) {
         context.renderJSON();
 
@@ -180,7 +180,7 @@ public class CommentProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/comment/{id}/remove", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class, PermissionMidware.class})
     @After({StopwatchEndAdvice.class})
     public void removeComment(final RequestContext context) {
         final String id = context.pathVar("id");
@@ -227,7 +227,7 @@ public class CommentProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/comment/{id}/revisions", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class, PermissionCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class, PermissionMidware.class})
     @After({StopwatchEndAdvice.class})
     public void getCommentRevisions(final RequestContext context) {
         final String id = context.pathVar("id");
@@ -246,7 +246,7 @@ public class CommentProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/comment/{id}/content", method = HttpMethod.GET)
-    @Before({LoginCheck.class})
+    @Before({LoginCheckMidware.class})
     public void getCommentContent(final RequestContext context) {
         final String id = context.pathVar("id");
         context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
@@ -285,7 +285,7 @@ public class CommentProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/comment/{id}", method = HttpMethod.PUT)
-    @Before({CSRFCheck.class, LoginCheck.class, CommentUpdateValidation.class, PermissionCheck.class})
+    @Before({CSRFMidware.class, LoginCheckMidware.class, CommentUpdateValidation.class, PermissionMidware.class})
     public void updateComment(final RequestContext context) {
         final String id = context.pathVar("id");
         context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
@@ -435,7 +435,7 @@ public class CommentProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/comment", method = HttpMethod.POST)
-    @Before({CSRFCheck.class, LoginCheck.class, CommentAddValidation.class, PermissionCheck.class})
+    @Before({CSRFMidware.class, LoginCheckMidware.class, CommentAddValidation.class, PermissionMidware.class})
     public void addComment(final RequestContext context) {
         context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
 
@@ -521,7 +521,7 @@ public class CommentProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/comment/thank", method = HttpMethod.POST)
-    @Before({LoginCheck.class, CSRFCheck.class, PermissionCheck.class})
+    @Before({LoginCheckMidware.class, CSRFMidware.class, PermissionMidware.class})
     public void thankComment(final RequestContext context) {
         context.renderJSON();
 

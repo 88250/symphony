@@ -38,10 +38,9 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.advice.LoginCheck;
-import org.b3log.symphony.processor.advice.PermissionGrant;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.LoginCheckMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
@@ -110,7 +109,7 @@ public class CityProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = {"/city/{city}", "/city/{city}/articles"}, method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCityArticles(final RequestContext context) {
         final String city = context.pathVar("city");
@@ -194,7 +193,7 @@ public class CityProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/city/{city}/users", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCityUsers(final RequestContext context) {
         final String city = context.pathVar("city");

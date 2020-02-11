@@ -32,9 +32,9 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Report;
-import org.b3log.symphony.processor.advice.LoginCheck;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.middleware.LoginCheckMidware;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ReportMgmtService;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.StatusCodes;
@@ -76,7 +76,7 @@ public class ReportProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/report", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheck.class})
+    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
     @After(StopwatchEndAdvice.class)
     public void report(final RequestContext context) {
         context.renderJSON();

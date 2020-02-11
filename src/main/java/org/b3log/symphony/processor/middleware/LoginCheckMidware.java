@@ -15,34 +15,43 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.symphony.processor.advice;
+package org.b3log.symphony.processor.middleware;
 
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.renderer.AbstractResponseRenderer;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.symphony.model.Common;
+import org.b3log.latke.model.User;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.util.Sessions;
-
-import java.util.Map;
+import org.json.JSONObject;
 
 /**
- * Fills CSRF token.
+ * Login check. Gets user from request attribute named "user" if logged in.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 27, 2015
- * @since 1.3.0
+ * @version 2.0.0.0, Feb 11, 2020
+ * @since 0.2.5
  */
 @Singleton
-public class CSRFToken extends ProcessAdvice {
+public class LoginCheckMidware {
 
-    @Override
-    public void doAdvice(final RequestContext context) {
-        final AbstractResponseRenderer renderer = context.getRenderer();
-        if (null != renderer) {
-            final Map<String, Object> dataModel = renderer.getRenderDataModel();
+    public void handle(final RequestContext context) {
+        final JSONObject currentUser = Sessions.getUser();
+        if (null == currentUser) {
+            context.sendError(401);
+            context.abort();
 
-            dataModel.put(Common.CSRF_TOKEN, Sessions.getCSRFToken(context));
+            return;
         }
+
+        final int point = currentUser.optInt(UserExt.USER_POINT);
+        final int appRole = currentUser.optInt(UserExt.USER_APP_ROLE);
+        if (UserExt.USER_APP_ROLE_C_HACKER == appRole) {
+            currentUser.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(point));
+        } else {
+            currentUser.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(point));
+        }
+
+        context.attr(User.USER, currentUser);
+        context.handle();
     }
 }
