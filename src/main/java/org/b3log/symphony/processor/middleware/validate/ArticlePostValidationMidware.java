@@ -21,8 +21,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
@@ -32,6 +30,7 @@ import org.b3log.symphony.model.Role;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.TagQueryService;
+import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.StatusCodes;
 import org.b3log.symphony.util.Symphonys;
@@ -45,11 +44,11 @@ import java.util.List;
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.3, Nov 25, 2018
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 0.2.0
  */
 @Singleton
-public class ArticleAddValidation extends ProcessAdvice {
+public class ArticlePostValidationMidware {
 
     /**
      * Max article title length.
@@ -76,14 +75,8 @@ public class ArticleAddValidation extends ProcessAdvice {
      */
     public static final int MIN_ARTICLE_REWARD_CONTENT_LENGTH = 4;
 
-    /**
-     * Validates article fields.
-     *
-     * @param context           the specified HTTP request context
-     * @param requestJSONObject the specified request object
-     * @throws RequestProcessAdviceException if validate failed
-     */
-    public static void validateArticleFields(final RequestContext context, final JSONObject requestJSONObject) throws RequestProcessAdviceException {
+    public void handle(final RequestContext context) {
+        final JSONObject requestJSONObject = context.requestJSON();
         final BeanManager beanManager = BeanManager.getInstance();
         final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
         final TagQueryService tagQueryService = beanManager.getReference(TagQueryService.class);
@@ -94,18 +87,31 @@ public class ArticleAddValidation extends ProcessAdvice {
 
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         articleTitle = StringUtils.trim(articleTitle);
+        articleTitle = Emotions.clear(articleTitle);
         if (StringUtils.isBlank(articleTitle) || articleTitle.length() > MAX_ARTICLE_TITLE_LENGTH) {
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("articleTitleErrorLabel")));
+            context.renderJSON(exception.put(Keys.MSG, langPropsService.get("articleTitleErrorLabel")));
+            context.abort();
+
+            return;
         }
+
+        final JSONObject user = Sessions.getUser();
         if (optionQueryService.containReservedWord(articleTitle)) {
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
+            final String msg = langPropsService.get("contentContainReservedWordLabel");
+            context.renderJSON(new JSONObject().put(Keys.MSG, msg));
+            context.abort();
+
+            return;
         }
 
         requestJSONObject.put(Article.ARTICLE_TITLE, articleTitle);
 
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE);
         if (Article.isInvalidArticleType(articleType)) {
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("articleTypeErrorLabel")));
+            context.renderJSON(exception.put(Keys.MSG, langPropsService.get("articleTypeErrorLabel")));
+            context.abort();
+
+            return;
         }
 
         String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
@@ -117,11 +123,17 @@ public class ArticleAddValidation extends ProcessAdvice {
         }
 
         if (StringUtils.isBlank(articleTags)) {
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("tagsEmptyErrorLabel")));
-        }
+            context.renderJSON(exception.put(Keys.MSG, langPropsService.get("tagsEmptyErrorLabel")));
+            context.abort();
 
+            return;
+        }
         if (optionQueryService.containReservedWord(articleTags)) {
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
+            final String msg = langPropsService.get("contentContainReservedWordLabel");
+            context.renderJSON(new JSONObject().put(Keys.MSG, msg));
+            context.abort();
+
+            return;
         }
 
         if (StringUtils.isNotBlank(articleTags)) {
@@ -135,24 +147,35 @@ public class ArticleAddValidation extends ProcessAdvice {
                 final String tagTitle = tagTitles[i].trim();
 
                 if (StringUtils.isBlank(tagTitle)) {
-                    throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                    context.renderJSON(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                    context.abort();
+
+                    return;
                 }
 
                 if (!Tag.containsWhiteListTags(tagTitle)) {
                     if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
-                        throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                        context.renderJSON(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                        context.abort();
+
+                        return;
                     }
 
                     if (tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH) {
-                        throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                        context.renderJSON(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                        context.abort();
+
+                        return;
                     }
                 }
 
                 final JSONObject currentUser = Sessions.getUser();
                 if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
-                    throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("articleTagReservedLabel")
-                            + " [" + tagTitle + "]"));
+                    context.renderJSON(exception.put(Keys.MSG, langPropsService.get("articleTagReservedLabel") + " [" + tagTitle + "]"));
+                    context.abort();
+
+                    return;
                 }
 
                 if (invalidTags.contains(tagTitle)) {
@@ -174,42 +197,56 @@ public class ArticleAddValidation extends ProcessAdvice {
             String msg = langPropsService.get("articleContentErrorLabel");
             msg = msg.replace("{maxArticleContentLength}", String.valueOf(MAX_ARTICLE_CONTENT_LENGTH));
 
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, msg));
+            context.renderJSON(exception.put(Keys.MSG, msg));
+            context.abort();
+
+            return;
         }
 
         if (optionQueryService.containReservedWord(articleContent)) {
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
+            final String msg = langPropsService.get("contentContainReservedWordLabel");
+            context.renderJSON(new JSONObject().put(Keys.MSG, msg));
+            context.abort();
+
+            return;
         }
 
         final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
         if (rewardPoint < 0) {
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("invalidRewardPointLabel")));
+            context.renderJSON(exception.put(Keys.MSG, langPropsService.get("invalidRewardPointLabel")));
+            context.abort();
+
+            return;
         }
 
         final int articleQnAOfferPoint = requestJSONObject.optInt(Article.ARTICLE_QNA_OFFER_POINT, 0);
         if (articleQnAOfferPoint < 0) {
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("invalidQnAOfferPointLabel")));
+            context.renderJSON(exception.put(Keys.MSG, langPropsService.get("invalidQnAOfferPointLabel")));
+            context.abort();
+
+            return;
         }
 
         final String articleRewardContnt = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
         if (StringUtils.isNotBlank(articleRewardContnt) && 1 > rewardPoint) {
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("invalidRewardPointLabel")));
+            context.renderJSON(exception.put(Keys.MSG, langPropsService.get("invalidRewardPointLabel")));
+            context.abort();
+
+            return;
         }
 
         if (rewardPoint > 0) {
-            if (StringUtils.isBlank(articleRewardContnt) || articleRewardContnt.length() > MAX_ARTICLE_CONTENT_LENGTH
-                    || articleRewardContnt.length() < MIN_ARTICLE_CONTENT_LENGTH) {
+            if (articleRewardContnt.length() > MAX_ARTICLE_CONTENT_LENGTH || StringUtils.length(articleRewardContnt) < 4) {
                 String msg = langPropsService.get("articleRewardContentErrorLabel");
                 msg = msg.replace("{maxArticleRewardContentLength}", String.valueOf(MAX_ARTICLE_REWARD_CONTENT_LENGTH));
 
-                throw new RequestProcessAdviceException(exception.put(Keys.MSG, msg));
+                context.renderJSON(exception.put(Keys.MSG, msg));
+                context.abort();
+
+                return;
             }
         }
-    }
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final JSONObject requestJSONObject = context.requestJSON();
-        validateArticleFields(context, requestJSONObject);
+        context.handle();
     }
 }
