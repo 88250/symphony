@@ -21,25 +21,22 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.After;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Times;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.channel.ChatroomChannel;
 import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.middleware.validate.ChatMsgAddValidation;
-import org.b3log.symphony.processor.channel.ChatroomChannel;
+import org.b3log.symphony.processor.middleware.PermissionMidware;
+import org.b3log.symphony.processor.middleware.validate.ChatMsgAddValidationMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
@@ -59,10 +56,10 @@ import static org.b3log.symphony.processor.channel.ChatroomChannel.SESSIONS;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.22, Sep 6, 2019
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 1.4.0
  */
-@RequestProcessor
+@Singleton
 public class ChatroomProcessor {
 
     /**
@@ -130,6 +127,21 @@ public class ChatroomProcessor {
     private ArticleQueryService articleQueryService;
 
     /**
+     * Register request handlers.
+     */
+    public static void register() {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
+        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
+        final AnonymousViewCheckMidware anonymousViewCheckMidware = beanManager.getReference(AnonymousViewCheckMidware.class);
+        final ChatMsgAddValidationMidware chatMsgAddValidationMidware = beanManager.getReference(ChatMsgAddValidationMidware.class);
+
+        final ChatroomProcessor chatroomProcessor = beanManager.getReference(ChatroomProcessor.class);
+        Dispatcher.post("/chat-room/send", chatroomProcessor::addChatRoomMsg, loginCheck::handle, chatMsgAddValidationMidware::handle);
+        Dispatcher.get("/cr", chatroomProcessor::showChatRoom, anonymousViewCheckMidware::handle, permissionMidware::grant);
+    }
+
+    /**
      * Adds a chat message.
      * <p>
      * The request json object (a chat message):
@@ -142,8 +154,6 @@ public class ChatroomProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/chat-room/send", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, ChatMsgAddValidation.class})
     public synchronized void addChatRoomMsg(final RequestContext context) {
         context.renderJSON();
 
@@ -191,9 +201,6 @@ public class ChatroomProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/cr", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, AnonymousViewCheckMidware.class})
-    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showChatRoom(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "chat-room.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

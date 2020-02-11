@@ -21,8 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
@@ -40,11 +38,11 @@ import org.json.JSONObject;
  * Validates for chat message adding.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Jun 2, 2018
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 1.4.0
  */
 @Singleton
-public class ChatMsgAddValidation extends ProcessAdvice {
+public class ChatMsgAddValidationMidware {
 
     /**
      * Language service.
@@ -64,34 +62,36 @@ public class ChatMsgAddValidation extends ProcessAdvice {
     @Inject
     private UserQueryService userQueryService;
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
+    public void handle(final RequestContext context) {
         final Request request = context.getRequest();
+        final JSONObject requestJSONObject = context.requestJSON();
+        request.setAttribute(Keys.REQUEST, requestJSONObject);
+        final JSONObject currentUser = Sessions.getUser();
+        if (System.currentTimeMillis() - currentUser.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.MIN_STEP_CHAT_TIME
+                && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("tooFrequentCmtLabel")));
+            context.abort();
 
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = context.requestJSON();
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-
-            final JSONObject currentUser = Sessions.getUser();
-            if (System.currentTimeMillis() - currentUser.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.MIN_STEP_CHAT_TIME
-                    && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
-                throw new Exception(langPropsService.get("tooFrequentCmtLabel"));
-            }
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
+            return;
         }
 
         String content = requestJSONObject.optString(Common.CONTENT);
         content = StringUtils.trim(content);
         if (StringUtils.isBlank(content) || content.length() > 4096) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentErrorLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("commentErrorLabel")));
+            context.abort();
+
+            return;
         }
 
         if (optionQueryService.containReservedWord(content)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
+            context.abort();
+
+            return;
         }
 
         requestJSONObject.put(Common.CONTENT, content);
+        context.handle();
     }
 }
