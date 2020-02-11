@@ -21,15 +21,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.After;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -38,9 +34,6 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.middleware.LoginCheckMidware;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
@@ -61,10 +54,10 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
- * @version 1.3.1.12, Jan 5, 2019
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 1.3.0
  */
-@RequestProcessor
+@Singleton
 public class CityProcessor {
 
     /**
@@ -108,9 +101,6 @@ public class CityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/city/{city}", "/city/{city}/articles"}, method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
-    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCityArticles(final RequestContext context) {
         final String city = context.pathVar("city");
         final Request request = context.getRequest();
@@ -192,9 +182,6 @@ public class CityProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/city/{city}/users", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
-    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showCityUsers(final RequestContext context) {
         final String city = context.pathVar("city");
         final Request request = context.getRequest();

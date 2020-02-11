@@ -22,19 +22,12 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.After;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Report;
-import org.b3log.symphony.processor.middleware.LoginCheckMidware;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ReportMgmtService;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.StatusCodes;
@@ -47,10 +40,10 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 26, 2018
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 3.1.0
  */
-@RequestProcessor
+@Singleton
 public class ReportProcessor {
 
     /**
@@ -75,9 +68,6 @@ public class ReportProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/report", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
-    @After(StopwatchEndAdvice.class)
     public void report(final RequestContext context) {
         context.renderJSON();
 

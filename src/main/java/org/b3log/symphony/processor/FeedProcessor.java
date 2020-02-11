@@ -22,12 +22,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.RssRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.symphony.Server;
@@ -57,10 +55,10 @@ import java.util.List;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Aug 20, 2018
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 3.1.0
  */
-@RequestProcessor
+@Singleton
 public class FeedProcessor {
 
     /**
@@ -103,7 +101,6 @@ public class FeedProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/rss/recent.xml", method = {HttpMethod.GET, HttpMethod.HEAD})
     public void genRecentRSS(final RequestContext context) {
         final RssRenderer renderer = new RssRenderer();
         context.setRenderer(renderer);
@@ -139,7 +136,6 @@ public class FeedProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/rss/domain/{domainURI}.xml", method = {HttpMethod.GET, HttpMethod.HEAD})
     public void genDomainRSS(final RequestContext context) {
         final String domainURI = context.pathVar("domainURI");
         final RssRenderer renderer = new RssRenderer();
