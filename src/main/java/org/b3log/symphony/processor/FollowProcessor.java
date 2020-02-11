@@ -18,13 +18,12 @@
 package org.b3log.symphony.processor;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Notification;
@@ -53,10 +52,10 @@ import java.util.Set;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.5, Jul 22, 2018
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 0.2.5
  */
-@RequestProcessor
+@Singleton
 public class FollowProcessor {
 
     /**
@@ -80,6 +79,25 @@ public class FollowProcessor {
     private ArticleQueryService articleQueryService;
 
     /**
+     * Register request handlers.
+     */
+    public static void register() {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
+        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
+
+        final FollowProcessor followProcessor = beanManager.getReference(FollowProcessor.class);
+        Dispatcher.post("/follow/user", followProcessor::followUser, loginCheck::handle);
+        Dispatcher.post("/unfollow/user", followProcessor::unfollowUser, loginCheck::handle);
+        Dispatcher.post("/follow/tag", followProcessor::followTag, loginCheck::handle);
+        Dispatcher.post("/unfollow/tag", followProcessor::unfollowTag, loginCheck::handle);
+        Dispatcher.post("/follow/article", followProcessor::followArticle, loginCheck::handle, permissionMidware::check);
+        Dispatcher.post("/unfollow/article", followProcessor::unfollowArticle, loginCheck::handle);
+        Dispatcher.post("/follow/article-watch", followProcessor::watchArticle, loginCheck::handle, permissionMidware::check);
+        Dispatcher.post("/unfollow/article-watch", followProcessor::unwatchArticle, loginCheck::handle, permissionMidware::check);
+    }
+
+    /**
      * Follows a user.
      * <p>
      * The request json object:
@@ -92,8 +110,6 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/follow/user", method = HttpMethod.POST)
-    @Before(LoginCheckMidware.class)
     public void followUser(final RequestContext context) {
         context.renderJSON();
 
@@ -130,8 +146,6 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/unfollow/user", method = HttpMethod.POST)
-    @Before(LoginCheckMidware.class)
     public void unfollowUser(final RequestContext context) {
         context.renderJSON();
 
@@ -159,8 +173,6 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/follow/tag", method = HttpMethod.POST)
-    @Before(LoginCheckMidware.class)
     public void followTag(final RequestContext context) {
         context.renderJSON();
         final Request request = context.getRequest();
@@ -187,8 +199,6 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/unfollow/tag", method = HttpMethod.POST)
-    @Before(LoginCheckMidware.class)
     public void unfollowTag(final RequestContext context) {
         context.renderJSON();
 
@@ -216,8 +226,6 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/follow/article", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, PermissionMidware.class})
     public void followArticle(final RequestContext context) {
         context.renderJSON();
 
@@ -259,8 +267,6 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/unfollow/article", method = HttpMethod.POST)
-    @Before(LoginCheckMidware.class)
     public void unfollowArticle(final RequestContext context) {
         context.renderJSON();
 
@@ -288,8 +294,6 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/follow/article-watch", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, PermissionMidware.class})
     public void watchArticle(final RequestContext context) {
         context.renderJSON();
 
@@ -331,8 +335,6 @@ public class FollowProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/unfollow/article-watch", method = HttpMethod.POST)
-    @Before(LoginCheckMidware.class)
     public void unwatchArticle(final RequestContext context) {
         context.renderJSON();
 
