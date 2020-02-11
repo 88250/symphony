@@ -25,15 +25,17 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.annotation.After;
 import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -44,7 +46,10 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.middleware.*;
+import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
+import org.b3log.symphony.processor.middleware.CSRFMidware;
+import org.b3log.symphony.processor.middleware.LoginCheckMidware;
+import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.middleware.validate.ArticleAddValidation;
@@ -84,10 +89,10 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 1.27.3.5, Sep 6, 2019
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 0.2.0
  */
-@RequestProcessor
+@Singleton
 public class ArticleProcessor {
 
     /**
@@ -196,6 +201,35 @@ public class ArticleProcessor {
      */
     @Inject
     private DataModelService dataModelService;
+
+    /**
+     * Register request handlers.
+     */
+    public static void register() {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
+        final CSRFMidware csrfMidware = beanManager.getReference(CSRFMidware.class);
+        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
+        final AnonymousViewCheckMidware anonymousViewCheckMidware = beanManager.getReference(AnonymousViewCheckMidware.class);
+        final ArticlePostValidationMidware articlePostValidationMidware = beanManager.getReference(ArticlePostValidationMidware.class);
+
+        final ArticleProcessor articleProcessor = beanManager.getReference(ArticleProcessor.class);
+        Dispatcher.post("/article/{id}/remove", articleProcessor::removeArticle, loginCheck::handle, permissionMidware::check);
+        Dispatcher.post("/article/check-title", articleProcessor::checkArticleTitle, loginCheck::handle);
+        Dispatcher.get("/article/{articleId}/image", articleProcessor::getArticleImage, loginCheck::handle);
+        Dispatcher.get("/article/{id}/revisions", articleProcessor::getArticleRevisions, loginCheck::handle, permissionMidware::check);
+        Dispatcher.get("/pre-post", articleProcessor::showPreAddArticle, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.get("/post", articleProcessor::showAddArticle, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.group().middlewares(anonymousViewCheckMidware::handle, csrfMidware::fill, permissionMidware::grant).router().get().uris(new String[]{"/article/{articleId}", "/article/{articleId}/comment/{commentId}"}).handler(articleProcessor::showArticle);
+        Dispatcher.post("/article", articleProcessor::addArticle, loginCheck::handle, csrfMidware::check, permissionMidware::check, articlePostValidationMidware::handle);
+        Dispatcher.get("/update", articleProcessor::showUpdateArticle, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.put("/article/{id}", articleProcessor::updateArticle, loginCheck::handle, csrfMidware::check, permissionMidware::check, articlePostValidationMidware::handle);
+        Dispatcher.post("/markdown", articleProcessor::markdown2HTML);
+        Dispatcher.get("/article/{articleId}/preview", articleProcessor::getArticlePreviewContent);
+        Dispatcher.post("/article/reward", articleProcessor::rewardArticle, loginCheck::handle);
+        Dispatcher.post("/article/thank", articleProcessor::thankArticle, loginCheck::handle, permissionMidware::check);
+        Dispatcher.post("/article/stick", articleProcessor::stickArticle, loginCheck::handle, permissionMidware::check);
+    }
 
     /**
      * Removes an article.
@@ -1196,7 +1230,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/reward", method = HttpMethod.POST)
     @Before(StopwatchStartAdvice.class)
     @After(StopwatchEndAdvice.class)
-    public void reward(final RequestContext context) {
+    public void rewardArticle(final RequestContext context) {
         final Request request = context.getRequest();
 
         final JSONObject currentUser = Sessions.getUser();
@@ -1238,7 +1272,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/thank", method = HttpMethod.POST)
     @Before({StopwatchStartAdvice.class, PermissionMidware.class})
     @After(StopwatchEndAdvice.class)
-    public void thank(final RequestContext context) {
+    public void thankArticle(final RequestContext context) {
         final Request request = context.getRequest();
 
         final JSONObject currentUser = Sessions.getUser();
