@@ -22,8 +22,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.After;
-import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
@@ -33,8 +31,6 @@ import org.b3log.latke.util.Locales;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Permission;
 import org.b3log.symphony.model.Role;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.RoleQueryService;
 import org.b3log.symphony.util.Sessions;
@@ -46,7 +42,7 @@ import java.util.Map;
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.0, Mar 30, 2019
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 0.2.0
  */
 @Singleton
@@ -80,9 +76,7 @@ public class ErrorProcessor {
      *
      * @param context the specified context
      */
-    @Before(StopwatchStartAdvice.class)
-    @After({PermissionGrant.class, StopwatchEndAdvice.class})
-    public void handleErrorPage(final RequestContext context) {
+    public void handle(final RequestContext context) {
         final String statusCode = context.pathVar("statusCode");
         if (StringUtils.equals("GET", context.method())) {
             final String requestURI = context.requestURI();
@@ -103,6 +97,11 @@ public class ErrorProcessor {
             dataModel.put(Permission.PERMISSIONS, permissionsGrant);
 
             dataModel.put(Common.ELAPSED, 0);
+
+            final Map<String, Object> contextDataModel = (Map<String, Object>) context.attr("dataModel");
+            if (null != contextDataModel) {
+                dataModel.putAll(contextDataModel);
+            }
         } else {
             context.renderJSON().renderMsg(statusCode);
         }

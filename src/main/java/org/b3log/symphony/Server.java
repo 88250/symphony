@@ -24,17 +24,13 @@ import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.http.BaseServer;
-import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.event.*;
-import org.b3log.symphony.processor.AfterRequestHandler;
-import org.b3log.symphony.processor.BeforeRequestHandler;
-import org.b3log.symphony.processor.ErrorProcessor;
-import org.b3log.symphony.processor.channel.*;
+import org.b3log.symphony.processor.Router;
 import org.b3log.symphony.service.CronMgmtService;
 import org.b3log.symphony.service.InitMgmtService;
 import org.b3log.symphony.util.Markdowns;
@@ -65,39 +61,32 @@ public final class Server extends BaseServer {
      * @param args the specified arguments
      */
     public static void main(final String[] args) {
+        System.setProperty("java.awt.headless", "true");
         Stopwatchs.start("Booting");
 
         final Options options = new Options();
-        final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT")
-                .hasArg().desc("listen port, default is 8080").build();
+        final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT").hasArg().desc("listen port, default is 8080").build();
         options.addOption(listenPortOpt);
 
-        final Option serverSchemeOpt = Option.builder("ss").longOpt("server_scheme").argName("SERVER_SCHEME")
-                .hasArg().desc("browser visit protocol, default is http").build();
+        final Option serverSchemeOpt = Option.builder("ss").longOpt("server_scheme").argName("SERVER_SCHEME").hasArg().desc("browser visit protocol, default is http").build();
         options.addOption(serverSchemeOpt);
 
-        final Option serverHostOpt = Option.builder("sh").longOpt("server_host").argName("SERVER_HOST")
-                .hasArg().desc("browser visit domain name, default is localhost").build();
+        final Option serverHostOpt = Option.builder("sh").longOpt("server_host").argName("SERVER_HOST").hasArg().desc("browser visit domain name, default is localhost").build();
         options.addOption(serverHostOpt);
 
-        final Option serverPortOpt = Option.builder("sp").longOpt("server_port").argName("SERVER_PORT")
-                .hasArg().desc("browser visit port, default is 8080").build();
+        final Option serverPortOpt = Option.builder("sp").longOpt("server_port").argName("SERVER_PORT").hasArg().desc("browser visit port, default is 8080").build();
         options.addOption(serverPortOpt);
 
-        final Option staticServerSchemeOpt = Option.builder("sss").longOpt("static_server_scheme").argName("STATIC_SERVER_SCHEME")
-                .hasArg().desc("browser visit static resource protocol, default is http").build();
+        final Option staticServerSchemeOpt = Option.builder("sss").longOpt("static_server_scheme").argName("STATIC_SERVER_SCHEME").hasArg().desc("browser visit static resource protocol, default is http").build();
         options.addOption(staticServerSchemeOpt);
 
-        final Option staticServerHostOpt = Option.builder("ssh").longOpt("static_server_host").argName("STATIC_SERVER_HOST")
-                .hasArg().desc("browser visit static resource domain name, default is localhost").build();
+        final Option staticServerHostOpt = Option.builder("ssh").longOpt("static_server_host").argName("STATIC_SERVER_HOST").hasArg().desc("browser visit static resource domain name, default is localhost").build();
         options.addOption(staticServerHostOpt);
 
-        final Option staticServerPortOpt = Option.builder("ssp").longOpt("static_server_port").argName("STATIC_SERVER_PORT")
-                .hasArg().desc("browser visit static resource port, default is 8080").build();
+        final Option staticServerPortOpt = Option.builder("ssp").longOpt("static_server_port").argName("STATIC_SERVER_PORT").hasArg().desc("browser visit static resource port, default is 8080").build();
         options.addOption(staticServerPortOpt);
 
-        final Option runtimeModeOpt = Option.builder("rm").longOpt("runtime_mode").argName("RUNTIME_MODE")
-                .hasArg().desc("runtime mode (DEVELOPMENT/PRODUCTION), default is DEVELOPMENT").build();
+        final Option runtimeModeOpt = Option.builder("rm").longOpt("runtime_mode").argName("RUNTIME_MODE").hasArg().desc("runtime mode (DEVELOPMENT/PRODUCTION), default is DEVELOPMENT").build();
         options.addOption(runtimeModeOpt);
 
         options.addOption("h", "help", false, "print help for the command");
@@ -168,9 +157,6 @@ public final class Server extends BaseServer {
             Latkes.setRuntimeMode(Latkes.RuntimeMode.valueOf(runtimeMode));
         }
 
-        Dispatcher.startRequestHandler = new BeforeRequestHandler();
-        Dispatcher.endRequestHandler = new AfterRequestHandler();
-
         final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
         final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
         final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
@@ -182,20 +168,6 @@ public final class Server extends BaseServer {
                 jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
 
         final BeanManager beanManager = BeanManager.getInstance();
-
-        final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
-        Dispatcher.error("/error/{statusCode}", errorProcessor::handleErrorPage);
-
-        final ArticleChannel articleChannel = beanManager.getReference(ArticleChannel.class);
-        Dispatcher.webSocket("/article-channel", articleChannel);
-        final ArticleListChannel articleListChannel = beanManager.getReference(ArticleListChannel.class);
-        Dispatcher.webSocket("/article-list-channel", articleListChannel);
-        final ChatroomChannel chatroomChannel = beanManager.getReference(ChatroomChannel.class);
-        Dispatcher.webSocket("/chat-room-channel", chatroomChannel);
-        final GobangChannel gobangChannel = beanManager.getReference(GobangChannel.class);
-        Dispatcher.webSocket("/gobang-game-channel", gobangChannel);
-        final UserChannel userChannel = beanManager.getReference(UserChannel.class);
-        Dispatcher.webSocket("/user-channel", userChannel);
 
         final InitMgmtService initMgmtService = beanManager.getReference(InitMgmtService.class);
         initMgmtService.initSym();
@@ -227,6 +199,9 @@ public final class Server extends BaseServer {
         domainCache.loadDomains();
         final CronMgmtService cronMgmtService = beanManager.getReference(CronMgmtService.class);
         cronMgmtService.start();
+
+        // 请求路由映射
+        Router.requestMapping();
 
         Stopwatchs.end();
         LOGGER.log(Level.DEBUG, "Stopwatch: {}{}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
