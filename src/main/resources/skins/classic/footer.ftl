@@ -47,7 +47,7 @@
                     </#if>
                     © ${year} <a href="https://b3log.org" target="_blank">B3log 开源</a>旗下云南链滴科技有限公司版权所有 •
                     <a href="https://sym.b3log.org" target="_blank">Sym</a>
-                ${version} • ${elapsed?c}ms
+                ${version}
                 </div>
             </div>
         </div>
