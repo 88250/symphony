@@ -21,8 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
@@ -38,11 +36,11 @@ import org.json.JSONObject;
  * Validates for comment updating locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, J, 2019
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 2.1.0
  */
 @Singleton
-public class CommentUpdateValidation extends ProcessAdvice {
+public class CommentUpdateValidationMidware {
 
     /**
      * Language service.
@@ -68,13 +66,10 @@ public class CommentUpdateValidation extends ProcessAdvice {
     @Inject
     private OptionQueryService optionQueryService;
 
-    /**
-     * Validates comment fields.
-     *
-     * @param requestJSONObject the specified request object
-     * @throws RequestProcessAdviceException if validate failed
-     */
-    private static void validateCommentFields(final JSONObject requestJSONObject) throws RequestProcessAdviceException {
+    public void handle(final RequestContext context) {
+        final Request request = context.getRequest();
+        final JSONObject requestJSONObject = context.requestJSON();
+        request.setAttribute(Keys.REQUEST, requestJSONObject);
         final BeanManager beanManager = BeanManager.getInstance();
         final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
         final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
@@ -84,27 +79,19 @@ public class CommentUpdateValidation extends ProcessAdvice {
 
         final String commentContent = StringUtils.trim(requestJSONObject.optString(Comment.COMMENT_CONTENT));
         if (StringUtils.isBlank(commentContent) || commentContent.length() > Comment.MAX_COMMENT_CONTENT_LENGTH) {
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("commentErrorLabel")));
+            context.renderJSON(exception.put(Keys.MSG, langPropsService.get("commentErrorLabel")));
+            context.abort();
+
+            return;
         }
 
         if (optionQueryService.containReservedWord(commentContent)) {
-            throw new RequestProcessAdviceException(exception.put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
-        }
-    }
+            context.renderJSON(exception.put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
+            context.abort();
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final Request request = context.getRequest();
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = context.requestJSON();
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()).
-                    put(Keys.STATUS_CODE, StatusCodes.ERR));
+            return;
         }
 
-        validateCommentFields(requestJSONObject);
+        context.handle();
     }
 }

@@ -21,14 +21,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.After;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -37,10 +35,8 @@ import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.middleware.CSRFMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
 import org.b3log.symphony.processor.middleware.PermissionMidware;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.middleware.validate.CommentAddValidation;
-import org.b3log.symphony.processor.middleware.validate.CommentUpdateValidation;
+import org.b3log.symphony.processor.middleware.validate.CommentAddValidationMidware;
+import org.b3log.symphony.processor.middleware.validate.CommentUpdateValidationMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
@@ -63,10 +59,10 @@ import java.util.Set;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.5, Dec 16, 2018
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 0.2.0
  */
-@RequestProcessor
+@Singleton
 public class CommentProcessor {
 
     /**
@@ -129,16 +125,36 @@ public class CommentProcessor {
     private FollowMgmtService followMgmtService;
 
     /**
+     * Register request handlers.
+     */
+    public static void register() {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
+        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
+        final CSRFMidware csrfMidware = beanManager.getReference(CSRFMidware.class);
+        final CommentUpdateValidationMidware commentUpdateValidationMidware = beanManager.getReference(CommentUpdateValidationMidware.class);
+        final CommentAddValidationMidware commentAddValidationMidware = beanManager.getReference(CommentAddValidationMidware.class);
+
+        final CommentProcessor commentProcessor = beanManager.getReference(CommentProcessor.class);
+        Dispatcher.post("/comment/accept", commentProcessor::acceptComment, loginCheck::handle, csrfMidware::check, permissionMidware::check);
+        Dispatcher.post("/comment/{id}/remove", commentProcessor::removeComment, loginCheck::handle, permissionMidware::check);
+        Dispatcher.get("/comment/{id}/revisions", commentProcessor::getCommentRevisions, loginCheck::handle, permissionMidware::check);
+        Dispatcher.get("/comment/{id}/content", commentProcessor::getCommentContent, loginCheck::handle);
+        Dispatcher.put("/comment/{id}", commentProcessor::updateComment, loginCheck::handle, csrfMidware::check, permissionMidware::check, commentUpdateValidationMidware::handle);
+        Dispatcher.post("/comment/original", commentProcessor::getOriginalComment);
+        Dispatcher.post("/comment/replies", commentProcessor::getReplies);
+        Dispatcher.post("/comment", commentProcessor::addComment, loginCheck::handle, csrfMidware::check, permissionMidware::check, commentAddValidationMidware::handle);
+        Dispatcher.post("/comment/thank", commentProcessor::thankComment, loginCheck::handle, csrfMidware::check, permissionMidware::check);
+    }
+
+    /**
      * Accepts a comment.
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/comment/accept", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class, PermissionMidware.class})
     public void acceptComment(final RequestContext context) {
         context.renderJSON();
 
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final JSONObject currentUser = Sessions.getUser();
         final String userId = currentUser.optString(Keys.OBJECT_ID);
@@ -179,12 +195,8 @@ public class CommentProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/comment/{id}/remove", method = HttpMethod.POST)
-    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class, PermissionMidware.class})
-    @After({StopwatchEndAdvice.class})
     public void removeComment(final RequestContext context) {
         final String id = context.pathVar("id");
-        final Request request = context.getRequest();
         if (StringUtils.isBlank(id)) {
             context.sendError(404);
 
@@ -226,9 +238,6 @@ public class CommentProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/comment/{id}/revisions", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class, PermissionMidware.class})
-    @After({StopwatchEndAdvice.class})
     public void getCommentRevisions(final RequestContext context) {
         final String id = context.pathVar("id");
         final JSONObject viewer = Sessions.getUser();
@@ -245,8 +254,6 @@ public class CommentProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/comment/{id}/content", method = HttpMethod.GET)
-    @Before({LoginCheckMidware.class})
     public void getCommentContent(final RequestContext context) {
         final String id = context.pathVar("id");
         context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
@@ -284,8 +291,6 @@ public class CommentProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/comment/{id}", method = HttpMethod.PUT)
-    @Before({CSRFMidware.class, LoginCheckMidware.class, CommentUpdateValidation.class, PermissionMidware.class})
     public void updateComment(final RequestContext context) {
         final String id = context.pathVar("id");
         context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
@@ -349,9 +354,7 @@ public class CommentProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/comment/original", method = HttpMethod.POST)
     public void getOriginalComment(final RequestContext context) {
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
         int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
@@ -380,7 +383,6 @@ public class CommentProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/comment/replies", method = HttpMethod.POST)
     public void getReplies(final RequestContext context) {
         final JSONObject requestJSONObject = context.requestJSON();
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
@@ -434,8 +436,6 @@ public class CommentProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/comment", method = HttpMethod.POST)
-    @Before({CSRFMidware.class, LoginCheckMidware.class, CommentAddValidation.class, PermissionMidware.class})
     public void addComment(final RequestContext context) {
         context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
 
@@ -520,8 +520,6 @@ public class CommentProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/comment/thank", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class, PermissionMidware.class})
     public void thankComment(final RequestContext context) {
         context.renderJSON();
 
