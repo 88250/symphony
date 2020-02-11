@@ -70,6 +70,8 @@ public class PermissionMidware {
     private RoleQueryService roleQueryService;
 
     public void grant(final RequestContext context) {
+        context.handle();
+
         final AbstractResponseRenderer renderer = context.getRenderer();
         if (null == renderer) {
             return;
