@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
- * @version 1.47.1.0, Nov 19, 2019
+ * @version 1.48.0.0, Jan 12, 2020
  */
 
 /**
@@ -630,6 +630,7 @@ var Util = {
     }
 
     var options = {
+      after: data.after || undefined,
       typewriterMode: data.typewriterMode || false,
       cache: data.cache || false,
       input: data.input,
