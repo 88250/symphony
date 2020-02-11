@@ -18,13 +18,12 @@
 package org.b3log.symphony.processor;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.*;
@@ -47,10 +46,10 @@ import java.util.Set;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.6, Jun 27, 2018
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 1.3.0
  */
-@RequestProcessor
+@Singleton
 public class VoteProcessor {
 
     /**
@@ -95,6 +94,21 @@ public class VoteProcessor {
     private NotificationMgmtService notificationMgmtService;
 
     /**
+     * Register request handlers.
+     */
+    public static void register() {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
+        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
+
+        final VoteProcessor voteProcessor = beanManager.getReference(VoteProcessor.class);
+        Dispatcher.post("/vote/up/comment", voteProcessor::voteUpComment, loginCheck::handle, permissionMidware::check);
+        Dispatcher.post("/vote/down/comment", voteProcessor::voteDownComment, loginCheck::handle, permissionMidware::check);
+        Dispatcher.post("/vote/up/article", voteProcessor::voteUpArticle, loginCheck::handle, permissionMidware::check);
+        Dispatcher.post("/vote/down/article", voteProcessor::voteDownArticle, loginCheck::handle, permissionMidware::check);
+    }
+
+    /**
      * Votes up a comment.
      * <p>
      * The request json object:
@@ -107,8 +121,6 @@ public class VoteProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/vote/up/comment", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, PermissionMidware.class})
     public void voteUpComment(final RequestContext context) {
         context.renderJSON();
 
@@ -161,8 +173,6 @@ public class VoteProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/vote/down/comment", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, PermissionMidware.class})
     public void voteDownComment(final RequestContext context) {
         context.renderJSON();
 
@@ -217,8 +227,6 @@ public class VoteProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/vote/up/article", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, PermissionMidware.class})
     public void voteUpArticle(final RequestContext context) {
         context.renderJSON();
 
@@ -272,8 +280,6 @@ public class VoteProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/vote/down/article", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, PermissionMidware.class})
     public void voteDownArticle(final RequestContext context) {
         context.renderJSON();
 
