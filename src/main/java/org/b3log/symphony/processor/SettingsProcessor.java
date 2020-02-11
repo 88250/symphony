@@ -26,28 +26,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Response;
-import org.b3log.latke.http.annotation.After;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.TimeZones;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.middleware.*;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.middleware.validate.PointTransferValidation;
-import org.b3log.symphony.processor.middleware.validate.UpdatePasswordValidation;
-import org.b3log.symphony.processor.middleware.validate.UpdateProfilesValidation;
+import org.b3log.symphony.processor.middleware.CSRFMidware;
+import org.b3log.symphony.processor.middleware.LoginCheckMidware;
+import org.b3log.symphony.processor.middleware.PermissionMidware;
+import org.b3log.symphony.processor.middleware.validate.PointTransferValidationMidware;
+import org.b3log.symphony.processor.middleware.validate.UpdatePasswordValidationMidware;
+import org.b3log.symphony.processor.middleware.validate.UpdateProfilesValidationMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Languages;
@@ -81,10 +79,10 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.4, Sep 6, 2019
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 2.4.0
  */
-@RequestProcessor
+@Singleton
 public class SettingsProcessor {
 
     /**
@@ -189,12 +187,42 @@ public class SettingsProcessor {
     private PointtransferMgmtService pointtransferMgmtService;
 
     /**
+     * Register request handlers.
+     */
+    public static void register() {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
+        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
+        final CSRFMidware csrfMidware = beanManager.getReference(CSRFMidware.class);
+        final UpdateProfilesValidationMidware updateProfilesValidationMidware = beanManager.getReference(UpdateProfilesValidationMidware.class);
+        final UpdatePasswordValidationMidware updatePasswordValidationMidware = beanManager.getReference(UpdatePasswordValidationMidware.class);
+        final PointTransferValidationMidware pointTransferValidationMidware = beanManager.getReference(PointTransferValidationMidware.class);
+
+        final SettingsProcessor settingsProcessor = beanManager.getReference(SettingsProcessor.class);
+        Dispatcher.post("/settings/deactivate", settingsProcessor::deactivateUser, loginCheck::handle);
+        Dispatcher.post("/settings/username", settingsProcessor::updateUserName, loginCheck::handle);
+        Dispatcher.post("/settings/email/vc", settingsProcessor::sendEmailVC, loginCheck::handle);
+        Dispatcher.post("/settings/email", settingsProcessor::updateEmail, loginCheck::handle);
+        Dispatcher.post("/settings/i18n", settingsProcessor::updateI18n, loginCheck::handle, csrfMidware::check);
+        Dispatcher.group().middlewares(loginCheck::handle, csrfMidware::fill, permissionMidware::grant).router().get().uris(new String[]{"/settings", "/settings/{page}"}).handler(settingsProcessor::showSettings);
+        Dispatcher.post("/settings/geo/status", settingsProcessor::updateGeoStatus, loginCheck::handle, csrfMidware::check);
+        Dispatcher.post("/settings/privacy", settingsProcessor::updatePrivacy, loginCheck::handle, csrfMidware::check);
+        Dispatcher.post("/settings/function", settingsProcessor::updateFunction, loginCheck::handle, csrfMidware::check);
+        Dispatcher.post("/settings/profiles", settingsProcessor::updateProfiles, loginCheck::handle, csrfMidware::check, updateProfilesValidationMidware::handle);
+        Dispatcher.post("/settings/avatar", settingsProcessor::updateAvatar, loginCheck::handle, csrfMidware::check, updateProfilesValidationMidware::handle);
+        Dispatcher.post("/settings/password", settingsProcessor::updatePassword, loginCheck::handle, csrfMidware::check, updatePasswordValidationMidware::handle);
+        Dispatcher.post("/settings/emotionList", settingsProcessor::updateEmoji, loginCheck::handle, csrfMidware::check);
+        Dispatcher.post("/invitecode/state", settingsProcessor::queryInvitecode, loginCheck::handle, csrfMidware::check);
+        Dispatcher.post("/point/buy-invitecode", settingsProcessor::pointBuy, loginCheck::handle, csrfMidware::check);
+        Dispatcher.post("/export/posts", settingsProcessor::exportPosts, loginCheck::handle);
+        Dispatcher.post("/point/transfer", settingsProcessor::pointTransfer, loginCheck::handle, csrfMidware::check, pointTransferValidationMidware::handle);
+    }
+
+    /**
      * Deactivates user.
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/settings/deactivate", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class})
     public void deactivateUser(final RequestContext context) {
         context.renderJSON();
 
@@ -215,8 +243,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/settings/username", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class})
     public void updateUserName(final RequestContext context) {
         context.renderJSON();
 
@@ -250,8 +276,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/settings/email/vc", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class})
     public void sendEmailVC(final RequestContext context) {
         context.renderJSON();
 
@@ -318,8 +342,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/settings/email", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class})
     public void updateEmail(final RequestContext context) {
         context.renderJSON();
 
@@ -363,8 +385,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/settings/i18n", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class})
     public void updateI18n(final RequestContext context) {
         context.renderJSON();
 
@@ -410,9 +430,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/settings", "/settings/{page}"}, method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
-    @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showSettings(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, null);
         context.setRenderer(renderer);
@@ -506,8 +523,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/settings/geo/status", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class})
     public void updateGeoStatus(final RequestContext context) {
         context.renderJSON();
 
@@ -546,8 +561,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/settings/privacy", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class})
     public void updatePrivacy(final RequestContext context) {
         context.renderJSON();
 
@@ -608,8 +621,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/settings/function", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class})
     public void updateFunction(final RequestContext context) {
         context.renderJSON();
 
@@ -694,8 +705,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/settings/profiles", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class, UpdateProfilesValidation.class})
     public void updateProfiles(final RequestContext context) {
         context.renderJSON();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
@@ -729,12 +738,9 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/settings/avatar", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class, UpdateProfilesValidation.class})
     public void updateAvatar(final RequestContext context) {
         context.renderJSON();
 
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
         final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
 
@@ -774,12 +780,9 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/settings/password", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class, UpdatePasswordValidation.class})
     public void updatePassword(final RequestContext context) {
         context.renderJSON();
 
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
 
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
@@ -810,8 +813,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/settings/emotionList", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class})
     public void updateEmoji(final RequestContext context) {
         context.renderJSON();
 
@@ -836,13 +837,10 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/point/transfer", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class, PointTransferValidation.class})
     public void pointTransfer(final RequestContext context) {
         final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
         context.renderJSON(ret);
 
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
 
         final int amount = requestJSONObject.optInt(Common.AMOUNT);
@@ -876,8 +874,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/invitecode/state", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class})
     public void queryInvitecode(final RequestContext context) {
         final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
         context.renderJSON(ret);
@@ -930,8 +926,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/point/buy-invitecode", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class, CSRFMidware.class, PermissionMidware.class})
     public void pointBuy(final RequestContext context) {
         final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
         context.renderJSON(ret);
@@ -970,8 +964,6 @@ public class SettingsProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/export/posts", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class})
     public void exportPosts(final RequestContext context) {
         context.renderJSON();
 

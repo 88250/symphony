@@ -22,8 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
@@ -43,11 +41,11 @@ import java.util.LinkedHashSet;
  * Validates for user profiles update.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.2.5, Sep 6, 2016
+ * @version 3.0.0.0, Feb 11, 2020
  * @since 0.2.0
  */
 @Singleton
-public class UpdateProfilesValidation extends ProcessAdvice {
+public class UpdateProfilesValidationMidware {
 
     /**
      * Language service.
@@ -75,38 +73,41 @@ public class UpdateProfilesValidation extends ProcessAdvice {
      */
     public static final int MAX_USER_INTRO_LENGTH = 255;
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
+    public void handle(final RequestContext context) {
         final Request request = context.getRequest();
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = context.requestJSON();
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
-        }
+        final JSONObject requestJSONObject = context.requestJSON();
+        request.setAttribute(Keys.REQUEST, requestJSONObject);
 
         final String userURL = requestJSONObject.optString(User.USER_URL);
         if (StringUtils.isNotBlank(userURL) && invalidUserURL(userURL)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
-                    "URL" + langPropsService.get("colonLabel") + langPropsService.get("invalidUserURLLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, "URL" + langPropsService.get("colonLabel") + langPropsService.get("invalidUserURLLabel")));
+            context.abort();
+
+            return;
         }
 
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         if (StringUtils.isNotBlank(userQQ) && (!Strings.isNumeric(userQQ) || userQQ.length() > MAX_USER_QQ_LENGTH)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
-                    langPropsService.get("invalidUserQQLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserQQLabel")));
+            context.abort();
+
+            return;
         }
 
         final String userNickname = requestJSONObject.optString(UserExt.USER_NICKNAME);
         if (StringUtils.isNotBlank(userNickname) && userNickname.length() > MAX_USER_NICKNAME_LENGTH) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserNicknameLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserNicknameLabel")));
+            context.abort();
+
+            return;
         }
 
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
         if (StringUtils.isNotBlank(userIntro) && userIntro.length() > MAX_USER_INTRO_LENGTH) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserIntroLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserIntroLabel")));
+            context.abort();
+
+            return;
         }
 
         final int userCommentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
@@ -123,7 +124,10 @@ public class UpdateProfilesValidation extends ProcessAdvice {
             userTags = Tag.formatTags(userTags);
             String[] tagTitles = userTags.split(",");
             if (null == tagTitles || 0 == tagTitles.length) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
+                context.renderJSON(new JSONObject().put(Keys.MSG, tagErrMsg));
+                context.abort();
+
+                return;
             }
 
             tagTitles = new LinkedHashSet<>(Arrays.asList(tagTitles)).toArray(new String[0]);
@@ -133,7 +137,10 @@ public class UpdateProfilesValidation extends ProcessAdvice {
                 final String tagTitle = tagTitles[i].trim();
 
                 if (StringUtils.isBlank(tagTitle)) {
-                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
+                    context.renderJSON(new JSONObject().put(Keys.MSG, tagErrMsg));
+                    context.abort();
+
+                    return;
                 }
 
                 if (Tag.containsWhiteListTags(tagTitle)) {
@@ -143,19 +150,26 @@ public class UpdateProfilesValidation extends ProcessAdvice {
                 }
 
                 if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
-                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
+                    context.renderJSON(new JSONObject().put(Keys.MSG, tagErrMsg));
+                    context.abort();
+
+                    return;
                 }
 
                 if (tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH) {
-                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
+                    context.renderJSON(new JSONObject().put(Keys.MSG, tagErrMsg));
+                    context.abort();
+
+                    return;
                 }
 
                 final JSONObject currentUser = Sessions.getUser();
                 if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
-                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
-                            langPropsService.get("selfTagLabel") + langPropsService.get("colonLabel")
-                                    + langPropsService.get("articleTagReservedLabel") + " [" + tagTitle + "]"));
+                    context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("selfTagLabel") + langPropsService.get("colonLabel") + langPropsService.get("articleTagReservedLabel") + " [" + tagTitle + "]"));
+                    context.abort();
+
+                    return;
                 }
 
                 tagBuilder.append(tagTitle).append(",");
@@ -166,6 +180,9 @@ public class UpdateProfilesValidation extends ProcessAdvice {
 
             requestJSONObject.put(UserExt.USER_TAGS, tagBuilder.toString());
         }
+
+
+        context.handle();
     }
 
     /**

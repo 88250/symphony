@@ -21,8 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
@@ -41,11 +39,11 @@ import org.jsoup.safety.Whitelist;
  * Validates for user point transfer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Oct 1, 2018
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 1.3.0
  */
 @Singleton
-public class PointTransferValidation extends ProcessAdvice {
+public class PointTransferValidationMidware {
 
     /**
      * Language service.
@@ -59,60 +57,77 @@ public class PointTransferValidation extends ProcessAdvice {
     @Inject
     private UserQueryService userQueryService;
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
+    public void handle(final RequestContext context) {
         final Request request = context.getRequest();
 
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = context.requestJSON();
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
-        }
-
+        final JSONObject requestJSONObject = context.requestJSON();
         final String userName = requestJSONObject.optString(User.USER_NAME);
-        if (StringUtils.isBlank(userName)
-                || UserExt.COM_BOT_NAME.equals(userName) || UserExt.NULL_USER_NAME.equals(userName)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("notFoundUserLabel")));
+        if (StringUtils.isBlank(userName) || UserExt.COM_BOT_NAME.equals(userName)) {
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("notFoundUserLabel")));
+            context.abort();
+
+            return;
         }
 
         final int amount = requestJSONObject.optInt(Common.AMOUNT);
         if (amount < 1 || amount > 5000) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("amountInvalidLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("amountInvalidLabel")));
+            context.abort();
+
+            return;
         }
 
         JSONObject toUser = userQueryService.getUserByName(userName);
         if (null == toUser) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("notFoundUserLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("notFoundUserLabel")));
+            context.abort();
+
+            return;
         }
 
         if (UserExt.USER_STATUS_C_VALID != toUser.optInt(UserExt.USER_STATUS)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
+            context.abort();
+
+            return;
         }
 
         request.setAttribute(Common.TO_USER, toUser);
 
         final JSONObject currentUser = Sessions.getUser();
         if (UserExt.USER_STATUS_C_VALID != currentUser.optInt(UserExt.USER_STATUS)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
+            context.abort();
+
+            return;
         }
 
         if (currentUser.optString(User.USER_NAME).equals(toUser.optString(User.USER_NAME))) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("cannotTransferSelfLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("cannotTransferSelfLabel")));
+            context.abort();
+
+            return;
         }
 
         final int balanceMinLimit = Symphonys.POINT_TRANSER_MIN;
         final int balance = currentUser.optInt(UserExt.USER_POINT);
         if (balance - amount < balanceMinLimit) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("insufficientBalanceLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("insufficientBalanceLabel")));
+            context.abort();
+
+            return;
         }
 
         String memo = StringUtils.trim(requestJSONObject.optString(Pointtransfer.MEMO));
         if (128 < StringUtils.length(memo)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("memoTooLargeLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("memoTooLargeLabel")));
+            context.abort();
+
+            return;
         }
         memo = Jsoup.clean(memo, Whitelist.none());
         request.setAttribute(Pointtransfer.MEMO, memo);
+
+        context.handle();
     }
 }

@@ -19,10 +19,7 @@ package org.b3log.symphony.processor.middleware.validate;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
@@ -33,11 +30,11 @@ import org.json.JSONObject;
  * Validates for user password update.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Oct 29, 2012
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 0.2.0
  */
 @Singleton
-public class UpdatePasswordValidation extends ProcessAdvice {
+public class UpdatePasswordValidationMidware {
 
     /**
      * Language service.
@@ -45,26 +42,24 @@ public class UpdatePasswordValidation extends ProcessAdvice {
     @Inject
     private LangPropsService langPropsService;
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final Request request = context.getRequest();
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = context.requestJSON();
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
-        }
-
+    public void handle(final RequestContext context) {
+        final JSONObject requestJSONObject = context.requestJSON();
         final String oldPwd = requestJSONObject.optString(User.USER_PASSWORD);
         if (StringUtils.isBlank(oldPwd)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("emptyOldPwdLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("emptyOldPwdLabel")));
+            context.abort();
+
+            return;
         }
 
         final String pwd = requestJSONObject.optString(User.USER_PASSWORD);
-        if (UserRegisterValidationMidware.invalidUserPassword(pwd)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidPasswordLabel")));
+        if (UserRegister2ValidationMidware.invalidUserPassword(pwd)) {
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("invalidPasswordLabel")));
+            context.abort();
+
+            return;
         }
+
+        context.handle();
     }
 }
