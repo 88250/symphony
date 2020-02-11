@@ -20,6 +20,8 @@ package org.b3log.symphony.processor;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import jodd.io.FileUtil;
 import jodd.net.MimeTypes;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -32,9 +34,9 @@ import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.*;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.URLs;
@@ -47,6 +49,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -60,10 +64,10 @@ import static org.b3log.symphony.util.Symphonys.QN_ENABLED;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.0.1.8, Nov 5, 2019
+ * @version 3.0.0.0, Feb 11, 2020
  * @since 1.4.0
  */
-@RequestProcessor
+@Singleton
 public class FileUploadProcessor {
 
     /**
@@ -78,11 +82,22 @@ public class FileUploadProcessor {
     private LangPropsService langPropsService;
 
     /**
+     * Register request handlers.
+     */
+    public static void register() {
+        final BeanManager beanManager = BeanManager.getInstance();
+
+        final FileUploadProcessor fileUploadProcessor = beanManager.getReference(FileUploadProcessor.class);
+        Dispatcher.get("/upload/{yyyy}/{MM}/{file}", fileUploadProcessor::getFile);
+        Dispatcher.post("/upload", fileUploadProcessor::uploadFile);
+        Dispatcher.post("/fetch-upload", fileUploadProcessor::fetchUpload);
+    }
+
+    /**
      * Gets file by the specified URL.
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/upload/{yyyy}/{MM}/{file}", method = HttpMethod.GET)
     public void getFile(final RequestContext context) {
         if (QN_ENABLED) {
             return;
@@ -138,7 +153,6 @@ public class FileUploadProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/upload", method = HttpMethod.POST)
     public void uploadFile(final RequestContext context) {
         final JSONObject result = Results.newFail();
         context.renderJSONPretty(result);
@@ -252,6 +266,89 @@ public class FileUploadProcessor {
 
         data.put("errFiles", errFiles);
         data.put("succMap", succMap);
+        result.put(Common.DATA, data);
+        result.put(Keys.CODE, StatusCodes.SUCC);
+        result.put(Keys.MSG, "");
+    }
+
+    /**
+     * Fetches the remote file and upload it.
+     *
+     * @param context the specified context
+     */
+    public void fetchUpload(final RequestContext context) {
+        final JSONObject result = Results.newFail();
+        context.renderJSONPretty(result);
+        final JSONObject data = new JSONObject();
+
+        final JSONObject requestJSONObject = context.requestJSON();
+        final String originalURL = requestJSONObject.optString(Common.URL);
+        if (!Strings.isURL(originalURL) || !StringUtils.startsWithIgnoreCase(originalURL, "http")) {
+            return;
+        }
+
+        byte[] bytes;
+        String contentType;
+        try {
+            final String host = new URL(originalURL).getHost();
+            final String hostIp = InetAddress.getByName(host).getHostAddress();
+            if (Networks.isInnerAddress(hostIp)) {
+                return;
+            }
+
+            final HttpRequest req = HttpRequest.get(originalURL).header(Common.USER_AGENT, Symphonys.USER_AGENT_BOT);
+            final HttpResponse res = req.connectionTimeout(3000).timeout(5000).send();
+            res.close();
+            if (200 != res.statusCode()) {
+                return;
+            }
+
+            bytes = res.bodyBytes();
+            contentType = res.contentType();
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Fetch file [url=" + originalURL + "] failed", e);
+
+            return;
+        }
+
+        final String suffix = Headers.getSuffix(contentType);
+        final String[] allowedSuffixArray = Symphonys.UPLOAD_SUFFIX.split(",");
+        if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
+            String msg = langPropsService.get("invalidFileSuffixLabel");
+            msg = StringUtils.replace(msg, "${suffix}", suffix);
+            result.put(Keys.MSG, msg);
+
+            return;
+        }
+
+        String fileName = UUID.randomUUID().toString().replace("-", "") + "." + suffix;
+
+        if (Symphonys.QN_ENABLED) {
+            final Auth auth = Auth.create(Symphonys.UPLOAD_QINIU_AK, Symphonys.UPLOAD_QINIU_SK);
+            final UploadManager uploadManager = new UploadManager(new Configuration());
+
+            try {
+                uploadManager.put(bytes, "e/" + fileName, auth.uploadToken(Symphonys.UPLOAD_QINIU_BUCKET), null, contentType, false);
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Uploads to Qiniu failed", e);
+            }
+
+            data.put(Common.URL, Symphonys.UPLOAD_QINIU_DOMAIN + "/e/" + fileName);
+            data.put("originalURL", originalURL);
+        } else {
+            fileName = FileUploadProcessor.genFilePath(fileName);
+            final Path path = Paths.get(Symphonys.UPLOAD_LOCAL_DIR, fileName);
+            path.getParent().toFile().mkdirs();
+            try (final OutputStream output = new FileOutputStream(Symphonys.UPLOAD_LOCAL_DIR + fileName)) {
+                IOUtils.write(bytes, output);
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Writes output stream failed", e);
+            }
+
+            data.put(Common.URL, Latkes.getServePath() + "/upload/" + fileName);
+            data.put("originalURL", originalURL);
+        }
+
         result.put(Common.DATA, data);
         result.put(Keys.CODE, StatusCodes.SUCC);
         result.put(Keys.MSG, "");
