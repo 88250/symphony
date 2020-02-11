@@ -41,7 +41,7 @@ import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.FileUploadProcessor;
-import org.b3log.symphony.processor.middleware.validate.UserRegisterValidation;
+import org.b3log.symphony.processor.middleware.validate.UserRegisterValidationMidware;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Geos;
 import org.b3log.symphony.util.Gravatars;
@@ -714,7 +714,7 @@ public class UserMgmtService {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
-            if (UserRegisterValidation.invalidUserName(newUserName)) {
+            if (UserRegisterValidationMidware.invalidUserName(newUserName)) {
                 throw new ServiceException(langPropsService.get("invalidUserNameLabel") + " [" + newUserName + "]");
             }
 

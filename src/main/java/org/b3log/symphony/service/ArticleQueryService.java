@@ -37,7 +37,7 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.*;
 import org.b3log.symphony.cache.ArticleCache;
 import org.b3log.symphony.model.*;
-import org.b3log.symphony.processor.middleware.validate.UserRegisterValidation;
+import org.b3log.symphony.processor.middleware.validate.UserRegisterValidationMidware;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.*;
@@ -1570,7 +1570,7 @@ public class ArticleQueryService {
 
         String articleLatestCmterName = article.optString(Article.ARTICLE_LATEST_CMTER_NAME);
         if (StringUtils.isNotBlank(articleLatestCmterName)
-                && UserRegisterValidation.invalidUserName(articleLatestCmterName)) {
+                && UserRegisterValidationMidware.invalidUserName(articleLatestCmterName)) {
             articleLatestCmterName = UserExt.ANONYMOUS_USER_NAME;
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, articleLatestCmterName);
         }

@@ -45,8 +45,8 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.ArticleBaiduSender;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.middleware.PermissionMidware;
-import org.b3log.symphony.processor.middleware.validate.UserRegister2Validation;
-import org.b3log.symphony.processor.middleware.validate.UserRegisterValidation;
+import org.b3log.symphony.processor.middleware.validate.UserRegister2ValidationMidware;
+import org.b3log.symphony.processor.middleware.validate.UserRegisterValidationMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Sessions;
@@ -1357,9 +1357,9 @@ public class AdminProcessor {
         final String password = context.param(User.USER_PASSWORD);
         final String appRole = context.param(UserExt.USER_APP_ROLE);
 
-        final boolean nameInvalid = UserRegisterValidation.invalidUserName(userName);
+        final boolean nameInvalid = UserRegisterValidationMidware.invalidUserName(userName);
         final boolean emailInvalid = !Strings.isEmail(email);
-        final boolean passwordInvalid = UserRegister2Validation.invalidUserPassword(password);
+        final boolean passwordInvalid = UserRegister2ValidationMidware.invalidUserPassword(password);
 
         if (nameInvalid || emailInvalid || passwordInvalid) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/error.ftl");

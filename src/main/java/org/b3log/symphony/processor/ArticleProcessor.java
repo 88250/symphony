@@ -47,7 +47,7 @@ import org.b3log.symphony.processor.middleware.CSRFMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
 import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.processor.middleware.validate.ArticlePostValidationMidware;
-import org.b3log.symphony.processor.middleware.validate.UserRegisterValidation;
+import org.b3log.symphony.processor.middleware.validate.UserRegisterValidationMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
 import org.json.JSONObject;
@@ -836,7 +836,7 @@ public class ArticleProcessor {
 
         // Referral statistic
         final String referralUserName = context.param("r");
-        if (!UserRegisterValidation.invalidUserName(referralUserName)) {
+        if (!UserRegisterValidationMidware.invalidUserName(referralUserName)) {
             final JSONObject referralUser = userQueryService.getUserByName(referralUserName);
             if (null == referralUser) {
                 return;

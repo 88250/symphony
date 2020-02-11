@@ -63,7 +63,7 @@ public class UpdatePasswordValidation extends ProcessAdvice {
         }
 
         final String pwd = requestJSONObject.optString(User.USER_PASSWORD);
-        if (UserRegisterValidation.invalidUserPassword(pwd)) {
+        if (UserRegisterValidationMidware.invalidUserPassword(pwd)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidPasswordLabel")));
         }
     }

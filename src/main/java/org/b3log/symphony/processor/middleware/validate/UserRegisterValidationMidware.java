@@ -22,10 +22,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
@@ -46,16 +43,16 @@ import java.util.Map;
  *
  * @author <a href="https://hacpai.com/member/mainlove">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.13, Mar 23, 2019
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 0.2.0
  */
 @Singleton
-public class UserRegisterValidation extends ProcessAdvice {
+public class UserRegisterValidationMidware {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = LogManager.getLogger(UserRegisterValidation.class);
+    private static final Logger LOGGER = LogManager.getLogger(UserRegisterValidationMidware.class);
 
     /**
      * Max user name length.
@@ -162,29 +159,22 @@ public class UserRegisterValidation extends ProcessAdvice {
         return password.length() < MIN_PWD_LENGTH || password.length() > MAX_PWD_LENGTH;
     }
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final Request request = context.getRequest();
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = context.requestJSON();
-            request.setAttribute(Keys.REQUEST, requestJSONObject);
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
-        }
-
+    public void handle(final RequestContext context) {
+        final JSONObject requestJSONObject = context.requestJSON();
         final String referral = requestJSONObject.optString(Common.REFERRAL);
 
         // check if admin allow to register
         final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_REGISTER);
         if ("1".equals(option.optString(Option.OPTION_VALUE))) {
-            checkField(true, "registerFailLabel", "notAllowRegisterLabel");
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("notAllowRegisterLabel")));
+            context.abort();
+
+            return;
         }
 
         boolean useInvitationLink = false;
 
-        if (!UserRegisterValidation.invalidUserName(referral)) {
+        if (!invalidUserName(referral)) {
             try {
                 final JSONObject referralUser = userQueryService.getUserByName(referral);
                 if (null != referralUser) {
@@ -205,56 +195,78 @@ public class UserRegisterValidation extends ProcessAdvice {
             final String invitecode = requestJSONObject.optString(Invitecode.INVITECODE);
 
             if (StringUtils.isBlank(invitecode) || INVITECODE_LENGHT != invitecode.length()) {
-                checkField(true, "registerFailLabel", "invalidInvitecodeLabel");
+                context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidInvitecodeLabel")));
+                context.abort();
+
+                return;
             }
 
             final JSONObject ic = invitecodeQueryService.getInvitecode(invitecode);
             if (null == ic) {
-                checkField(true, "registerFailLabel", "invalidInvitecodeLabel");
+                context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidInvitecodeLabel")));
+                context.abort();
+
+                return;
             }
 
             if (Invitecode.STATUS_C_UNUSED != ic.optInt(Invitecode.STATUS)) {
-                checkField(true, "registerFailLabel", "usedInvitecodeLabel");
+                context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("usedInvitecodeLabel")));
+                context.abort();
+
+                return;
             }
         }
 
         // open register
         if (useInvitationLink || "0".equals(option.optString(Option.OPTION_VALUE))) {
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-            checkField(CaptchaProcessor.invalidCaptcha(captcha), "registerFailLabel", "captchaErrorLabel");
+            if (CaptchaProcessor.invalidCaptcha(captcha)) {
+                context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("captchaErrorLabel")));
+                context.abort();
+
+                return;
+            }
         }
 
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final int appRole = requestJSONObject.optInt(UserExt.USER_APP_ROLE);
-        //final String password = requestJSONObject.optString(User.USER_PASSWORD);
 
         if (UserExt.isReservedUserName(name)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel")
-                    + " - " + langPropsService.get("reservedUserNameLabel")));
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("reservedUserNameLabel")));
+            context.abort();
+
+            return;
         }
 
-        checkField(invalidUserName(name), "registerFailLabel", "invalidUserNameLabel");
-        checkField(!Strings.isEmail(email), "registerFailLabel", "invalidEmailLabel");
-        checkField(!UserExt.isValidMailDomain(email), "registerFailLabel", "invalidEmail1Label");
-        checkField(UserExt.USER_APP_ROLE_C_HACKER != appRole
-                && UserExt.USER_APP_ROLE_C_PAINTER != appRole, "registerFailLabel", "invalidAppRoleLabel");
-        //checkField(invalidUserPassword(password), "registerFailLabel", "invalidPasswordLabel");
-    }
+        if (invalidUserName(name)) {
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidUserNameLabel")));
+            context.abort();
 
-    /**
-     * Checks field.
-     *
-     * @param invalid    the specified invalid flag
-     * @param failLabel  the specified fail label
-     * @param fieldLabel the specified field label
-     * @throws RequestProcessAdviceException request process advice exception
-     */
-    private void checkField(final boolean invalid, final String failLabel, final String fieldLabel)
-            throws RequestProcessAdviceException {
-        if (invalid) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get(failLabel)
-                    + " - " + langPropsService.get(fieldLabel)));
+            return;
         }
+
+        if (!Strings.isEmail(email)) {
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidEmailLabel")));
+            context.abort();
+
+            return;
+        }
+
+        if (!UserExt.isValidMailDomain(email)) {
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidEmail1Label")));
+            context.abort();
+
+            return;
+        }
+
+        if (UserExt.USER_APP_ROLE_C_HACKER != appRole && UserExt.USER_APP_ROLE_C_PAINTER != appRole) {
+            context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidAppRoleLabel")));
+            context.abort();
+
+            return;
+        }
+
+        context.handle();
     }
 }

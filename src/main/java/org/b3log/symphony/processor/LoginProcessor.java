@@ -25,28 +25,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Response;
-import org.b3log.latke.http.annotation.After;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.*;
+import org.b3log.symphony.processor.middleware.CSRFMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchEndAdvice;
-import org.b3log.symphony.processor.middleware.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.processor.middleware.validate.UserForgetPwdValidation;
-import org.b3log.symphony.processor.middleware.validate.UserRegister2Validation;
-import org.b3log.symphony.processor.middleware.validate.UserRegisterValidation;
+import org.b3log.symphony.processor.middleware.PermissionMidware;
+import org.b3log.symphony.processor.middleware.validate.UserForgetPwdValidationMidware;
+import org.b3log.symphony.processor.middleware.validate.UserRegister2ValidationMidware;
+import org.b3log.symphony.processor.middleware.validate.UserRegisterValidationMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
@@ -65,10 +63,10 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.13.12.8, Sep 6, 2019
+ * @version 2.0.0.0, Feb 11, 2020
  * @since 0.2.0
  */
-@RequestProcessor
+@Singleton
 public class LoginProcessor {
 
     /**
@@ -163,12 +161,37 @@ public class LoginProcessor {
     private TagQueryService tagQueryService;
 
     /**
+     * Register request handlers.
+     */
+    public static void register() {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
+        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
+        final CSRFMidware csrfMidware = beanManager.getReference(CSRFMidware.class);
+        final UserForgetPwdValidationMidware userForgetPwdValidationMidware = beanManager.getReference(UserForgetPwdValidationMidware.class);
+        final UserRegisterValidationMidware userRegisterValidationMidware = beanManager.getReference(UserRegisterValidationMidware.class);
+        final UserRegister2ValidationMidware userRegister2ValidationMidware = beanManager.getReference(UserRegister2ValidationMidware.class);
+
+        final LoginProcessor loginProcessor = beanManager.getReference(LoginProcessor.class);
+        Dispatcher.post("/guide/next", loginProcessor::nextGuideStep, loginCheck::handle);
+        Dispatcher.get("/guide", loginProcessor::showGuide, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.get("/login", loginProcessor::showLogin, permissionMidware::grant);
+        Dispatcher.get("/forget-pwd", loginProcessor::showForgetPwd, permissionMidware::grant);
+        Dispatcher.post("/forget-pwd", loginProcessor::forgetPwd, userForgetPwdValidationMidware::handle);
+        Dispatcher.get("/reset-pwd", loginProcessor::showResetPwd, permissionMidware::grant);
+        Dispatcher.post("/reset-pwd", loginProcessor::resetPwd);
+        Dispatcher.get("/register", loginProcessor::showRegister, permissionMidware::grant);
+        Dispatcher.post("/register", loginProcessor::register, userRegisterValidationMidware::handle);
+        Dispatcher.post("/register2", loginProcessor::register2, userRegister2ValidationMidware::handle);
+        Dispatcher.post("/login", loginProcessor::login);
+        Dispatcher.get("/logout", loginProcessor::logout, permissionMidware::grant);
+    }
+
+    /**
      * Next guide step.
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/guide/next", method = HttpMethod.POST)
-    @Before({LoginCheckMidware.class})
     public void nextGuideStep(final RequestContext context) {
         context.renderJSON();
 
@@ -208,9 +231,6 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/guide", method = HttpMethod.GET)
-    @Before({StopwatchStartAdvice.class, LoginCheckMidware.class})
-    @After({CSRFToken.class, PermissionGrant.class, StopwatchEndAdvice.class})
     public void showGuide(final RequestContext context) {
         final JSONObject currentUser = Sessions.getUser();
         final int step = currentUser.optInt(UserExt.USER_GUIDE_STEP);
@@ -247,9 +267,6 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/login", method = HttpMethod.GET)
-    @Before(StopwatchStartAdvice.class)
-    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showLogin(final RequestContext context) {
         if (Sessions.isLoggedIn()) {
             context.sendRedirect(Latkes.getServePath());
@@ -278,9 +295,6 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/forget-pwd", method = HttpMethod.GET)
-    @Before(StopwatchStartAdvice.class)
-    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showForgetPwd(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "verify/forget-pwd.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -292,8 +306,6 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/forget-pwd", method = HttpMethod.POST)
-    @Before(UserForgetPwdValidation.class)
     public void forgetPwd(final RequestContext context) {
         context.renderJSON();
 
@@ -335,9 +347,6 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/reset-pwd", method = HttpMethod.GET)
-    @Before(StopwatchStartAdvice.class)
-    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showResetPwd(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, null);
         context.setRenderer(renderer);
@@ -365,7 +374,6 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/reset-pwd", method = HttpMethod.POST)
     public void resetPwd(final RequestContext context) {
         context.renderJSON();
 
@@ -411,9 +419,6 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/register", method = HttpMethod.GET)
-    @Before(StopwatchStartAdvice.class)
-    @After({PermissionGrant.class, StopwatchEndAdvice.class})
     public void showRegister(final RequestContext context) {
         if (Sessions.isLoggedIn()) {
             context.sendRedirect(Latkes.getServePath());
@@ -428,7 +433,7 @@ public class LoginProcessor {
         boolean useInvitationLink = false;
 
         String referral = context.param("r");
-        if (!UserRegisterValidation.invalidUserName(referral)) {
+        if (!UserRegisterValidationMidware.invalidUserName(referral)) {
             final JSONObject referralUser = userQueryService.getUserByName(referral);
             if (null != referralUser) {
                 dataModel.put(Common.REFERRAL, referral);
@@ -483,8 +488,6 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/register", method = HttpMethod.POST)
-    @Before(UserRegisterValidation.class)
     public void register(final RequestContext context) {
         context.renderJSON();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
@@ -541,8 +544,6 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/register2", method = HttpMethod.POST)
-    @Before(UserRegister2Validation.class)
     public void register2(final RequestContext context) {
         context.renderJSON();
 
@@ -579,7 +580,7 @@ public class LoginProcessor {
             final String ip = Requests.getRemoteAddr(request);
             userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true, true);
 
-            if (StringUtils.isNotBlank(referral) && !UserRegisterValidation.invalidUserName(referral)) {
+            if (StringUtils.isNotBlank(referral) && !UserRegisterValidationMidware.invalidUserName(referral)) {
                 final JSONObject referralUser = userQueryService.getUserByName(referral);
                 if (null != referralUser) {
                     final String referralId = referralUser.optString(Keys.OBJECT_ID);
@@ -636,7 +637,6 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/login", method = HttpMethod.POST)
     public void login(final RequestContext context) {
         final Request request = context.getRequest();
         final Response response = context.getResponse();
@@ -738,10 +738,7 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/logout", method = HttpMethod.GET)
     public void logout(final RequestContext context) {
-        final Request request = context.getRequest();
-
         final JSONObject user = Sessions.getUser();
         if (null != user) {
             Sessions.logout(user.optString(Keys.OBJECT_ID), context.getResponse());
