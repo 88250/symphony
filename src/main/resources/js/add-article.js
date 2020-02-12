@@ -22,7 +22,7 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.26.1.1, Nov 19, 2019
+ * @version 2.26.2.0, Jan 12, 2020
  */
 
 /**
@@ -104,14 +104,18 @@ var AddArticle = {
         $(it).attr('disabled', 'disabled').css('opacity', '0.3')
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        $('#addArticleTip').addClass('error').html('<ul><li>' + errorThrown + '</li></ul>')
+        $('#addArticleTip').
+          addClass('error').
+          html('<ul><li>' + errorThrown + '</li></ul>')
       },
       success: function (result, textStatus) {
         $(it).removeAttr('disabled').css('opacity', '1')
         if (0 === result.sc) {
           window.location.href = Label.servePath + '/member/' + Label.userName
         } else {
-          $('#addArticleTip').addClass('error').html('<ul><li>' + result.msg + '</li></ul>')
+          $('#addArticleTip').
+            addClass('error').
+            html('<ul><li>' + result.msg + '</li></ul>')
         }
       },
       complete: function () {
@@ -160,15 +164,22 @@ var AddArticle = {
         articleCommentable: $('#articleCommentable').prop('checked'),
         articleNotifyFollowers: $('#articleNotifyFollowers').prop('checked'),
         articleType: articleType,
-        articleShowInList: Boolean($('#articleShowInList').prop('checked')) ? 1 : 0
+        articleShowInList: Boolean($('#articleShowInList').prop('checked'))
+          ? 1
+          : 0,
       }
 
       if (articleType !== 5) {
         requestJSONObject.articleRewardContent = this.rewardEditor.getValue()
-        requestJSONObject.articleRewardPoint = $('#articleRewardPoint').val().replace(/(^\s*)|(\s*$)/g, '')
-        requestJSONObject.articleAnonymous = $('#articleAnonymous').prop('checked')
+        requestJSONObject.articleRewardPoint = $('#articleRewardPoint').
+          val().
+          replace(/(^\s*)|(\s*$)/g, '')
+        requestJSONObject.articleAnonymous = $('#articleAnonymous').
+          prop('checked')
       } else {
-        requestJSONObject.articleQnAOfferPoint = $('#articleAskPoint').val().replace(/(^\s*)|(\s*$)/g, '')
+        requestJSONObject.articleQnAOfferPoint = $('#articleAskPoint').
+          val().
+          replace(/(^\s*)|(\s*$)/g, '')
       }
 
       var url = Label.servePath + '/article', type = 'POST'
@@ -193,7 +204,9 @@ var AddArticle = {
           $(it).attr('disabled', 'disabled').css('opacity', '0.3')
         },
         error: function (jqXHR, textStatus, errorThrown) {
-          $('#addArticleTip').addClass('error').html('<ul><li>' + errorThrown + '</li></ul>')
+          $('#addArticleTip').
+            addClass('error').
+            html('<ul><li>' + errorThrown + '</li></ul>')
         },
         success: function (result, textStatus) {
           $(it).removeAttr('disabled').css('opacity', '1')
@@ -204,7 +217,9 @@ var AddArticle = {
             AddArticle.editor.clearCache()
             AddArticle.rewardEditor.clearCache()
           } else {
-            $('#addArticleTip').addClass('error').html('<ul><li>' + result.msg + '</li></ul>')
+            $('#addArticleTip').
+              addClass('error').
+              html('<ul><li>' + result.msg + '</li></ul>')
           }
         },
         complete: function () {
@@ -257,6 +272,11 @@ var AddArticle = {
       resize: {
         enable: false,
       },
+      after: function () {
+        if ($('#articleContent').next().val() !== '') {
+          AddArticle.editor.setValue($('#articleContent').next().val())
+        }
+      },
       height: 360,
       counter: 4096,
       placeholder: $('#articleContent').data('placeholder'),
@@ -264,7 +284,8 @@ var AddArticle = {
         if (Label.articleType === 3) {
           var postData = JSON.parse(localStorage.postData)
           prevValue = localStorage.getItem('vditorarticleContent') || ''
-          AddArticle.recordThought(AddArticle.editor.getValue(), prevValue, postData)
+          AddArticle.recordThought(AddArticle.editor.getValue(), prevValue,
+            postData)
           localStorage.postData = JSON.stringify(postData)
         }
       },
@@ -316,10 +337,6 @@ var AddArticle = {
 
     this._initTag()
 
-    if ($('#articleContent').next().val() !== '') {
-      AddArticle.editor.setValue($('#articleContent').next().val())
-    }
-
     // focus
     if ($('#articleTitle').val().length <= 0) {
       $('#articleTitle').focus()
@@ -347,9 +364,10 @@ var AddArticle = {
             if ($('#articleTitleTip').length === 1) {
               $('#articleTitleTip').html(result.msg)
             } else {
-              $('#articleTitle').after('<div class="module" id="articleTitleTip">' +
-                result.msg +
-                '</div>')
+              $('#articleTitle').
+                after('<div class="module" id="articleTitleTip">' +
+                  result.msg +
+                  '</div>')
             }
 
           } else {
@@ -360,12 +378,13 @@ var AddArticle = {
     })
 
     // 快捷发文
-    $('#articleTags, #articleRewardPoint, #articleAskPoint').keypress(function (event) {
-      if (event.ctrlKey && 10 === event.charCode) {
-        AddArticle.add()
-        return false
-      }
-    })
+    $('#articleTags, #articleRewardPoint, #articleAskPoint').
+      keypress(function (event) {
+        if (event.ctrlKey && 10 === event.charCode) {
+          AddArticle.add()
+          return false
+        }
+      })
 
     if ($('#articleAskPoint').length === 0) {
       // 初始化打赏区编辑器
@@ -384,13 +403,15 @@ var AddArticle = {
         },
         height: 160,
         counter: 4096,
-        placeholder: $('#articleRewardContent').data('placeholder')
+        placeholder: $('#articleRewardContent').data('placeholder'),
+        after: function () {
+          if ($('#articleRewardContent').next().val() !== '') {
+            $('#showReward').click()
+            AddArticle.rewardEditor.setValue(
+              $('#articleRewardContent').next().val())
+          }
+        },
       })
-
-      if ($('#articleRewardContent').next().val() !== '') {
-        $('#showReward').click()
-        AddArticle.rewardEditor.setValue($('#articleRewardContent').next().val())
-      }
     }
 
     if ($('#articleAskPoint').length === 0) {
@@ -517,7 +538,8 @@ var AddArticle = {
     $('#articleTags').click(function () {
       $('.post .domains-tags').show()
       if ($.ua.device.type !== 'mobile') {
-        $('.post .domains-tags').css('left', ($('.post .tags-selected').width() + 10) + 'px')
+        $('.post .domains-tags').
+          css('left', ($('.post .tags-selected').width() + 10) + 'px')
       }
       $('#articleTagsSelectedPanel').hide()
     }).blur(function () {
@@ -587,12 +609,15 @@ var AddArticle = {
         $.ajax({
           url: Label.servePath + '/tags/query?title=' + $('#articleTags').val(),
           error: function (jqXHR, textStatus, errorThrown) {
-            $('#addArticleTip').addClass('error').html('<ul><li>' + errorThrown + '</li></ul>')
+            $('#addArticleTip').
+              addClass('error').
+              html('<ul><li>' + errorThrown + '</li></ul>')
           },
           success: function (result, textStatus) {
             if (result.sc) {
               if ($.ua.device.type !== 'mobile') {
-                $('#articleTagsSelectedPanel').css('left', ($('.post .tags-selected').width() + 10) + 'px')
+                $('#articleTagsSelectedPanel').
+                  css('left', ($('.post .tags-selected').width() + 10) + 'px')
               }
               $('#articleTags').completed('updateData', result.tags)
             } else {
