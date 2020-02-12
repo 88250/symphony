@@ -117,7 +117,7 @@ public class IndexProcessor {
         Dispatcher.get("/CHANGE_LOGS.html", indexProcessor::showChangelogs);
         Dispatcher.group().middlewares(anonymousViewCheckMidware::handle, permissionMidware::grant).router().get().uris(new String[]{"/qna", "/qna/unanswered", "/qna/reward", "/qna/hot"}).handler(indexProcessor::showQnA);
         Dispatcher.group().middlewares(loginCheck::handle, permissionMidware::grant).router().get().uris(new String[]{"/watch", "/watch/users"}).handler(indexProcessor::showWatch);
-        Dispatcher.group().middlewares(permissionMidware::grant).router().get().uris(new String[]{"", "/"}).handler(indexProcessor::showIndex);
+        Dispatcher.get("/", indexProcessor::showIndex, permissionMidware::grant);
         Dispatcher.group().middlewares(anonymousViewCheckMidware::handle, permissionMidware::grant).router().get().uris(new String[]{"/recent", "/recent/hot", "/recent/good", "/recent/reply"}).handler(indexProcessor::showRecent);
         Dispatcher.get("/about", indexProcessor::showAbout, permissionMidware::grant);
         Dispatcher.get("/kill-browser", indexProcessor::showKillBrowser);
