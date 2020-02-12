@@ -211,11 +211,11 @@ public class ArticleProcessor {
         Dispatcher.post("/article/check-title", articleProcessor::checkArticleTitle, loginCheck::handle);
         Dispatcher.get("/article/{articleId}/image", articleProcessor::getArticleImage, loginCheck::handle);
         Dispatcher.get("/article/{id}/revisions", articleProcessor::getArticleRevisions, loginCheck::handle, permissionMidware::check);
-        Dispatcher.get("/pre-post", articleProcessor::showPreAddArticle, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
-        Dispatcher.get("/post", articleProcessor::showAddArticle, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
-        Dispatcher.group().middlewares(anonymousViewCheckMidware::handle, csrfMidware::fill, permissionMidware::grant).router().get().uris(new String[]{"/article/{articleId}", "/article/{articleId}/comment/{commentId}"}).handler(articleProcessor::showArticle);
+        Dispatcher.get("/pre-post", articleProcessor::showPreAddArticle, loginCheck::handle, csrfMidware::fill);
+        Dispatcher.get("/post", articleProcessor::showAddArticle, loginCheck::handle, csrfMidware::fill);
+        Dispatcher.group().middlewares(anonymousViewCheckMidware::handle, csrfMidware::fill).router().get().uris(new String[]{"/article/{articleId}", "/article/{articleId}/comment/{commentId}"}).handler(articleProcessor::showArticle);
         Dispatcher.post("/article", articleProcessor::addArticle, loginCheck::handle, csrfMidware::check, permissionMidware::check, articlePostValidationMidware::handle);
-        Dispatcher.get("/update", articleProcessor::showUpdateArticle, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.get("/update", articleProcessor::showUpdateArticle, loginCheck::handle, csrfMidware::fill);
         Dispatcher.put("/article/{id}", articleProcessor::updateArticle, loginCheck::handle, csrfMidware::check, permissionMidware::check, articlePostValidationMidware::handle);
         Dispatcher.post("/markdown", articleProcessor::markdown2HTML);
         Dispatcher.get("/article/{articleId}/preview", articleProcessor::getArticlePreviewContent);

@@ -204,7 +204,7 @@ public class SettingsProcessor {
         Dispatcher.post("/settings/email/vc", settingsProcessor::sendEmailVC, loginCheck::handle);
         Dispatcher.post("/settings/email", settingsProcessor::updateEmail, loginCheck::handle);
         Dispatcher.post("/settings/i18n", settingsProcessor::updateI18n, loginCheck::handle, csrfMidware::check);
-        Dispatcher.group().middlewares(loginCheck::handle, csrfMidware::fill, permissionMidware::grant).router().get().uris(new String[]{"/settings", "/settings/{page}"}).handler(settingsProcessor::showSettings);
+        Dispatcher.group().middlewares(loginCheck::handle, csrfMidware::fill).router().get().uris(new String[]{"/settings", "/settings/{page}"}).handler(settingsProcessor::showSettings);
         Dispatcher.post("/settings/geo/status", settingsProcessor::updateGeoStatus, loginCheck::handle, csrfMidware::check);
         Dispatcher.post("/settings/privacy", settingsProcessor::updatePrivacy, loginCheck::handle, csrfMidware::check);
         Dispatcher.post("/settings/function", settingsProcessor::updateFunction, loginCheck::handle, csrfMidware::check);

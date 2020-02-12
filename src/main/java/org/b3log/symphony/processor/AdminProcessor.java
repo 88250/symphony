@@ -313,7 +313,7 @@ public class AdminProcessor {
         final BeanManager beanManager = BeanManager.getInstance();
         final AdminProcessor adminProcessor = beanManager.getReference(AdminProcessor.class);
         final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
-        final Handler[] middlewares = new Handler[]{permissionMidware::check, permissionMidware::grant};
+        final Handler[] middlewares = new Handler[]{permissionMidware::check};
 
         Dispatcher.get("/admin/auditlog", adminProcessor::showAuditlog, middlewares);
         Dispatcher.get("/admin/report/ignore/{reportId}", adminProcessor::makeReportIgnored, middlewares);

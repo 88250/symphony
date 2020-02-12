@@ -174,17 +174,17 @@ public class LoginProcessor {
 
         final LoginProcessor loginProcessor = beanManager.getReference(LoginProcessor.class);
         Dispatcher.post("/guide/next", loginProcessor::nextGuideStep, loginCheck::handle);
-        Dispatcher.get("/guide", loginProcessor::showGuide, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
-        Dispatcher.get("/login", loginProcessor::showLogin, permissionMidware::grant);
-        Dispatcher.get("/forget-pwd", loginProcessor::showForgetPwd, permissionMidware::grant);
+        Dispatcher.get("/guide", loginProcessor::showGuide, loginCheck::handle, csrfMidware::fill);
+        Dispatcher.get("/login", loginProcessor::showLogin);
+        Dispatcher.get("/forget-pwd", loginProcessor::showForgetPwd);
         Dispatcher.post("/forget-pwd", loginProcessor::forgetPwd, userForgetPwdValidationMidware::handle);
-        Dispatcher.get("/reset-pwd", loginProcessor::showResetPwd, permissionMidware::grant);
+        Dispatcher.get("/reset-pwd", loginProcessor::showResetPwd);
         Dispatcher.post("/reset-pwd", loginProcessor::resetPwd);
-        Dispatcher.get("/register", loginProcessor::showRegister, permissionMidware::grant);
+        Dispatcher.get("/register", loginProcessor::showRegister);
         Dispatcher.post("/register", loginProcessor::register, userRegisterValidationMidware::handle);
         Dispatcher.post("/register2", loginProcessor::register2, userRegister2ValidationMidware::handle);
         Dispatcher.post("/login", loginProcessor::login);
-        Dispatcher.get("/logout", loginProcessor::logout, permissionMidware::grant);
+        Dispatcher.get("/logout", loginProcessor::logout);
     }
 
     /**

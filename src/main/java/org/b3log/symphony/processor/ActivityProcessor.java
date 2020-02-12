@@ -127,19 +127,19 @@ public class ActivityProcessor {
         final Activity1A0001CollectValidationMidware activity1A0001CollectValidationMidware = beanManager.getReference(Activity1A0001CollectValidationMidware.class);
 
         final ActivityProcessor activityProcessor = beanManager.getReference(ActivityProcessor.class);
-        Dispatcher.get("/activity/character", activityProcessor::showCharacter, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.get("/activity/character", activityProcessor::showCharacter, loginCheck::handle, csrfMidware::fill);
         Dispatcher.post("/activity/character/submit", activityProcessor::submitCharacter, loginCheck::handle);
-        Dispatcher.get("/activities", activityProcessor::showActivities, permissionMidware::grant);
-        Dispatcher.get("/activity/checkin", activityProcessor::showDailyCheckin, permissionMidware::grant);
+        Dispatcher.get("/activities", activityProcessor::showActivities);
+        Dispatcher.get("/activity/checkin", activityProcessor::showDailyCheckin);
         Dispatcher.get("/activity/daily-checkin", activityProcessor::dailyCheckin, loginCheck::handle);
         Dispatcher.get("/activity/yesterday-liveness-reward", activityProcessor::yesterdayLivenessReward, loginCheck::handle);
-        Dispatcher.get("/activity/1A0001", activityProcessor::show1A0001, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.get("/activity/1A0001", activityProcessor::show1A0001, csrfMidware::fill);
         Dispatcher.post("/activity/1A0001/bet", activityProcessor::bet1A0001, loginCheck::handle, csrfMidware::check, activity1A0001ValidationMidware::handle);
         Dispatcher.post("/activity/1A0001/collect", activityProcessor::collect1A0001, loginCheck::handle, activity1A0001CollectValidationMidware::handle);
-        Dispatcher.get("/activity/eating-snake", activityProcessor::showEatingSnake, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.get("/activity/eating-snake", activityProcessor::showEatingSnake, loginCheck::handle, csrfMidware::fill);
         Dispatcher.post("/activity/eating-snake/start", activityProcessor::startEatingSnake, loginCheck::handle, csrfMidware::check);
         Dispatcher.post("/activity/eating-snake/collect", activityProcessor::collectEatingSnake, loginCheck::handle, csrfMidware::fill);
-        Dispatcher.get("/activity/gobang", activityProcessor::showGobang, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.get("/activity/gobang", activityProcessor::showGobang, loginCheck::handle, csrfMidware::fill);
         Dispatcher.post("/activity/gobang/start", activityProcessor::startGobang, loginCheck::handle);
     }
 

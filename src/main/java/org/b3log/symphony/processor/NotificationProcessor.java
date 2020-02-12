@@ -102,17 +102,17 @@ public class NotificationProcessor {
         final NotificationProcessor notificationProcessor = beanManager.getReference(NotificationProcessor.class);
         Dispatcher.get("/notifications/remove/{type}", notificationProcessor::removeNotifications, loginCheck::handle);
         Dispatcher.get("/notifications/remove", notificationProcessor::removeNotification, loginCheck::handle);
-        Dispatcher.get("/notifications/sys-announce", notificationProcessor::showSysAnnounceNotifications, loginCheck::handle, permissionMidware::grant);
+        Dispatcher.get("/notifications/sys-announce", notificationProcessor::showSysAnnounceNotifications, loginCheck::handle);
         Dispatcher.get("/notifications/all-read", notificationProcessor::makeAllNotificationsRead, loginCheck::handle);
         Dispatcher.get("/notifications/make-read/{type}", notificationProcessor::makeNotificationReadByType, loginCheck::handle);
         Dispatcher.post("/notifications/make-read", notificationProcessor::makeNotificationRead, loginCheck::handle);
         Dispatcher.get("/notifications", notificationProcessor::navigateNotifications, loginCheck::handle);
-        Dispatcher.get("/notifications/point", notificationProcessor::showPointNotifications, loginCheck::handle, permissionMidware::grant);
-        Dispatcher.get("/notifications/commented", notificationProcessor::showCommentedNotifications, loginCheck::handle, permissionMidware::grant);
-        Dispatcher.get("/notifications/reply", notificationProcessor::showReplyNotifications, loginCheck::handle, permissionMidware::grant);
-        Dispatcher.get("/notifications/at", notificationProcessor::showAtNotifications, loginCheck::handle, permissionMidware::grant);
-        Dispatcher.get("/notifications/following", notificationProcessor::showFollowingNotifications, loginCheck::handle, permissionMidware::grant);
-        Dispatcher.get("/notifications/broadcast", notificationProcessor::showBroadcastNotifications, loginCheck::handle, permissionMidware::grant);
+        Dispatcher.get("/notifications/point", notificationProcessor::showPointNotifications, loginCheck::handle);
+        Dispatcher.get("/notifications/commented", notificationProcessor::showCommentedNotifications, loginCheck::handle);
+        Dispatcher.get("/notifications/reply", notificationProcessor::showReplyNotifications, loginCheck::handle);
+        Dispatcher.get("/notifications/at", notificationProcessor::showAtNotifications, loginCheck::handle);
+        Dispatcher.get("/notifications/following", notificationProcessor::showFollowingNotifications, loginCheck::handle);
+        Dispatcher.get("/notifications/broadcast", notificationProcessor::showBroadcastNotifications, loginCheck::handle);
         Dispatcher.get("/notifications/unread/count", notificationProcessor::getUnreadNotificationCount, loginCheck::handle);
     }
 

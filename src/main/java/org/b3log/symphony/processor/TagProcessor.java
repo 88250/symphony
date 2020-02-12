@@ -100,8 +100,8 @@ public class TagProcessor {
 
         final TagProcessor tagProcessor = beanManager.getReference(TagProcessor.class);
         Dispatcher.get("/tags/query", tagProcessor::queryTags, loginCheck::handle);
-        Dispatcher.get("/tags", tagProcessor::showTagsWall, anonymousViewCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.group().middlewares(anonymousViewCheckMidware::handle, permissionMidware::grant).router().get().uris(new String[]{"/tag/{tagURI}", "/tag/{tagURI}/hot", "/tag/{tagURI}/good", "/tag/{tagURI}/reply", "/tag/{tagURI}/perfect"}).handler(tagProcessor::showTagArticles);
+        Dispatcher.get("/tags", tagProcessor::showTagsWall, anonymousViewCheckMidware::handle);
+        Dispatcher.group().middlewares(anonymousViewCheckMidware::handle).router().get().uris(new String[]{"/tag/{tagURI}", "/tag/{tagURI}/hot", "/tag/{tagURI}/good", "/tag/{tagURI}/reply", "/tag/{tagURI}/perfect"}).handler(tagProcessor::showTagArticles);
     }
 
     /**

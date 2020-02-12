@@ -104,7 +104,7 @@ public class BreezemoonProcessor {
         final CSRFMidware csrfMidware = beanManager.getReference(CSRFMidware.class);
 
         final BreezemoonProcessor breezemoonProcessor = beanManager.getReference(BreezemoonProcessor.class);
-        Dispatcher.get("/watch/breezemoons", breezemoonProcessor::showWatchBreezemoon, loginCheck::handle, csrfMidware::fill, permissionMidware::grant);
+        Dispatcher.get("/watch/breezemoons", breezemoonProcessor::showWatchBreezemoon, loginCheck::handle, csrfMidware::fill);
         Dispatcher.post("/breezemoon", breezemoonProcessor::addBreezemoon, loginCheck::handle, csrfMidware::check, permissionMidware::check);
         Dispatcher.put("/breezemoon/{id}", breezemoonProcessor::updateBreezemoon, loginCheck::handle, csrfMidware::check, permissionMidware::check);
         Dispatcher.delete("/breezemoon/{id}", breezemoonProcessor::removeBreezemoon, loginCheck::handle, csrfMidware::check, permissionMidware::check);

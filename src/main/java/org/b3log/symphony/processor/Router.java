@@ -57,7 +57,7 @@ public final class Router {
         // 注册 HTTP 错误处理
         final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
         final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
-        Dispatcher.error("/error/{statusCode}", errorProcessor::handle, permissionMidware::grant);
+        Dispatcher.error("/error/{statusCode}", errorProcessor::handle);
 
         // 配置顶层中间件
         Dispatcher.startRequestHandler = new BeforeRequestHandler();
@@ -107,28 +107,28 @@ public final class Router {
 
         // 搜索
         final SearchProcessor searchProcessor = beanManager.getReference(SearchProcessor.class);
-        Dispatcher.get("/search", searchProcessor::search, permissionMidware::grant);
+        Dispatcher.get("/search", searchProcessor::search);
         // Sitemap
         final SitemapProcessor sitemapProcessor = beanManager.getReference(SitemapProcessor.class);
         Dispatcher.get("/sitemap.xml", sitemapProcessor::sitemap);
         // 统计
         final StatisticProcessor statisticProcessor = beanManager.getReference(StatisticProcessor.class);
-        Dispatcher.get("/statistic", statisticProcessor::showStatistic, anonymousViewCheckMidware::handle, permissionMidware::grant);
+        Dispatcher.get("/statistic", statisticProcessor::showStatistic, anonymousViewCheckMidware::handle);
         // 跳转页
         final ForwardProcessor forwardProcessor = beanManager.getReference(ForwardProcessor.class);
         Dispatcher.get("/forward", forwardProcessor::showForward);
         // 领域
         final DomainProcessor domainProcessor = beanManager.getReference(DomainProcessor.class);
-        Dispatcher.get("/domain/{domainURI}", domainProcessor::showDomainArticles, anonymousViewCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/domains", domainProcessor::showDomains, anonymousViewCheckMidware::handle, permissionMidware::grant);
+        Dispatcher.get("/domain/{domainURI}", domainProcessor::showDomainArticles, anonymousViewCheckMidware::handle);
+        Dispatcher.get("/domains", domainProcessor::showDomains, anonymousViewCheckMidware::handle);
         // RSS 订阅
         final FeedProcessor feedProcessor = beanManager.getReference(FeedProcessor.class);
         Dispatcher.group().router().get().head().uri("/rss/recent.xml").handler(feedProcessor::genRecentRSS);
         Dispatcher.group().router().get().head().uri("/rss/domain/{domainURI}.xml").handler(feedProcessor::genDomainRSS);
         // 同城
         final CityProcessor cityProcessor = beanManager.getReference(CityProcessor.class);
-        Dispatcher.group().middlewares(loginCheck::handle, permissionMidware::grant).router().get().uris(new String[]{"/city/{city}", "/city/{city}/articles"}).handler(cityProcessor::showCityArticles);
-        Dispatcher.get("/city/{city}/users", cityProcessor::showCityUsers, loginCheck::handle, permissionMidware::grant);
+        Dispatcher.group().middlewares(loginCheck::handle).router().get().uris(new String[]{"/city/{city}", "/city/{city}/articles"}).handler(cityProcessor::showCityArticles);
+        Dispatcher.get("/city/{city}/users", cityProcessor::showCityUsers, loginCheck::handle);
 
         // 管理后台
         AdminProcessor.register();

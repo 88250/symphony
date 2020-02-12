@@ -138,7 +138,7 @@ public class ChatroomProcessor {
 
         final ChatroomProcessor chatroomProcessor = beanManager.getReference(ChatroomProcessor.class);
         Dispatcher.post("/chat-room/send", chatroomProcessor::addChatRoomMsg, loginCheck::handle, chatMsgAddValidationMidware::handle);
-        Dispatcher.get("/cr", chatroomProcessor::showChatRoom, anonymousViewCheckMidware::handle, permissionMidware::grant);
+        Dispatcher.get("/cr", chatroomProcessor::showChatRoom, anonymousViewCheckMidware::handle);
     }
 
     /**

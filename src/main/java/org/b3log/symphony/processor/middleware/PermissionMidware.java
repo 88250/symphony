@@ -26,7 +26,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.handler.RouteHandler;
 import org.b3log.latke.http.handler.RouteResolution;
-import org.b3log.latke.http.renderer.AbstractResponseRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
@@ -47,7 +46,7 @@ import java.util.Set;
  * Permission check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 11, 2020
+ * @version 2.0.0.1, Feb 12, 2020
  * @since 1.8.0
  */
 @Singleton
@@ -68,33 +67,6 @@ public class PermissionMidware {
      */
     @Inject
     private RoleQueryService roleQueryService;
-
-    public void grant(final RequestContext context) {
-        context.handle();
-
-        final AbstractResponseRenderer renderer = context.getRenderer();
-        if (null == renderer) {
-            return;
-        }
-
-        Stopwatchs.start("Grant permissions");
-        try {
-            final Map<String, Object> dataModel = context.getRenderer().getRenderDataModel();
-
-            final JSONObject user = Sessions.getUser();
-            final String roleId = null != user ? user.optString(User.USER_ROLE) : Role.ROLE_ID_C_VISITOR;
-            final Map<String, JSONObject> permissionsGrant = roleQueryService.getPermissionsGrantMap(roleId);
-            dataModel.put(Permission.PERMISSIONS, permissionsGrant);
-
-            final JSONObject role = roleQueryService.getRole(roleId);
-
-            String noPermissionLabel = langPropsService.get("noPermissionLabel");
-            noPermissionLabel = noPermissionLabel.replace("{roleName}", role.optString(Role.ROLE_NAME));
-            dataModel.put("noPermissionLabel", noPermissionLabel);
-        } finally {
-            Stopwatchs.end();
-        }
-    }
 
     public void check(final RequestContext context) {
         Stopwatchs.start("Check Permissions");

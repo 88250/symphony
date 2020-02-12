@@ -176,17 +176,17 @@ public class UserProcessor {
         final UserCheckMidware userCheckMidware = beanManager.getReference(UserCheckMidware.class);
 
         final UserProcessor userProcessor = beanManager.getReference(UserProcessor.class);
-        Dispatcher.get("/member/{userName}", userProcessor::showHome, anonymousViewCheckMidware::handle, userCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.group().middlewares(anonymousViewCheckMidware::handle, userCheckMidware::handle, csrfMidware::fill, permissionMidware::grant).router().get().uris(new String[]{"/member/{userName}/breezemoons", "/member/{userName}/breezemoons/{breezemoonId}"}).handler(userProcessor::showHomeBreezemoons);
-        Dispatcher.get("/member/{userName}/comments/anonymous", userProcessor::showHomeAnonymousComments, userCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/member/{userName}/articles/anonymous", userProcessor::showAnonymousArticles, userCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/member/{userName}/comments", userProcessor::showHomeComments, anonymousViewCheckMidware::handle, userCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/member/{userName}/following/users", userProcessor::showHomeFollowingUsers, anonymousViewCheckMidware::handle, userCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/member/{userName}/following/tags", userProcessor::showHomeFollowingTags, anonymousViewCheckMidware::handle, userCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/member/{userName}/following/articles", userProcessor::showHomeFollowingArticles, anonymousViewCheckMidware::handle, userCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/member/{userName}/watching/articles", userProcessor::showHomeWatchingArticles, anonymousViewCheckMidware::handle, userCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/member/{userName}/followers", userProcessor::showHomeFollowers, anonymousViewCheckMidware::handle, userCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/member/{userName}/points", userProcessor::showHomePoints, anonymousViewCheckMidware::handle, userCheckMidware::handle, permissionMidware::grant);
+        Dispatcher.get("/member/{userName}", userProcessor::showHome, anonymousViewCheckMidware::handle, userCheckMidware::handle);
+        Dispatcher.group().middlewares(anonymousViewCheckMidware::handle, userCheckMidware::handle, csrfMidware::fill).router().get().uris(new String[]{"/member/{userName}/breezemoons", "/member/{userName}/breezemoons/{breezemoonId}"}).handler(userProcessor::showHomeBreezemoons);
+        Dispatcher.get("/member/{userName}/comments/anonymous", userProcessor::showHomeAnonymousComments, userCheckMidware::handle);
+        Dispatcher.get("/member/{userName}/articles/anonymous", userProcessor::showAnonymousArticles, userCheckMidware::handle);
+        Dispatcher.get("/member/{userName}/comments", userProcessor::showHomeComments, anonymousViewCheckMidware::handle, userCheckMidware::handle);
+        Dispatcher.get("/member/{userName}/following/users", userProcessor::showHomeFollowingUsers, anonymousViewCheckMidware::handle, userCheckMidware::handle);
+        Dispatcher.get("/member/{userName}/following/tags", userProcessor::showHomeFollowingTags, anonymousViewCheckMidware::handle, userCheckMidware::handle);
+        Dispatcher.get("/member/{userName}/following/articles", userProcessor::showHomeFollowingArticles, anonymousViewCheckMidware::handle, userCheckMidware::handle);
+        Dispatcher.get("/member/{userName}/watching/articles", userProcessor::showHomeWatchingArticles, anonymousViewCheckMidware::handle, userCheckMidware::handle);
+        Dispatcher.get("/member/{userName}/followers", userProcessor::showHomeFollowers, anonymousViewCheckMidware::handle, userCheckMidware::handle);
+        Dispatcher.get("/member/{userName}/points", userProcessor::showHomePoints, anonymousViewCheckMidware::handle, userCheckMidware::handle);
         Dispatcher.post("/users/names", userProcessor::listNames);
         Dispatcher.get("/users/emotions", userProcessor::getFrequentEmotions);
     }

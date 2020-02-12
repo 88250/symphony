@@ -89,11 +89,11 @@ public class TopProcessor {
         final AnonymousViewCheckMidware anonymousViewCheckMidware = beanManager.getReference(AnonymousViewCheckMidware.class);
 
         final TopProcessor topProcessor = beanManager.getReference(TopProcessor.class);
-        Dispatcher.get("/top", topProcessor::showTop, anonymousViewCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/top/link", topProcessor::showLink, anonymousViewCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/top/balance", topProcessor::showBalance, anonymousViewCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/top/consumption", topProcessor::showConsumption, anonymousViewCheckMidware::handle, permissionMidware::grant);
-        Dispatcher.get("/top/checkin", topProcessor::showCheckin, anonymousViewCheckMidware::handle, permissionMidware::grant);
+        Dispatcher.get("/top", topProcessor::showTop, anonymousViewCheckMidware::handle);
+        Dispatcher.get("/top/link", topProcessor::showLink, anonymousViewCheckMidware::handle);
+        Dispatcher.get("/top/balance", topProcessor::showBalance, anonymousViewCheckMidware::handle);
+        Dispatcher.get("/top/consumption", topProcessor::showConsumption, anonymousViewCheckMidware::handle);
+        Dispatcher.get("/top/checkin", topProcessor::showCheckin, anonymousViewCheckMidware::handle);
     }
 
     /**
