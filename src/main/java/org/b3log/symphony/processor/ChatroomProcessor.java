@@ -35,7 +35,6 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.ChatroomChannel;
 import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
-import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.processor.middleware.validate.ChatMsgAddValidationMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
@@ -132,7 +131,6 @@ public class ChatroomProcessor {
     public static void register() {
         final BeanManager beanManager = BeanManager.getInstance();
         final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
-        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
         final AnonymousViewCheckMidware anonymousViewCheckMidware = beanManager.getReference(AnonymousViewCheckMidware.class);
         final ChatMsgAddValidationMidware chatMsgAddValidationMidware = beanManager.getReference(ChatMsgAddValidationMidware.class);
 

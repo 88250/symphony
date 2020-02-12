@@ -22,7 +22,6 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.symphony.processor.channel.*;
 import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
-import org.b3log.symphony.processor.middleware.PermissionMidware;
 
 /**
  * 请求路由映射.
@@ -56,7 +55,6 @@ public final class Router {
 
         // 注册 HTTP 错误处理
         final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
-        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
         Dispatcher.error("/error/{statusCode}", errorProcessor::handle);
 
         // 配置顶层中间件
@@ -102,7 +100,6 @@ public final class Router {
 
         final BeanManager beanManager = BeanManager.getInstance();
         final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
-        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
         final AnonymousViewCheckMidware anonymousViewCheckMidware = beanManager.getReference(AnonymousViewCheckMidware.class);
 
         // 搜索

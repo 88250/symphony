@@ -41,7 +41,6 @@ import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.middleware.CSRFMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
-import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.processor.middleware.validate.UserForgetPwdValidationMidware;
 import org.b3log.symphony.processor.middleware.validate.UserRegister2ValidationMidware;
 import org.b3log.symphony.processor.middleware.validate.UserRegisterValidationMidware;
@@ -166,7 +165,6 @@ public class LoginProcessor {
     public static void register() {
         final BeanManager beanManager = BeanManager.getInstance();
         final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
-        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
         final CSRFMidware csrfMidware = beanManager.getReference(CSRFMidware.class);
         final UserForgetPwdValidationMidware userForgetPwdValidationMidware = beanManager.getReference(UserForgetPwdValidationMidware.class);
         final UserRegisterValidationMidware userRegisterValidationMidware = beanManager.getReference(UserRegisterValidationMidware.class);

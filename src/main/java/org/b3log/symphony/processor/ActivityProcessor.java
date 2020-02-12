@@ -37,7 +37,6 @@ import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.middleware.CSRFMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
-import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.processor.middleware.validate.Activity1A0001CollectValidationMidware;
 import org.b3log.symphony.processor.middleware.validate.Activity1A0001ValidationMidware;
 import org.b3log.symphony.service.*;
@@ -122,7 +121,6 @@ public class ActivityProcessor {
         final BeanManager beanManager = BeanManager.getInstance();
         final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
         final CSRFMidware csrfMidware = beanManager.getReference(CSRFMidware.class);
-        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
         final Activity1A0001ValidationMidware activity1A0001ValidationMidware = beanManager.getReference(Activity1A0001ValidationMidware.class);
         final Activity1A0001CollectValidationMidware activity1A0001CollectValidationMidware = beanManager.getReference(Activity1A0001CollectValidationMidware.class);
 

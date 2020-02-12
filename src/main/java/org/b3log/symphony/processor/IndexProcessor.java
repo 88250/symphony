@@ -39,7 +39,6 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
-import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -110,7 +109,6 @@ public class IndexProcessor {
     public static void register() {
         final BeanManager beanManager = BeanManager.getInstance();
         final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
-        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
         final AnonymousViewCheckMidware anonymousViewCheckMidware = beanManager.getReference(AnonymousViewCheckMidware.class);
 
         final IndexProcessor indexProcessor = beanManager.getReference(IndexProcessor.class);

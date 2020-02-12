@@ -25,7 +25,6 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
-import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -85,7 +84,6 @@ public class TopProcessor {
      */
     public static void register() {
         final BeanManager beanManager = BeanManager.getInstance();
-        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
         final AnonymousViewCheckMidware anonymousViewCheckMidware = beanManager.getReference(AnonymousViewCheckMidware.class);
 
         final TopProcessor topProcessor = beanManager.getReference(TopProcessor.class);

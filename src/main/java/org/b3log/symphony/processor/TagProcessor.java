@@ -33,7 +33,6 @@ import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
-import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
@@ -96,7 +95,6 @@ public class TagProcessor {
         final BeanManager beanManager = BeanManager.getInstance();
         final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
         final AnonymousViewCheckMidware anonymousViewCheckMidware = beanManager.getReference(AnonymousViewCheckMidware.class);
-        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
 
         final TagProcessor tagProcessor = beanManager.getReference(TagProcessor.class);
         Dispatcher.get("/tags/query", tagProcessor::queryTags, loginCheck::handle);

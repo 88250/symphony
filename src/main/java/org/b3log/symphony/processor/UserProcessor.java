@@ -35,7 +35,6 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
 import org.b3log.symphony.processor.middleware.CSRFMidware;
-import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.processor.middleware.UserCheckMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.*;
@@ -170,7 +169,6 @@ public class UserProcessor {
      */
     public static void register() {
         final BeanManager beanManager = BeanManager.getInstance();
-        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
         final AnonymousViewCheckMidware anonymousViewCheckMidware = beanManager.getReference(AnonymousViewCheckMidware.class);
         final CSRFMidware csrfMidware = beanManager.getReference(CSRFMidware.class);
         final UserCheckMidware userCheckMidware = beanManager.getReference(UserCheckMidware.class);

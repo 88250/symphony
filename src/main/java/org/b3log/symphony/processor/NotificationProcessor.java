@@ -30,7 +30,6 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
-import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
@@ -97,7 +96,6 @@ public class NotificationProcessor {
     public static void register() {
         final BeanManager beanManager = BeanManager.getInstance();
         final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
-        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
 
         final NotificationProcessor notificationProcessor = beanManager.getReference(NotificationProcessor.class);
         Dispatcher.get("/notifications/remove/{type}", notificationProcessor::removeNotifications, loginCheck::handle);

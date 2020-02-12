@@ -42,7 +42,6 @@ import org.b3log.latke.util.TimeZones;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.middleware.CSRFMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
-import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.processor.middleware.validate.PointTransferValidationMidware;
 import org.b3log.symphony.processor.middleware.validate.UpdatePasswordValidationMidware;
 import org.b3log.symphony.processor.middleware.validate.UpdateProfilesValidationMidware;
@@ -192,7 +191,6 @@ public class SettingsProcessor {
     public static void register() {
         final BeanManager beanManager = BeanManager.getInstance();
         final LoginCheckMidware loginCheck = beanManager.getReference(LoginCheckMidware.class);
-        final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
         final CSRFMidware csrfMidware = beanManager.getReference(CSRFMidware.class);
         final UpdateProfilesValidationMidware updateProfilesValidationMidware = beanManager.getReference(UpdateProfilesValidationMidware.class);
         final UpdatePasswordValidationMidware updatePasswordValidationMidware = beanManager.getReference(UpdatePasswordValidationMidware.class);
