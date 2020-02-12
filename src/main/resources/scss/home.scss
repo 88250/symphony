@@ -190,6 +190,11 @@
   margin: 7px 15px 0 0;
   line-height: 20px;
   float: left;
+  display: inline-flex;
+  align-items: center;
+  input {
+    margin-left: 5px;
+  }
 }
 
 .post {

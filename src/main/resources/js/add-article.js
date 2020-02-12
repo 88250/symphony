@@ -404,13 +404,14 @@ var AddArticle = {
         height: 160,
         counter: 4096,
         placeholder: $('#articleRewardContent').data('placeholder'),
+        after: function () {
+          if ($('#articleRewardContent').next().val() !== '') {
+            $('#showReward').click()
+            AddArticle.rewardEditor.setValue(
+              $('#articleRewardContent').next().val())
+          }
+        },
       })
-
-      if ($('#articleRewardContent').next().val() !== '') {
-        $('#showReward').click()
-        AddArticle.rewardEditor.setValue(
-          $('#articleRewardContent').next().val())
-      }
     }
 
     if ($('#articleAskPoint').length === 0) {
