@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
- * @version 1.48.0.0, Jan 12, 2020
+ * @version 1.48.0.1, Mar 5, 2020
  */
 
 /**
@@ -116,6 +116,7 @@ var Util = {
     Vditor.mathRender(document.body)
     Vditor.codeRender(document.body, Label.langLabel)
     Vditor.abcRender()
+    Vditor.graphvizRender(this)
 
     var hasLivePhoto = false
     $('.vditor-reset').each(function () {
