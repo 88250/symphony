@@ -61,7 +61,7 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.28.2.0, Sep 6, 2019
+ * @version 2.28.2.1, Mar 10, 2020
  * @since 0.2.0
  */
 @Service
@@ -2154,7 +2154,7 @@ public class ArticleQueryService {
             final String content = article.optString(Article.ARTICLE_CONTENT);
             final Document doc = Jsoup.parse(content, StringUtils.EMPTY, Parser.htmlParser());
             doc.outputSettings().prettyPrint(false);
-            final Elements hs = doc.select("h1, h2, h3, h4, h5");
+            final Elements hs = doc.select("body>h1, body>h2, body>h3, body>h4, body>h5, body>h6");
             if (hs.size() < 3) {
                 return "";
             }
