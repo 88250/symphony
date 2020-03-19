@@ -36,7 +36,7 @@
 
 欢迎到 [Sym 官方讨论区](https://hacpai.com/tag/sym)了解更多。同时也欢迎关注 B3log 开源社区微信公众号 `B3log开源`：
 
-![b3logos.png](https://img.hacpai.com/file/2019/10/image-d3c00d78.png?2)
+![b3logos.png](https://img.hacpai.com/file/2019/10/image-d3c00d78.png)
 
 ## ⚡ 动机
 
@@ -74,7 +74,7 @@
 * [Sym 简介幻灯片](https://sym.b3log.org/syme-intro.pptx)
 * [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
 
-[![Sym功能点](https://img.hacpai.com/file/2020/03/image-a2ae13cc.png?2)](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
+[![Sym功能点](https://img.hacpai.com/file/2020/03/image-a2ae13cc.png)](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
 
 ## 🎨 界面
 
@@ -82,27 +82,27 @@
 
 **首页**
 
-![index](https://img.hacpai.com/file/2020/03/c4b0dee683aa449bb188d5acb9eceb01.png?2)
+![index](https://img.hacpai.com/file/2020/03/c4b0dee683aa449bb188d5acb9eceb01.png)
 
 **列表**
 
-![list.png](https://img.hacpai.com/file/2020/03/list-7ec2767b.png?2)
+![list.png](https://img.hacpai.com/file/2020/03/list-7ec2767b.png)
 
 **帖子**
 
-![article.png](https://img.hacpai.com/file/2020/03/article-92bd35dd.png?2)
+![article.png](https://img.hacpai.com/file/2020/03/article-92bd35dd.png)
 
 **发帖**
 
-![post.png](https://img.hacpai.com/file/2020/03/post-b92fa128.png?2)
+![post.png](https://img.hacpai.com/file/2020/03/post-b92fa128.png)
 
 **用户 - PC 端**
 
-![pchome.png](https://img.hacpai.com/file/2020/03/pchome-458c540e.png?2)
+![pchome.png](https://img.hacpai.com/file/2020/03/pchome-458c540e.png)
 
 **多主题**
 
-![theme1.png](https://img.hacpai.com/file/2020/03/theme1-81030f5a.png?2)
+![theme1.png](https://img.hacpai.com/file/2020/03/theme1-81030f5a.png)
 
 ## 🛠️ 安装
 
