@@ -713,7 +713,7 @@ var Util = {
         'list',
         'check',
         'upload',
-        'wysiwyg',
+        'edit-mode',
         'preview',
         'fullscreen',
         'help',
