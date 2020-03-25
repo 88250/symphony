@@ -1,6 +1,6 @@
 {
   "name": "symphony",
-  "version": "3.6.1",
+  "version": "3.6.2",
   "description": "A modern community (forum/BBS/SNS/blog) platform written in Java. 一款用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）平台。",
   "homepage": "https://sym.b3log.org",
   "repository": {
