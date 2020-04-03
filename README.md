@@ -71,8 +71,6 @@
 
 ## 🎨 界面
 
-以下截图来自 Sym 商业版。
-
 **首页**
 
 ![index](https://img.hacpai.com/file/2020/03/c4b0dee683aa449bb188d5acb9eceb01.png)
