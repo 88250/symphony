@@ -50,7 +50,7 @@
 ## 🗃 案例
 
 * [黑客派](https://hacpai.com)
-* [快递100](https://bbs.kuaidi100.com)
+* [快递100社区论坛](https://bbs.kuaidi100.com)
 * [金蝶精斗云社区](https://cs.jdy.com)
 * [乾学院](http://c.raqsoft.com.cn)
 * [宽客网](http://www.cnq.net)
