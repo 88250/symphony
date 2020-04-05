@@ -633,7 +633,9 @@ var Util = {
     var options = {
       after: data.after || undefined,
       typewriterMode: data.typewriterMode || false,
-      cache: data.cache || false,
+      cache: {
+        enable: data.cache || false,
+      },
       input: data.input,
       preview: {
         delay: 500,
