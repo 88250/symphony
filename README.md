@@ -27,7 +27,7 @@
 
 ## 💡 简介
 
-[Symphony](https://sym.b3log.org)（[ˈs ɪmf əni]，n.交响乐）是一个现代化的社区平台，因为它：
+[Symphony](https://github.com/88250/symphony)（[ˈs ɪmf əni]，n.交响乐）是一个现代化的社区平台，因为它：
 
 * 实现了面向内容讨论的论坛
 * 实现了面向知识问答的社区
@@ -49,25 +49,18 @@
 
 ## 🗃 案例
 
-社区版：
-
+* [黑客派](https://hacpai.com)
+* [快递100社区论坛](https://bbs.kuaidi100.com)
+* [金蝶精斗云社区](https://cs.jdy.com)
+* [乾学院](http://c.raqsoft.com.cn)
 * [宽客网](http://www.cnq.net)
 * [AIQ-机器学习](http://www.6aiq.com)
 * [许昌IT圈](http://www.xcitq.com)
 * [凤凰匯](https://www.fengd.com)
 * [俩猴网](http://www.xfx77.cn)
-* [艺赛旗 RPA](http://support.i-search.com.cn)（商用授权）
-* [北极社区](https://begeek.bwae.org)（商用授权）
-* [神州邦邦](https://c.shenzhoubb.com)（商用授权）
-* ......
-
-商业版：
-
-* [黑客派](https://hacpai.com)
-* [乾学院](http://c.raqsoft.com.cn)
-* [快递100](https://bbs.kuaidi100.com)
-* [金蝶精斗云社区](https://cs.jdy.com)
-* ......
+* [艺赛旗 RPA](http://support.i-search.com.cn)
+* [北极社区](https://begeek.bwae.org)
+* [神州邦邦](https://c.shenzhoubb.com)
 
 ## ✨  特性
 
@@ -77,8 +70,6 @@
 [![Sym功能点](https://img.hacpai.com/file/2020/03/image-a2ae13cc.png)](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
 
 ## 🎨 界面
-
-以下截图来自 Sym 商业版。
 
 **首页**
 
@@ -110,11 +101,7 @@
 
 ## 📄 授权
 
-* 社区版：使用 AGPLv3 开源，如果你选择使用社区版，则必须完全遵守 AGPLv3 的相关条款；公司使用必须购买商用授权
-* 商业版：提供完整源码以便二开，报价 ¥20000，详情请看[这里](https://sym.b3log.org/pricing.html)
-* 云服务：提供开箱即用的云端服务，每年 ¥5000（暂时售罄）
-
-**关于商业版和社区版的对比请看[这里](https://hacpai.com/article/1500543226433)，企业网站、经营性网站、以营利为目的或实现盈利的网站请购买商业版。**
+* 社区版使用 AGPLv3 开源，如果你选择使用社区版，则必须完全遵守 AGPLv3 的相关条款。
 
 ## 🏘️ 社区
 
