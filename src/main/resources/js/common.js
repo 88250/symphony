@@ -116,7 +116,7 @@ var Util = {
     Vditor.mathRender(document.body)
     Vditor.codeRender(document.body, Label.langLabel)
     Vditor.abcRender()
-    Vditor.graphvizRender(this)
+    Vditor.graphvizRender(document.body)
 
     var hasLivePhoto = false
     $('.vditor-reset').each(function () {
