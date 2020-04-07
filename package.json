@@ -12,21 +12,27 @@
   },
   "license": "AGPLv3",
   "private": true,
-  "author": "Daniel <d@b3log.org> (http://88250.b3log.org) & Vanessa <v@b3log.org> (http://vanessa.b3log.org)",
+  "author": {
+    "name": "B3log 开源社区",
+    "email": "os@b3log.org",
+    "url": "https://b3log.org"
+  },
+  "maintainers": [
+    {
+      "name": "Liang Ding",
+      "email": "d@b3log.org",
+      "url": "http://88250.b3log.org"
+    },
+    {
+      "name": "Liyuan Li",
+      "email": "v@b3log.org",
+      "url": "http://vanessa.b3log.org"
+    }
+  ],
   "scripts": {
     "dev": "gulp watch",
     "build": "gulp"
   },
-  "maintainers": [
-    {
-      "name": "Daniel",
-      "email": "d@b3log.org"
-    },
-    {
-      "name": "Vanessa",
-      "email": "v@b3log.org"
-    }
-  ],
   "devDependencies": {
     "del": "^5.0.0",
     "gulp": "^4.0.2",
