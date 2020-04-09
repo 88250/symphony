@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.17.0.26, Apr 4, 2020
+    Version: 2.17.0.27, Apr 9, 2020
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -21,7 +21,7 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>3.2.16</latke.version>
+        <latke.version>3.3.0</latke.version>
 
         <jsoup.version>1.12.1</jsoup.version>
         <flexmark.version>0.50.40</flexmark.version>
