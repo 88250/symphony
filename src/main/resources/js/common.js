@@ -661,7 +661,10 @@ var Util = {
       },
       placeholder: data.placeholder,
       height: data.height,
-      counter: data.counter,
+      counter: {
+        enable: data.counter ? true : false,
+        max: data.counter,
+      },
       resize: {
         enable: data.resize.enable,
         position: data.resize.position,
@@ -710,15 +713,11 @@ var Util = {
       options.toolbar = [
         'emoji',
         'bold',
-        'italic',
         'link',
         'list',
-        'check',
-        'upload',
         'edit-mode',
         'preview',
         'fullscreen',
-        'help',
       ]
       options.resize.enable = false
     } else if (data.toolbar) {
