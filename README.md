@@ -472,7 +472,7 @@ notification
 
 ## 🛠️ Setup
 
-Please visit [Sym Setup Guide](https://hacpai.com/article/1486188905847)。
+Please visit [Sym Setup Guide](https://hacpai.com/article/1486188905847).
 
 ## 🏘️ Community
 
