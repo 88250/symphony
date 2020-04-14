@@ -1,7 +1,7 @@
 <p align = "center">
 <img alt="Sym" src="https://user-images.githubusercontent.com/873584/52320309-9555a100-2a09-11e9-9252-f04dc47b0a31.png">
 <br><br>
-下一代的社区系统，为未来而构建
+The next generation of the community system, built for the future
 <br><br>
 <a title="Build Status" target="_blank" href="https://travis-ci.org/88250/symphony"><img src="https://img.shields.io/travis/88250/symphony.svg?style=flat-square"></a>
 <a title="Docker Image CI" target="_blank" href="https://github.com/88250/symphony/actions"><img src="https://img.shields.io/github/workflow/status/88250/symphony/Docker%20Image%20CI?label=Actions&logo=github&style=flat-square"></a>
@@ -25,105 +25,92 @@
 <a title="Author GitHub Followers" target="_blank" href="https://github.com/88250"><img src="https://img.shields.io/github/followers/88250.svg?label=Followers&style=social"></a>
 </p>
 
-## 💡 简介
+## 💡 Introduction
 
-[Symphony](https://github.com/88250/symphony)（[ˈs ɪmf əni]，n.交响乐）是一个现代化的社区平台，因为它：
+[Symphony](https://github.com/88250/symphony) is a modern community platform because it:
 
-* 实现了面向内容讨论的论坛
-* 实现了面向知识问答的社区
-* 包含了面向用户分享、交友、游戏的社交网络
-* `100%` 开源
+* Implemented a forum for content-oriented discussions
+* Implemented a community for knowledge quiz
+* Including social networks for user sharing, making friends, games
+* `100%` open source
 
-欢迎到 [Sym 官方讨论区](https://hacpai.com/tag/sym)了解更多。同时也欢迎关注 B3log 开源社区微信公众号 `B3log开源`：
+Welcome to [Sym Official Discussion Forum](https://hacpai.com/tag/sym) to learn more.
 
-![b3logos.png](https://img.hacpai.com/file/2019/10/image-d3c00d78.png)
+## ⚡ Motivation
 
-## ⚡ 动机
+Many community forum systems:
 
-很多社区论坛系统：
+* The interface style is old-fashioned and has not kept pace with the development of the times
+* Lack of innovative and fun features, lack of modern interactive elements and user experience
+* Lack of consideration of actual operational needs, management function is too single
+* The details are not exquisite and lack long-term maintenance
 
-* 界面风格老式，没有跟上时代发展的步伐
-* 缺少创新、好玩的特性，缺少现代化的交互元素和用户体验
-* 缺乏考虑实际运营需求，管理功能过于单一
-* 细节不够精致、缺乏长期维护
+## 🗃 Showcases
 
-## 🗃 案例
+* [HacPai](https://hacpai.com)
 
-* [黑客派](https://hacpai.com)
-* [快递100社区论坛](https://bbs.kuaidi100.com)
-* [金蝶精斗云社区](https://cs.jdy.com)
-* [乾学院](http://c.raqsoft.com.cn)
-* [宽客网](http://www.cnq.net)
-* [AIQ-机器学习](http://www.6aiq.com)
-* [许昌IT圈](http://www.xcitq.com)
-* [凤凰匯](https://www.fengd.com)
-* [俩猴网](http://www.xfx77.cn)
-* [艺赛旗 RPA](http://support.i-search.com.cn)
-* [北极社区](https://begeek.bwae.org)
-* [神州邦邦](https://c.shenzhoubb.com)
+## ✨  Features
 
-## ✨  特性
+* [Sym Introduction PPT](https://sym.b3log.org/syme-intro.pptx)
+* [Sym Function Mind Map](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
 
-* [Sym 简介幻灯片](https://sym.b3log.org/syme-intro.pptx)
-* [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
+[![Sym Function Mind Map](https://img.hacpai.com/file/2020/03/image-a2ae13cc.png)](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
 
-[![Sym功能点](https://img.hacpai.com/file/2020/03/image-a2ae13cc.png)](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
+## 🎨 Screenshots
 
-## 🎨 界面
-
-**首页**
+**Index**
 
 ![index](https://img.hacpai.com/file/2020/03/c4b0dee683aa449bb188d5acb9eceb01.png)
 
-**列表**
+**List**
 
 ![list.png](https://img.hacpai.com/file/2020/03/list-7ec2767b.png)
 
-**帖子**
+**Article**
 
 ![article.png](https://img.hacpai.com/file/2020/03/article-92bd35dd.png)
 
-**发帖**
+**Post**
 
 ![post.png](https://img.hacpai.com/file/2020/03/post-b92fa128.png)
 
-**用户 - PC 端**
+**User - PC**
 
 ![pchome.png](https://img.hacpai.com/file/2020/03/pchome-458c540e.png)
 
-**多主题**
+**Theme**
 
 ![theme1.png](https://img.hacpai.com/file/2020/03/theme1-81030f5a.png)
 
-## 🛠️ 安装
+## 🛠️ Setup
 
-请参考 [Sym 安装指南](https://hacpai.com/article/1486188905847)。
+Please visit [Sym Setup Guide](https://hacpai.com/article/1486188905847)。
 
-## 📄 授权
+## 🏘️ Community
 
-* 社区版使用 AGPLv3 开源，如果你选择使用社区版，则必须完全遵守 AGPLv3 的相关条款。
+* [Forum](https://hacpai.com/tag/sym)
+* [Issues](https://github.com/88250/symphony/issues/new/choose)
 
-## 🏘️ 社区
+## 📄 License
 
-* [讨论区](https://hacpai.com/tag/sym)
-* [报告问题](https://github.com/88250/symphony/issues/new/choose)
+* The community edition uses AGPLv3 as open source. If you choose to use the community version, you must fully comply with the relevant terms of AGPLv3.
 
-## 🙏 鸣谢
+## 🙏 Acknowledgement
 
-* [jQuery](https://github.com/jquery/jquery)：前端 JavaScript 工具库
-* [Vditor](https://github.com/Vanessa219/vditor)： 浏览器端的 Markdown 编辑器
-* [Highlight.js](https://github.com/isagalaev/highlight.js)：前端代码高亮库
+* [jQuery](https://github.com/jquery/jquery): Front-end JavaScript tool library
+* [Vditor](https://github.com/Vanessa219/vditor): In-browser Markdown editor
+* [Highlight.js](https://github.com/isagalaev/highlight.js): Front-end code syntax highlighting library
 * [pjax](https://github.com/defunkt/jquery-pjax)：pushState + AJAX = pjax
-* [Sass](http://sass-lang.com)：前端 CSS 处理工具
-* [jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器
-* [flexmark](https://github.com/vsch/flexmark-java)：Java Markdown 处理库
-* [Apache Commons](http://commons.apache.org)：Java 工具库集
-* [Jodd](https://github.com/oblac/jodd)：Java 工具库集
-* [Latke](https://github.com/88250/latke)：以 JSON 为主的 Java Web 框架
+* [Sass](http://sass-lang.com): Front-end CSS processing tool
+* [jsoup](https://github.com/jhy/jsoup): Java HTML parser
+* [flexmark](https://github.com/vsch/flexmark-java): Java Markdown processor
+* [Apache Commons](http://commons.apache.org): Java commons library
+* [Jodd](https://github.com/oblac/jodd): Java tool library
+* [Latke](https://github.com/88250/latke): Java Web framework based on JSON
 
-安全方面特别感谢：
+Special thanks for security:
 
-* [米斯特安全团队](http://www.hi-ourlife.com)
+* [Acmesec(Hi-OurLife)](http://www.hi-ourlife.com)
 * [@gh0stkey](https://github.com/gh0stkey)
 * [@SeagullGR](https://github.com/SeagullGR)
-* [长亭科技](https://www.chaitin.cn)
+* [chaitin.cn](https://www.chaitin.cn)
