@@ -25,6 +25,10 @@ The next generation of the community system, built for the future
 <a title="Author GitHub Followers" target="_blank" href="https://github.com/88250"><img src="https://img.shields.io/github/followers/88250.svg?label=Followers&style=social"></a>
 </p>
 
+<p align="center">
+<a href="https://hacpai.com/article/1570193280819">中文</a>
+</p>
+
 ## 💡 Introduction
 
 [Symphony](https://github.com/88250/symphony) is a modern community platform because it:
