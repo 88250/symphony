@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
- * @version 1.48.0.1, Mar 5, 2020
+ * @version 1.49.0.0, Apr 16, 2020
  */
 
 /**
@@ -711,13 +711,13 @@ var Util = {
 
     if ($(window).width() < 768) {
       options.toolbar = [
-        'emoji',
-        'bold',
-        'link',
-        'list',
-        'edit-mode',
-        'preview',
-        'fullscreen',
+        "emoji",
+        "link",
+        "upload",
+        "insert-after",
+        "edit-mode",
+        "preview",
+        "fullscreen",
       ]
       options.resize.enable = false
     } else if (data.toolbar) {
