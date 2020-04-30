@@ -19,7 +19,7 @@
  * @fileoverview 聊天室
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.0.1, Aug 6, 2019
+ * @version 1.3.0.2, Apr 30, 2020
  */
 
 /**
@@ -52,7 +52,47 @@ var ChatRoom = {
         enable: true,
         position: 'bottom',
       },
-      height: 160,
+      toolbar: [
+        'emoji',
+        'headings',
+        'bold',
+        'italic',
+        'link',
+        '|',
+        'list',
+        'ordered-list',
+        'check',
+        'outdent',
+        'indent',
+        '|',
+        'quote',
+        'code',
+        'insert-before',
+        'insert-after',
+        '|',
+        'upload',
+        'table',
+        '|',
+        'undo',
+        'redo',
+        '|',
+        {
+          name: 'more',
+          toolbar: [
+            'fullscreen',
+            'edit-mode',
+            'both',
+            'format',
+            'preview',
+            'outline',
+            'content-theme',
+            'code-theme',
+            'devtools',
+            'info',
+            'help',
+          ],
+        }],
+      height: 200,
       counter: 4096,
       placeholder: 'Say sth...',
       ctrlEnter: function () {
