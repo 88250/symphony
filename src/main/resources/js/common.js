@@ -715,8 +715,6 @@ var Util = {
         'link',
         'upload',
         'edit-mode',
-        'code-theme',
-        'content-theme',
         {
           name: 'more',
           toolbar: [
