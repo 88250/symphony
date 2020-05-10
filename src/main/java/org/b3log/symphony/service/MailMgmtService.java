@@ -145,7 +145,6 @@ public class MailMgmtService {
 
             if (receivers.length() < 1) {
                 LOGGER.info("No user need send newsletter");
-
                 return;
             }
 
@@ -187,7 +186,6 @@ public class MailMgmtService {
                     articleRepository.get(articleQuery).optJSONArray(Keys.RESULTS));
             if (articles.isEmpty()) {
                 LOGGER.info("No article as newsletter to send");
-
                 return;
             }
             articleQueryService.organizeArticles(articles);

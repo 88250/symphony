@@ -118,7 +118,6 @@ public class FileUploadProcessor {
                     !FileUtil.isExistingFolder(new File(Symphonys.UPLOAD_LOCAL_DIR)) ||
                     !new File(path).getCanonicalPath().startsWith(new File(Symphonys.UPLOAD_LOCAL_DIR).getCanonicalPath())) {
                 context.sendError(404);
-
                 return;
             }
 
@@ -184,7 +183,6 @@ public class FileUploadProcessor {
             suffix = Headers.getSuffix(file);
             if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
                 checkFailed = true;
-
                 break;
             }
 
@@ -208,7 +206,6 @@ public class FileUploadProcessor {
             String msg = langPropsService.get("invalidFileSuffixLabel");
             msg = StringUtils.replace(msg, "${suffix}", suffix);
             result.put(Keys.MSG, msg);
-
             return;
         }
 
@@ -307,7 +304,6 @@ public class FileUploadProcessor {
             contentType = res.contentType();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Fetch file [url=" + originalURL + "] failed", e);
-
             return;
         }
 
@@ -317,7 +313,6 @@ public class FileUploadProcessor {
             String msg = langPropsService.get("invalidFileSuffixLabel");
             msg = StringUtils.replace(msg, "${suffix}", suffix);
             result.put(Keys.MSG, msg);
-
             return;
         }
 

@@ -123,7 +123,6 @@ public class CityProcessor {
         final JSONObject user = Sessions.getUser();
         if (!UserExt.finshedGuide(user)) {
             context.sendRedirect(Latkes.getServePath() + "/guide");
-
             return;
         }
 
@@ -133,7 +132,6 @@ public class CityProcessor {
 
         if (UserExt.USER_GEO_STATUS_C_PUBLIC != user.optInt(UserExt.USER_GEO_STATUS)) {
             dataModel.put(UserExt.USER_GEO_STATUS, false);
-
             return;
         }
 
@@ -149,7 +147,6 @@ public class CityProcessor {
 
         if (StringUtils.isBlank(userCity)) {
             dataModel.put(Common.CITY_FOUND, false);
-
             return;
         }
 
@@ -204,7 +201,6 @@ public class CityProcessor {
         final JSONObject user = Sessions.getUser();
         if (!UserExt.finshedGuide(user)) {
             context.sendRedirect(Latkes.getServePath() + "/guide");
-
             return;
         }
 
@@ -213,7 +209,6 @@ public class CityProcessor {
         dataModel.put(Common.CITY, langService.get("sameCityLabel"));
         if (UserExt.USER_GEO_STATUS_C_PUBLIC != user.optInt(UserExt.USER_GEO_STATUS)) {
             dataModel.put(UserExt.USER_GEO_STATUS, false);
-
             return;
         }
 
@@ -229,7 +224,6 @@ public class CityProcessor {
 
         if (StringUtils.isBlank(userCity)) {
             dataModel.put(Common.CITY_FOUND, false);
-
             return;
         }
 

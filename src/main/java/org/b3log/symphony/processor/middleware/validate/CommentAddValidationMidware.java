@@ -59,14 +59,12 @@ public class CommentAddValidationMidware {
         if (StringUtils.isBlank(commentContent) || commentContent.length() > Comment.MAX_COMMENT_CONTENT_LENGTH) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("commentErrorLabel")));
             context.abort();
-
             return;
         }
 
         if (optionQueryService.containReservedWord(commentContent)) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
             context.abort();
-
             return;
         }
 
@@ -74,7 +72,6 @@ public class CommentAddValidationMidware {
         if (StringUtils.isBlank(articleId)) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
             context.abort();
-
             return;
         }
 
@@ -82,14 +79,12 @@ public class CommentAddValidationMidware {
         if (null == article) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
             context.abort();
-
             return;
         }
 
         if (!article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("notAllowCmtLabel")));
             context.abort();
-
             return;
         }
 
@@ -99,7 +94,6 @@ public class CommentAddValidationMidware {
             if (null == originalCmt) {
                 context.renderJSON(exception.put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
                 context.abort();
-
                 return;
             }
         }

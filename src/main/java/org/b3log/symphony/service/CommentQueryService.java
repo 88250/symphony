@@ -198,14 +198,12 @@ public class CommentQueryService {
                         new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
                         new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, commentId)
                 )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
-
                 break;
             case UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME:
                 numQuery.setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
                         new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN, commentId)
                 )).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
                 break;
         }
 
@@ -576,7 +574,6 @@ public class CommentQueryService {
                             for (final String userName : userNames) {
                                 if (userName.equals(viewerUserName)) {
                                     invited = true;
-
                                     break;
                                 }
                             }
@@ -869,7 +866,6 @@ public class CommentQueryService {
         if (Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)
                 || UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)) {
             comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
-
             return;
         }
 

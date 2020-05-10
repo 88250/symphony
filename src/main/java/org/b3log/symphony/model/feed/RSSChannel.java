@@ -159,7 +159,7 @@ public final class RSSChannel {
     /**
      * Items.
      */
-    private List<RSSItem> items = new ArrayList<>();
+    private final List<RSSItem> items = new ArrayList<>();
 
     /**
      * Gets the atom link.

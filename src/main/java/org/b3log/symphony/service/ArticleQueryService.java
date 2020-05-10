@@ -192,7 +192,6 @@ public class ArticleQueryService {
                 query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                         setPage(currentPageNum, fetchSize).
                         setFilter(makeQuestionArticleShowingFilter());
-
                 break;
             case 1:
                 query = new Query().
@@ -203,7 +202,6 @@ public class ArticleQueryService {
                 filters1.add(new PropertyFilter(Article.ARTICLE_COMMENT_CNT, FilterOperator.EQUAL, 0));
                 filters1.addAll(compositeFilter1.getSubFilters());
                 query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters1));
-
                 break;
             case 2:
                 final String id = String.valueOf(DateUtils.addMonths(new Date(), -1).getTime());
@@ -216,7 +214,6 @@ public class ArticleQueryService {
                 filters2.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
                 filters2.addAll(compositeFilter2.getSubFilters());
                 query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters2));
-
                 break;
             case 3:
                 query = new Query().
@@ -224,7 +221,6 @@ public class ArticleQueryService {
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                         setPage(currentPageNum, fetchSize).
                         setFilter(makeQuestionArticleShowingFilter());
-
                 break;
             default:
                 query = new Query().
@@ -826,31 +822,26 @@ public class ArticleQueryService {
                 case 0:
                     queryStr.append(" and ").append("symphony_tag_article." + Tag.TAG + '_' + Keys.OBJECT_ID).append("=").append(tag.optString(Keys.OBJECT_ID)).
                             append(" order by ").append("symphony_tag_article." + Keys.OBJECT_ID + " ").append(" desc ");
-
                     break;
                 case 1:
                     queryStr.append(" and ").append("symphony_tag_article." + Tag.TAG + '_' + Keys.OBJECT_ID).append("=").append(tag.optString(Keys.OBJECT_ID)).
                             append(" order by ").append("symphony_tag_article." + Article.ARTICLE_COMMENT_CNT + " ").append(" desc ").
                             append(",").append("symphony_tag_article." + Keys.OBJECT_ID + " ").append(" desc ");
-
                     break;
                 case 2:
                     queryStr.append(" and ").append("symphony_tag_article." + Tag.TAG + '_' + Keys.OBJECT_ID).append("=").append(tag.optString(Keys.OBJECT_ID)).
                             append(" order by ").append("symphony_tag_article." + Article.REDDIT_SCORE + " ").append(" desc ").
                             append(",").append("symphony_tag_article." + Keys.OBJECT_ID + " ").append(" desc ");
-
                     break;
                 case 3:
                     queryStr.append(" and ").append("symphony_tag_article." + Tag.TAG + '_' + Keys.OBJECT_ID).append("=").append(tag.optString(Keys.OBJECT_ID)).
                             append(" order by ").append("symphony_tag_article." + Article.ARTICLE_LATEST_CMT_TIME + " ").append(" desc ").
                             append(",").append("symphony_tag_article." + Keys.OBJECT_ID + " ").append(" desc ");
-
                     break;
                 case 4:
                     queryStr.append(" and ").append("symphony_tag_article." + Tag.TAG + '_' + Keys.OBJECT_ID).append("=").append(tag.optString(Keys.OBJECT_ID)).
                             append(" order by ").append("symphony_tag_article." + Article.ARTICLE_PERFECT + " ").append(" desc ").
                             append(",").append("symphony_tag_article." + Keys.OBJECT_ID + " ").append(" desc ");
-
                     break;
                 default:
                     LOGGER.warn("Unknown sort mode [" + sortMode + "]");
@@ -878,7 +869,6 @@ public class ArticleQueryService {
                     LOGGER.warn("Unknown sort mode [" + sortMode + "]");
                 case 0:
                     Collections.sort(ret, (o1, o2) -> o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID)));
-
                     break;
                 case 1:
                     Collections.sort(ret, (o1, o2) -> {
@@ -889,7 +879,6 @@ public class ArticleQueryService {
 
                         return v > 0 ? 1 : -1;
                     });
-
                     break;
                 case 2:
                     Collections.sort(ret, (o1, o2) -> {
@@ -900,7 +889,6 @@ public class ArticleQueryService {
 
                         return v > 0 ? 1 : -1;
                     });
-
                     break;
                 case 3:
                     Collections.sort(ret, (o1, o2) -> {
@@ -912,7 +900,6 @@ public class ArticleQueryService {
 
                         return v > 0 ? 1 : -1;
                     });
-
                     break;
                 case 4:
                     Collections.sort(ret, (o1, o2) -> {
@@ -923,7 +910,6 @@ public class ArticleQueryService {
 
                         return v > 0 ? 1 : -1;
                     });
-
                     break;
             }
 
@@ -1042,7 +1028,6 @@ public class ArticleQueryService {
                 for (final String userName : userNames) {
                     if (userName.equals(currentUserName)) {
                         invited = true;
-
                         break;
                     }
                 }
@@ -1219,7 +1204,6 @@ public class ArticleQueryService {
                         addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                         setFilter(makeRecentArticleShowingFilter());
-
                 break;
             case 1:
                 final String id = String.valueOf(DateUtils.addMonths(new Date(), -1).getTime());
@@ -1232,7 +1216,6 @@ public class ArticleQueryService {
                 filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
                 filters.addAll(compositeFilter.getSubFilters());
                 query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
                 break;
             case 2:
                 query = new Query().
@@ -1240,7 +1223,6 @@ public class ArticleQueryService {
                         addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING).
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                         setFilter(makeRecentArticleShowingFilter());
-
                 break;
             case 3:
                 query = new Query().
@@ -1248,7 +1230,6 @@ public class ArticleQueryService {
                         addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING).
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                         setFilter(makeRecentArticleShowingFilter());
-
                 break;
             default:
                 query = new Query().
@@ -1746,7 +1727,6 @@ public class ArticleQueryService {
                     if (comment.optString(Comment.COMMENT_AUTHOR_ID).equals(
                             c.optString(Comment.COMMENT_AUTHOR_ID))) {
                         exist = true;
-
                         break;
                     }
                 }
@@ -1819,7 +1799,6 @@ public class ArticleQueryService {
                 article.put(Article.ARTICLE_REWARD_CONTENT, "");
                 article.put(Article.ARTICLE_REWARD_POINT, 0);
                 article.put(Article.ARTICLE_QNA_OFFER_POINT, 0);
-
                 return;
             }
 
@@ -1842,7 +1821,6 @@ public class ArticleQueryService {
                 for (final String userName : userNames) {
                     if (userName.equals(currentUserName)) {
                         invited = true;
-
                         break;
                     }
                 }
@@ -1858,7 +1836,6 @@ public class ArticleQueryService {
                     article.put(Article.ARTICLE_QNA_OFFER_POINT, 0);
                     article.put(Article.ARTICLE_T_TOC, "");
                     article.put(Article.ARTICLE_AUDIO_URL, "");
-
                     return;
                 }
             }

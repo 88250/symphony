@@ -350,7 +350,6 @@ public final class Tag {
                 if (count >= MAX_TAG_COUNT) {
                     break;
                 }
-
                 continue;
             }
 

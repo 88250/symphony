@@ -91,7 +91,6 @@ public class ArticlePostValidationMidware {
         if (StringUtils.isBlank(articleTitle) || articleTitle.length() > MAX_ARTICLE_TITLE_LENGTH) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("articleTitleErrorLabel")));
             context.abort();
-
             return;
         }
 
@@ -100,7 +99,6 @@ public class ArticlePostValidationMidware {
             final String msg = langPropsService.get("contentContainReservedWordLabel");
             context.renderJSON(new JSONObject().put(Keys.MSG, msg));
             context.abort();
-
             return;
         }
 
@@ -110,7 +108,6 @@ public class ArticlePostValidationMidware {
         if (Article.isInvalidArticleType(articleType)) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("articleTypeErrorLabel")));
             context.abort();
-
             return;
         }
 
@@ -125,14 +122,12 @@ public class ArticlePostValidationMidware {
         if (StringUtils.isBlank(articleTags)) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("tagsEmptyErrorLabel")));
             context.abort();
-
             return;
         }
         if (optionQueryService.containReservedWord(articleTags)) {
             final String msg = langPropsService.get("contentContainReservedWordLabel");
             context.renderJSON(new JSONObject().put(Keys.MSG, msg));
             context.abort();
-
             return;
         }
 
@@ -149,7 +144,6 @@ public class ArticlePostValidationMidware {
                 if (StringUtils.isBlank(tagTitle)) {
                     context.renderJSON(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
                     context.abort();
-
                     return;
                 }
 
@@ -157,14 +151,12 @@ public class ArticlePostValidationMidware {
                     if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
                         context.renderJSON(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
                         context.abort();
-
                         return;
                     }
 
                     if (tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH) {
                         context.renderJSON(exception.put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
                         context.abort();
-
                         return;
                     }
                 }
@@ -174,7 +166,6 @@ public class ArticlePostValidationMidware {
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                     context.renderJSON(exception.put(Keys.MSG, langPropsService.get("articleTagReservedLabel") + " [" + tagTitle + "]"));
                     context.abort();
-
                     return;
                 }
 
@@ -199,7 +190,6 @@ public class ArticlePostValidationMidware {
 
             context.renderJSON(exception.put(Keys.MSG, msg));
             context.abort();
-
             return;
         }
 
@@ -207,7 +197,6 @@ public class ArticlePostValidationMidware {
             final String msg = langPropsService.get("contentContainReservedWordLabel");
             context.renderJSON(new JSONObject().put(Keys.MSG, msg));
             context.abort();
-
             return;
         }
 
@@ -215,7 +204,6 @@ public class ArticlePostValidationMidware {
         if (rewardPoint < 0) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("invalidRewardPointLabel")));
             context.abort();
-
             return;
         }
 
@@ -223,7 +211,6 @@ public class ArticlePostValidationMidware {
         if (articleQnAOfferPoint < 0) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("invalidQnAOfferPointLabel")));
             context.abort();
-
             return;
         }
 
@@ -231,7 +218,6 @@ public class ArticlePostValidationMidware {
         if (StringUtils.isNotBlank(articleRewardContnt) && 1 > rewardPoint) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("invalidRewardPointLabel")));
             context.abort();
-
             return;
         }
 
@@ -242,7 +228,6 @@ public class ArticlePostValidationMidware {
 
                 context.renderJSON(exception.put(Keys.MSG, msg));
                 context.abort();
-
                 return;
             }
         }

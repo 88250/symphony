@@ -198,7 +198,6 @@ public class LoginProcessor {
             requestJSONObject = context.requestJSON();
         } catch (final Exception e) {
             LOGGER.warn(e.getMessage());
-
             return;
         }
 
@@ -217,7 +216,6 @@ public class LoginProcessor {
             userMgmtService.updateUser(userId, user);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Guide next step [" + step + "] failed", e);
-
             return;
         }
 
@@ -234,7 +232,6 @@ public class LoginProcessor {
         final int step = currentUser.optInt(UserExt.USER_GUIDE_STEP);
         if (UserExt.USER_GUIDE_STEP_FIN == step) {
             context.sendRedirect(Latkes.getServePath());
-
             return;
         }
 
@@ -251,7 +248,6 @@ public class LoginProcessor {
             final JSONObject user = iterator.next();
             if (user.optString(Keys.OBJECT_ID).equals(currentUser.optString(Keys.OBJECT_ID))) {
                 iterator.remove();
-
                 break;
             }
         }
@@ -268,7 +264,6 @@ public class LoginProcessor {
     public void showLogin(final RequestContext context) {
         if (Sessions.isLoggedIn()) {
             context.sendRedirect(Latkes.getServePath());
-
             return;
         }
 
@@ -314,7 +309,6 @@ public class LoginProcessor {
             final JSONObject user = userQueryService.getUserByEmail(email);
             if (null == user || UserExt.USER_STATUS_C_VALID != user.optInt(UserExt.USER_STATUS)) {
                 context.renderFalseResult().renderMsg(langPropsService.get("notFoundUserLabel"));
-
                 return;
             }
 
@@ -383,7 +377,6 @@ public class LoginProcessor {
         final JSONObject verifycode = verifycodeQueryService.getVerifycode(code);
         if (null == verifycode || !verifycode.optString(Verifycode.USER_ID).equals(userId)) {
             context.renderMsg(langPropsService.get("verifycodeExpiredLabel"));
-
             return;
         }
 
@@ -393,7 +386,6 @@ public class LoginProcessor {
             final JSONObject user = userQueryService.getUser(userId);
             if (null == user || UserExt.USER_STATUS_C_VALID != user.optInt(UserExt.USER_STATUS)) {
                 context.renderMsg(langPropsService.get("resetPwdLabel") + " - " + "User Not Found");
-
                 return;
             }
 
@@ -420,7 +412,6 @@ public class LoginProcessor {
     public void showRegister(final RequestContext context) {
         if (Sessions.isLoggedIn()) {
             context.sendRedirect(Latkes.getServePath());
-
             return;
         }
 
@@ -560,7 +551,6 @@ public class LoginProcessor {
             final JSONObject user = userQueryService.getUser(userId);
             if (null == user) {
                 context.renderMsg(langPropsService.get("registerFailLabel") + " - " + "User Not Found");
-
                 return;
             }
 
@@ -646,7 +636,6 @@ public class LoginProcessor {
             requestJSONObject = context.requestJSON();
         } catch (final Exception e) {
             context.renderMsg(langPropsService.get("paramsParseFailedLabel"));
-
             return;
         }
 
@@ -660,21 +649,18 @@ public class LoginProcessor {
 
             if (null == user) {
                 context.renderMsg(langPropsService.get("notFoundUserLabel"));
-
                 return;
             }
 
             if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false, true);
                 context.renderMsg(langPropsService.get("userBlockLabel"));
-
                 return;
             }
 
             if (UserExt.USER_STATUS_C_NOT_VERIFIED == user.optInt(UserExt.USER_STATUS)) {
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false, true);
                 context.renderMsg(langPropsService.get("notVerifiedLabel"));
-
                 return;
             }
 
@@ -682,7 +668,6 @@ public class LoginProcessor {
                     || UserExt.USER_STATUS_C_DEACTIVATED == user.optInt(UserExt.USER_STATUS)) {
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false, true);
                 context.renderMsg(langPropsService.get("invalidLoginLabel"));
-
                 return;
             }
 
@@ -698,7 +683,6 @@ public class LoginProcessor {
                 if (!StringUtils.equals(wrong.optString(CaptchaProcessor.CAPTCHA), captcha)) {
                     context.renderMsg(langPropsService.get("captchaErrorLabel"));
                     context.renderJSONValue(Common.NEED_CAPTCHA, userId);
-
                     return;
                 }
             }
@@ -714,7 +698,6 @@ public class LoginProcessor {
                 context.renderJSONValue(Keys.TOKEN, token);
 
                 WRONG_PWD_TRIES.remove(userId);
-
                 return;
             }
 

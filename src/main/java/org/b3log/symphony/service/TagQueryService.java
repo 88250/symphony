@@ -575,7 +575,6 @@ public class TagQueryService {
 
                 if (tagIds.size() >= fetchSize) {
                     full = true;
-
                     break;
                 }
             }

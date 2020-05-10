@@ -233,7 +233,6 @@ public class ArticleProcessor {
         final String id = context.pathVar("id");
         if (StringUtils.isBlank(id)) {
             context.sendError(404);
-
             return;
         }
 
@@ -242,14 +241,12 @@ public class ArticleProcessor {
         final JSONObject article = articleQueryService.getArticle(id);
         if (null == article) {
             context.sendError(404);
-
             return;
         }
 
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
         if (!authorId.equals(currentUserId)) {
             context.sendError(403);
-
             return;
         }
 
@@ -283,7 +280,6 @@ public class ArticleProcessor {
         final JSONObject article = articleQueryService.getArticleByTitle(title);
         if (null == article) {
             context.renderJSON(true);
-
             return;
         }
 
@@ -314,7 +310,6 @@ public class ArticleProcessor {
             final JSONObject oldArticle = articleQueryService.getArticle(id);
             if (oldArticle.optString(Article.ARTICLE_TITLE).equals(title)) {
                 context.renderJSON(true);
-
                 return;
             }
 
@@ -361,7 +356,6 @@ public class ArticleProcessor {
             final JSONObject chRecord = org.b3log.symphony.model.Character.getCharacter(ch, characters);
             if (null == chRecord) {
                 images.add(org.b3log.symphony.model.Character.createImage(ch));
-
                 continue;
             }
 
@@ -507,7 +501,6 @@ public class ArticleProcessor {
 
                 if (Tag.containsWhiteListTags(tagTitle)) {
                     tagBuilder.append(tagTitle).append(",");
-
                     continue;
                 }
 
@@ -598,7 +591,6 @@ public class ArticleProcessor {
         final JSONObject article = articleQueryService.getArticleById(articleId);
         if (null == article) {
             context.sendError(404);
-
             return;
         }
 
@@ -761,7 +753,6 @@ public class ArticleProcessor {
         if (!article.optBoolean(Common.DISCUSSION_VIEWABLE)) {
             article.put(Article.ARTICLE_T_COMMENTS, (Object) Collections.emptyList());
             article.put(Article.ARTICLE_T_NICE_COMMENTS, (Object) Collections.emptyList());
-
             return;
         }
 
@@ -959,14 +950,12 @@ public class ArticleProcessor {
         final String articleId = context.param("id");
         if (StringUtils.isBlank(articleId)) {
             context.sendError(404);
-
             return;
         }
 
         final JSONObject article = articleQueryService.getArticle(articleId);
         if (null == article) {
             context.sendError(404);
-
             return;
         }
 
@@ -974,7 +963,6 @@ public class ArticleProcessor {
         if (null == currentUser
                 || !currentUser.optString(Keys.OBJECT_ID).equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
             context.sendError(403);
-
             return;
         }
 
@@ -1026,14 +1014,12 @@ public class ArticleProcessor {
         final Request request = context.getRequest();
         if (StringUtils.isBlank(id)) {
             context.sendError(404);
-
             return;
         }
 
         final JSONObject oldArticle = articleQueryService.getArticleById(id);
         if (null == oldArticle) {
             context.sendError(404);
-
             return;
         }
 
@@ -1042,7 +1028,6 @@ public class ArticleProcessor {
         if (Article.ARTICLE_STATUS_C_VALID != oldArticle.optInt(Article.ARTICLE_STATUS)) {
             context.renderMsg(langPropsService.get("articleLockedLabel"));
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
-
             return;
         }
 
@@ -1080,7 +1065,6 @@ public class ArticleProcessor {
         if (null == currentUser
                 || !currentUser.optString(Keys.OBJECT_ID).equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {
             context.sendError(403);
-
             return;
         }
 
@@ -1135,7 +1119,6 @@ public class ArticleProcessor {
         final String markdownText = requestJSON.optString("markdownText");
         if (StringUtils.isBlank(markdownText)) {
             context.renderJSONValue("html", "");
-
             return;
         }
 
@@ -1168,7 +1151,6 @@ public class ArticleProcessor {
         final String content = articleQueryService.getArticlePreviewContent(articleId, context);
         if (StringUtils.isBlank(content)) {
             context.renderJSON().renderFalseResult();
-
             return;
         }
 
@@ -1184,14 +1166,12 @@ public class ArticleProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(403);
-
             return;
         }
 
         final String articleId = context.param(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
             context.sendError(400);
-
             return;
         }
 
@@ -1201,7 +1181,6 @@ public class ArticleProcessor {
             articleMgmtService.reward(articleId, currentUser.optString(Keys.OBJECT_ID));
         } catch (final ServiceException e) {
             context.renderMsg(langPropsService.get("transferFailLabel"));
-
             return;
         }
 
@@ -1221,14 +1200,12 @@ public class ArticleProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(403);
-
             return;
         }
 
         final String articleId = context.param(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
             context.sendError(400);
-
             return;
         }
 
@@ -1238,7 +1215,6 @@ public class ArticleProcessor {
             articleMgmtService.thank(articleId, currentUser.optString(Keys.OBJECT_ID));
         } catch (final ServiceException e) {
             context.renderMsg(langPropsService.get("transferFailLabel"));
-
             return;
         }
 
@@ -1254,27 +1230,23 @@ public class ArticleProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(403);
-
             return;
         }
 
         final String articleId = context.param(Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
             context.sendError(400);
-
             return;
         }
 
         final JSONObject article = articleQueryService.getArticle(articleId);
         if (null == article) {
             context.sendError(404);
-
             return;
         }
 
         if (!currentUser.optString(Keys.OBJECT_ID).equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
             context.sendError(403);
-
             return;
         }
 
@@ -1284,7 +1256,6 @@ public class ArticleProcessor {
             articleMgmtService.stick(articleId);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
-
             return;
         }
 

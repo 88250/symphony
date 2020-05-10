@@ -141,7 +141,6 @@ public class ArticleChannel implements WebSocketChannel {
                         for (final String inviteUserName : userNames) {
                             if (inviteUserName.equals(userName)) {
                                 invited = true;
-
                                 break;
                             }
                         }

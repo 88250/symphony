@@ -369,7 +369,6 @@ public class TagMgmtService {
                         relation.put(Common.WEIGHT, relation.optInt(Common.WEIGHT) + 1);
 
                         updateTagRelation(relation.optString(Keys.OBJECT_ID), relation);
-
                         continue;
                     }
 
@@ -378,7 +377,6 @@ public class TagMgmtService {
                         relation.put(Common.WEIGHT, relation.optInt(Common.WEIGHT) + 1);
 
                         updateTagRelation(relation.optString(Keys.OBJECT_ID), relation);
-
                         continue;
                     }
 

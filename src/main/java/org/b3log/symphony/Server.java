@@ -104,13 +104,11 @@ public final class Server extends BaseServer {
             commandLine = commandLineParser.parse(options, args);
         } catch (final ParseException e) {
             helpFormatter.printHelp(cmdSyntax, header, options, footer, true);
-
             return;
         }
 
         if (commandLine.hasOption("h")) {
             helpFormatter.printHelp(cmdSyntax, header, options, footer, true);
-
             return;
         }
 

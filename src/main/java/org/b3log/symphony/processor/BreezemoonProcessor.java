@@ -129,7 +129,6 @@ public class BreezemoonProcessor {
 
             if (!UserExt.finshedGuide(user)) {
                 context.sendRedirect(Latkes.getServePath() + "/guide");
-
                 return;
             }
 

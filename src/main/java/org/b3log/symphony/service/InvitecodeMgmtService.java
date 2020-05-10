@@ -75,7 +75,6 @@ public class InvitecodeMgmtService {
             result = invitecodeRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets invitecodes failed", e);
-
             return;
         }
 

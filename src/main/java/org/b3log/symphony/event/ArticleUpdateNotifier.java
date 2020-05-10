@@ -132,7 +132,6 @@ public class ArticleUpdateNotifier extends AbstractEventListener<JSONObject> {
             if (!Article.isDifferent(oldArticle, articleUpdated)) {
                 // 更新帖子通知改进 https://github.com/b3log/symphony/issues/872
                 LOGGER.log(Level.DEBUG, "The article [title=" + oldArticle.optString(Article.ARTICLE_TITLE) + "] has not changed, do not notify it's watchers");
-
                 return;
             }
 

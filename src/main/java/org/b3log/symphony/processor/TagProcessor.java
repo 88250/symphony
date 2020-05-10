@@ -110,7 +110,6 @@ public class TagProcessor {
     public void queryTags(final RequestContext context) {
         if (!Sessions.isLoggedIn()) {
             context.setStatus(403);
-
             return;
         }
 
@@ -173,7 +172,6 @@ public class TagProcessor {
 
             if (!UserExt.finshedGuide(user)) {
                 context.sendRedirect(Latkes.getServePath() + "/guide");
-
                 return;
             }
         }
@@ -181,7 +179,6 @@ public class TagProcessor {
         final JSONObject tag = tagQueryService.getTagByURI(tagURI);
         if (null == tag) {
             context.sendError(404);
-
             return;
         }
         tag.put(Common.IS_RESERVED, tagQueryService.isReservedTag(tag.optString(Tag.TAG_TITLE)));
@@ -204,23 +201,18 @@ public class TagProcessor {
         switch (sortModeStr) {
             case "":
                 sortMode = 0;
-
                 break;
             case "/hot":
                 sortMode = 1;
-
                 break;
             case "/good":
                 sortMode = 2;
-
                 break;
             case "/reply":
                 sortMode = 3;
-
                 break;
             case "/perfect":
                 sortMode = 4;
-
                 break;
             default:
                 sortMode = 0;

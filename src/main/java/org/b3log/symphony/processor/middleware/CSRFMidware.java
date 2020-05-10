@@ -68,7 +68,6 @@ public class CSRFMidware {
         if (!StringUtils.startsWith(referer, StringUtils.substringBeforeLast(Latkes.getServePath(), ":"))) {
             context.renderJSON(exception);
             context.abort();
-
             return;
         }
 
@@ -79,7 +78,6 @@ public class CSRFMidware {
         if (!StringUtils.equals(clientToken, serverToken)) {
             context.renderJSON(exception);
             context.abort();
-
             return;
         }
 

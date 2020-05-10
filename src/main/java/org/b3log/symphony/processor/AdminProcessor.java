@@ -497,7 +497,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, "Still [" + count + "] users are using this role.");
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -598,7 +597,6 @@ public class AdminProcessor {
             operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_BREEZEMOON, breezemoonId));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates a breezemoon failed", e);
-
             return;
         }
 
@@ -649,7 +647,6 @@ public class AdminProcessor {
         final String roleName = context.param(Role.ROLE_NAME);
         if (StringUtils.isBlank(roleName)) {
             context.sendRedirect(Latkes.getServePath() + "/admin/roles");
-
             return;
         }
 
@@ -856,7 +853,6 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, e.getMessage());
 
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -873,7 +869,6 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1012,7 +1007,6 @@ public class AdminProcessor {
             operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_INVITECODE, invitecodeId));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates an invitecode failed", e);
-
             return;
         }
 
@@ -1048,7 +1042,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, langPropsService.get("notFoundUserLabel"));
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1088,7 +1081,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1110,13 +1102,11 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, langPropsService.get("invalidReservedWordLabel"));
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
         if (optionQueryService.isReservedWord(word)) {
             context.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
-
             return;
         }
 
@@ -1132,7 +1122,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1374,7 +1363,6 @@ public class AdminProcessor {
             }
 
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1398,7 +1386,6 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1458,18 +1445,15 @@ public class AdminProcessor {
                 case UserExt.USER_JOIN_USED_POINT_RANK:
                 case UserExt.USER_FORWARD_PAGE_STATUS:
                     user.put(name, Integer.valueOf(value));
-
                     break;
                 case User.USER_PASSWORD:
                     final String oldPwd = user.getString(name);
                     if (!oldPwd.equals(value) && StringUtils.isNotBlank(value)) {
                         user.put(name, DigestUtils.md5Hex(value));
                     }
-
                     break;
                 default:
                     user.put(name, value);
-
                     break;
             }
         }
@@ -1484,7 +1468,6 @@ public class AdminProcessor {
             operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_USER, userId));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates a user failed", e);
-
             return;
         }
 
@@ -1506,7 +1489,6 @@ public class AdminProcessor {
 
         if (oldEmail.equals(newEmail)) {
             context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
-
             return;
         }
 
@@ -1521,7 +1503,6 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1543,7 +1524,6 @@ public class AdminProcessor {
 
         if (oldUserName.equals(newUserName)) {
             context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
-
             return;
         }
 
@@ -1558,7 +1538,6 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1581,7 +1560,6 @@ public class AdminProcessor {
             LOGGER.warn("Charge point memo format error");
 
             context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
-
             return;
         }
 
@@ -1602,7 +1580,6 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1631,7 +1608,6 @@ public class AdminProcessor {
                 final Map<String, Object> dataModel = renderer.getDataModel();
                 dataModel.put(Keys.MSG, langPropsService.get("insufficientBalanceLabel"));
                 dataModelService.fillHeaderAndFooter(context, dataModel);
-
                 return;
             }
 
@@ -1650,7 +1626,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1673,7 +1648,6 @@ public class AdminProcessor {
                     || UserExt.USER_STATUS_C_VALID != user.optInt(UserExt.USER_STATUS)
                     || UserExt.NULL_USER_NAME.equals(user.optString(User.USER_NAME))) {
                 response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
-
                 return;
             }
 
@@ -1689,7 +1663,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1718,7 +1691,6 @@ public class AdminProcessor {
 
                 dataModel.put(Keys.MSG, langPropsService.get("insufficientBalanceLabel"));
                 dataModelService.fillHeaderAndFooter(context, dataModel);
-
                 return;
             }
 
@@ -1737,7 +1709,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -2083,7 +2054,6 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, langPropsService.get("notFoundTagLabel"));
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -2135,7 +2105,6 @@ public class AdminProcessor {
                 operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_TAG, tagId));
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Updates a tag failed", e);
-
                 return;
             }
         }
@@ -2280,7 +2249,6 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, langPropsService.get("invalidDomainTitleLabel"));
 
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -2289,7 +2257,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, langPropsService.get("duplicatedDomainLabel"));
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -2308,7 +2275,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -2367,7 +2333,6 @@ public class AdminProcessor {
                 final Map<String, Object> dataModel = renderer.getDataModel();
                 dataModel.put(Keys.MSG, e.getMessage());
                 dataModelService.fillHeaderAndFooter(context, dataModel);
-
                 return;
             }
 
@@ -2382,7 +2347,6 @@ public class AdminProcessor {
 
                 dataModel.put(Keys.MSG, e.getMessage());
                 dataModelService.fillHeaderAndFooter(context, dataModel);
-
                 return;
             }
         }
@@ -2397,7 +2361,6 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, msg);
 
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -2430,7 +2393,6 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, langPropsService.get("invalidTagLabel"));
 
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 

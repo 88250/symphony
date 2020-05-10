@@ -371,7 +371,6 @@ public class BreezemoonQueryService {
                 if (UserExt.USER_XXX_STATUS_C_PRIVATE == author.optInt(UserExt.USER_BREEZEMOON_STATUS)
                         && !StringUtils.equals(currentUserId, authorId) && !"admin".equals(currentUserId)) {
                     iterator.remove();
-
                     continue;
                 }
                 bm.put(Breezemoon.BREEZEMOON_T_AUTHOR_NAME, author.optString(User.USER_NAME));

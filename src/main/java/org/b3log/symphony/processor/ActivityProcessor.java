@@ -164,7 +164,6 @@ public class ActivityProcessor {
         final String character = characterQueryService.getUnwrittenCharacter(userId);
         if (StringUtils.isBlank(character)) {
             dataModel.put("noCharacter", true);
-
             return;
         }
 
@@ -198,7 +197,6 @@ public class ActivityProcessor {
             LOGGER.log(Level.ERROR, "Submits character failed", e);
 
             context.renderJSON(false).renderMsg(langPropsService.get("activityCharacterRecognizeFailedLabel"));
-
             return;
         }
 
@@ -242,7 +240,6 @@ public class ActivityProcessor {
         final String userId = user.optString(Keys.OBJECT_ID);
         if (activityQueryService.isCheckedinToday(userId)) {
             context.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
-
             return;
         }
 
@@ -346,7 +343,6 @@ public class ActivityProcessor {
                 msg = msg.replace("{point}", String.valueOf(sum));
 
                 dataModel.put(Keys.MSG, msg);
-
                 break;
             }
 
@@ -354,7 +350,6 @@ public class ActivityProcessor {
                 dataModel.put(Keys.MSG, langPropsService.get("activityEndLabel"));
                 break;
             }
-
             break;
         }
 

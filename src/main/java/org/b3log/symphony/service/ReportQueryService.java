@@ -182,7 +182,6 @@ public class ReportQueryService {
                             reportData = "<a href=\"" + Latkes.getServePath() + "/article/" + article.optString(Keys.OBJECT_ID) +
                                     "\" target=\"_blank\">" + Emotions.convert(title) + "</a>";
                         }
-
                         break;
                     case Report.REPORT_DATA_TYPE_C_COMMENT:
                         report.put(Report.REPORT_T_DATA_TYPE_STR, langPropsService.get("cmtLabel"));
@@ -192,23 +191,19 @@ public class ReportQueryService {
                             final int cmtViewMode = UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME;
                             reportData = commentQueryService.getCommentURL(commentId, cmtViewMode, Symphonys.ARTICLE_COMMENTS_CNT);
                         }
-
                         break;
                     case Report.REPORT_DATA_TYPE_C_USER:
                         report.put(Report.REPORT_T_DATA_TYPE_STR, langPropsService.get("accountLabel"));
                         final JSONObject reported = userRepository.get(dataId);
                         reportData = UserExt.getUserLink(reported);
-
                         break;
                     default:
                         LOGGER.log(Level.ERROR, "Unknown report data type [" + dataType + "]");
-
                         continue;
                 }
                 report.put(Report.REPORT_T_DATA, reportData);
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Builds report data failed", e);
-
                 continue;
             }
 
@@ -217,43 +212,33 @@ public class ReportQueryService {
             switch (type) {
                 case Report.REPORT_TYPE_C_SPAM_AD:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("spamADLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_PORNOGRAPHIC:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("pornographicLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_VIOLATION_OF_REGULATIONS:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("violationOfRegulationsLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_ALLEGEDLY_INFRINGING:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("allegedlyInfringingLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_PERSONAL_ATTACKS:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("personalAttacksLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_POSING_ACCOUNT:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("posingAccountLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_SPAM_AD_ACCOUNT:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("spamADAccountLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_PERSONAL_INFO_VIOLATION:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("personalInfoViolationLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_OTHER:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("miscLabel"));
-
                     break;
                 default:
                     LOGGER.log(Level.ERROR, "Unknown report type [" + type + "]");
-
                     continue;
             }
 

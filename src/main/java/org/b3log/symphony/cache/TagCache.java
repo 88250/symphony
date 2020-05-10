@@ -268,14 +268,12 @@ public class TagCache {
                         || StringUtils.contains(title, " ")
                         || StringUtils.contains(title, "　")) { // filter legacy data
                     iterator.remove();
-
                     continue;
                 }
 
                 if (!Tag.containsWhiteListTags(title)) {
                     if (!Tag.TAG_TITLE_PATTERN.matcher(title).matches() || title.length() > Tag.MAX_TAG_TITLE_LENGTH) {
                         iterator.remove();
-
                         continue;
                     }
                 }

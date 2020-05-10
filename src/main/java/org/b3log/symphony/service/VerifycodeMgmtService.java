@@ -178,21 +178,17 @@ public class VerifycodeMgmtService {
                     case Verifycode.BIZ_TYPE_C_REGISTER:
                         dataModel.put(Common.URL, Latkes.getServePath() + "/register?code=" + code);
                         subject = langPropsService.get("registerEmailSubjectLabel", Latkes.getLocale());
-
                         break;
                     case Verifycode.BIZ_TYPE_C_RESET_PWD:
                         dataModel.put(Common.URL, Latkes.getServePath() + "/reset-pwd?code=" + code);
                         subject = langPropsService.get("forgetEmailSubjectLabel", Latkes.getLocale());
-
                         break;
                     case Verifycode.BIZ_TYPE_C_BIND_EMAIL:
                         dataModel.put(Keys.CODE, code);
                         subject = langPropsService.get("bindEmailSubjectLabel", Latkes.getLocale());
-
                         break;
                     default:
                         LOGGER.warn("Send email verify code failed with wrong biz type [" + bizType + "]");
-
                         continue;
                 }
 

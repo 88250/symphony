@@ -81,14 +81,12 @@ public class CommentUpdateValidationMidware {
         if (StringUtils.isBlank(commentContent) || commentContent.length() > Comment.MAX_COMMENT_CONTENT_LENGTH) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("commentErrorLabel")));
             context.abort();
-
             return;
         }
 
         if (optionQueryService.containReservedWord(commentContent)) {
             context.renderJSON(exception.put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
             context.abort();
-
             return;
         }
 

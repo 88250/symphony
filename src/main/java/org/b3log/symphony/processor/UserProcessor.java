@@ -249,7 +249,6 @@ public class UserProcessor {
             final JSONObject breezemoon = breezemoonQueryService.getBreezemoon(breezemoonId);
             if (null == breezemoon) {
                 context.sendError(404);
-
                 return;
             }
 
@@ -284,7 +283,6 @@ public class UserProcessor {
         if (null == currentUser || (!currentUser.optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID)))
                 && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
             context.sendError(404);
-
             return;
         }
 
@@ -356,7 +354,6 @@ public class UserProcessor {
         if (null == currentUser || (!currentUser.optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID)))
                 && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
             context.sendError(404);
-
             return;
         }
 
@@ -914,7 +911,6 @@ public class UserProcessor {
             }
 
             result.put(Common.DATA, userNames);
-
             return;
         }
 
@@ -935,7 +931,6 @@ public class UserProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             result.put(Common.DATA, data);
-
             return;
         }
 

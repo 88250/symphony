@@ -98,7 +98,6 @@ public class SearchProcessor {
 
         if (!Symphonys.ES_ENABLED && !Symphonys.ALGOLIA_ENABLED) {
             context.sendError(404);
-
             return;
         }
 
@@ -122,7 +121,6 @@ public class SearchProcessor {
             final JSONObject result = searchQueryService.searchElasticsearch(Article.ARTICLE, keyword, pageNum, pageSize);
             if (null == result || 0 != result.optInt("status")) {
                 context.sendError(404);
-
                 return;
             }
 
@@ -141,7 +139,6 @@ public class SearchProcessor {
             final JSONObject result = searchQueryService.searchAlgolia(keyword, pageNum, pageSize);
             if (null == result) {
                 context.sendError(404);
-
                 return;
             }
 

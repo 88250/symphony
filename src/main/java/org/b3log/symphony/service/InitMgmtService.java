@@ -59,12 +59,12 @@ public class InitMgmtService {
      */
     private static final String DEFAULT_LANG = "zh_CN";
 
-    private static Set<String> VISITOR_PERMISSIONS = new HashSet<>();
-    private static Set<String> DEFAULT_PERMISSIONS = new HashSet<>();
-    private static Set<String> MEMBER_PERMISSIONS = new HashSet<>();
-    private static Set<String> REGULAR_PERMISSIONS = new HashSet<>();
-    private static Set<String> ADMIN_PERMISSIONS = new HashSet<>();
-    private static Set<String> LEADER_PERMISSIONS = new HashSet<>();
+    private static final Set<String> VISITOR_PERMISSIONS = new HashSet<>();
+    private static final Set<String> DEFAULT_PERMISSIONS = new HashSet<>();
+    private static final Set<String> MEMBER_PERMISSIONS = new HashSet<>();
+    private static final Set<String> REGULAR_PERMISSIONS = new HashSet<>();
+    private static final Set<String> ADMIN_PERMISSIONS = new HashSet<>();
+    private static final Set<String> LEADER_PERMISSIONS = new HashSet<>();
 
     static { // Init built-in roles' permissions, see https://github.com/b3log/symphony/issues/358 for more details
         // Visitor

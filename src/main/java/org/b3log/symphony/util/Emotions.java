@@ -18,7 +18,6 @@
 package org.b3log.symphony.util;
 
 import com.vdurmont.emoji.EmojiParser;
-import org.b3log.latke.Latkes;
 
 import java.util.regex.Pattern;
 

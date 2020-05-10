@@ -145,7 +145,6 @@ public class FeedProcessor {
             final JSONObject domain = domainQueryService.getByURI(domainURI);
             if (null == domain) {
                 context.getResponse().sendError(404);
-
                 return;
             }
 

@@ -138,7 +138,6 @@ public class FollowQueryService {
                 final JSONObject user = userRepository.get(followingId);
                 if (null == user) {
                     LOGGER.log(Level.WARN, "Not found user [id=" + followingId + "]");
-
                     continue;
                 }
 
@@ -192,7 +191,6 @@ public class FollowQueryService {
                     } catch (final Exception e) {
                         LOGGER.log(Level.ERROR, "Fix history data failed", e);
                     }
-
                     continue;
                 }
 
@@ -237,7 +235,6 @@ public class FollowQueryService {
                 final JSONObject article = articleRepository.get(followingId);
                 if (null == article) {
                     LOGGER.log(Level.WARN, "Not found article [id=" + followingId + "]");
-
                     continue;
                 }
 
@@ -284,7 +281,6 @@ public class FollowQueryService {
                 final JSONObject article = articleRepository.get(followingId);
                 if (null == article) {
                     LOGGER.log(Level.WARN, "Not found article [id=" + followingId + "]");
-
                     continue;
                 }
 
@@ -331,7 +327,6 @@ public class FollowQueryService {
                 final JSONObject user = userRepository.get(followerId);
                 if (null == user) {
                     LOGGER.log(Level.WARN, "Not found user [id=" + followerId + "]");
-
                     continue;
                 }
 
@@ -377,7 +372,6 @@ public class FollowQueryService {
                 final JSONObject user = userRepository.get(followerId);
                 if (null == user) {
                     LOGGER.log(Level.WARN, "Not found user [id=" + followerId + "]");
-
                     continue;
                 }
 

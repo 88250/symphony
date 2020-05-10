@@ -73,14 +73,12 @@ public class Activity1A0001ValidationMidware {
             msg = msg.replace("${current}", String.format("%.2f", liveness) + "%");
             context.renderJSON(new JSONObject().put(Keys.MSG, msg));
             context.abort();
-
             return;
         }
 
         if (Symphonys.ACTIVITY_1A0001_CLOSED) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityClosedLabel")));
             context.abort();
-
             return;
         }
 
@@ -90,7 +88,6 @@ public class Activity1A0001ValidationMidware {
         if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activity1A0001CloseLabel")));
             context.abort();
-
             return;
         }
 
@@ -99,7 +96,6 @@ public class Activity1A0001ValidationMidware {
         if (hour > 14 || (hour == 14 && minute > 55)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityEndLabel")));
             context.abort();
-
             return;
         }
 
@@ -108,7 +104,6 @@ public class Activity1A0001ValidationMidware {
         if (200 != amount && 300 != amount && 400 != amount && 500 != amount) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityBetFailLabel")));
             context.abort();
-
             return;
         }
 
@@ -116,14 +111,12 @@ public class Activity1A0001ValidationMidware {
         if (0 != smallOrLarge && 1 != smallOrLarge) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityBetFailLabel")));
             context.abort();
-
             return;
         }
 
         if (UserExt.USER_STATUS_C_VALID != currentUser.optInt(UserExt.USER_STATUS)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
             context.abort();
-
             return;
         }
 
@@ -135,7 +128,6 @@ public class Activity1A0001ValidationMidware {
         if (balance - amount < 0) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("insufficientBalanceLabel")));
             context.abort();
-
             return;
         }
 

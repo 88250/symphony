@@ -82,7 +82,6 @@ public class UpdateProfilesValidationMidware {
         if (StringUtils.isNotBlank(userURL) && invalidUserURL(userURL)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, "URL" + langPropsService.get("colonLabel") + langPropsService.get("invalidUserURLLabel")));
             context.abort();
-
             return;
         }
 
@@ -90,7 +89,6 @@ public class UpdateProfilesValidationMidware {
         if (StringUtils.isNotBlank(userQQ) && (!Strings.isNumeric(userQQ) || userQQ.length() > MAX_USER_QQ_LENGTH)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserQQLabel")));
             context.abort();
-
             return;
         }
 
@@ -98,7 +96,6 @@ public class UpdateProfilesValidationMidware {
         if (StringUtils.isNotBlank(userNickname) && userNickname.length() > MAX_USER_NICKNAME_LENGTH) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserNicknameLabel")));
             context.abort();
-
             return;
         }
 
@@ -106,7 +103,6 @@ public class UpdateProfilesValidationMidware {
         if (StringUtils.isNotBlank(userIntro) && userIntro.length() > MAX_USER_INTRO_LENGTH) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserIntroLabel")));
             context.abort();
-
             return;
         }
 
@@ -126,7 +122,6 @@ public class UpdateProfilesValidationMidware {
             if (null == tagTitles || 0 == tagTitles.length) {
                 context.renderJSON(new JSONObject().put(Keys.MSG, tagErrMsg));
                 context.abort();
-
                 return;
             }
 
@@ -139,27 +134,23 @@ public class UpdateProfilesValidationMidware {
                 if (StringUtils.isBlank(tagTitle)) {
                     context.renderJSON(new JSONObject().put(Keys.MSG, tagErrMsg));
                     context.abort();
-
                     return;
                 }
 
                 if (Tag.containsWhiteListTags(tagTitle)) {
                     tagBuilder.append(tagTitle).append(",");
-
                     continue;
                 }
 
                 if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
                     context.renderJSON(new JSONObject().put(Keys.MSG, tagErrMsg));
                     context.abort();
-
                     return;
                 }
 
                 if (tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH) {
                     context.renderJSON(new JSONObject().put(Keys.MSG, tagErrMsg));
                     context.abort();
-
                     return;
                 }
 
@@ -168,7 +159,6 @@ public class UpdateProfilesValidationMidware {
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                     context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("selfTagLabel") + langPropsService.get("colonLabel") + langPropsService.get("articleTagReservedLabel") + " [" + tagTitle + "]"));
                     context.abort();
-
                     return;
                 }
 

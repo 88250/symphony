@@ -169,14 +169,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                                 new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
                                 new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN_OR_EQUAL, originalCmtId)
                         )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
-
                         break;
                     case UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME:
                         numQuery.setFilter(CompositeFilterOperator.and(
                                 new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
                                 new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, originalCmtId)
                         )).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
                         break;
                 }
 
@@ -269,7 +267,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                         pointtransferMgmtService.transfer(commenterId, Pointtransfer.ID_C_SYS,
                                 Pointtransfer.TRANSFER_TYPE_C_AT_PARTICIPANTS, sum, commentId, System.currentTimeMillis(), "");
                     }
-
                     return;
                 }
             }

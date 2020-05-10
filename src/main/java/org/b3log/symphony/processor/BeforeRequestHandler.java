@@ -155,7 +155,6 @@ public class BeforeRequestHandler implements Handler {
         if (BrowserType.ROBOT == browserType) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine [User-Agent={}]", context.header(Common.USER_AGENT));
             Sessions.setBot(true);
-
             return;
         }
 

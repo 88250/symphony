@@ -77,7 +77,6 @@ public class ForwardProcessor {
         final String referer = Headers.getHeader(request, "referer", "");
         if (!StringUtils.startsWith(referer, Latkes.getServePath())) {
             context.sendRedirect(Latkes.getServePath());
-
             return;
         }
 
@@ -87,7 +86,6 @@ public class ForwardProcessor {
         final JSONObject user = Sessions.getUser();
         if (null != user && UserExt.USER_XXX_STATUS_C_DISABLED == user.optInt(UserExt.USER_FORWARD_PAGE_STATUS)) {
             context.sendRedirect(to);
-
             return;
         }
 

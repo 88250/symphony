@@ -144,7 +144,6 @@ public class OperationQueryService {
                 auditlogs.add(auditlog);
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Builds audit log failed", e);
-
                 continue;
             }
         }

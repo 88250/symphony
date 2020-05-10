@@ -164,13 +164,11 @@ public class CommentProcessor {
             final JSONObject comment = commentQueryService.getComment(commentId);
             if (null == comment) {
                 context.renderFalseResult().renderMsg("Not found comment to accept");
-
                 return;
             }
             final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
             if (StringUtils.equals(userId, commentAuthorId)) {
                 context.renderFalseResult().renderMsg(langPropsService.get("thankSelfLabel"));
-
                 return;
             }
 
@@ -178,7 +176,6 @@ public class CommentProcessor {
             final JSONObject article = articleQueryService.getArticle(articleId);
             if (!StringUtils.equals(userId, article.optString(Article.ARTICLE_AUTHOR_ID))) {
                 context.renderFalseResult().renderMsg(langPropsService.get("sc403Label"));
-
                 return;
             }
 
@@ -199,7 +196,6 @@ public class CommentProcessor {
         final String id = context.pathVar("id");
         if (StringUtils.isBlank(id)) {
             context.sendError(404);
-
             return;
         }
 
@@ -208,14 +204,12 @@ public class CommentProcessor {
         final JSONObject comment = commentQueryService.getComment(id);
         if (null == comment) {
             context.sendError(404);
-
             return;
         }
 
         final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
         if (!authorId.equals(currentUserId)) {
             context.sendError(403);
-
             return;
         }
 
@@ -261,14 +255,12 @@ public class CommentProcessor {
         final JSONObject comment = commentQueryService.getComment(id);
         if (null == comment) {
             LOGGER.warn("Not found comment [id=" + id + "] to update");
-
             return;
         }
 
         final JSONObject currentUser = Sessions.getUser();
         if (!currentUser.optString(Keys.OBJECT_ID).equals(comment.optString(Comment.COMMENT_AUTHOR_ID))) {
             context.sendError(403);
-
             return;
         }
 
@@ -301,14 +293,12 @@ public class CommentProcessor {
             final JSONObject comment = commentQueryService.getComment(id);
             if (null == comment) {
                 LOGGER.warn("Not found comment [id=" + id + "] to update");
-
                 return;
             }
 
             final JSONObject currentUser = Sessions.getUser();
             if (!currentUser.optString(Keys.OBJECT_ID).equals(comment.optString(Comment.COMMENT_AUTHOR_ID))) {
                 context.sendError(403);
-
                 return;
             }
 
@@ -395,7 +385,6 @@ public class CommentProcessor {
 
         if (StringUtils.isBlank(commentId)) {
             context.renderJSON(true).renderJSONValue(Comment.COMMENT_T_REPLIES, Collections.emptyList());
-
             return;
         }
 
@@ -482,14 +471,12 @@ public class CommentProcessor {
                 for (final String userName : userNames) {
                     if (userName.equals(currentUserName)) {
                         invited = true;
-
                         break;
                     }
                 }
 
                 if (!invited) {
                     context.sendError(403);
-
                     return;
                 }
             }

@@ -133,7 +133,6 @@ public class VoteProcessor {
         if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_COMMENT)) {
             context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
-
             return;
         }
 
@@ -186,7 +185,6 @@ public class VoteProcessor {
         if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_COMMENT)) {
             context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
-
             return;
         }
 
@@ -240,7 +238,6 @@ public class VoteProcessor {
         if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
             context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
-
             return;
         }
 
@@ -293,7 +290,6 @@ public class VoteProcessor {
         if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
             context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
-
             return;
         }
 

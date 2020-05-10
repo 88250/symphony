@@ -283,7 +283,6 @@ public class SettingsProcessor {
         if (!Strings.isEmail(email)) {
             final String msg = langPropsService.get("sendFailedLabel") + " - " + langPropsService.get("invalidEmailLabel");
             context.renderMsg(msg);
-
             return;
         }
 
@@ -291,7 +290,6 @@ public class SettingsProcessor {
         if (CaptchaProcessor.invalidCaptcha(captcha)) {
             final String msg = langPropsService.get("sendFailedLabel") + " - " + langPropsService.get("captchaErrorLabel");
             context.renderMsg(msg);
-
             return;
         }
 
@@ -299,7 +297,6 @@ public class SettingsProcessor {
         if (email.equalsIgnoreCase(user.optString(User.USER_EMAIL))) {
             final String msg = langPropsService.get("sendFailedLabel") + " - " + langPropsService.get("bindedLabel");
             context.renderMsg(msg);
-
             return;
         }
 
@@ -308,13 +305,11 @@ public class SettingsProcessor {
             JSONObject verifycode = verifycodeQueryService.getVerifycodeByUserId(Verifycode.TYPE_C_EMAIL, Verifycode.BIZ_TYPE_C_BIND_EMAIL, userId);
             if (null != verifycode) {
                 context.renderTrueResult().renderMsg(langPropsService.get("vcSentLabel"));
-
                 return;
             }
 
             if (null != userQueryService.getUserByEmail(email)) {
                 context.renderMsg(langPropsService.get("duplicatedEmailLabel"));
-
                 return;
             }
 
@@ -354,7 +349,6 @@ public class SettingsProcessor {
                 final String msg = langPropsService.get("updateFailLabel") + " - " + langPropsService.get("captchaErrorLabel");
                 context.renderMsg(msg);
                 context.renderJSONValue(Keys.CODE, 2);
-
                 return;
             }
 
@@ -362,7 +356,6 @@ public class SettingsProcessor {
                 final String msg = langPropsService.get("updateFailLabel") + " - " + langPropsService.get("captchaErrorLabel");
                 context.renderMsg(msg);
                 context.renderJSONValue(Keys.CODE, 2);
-
                 return;
             }
 
@@ -648,7 +641,6 @@ public class SettingsProcessor {
         }
         if (StringUtils.isNotBlank(indexRedirectURL) && !StringUtils.startsWith(indexRedirectURL, Latkes.getServePath())) {
             context.renderMsg(langPropsService.get("onlyInternalURLLabel"));
-
             return;
         }
         if (StringUtils.isNotBlank(indexRedirectURL)) {
@@ -789,7 +781,6 @@ public class SettingsProcessor {
         final JSONObject user = Sessions.getUser();
         if (!password.equals(user.optString(User.USER_PASSWORD))) {
             context.renderMsg(langPropsService.get("invalidOldPwdLabel"));
-
             return;
         }
 
@@ -881,7 +872,6 @@ public class SettingsProcessor {
         if (StringUtils.isBlank(invitecode)) {
             ret.put(Keys.STATUS_CODE, -1);
             ret.put(Keys.MSG, invitecode + " " + langPropsService.get("notFoundInvitecodeLabel"));
-
             return;
         }
 
@@ -899,7 +889,6 @@ public class SettingsProcessor {
             switch (status) {
                 case Invitecode.STATUS_C_USED:
                     ret.put(Keys.MSG, langPropsService.get("invitecodeUsedLabel"));
-
                     break;
                 case Invitecode.STATUS_C_UNUSED:
                     String msg = langPropsService.get("invitecodeOkLabel");
@@ -907,11 +896,9 @@ public class SettingsProcessor {
                             + Symphonys.INVITECODE_EXPIRED, "yyyy-MM-dd HH:mm"));
 
                     ret.put(Keys.MSG, msg);
-
                     break;
                 case Invitecode.STATUS_C_STOPUSE:
                     ret.put(Keys.MSG, langPropsService.get("invitecodeStopLabel"));
-
                     break;
                 default:
                     ret.put(Keys.MSG, langPropsService.get("notFoundInvitecodeLabel"));

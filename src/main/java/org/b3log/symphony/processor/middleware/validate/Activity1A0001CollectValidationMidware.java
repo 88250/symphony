@@ -56,7 +56,6 @@ public class Activity1A0001CollectValidationMidware {
         if (Symphonys.ACTIVITY_1A0001_CLOSED) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityClosedLabel")));
             context.abort();
-
             return;
         }
 
@@ -66,7 +65,6 @@ public class Activity1A0001CollectValidationMidware {
         if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activity1A0001CloseLabel")));
             context.abort();
-
             return;
         }
 
@@ -74,7 +72,6 @@ public class Activity1A0001CollectValidationMidware {
         if (hour < 16) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityCollectNotOpenLabel")));
             context.abort();
-
             return;
         }
 
@@ -82,14 +79,12 @@ public class Activity1A0001CollectValidationMidware {
         if (UserExt.USER_STATUS_C_VALID != currentUser.optInt(UserExt.USER_STATUS)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
             context.abort();
-
             return;
         }
 
         if (!activityQueryService.is1A0001Today(currentUser.optString(Keys.OBJECT_ID))) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("activityNotParticipatedLabel")));
             context.abort();
-
             return;
         }
 

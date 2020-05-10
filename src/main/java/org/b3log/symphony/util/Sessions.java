@@ -104,7 +104,6 @@ public final class Sessions {
         if (null == data) {
             data = new JSONObject().put(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, isBot);
             THREAD_LOCAL_DATA.set(data);
-
             return;
         }
 
@@ -135,7 +134,6 @@ public final class Sessions {
         if (null == data) {
             data = new JSONObject().put(Common.IS_MOBILE, isMobile);
             THREAD_LOCAL_DATA.set(data);
-
             return;
         }
 
@@ -166,7 +164,6 @@ public final class Sessions {
         if (null == data) {
             data = new JSONObject().put(UserExt.USER_AVATAR_VIEW_MODE, avatarViewMode);
             THREAD_LOCAL_DATA.set(data);
-
             return;
         }
 
@@ -197,7 +194,6 @@ public final class Sessions {
         if (null == data) {
             data = new JSONObject().put(Common.IS_LOGGED_IN, isLoggedIn);
             THREAD_LOCAL_DATA.set(data);
-
             return;
         }
 
@@ -228,7 +224,6 @@ public final class Sessions {
         if (null == data) {
             data = new JSONObject().put(User.USER, user);
             THREAD_LOCAL_DATA.set(data);
-
             return;
         }
 
@@ -259,7 +254,6 @@ public final class Sessions {
         if (null == data) {
             data = new JSONObject().put(Keys.TEMAPLTE_DIR_NAME, templateDir);
             THREAD_LOCAL_DATA.set(data);
-
             return;
         }
 

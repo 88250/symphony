@@ -126,24 +126,20 @@ public class AnonymousViewCheckMidware {
                 if (null == article) {
                     context.sendError(404);
                     context.abort();
-
                     return;
                 }
 
                 if (Article.ARTICLE_ANONYMOUS_VIEW_C_NOT_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW) && !Sessions.isLoggedIn()) {
                     context.sendError(401);
                     context.abort();
-
                     return;
                 } else if (Article.ARTICLE_ANONYMOUS_VIEW_C_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)) {
                     context.handle();
-
                     return;
                 }
             } catch (final RepositoryException e) {
                 context.sendError(500);
                 context.abort();
-
                 return;
             }
         }
@@ -172,20 +168,17 @@ public class AnonymousViewCheckMidware {
                     if (uris.length() > Symphonys.ANONYMOUS_VIEW_URIS) {
                         context.sendError(401);
                         context.abort();
-
                         return;
                     }
 
                     addCookie(context.getResponse(), cookieNameVisits, URLs.encode(uris.toString()));
                     context.handle();
-
                     return;
                 } else {
                     final JSONArray uris = new JSONArray();
                     uris.put(requestURI);
                     addCookie(context.getResponse(), cookieNameVisits, URLs.encode(uris.toString()));
                     context.handle();
-
                     return;
                 }
             } else { // logged in
@@ -196,7 +189,6 @@ public class AnonymousViewCheckMidware {
 
                     context.getResponse().addCookie(cookie);
                     context.handle();
-
                     return;
                 }
             }

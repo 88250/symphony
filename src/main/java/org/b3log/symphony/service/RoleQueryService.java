@@ -270,7 +270,6 @@ public class RoleQueryService {
 
                     if (permissionId.equals(grantPermissionId)) {
                         permission.put(Permission.PERMISSION_T_GRANT, true);
-
                         break;
                     }
                 }

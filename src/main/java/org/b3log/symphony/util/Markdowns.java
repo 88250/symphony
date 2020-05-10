@@ -167,7 +167,6 @@ public final class Markdowns {
             if (StringUtils.startsWithIgnoreCase(data, "data:")
                     || StringUtils.startsWithIgnoreCase(data, "javascript")) {
                 obj.remove();
-
                 continue;
             }
 
@@ -332,7 +331,6 @@ public final class Markdowns {
                 String src = a.attr("href");
                 if (StringUtils.containsIgnoreCase(src, "javascript:")) {
                     a.remove();
-
                     return;
                 }
 
@@ -370,7 +368,6 @@ public final class Markdowns {
             for (final Thread thread : threads) {
                 if (thread.getId() == threadId[0]) {
                     thread.stop();
-
                     break;
                 }
             }
