@@ -950,7 +950,9 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final JSONObject result = invitecodeQueryService.getInvitecodes(requestJSONObject);
-        dataModel.put(Invitecode.INVITECODES, CollectionUtils.jsonArrayToList(result.optJSONArray(Invitecode.INVITECODES)));
+        final List<JSONObject> invitecodes = CollectionUtils.jsonArrayToList(result.optJSONArray(Invitecode.INVITECODES));
+        invitecodes.forEach(Escapes::escapeHTML);
+        dataModel.put(Invitecode.INVITECODES, invitecodes);
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
