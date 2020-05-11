@@ -731,6 +731,10 @@ public class LoginProcessor {
             destinationURL = context.header("referer");
         }
 
+        if (!StringUtils.startsWith(destinationURL, Latkes.getServePath())) {
+            destinationURL = Latkes.getServePath();
+        }
+
         context.sendRedirect(destinationURL);
     }
 }
