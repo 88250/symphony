@@ -82,7 +82,7 @@ import java.util.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.0.0.0, Feb 11, 2020
+ * @version 2.0.1.0, May 11, 2020
  * @since 0.2.0
  */
 @Singleton
@@ -548,7 +548,9 @@ public class ArticleProcessor {
         String at = context.param(Common.AT);
         at = StringUtils.trim(at);
         if (StringUtils.isNotBlank(at)) {
-            dataModel.put(Common.AT, at + " ");
+            if (!UserRegisterValidationMidware.invalidUserName(at)) {
+                dataModel.put(Common.AT, at + " ");
+            }
         }
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
