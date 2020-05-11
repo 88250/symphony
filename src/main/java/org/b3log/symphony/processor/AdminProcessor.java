@@ -1178,9 +1178,9 @@ public class AdminProcessor {
     public void showReservedWords(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/reserved-words.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
-        dataModel.put(Common.WORDS, optionQueryService.getReservedWords());
-
+        final List<JSONObject> words = optionQueryService.getReservedWords();
+        words.forEach(Escapes::escapeHTML);
+        dataModel.put(Common.WORDS, words);
         dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
@@ -1193,10 +1193,8 @@ public class AdminProcessor {
         final String id = context.pathVar("id");
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/reserved-word.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         final JSONObject word = optionQueryService.getOption(id);
         dataModel.put(Common.WORD, word);
-
         dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
@@ -2149,7 +2147,9 @@ public class AdminProcessor {
         domainFields.add(Domain.DOMAIN_STATUS);
         domainFields.add(Domain.DOMAIN_URI);
         final JSONObject result = domainQueryService.getDomains(requestJSONObject, domainFields);
-        dataModel.put(Common.ALL_DOMAINS, CollectionUtils.jsonArrayToList(result.optJSONArray(Domain.DOMAINS)));
+        final List<JSONObject> domains = CollectionUtils.jsonArrayToList(result.optJSONArray(Domain.DOMAINS));
+        domains.forEach(Escapes::escapeHTML);
+        dataModel.put(Common.ALL_DOMAINS, domains);
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
