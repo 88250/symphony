@@ -38,6 +38,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.URLs;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.middleware.CSRFMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
@@ -278,7 +279,7 @@ public class LoginProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "verify/login.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModel.put(Common.GOTO, referer);
+        dataModel.put(Common.GOTO, URLs.encode(referer));
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
     }

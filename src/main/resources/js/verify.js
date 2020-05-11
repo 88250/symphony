@@ -32,6 +32,7 @@ var Verify = {
      * @description 登录
      */
     login: function (goto) {
+        goto = decodeURIComponent(goto)
         if (Validate.goValidate({target: $('#loginTip'),
             data: [{
                     "target": $("#nameOrEmail"),
