@@ -113,6 +113,7 @@ var Util = {
   parseMarkdown: function () {
     Vditor.mermaidRender(document.body)
     Vditor.chartRender()
+    Vditor.mindmapRender()
     Vditor.mathRender(document.body)
     Vditor.codeRender(document.body, Label.langLabel)
     Vditor.abcRender()
