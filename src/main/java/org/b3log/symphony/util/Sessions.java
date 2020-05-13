@@ -241,7 +241,7 @@ public final class Sessions {
             return "classic";
         }
 
-        return data.optString(Keys.TEMAPLTE_DIR_NAME);
+        return data.optString(Keys.TEMPLATE_DIR_NAME);
     }
 
     /**
@@ -252,12 +252,12 @@ public final class Sessions {
     public static void setTemplateDir(final String templateDir) {
         JSONObject data = THREAD_LOCAL_DATA.get();
         if (null == data) {
-            data = new JSONObject().put(Keys.TEMAPLTE_DIR_NAME, templateDir);
+            data = new JSONObject().put(Keys.TEMPLATE_DIR_NAME, templateDir);
             THREAD_LOCAL_DATA.set(data);
             return;
         }
 
-        data.put(Keys.TEMAPLTE_DIR_NAME, templateDir);
+        data.put(Keys.TEMPLATE_DIR_NAME, templateDir);
     }
 
     /**

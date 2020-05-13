@@ -183,7 +183,7 @@ public class ArticleChannel implements WebSocketChannel {
                     dataModel.put(Permission.PERMISSIONS, permissions);
                 }
 
-                final String templateDirName = httpSession.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+                final String templateDirName = httpSession.getAttribute(Keys.TEMPLATE_DIR_NAME);
                 final Template template = Templates.getTemplate(templateDirName + "/common/comment.ftl");
                 final StringWriter stringWriter = new StringWriter();
                 template.process(dataModel, stringWriter);
