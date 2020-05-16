@@ -117,7 +117,7 @@ import java.util.*;
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 3.0.0.0, Feb 11, 2020
+ * @version 3.0.0.1, May 16, 2020
  * @since 1.1.0
  */
 @Singleton
@@ -2387,20 +2387,13 @@ public class AdminProcessor {
 
         final String tagTitle = context.param(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
-
         if (null == tag) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/error.ftl");
             final Map<String, Object> dataModel = renderer.getDataModel();
-
             dataModel.put(Keys.MSG, langPropsService.get("invalidTagLabel"));
-
             dataModelService.fillHeaderAndFooter(context, dataModel);
             return;
         }
-
-        final JSONObject domainTag = new JSONObject();
-        domainTag.put(Domain.DOMAIN + "_" + Keys.OBJECT_ID, domainId);
-        domainTag.put(Tag.TAG + "_" + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
 
         domainMgmtService.removeDomainTag(domainId, tag.optString(Keys.OBJECT_ID));
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_DOMAIN_TAG, domainId));
