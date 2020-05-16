@@ -2148,7 +2148,11 @@ public class AdminProcessor {
         domainFields.add(Domain.DOMAIN_URI);
         final JSONObject result = domainQueryService.getDomains(requestJSONObject, domainFields);
         final List<JSONObject> domains = CollectionUtils.jsonArrayToList(result.optJSONArray(Domain.DOMAINS));
-        domains.forEach(Escapes::escapeHTML);
+        for (final JSONObject domain : domains) {
+            final String iconPath = domain.optString(Domain.DOMAIN_ICON_PATH);
+            Escapes.escapeHTML(domain);
+            domain.put(Domain.DOMAIN_ICON_PATH, iconPath);
+        }
         dataModel.put(Common.ALL_DOMAINS, domains);
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
