@@ -2178,7 +2178,6 @@ public class AdminProcessor {
         dataModel.put(Domain.DOMAIN, domain);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
-
     }
 
     /**
