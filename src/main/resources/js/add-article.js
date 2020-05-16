@@ -263,6 +263,7 @@ var AddArticle = {
     var prevValue = postData.content
     // 初始化文章编辑器
     AddArticle.editor = Util.newVditor({
+      outline: true,
       typewriterMode: true,
       id: 'articleContent',
       cache: Label.articleOId ? false : true,
