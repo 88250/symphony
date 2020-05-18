@@ -17,7 +17,6 @@
  */
 package org.b3log.symphony.repository;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Permission;
@@ -30,7 +29,7 @@ import java.util.List;
  * Role-Permission repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Aug 27, 2018
+ * @version 1.0.0.2, May 18, 2020
  * @since 1.8.0
  */
 @Repository
@@ -50,10 +49,7 @@ public class RolePermissionRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public void removeByRoleId(final String roleId) throws RepositoryException {
-        final List<JSONObject> toRemoves = getByRoleId(roleId);
-        for (final JSONObject toRemove : toRemoves) {
-            remove(toRemove.optString(Keys.OBJECT_ID));
-        }
+        remove(new Query().setFilter(new PropertyFilter(Role.ROLE_ID, FilterOperator.EQUAL, roleId)).setPageCount(1));
     }
 
     /**
@@ -70,10 +66,6 @@ public class RolePermissionRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public List<JSONObject> getByRoleId(final String roleId) throws RepositoryException {
-        final Query query = new Query().setFilter(
-                new PropertyFilter(Role.ROLE_ID, FilterOperator.EQUAL, roleId)).
-                setPageCount(1);
-
-        return getList(query);
+        return getList(new Query().setFilter(new PropertyFilter(Role.ROLE_ID, FilterOperator.EQUAL, roleId)).setPageCount(1));
     }
 }
