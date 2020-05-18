@@ -31,7 +31,7 @@
                             <li class="fn-clear form">
                                 <div><big class="ft-gray">${category}</big></div>
                                 <#list permissionCategories[category] as permission>
-                                    <label><input name="${permission.oId}" type="checkbox"
+                                    <label><input name="${permission.oId}" <#if "adminRole" == role.oId>onclick="return false;"</#if> type="checkbox"
                                         <#if permission.permissionGrant>checked</#if>
                                         > ${permission.permissionLabel} &nbsp; &nbsp;</label>
                                 </#list>
