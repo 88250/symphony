@@ -329,7 +329,7 @@ public class CommentProcessor {
             commentContent = Emotions.convert(commentContent);
             commentContent = Markdowns.toHTML(commentContent);
             commentContent = Markdowns.clean(commentContent, "");
-            commentContent = MP3Players.render(commentContent);
+            commentContent = AudioPlayers.render(commentContent);
             commentContent = VideoPlayers.render(commentContent);
 
             context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);

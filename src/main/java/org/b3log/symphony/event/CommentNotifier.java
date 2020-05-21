@@ -214,7 +214,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             cc = Emotions.convert(cc);
             cc = Markdowns.toHTML(cc);
             cc = Markdowns.clean(cc, "");
-            cc = MP3Players.render(cc);
+            cc = AudioPlayers.render(cc);
             cc = VideoPlayers.render(cc);
 
             chData.put(Comment.COMMENT_CONTENT, cc);

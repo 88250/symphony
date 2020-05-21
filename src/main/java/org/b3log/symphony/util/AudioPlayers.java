@@ -23,51 +23,51 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * MP3 player utilities.
+ * Audio player utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.2.0, Jul 15, 2018
+ * @version 1.0.2.1, May 22, 2020
  * @since 2.1.0
  */
-public final class MP3Players {
+public final class AudioPlayers {
 
     /**
-     * MP3 URL regex.
+     * Audio (.mp3, .flac) URL regex.
      */
-    private static final String MP3_URL_REGEX = "<p>( )*<a href.*\\.mp3.*</a>( )*</p>";
+    private static final String MP3_URL_REGEX = "<p>( )*<a href.*\\.(mp3|flac).*</a>( )*</p>";
 
     /**
-     * MP3 URL regex pattern.
+     * Audio URL regex pattern.
      */
     private static final Pattern PATTERN = Pattern.compile(MP3_URL_REGEX, Pattern.CASE_INSENSITIVE);
 
     /**
-     * Renders the specified content with MP3 player if need.
+     * Renders the specified content with audio player if need.
      *
      * @param content the specified content
      * @return rendered content
      */
-    public static final String render(final String content) {
+    public static String render(final String content) {
         final StringBuffer contentBuilder = new StringBuffer();
 
         final Matcher m = PATTERN.matcher(content);
         while (m.find()) {
             final String g = m.group();
-            String mp3Name = StringUtils.substringBetween(g, "\">", ".mp3</a>");
-            String mp3URL = StringUtils.substringBetween(g, "href=\"", "\" rel=");
-            if (StringUtils.isBlank(mp3URL)) {
-                mp3URL = StringUtils.substringBetween(g, "href=\"", "\"");
+            String audioName = StringUtils.substringBetween(g, "\">", "</a>");
+            audioName = StringUtils.substringBeforeLast(audioName, ".");
+            String audioURL = StringUtils.substringBetween(g, "href=\"", "\" rel=");
+            if (StringUtils.isBlank(audioURL)) {
+                audioURL = StringUtils.substringBetween(g, "href=\"", "\"");
             }
 
             m.appendReplacement(contentBuilder, "<div class=\"aplayer content-audio\" data-title=\""
-                    + mp3Name + "\" data-url=\"" + mp3URL + "\" ></div>\n");
+                    + audioName + "\" data-url=\"" + audioURL + "\" ></div>\n");
         }
         m.appendTail(contentBuilder);
-
         return contentBuilder.toString();
     }
 
-    private MP3Players() {
+    private AudioPlayers() {
     }
 }

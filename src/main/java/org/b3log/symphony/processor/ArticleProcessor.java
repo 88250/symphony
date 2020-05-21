@@ -1129,7 +1129,7 @@ public class ArticleProcessor {
         html = Emotions.convert(html);
         html = Markdowns.toHTML(html);
         html = Markdowns.clean(html, "");
-        html = MP3Players.render(html);
+        html = AudioPlayers.render(html);
         html = VideoPlayers.render(html);
 
         result.put(Common.DATA, html);
