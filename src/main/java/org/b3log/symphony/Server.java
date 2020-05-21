@@ -69,7 +69,7 @@ public final class Server extends BaseServer {
         final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT").hasArg().desc("listen port, default is 8080").build();
         options.addOption(listenPortOpt);
 
-        final Option unixDomainSocketPathOpt = Option.builder("udsp").longOpt("unix_domain_socket_path").argName("UNIX_DOMAIN_SOCKET_PATH").hasArg().desc("unix domain socket path").build();
+        final Option unixDomainSocketPathOpt = Option.builder().longOpt("unix_domain_socket_path").argName("UNIX_DOMAIN_SOCKET_PATH").hasArg().desc("unix domain socket path").build();
         options.addOption(unixDomainSocketPathOpt);
 
         final Option serverSchemeOpt = Option.builder("ss").longOpt("server_scheme").argName("SERVER_SCHEME").hasArg().desc("browser visit protocol, default is http").build();
