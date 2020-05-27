@@ -18,6 +18,7 @@
 package org.b3log.symphony.util;
 
 import com.vdurmont.emoji.EmojiParser;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.regex.Pattern;
 
@@ -27,7 +28,7 @@ import java.util.regex.Pattern;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.3.0.6, Apr 5, 2020
+ * @version 1.3.0.7, Apr 27, 2020
  * @since 0.2.0
  */
 public final class Emotions {
@@ -59,7 +60,11 @@ public final class Emotions {
      * @param content the specified string to parse
      * @return the string with the mojis replaces by their unicode
      */
-    public static String toUnicode(final String content) {
+    public static String toUnicode(String content) {
+        // 该 Emoji 和 EmojiParser 命名不一致，此处做修正
+        content = StringUtils.replace(content, ":unicorn:", ":unicorn_face:");
+        content = StringUtils.replace(content, ":upside_down_face:", ":upside_down:");
+
         String ret = EmojiParser.parseToUnicode(content);
         ret = ret.replace("❤", "❤️");
         ret = ret.replace("♥", "♥️");
