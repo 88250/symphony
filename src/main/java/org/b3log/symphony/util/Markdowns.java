@@ -339,8 +339,10 @@ public final class Markdowns {
                     return;
                 }
 
-                src = URLs.encode(src);
-                a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
+                if (!MediaPlayers.isMedia(src)) {
+                    src = URLs.encode(src);
+                    a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
+                }
                 a.attr("target", "_blank");
                 a.attr("rel", "nofollow");
             });

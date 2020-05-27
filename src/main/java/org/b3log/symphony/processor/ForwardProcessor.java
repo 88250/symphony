@@ -64,7 +64,6 @@ public class ForwardProcessor {
      * Shows jump page.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     public void showForward(final RequestContext context) {
         final Request request = context.getRequest();

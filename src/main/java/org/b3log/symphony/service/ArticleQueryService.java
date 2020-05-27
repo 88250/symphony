@@ -1857,8 +1857,8 @@ public class ArticleQueryService {
             articleContent = article.optString(Article.ARTICLE_CONTENT);
 
             if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
-                articleContent = AudioPlayers.render(articleContent);
-                articleContent = VideoPlayers.render(articleContent);
+                articleContent = MediaPlayers.renderAudio(articleContent);
+                articleContent = MediaPlayers.renderVideo(articleContent);
             }
 
             article.put(Article.ARTICLE_CONTENT, articleContent);

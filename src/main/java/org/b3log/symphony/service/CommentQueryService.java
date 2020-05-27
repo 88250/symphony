@@ -875,8 +875,8 @@ public class CommentQueryService {
         commentContent = Emotions.convert(commentContent);
         commentContent = Markdowns.toHTML(commentContent);
         commentContent = Markdowns.clean(commentContent, "");
-        commentContent = AudioPlayers.render(commentContent);
-        commentContent = VideoPlayers.render(commentContent);
+        commentContent = MediaPlayers.renderAudio(commentContent);
+        commentContent = MediaPlayers.renderVideo(commentContent);
         comment.put(Comment.COMMENT_CONTENT, commentContent);
     }
 }
