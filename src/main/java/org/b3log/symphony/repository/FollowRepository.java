@@ -21,7 +21,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Follow;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -52,14 +51,11 @@ public class FollowRepository extends AbstractRepository {
      * @param followingType the specified following type
      * @throws RepositoryException repository exception
      */
-    public void removeByFollowerIdAndFollowingId(final String followerId, final String followingId, final int followingType)
-            throws RepositoryException {
+    public void removeByFollowerIdAndFollowingId(final String followerId, final String followingId, final int followingType) throws RepositoryException {
         final JSONObject toRemove = getByFollowerIdAndFollowingId(followerId, followingId, followingType);
-
         if (null == toRemove) {
             return;
         }
-
         remove(toRemove.optString(Keys.OBJECT_ID));
     }
 
@@ -72,23 +68,13 @@ public class FollowRepository extends AbstractRepository {
      * @return follow relationship, returns {@code null} if not found
      * @throws RepositoryException repository exception
      */
-    public JSONObject getByFollowerIdAndFollowingId(final String followerId, final String followingId, final int followingType)
-            throws RepositoryException {
+    public JSONObject getByFollowerIdAndFollowingId(final String followerId, final String followingId, final int followingType) throws RepositoryException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Follow.FOLLOWER_ID, FilterOperator.EQUAL, followerId));
         filters.add(new PropertyFilter(Follow.FOLLOWING_ID, FilterOperator.EQUAL, followingId));
         filters.add(new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, followingType));
-
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        if (0 == array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        return getFirst(query);
     }
 
     /**
@@ -100,8 +86,7 @@ public class FollowRepository extends AbstractRepository {
      * @return {@code true} if exists, returns {@code false} otherwise
      * @throws RepositoryException repository exception
      */
-    public boolean exists(final String followerId, final String followingId, final int followingType)
-            throws RepositoryException {
+    public boolean exists(final String followerId, final String followingId, final int followingType) throws RepositoryException {
         return null != getByFollowerIdAndFollowingId(followerId, followingId, followingType);
     }
 
@@ -130,7 +115,6 @@ public class FollowRepository extends AbstractRepository {
                         new PropertyFilter(Follow.FOLLOWING_ID, FilterOperator.EQUAL, followingId),
                         new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, type))).
                 setPage(currentPageNum, pageSize).setPageCount(1);
-
         return get(query);
     }
 }

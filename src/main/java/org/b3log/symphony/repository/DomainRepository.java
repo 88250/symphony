@@ -17,11 +17,9 @@
  */
 package org.b3log.symphony.repository;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Domain;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -50,15 +48,7 @@ public class DomainRepository extends AbstractRepository {
      */
     public JSONObject getByTitle(final String domainTitle) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Domain.DOMAIN_TITLE, FilterOperator.EQUAL, domainTitle)).setPageCount(1);
-
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        if (0 == array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        return getFirst(query);
     }
 
     /**
@@ -70,14 +60,6 @@ public class DomainRepository extends AbstractRepository {
      */
     public JSONObject getByURI(final String domainURI) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Domain.DOMAIN_URI, FilterOperator.EQUAL, domainURI)).setPageCount(1);
-
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        if (0 == array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        return getFirst(query);
     }
 }

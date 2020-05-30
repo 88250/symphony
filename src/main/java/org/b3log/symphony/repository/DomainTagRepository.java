@@ -78,13 +78,8 @@ public class DomainTagRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public void removeByDomainId(final String domainId) throws RepositoryException {
-        final Query query = new Query().
-                setFilter(new PropertyFilter(Domain.DOMAIN + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, domainId));
-        final JSONArray relations = get(query).optJSONArray(Keys.RESULTS);
-        for (int i = 0; i < relations.length(); i++) {
-            final JSONObject rel = relations.optJSONObject(i);
-            remove(rel.optString(Keys.OBJECT_ID));
-        }
+        final Query query = new Query().setFilter(new PropertyFilter(Domain.DOMAIN + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, domainId));
+        remove(query);
     }
 
     /**

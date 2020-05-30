@@ -24,7 +24,6 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.cache.UserCache;
 import org.b3log.symphony.model.Role;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -96,20 +95,12 @@ public class UserRepository extends AbstractRepository {
             return ret;
         }
 
-        final Query query = new Query().setPageCount(1);
-        query.setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, name));
-
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        if (0 == array.length()) {
+        final Query query = new Query().setPageCount(1).setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, name));
+        ret = getFirst(query);
+        if (null == ret) {
             return null;
         }
-
-        ret = array.optJSONObject(0);
-
         userCache.putUser(ret);
-
         return ret;
     }
 
@@ -121,17 +112,8 @@ public class UserRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public JSONObject getByEmail(final String email) throws RepositoryException {
-        final Query query = new Query().setPageCount(1);
-        query.setFilter(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
-
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        if (0 == array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        final Query query = new Query().setPageCount(1).setFilter(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
+        return getFirst(query);
     }
 
     /**

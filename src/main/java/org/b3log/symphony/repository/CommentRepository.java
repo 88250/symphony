@@ -25,8 +25,9 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.cache.CommentCache;
 import org.b3log.symphony.model.*;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Comment repository.
@@ -113,7 +114,7 @@ public class CommentRepository extends AbstractRepository {
                     setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                     setPage(1, 1);
-            final JSONObject latestCmt = get(latestCmtQuery).optJSONArray(Keys.RESULTS).optJSONObject(0);
+            final JSONObject latestCmt = getFirst(latestCmtQuery);
             article.put(Article.ARTICLE_LATEST_CMT_TIME, latestCmt.optLong(Keys.OBJECT_ID));
             final JSONObject latestCmtAuthor = userRepository.get(latestCmt.optString(Comment.COMMENT_AUTHOR_ID));
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, latestCmtAuthor.optString(User.USER_NAME));
@@ -125,11 +126,9 @@ public class CommentRepository extends AbstractRepository {
 
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, commentId),
-                new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_COMMENT)
-        ));
-        final JSONArray commentRevisions = revisionRepository.get(query).optJSONArray(Keys.RESULTS);
-        for (int j = 0; j < commentRevisions.length(); j++) {
-            final JSONObject articleRevision = commentRevisions.optJSONObject(j);
+                new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_COMMENT)));
+        final List<JSONObject> commentRevisions = revisionRepository.getList(query);
+        for (final JSONObject articleRevision : commentRevisions) {
             revisionRepository.remove(articleRevision.optString(Keys.OBJECT_ID));
         }
 

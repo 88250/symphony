@@ -27,7 +27,6 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
@@ -169,30 +168,24 @@ public class ActivityQueryService {
      */
     public List<JSONObject> getTopCheckinUsers(final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<>();
-
         final Query query = new Query().addSort(UserExt.USER_LONGEST_CHECKIN_STREAK, SortDirection.DESCENDING).
                 addSort(UserExt.USER_CURRENT_CHECKIN_STREAK, SortDirection.DESCENDING).
                 setPage(1, fetchSize);
-
         try {
             final JSONObject result = userRepository.get(query);
-            final List<JSONObject> users = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-
+            final List<JSONObject> users = (List<JSONObject>) result.opt(Keys.RESULTS);
             for (final JSONObject user : users) {
                 if (UserExt.USER_APP_ROLE_C_HACKER == user.optInt(UserExt.USER_APP_ROLE)) {
                     user.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(user.optInt(UserExt.USER_POINT)));
                 } else {
                     user.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(user.optInt(UserExt.USER_POINT)));
                 }
-
                 avatarQueryService.fillUserAvatarURL(user);
-
                 ret.add(user);
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets top checkin users error", e);
         }
-
         return ret;
     }
 

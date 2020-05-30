@@ -21,7 +21,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Vote;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -63,15 +62,11 @@ public class VoteRepository extends AbstractRepository {
         filters.add(new PropertyFilter(Vote.DATA_ID, FilterOperator.EQUAL, dataId));
         filters.add(new PropertyFilter(Vote.DATA_TYPE, FilterOperator.EQUAL, dataType));
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
+        final JSONObject voteToRemove = getFirst(query);
+        if (null == voteToRemove) {
             return -1;
         }
-
-        final JSONObject voteToRemove = array.optJSONObject(0);
         remove(voteToRemove.optString(Keys.OBJECT_ID));
-
         return voteToRemove.optInt(Vote.TYPE);
     }
 

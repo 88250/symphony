@@ -21,14 +21,12 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Link;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -57,16 +55,9 @@ public class LinkRepository extends AbstractRepository {
         final Query query = new Query().setFilter(new PropertyFilter(Link.LINK_ADDR_HASH, FilterOperator.EQUAL, hash)).
                 setPageCount(1).setPage(1, 1);
         try {
-            final JSONObject result = get(query);
-            final JSONArray links = result.optJSONArray(Keys.RESULTS);
-            if (0 == links.length()) {
-                return null;
-            }
-
-            return links.optJSONObject(0);
+            return getFirst(query);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets link by address [addr=" + addr + ", hash=" + hash + "] failed", e);
-
             return null;
         }
     }
