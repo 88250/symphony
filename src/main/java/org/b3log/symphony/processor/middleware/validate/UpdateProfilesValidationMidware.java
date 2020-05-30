@@ -41,7 +41,7 @@ import java.util.LinkedHashSet;
  * Validates for user profiles update.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.0, Feb 11, 2020
+ * @version 3.0.0.1, May 30, 2020
  * @since 0.2.0
  */
 @Singleton
@@ -74,10 +74,7 @@ public class UpdateProfilesValidationMidware {
     public static final int MAX_USER_INTRO_LENGTH = 255;
 
     public void handle(final RequestContext context) {
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
-        request.setAttribute(Keys.REQUEST, requestJSONObject);
-
         final String userURL = requestJSONObject.optString(User.USER_URL);
         if (StringUtils.isNotBlank(userURL) && invalidUserURL(userURL)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, "URL" + langPropsService.get("colonLabel") + langPropsService.get("invalidUserURLLabel")));

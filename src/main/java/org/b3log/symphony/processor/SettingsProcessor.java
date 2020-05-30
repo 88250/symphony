@@ -78,7 +78,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 11, 2020
+ * @version 2.0.0.1, May 30, 2020
  * @since 2.4.0
  */
 @Singleton
@@ -731,7 +731,7 @@ public class SettingsProcessor {
     public void updateAvatar(final RequestContext context) {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
+        final JSONObject requestJSONObject = context.requestJSON();
         final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
 
         JSONObject user = Sessions.getUser();
@@ -773,8 +773,7 @@ public class SettingsProcessor {
     public void updatePassword(final RequestContext context) {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
-
+        final JSONObject requestJSONObject = context.requestJSON();
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
         final String newPassword = requestJSONObject.optString(User.USER_NEW_PASSWORD);
 
