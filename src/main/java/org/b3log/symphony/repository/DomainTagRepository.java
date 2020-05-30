@@ -22,7 +22,6 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Tag;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**

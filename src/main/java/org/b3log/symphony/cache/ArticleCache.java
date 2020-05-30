@@ -35,7 +35,6 @@ import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
