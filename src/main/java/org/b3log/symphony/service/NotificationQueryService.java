@@ -33,7 +33,6 @@ import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -232,10 +231,9 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         try {
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final String dataId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
                 String desTemplate;
@@ -418,10 +416,9 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         try {
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final String dataId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
                 String desTemplate = "";
@@ -646,18 +643,16 @@ public class NotificationQueryService {
             final int cmtViewMode = user.optInt(UserExt.USER_COMMENT_VIEW_MODE);
 
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final JSONObject comment = commentQueryService.getCommentById(commentId);
 
                 final Query q = new Query().setPageCount(1).
                         select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
-                final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
-                final JSONObject article = rlts.optJSONObject(0);
+                final JSONObject article = articleRepository.getFirst(q);
                 final String articleTitle = article.optString(Article.ARTICLE_TITLE);
                 final int articleType = article.optInt(Article.ARTICLE_TYPE);
                 final int articlePerfect = article.optInt(Article.ARTICLE_PERFECT);
@@ -725,18 +720,16 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         try {
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final JSONObject comment = commentQueryService.getCommentById(commentId);
 
                 final Query q = new Query().setPageCount(1).
                         select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
-                final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
-                final JSONObject article = rlts.optJSONObject(0);
+                final JSONObject article = articleRepository.getFirst(q);
                 final String articleTitle = article.optString(Article.ARTICLE_TITLE);
                 final int articleType = article.optInt(Article.ARTICLE_TYPE);
                 final int articlePerfect = article.optInt(Article.ARTICLE_PERFECT);
@@ -818,10 +811,9 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         try {
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
                 final String dataId = notification.optString(Notification.NOTIFICATION_DATA_ID);
 
@@ -841,8 +833,7 @@ public class NotificationQueryService {
                                     select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                                     setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
                                             comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
-                            final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
-                            final JSONObject article = rlts.optJSONObject(0);
+                            final JSONObject article = articleRepository.getFirst(q);
                             final String articleTitle = article.optString(Article.ARTICLE_TITLE);
                             final int articleType = article.optInt(Article.ARTICLE_TYPE);
                             final int articlePerfect = article.optInt(Article.ARTICLE_PERFECT);
@@ -1066,10 +1057,9 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         try {
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
                 final JSONObject followingNotification = new JSONObject();
@@ -1082,8 +1072,7 @@ public class NotificationQueryService {
                                 select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                                 setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
                                         comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
-                        final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
-                        JSONObject article = rlts.optJSONObject(0);
+                        JSONObject article = articleRepository.getFirst(q);
                         final String articleTitle = article.optString(Article.ARTICLE_TITLE);
                         final int articleType = article.optInt(Article.ARTICLE_TYPE);
                         final int articlePerfect = article.optInt(Article.ARTICLE_PERFECT);
@@ -1184,10 +1173,9 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         try {
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final String articleId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final Query q = new Query().setPageCount(1).
                         select(Article.ARTICLE_TITLE,
@@ -1199,9 +1187,7 @@ public class NotificationQueryService {
                                 Article.ARTICLE_COMMENT_CNT,
                                 Article.ARTICLE_PERFECT).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, articleId));
-                final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
-                final JSONObject article = rlts.optJSONObject(0);
-
+                final JSONObject article = articleRepository.getFirst(q);
                 if (null == article) {
                     LOGGER.warn("Not found article [id=" + articleId + "]");
                     continue;
