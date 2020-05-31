@@ -39,7 +39,6 @@ import org.b3log.symphony.repository.FollowRepository;
 import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Sessions;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -113,18 +112,15 @@ public class UserQueryService {
                     setFilter(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID)).
                     addSort(UserExt.USER_ARTICLE_COUNT, SortDirection.DESCENDING).
                     addSort(UserExt.USER_COMMENT_COUNT, SortDirection.DESCENDING);
-            final JSONArray rangeUsers = userRepository.get(userQuery).optJSONArray(Keys.RESULTS);
-
-            final int realLen = rangeUsers.length();
+            final List<JSONObject> rangeUsers = userRepository.getList(userQuery);
+            final int realLen = rangeUsers.size();
             if (realLen < fetchSize) {
                 fetchSize = realLen;
             }
 
-
             final List<Integer> indices = CollectionUtils.getRandomIntegers(0, realLen, fetchSize);
-
             for (final Integer index : indices) {
-                ret.add(rangeUsers.getJSONObject(index));
+                ret.add(rangeUsers.get(index));
             }
 
             for (final JSONObject selectedUser : ret) {
@@ -275,11 +271,8 @@ public class UserQueryService {
                 setFilter(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID)).
                 select(User.USER_NAME, UserExt.USER_AVATAR_URL);
         try {
-            final JSONObject result = userRepository.get(query);
-            final JSONArray array = result.optJSONArray(Keys.RESULTS);
-            for (int i = 0; i < array.length(); i++) {
-                final JSONObject user = array.optJSONObject(i);
-
+            final List<JSONObject> list = userRepository.getList(query);
+            for (final JSONObject user : list) {
                 final JSONObject u = new JSONObject();
                 u.put(User.USER_NAME, user.optString(User.USER_NAME));
                 u.put(UserExt.USER_T_NAME_LOWER_CASE, user.optString(User.USER_NAME).toLowerCase());
@@ -288,10 +281,9 @@ public class UserQueryService {
                 USER_NAMES.add(u);
             }
 
-            Collections.sort(USER_NAMES, (u1, u2) -> {
+            USER_NAMES.sort((u1, u2) -> {
                 final String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
                 final String u2Name = u2.optString(UserExt.USER_T_NAME_LOWER_CASE);
-
                 return u1Name.compareTo(u2Name);
             });
         } catch (final RepositoryException e) {

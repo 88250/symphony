@@ -34,7 +34,6 @@ import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -130,29 +129,25 @@ public class TagMgmtService {
 
         int removedCnt = 0;
         try {
-            final JSONArray tags = tagRepository.get(new Query().setFilter(new PropertyFilter(Tag.TAG_REFERENCE_CNT, FilterOperator.EQUAL, 0))).optJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < tags.length(); i++) {
-                JSONObject tag = tags.optJSONObject(i);
+            final List<JSONObject> tags = tagRepository.getList(new Query().setFilter(new PropertyFilter(Tag.TAG_REFERENCE_CNT, FilterOperator.EQUAL, 0)));
+            for (final JSONObject tag : tags) {
                 final String tagId = tag.optString(Keys.OBJECT_ID);
-
                 if (0 < tag.optInt(Tag.TAG_REFERENCE_CNT) ||
-                        0 < domainTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE).optJSONArray(Keys.RESULTS).length()) {
+                        0 < ((List<JSONObject>) domainTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS)).size()) {
                     continue;
                 }
 
                 // 优化清理未使用标签 https://github.com/b3log/symphony/issues/826
-                final JSONArray userFollowTags = followRepository.getByFollowingId(tagId, Follow.FOLLOWING_TYPE_C_TAG, 1, Integer.MAX_VALUE).optJSONArray(Keys.RESULTS);
-                for (int j = 0; j < userFollowTags.length(); j++) {
-                    final JSONObject userFollowTag = userFollowTags.optJSONObject(j);
+                final List<JSONObject> userFollowTags = (List<JSONObject>) followRepository.getByFollowingId(tagId, Follow.FOLLOWING_TYPE_C_TAG, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
+                for (final JSONObject userFollowTag : userFollowTags) {
                     if (Follow.FOLLOWING_TYPE_C_TAG == userFollowTag.optInt(Follow.FOLLOWING_TYPE)) {
                         final String followerId = userFollowTag.optString(Follow.FOLLOWER_ID);
                         followMgmtService.unfollowTag(followerId, tagId);
                     }
                 }
 
-                final JSONArray userTagRels = userTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE).optJSONArray(Keys.RESULTS);
-                if (1 == userTagRels.length() && Tag.TAG_TYPE_C_CREATOR == userTagRels.optJSONObject(0).optInt(Common.TYPE)) {
+                final List<JSONObject> userTagRels = (List<JSONObject>) userTagRepository.getByTagId(tagId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
+                if (1 == userTagRels.size() && Tag.TAG_TYPE_C_CREATOR == userTagRels.get(0).optInt(Common.TYPE)) {
                     final String tagTitle = tag.optString(Tag.TAG_TITLE);
 
                     if (StringUtils.isBlank(tag.optString(Tag.TAG_ICON_PATH)) && StringUtils.isBlank(tag.optString(Tag.TAG_DESCRIPTION))) {
