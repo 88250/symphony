@@ -46,7 +46,7 @@ import java.util.Set;
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.1.0, Jan 22, 2019
+ * @version 2.1.2.0, May 31, 2020
  */
 public final class Sessions {
 
@@ -330,8 +330,10 @@ public final class Sessions {
             final String ret = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.COOKIE_SECRET);
             final Cookie cookie = new Cookie(COOKIE_NAME, ret);
             cookie.setPath("/");
-            cookie.setMaxAge(rememberLogin ? COOKIE_EXPIRY : -1);
-            cookie.setHttpOnly(true); // HTTP Only
+            if (rememberLogin) {
+                cookie.setMaxAge(COOKIE_EXPIRY);
+            }
+            cookie.setHttpOnly(true);
             cookie.setSecure(StringUtils.equalsIgnoreCase(Latkes.getServerScheme(), "https"));
 
             response.addCookie(cookie);

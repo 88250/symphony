@@ -47,7 +47,7 @@ import java.util.Set;
  * Anonymous view check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 11, 2020
+ * @version 2.0.0.1, May 31, 2020
  * @since 1.6.0
  */
 @Singleton
@@ -100,8 +100,8 @@ public class AnonymousViewCheckMidware {
     private static void addCookie(final Response response, final String name, final String value) {
         final Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
-        cookie.setMaxAge(60 * 60 * 24); // 24 hours
-        cookie.setHttpOnly(true); // HTTP Only
+        cookie.setMaxAge(60 * 60 * 24);
+        cookie.setHttpOnly(true);
         cookie.setSecure(StringUtils.equalsIgnoreCase(Latkes.getServerScheme(), "https"));
 
         response.addCookie(cookie);

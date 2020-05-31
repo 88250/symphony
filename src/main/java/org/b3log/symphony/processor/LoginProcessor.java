@@ -63,7 +63,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.0.0.0, Feb 11, 2020
+ * @version 2.0.0.1, May 31, 2020
  * @since 0.2.0
  */
 @Singleton
@@ -629,17 +629,8 @@ public class LoginProcessor {
     public void login(final RequestContext context) {
         final Request request = context.getRequest();
         final Response response = context.getResponse();
-
         context.renderJSON().renderMsg(langPropsService.get("loginFailLabel"));
-
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = context.requestJSON();
-        } catch (final Exception e) {
-            context.renderMsg(langPropsService.get("paramsParseFailedLabel"));
-            return;
-        }
-
+        final JSONObject requestJSONObject = context.requestJSON();
         final String nameOrEmail = requestJSONObject.optString("nameOrEmail");
 
         try {
