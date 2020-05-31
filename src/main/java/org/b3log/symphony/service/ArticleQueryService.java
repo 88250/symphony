@@ -34,14 +34,16 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.*;
+import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Stopwatchs;
+import org.b3log.latke.util.Times;
 import org.b3log.symphony.cache.ArticleCache;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.middleware.validate.UserRegisterValidationMidware;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.*;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -253,8 +255,7 @@ public class ArticleQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
+        final List<JSONObject> articles = (List<JSONObject>) result.opt(Keys.RESULTS);
         organizeArticles(articles);
         for (final JSONObject article : articles) {
             final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
@@ -310,8 +311,7 @@ public class ArticleQueryService {
             Stopwatchs.end();
         }
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> ret = CollectionUtils.jsonArrayToList(data);
+        final List<JSONObject> ret = (List<JSONObject>) result.opt(Keys.RESULTS);
         organizeArticles(ret);
 
         return ret;
@@ -371,32 +371,22 @@ public class ArticleQueryService {
      */
     public JSONObject getNextPermalink(final String articleId) {
         Stopwatchs.start("Get next");
-
         try {
             final Query query = new Query().setFilter(
                     new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN, articleId)).
                     addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).
                     select(Article.ARTICLE_PERMALINK, Article.ARTICLE_TITLE).
                     setPage(1, 1).setPageCount(1);
-
-            final JSONArray result = articleRepository.get(query).optJSONArray(Keys.RESULTS);
-            if (0 == result.length()) {
-                return null;
-            }
-
-            final JSONObject ret = result.optJSONObject(0);
+            final JSONObject ret = articleRepository.getFirst(query);
             if (null == ret) {
                 return null;
             }
-
             final String title = Escapes.escapeHTML(ret.optString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
             ret.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, EmojiParser.parseToUnicode(title));
-
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets next article permalink failed", e);
-
             return null;
         } finally {
             Stopwatchs.end();
@@ -425,25 +415,16 @@ public class ArticleQueryService {
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                     select(Article.ARTICLE_PERMALINK, Article.ARTICLE_TITLE).
                     setPage(1, 1).setPageCount(1);
-
-            final JSONArray result = articleRepository.get(query).optJSONArray(Keys.RESULTS);
-            if (0 == result.length()) {
-                return null;
-            }
-
-            final JSONObject ret = result.optJSONObject(0);
+            final JSONObject ret = articleRepository.getFirst(query);
             if (null == ret) {
                 return null;
             }
-
             final String title = Escapes.escapeHTML(ret.optString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
             ret.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, EmojiParser.parseToUnicode(title));
-
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets previous article permalink failed", e);
-
             return null;
         } finally {
             Stopwatchs.end();
@@ -531,15 +512,12 @@ public class ArticleQueryService {
         try {
             final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setPageCount(1).
                     setPage(currentPageNum, pageSize);
-
             if (null != types && types.length > 0) {
                 final List<Filter> typeFilters = new ArrayList<>();
                 for (int i = 0; i < types.length; i++) {
                     final int type = types[i];
-
                     typeFilters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.EQUAL, type));
                 }
-
                 final CompositeFilter typeFilter = new CompositeFilter(CompositeFilterOperator.OR, typeFilters);
                 final List<Filter> filters = new ArrayList<>();
                 filters.add(typeFilter);
@@ -550,12 +528,9 @@ public class ArticleQueryService {
                 query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID));
             }
 
-            final JSONObject result = articleRepository.get(query);
-
-            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            return articleRepository.getList(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles failed", e);
-
             throw new ServiceException(e);
         }
     }
@@ -578,16 +553,14 @@ public class ArticleQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) Collections.emptyList());
 
         try {
-            final JSONArray domainTags = domainTagRepository.getByDomainId(domainId, 1, Integer.MAX_VALUE)
-                    .optJSONArray(Keys.RESULTS);
-
-            if (domainTags.length() <= 0) {
+            final List<JSONObject> domainTags = (List<JSONObject>) domainTagRepository.getByDomainId(domainId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
+            if (domainTags.isEmpty()) {
                 return ret;
             }
 
             final List<String> tagIds = new ArrayList<>();
-            for (int i = 0; i < domainTags.length(); i++) {
-                tagIds.add(domainTags.optJSONObject(i).optString(Tag.TAG + "_" + Keys.OBJECT_ID));
+            for (final JSONObject domainTag : domainTags) {
+                tagIds.add(domainTag.optString(Tag.TAG + "_" + Keys.OBJECT_ID));
             }
 
             final StringBuilder queryCount = new StringBuilder("select count(0) ").append(" from ");
@@ -622,23 +595,19 @@ public class ArticleQueryService {
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
 
             final Set<String> articleIds = new HashSet<>();
-            for (int i = 0; i < tagArticles.size(); i++) {
-                articleIds.add(tagArticles.get(i).optString(Keys.OBJECT_ID));
+            for (final JSONObject tagArticle : tagArticles) {
+                articleIds.add(tagArticle.optString(Keys.OBJECT_ID));
             }
-            Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
+            final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articleRepository.get(query).optJSONArray(Keys.RESULTS));
+            final List<JSONObject> articles = (List<JSONObject>) articleRepository.get(query).opt(Keys.RESULTS);
             organizeArticles(articles);
-
             final Integer participantsCnt = Symphonys.ARTICLE_LIST_PARTICIPANTS_CNT;
             genParticipants(articles, participantsCnt);
-
             ret.put(Article.ARTICLES, (Object) articles);
-
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets domain articles error", e);
-
             return null;
         }
     }
@@ -680,10 +649,10 @@ public class ArticleQueryService {
             for (final JSONObject tag : tags) {
                 final String tagId = tag.optString(Keys.OBJECT_ID);
                 JSONObject result = tagArticleRepository.getByTagId(tagId, 1, fetchSize);
-                final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
+                final List<JSONObject> tagArticleRelations = (List<JSONObject>) result.opt(Keys.RESULTS);
                 final Set<String> articleIds = new HashSet<>();
-                for (int j = 0; j < tagArticleRelations.length(); j++) {
-                    final String articleId = tagArticleRelations.optJSONObject(j).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID);
+                for (final JSONObject tagArticleRelation : tagArticleRelations) {
+                    final String articleId = tagArticleRelation.optString(Article.ARTICLE + '_' + Keys.OBJECT_ID);
                     if (fetchedArticleIds.contains(articleId)) {
                         continue;
                     }
@@ -693,7 +662,6 @@ public class ArticleQueryService {
                 }
 
                 articleIds.remove(article.optString(Keys.OBJECT_ID));
-
                 final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                         select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_AUTHOR_ID);
                 ret.addAll(articleRepository.getList(query));
@@ -710,11 +678,9 @@ public class ArticleQueryService {
             }
 
             organizeArticles(ret);
-
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets relevant articles failed", e);
-
             return Collections.emptyList();
         }
     }
@@ -787,18 +753,13 @@ public class ArticleQueryService {
                     setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_CITY, FilterOperator.EQUAL, city),
                             new PropertyFilter(Article.ARTICLE_SHOW_IN_LIST, FilterOperator.NOT_EQUAL, Article.ARTICLE_SHOW_IN_LIST_C_NOT))).
                     setPageCount(1).setPage(currentPageNum, pageSize);
-
-            final JSONObject result = articleRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = articleRepository.getList(query);
             organizeArticles(ret);
-
             final Integer participantsCnt = Symphonys.ARTICLE_LIST_PARTICIPANTS_CNT;
             genParticipants(ret, participantsCnt);
-
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles by city [" + city + "] failed", e);
-
             return Collections.emptyList();
         }
     }
@@ -860,54 +821,47 @@ public class ArticleQueryService {
             Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
             addListProjections(query);
 
-            JSONObject result = articleRepository.get(query);
-
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-
+            final List<JSONObject> ret = articleRepository.getList(query);
             switch (sortMode) {
                 default:
                     LOGGER.warn("Unknown sort mode [" + sortMode + "]");
                 case 0:
-                    Collections.sort(ret, (o1, o2) -> o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID)));
+                    ret.sort((o1, o2) -> o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID)));
                     break;
                 case 1:
-                    Collections.sort(ret, (o1, o2) -> {
+                    ret.sort((o1, o2) -> {
                         final int v = o2.optInt(Article.ARTICLE_COMMENT_CNT) - o1.optInt(Article.ARTICLE_COMMENT_CNT);
                         if (0 == v) {
                             return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
                         }
-
                         return v > 0 ? 1 : -1;
                     });
                     break;
                 case 2:
-                    Collections.sort(ret, (o1, o2) -> {
+                    ret.sort((o1, o2) -> {
                         final double v = o2.optDouble(Article.REDDIT_SCORE) - o1.optDouble(Article.REDDIT_SCORE);
                         if (0 == v) {
                             return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
                         }
-
                         return v > 0 ? 1 : -1;
                     });
                     break;
                 case 3:
-                    Collections.sort(ret, (o1, o2) -> {
+                    ret.sort((o1, o2) -> {
                         final long v = (o2.optLong(Article.ARTICLE_LATEST_CMT_TIME)
                                 - o1.optLong(Article.ARTICLE_LATEST_CMT_TIME));
                         if (0 == v) {
                             return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
                         }
-
                         return v > 0 ? 1 : -1;
                     });
                     break;
                 case 4:
-                    Collections.sort(ret, (o1, o2) -> {
+                    ret.sort((o1, o2) -> {
                         final long v = (o2.optLong(Article.ARTICLE_PERFECT) - o1.optLong(Article.ARTICLE_PERFECT));
                         if (0 == v) {
                             return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
                         }
-
                         return v > 0 ? 1 : -1;
                     });
                     break;
@@ -1072,25 +1026,20 @@ public class ArticleQueryService {
                         new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID)));
         try {
             final JSONObject result = articleRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = (List<JSONObject>) result.opt(Keys.RESULTS);
             if (ret.isEmpty()) {
                 return ret;
             }
-
             final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
             final int recordCount = pagination.optInt(Pagination.PAGINATION_RECORD_COUNT);
             final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
-
             final JSONObject first = ret.get(0);
             first.put(Pagination.PAGINATION_RECORD_COUNT, recordCount);
             first.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-
             organizeArticles(ret);
-
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets user articles failed", e);
-
             return Collections.emptyList();
         }
     }
@@ -1252,24 +1201,19 @@ public class ArticleQueryService {
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
-
         final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
-
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, fetchSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
+        final List<JSONObject> articles = (List<JSONObject>) result.opt(Keys.RESULTS);
         organizeArticles(articles);
 
         //final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
         //genParticipants(articles, participantsCnt);
         ret.put(Article.ARTICLES, (Object) articles);
-
         return ret;
     }
 
@@ -1336,8 +1280,7 @@ public class ArticleQueryService {
             List<JSONObject> ret;
             Stopwatchs.start("Query hot articles");
             try {
-                final JSONObject result = articleRepository.get(query);
-                ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+                ret = articleRepository.getList(query);
             } finally {
                 Stopwatchs.end();
             }
@@ -1412,24 +1355,19 @@ public class ArticleQueryService {
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
-
         final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
-
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, fetchSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> articles = CollectionUtils.jsonArrayToList(data);
+        final List<JSONObject> articles = (List<JSONObject>) result.opt(Keys.RESULTS);
         organizeArticles(articles);
 
         //final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
         //genParticipants(articles, participantsCnt);
         ret.put(Article.ARTICLES, (Object) articles);
-
         return ret;
     }
 
@@ -1717,10 +1655,8 @@ public class ArticleQueryService {
             final JSONObject result = commentRepository.get(query);
 
             final List<JSONObject> comments = new ArrayList<>();
-            final JSONArray records = result.optJSONArray(Keys.RESULTS);
-            for (int i = 0; i < records.length(); i++) {
-                final JSONObject comment = records.optJSONObject(i);
-
+            final List<JSONObject> records = (List<JSONObject>) result.opt(Keys.RESULTS);
+            for (final JSONObject comment : records) {
                 boolean exist = false;
                 // deduplicate
                 for (final JSONObject c : comments) {
