@@ -27,7 +27,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Permission;
@@ -36,7 +35,6 @@ import org.b3log.symphony.repository.PermissionRepository;
 import org.b3log.symphony.repository.RolePermissionRepository;
 import org.b3log.symphony.repository.RoleRepository;
 import org.b3log.symphony.repository.UserRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -256,10 +254,8 @@ public class RoleQueryService {
         final List<JSONObject> ret = new ArrayList<>();
 
         try {
-            final List<JSONObject> permissions = CollectionUtils.jsonArrayToList(
-                    permissionRepository.get(new Query()).optJSONArray(Keys.RESULTS));
+            final List<JSONObject> permissions = permissionRepository.getList(new Query());
             final List<JSONObject> rolePermissions = rolePermissionRepository.getByRoleId(roleId);
-
             for (final JSONObject permission : permissions) {
                 final String permissionId = permission.optString(Keys.OBJECT_ID);
                 permission.put(Permission.PERMISSION_T_GRANT, false);
@@ -267,7 +263,6 @@ public class RoleQueryService {
 
                 for (final JSONObject rolePermission : rolePermissions) {
                     final String grantPermissionId = rolePermission.optString(Permission.PERMISSION_ID);
-
                     if (permissionId.equals(grantPermissionId)) {
                         permission.put(Permission.PERMISSION_T_GRANT, true);
                         break;
@@ -357,9 +352,7 @@ public class RoleQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> roles = CollectionUtils.jsonArrayToList(data);
-
+        final List<JSONObject> roles = (List<JSONObject>) result.opt(Keys.RESULTS);
         try {
             for (final JSONObject role : roles) {
                 final List<JSONObject> permissions = new ArrayList<>();
@@ -370,12 +363,10 @@ public class RoleQueryService {
                 for (final JSONObject rolePermission : rolePermissions) {
                     final String permissionId = rolePermission.optString(Permission.PERMISSION_ID);
                     final JSONObject permission = permissionRepository.get(permissionId);
-
                     permissions.add(permission);
                 }
 
-                final Query userCountQuery = new Query().
-                        setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, roleId));
+                final Query userCountQuery = new Query().setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, roleId));
                 final int count = (int) userRepository.count(userCountQuery);
                 role.put(Role.ROLE_T_USER_COUNT, count);
 
@@ -403,15 +394,11 @@ public class RoleQueryService {
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets role permissions failed", e);
-
             return null;
         }
 
-        Collections.sort(roles, (o1, o2) -> ((List) o2.opt(Permission.PERMISSIONS)).size()
-                - ((List) o1.opt(Permission.PERMISSIONS)).size());
-
+        roles.sort((o1, o2) -> ((List) o2.opt(Permission.PERMISSIONS)).size() - ((List) o1.opt(Permission.PERMISSIONS)).size());
         ret.put(Role.ROLES, (Object) roles);
-
         return ret;
     }
 }

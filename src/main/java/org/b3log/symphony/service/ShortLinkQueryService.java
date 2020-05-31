@@ -35,6 +35,7 @@ import org.b3log.symphony.repository.ArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,14 +110,13 @@ public class ShortLinkQueryService {
                         anchor = StringUtils.substringAfter(url, "#");
                     }
 
-                    final Query query = new Query().select(Article.ARTICLE_TITLE).
-                            setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, linkId));
-                    final JSONArray results = articleRepository.get(query).optJSONArray(Keys.RESULTS);
-                    if (0 == results.length()) {
+                    final Query query = new Query().select(Article.ARTICLE_TITLE).setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, linkId));
+                    final List<JSONObject> results = articleRepository.getList(query);
+                    if (results.isEmpty()) {
                         continue;
                     }
 
-                    final JSONObject linkArticle = results.optJSONObject(0);
+                    final JSONObject linkArticle = results.get(0);
                     final String linkTitle = linkArticle.optString(Article.ARTICLE_TITLE);
                     String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/article/" + linkId;
                     if (StringUtils.isNotBlank(queryStr)) {
