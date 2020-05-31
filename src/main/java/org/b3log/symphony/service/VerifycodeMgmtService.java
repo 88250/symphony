@@ -81,12 +81,7 @@ public class VerifycodeMgmtService {
     public void removeByCode(final String code) {
         final Query query = new Query().setFilter(new PropertyFilter(Verifycode.CODE, FilterOperator.EQUAL, code));
         try {
-            final JSONArray results = verifycodeRepository.get(query).optJSONArray(Keys.RESULTS);
-            if (1 > results.length()) {
-                return;
-            }
-
-            verifycodeRepository.remove(results.optJSONObject(0).optString(Keys.OBJECT_ID));
+            verifycodeRepository.remove(query);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes by code [" + code + "] failed", e);
         }
@@ -127,15 +122,8 @@ public class VerifycodeMgmtService {
     public void removeExpiredVerifycodes() {
         final Query query = new Query().setFilter(new PropertyFilter(Verifycode.EXPIRED,
                 FilterOperator.LESS_THAN, new Date().getTime()));
-
         try {
-            final JSONObject result = verifycodeRepository.get(query);
-            final JSONArray verifycodes = result.optJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < verifycodes.length(); i++) {
-                final String id = verifycodes.optJSONObject(i).optString(Keys.OBJECT_ID);
-                verifycodeRepository.remove(id);
-            }
+            verifycodeRepository.remove(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Expires verifycodes failed", e);
         }
@@ -150,14 +138,9 @@ public class VerifycodeMgmtService {
         filters.add(new PropertyFilter(Verifycode.TYPE, FilterOperator.EQUAL, Verifycode.TYPE_C_EMAIL));
         filters.add(new PropertyFilter(Verifycode.STATUS, FilterOperator.EQUAL, Verifycode.STATUS_C_UNSENT));
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
         try {
-            final JSONObject result = verifycodeRepository.get(query);
-            final JSONArray verifycodes = result.optJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < verifycodes.length(); i++) {
-                final JSONObject verifycode = verifycodes.optJSONObject(i);
-
+            final List<JSONObject> verifycodes = verifycodeRepository.getList(query);
+            for (final JSONObject verifycode : verifycodes) {
                 final String userId = verifycode.optString(Verifycode.USER_ID);
                 final JSONObject user = userRepository.get(userId);
                 if (null == user) {
