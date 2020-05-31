@@ -30,7 +30,10 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.*;
+import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Stopwatchs;
+import org.b3log.latke.util.Times;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
@@ -153,10 +156,9 @@ public class CommentQueryService {
                     .setFilter(CompositeFilterOperator.and(
                             new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
                             new PropertyFilter(Comment.COMMENT_QNA_OFFERED, FilterOperator.EQUAL, Comment.COMMENT_QNA_OFFERED_C_YES),
-                            new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
-                    ));
+                            new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)));
             try {
-                final List<JSONObject> comments = CollectionUtils.jsonArrayToList(commentRepository.get(query).optJSONArray(Keys.RESULTS));
+                final List<JSONObject> comments = commentRepository.getList(query);
                 if (comments.isEmpty()) {
                     return null;
                 }
@@ -167,11 +169,9 @@ public class CommentQueryService {
                 final int pageSize = Symphonys.ARTICLE_COMMENTS_CNT;
                 ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, getCommentPage(
                         articleId, ret.optString(Keys.OBJECT_ID), commentViewMode, pageSize));
-
                 return ret;
             } catch (final RepositoryException e) {
                 LOGGER.log(Level.ERROR, "Gets accepted comment failed", e);
-
                 return null;
             }
         } finally {
@@ -287,16 +287,11 @@ public class CommentQueryService {
                 setPage(1, Integer.MAX_VALUE).setPageCount(1).
                 setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(Comment.COMMENT_ORIGINAL_COMMENT_ID, FilterOperator.EQUAL, commentId),
-                        new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
-                ));
+                        new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)));
         try {
-            final List<JSONObject> comments = CollectionUtils.jsonArrayToList(
-                    commentRepository.get(query).optJSONArray(Keys.RESULTS));
-
+            final List<JSONObject> comments = commentRepository.getList(query);
             organizeComments(comments);
-
             final int pageSize = Symphonys.ARTICLE_COMMENTS_CNT;
-
             final List<JSONObject> ret = new ArrayList<>();
             for (final JSONObject comment : comments) {
                 final JSONObject reply = new JSONObject();
@@ -358,16 +353,11 @@ public class CommentQueryService {
                     setFilter(CompositeFilterOperator.and(
                             new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
                             new PropertyFilter(Comment.COMMENT_SCORE, FilterOperator.GREATER_THAN, 0D),
-                            new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
-                    ));
+                            new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)));
             try {
-                final List<JSONObject> ret = CollectionUtils.jsonArrayToList(
-                        commentRepository.get(query).optJSONArray(Keys.RESULTS));
-
+                final List<JSONObject> ret = commentRepository.getList(query);
                 organizeComments(ret);
-
                 final int pageSize = Symphonys.ARTICLE_COMMENTS_CNT;
-
                 for (final JSONObject comment : ret) {
                     comment.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, getCommentPage(
                             articleId, comment.optString(Keys.OBJECT_ID),
@@ -377,7 +367,6 @@ public class CommentQueryService {
                 return ret;
             } catch (final RepositoryException e) {
                 LOGGER.log(Level.ERROR, "Get nice comments failed", e);
-
                 return Collections.emptyList();
             }
         } finally {
@@ -499,7 +488,7 @@ public class CommentQueryService {
                         new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)));
         try {
             final JSONObject result = commentRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = (List<JSONObject>) result.opt(Keys.RESULTS);
             if (ret.isEmpty()) {
                 return ret;
             }
@@ -631,8 +620,7 @@ public class CommentQueryService {
             } finally {
                 Stopwatchs.end();
             }
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-
+            final List<JSONObject> ret = (List<JSONObject>) result.opt(Keys.RESULTS);
             organizeComments(ret);
 
             Stopwatchs.start("Revision, paging, original");
