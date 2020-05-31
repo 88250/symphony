@@ -623,7 +623,7 @@ public class TagQueryService {
         for (final JSONObject tag : tags) {
             tag.put(Tag.TAG_T_CREATE_TIME, new Date(tag.optLong(Keys.OBJECT_ID)));
         }
-        ret.put(Tag.TAGS, tags);
+        ret.put(Tag.TAGS, (Object) tags);
         return ret;
     }
 
