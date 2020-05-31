@@ -27,7 +27,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Option;
@@ -38,7 +37,6 @@ import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Mails;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -139,11 +137,10 @@ public class MailMgmtService {
                             new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.LESS_THAN_OR_EQUAL, sevenDaysAgo),
                             new PropertyFilter(UserExt.USER_SUB_MAIL_STATUS, FilterOperator.EQUAL, UserExt.USER_SUB_MAIL_STATUS_ENABLED),
                             new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID),
-                            new PropertyFilter(User.USER_EMAIL, FilterOperator.NOT_LIKE, "%" + UserExt.USER_BUILTIN_EMAIL_SUFFIX)
-                    )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
-            final JSONArray receivers = userRepository.get(toUserQuery).optJSONArray(Keys.RESULTS);
-
-            if (receivers.length() < 1) {
+                            new PropertyFilter(User.USER_EMAIL, FilterOperator.NOT_LIKE, "%" + UserExt.USER_BUILTIN_EMAIL_SUFFIX))).
+                    addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
+            final List<JSONObject> receivers = userRepository.getList(toUserQuery);
+            if (receivers.isEmpty()) {
                 LOGGER.info("No user need send newsletter");
                 return;
             }
@@ -151,8 +148,7 @@ public class MailMgmtService {
             final Set<String> toMails = new HashSet<>();
 
             final Transaction transaction = userRepository.beginTransaction();
-            for (int i = 0; i < receivers.length(); i++) {
-                final JSONObject user = receivers.optJSONObject(i);
+            for (final JSONObject user : receivers) {
                 final String email = user.optString(User.USER_EMAIL);
                 if (Strings.isEmail(email)) {
                     toMails.add(email);
@@ -178,12 +174,11 @@ public class MailMgmtService {
                             new PropertyFilter(Article.ARTICLE_CREATE_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, sevenDaysAgo),
                             new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.EQUAL, Article.ARTICLE_TYPE_C_NORMAL),
                             new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.NOT_EQUAL, Article.ARTICLE_STATUS_C_INVALID),
-                            new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, Tag.TAG_TITLE_C_SANDBOX + "%")
-                    )).addSort(Article.ARTICLE_PUSH_ORDER, SortDirection.DESCENDING).
+                            new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, Tag.TAG_TITLE_C_SANDBOX + "%"))).
+                    addSort(Article.ARTICLE_PUSH_ORDER, SortDirection.DESCENDING).
                     addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
                     addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING);
-            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(
-                    articleRepository.get(articleQuery).optJSONArray(Keys.RESULTS));
+            final List<JSONObject> articles = articleRepository.getList(articleQuery);
             if (articles.isEmpty()) {
                 LOGGER.info("No article as newsletter to send");
                 return;

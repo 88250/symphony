@@ -51,6 +51,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -124,57 +125,42 @@ public class PostExportService {
                         Article.ARTICLE_CREATE_TIME);
 
         try {
-            final JSONArray articles = articleRepository.get(query).optJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < articles.length(); i++) {
-                final JSONObject article = articles.getJSONObject(i);
+            final List<JSONObject> articles = articleRepository.getList(query);
+            for (final JSONObject article : articles) {
                 final JSONObject post = new JSONObject();
-
                 post.put("id", article.optString(Keys.OBJECT_ID));
-
                 final JSONObject content = new JSONObject();
                 content.put("title", article.optString(Article.ARTICLE_TITLE));
                 content.put("tags", article.optString(Article.ARTICLE_TAGS));
                 content.put("body", article.optString(Article.ARTICLE_CONTENT));
-
                 post.put("content", content.toString());
                 post.put("created", Article.ARTICLE_CREATE_TIME);
                 post.put("type", "article");
-
                 posts.put(post);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export articles failed", e);
-
             return null;
         }
 
         query = new Query().setFilter(new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId)).
                 select(Keys.OBJECT_ID, Comment.COMMENT_CONTENT, Comment.COMMENT_CREATE_TIME);
-
         try {
-            final JSONArray comments = commentRepository.get(query).optJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < comments.length(); i++) {
-                final JSONObject comment = comments.getJSONObject(i);
+            final List<JSONObject> comments = commentRepository.getList(query);
+            for (final JSONObject comment : comments) {
                 final JSONObject post = new JSONObject();
-
                 post.put("id", comment.optString(Keys.OBJECT_ID));
-
                 final JSONObject content = new JSONObject();
                 content.put("title", "");
                 content.put("tags", "");
                 content.put("body", comment.optString(Comment.COMMENT_CONTENT));
-
                 post.put("content", content.toString());
                 post.put("created", Comment.COMMENT_CREATE_TIME);
                 post.put("type", "comment");
-
                 posts.put(post);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export comments failed", e);
-
             return null;
         }
 
