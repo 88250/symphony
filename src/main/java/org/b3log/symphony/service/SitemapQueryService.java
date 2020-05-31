@@ -113,7 +113,7 @@ public class SitemapQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
         try {
-            final JSONArray articles = articleRepository.get(query).getJSONArray(Keys.RESULTS);
+            final JSONArray articles = articleRepository.get(query).optJSONArray(Keys.RESULTS);
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);

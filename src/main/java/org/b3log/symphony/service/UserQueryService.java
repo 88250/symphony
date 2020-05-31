@@ -188,37 +188,28 @@ public class UserQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getLatestLoggedInUsers(final long time, final int currentPageNum, final int pageSize,
-                                             final int windowSize) throws ServiceException {
+    public JSONObject getLatestLoggedInUsers(final long time, final int currentPageNum, final int pageSize, final int windowSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
-
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setPage(currentPageNum, pageSize).
                 setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID),
-                        new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, time)
-                ));
-
+                        new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, time)));
         JSONObject result;
         try {
             result = userRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets latest logged in user failed", e);
-
             throw new ServiceException(e);
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-        final JSONArray users = result.optJSONArray(Keys.RESULTS);
-        ret.put(User.USERS, users);
-
+        ret.put(User.USERS, result.opt(Keys.RESULTS));
         return ret;
     }
 
@@ -663,25 +654,21 @@ public class UserQueryService {
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONArray users = result.optJSONArray(Keys.RESULTS);
+        final List<JSONObject> users = (List<JSONObject>) result.opt(Keys.RESULTS);
         try {
-            for (int i = 0; i < users.length(); i++) {
-                JSONObject user = users.getJSONObject(i);
-                users.getJSONObject(i).put(Common.IS_FOLLOWING,
-                        followRepository.exists(requestJSONObject.optString(Keys.OBJECT_ID), user.optString(Keys.OBJECT_ID),
-                                Follow.FOLLOWING_TYPE_C_USER));
+            for (final JSONObject user : users) {
+                user.put(Common.IS_FOLLOWING, followRepository.exists(requestJSONObject.optString(Keys.OBJECT_ID), user.optString(Keys.OBJECT_ID), Follow.FOLLOWING_TYPE_C_USER));
             }
         } catch (final RepositoryException | JSONException e) {
             LOGGER.log(Level.ERROR, "Fills following failed", e);
         }
-        ret.put(User.USERS, users);
+        ret.put(User.USERS, (Object) users);
         return ret;
     }
 
