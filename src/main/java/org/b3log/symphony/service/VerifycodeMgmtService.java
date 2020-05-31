@@ -34,7 +34,6 @@ import org.b3log.symphony.model.Verifycode;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.VerifycodeRepository;
 import org.b3log.symphony.util.Mails;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.*;

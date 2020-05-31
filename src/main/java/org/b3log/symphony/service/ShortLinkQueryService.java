@@ -32,7 +32,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.repository.ArticleRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
