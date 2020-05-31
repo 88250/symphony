@@ -144,29 +144,22 @@ public class InvitecodeQueryService {
         final Query query = new Query().setPage(currentPageNum, pageSize).
                 addSort(Invitecode.STATUS, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
         JSONObject result;
         try {
             result = invitecodeRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets invitecodes failed", e);
-
             return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> invitecodes = CollectionUtils.jsonArrayToList(data);
-
-        ret.put(Invitecode.INVITECODES, invitecodes);
-
+        ret.put(Invitecode.INVITECODES, result.opt(Keys.RESULTS));
         return ret;
     }
 

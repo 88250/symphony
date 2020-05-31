@@ -405,7 +405,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final JSONObject result = operationQueryService.getAuditlogs(requestJSONObject);
-        dataModel.put(Operation.OPERATIONS, CollectionUtils.jsonArrayToList(result.optJSONArray(Operation.OPERATIONS)));
+        dataModel.put(Operation.OPERATIONS, result.opt(Operation.OPERATIONS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -468,7 +468,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final JSONObject result = reportQueryService.getReports(requestJSONObject);
-        dataModel.put(Report.REPORTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Report.REPORTS)));
+        dataModel.put(Report.REPORTS, result.opt(Report.REPORTS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -534,7 +534,7 @@ public class AdminProcessor {
         fields.add(Breezemoon.BREEZEMOON_AUTHOR_ID);
         fields.add(Breezemoon.BREEZEMOON_STATUS);
         final JSONObject result = breezemoonQueryService.getBreezemoons(requestJSONObject, fields);
-        dataModel.put(Breezemoon.BREEZEMOONS, CollectionUtils.jsonArrayToList(result.optJSONArray(Breezemoon.BREEZEMOONS)));
+        dataModel.put(Breezemoon.BREEZEMOONS, result.opt(Breezemoon.BREEZEMOONS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -950,7 +950,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final JSONObject result = invitecodeQueryService.getInvitecodes(requestJSONObject);
-        final List<JSONObject> invitecodes = CollectionUtils.jsonArrayToList(result.optJSONArray(Invitecode.INVITECODES));
+        final List<JSONObject> invitecodes = (List<JSONObject>) result.opt(Invitecode.INVITECODES);
         invitecodes.forEach(Escapes::escapeHTML);
         dataModel.put(Invitecode.INVITECODES, invitecodes);
 
@@ -1287,7 +1287,7 @@ public class AdminProcessor {
         }
 
         final JSONObject result = userQueryService.getUsers(requestJSONObject);
-        dataModel.put(User.USERS, CollectionUtils.jsonArrayToList(result.optJSONArray(User.USERS)));
+        dataModel.put(User.USERS, result.opt(User.USERS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -1751,7 +1751,7 @@ public class AdminProcessor {
         articleFields.add(Article.ARTICLE_STATUS);
         articleFields.add(Article.ARTICLE_STICK);
         final JSONObject result = articleQueryService.getArticles(requestJSONObject, articleFields);
-        dataModel.put(Article.ARTICLES, CollectionUtils.jsonArrayToList(result.optJSONArray(Article.ARTICLES)));
+        dataModel.put(Article.ARTICLES, result.opt(Article.ARTICLES));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -1862,7 +1862,7 @@ public class AdminProcessor {
         commentFields.add(Comment.COMMENT_STATUS);
         commentFields.add(Comment.COMMENT_CONTENT);
         final JSONObject result = commentQueryService.getComments(requestJSONObject, commentFields);
-        dataModel.put(Comment.COMMENTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Comment.COMMENTS)));
+        dataModel.put(Comment.COMMENTS, result.opt(Comment.COMMENTS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -2022,7 +2022,7 @@ public class AdminProcessor {
         tagFields.add(Tag.TAG_URI);
         tagFields.add(Tag.TAG_CSS);
         final JSONObject result = tagQueryService.getTags(requestJSONObject, tagFields);
-        dataModel.put(Tag.TAGS, CollectionUtils.jsonArrayToList(result.optJSONArray(Tag.TAGS)));
+        dataModel.put(Tag.TAGS, result.opt(Tag.TAGS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -2147,7 +2147,7 @@ public class AdminProcessor {
         domainFields.add(Domain.DOMAIN_STATUS);
         domainFields.add(Domain.DOMAIN_URI);
         final JSONObject result = domainQueryService.getDomains(requestJSONObject, domainFields);
-        final List<JSONObject> domains = CollectionUtils.jsonArrayToList(result.optJSONArray(Domain.DOMAINS));
+        final List<JSONObject> domains = (List<JSONObject>) result.opt(Domain.DOMAINS);
         for (final JSONObject domain : domains) {
             final String iconPath = domain.optString(Domain.DOMAIN_ICON_PATH);
             Escapes.escapeHTML(domain);

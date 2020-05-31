@@ -34,7 +34,6 @@ import org.b3log.symphony.repository.DomainRepository;
 import org.b3log.symphony.repository.DomainTagRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.util.Markdowns;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
@@ -309,23 +308,17 @@ public class DomainQueryService {
             result = domainRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets domains failed", e);
-
             return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> domains = CollectionUtils.jsonArrayToList(data);
-
-        ret.put(Domain.DOMAINS, domains);
-
+        ret.put(Domain.DOMAINS, result.opt(Keys.RESULTS));
         return ret;
     }
 

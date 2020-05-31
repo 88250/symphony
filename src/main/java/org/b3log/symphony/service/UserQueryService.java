@@ -572,7 +572,6 @@ public class UserQueryService {
             result = userRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets users failed", e);
-
             return null;
         }
 
@@ -583,15 +582,11 @@ public class UserQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONArray users = result.optJSONArray(Keys.RESULTS);
-        ret.put(User.USERS, users);
-
-        for (int i = 0; i < users.length(); i++) {
-            final JSONObject user = users.optJSONObject(i);
+        final List<JSONObject> users = (List<JSONObject>) result.opt(Keys.RESULTS);
+        ret.put(User.USERS, (Object) users);
+        for (final JSONObject user : users) {
             user.put(UserExt.USER_T_CREATE_TIME, new Date(user.optLong(Keys.OBJECT_ID)));
-
             avatarQueryService.fillUserAvatarURL(user);
-
             final JSONObject role = roleQueryService.getRole(user.optString(User.USER_ROLE));
             user.put(Role.ROLE_NAME, role.optString(Role.ROLE_NAME));
         }
@@ -642,14 +637,12 @@ public class UserQueryService {
                         new PropertyFilter(UserExt.USER_CITY, FilterOperator.EQUAL, city),
                         new PropertyFilter(UserExt.USER_GEO_STATUS, FilterOperator.EQUAL, UserExt.USER_GEO_STATUS_C_PUBLIC),
                         new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID),
-                        new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, latestTime)
-                ));
+                        new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, latestTime)));
         JSONObject result;
         try {
             result = userRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets users by city error", e);
-
             return null;
         }
 

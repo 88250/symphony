@@ -29,7 +29,6 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Report;
@@ -42,7 +41,6 @@ import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -140,13 +138,11 @@ public class ReportQueryService {
         final Query query = new Query().setPage(currentPageNum, pageSize).
                 addSort(Report.REPORT_HANDLED, SortDirection.ASCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
         JSONObject result;
         try {
             result = reportRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Get reports failed", e);
-
             return null;
         }
 
@@ -157,8 +153,7 @@ public class ReportQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> records = CollectionUtils.jsonArrayToList(data);
+        final List<JSONObject> records = (List<JSONObject>) result.opt(Keys.RESULTS);
         final List<JSONObject> reports = new ArrayList<>();
         for (final JSONObject record : records) {
             final JSONObject report = new JSONObject();
@@ -247,11 +242,9 @@ public class ReportQueryService {
             memo = Markdowns.clean(memo, "");
             report.put(Report.REPORT_MEMO, memo);
             report.put(Report.REPORT_HANDLED, record.optInt(Report.REPORT_HANDLED));
-
             reports.add(report);
         }
-        ret.put(Report.REPORTS, reports);
-
+        ret.put(Report.REPORTS, (Object) reports);
         return ret;
     }
 }

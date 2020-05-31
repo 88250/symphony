@@ -36,7 +36,6 @@ import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.*;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -724,28 +723,22 @@ public class CommentQueryService {
             result = commentRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets comments failed", e);
-
             return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> comments = CollectionUtils.jsonArrayToList(data);
-
+        final List<JSONObject> comments = (List<JSONObject>) result.opt(Keys.RESULTS);
         try {
             for (final JSONObject comment : comments) {
                 organizeComment(comment);
-
                 final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
                 final JSONObject article = articleRepository.get(articleId);
-
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE,
                         Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
                                 ? langPropsService.get("articleTitleBlockLabel")
@@ -754,12 +747,10 @@ public class CommentQueryService {
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Organizes comments failed", e);
-
             return null;
         }
 
-        ret.put(Comment.COMMENTS, comments);
-
+        ret.put(Comment.COMMENTS, (Object) comments);
         return ret;
     }
 
