@@ -28,7 +28,7 @@
         </div>
         <div class="fn-hr5"></div>
         <div>
-            © ${year} <a href="https://b3log.org" target="_blank">B3log 开源</a>旗下云南链滴科技有限公司版权所有
+            © ${year} <a href="https://b3log.org" target="_blank">B3log 开源</a>
             <div class="fn-hr5"></div>
             <a href="https://sym.b3log.org" target="_blank">Sym</a>
             ${version}
