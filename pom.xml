@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.17.0.31, May 21, 2020
+    Version: 2.17.0.32, Jun 12, 2020
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -12,11 +12,11 @@
     <groupId>org.b3log</groupId>
     <artifactId>symphony</artifactId>
     <packaging>jar</packaging>
-    <version>3.6.2</version>
+    <version>3.6.3</version>
     <name>Symphony</name>
     <url>https://sym.b3log.org</url>
     <description>
-        一款用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）平台。
+        一款用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）系统平台。
     </description>
     <inceptionYear>2012</inceptionYear>
 
