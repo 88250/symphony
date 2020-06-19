@@ -34,6 +34,7 @@ import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.CharacterRepository;
 import org.b3log.symphony.repository.PointtransferRepository;
+import org.b3log.symphony.util.StatusCodes;
 import org.b3log.symphony.util.Symphonys;
 import org.b3log.symphony.util.Tesseracts;
 import org.json.JSONObject;
@@ -53,7 +54,7 @@ import java.util.Random;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
- * @version 1.6.10.2, Jun 8, 2019
+ * @version 1.6.10.3, Jun 20, 2020
  * @since 1.3.0
  */
 @Service
@@ -131,21 +132,17 @@ public class ActivityMgmtService {
      * @return result
      */
     public synchronized JSONObject startEatingSnake(final String userId) {
-        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
-
+        final JSONObject ret = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
         final int startPoint = pointtransferRepository.getActivityEatingSnakeAvg(userId);
-
         final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_EATINGSNAKE,
                 startPoint, "", System.currentTimeMillis(), "");
-
-        ret.put(Keys.STATUS_CODE, succ);
-
+        if (succ) {
+            ret.put(Keys.CODE, StatusCodes.SUCC);
+        }
         final String msg = succ ? "started" : langPropsService.get("activityStartEatingSnakeFailLabel");
         ret.put(Keys.MSG, msg);
-
         livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_ACTIVITY);
-
         return ret;
     }
 
@@ -157,11 +154,10 @@ public class ActivityMgmtService {
      * @return result
      */
     public synchronized JSONObject collectEatingSnake(final String userId, final int score) {
-        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
+        final JSONObject ret = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
 
         if (score < 1) {
-            ret.put(Keys.STATUS_CODE, true);
-
+            ret.put(Keys.CODE, StatusCodes.SUCC);
             return ret;
         }
 
@@ -171,13 +167,11 @@ public class ActivityMgmtService {
         final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_EATINGSNAKE_COLLECT, amout,
                 "", System.currentTimeMillis(), "");
-
         if (!succ) {
             ret.put(Keys.MSG, "Sorry, transfer point failed, please contact admin");
+        } else {
+            ret.put(Keys.CODE, StatusCodes.SUCC);
         }
-
-        ret.put(Keys.STATUS_CODE, succ);
-
         return ret;
     }
 
@@ -193,13 +187,11 @@ public class ActivityMgmtService {
         String recongnizeFailedMsg = langPropsService.get("activityCharacterRecognizeFailedLabel");
 
         final JSONObject ret = new JSONObject();
-        ret.put(Keys.STATUS_CODE, false);
+        ret.put(Keys.CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, recongnizeFailedMsg);
 
         if (StringUtils.isBlank(characterImg) || StringUtils.isBlank(character)) {
-            ret.put(Keys.STATUS_CODE, false);
             ret.put(Keys.MSG, recongnizeFailedMsg);
-
             return ret;
         }
 
@@ -215,7 +207,6 @@ public class ActivityMgmtService {
             stream.close();
         } catch (final IOException e) {
             LOGGER.log(Level.ERROR, "Submits character failed", e);
-
             return ret;
         } finally {
             if (null != stream) {
@@ -228,22 +219,18 @@ public class ActivityMgmtService {
         }
 
         final String recognizedCharacter = Tesseracts.recognizeCharacter(imagePath);
-        LOGGER.info("Character [" + character + "], recognized [" + recognizedCharacter + "], image path [" + imagePath
-                + "]");
+        LOGGER.info("Character [" + character + "], recognized [" + recognizedCharacter + "], image path [" + imagePath + "]");
         if (StringUtils.equals(character, recognizedCharacter)) {
             final Query query = new Query();
             query.setFilter(CompositeFilterOperator.and(
                     new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_USER_ID, FilterOperator.EQUAL, userId),
-                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, character)
-            ));
-
+                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, character)));
             try {
                 if (characterRepository.count(query) > 0) {
                     return ret;
                 }
             } catch (final RepositoryException e) {
                 LOGGER.log(Level.ERROR, "Count characters failed [userId=" + userId + ", character=" + character + "]", e);
-
                 return ret;
             }
 
@@ -256,15 +243,12 @@ public class ActivityMgmtService {
             final Transaction transaction = characterRepository.beginTransaction();
             try {
                 characterId = characterRepository.add(record);
-
                 transaction.commit();
             } catch (final RepositoryException e) {
                 LOGGER.log(Level.ERROR, "Submits character failed", e);
-
                 if (null != transaction) {
                     transaction.rollback();
                 }
-
                 return ret;
             }
 
@@ -272,14 +256,12 @@ public class ActivityMgmtService {
                     Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHARACTER, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHARACTER,
                     characterId, System.currentTimeMillis(), "");
 
-            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.CODE, StatusCodes.SUCC);
             ret.put(Keys.MSG, langPropsService.get("activityCharacterRecognizeSuccLabel"));
         } else {
             recongnizeFailedMsg = recongnizeFailedMsg.replace("{一}", recognizedCharacter);
-            ret.put(Keys.STATUS_CODE, false);
             ret.put(Keys.MSG, recongnizeFailedMsg);
         }
-
         return ret;
     }
 
@@ -324,9 +306,7 @@ public class ActivityMgmtService {
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_END, todayInt);
                 user.put(UserExt.USER_CURRENT_CHECKIN_STREAK, 1);
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK, 1);
-
                 userMgmtService.updateUser(userId, user);
-
                 return sum;
             }
 
@@ -355,7 +335,6 @@ public class ActivityMgmtService {
             if (longestStreakDays < currentStreakDays) {
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_START, currentStreakStart);
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_END, currentStreakEnd);
-
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK, currentStreakDays);
             }
 
@@ -369,11 +348,9 @@ public class ActivityMgmtService {
             }
 
             livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_ACTIVITY);
-
             return sum;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Checkin streak error", e);
-
             return Integer.MIN_VALUE;
         }
     }
@@ -387,11 +364,10 @@ public class ActivityMgmtService {
      * @return result
      */
     public synchronized JSONObject bet1A0001(final String userId, final int amount, final int smallOrLarge) {
-        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
+        final JSONObject ret = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
 
         if (activityQueryService.is1A0001Today(userId)) {
             ret.put(Keys.MSG, langPropsService.get("activityParticipatedLabel"));
-
             return ret;
         }
 
@@ -399,15 +375,12 @@ public class ActivityMgmtService {
 
         final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001, amount, date + "-" + smallOrLarge, System.currentTimeMillis(), "");
-
-        ret.put(Keys.STATUS_CODE, succ);
-
-        final String msg = succ
-                ? langPropsService.get("activityBetSuccLabel") : langPropsService.get("activityBetFailLabel");
+        if (succ) {
+            ret.put(Keys.CODE, StatusCodes.SUCC);
+        }
+        final String msg = succ ? langPropsService.get("activityBetSuccLabel") : langPropsService.get("activityBetFailLabel");
         ret.put(Keys.MSG, msg);
-
         livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_ACTIVITY);
-
         return ret;
     }
 
@@ -418,17 +391,15 @@ public class ActivityMgmtService {
      * @return result
      */
     public synchronized JSONObject collect1A0001(final String userId) {
-        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
+        final JSONObject ret = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
 
         if (!activityQueryService.is1A0001Today(userId)) {
             ret.put(Keys.MSG, langPropsService.get("activityNotParticipatedLabel"));
-
             return ret;
         }
 
         if (activityQueryService.isCollected1A0001Today(userId)) {
             ret.put(Keys.MSG, langPropsService.get("activityParticipatedLabel"));
-
             return ret;
         }
 
@@ -451,7 +422,7 @@ public class ActivityMgmtService {
                 int endInt = 0;
                 if (price.split("\\.")[1].length() > 1) {
                     final String end = price.substring(price.length() - 1);
-                    endInt = Integer.valueOf(end);
+                    endInt = Integer.parseInt(end);
                 }
 
                 if (0 <= endInt && endInt <= 4) {
@@ -464,30 +435,24 @@ public class ActivityMgmtService {
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Collect 1A0001 failed", e);
-
             ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFailLabel"));
-
             return ret;
         }
 
         if (StringUtils.isBlank(smallOrLarge)) {
             ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFailLabel"));
-
             return ret;
         }
 
-        ret.put(Keys.STATUS_CODE, true);
+        ret.put(Keys.CODE, StatusCodes.SUCC);
         if (StringUtils.equals(smallOrLarge, smallOrLargeResult)) {
             final int amount = sum * 2;
-
             final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                     Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001_COLLECT, amount,
                     DateFormatUtils.format(new Date(), "yyyyMMdd") + "-" + smallOrLargeResult, System.currentTimeMillis(), "");
-
             if (succ) {
                 String msg = langPropsService.get("activity1A0001CollectSucc1Label");
                 msg = msg.replace("{point}", String.valueOf(amount));
-
                 ret.put(Keys.MSG, msg);
             } else {
                 ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFailLabel"));
@@ -495,7 +460,6 @@ public class ActivityMgmtService {
         } else {
             ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectSucc0Label"));
         }
-
         return ret;
     }
 
@@ -537,21 +501,17 @@ public class ActivityMgmtService {
      * @return result
      */
     public synchronized JSONObject startGobang(final String userId) {
-        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
-
+        final JSONObject ret = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
         final int startPoint = Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START;
-
         final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_GOBANG,
                 startPoint, "", System.currentTimeMillis(), "");
-
-        ret.put(Keys.STATUS_CODE, succ);
-
+        if (succ) {
+            ret.put(Keys.CODE, StatusCodes.SUCC);
+        }
         final String msg = succ ? "started" : langPropsService.get("activityStartGobangFailLabel");
         ret.put(Keys.MSG, msg);
-
         livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_ACTIVITY);
-
         return ret;
     }
 
@@ -563,18 +523,15 @@ public class ActivityMgmtService {
      * @return result
      */
     public synchronized JSONObject collectGobang(final String userId, final int score) {
-        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
-
+        final JSONObject ret = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
         final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_GOBANG_COLLECT, score,
                 "", System.currentTimeMillis(), "");
-
         if (!succ) {
             ret.put(Keys.MSG, "Sorry, transfer point failed, please contact admin");
+        } else {
+            ret.put(Keys.CODE, StatusCodes.SUCC);
         }
-
-        ret.put(Keys.STATUS_CODE, succ);
-
         return ret;
     }
 }

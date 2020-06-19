@@ -41,6 +41,7 @@ import org.b3log.symphony.processor.middleware.validate.Activity1A0001CollectVal
 import org.b3log.symphony.processor.middleware.validate.Activity1A0001ValidationMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.StatusCodes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -67,7 +68,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
- * @version 2.0.0.0, Feb 11, 2020
+ * @version 2.0.0.1, Jun 20, 2020
  * @since 1.3.0
  */
 @Singleton
@@ -187,7 +188,7 @@ public class ActivityProcessor {
      */
     public void submitCharacter(final RequestContext context) {
         final Request request = context.getRequest();
-        context.renderJSON().renderFalseResult();
+        context.renderJSON(StatusCodes.ERR);
 
         JSONObject requestJSONObject;
         try {
@@ -195,8 +196,7 @@ public class ActivityProcessor {
             request.setAttribute(Keys.REQUEST, requestJSONObject);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Submits character failed", e);
-
-            context.renderJSON(false).renderMsg(langPropsService.get("activityCharacterRecognizeFailedLabel"));
+            context.renderMsg(langPropsService.get("activityCharacterRecognizeFailedLabel"));
             return;
         }
 
@@ -366,25 +366,20 @@ public class ActivityProcessor {
      * @param context the specified context
      */
     public void bet1A0001(final RequestContext context) {
-        context.renderJSON().renderFalseResult();
-
+        context.renderJSON(StatusCodes.ERR);
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
-
         final int amount = requestJSONObject.optInt(Common.AMOUNT);
         final int smallOrLarge = requestJSONObject.optInt(Common.SMALL_OR_LARGE);
-
         final JSONObject currentUser = Sessions.getUser();
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
-
         final JSONObject ret = activityMgmtService.bet1A0001(fromId, amount, smallOrLarge);
-        if (ret.optBoolean(Keys.STATUS_CODE)) {
+        if (StatusCodes.SUCC == ret.optInt(Keys.CODE)) {
             String msg = langPropsService.get("activity1A0001BetedLabel");
             final String small = langPropsService.get("activity1A0001BetSmallLabel");
             final String large = langPropsService.get("activity1A0001BetLargeLabel");
             msg = msg.replace("{smallOrLarge}", smallOrLarge == 0 ? small : large);
             msg = msg.replace("{point}", String.valueOf(amount));
-
-            context.renderTrueResult().renderMsg(msg);
+            context.renderCodeMsg(StatusCodes.SUCC, msg);
         }
     }
 
@@ -452,20 +447,16 @@ public class ActivityProcessor {
      * @param context the specified context
      */
     public void collectEatingSnake(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "activity/eating-snake.ftl");
-
         JSONObject requestJSONObject;
         try {
             requestJSONObject = context.requestJSON();
             final int score = requestJSONObject.optInt("score");
             final JSONObject user = Sessions.getUser();
             final JSONObject ret = activityMgmtService.collectEatingSnake(user.optString(Keys.OBJECT_ID), score);
-
             context.renderJSON(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Collects eating snake game failed", e);
-
-            context.renderJSON(false).renderMsg("err....");
+            context.renderCodeMsg(StatusCodes.ERR, "err....");
         }
     }
 
@@ -493,14 +484,14 @@ public class ActivityProcessor {
      * @param context the specified context
      */
     public void startGobang(final RequestContext context) {
-        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
+        final JSONObject ret = new JSONObject().put(Keys.CODE, StatusCodes.SUCC);
         final JSONObject currentUser = Sessions.getUser();
-
         final boolean succ = currentUser.optInt(UserExt.USER_POINT) - Pointtransfer.TRANSFER_SUM_C_ACTIVITY_GOBANG_START >= 0;
-        ret.put(Keys.STATUS_CODE, succ);
+        if (succ) {
+            ret.put(Keys.CODE, StatusCodes.SUCC);
+        }
         final String msg = succ ? "started" : langPropsService.get("activityStartGobangFailLabel");
         ret.put(Keys.MSG, msg);
-
         context.renderJSON(ret);
     }
 }
