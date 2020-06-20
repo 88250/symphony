@@ -361,7 +361,7 @@ var AddArticle = {
           'articleId': Label.articleOId, // 更新时才有值
         }),
         success: function (result, textStatus) {
-          if (!result.sc) {
+          if (0 !== result.sc) {
             if ($('#articleTitleTip').length === 1) {
               $('#articleTitleTip').html(result.msg)
             } else {
@@ -615,7 +615,7 @@ var AddArticle = {
               html('<ul><li>' + errorThrown + '</li></ul>')
           },
           success: function (result, textStatus) {
-            if (result.sc) {
+            if (0 === result.sc) {
               if ($.ua.device.type !== 'mobile') {
                 $('#articleTagsSelectedPanel').
                   css('left', ($('.post .tags-selected').width() + 10) + 'px')

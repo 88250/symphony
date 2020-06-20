@@ -157,7 +157,7 @@ var EatingSnake = {
                 $btn.attr("disabled", "disabled").css("opacity", "0.3").text($btn.text() + 'ing');
             },
             success: function (result, textStatus) {
-                if (!result.sc) {
+                if (0 !== result.sc) {
                     Util.alert(result.msg);
 
                     return;
@@ -325,7 +325,7 @@ var EatingSnake = {
             headers: {"csrfToken": csrfToken},
             cache: false,
             success: function (result, textStatus) {
-                if (result.sc) {
+                if (0 === result.sc) {
                     EatingSnake.init();
                     // countTime = 0;
                     EatingSnake.interval = setInterval(EatingSnake.gameRun, EatingSnake.currTime);

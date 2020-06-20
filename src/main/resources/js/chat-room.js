@@ -121,7 +121,7 @@ var ChatRoom = {
           css('opacity', '0.3')
       },
       success: function (result) {
-        if (result.sc) {
+        if (0 === result.sc) {
           $('#chatContentTip').removeClass('error succ').html('')
 
           ChatRoom.editor.setValue('')

@@ -76,7 +76,7 @@ var Comment = {
         commentId: id,
       }),
       success: function (result) {
-        if (!result.sc) {
+        if (0 !== result.sc) {
           Util.alert(result.msg)
           return
         } else {
@@ -508,7 +508,7 @@ var Comment = {
         Util.alert(errorThrown)
       },
       success: function (result, textStatus) {
-        if (result.sc) {
+        if (0 === result.sc) {
           $(it).removeAttr('onclick')
           var $heart = $(
             '<svg class="ft-red"><use xlink:href="#heart"></use></svg>'),
@@ -593,7 +593,7 @@ var Comment = {
         $(it).css('opacity', '0.3')
       },
       success: function (result, textStatus) {
-        if (!result.sc) {
+        if (0 !== result.sc) {
           Util.alert(result.msg)
           return false
         }
@@ -892,7 +892,7 @@ var Article = {
         $voteUp.removeClass('disabled')
         var upCnt = parseInt($voteUp.text()),
           downCnt = parseInt($voteDown.text())
-        if (result.sc) {
+        if (0 === result.sc) {
           if (0 === result.type) { // cancel up
             $voteUp.html('<svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ' +
               (upCnt - 1)).removeClass('ft-red')
@@ -944,7 +944,7 @@ var Article = {
         $voteDown.removeClass('disabled')
         var upCnt = parseInt($voteUp.text()),
           downCnt = parseInt($voteDown.text())
-        if (result.sc) {
+        if (0 === result.sc) {
           if (1 === result.type) { // cancel down
             $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' +
               (downCnt - 1)).removeClass('ft-red')
@@ -1162,7 +1162,7 @@ var Article = {
       url: Label.servePath + '/' + type + '/' + id + '/revisions',
       cache: false,
       success: function (result, textStatus) {
-        if (result.sc) {
+        if (0 === result.sc) {
           if (0 === result.revisions.length // for legacy data
             || 1 === result.revisions.length) {
             $('#revision > .revisions').remove()
@@ -1366,7 +1366,7 @@ var Article = {
         type: 'POST',
         cache: false,
         success: function (result, textStatus) {
-          if (result.sc) {
+          if (0 === result.sc) {
             $('#articleRewardContent .vditor-reset').
               html(result.articleRewardContent)
             Util.parseHljs()
@@ -1413,7 +1413,7 @@ var Article = {
       type: 'POST',
       cache: false,
       success: function (result, textStatus) {
-        if (result.sc) {
+        if (0 === result.sc) {
           var thxCnt = parseInt($('#thankArticle').text())
           $('#thankArticle').
             removeAttr('onclick').

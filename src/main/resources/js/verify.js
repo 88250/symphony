@@ -53,7 +53,7 @@ var Verify = {
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
-                    if (result.sc) {
+                    if (0 === result.sc) {
                         window.location.href = goto;
                     } else {
                         $("#loginTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
@@ -103,7 +103,7 @@ var Verify = {
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
-                    if (result.sc) {
+                    if (0 === result.sc) {
                         $("#registerTip").addClass('succ').removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                         $("#registerBtn").attr('disabled', 'disabled');
                     } else {
@@ -145,7 +145,7 @@ var Verify = {
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
-                    if (result.sc) {
+                    if (0 === result.sc) {
                         window.location.href = Label.servePath;
                     } else {
                         $("#registerTip2").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
@@ -180,7 +180,7 @@ var Verify = {
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
-                    if (result.sc) {
+                    if (0 === result.sc) {
                         $("#fpwdTip").addClass('succ').removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                     } else {
                         $("#fpwdTip").removeClass("tip-succ");
@@ -220,7 +220,7 @@ var Verify = {
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
-                    if (result.sc) {
+                    if (0 === result.sc) {
                         window.location.href = Label.servePath;
                     } else {
                         $("#rpwdTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
@@ -289,7 +289,7 @@ var Verify = {
                         userGuideStep: currentStep
                     }),
                     success: function (result, textStatus) {
-                        if (!result.sc) {
+                        if (0 !== result.sc) {
                             Util.alert(result.msg);
                         }
                     }

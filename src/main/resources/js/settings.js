@@ -73,7 +73,7 @@ var Settings = {
         captcha: $('#emailVerify').val(),
       }),
       success: function (result) {
-        if (result.sc) {
+        if (0 === result.sc) {
           $('#emailInput').prop('disabled', true)
           $('.home-account__captch').hide()
           $('#emailCodePanel').show()
@@ -100,7 +100,7 @@ var Settings = {
         captcha: $('#emailCode').val(),
       }),
       success: function (result) {
-        if (result.sc) {
+        if (0 === result.sc) {
           $('.home-account__captch').show()
           $('#emailVerify').val('')
           $('#emailCodePanel').hide()
@@ -243,7 +243,7 @@ var Settings = {
       type: 'POST',
       cache: false,
       success: function (result, textStatus) {
-        if (!result.sc) {
+        if (0 !== result.sc) {
           Util.alert('TBD: V, tip display it....')
 
           return
@@ -315,7 +315,7 @@ var Settings = {
           Util.alert(errorThrown)
         },
         success: function (result, textStatus) {
-          if (result.sc) {
+          if (0 === result.sc) {
             $('#pointTransferTip').
               addClass('succ').
               removeClass('error').
@@ -362,7 +362,7 @@ var Settings = {
         Util.alert(errorThrown)
       },
       success: function (result, textStatus) {
-        if (result.sc) {
+        if (0 === result.sc) {
           $('.list ul').
             prepend('<li class="vditor-reset"><code>' +
               result.msg.split(' ')[0] + '</code>' + result.msg.substr(16) +
@@ -528,7 +528,7 @@ var Settings = {
         Util.alert(errorThrown)
       },
       success: function (result, textStatus) {
-        if (result.sc) {
+        if (0 === result.sc) {
           $('#' + type.replace(/\//g, '') + 'Tip').
             addClass('succ').
             removeClass('error').
@@ -588,7 +588,7 @@ var Settings = {
         Util.alert(errorThrown)
       },
       success: function (result, textStatus) {
-        if (result.sc) {
+        if (0 === result.sc) {
           $('#avatarURLDom, .user-nav .avatar-small').
             attr('style', 'background-image:url(' +
               requestJSONObject.userAvatarURL + ')')
@@ -689,7 +689,7 @@ var Settings = {
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
-        if (result.sc) {
+        if (0 === result.sc) {
           window.location.reload()
         }
       },
@@ -704,7 +704,7 @@ var Settings = {
       type: 'GET',
       cache: false,
       success: function (result) {
-        if (result.sc) {
+        if (0 === result.sc) {
           location.reload()
         }
       },

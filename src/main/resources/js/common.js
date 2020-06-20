@@ -236,7 +236,7 @@ var Util = {
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
-        if (result.sc) {
+        if (0 === result.sc) {
           Util.setUnreadNotificationCount(false)
           $('.notification li').addClass('read')
           if (it) {
@@ -515,7 +515,7 @@ var Util = {
               data: JSON.stringify(requestJSONObject),
               cache: false,
               success: function (result, textStatus) {
-                if (result.sc) {
+                if (0 === result.sc) {
                   var value = cm.getValue()
                   value = value.replace(result.originalURL, result.url)
                   cm.setValue(value)
@@ -950,7 +950,7 @@ var Util = {
       cache: false,
       data: JSON.stringify(requestJSONObject),
       success: function (result, textStatus) {
-        if (result.sc) {
+        if (0 === result.sc) {
           $(it).removeClass('disabled')
           if (typeof (index) !== 'undefined') {
             if ('article' === type || 'tag' === type) {
@@ -1011,7 +1011,7 @@ var Util = {
       cache: false,
       data: JSON.stringify(requestJSONObject),
       success: function (result, textStatus) {
-        if (result.sc) {
+        if (0 === result.sc) {
           if (typeof (index) !== 'undefined') {
             if ('article' === type || 'tag' === type) {
               $(it).
