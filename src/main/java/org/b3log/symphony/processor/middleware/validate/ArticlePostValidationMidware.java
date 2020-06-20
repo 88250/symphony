@@ -83,7 +83,7 @@ public class ArticlePostValidationMidware {
         final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
 
         final JSONObject exception = new JSONObject();
-        exception.put(Keys.STATUS_CODE, StatusCodes.ERR);
+        exception.put(Keys.CODE, StatusCodes.ERR);
 
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         articleTitle = StringUtils.trim(articleTitle);
@@ -94,7 +94,6 @@ public class ArticlePostValidationMidware {
             return;
         }
 
-        final JSONObject user = Sessions.getUser();
         if (optionQueryService.containReservedWord(articleTitle)) {
             final String msg = langPropsService.get("contentContainReservedWordLabel");
             context.renderJSON(new JSONObject().put(Keys.MSG, msg));

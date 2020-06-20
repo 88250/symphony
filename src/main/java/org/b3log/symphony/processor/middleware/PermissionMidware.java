@@ -73,7 +73,7 @@ public class PermissionMidware {
         try {
             final JSONObject exception = new JSONObject();
             exception.put(Keys.MSG, langPropsService.get("noPermissionLabel"));
-            exception.put(Keys.STATUS_CODE, 403);
+            exception.put(Keys.CODE, 403);
 
             final String prefix = "permission.rule.url.";
             final String requestURI = StringUtils.substringAfter(context.requestURI(), Latkes.getContextPath());

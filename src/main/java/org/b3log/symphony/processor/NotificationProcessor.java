@@ -35,6 +35,7 @@ import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.StatusCodes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -163,11 +164,11 @@ public class NotificationProcessor {
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_BROADCAST);
                 break;
             default:
-                context.renderJSON(false);
+                context.renderJSON(StatusCodes.ERR);
                 return;
         }
 
-        context.renderJSON(true);
+        context.renderJSON(StatusCodes.SUCC);
     }
 
     /**
@@ -176,7 +177,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     public void removeNotification(final RequestContext context) {
-        context.renderJSON(true);
+        context.renderJSON(StatusCodes.SUCC);
 
         final JSONObject requestJSONObject = context.requestJSON();
         final JSONObject currentUser = Sessions.getUser();
@@ -246,7 +247,7 @@ public class NotificationProcessor {
 
         notificationMgmtService.makeAllRead(userId);
 
-        context.renderJSON(true);
+        context.renderJSON(StatusCodes.SUCC);
     }
 
     /**
@@ -282,12 +283,12 @@ public class NotificationProcessor {
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_COMMENT);
                 break;
             default:
-                context.renderJSON(false);
+                context.renderJSON(StatusCodes.ERR);
                 return;
         }
 
 
-        context.renderJSON(true);
+        context.renderJSON(StatusCodes.SUCC);
     }
 
     /**
@@ -304,7 +305,7 @@ public class NotificationProcessor {
 
         notificationMgmtService.makeRead(userId, articleId, commentIds);
 
-        context.renderJSON(true);
+        context.renderJSON(StatusCodes.SUCC);
     }
 
     /**
@@ -705,7 +706,7 @@ public class NotificationProcessor {
 
         fillNotificationCount(userId, dataModel);
 
-        context.renderJSON(new JSONObject(dataModel)).renderTrueResult().
+        context.renderJSON(new JSONObject(dataModel)).renderJSONValue(Keys.CODE, StatusCodes.SUCC).
                 renderJSONValue(UserExt.USER_NOTIFY_STATUS, currentUser.optInt(UserExt.USER_NOTIFY_STATUS));
     }
 }

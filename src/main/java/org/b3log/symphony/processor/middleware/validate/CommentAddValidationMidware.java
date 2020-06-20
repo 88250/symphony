@@ -53,7 +53,7 @@ public class CommentAddValidationMidware {
         final CommentQueryService commentQueryService = beanManager.getReference(CommentQueryService.class);
 
         final JSONObject exception = new JSONObject();
-        exception.put(Keys.STATUS_CODE, StatusCodes.ERR);
+        exception.put(Keys.CODE, StatusCodes.ERR);
 
         final String commentContent = StringUtils.trim(requestJSONObject.optString(Comment.COMMENT_CONTENT));
         if (StringUtils.isBlank(commentContent) || commentContent.length() > Comment.MAX_COMMENT_CONTENT_LENGTH) {

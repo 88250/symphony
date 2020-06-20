@@ -46,10 +46,7 @@ import org.b3log.symphony.processor.middleware.validate.PointTransferValidationM
 import org.b3log.symphony.processor.middleware.validate.UpdatePasswordValidationMidware;
 import org.b3log.symphony.processor.middleware.validate.UpdateProfilesValidationMidware;
 import org.b3log.symphony.service.*;
-import org.b3log.symphony.util.Escapes;
-import org.b3log.symphony.util.Languages;
-import org.b3log.symphony.util.Sessions;
-import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.*;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -222,7 +219,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void deactivateUser(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final Response response = context.getResponse();
         final JSONObject currentUser = Sessions.getUser();
@@ -230,7 +227,7 @@ public class SettingsProcessor {
             userMgmtService.deactivateUser(currentUser.optString(Keys.OBJECT_ID));
             Sessions.logout(currentUser.optString(Keys.OBJECT_ID), response);
 
-            context.renderTrueResult();
+            context.renderJSON(StatusCodes.SUCC);
         } catch (final Exception e) {
             context.renderMsg(e.getMessage());
         }
@@ -242,7 +239,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void updateUserName(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final JSONObject requestJSONObject = context.requestJSON();
         final JSONObject currentUser = Sessions.getUser();
@@ -263,7 +260,7 @@ public class SettingsProcessor {
                     Pointtransfer.TRANSFER_TYPE_C_CHANGE_USERNAME, Pointtransfer.TRANSFER_SUM_C_CHANGE_USERNAME,
                     oldName + "-" + newName, System.currentTimeMillis(), "");
 
-            context.renderTrueResult();
+            context.renderJSON(StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
@@ -275,9 +272,8 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void sendEmailVC(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String email = StringUtils.lowerCase(StringUtils.trim(requestJSONObject.optString(User.USER_EMAIL)));
         if (!Strings.isEmail(email)) {
@@ -304,7 +300,7 @@ public class SettingsProcessor {
         try {
             JSONObject verifycode = verifycodeQueryService.getVerifycodeByUserId(Verifycode.TYPE_C_EMAIL, Verifycode.BIZ_TYPE_C_BIND_EMAIL, userId);
             if (null != verifycode) {
-                context.renderTrueResult().renderMsg(langPropsService.get("vcSentLabel"));
+                context.renderJSON(StatusCodes.SUCC).renderMsg(langPropsService.get("vcSentLabel"));
                 return;
             }
 
@@ -324,7 +320,7 @@ public class SettingsProcessor {
             verifycode.put(Verifycode.RECEIVER, email);
             verifycodeMgmtService.addVerifycode(verifycode);
 
-            context.renderTrueResult().renderMsg(langPropsService.get("verifycodeSentLabel"));
+            context.renderJSON(StatusCodes.SUCC).renderMsg(langPropsService.get("verifycodeSentLabel"));
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
@@ -336,7 +332,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void updateEmail(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
@@ -365,7 +361,7 @@ public class SettingsProcessor {
             userMgmtService.updateUserEmail(userId, user);
             verifycodeMgmtService.removeByCode(captcha);
 
-            context.renderTrueResult();
+            context.renderJSON(StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
@@ -377,7 +373,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void updateI18n(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final Request request = context.getRequest();
         JSONObject requestJSONObject;
@@ -410,7 +406,7 @@ public class SettingsProcessor {
 
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
 
-            context.renderTrueResult();
+            context.renderJSON(StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
@@ -515,7 +511,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void updateGeoStatus(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final Request request = context.getRequest();
         JSONObject requestJSONObject;
@@ -541,7 +537,7 @@ public class SettingsProcessor {
 
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
 
-            context.renderTrueResult();
+            context.renderJSON(StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
@@ -553,7 +549,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void updatePrivacy(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final Request request = context.getRequest();
         JSONObject requestJSONObject;
@@ -601,7 +597,7 @@ public class SettingsProcessor {
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
 
-            context.renderTrueResult();
+            context.renderJSON(StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
@@ -613,7 +609,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void updateFunction(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final Request request = context.getRequest();
         JSONObject requestJSONObject;
@@ -684,7 +680,7 @@ public class SettingsProcessor {
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
 
-            context.renderTrueResult();
+            context.renderJSON(StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
@@ -696,7 +692,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void updateProfiles(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
         final String userTags = requestJSONObject.optString(UserExt.USER_TAGS);
         final String userURL = requestJSONObject.optString(User.USER_URL);
@@ -717,7 +713,7 @@ public class SettingsProcessor {
         try {
             userMgmtService.updateProfiles(user);
 
-            context.renderTrueResult();
+            context.renderJSON(StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
@@ -729,7 +725,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void updateAvatar(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final JSONObject requestJSONObject = context.requestJSON();
         final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
@@ -759,7 +755,7 @@ public class SettingsProcessor {
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
 
-            context.renderTrueResult();
+            context.renderJSON(StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
@@ -771,7 +767,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void updatePassword(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final JSONObject requestJSONObject = context.requestJSON();
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
@@ -787,7 +783,7 @@ public class SettingsProcessor {
 
         try {
             userMgmtService.updatePassword(user);
-            context.renderTrueResult();
+            context.renderJSON(StatusCodes.SUCC);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg, e);
@@ -802,7 +798,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void updateEmoji(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final JSONObject requestJSONObject = context.requestJSON();
         final String emotionList = requestJSONObject.optString(Emotion.EMOTIONS);
@@ -811,7 +807,7 @@ public class SettingsProcessor {
         try {
             emotionMgmtService.setEmotionList(user.optString(Keys.OBJECT_ID), emotionList);
 
-            context.renderTrueResult();
+            context.renderJSON(StatusCodes.SUCC);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg, e);
@@ -826,7 +822,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void pointTransfer(final RequestContext context) {
-        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
+        final JSONObject ret = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
         context.renderJSON(ret);
 
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
@@ -845,7 +841,9 @@ public class SettingsProcessor {
         final String transferId = pointtransferMgmtService.transfer(fromId, toId,
                 Pointtransfer.TRANSFER_TYPE_C_ACCOUNT2ACCOUNT, amount, toId, System.currentTimeMillis(), memo);
         final boolean succ = null != transferId;
-        ret.put(Keys.STATUS_CODE, succ);
+        if (succ) {
+            ret.put(Keys.CODE, StatusCodes.SUCC);
+        }
         if (!succ) {
             ret.put(Keys.MSG, langPropsService.get("transferFailLabel"));
         } else {
@@ -863,13 +861,13 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void queryInvitecode(final RequestContext context) {
-        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
+        final JSONObject ret = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
         context.renderJSON(ret);
 
         final JSONObject requestJSONObject = context.requestJSON();
         String invitecode = requestJSONObject.optString(Invitecode.INVITECODE);
         if (StringUtils.isBlank(invitecode)) {
-            ret.put(Keys.STATUS_CODE, -1);
+            ret.put(Keys.CODE, -1);
             ret.put(Keys.MSG, invitecode + " " + langPropsService.get("notFoundInvitecodeLabel"));
             return;
         }
@@ -879,11 +877,11 @@ public class SettingsProcessor {
         final JSONObject result = invitecodeQueryService.getInvitecode(invitecode);
 
         if (null == result) {
-            ret.put(Keys.STATUS_CODE, -1);
+            ret.put(Keys.CODE, -1);
             ret.put(Keys.MSG, langPropsService.get("notFoundInvitecodeLabel"));
         } else {
             final int status = result.optInt(Invitecode.STATUS);
-            ret.put(Keys.STATUS_CODE, status);
+            ret.put(Keys.CODE, status);
 
             switch (status) {
                 case Invitecode.STATUS_C_USED:
@@ -911,7 +909,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void pointBuy(final RequestContext context) {
-        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
+        final JSONObject ret = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
         context.renderJSON(ret);
 
         final String allowRegister = optionQueryService.getAllowRegister();
@@ -932,7 +930,9 @@ public class SettingsProcessor {
                 Pointtransfer.TRANSFER_TYPE_C_BUY_INVITECODE, Pointtransfer.TRANSFER_SUM_C_BUY_INVITECODE,
                 invitecode, System.currentTimeMillis(), "");
         final boolean succ = null != transferId;
-        ret.put(Keys.STATUS_CODE, succ);
+        if (succ) {
+            ret.put(Keys.CODE, StatusCodes.SUCC);
+        }
         if (!succ) {
             ret.put(Keys.MSG, langPropsService.get("exchangeFailedLabel"));
         } else {
@@ -949,7 +949,7 @@ public class SettingsProcessor {
      * @param context the specified context
      */
     public void exportPosts(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final JSONObject user = Sessions.getUser();
         final String userId = user.optString(Keys.OBJECT_ID);
@@ -962,7 +962,7 @@ public class SettingsProcessor {
             return;
         }
 
-        context.renderJSON(true).renderJSONValue("url", downloadURL);
+        context.renderJSON(StatusCodes.SUCC).renderJSONValue("url", downloadURL);
     }
 
     private static final String[][] emojiLists = {{

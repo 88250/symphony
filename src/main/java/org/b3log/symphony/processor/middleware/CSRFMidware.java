@@ -27,6 +27,7 @@ import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -61,7 +62,7 @@ public class CSRFMidware {
     public void check(final RequestContext context) {
         final JSONObject exception = new JSONObject();
         exception.put(Keys.MSG, langPropsService.get("csrfCheckFailedLabel"));
-        exception.put(Keys.STATUS_CODE, false);
+        exception.put(Keys.CODE, StatusCodes.ERR);
 
         // 1. Check Referer
         final String referer = context.header("Referer");

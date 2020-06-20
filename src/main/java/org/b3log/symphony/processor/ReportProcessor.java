@@ -69,7 +69,7 @@ public class ReportProcessor {
      * @param context the specified context
      */
     public void report(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final JSONObject requestJSONObject = context.requestJSON();
 
@@ -90,15 +90,15 @@ public class ReportProcessor {
         try {
             reportMgmtService.addReport(report);
 
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+            context.renderJSONValue(Keys.CODE, StatusCodes.ERR);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Adds a report failed", e);
 
             context.renderMsg(langPropsService.get("systemErrLabel"));
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+            context.renderJSONValue(Keys.CODE, StatusCodes.ERR);
         }
     }
 
