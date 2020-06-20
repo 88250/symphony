@@ -232,7 +232,7 @@ var Util = {
    */
   makeNotificationRead: function (type, it) {
     $.ajax({
-      url: Label.servePath + '/notifications/read/' + type,
+      url: Label.servePath + '/notifications/make-read/' + type,
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {

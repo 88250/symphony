@@ -682,7 +682,7 @@ public class LoginProcessor {
                 final String ip = Requests.getRemoteAddr(request);
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true, true);
 
-                context.renderJSON(StatusCodes.SUCC);
+                context.renderCodeMsg(StatusCodes.SUCC, "");
                 context.renderJSONValue(Keys.TOKEN, token);
 
                 WRONG_PWD_TRIES.remove(userId);
