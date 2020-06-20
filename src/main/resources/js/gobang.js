@@ -36,7 +36,7 @@ var Gobang = {
             type: "POST",
             cache: false,
             success: function (result) {
-                if (0 === result.sc) {
+                if (0 === result.code) {
                     GobangChannel.init(wsurl + "/gobang-game-channel?player=" + Label.currentUserName);
                     $(".side button.green").hide();
                     $(".side button.red, #chatInput").show();

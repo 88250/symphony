@@ -75,7 +75,7 @@ var Breezemoon = {
         breezemoonContent: $('#breezemoonInput').val(),
       }),
       success: function (result) {
-        if (result.sc === 0) {
+        if (result.code === 0) {
           window.location.reload()
         } else {
           alert(result.msg)
@@ -95,7 +95,7 @@ var Breezemoon = {
         headers: {'csrfToken': this.csrfToken},
         cache: false,
         success: function (result) {
-          if (result.sc === 0) {
+          if (result.code === 0) {
             $it.closest('li').remove()
           } else {
             alert(result.msg)
@@ -141,7 +141,7 @@ var Breezemoon = {
         breezemoonContent: val,
       }),
       success: function (result) {
-        if (result.sc === 0) {
+        if (result.code === 0) {
           $btn.closest('.form').prev().text(val).show()
           $btn.closest('.form').remove()
         } else {

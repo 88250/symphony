@@ -46,7 +46,7 @@ var Activity = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
-                if (0 === result.sc) {
+                if (0 === result.code) {
                     $("#betDiv, #betBtn").remove();
                     $("#tip").addClass("succ").removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                 } else {
@@ -75,7 +75,7 @@ var Activity = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 $("#tip").show();
-                if (0 === result.sc) {
+                if (0 === result.code) {
                     $("#tip").addClass("succ").removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                     $("#collectBtn").remove();
                 } else {
@@ -167,7 +167,7 @@ var Activity = {
             success: function (result, textStatus) {
                 Util.alert(result.msg);
 
-                if (0 === result.sc) {
+                if (0 === result.code) {
                     window.location.reload();
                 }
             },

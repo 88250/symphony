@@ -48,7 +48,7 @@ var Settings = {
       }),
       complete: function (result) {
         $btn.removeAttr('disabled').css('opacity', '1')
-        if (result.responseJSON.sc === 0) {
+        if (result.responseJSON.code === 0) {
           Util.alert(Label.reportSuccLabel)
           $('#reportTextarea').val('')
           $('#reportDialog').dialog('close')
@@ -73,7 +73,7 @@ var Settings = {
         captcha: $('#emailVerify').val(),
       }),
       success: function (result) {
-        if (0 === result.sc) {
+        if (0 === result.code) {
           $('#emailInput').prop('disabled', true)
           $('.home-account__captch').hide()
           $('#emailCodePanel').show()
@@ -100,7 +100,7 @@ var Settings = {
         captcha: $('#emailCode').val(),
       }),
       success: function (result) {
-        if (0 === result.sc) {
+        if (0 === result.code) {
           $('.home-account__captch').show()
           $('#emailVerify').val('')
           $('#emailCodePanel').hide()
@@ -243,7 +243,7 @@ var Settings = {
       type: 'POST',
       cache: false,
       success: function (result, textStatus) {
-        if (0 !== result.sc) {
+        if (0 !== result.code) {
           Util.alert('TBD: V, tip display it....')
 
           return
@@ -315,7 +315,7 @@ var Settings = {
           Util.alert(errorThrown)
         },
         success: function (result, textStatus) {
-          if (0 === result.sc) {
+          if (0 === result.code) {
             $('#pointTransferTip').
               addClass('succ').
               removeClass('error').
@@ -362,7 +362,7 @@ var Settings = {
         Util.alert(errorThrown)
       },
       success: function (result, textStatus) {
-        if (0 === result.sc) {
+        if (0 === result.code) {
           $('.list ul').
             prepend('<li class="vditor-reset"><code>' +
               result.msg.split(' ')[0] + '</code>' + result.msg.substr(16) +
@@ -403,7 +403,7 @@ var Settings = {
         Util.alert(errorThrown)
       },
       success: function (result, textStatus) {
-        switch (result.sc) {
+        switch (result.code) {
           case -1:
           case 0:
           case 2:
@@ -528,7 +528,7 @@ var Settings = {
         Util.alert(errorThrown)
       },
       success: function (result, textStatus) {
-        if (0 === result.sc) {
+        if (0 === result.code) {
           $('#' + type.replace(/\//g, '') + 'Tip').
             addClass('succ').
             removeClass('error').
@@ -588,7 +588,7 @@ var Settings = {
         Util.alert(errorThrown)
       },
       success: function (result, textStatus) {
-        if (0 === result.sc) {
+        if (0 === result.code) {
           $('#avatarURLDom, .user-nav .avatar-small').
             attr('style', 'background-image:url(' +
               requestJSONObject.userAvatarURL + ')')
@@ -689,7 +689,7 @@ var Settings = {
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
-        if (0 === result.sc) {
+        if (0 === result.code) {
           window.location.reload()
         }
       },
@@ -704,7 +704,7 @@ var Settings = {
       type: 'GET',
       cache: false,
       success: function (result) {
-        if (0 === result.sc) {
+        if (0 === result.code) {
           location.reload()
         }
       },
