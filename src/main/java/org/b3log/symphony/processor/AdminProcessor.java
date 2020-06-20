@@ -50,6 +50,7 @@ import org.b3log.symphony.processor.middleware.validate.UserRegisterValidationMi
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.StatusCodes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -631,8 +632,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     public void removeUnusedTags(final RequestContext context) {
-        context.renderJSON(true);
-
+        context.renderJSON(StatusCodes.SUCC);
         tagMgmtService.removeUnusedTags();
         operationMgmtService.addOperation(Operation.newOperation(context.getRequest(), Operation.OPERATION_CODE_C_REMOVE_UNUSED_TAGS, ""));
     }
@@ -2410,7 +2410,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     public void rebuildArticleSearchIndex(final RequestContext context) {
-        context.renderJSON(true);
+        context.renderJSON(StatusCodes.SUCC);
 
         if (Symphonys.ES_ENABLED) {
             searchMgmtService.rebuildESIndex();

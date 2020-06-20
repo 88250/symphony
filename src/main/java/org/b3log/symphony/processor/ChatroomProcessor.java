@@ -153,8 +153,6 @@ public class ChatroomProcessor {
      * @param context the specified context
      */
     public synchronized void addChatRoomMsg(final RequestContext context) {
-        context.renderJSON();
-
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
         String content = requestJSONObject.optString(Common.CONTENT);
 
@@ -182,7 +180,7 @@ public class ChatroomProcessor {
         pushMsg.put(Common.TIME, Times.getTimeAgo(msg.optLong(Common.TIME), Locales.getLocale()));
         ChatroomChannel.notifyChat(pushMsg);
 
-        context.renderTrueResult();
+        context.renderJSON(StatusCodes.SUCC);
 
         try {
             final String userId = currentUser.optString(Keys.OBJECT_ID);

@@ -250,17 +250,15 @@ public class ArticleProcessor {
             return;
         }
 
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
         try {
             articleMgmtService.removeArticle(id);
 
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC);
             context.renderJSONValue(Article.ARTICLE_T_ID, id);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
-
             context.renderMsg(msg);
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
         }
     }
 
@@ -279,7 +277,7 @@ public class ArticleProcessor {
 
         final JSONObject article = articleQueryService.getArticleByTitle(title);
         if (null == article) {
-            context.renderJSON(true);
+            context.renderJSON(StatusCodes.SUCC);
             return;
         }
 
@@ -302,14 +300,14 @@ public class ArticleProcessor {
             }
 
             final JSONObject ret = new JSONObject();
-            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.CODE, StatusCodes.ERR);
             ret.put(Keys.MSG, msg);
 
             context.renderJSON(ret);
         } else { // Update
             final JSONObject oldArticle = articleQueryService.getArticle(id);
             if (oldArticle.optString(Article.ARTICLE_TITLE).equals(title)) {
-                context.renderJSON(true);
+                context.renderJSON(StatusCodes.SUCC);
                 return;
             }
 
@@ -331,9 +329,8 @@ public class ArticleProcessor {
             }
 
             final JSONObject ret = new JSONObject();
-            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.CODE, StatusCodes.ERR);
             ret.put(Keys.MSG, msg);
-
             context.renderJSON(ret);
         }
     }
@@ -400,11 +397,9 @@ public class ArticleProcessor {
         }
 
         String url = "";
-
         final JSONObject ret = new JSONObject();
-        ret.put(Keys.STATUS_CODE, true);
+        ret.put(Keys.CODE, StatusCodes.SUCC);
         ret.put(Common.URL, url);
-
         context.renderJSON(ret);
     }
 
@@ -417,9 +412,8 @@ public class ArticleProcessor {
         final String id = context.pathVar("id");
         final List<JSONObject> revisions = revisionQueryService.getArticleRevisions(id);
         final JSONObject ret = new JSONObject();
-        ret.put(Keys.STATUS_CODE, true);
+        ret.put(Keys.CODE, StatusCodes.SUCC);
         ret.put(Revision.REVISIONS, (Object) revisions);
-
         context.renderJSON(ret);
     }
 
@@ -875,7 +869,7 @@ public class ArticleProcessor {
      * @param context the specified context
      */
     public void addArticle(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
@@ -932,14 +926,13 @@ public class ArticleProcessor {
 
             final String articleId = articleMgmtService.addArticle(article);
 
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC);
             context.renderJSONValue(Article.ARTICLE_T_ID, articleId);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
             LOGGER.log(Level.ERROR, "Adds article [title=" + articleTitle + "] failed: {}", e.getMessage());
-
             context.renderMsg(msg);
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+            context.renderJSONValue(Keys.CODE, StatusCodes.ERR);
         }
     }
 
@@ -1025,11 +1018,11 @@ public class ArticleProcessor {
             return;
         }
 
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         if (Article.ARTICLE_STATUS_C_VALID != oldArticle.optInt(Article.ARTICLE_STATUS)) {
             context.renderMsg(langPropsService.get("articleLockedLabel"));
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+            context.renderJSONValue(Keys.CODE, StatusCodes.ERR);
             return;
         }
 
@@ -1089,14 +1082,13 @@ public class ArticleProcessor {
         try {
             articleMgmtService.updateArticle(article);
 
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC);
             context.renderJSONValue(Article.ARTICLE_T_ID, id);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
             LOGGER.log(Level.ERROR, "Adds article [title=" + articleTitle + "] failed: {}", e.getMessage());
-
             context.renderMsg(msg);
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+            context.renderJSONValue(Keys.CODE, StatusCodes.ERR);
         }
     }
 
@@ -1152,11 +1144,11 @@ public class ArticleProcessor {
         final String articleId = context.pathVar("articleId");
         final String content = articleQueryService.getArticlePreviewContent(articleId, context);
         if (StringUtils.isBlank(content)) {
-            context.renderJSON().renderFalseResult();
+            context.renderJSON(StatusCodes.ERR);
             return;
         }
 
-        context.renderJSON(true).renderJSONValue("html", content);
+        context.renderJSON(StatusCodes.SUCC).renderJSONValue("html", content);
     }
 
     /**
@@ -1177,7 +1169,7 @@ public class ArticleProcessor {
             return;
         }
 
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         try {
             articleMgmtService.reward(articleId, currentUser.optString(Keys.OBJECT_ID));
@@ -1190,7 +1182,7 @@ public class ArticleProcessor {
         articleQueryService.processArticleContent(article);
 
         final String rewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
-        context.renderTrueResult().renderJSONValue(Article.ARTICLE_REWARD_CONTENT, rewardContent);
+        context.renderJSON(StatusCodes.SUCC).renderJSONValue(Article.ARTICLE_REWARD_CONTENT, rewardContent);
     }
 
     /**
@@ -1211,7 +1203,7 @@ public class ArticleProcessor {
             return;
         }
 
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         try {
             articleMgmtService.thank(articleId, currentUser.optString(Keys.OBJECT_ID));
@@ -1220,7 +1212,7 @@ public class ArticleProcessor {
             return;
         }
 
-        context.renderTrueResult();
+        context.renderJSON(StatusCodes.SUCC);
     }
 
     /**
@@ -1252,7 +1244,7 @@ public class ArticleProcessor {
             return;
         }
 
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         try {
             articleMgmtService.stick(articleId);
@@ -1261,6 +1253,6 @@ public class ArticleProcessor {
             return;
         }
 
-        context.renderTrueResult().renderMsg(langPropsService.get("stickSuccLabel"));
+        context.renderJSON(StatusCodes.SUCC).renderMsg(langPropsService.get("stickSuccLabel"));
     }
 }
