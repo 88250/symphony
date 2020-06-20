@@ -32,7 +32,7 @@ import java.io.File;
  * Templates utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.1, Nov 5, 2019
+ * @version 2.0.0.2, Jun 20, 2020
  * @since 1.3.0
  */
 public final class Templates {
@@ -50,7 +50,7 @@ public final class Templates {
     /**
      * Freemarker version.
      */
-    public static final Version FREEMARKER_VER = Configuration.VERSION_2_3_28;
+    public static final Version FREEMARKER_VER = Configuration.VERSION_2_3_30;
 
     static {
         TEMPLATE_CFG = new Configuration(FREEMARKER_VER);
