@@ -35,6 +35,7 @@ import org.b3log.symphony.processor.middleware.AnonymousViewCheckMidware;
 import org.b3log.symphony.processor.middleware.LoginCheckMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.StatusCodes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -113,7 +114,7 @@ public class TagProcessor {
             return;
         }
 
-        context.renderJSON().renderTrueResult();
+        context.renderJSON(StatusCodes.SUCC);
 
         final String titlePrefix = context.param("title");
 

@@ -31,6 +31,7 @@ import org.b3log.symphony.processor.middleware.LoginCheckMidware;
 import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.util.HashSet;
@@ -122,7 +123,7 @@ public class VoteProcessor {
      * @param context the specified context
      */
     public void voteUpComment(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
@@ -132,7 +133,7 @@ public class VoteProcessor {
 
         if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_COMMENT)) {
-            context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
+            context.renderMsg(langPropsService.get("cantVoteSelfLabel"));
             return;
         }
 
@@ -156,7 +157,7 @@ public class VoteProcessor {
             VOTES.add(userId + dataId);
         }
 
-        context.renderTrueResult().renderJSONValue(Vote.TYPE, vote);
+        context.renderJSON(StatusCodes.SUCC).renderJSONValue(Vote.TYPE, vote);
     }
 
     /**
@@ -173,9 +174,8 @@ public class VoteProcessor {
      * @param context the specified context
      */
     public void voteDownComment(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
 
@@ -184,7 +184,7 @@ public class VoteProcessor {
 
         if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_COMMENT)) {
-            context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
+            context.renderMsg(langPropsService.get("cantVoteSelfLabel"));
             return;
         }
 
@@ -209,7 +209,7 @@ public class VoteProcessor {
 //            VOTES.add(userId + dataId);
         }
 
-        context.renderTrueResult().renderJSONValue(Vote.TYPE, vote);
+        context.renderJSON(StatusCodes.SUCC).renderJSONValue(Vote.TYPE, vote);
     }
 
     /**
@@ -226,9 +226,8 @@ public class VoteProcessor {
      * @param context the specified context
      */
     public void voteUpArticle(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
 
@@ -237,7 +236,7 @@ public class VoteProcessor {
 
         if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
-            context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
+            context.renderMsg(langPropsService.get("cantVoteSelfLabel"));
             return;
         }
 
@@ -261,7 +260,7 @@ public class VoteProcessor {
             VOTES.add(userId + dataId);
         }
 
-        context.renderTrueResult().renderJSONValue(Vote.TYPE, vote);
+        context.renderJSON(StatusCodes.SUCC).renderJSONValue(Vote.TYPE, vote);
     }
 
     /**
@@ -278,9 +277,8 @@ public class VoteProcessor {
      * @param context the specified context
      */
     public void voteDownArticle(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
 
@@ -289,7 +287,7 @@ public class VoteProcessor {
 
         if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
-            context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
+            context.renderMsg(langPropsService.get("cantVoteSelfLabel"));
             return;
         }
 
@@ -314,6 +312,6 @@ public class VoteProcessor {
 //            VOTES.add(userId + dataId);
         }
 
-        context.renderTrueResult().renderJSONValue(Vote.TYPE, vote);
+        context.renderJSON(StatusCodes.SUCC).renderJSONValue(Vote.TYPE, vote);
     }
 }
