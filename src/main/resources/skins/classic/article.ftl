@@ -191,15 +191,14 @@
                         <ul>
                             <li>
                                 <div class="fn-flex">
-                                    <#if article.articleOfferedComment.commentAnonymous == 0>
-                                <a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}"></#if>
+                                <a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}">
                                     <div class="avatar tooltipped tooltipped-se"
                                          aria-label="${article.articleOfferedComment.commentAuthorName}" style="background-image:url('${article.articleOfferedComment.commentAuthorThumbnailURL}')"></div>
-                                    <#if article.articleOfferedComment.commentAnonymous == 0></a></#if>
+                                </a>
                                     <div class="fn-flex-1">
                                         <div class="fn-clear comment-info ft-smaller">
                                             <span class="fn-left">
-                                                <#if article.articleOfferedComment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${article.articleOfferedComment.commentAuthorName}</span><#if article.articleOfferedComment.commentAnonymous == 0></a></#if>
+                                                <a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}" class="ft-gray"><span class="ft-gray">${article.articleOfferedComment.commentAuthorName}</span></a>
                                                 <span class="ft-fade">• ${article.articleOfferedComment.timeAgo}</span>
 
                                                 <#if article.articleOfferedComment.rewardedCnt gt 0>
@@ -235,11 +234,10 @@
                         <#list article.articleNiceComments as comment>
                             <li>
                                 <div class="fn-flex">
-                                    <#if comment.commentAnonymous == 0>
-                                    <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
+                                    <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}">
                                         <div class="avatar tooltipped tooltipped-se"
                                              aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
-                                    <#if comment.commentAnonymous == 0></a></#if>
+                                    </a>
                                     <div class="fn-flex-1">
                                         <div class="fn-clear comment-info ft-smaller">
                                             <span class="fn-left">
