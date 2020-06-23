@@ -607,7 +607,7 @@ public class ArticleQueryService {
             ret.put(Article.ARTICLES, (Object) articles);
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets domain articles error", e);
+            LOGGER.log(Level.ERROR, "Gets domain articles failed", e);
             return null;
         }
     }

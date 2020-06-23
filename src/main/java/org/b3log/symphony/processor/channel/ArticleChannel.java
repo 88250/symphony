@@ -193,7 +193,7 @@ public class ArticleChannel implements WebSocketChannel {
                 final String msgStr = message.toString();
                 session.sendText(msgStr);
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Notify comment error", e);
+                LOGGER.log(Level.ERROR, "Notify comment failed", e);
             }
         }
     }

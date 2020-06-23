@@ -222,7 +222,7 @@ public class SearchMgmtService {
             try {
                 Thread.sleep(100);
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Sleep error", e);
+                LOGGER.log(Level.ERROR, "Sleep failed", e);
             }
         }
     }

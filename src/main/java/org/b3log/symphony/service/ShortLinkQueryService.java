@@ -131,7 +131,7 @@ public class ShortLinkQueryService {
 
                 matcher.appendTail(contentBuilder);
             } catch (final RepositoryException e) {
-                LOGGER.log(Level.ERROR, "Generates article link error", e);
+                LOGGER.log(Level.ERROR, "Generates article link failed", e);
             }
 
             return contentBuilder.toString();

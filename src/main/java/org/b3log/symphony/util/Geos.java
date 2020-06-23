@@ -110,7 +110,7 @@ public final class Geos {
                 try {
                     conn.disconnect();
                 } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Close HTTP connection error", e);
+                    LOGGER.log(Level.ERROR, "Close HTTP connection failed", e);
                 }
             }
         }
@@ -159,7 +159,7 @@ public final class Geos {
                 try {
                     conn.disconnect();
                 } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Close HTTP connection error", e);
+                    LOGGER.log(Level.ERROR, "Close HTTP connection failed", e);
                 }
             }
         }

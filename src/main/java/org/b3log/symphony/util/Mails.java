@@ -271,7 +271,7 @@ public final class Mails {
 
                             LOGGER.info("Sent [" + batch.size() + "] mails");
                         } catch (final Exception e) {
-                            LOGGER.log(Level.ERROR, "Send mail error", e);
+                            LOGGER.log(Level.ERROR, "Send mail failed", e);
                         }
                     }
 
@@ -301,12 +301,12 @@ public final class Mails {
 
                         LOGGER.info("Sent [" + batch.size() + "] mails");
                     } catch (final Exception e) {
-                        LOGGER.log(Level.ERROR, "Send mail error", e);
+                        LOGGER.log(Level.ERROR, "Send mail failed", e);
                     }
                 }
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Batch send mail error", e);
+            LOGGER.log(Level.ERROR, "Batch send mail failed", e);
         }
     }
 
@@ -601,7 +601,7 @@ final class MailSender implements java.io.Serializable {
             LOGGER.debug(html);
 
         } catch (Exception e) {
-            LOGGER.log(Level.ERROR, "Send mail error", e);
+            LOGGER.log(Level.ERROR, "Send mail failed", e);
         }
     }
 

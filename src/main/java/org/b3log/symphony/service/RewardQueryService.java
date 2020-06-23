@@ -68,7 +68,7 @@ public class RewardQueryService {
         try {
             return rewardRepository.count(query);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Rewarded count error", e);
+            LOGGER.log(Level.ERROR, "Rewarded count failed", e);
 
             return 0;
         }
@@ -94,7 +94,7 @@ public class RewardQueryService {
         try {
             return 0 != rewardRepository.count(query);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Determines reward error", e);
+            LOGGER.log(Level.ERROR, "Determines reward failed", e);
 
             return false;
         }

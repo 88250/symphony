@@ -118,7 +118,7 @@ public class PointtransferQueryService {
         try {
             return pointtransferRepository.getList(query);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets latest pointtransfers error", e);
+            LOGGER.log(Level.ERROR, "Gets latest pointtransfers failed", e);
         }
         return ret;
     }
@@ -148,7 +148,7 @@ public class PointtransferQueryService {
                 ret.add(user);
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets top balance users error", e);
+            LOGGER.log(Level.ERROR, "Gets top balance users failed", e);
         }
         return ret;
     }
@@ -178,7 +178,7 @@ public class PointtransferQueryService {
                 ret.add(user);
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets top consumption users error", e);
+            LOGGER.log(Level.ERROR, "Gets top consumption users failed", e);
         }
         return ret;
     }

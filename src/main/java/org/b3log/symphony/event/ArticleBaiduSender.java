@@ -105,7 +105,7 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
 
             sendToBaidu(articlePermalink);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Sends the article to Baidu error", e);
+            LOGGER.log(Level.ERROR, "Sends the article to Baidu failed", e);
         }
     }
 

@@ -118,7 +118,7 @@ public class ActivityQueryService {
                 ret.add(user);
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets top eating snake users error", e);
+            LOGGER.log(Level.ERROR, "Gets top eating snake users failed", e);
         }
 
         return ret;
@@ -154,7 +154,7 @@ public class ActivityQueryService {
                 ret.add(user);
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets top eating snake users error", e);
+            LOGGER.log(Level.ERROR, "Gets top eating snake users failed", e);
         }
 
         return ret;
@@ -184,7 +184,7 @@ public class ActivityQueryService {
                 ret.add(user);
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets top checkin users error", e);
+            LOGGER.log(Level.ERROR, "Gets top checkin users failed", e);
         }
         return ret;
     }

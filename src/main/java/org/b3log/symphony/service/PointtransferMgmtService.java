@@ -122,7 +122,7 @@ public class PointtransferMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Transfer [fromId=" + fromId + ", toId=" + toId + ", sum=" + sum +
-                    ", type=" + type + ", dataId=" + dataId + ", memo=" + memo + "] error", e);
+                    ", type=" + type + ", dataId=" + dataId + ", memo=" + memo + "] failed", e);
 
             return null;
         }

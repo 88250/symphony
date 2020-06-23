@@ -350,7 +350,7 @@ public class ActivityMgmtService {
             livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_ACTIVITY);
             return sum;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Checkin streak error", e);
+            LOGGER.log(Level.ERROR, "Checkin streak failed", e);
             return Integer.MIN_VALUE;
         }
     }

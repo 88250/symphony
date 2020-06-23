@@ -287,7 +287,7 @@ public class UserQueryService {
                 return u1Name.compareTo(u2Name);
             });
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Loads usernames error", e);
+            LOGGER.log(Level.ERROR, "Loads usernames failed", e);
         }
     }
 
@@ -634,7 +634,7 @@ public class UserQueryService {
         try {
             result = userRepository.get(query);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets users by city error", e);
+            LOGGER.log(Level.ERROR, "Gets users by city failed", e);
             return null;
         }
 

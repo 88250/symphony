@@ -107,7 +107,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Get template [dir=" + templateDirName + ", name=" + templateName + "] error", e);
+            LOGGER.log(Level.ERROR, "Get template [dir=" + templateDirName + ", name=" + templateName + "] failed", e);
 
             return null;
         }

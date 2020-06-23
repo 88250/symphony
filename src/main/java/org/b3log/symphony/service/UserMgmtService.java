@@ -573,7 +573,7 @@ public class UserMgmtService {
                         trans.rollback();
                     }
 
-                    LOGGER.log(Level.ERROR, "Defeat others error", e);
+                    LOGGER.log(Level.ERROR, "Defeat others failed", e);
                 }
 
                 final JSONObject notification = new JSONObject();

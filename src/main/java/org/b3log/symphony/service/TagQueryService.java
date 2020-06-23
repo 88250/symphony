@@ -262,7 +262,7 @@ public class TagQueryService {
             return tagRepository.getList(new Query().setFilter(new PropertyFilter(Tag.TAG_STATUS, FilterOperator.NOT_EQUAL, Tag.TAG_STATUS_C_VALID))).
                     stream().map(record -> record.optString(Tag.TAG_TITLE)).collect(Collectors.toList());
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets invalid tags error", e);
+            LOGGER.log(Level.ERROR, "Gets invalid tags failed", e);
 
             return Collections.emptyList();
         }

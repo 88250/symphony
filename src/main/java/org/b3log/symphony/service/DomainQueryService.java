@@ -147,7 +147,7 @@ public class DomainQueryService {
                 ret.add(tag);
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets domain [id=" + domainId + "] tags error", e);
+            LOGGER.log(Level.ERROR, "Gets domain [id=" + domainId + "] tags failed", e);
         }
         return ret;
     }

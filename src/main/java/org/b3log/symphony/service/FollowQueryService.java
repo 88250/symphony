@@ -398,7 +398,7 @@ public class FollowQueryService {
             try {
                 return followRepository.count(query);
             } catch (final RepositoryException e) {
-                LOGGER.log(Level.ERROR, "Counts following count error", e);
+                LOGGER.log(Level.ERROR, "Counts following count failed", e);
                 return 0;
             }
         } finally {
@@ -421,7 +421,7 @@ public class FollowQueryService {
         try {
             return followRepository.count(query);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Counts follower count error", e);
+            LOGGER.log(Level.ERROR, "Counts follower count failed", e);
             return 0;
         }
     }

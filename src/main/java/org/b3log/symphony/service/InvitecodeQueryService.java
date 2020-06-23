@@ -92,7 +92,7 @@ public class InvitecodeQueryService {
         try {
             return invitecodeRepository.getFirst(query);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets invitecode error", e);
+            LOGGER.log(Level.ERROR, "Gets invitecode failed", e);
             return null;
         }
     }
