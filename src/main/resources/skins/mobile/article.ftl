@@ -387,12 +387,10 @@
                         <ul class="module-list">
                             <#list sideRelevantArticles as relevantArticle>
                             <li<#if !relevantArticle_has_next> class="last"</#if>>
-                                <#if "someone" != relevantArticle.articleAuthorName>
                                 <a rel="nofollow" 
-                               href="${servePath}/member/${relevantArticle.articleAuthorName}"></#if>
-                                    <span class="avatar-small slogan"
-                                          style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"></span>
-                                    <#if "someone" != relevantArticle.articleAuthorName></a></#if>
+                               href="${servePath}/member/${relevantArticle.articleAuthorName}">
+                                    <span class="avatar-small slogan" style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"></span>
+                                </a>
                                 <a rel="nofollow" class="title" href="${servePath}${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                             </li>
                             </#list>
@@ -411,12 +409,10 @@
                         <ul class="module-list">
                             <#list sideRandomArticles as randomArticle>
                             <li<#if !randomArticle_has_next> class="last"</#if>>
-                                <#if "someone" != randomArticle.articleAuthorName>
                                 <a  rel="nofollow"
-                                href="${servePath}/member/${randomArticle.articleAuthorName}"></#if>
-                                    <span class="avatar-small slogan"
-                                          style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
-                                    <#if "someone" != randomArticle.articleAuthorName></a></#if>
+                                href="${servePath}/member/${randomArticle.articleAuthorName}">
+                                    <span class="avatar-small slogan" style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
+                                </a>
                                 <a class="title" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                             </li>
                             </#list>

@@ -24,11 +24,10 @@
     <#list atNotifications as notification>
     <li class="comment-list-item fn-flex<#if notification.hasRead> read</#if>">
         <#if 2 == notification.dataType>
-            <#if "someone" != notification.authorName>
             <a rel="nofollow" href="${servePath}/member/${notification.authorName}"
-               title="${notification.authorName}"></#if>
+               title="${notification.authorName}">
                 <div class="avatar" style="background-image:url('${notification.thumbnailURL}')"></div>
-            <#if "someone" != notification.authorName></a></#if>
+            </a>
             <#if !notification.atInArticle>
             <div class="fn-flex-1">
                 <div>

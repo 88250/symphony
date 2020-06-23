@@ -42,9 +42,8 @@
                     <div class="ft-smaller">
                     <span class="ft-fade">${article.timeAgo}</span>
                     <#if "" != article.articleLatestCmterName>
-                    <span class="ft-fade">•&nbsp;${latestCmtFromLabel}</span> 
-                    <#if article.articleLatestCmterName != 'someone'>
-                    <a rel="nofollow" class="ft-gray" href="${servePath}/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleLatestCmterName != 'someone'></a><#else></span></#if>
+                    <span class="ft-fade">•&nbsp;${latestCmtFromLabel}</span>
+                    <a rel="nofollow" class="ft-gray" href="${servePath}/member/${article.articleLatestCmterName}">${article.articleLatestCmterName}</a>
                     </#if>
                     </div>
                 </div>

@@ -39,13 +39,10 @@
         <#if !(paginationPageCount?? && paginationPageCount!=0 && paginationPageCount!=1) && comment_index == userHomeComments?size - 1>
             last</#if>">
             <div>
-            <#if comment.commentArticleAuthorName != "someone">
             <a target="_blank" class="tooltipped tooltipped-n" rel="nofollow" href="${servePath}/member/${comment.commentArticleAuthorName}"
-               aria-label="${comment.commentArticleAuthorName}"></#if>
+               aria-label="${comment.commentArticleAuthorName}">
                 <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}')"></div>
-            <#if comment.commentArticleAuthorName != "someone">
             </a>
-            </#if>
             </div>
             <div class="fn-flex-1">
                 <div class="fn-flex">

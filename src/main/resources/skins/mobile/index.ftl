@@ -40,12 +40,11 @@
                         <ul class="module-list">
                             <#list recentArticles as article>
                             <li<#if !article_has_next> class="last"</#if>>
-                                <#if "someone" != article.articleAuthorName>
-                                <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
+                                <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}">
                                     <span class="avatar-small tooltipped tooltipped-se slogan"
                                           aria-label="${article.articleAuthorName}"
                                           style="background-image:url('${article.articleAuthorThumbnailURL20}')"></span>
-                                    <#if "someone" != article.articleAuthorName></a></#if>
+                                </a>
                                 <a rel="nofollow" class="title fn-ellipsis" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                                 <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}"><#if article.articleViewCount < 1000>
                                     ${article.articleViewCount}<#else>${article.articleViewCntDisplayFormat}</#if></a>
@@ -62,12 +61,11 @@
                         <ul class="module-list">
                             <#list perfectArticles as article>
                             <li<#if !article_has_next> class="last"</#if>>
-                                <#if "someone" != article.articleAuthorName>
-                                <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
+                                <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}">
                                     <span class="avatar-small tooltipped tooltipped-se slogan"
                                           aria-label="${article.articleAuthorName}"
                                           style="background-image:url('${article.articleAuthorThumbnailURL20}')"></span>
-                                    <#if "someone" != article.articleAuthorName></a></#if>
+                                </a>
                                 <a rel="nofollow" class="title fn-ellipsis" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                                 <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
                             </li>
