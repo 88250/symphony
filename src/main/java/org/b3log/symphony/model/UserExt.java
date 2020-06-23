@@ -28,7 +28,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.16.0.1, Jan 10, 2019
+ * @version 2.16.0.2, Jun 23, 2020
  * @see org.b3log.latke.model.User
  * @since 0.2.0
  */
@@ -581,7 +581,6 @@ public final class UserExt {
         if (2 == hex.length()) {
             final String a1 = hex.substring(0, 1);
             final String a2 = hex.substring(1);
-
             return a1 + a1 + a1 + a2 + a2 + a2;
         }
 
@@ -589,7 +588,6 @@ public final class UserExt {
             final String a1 = hex.substring(0, 1);
             final String a2 = hex.substring(1, 2);
             final String a3 = hex.substring(2);
-
             return a1 + a1 + a2 + a2 + a3 + a3;
         }
 
@@ -598,7 +596,6 @@ public final class UserExt {
             final String a2 = hex.substring(1, 2);
             final String a3 = hex.substring(2, 3);
             final String a4 = hex.substring(3);
-
             return a1 + a2 + a3 + a4 + a3 + a4;
         }
 
@@ -608,14 +605,12 @@ public final class UserExt {
             final String a3 = hex.substring(2, 3);
             final String a4 = hex.substring(3, 4);
             final String a5 = hex.substring(4);
-
             return a1 + a2 + a3 + a4 + a5 + a5;
         }
 
         if (6 == hex.length()) {
             return hex;
         }
-
         return hex.substring(0, 6);
     }
 
@@ -633,7 +628,6 @@ public final class UserExt {
         }
 
         final String domain = StringUtils.substringAfter(email, "@");
-
         return StringUtils.containsIgnoreCase(whitelistMailDomains, domain);
     }
 
@@ -645,13 +639,11 @@ public final class UserExt {
      */
     public static boolean isReservedUserName(final String userName) {
         for (final String reservedUserName : Symphonys.RESERVED_USER_NAMES) {
-            if (StringUtils.equalsIgnoreCase(userName, reservedUserName)) {
+            if (StringUtils.containsIgnoreCase(userName, reservedUserName)) {
                 return true;
             }
         }
-
-        return StringUtils.containsIgnoreCase(userName, UserExt.ANONYMOUS_USER_NAME);
-
+        return false;
     }
 
     /**

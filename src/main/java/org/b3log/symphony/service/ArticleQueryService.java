@@ -63,7 +63,7 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.28.2.1, Mar 10, 2020
+ * @version 2.28.2.2, Jun 23, 2020
  * @since 0.2.0
  */
 @Service
@@ -1587,20 +1587,17 @@ public class ArticleQueryService {
     private void genArticleAuthor(final JSONObject article) throws RepositoryException {
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
-        final JSONObject author = userRepository.get(authorId);
-        article.put(Article.ARTICLE_T_AUTHOR, author);
-
-        if (Article.ARTICLE_ANONYMOUS_C_ANONYMOUS == article.optInt(Article.ARTICLE_ANONYMOUS)) {
-            article.put(Article.ARTICLE_T_AUTHOR_NAME, UserExt.ANONYMOUS_USER_NAME);
-            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "210", avatarQueryService.getDefaultAvatarURL("210"));
-            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "48", avatarQueryService.getDefaultAvatarURL("48"));
-            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "20", avatarQueryService.getDefaultAvatarURL("20"));
+        JSONObject author;
+        if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
+            author = userRepository.get(authorId);
         } else {
-            article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
-            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "210", avatarQueryService.getAvatarURLByUser(author, "210"));
-            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "48", avatarQueryService.getAvatarURLByUser(author, "48"));
-            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "20", avatarQueryService.getAvatarURLByUser(author, "20"));
+            author = userRepository.getAnonymousUser();
         }
+        article.put(Article.ARTICLE_T_AUTHOR, author);
+        article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "210", avatarQueryService.getAvatarURLByUser(author, "210"));
+        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "48", avatarQueryService.getAvatarURLByUser(author, "48"));
+        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL + "20", avatarQueryService.getAvatarURLByUser(author, "20"));
     }
 
     /**

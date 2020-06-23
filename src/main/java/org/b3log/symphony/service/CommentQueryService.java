@@ -49,7 +49,7 @@ import java.util.concurrent.TimeUnit;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.2.7, May 12, 2019
+ * @version 2.12.2.8, Jun 23, 2020
  * @since 0.2.0
  */
 @Service
@@ -524,18 +524,17 @@ public class CommentQueryService {
                 comment.put(Comment.COMMENT_T_COMMENTER, commenter);
 
                 final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-                final JSONObject articleAuthor = userRepository.get(articleAuthorId);
-                final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
+                JSONObject articleAuthor;
                 if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
-                    comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, articleAuthorName);
-                    comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, "/member/" + articleAuthor.optString(User.USER_NAME));
-                    final String articleAuthorThumbnailURL = avatarQueryService.getAvatarURLByUser(articleAuthor, "48");
-                    comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, articleAuthorThumbnailURL);
+                    articleAuthor = userRepository.get(articleAuthorId);
                 } else {
-                    comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, UserExt.ANONYMOUS_USER_NAME);
-                    comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, "");
-                    comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, avatarQueryService.getDefaultAvatarURL("48"));
+                    articleAuthor = userRepository.getAnonymousUser();
                 }
+                final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
+                comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, articleAuthorName);
+                comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, "/member/" + articleAuthor.optString(User.USER_NAME));
+                final String articleAuthorThumbnailURL = avatarQueryService.getAvatarURLByUser(articleAuthor, "48");
+                comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, articleAuthorThumbnailURL);
 
                 final String commentId = comment.optString(Keys.OBJECT_ID);
                 final int cmtViewMode = UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL;
@@ -802,20 +801,18 @@ public class CommentQueryService {
             comment.put(Comment.COMMENT_CREATE_TIME, createDate);
             comment.put(Comment.COMMENT_CREATE_TIME_STR, DateFormatUtils.format(createDate, "yyyy-MM-dd HH:mm:ss"));
 
-            final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
-            final JSONObject author = userRepository.get(authorId);
-
-            comment.put(Comment.COMMENT_T_COMMENTER, author);
+            JSONObject author;
             if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == comment.optInt(Comment.COMMENT_ANONYMOUS)) {
-                comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));
-                comment.put(Comment.COMMENT_T_AUTHOR_URL, author.optString(User.USER_URL));
-                final String thumbnailURL = avatarQueryService.getAvatarURLByUser(author, "48");
-                comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
+                final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+                author = userRepository.get(authorId);
             } else {
-                comment.put(Comment.COMMENT_T_AUTHOR_NAME, UserExt.ANONYMOUS_USER_NAME);
-                comment.put(Comment.COMMENT_T_AUTHOR_URL, "");
-                comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getDefaultAvatarURL("48"));
+                author = userRepository.getAnonymousUser();
             }
+            comment.put(Comment.COMMENT_T_COMMENTER, author);
+            comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+            comment.put(Comment.COMMENT_T_AUTHOR_URL, author.optString(User.USER_URL));
+            final String thumbnailURL = avatarQueryService.getAvatarURLByUser(author, "48");
+            comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
             processCommentContent(comment);
         } finally {

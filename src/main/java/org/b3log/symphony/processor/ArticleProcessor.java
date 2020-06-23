@@ -593,18 +593,17 @@ public class ArticleProcessor {
         dataModelService.fillHeaderAndFooter(context, dataModel);
 
         final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-        final JSONObject author = userQueryService.getUser(articleAuthorId);
-        Escapes.escapeHTML(author);
-
+        JSONObject author;
         if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
-            article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
-            article.put(Article.ARTICLE_T_AUTHOR_URL, author.optString(User.USER_URL));
-            article.put(Article.ARTICLE_T_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
+            author = userQueryService.getUser(articleAuthorId);
         } else {
-            article.put(Article.ARTICLE_T_AUTHOR_NAME, UserExt.ANONYMOUS_USER_NAME);
-            article.put(Article.ARTICLE_T_AUTHOR_URL, "");
-            article.put(Article.ARTICLE_T_AUTHOR_INTRO, "");
+            author = userQueryService.getAnonymousUser();
         }
+        Escapes.escapeHTML(author);
+        article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+        article.put(Article.ARTICLE_T_AUTHOR_URL, author.optString(User.USER_URL));
+        article.put(Article.ARTICLE_T_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
+
         dataModel.put(Article.ARTICLE, article);
 
         article.put(Common.IS_MY_ARTICLE, false);

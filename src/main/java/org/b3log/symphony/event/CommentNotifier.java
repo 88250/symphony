@@ -48,7 +48,7 @@ import java.util.Set;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.13.0, Apr 11, 2019
+ * @version 1.7.13.1, Jun 23, 2020
  * @since 0.2.0
  */
 @Singleton
@@ -147,7 +147,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final String commenterId = originalComment.optString(Comment.COMMENT_AUTHOR_ID);
 
             final String commentContent = originalComment.optString(Comment.COMMENT_CONTENT);
-            final JSONObject commenter = userQueryService.getUser(commenterId);
+            JSONObject commenter;
+            if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == originalComment.optInt(Comment.COMMENT_ANONYMOUS)) {
+                commenter = userQueryService.getUser(commenterId);
+            } else {
+                commenter = userQueryService.getAnonymousUser();
+            }
             final String commenterName = commenter.optString(User.USER_NAME);
 
             // 0. Data channel (WebSocket)
@@ -195,19 +200,15 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 }
             }
 
-            if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == originalComment.optInt(Comment.COMMENT_ANONYMOUS)) {
-                chData.put(Comment.COMMENT_T_AUTHOR_NAME, commenterName);
-                chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(commenter, "48"));
-            } else {
-                chData.put(Comment.COMMENT_T_AUTHOR_NAME, UserExt.ANONYMOUS_USER_NAME);
-                chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getDefaultAvatarURL("48"));
-            }
+
+            chData.put(Comment.COMMENT_T_AUTHOR_NAME, commenterName);
+            chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(commenter, "48"));
+
 
             chData.put(Common.TIME_AGO, langPropsService.get("justNowLabel"));
             chData.put(Comment.COMMENT_CREATE_TIME_STR, DateFormatUtils.format(chData.optLong(Comment.COMMENT_CREATE_TIME), "yyyy-MM-dd HH:mm:ss"));
             String thankTemplate = langPropsService.get("thankConfirmLabel");
-            thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.POINT_THANK_COMMENT))
-                    .replace("{user}", commenterName);
+            thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.POINT_THANK_COMMENT)).replace("{user}", commenterName);
             chData.put(Comment.COMMENT_T_THANK_LABEL, thankTemplate);
             String cc = shortLinkQueryService.linkArticle(commentContent);
             cc = Emotions.toAliases(cc);
