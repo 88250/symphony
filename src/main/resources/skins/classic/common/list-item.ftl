@@ -62,7 +62,7 @@
                     </#if>
                     <br>
                     <#if "" != article.articleLatestCmterName>
-                        <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"></#if><span class="author">${article.articleLatestCmterName}</span></a>
+                        <a rel="nofollow" class="author" href="${servePath}/member/${article.articleLatestCmterName}"><span class="author">${article.articleLatestCmterName}</span></a>
                         ${article.cmtTimeAgo}${cmtLabel}
                     </#if>
                 </div>

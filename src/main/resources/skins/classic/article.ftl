@@ -66,8 +66,7 @@
                     <a rel="author" href="${servePath}/member/${article.articleAuthorName}"><div
                         class="avatar-mid tooltipped tooltipped-se" aria-label="${article.articleAuthorName}" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div></a>
                     <div class="fn-flex-1 fn-ellipsis">
-                        <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-gray"></#if><strong class="ft-gray">${article.articleAuthorName}</strong></a>
-
+                        <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-gray"><strong class="ft-gray">${article.articleAuthorName}</strong></a>
                         <#if 0 == article.articleAuthor.userUAStatus>
                             <span id="articltVia" class="ft-fade" data-ua="${article.articleUA}"></span>
                         </#if>
