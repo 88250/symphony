@@ -612,29 +612,16 @@ var Comment = {
           var data = comments[i]
 
           template += '<li><div class="fn-flex">'
-
-          if (data.commentAuthorName !== 'someone') {
-            template += '<a rel="nofollow" href="/member/' +
-              data.commentAuthorName + '">'
-          }
+          template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">'
           template += '<div class="avatar tooltipped tooltipped-se" aria-label="' +
             data.commentAuthorName + '" style="background-image:url('
             + data.commentAuthorThumbnailURL + ')"></div>'
-          if (data.commentAuthorName !== 'someone') {
-            template += '</a>'
-          }
+          template += '</a>'
 
-          template += '<div class="fn-flex-1">'
-            + '<div class="comment-info ft-smaller">'
-
-          if (data.commentAuthorName !== 'someone') {
-            template += '<a class="ft-gray" rel="nofollow" href="/member/' +
-              data.commentAuthorName + '">'
-          }
+          template += '<div class="fn-flex-1"><div class="comment-info ft-smaller">'
+          template += '<a class="ft-gray" rel="nofollow" href="/member/' + data.commentAuthorName + '">'
           template += data.commentAuthorName
-          if (data.commentAuthorName !== 'someone') {
-            template += '</a>'
-          }
+          template += '</a>'
 
           template += '<span class="ft-fade"> • ' + data.timeAgo
           if (data.rewardedCnt > 0) {
