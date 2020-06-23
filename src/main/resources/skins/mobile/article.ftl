@@ -122,13 +122,11 @@
                     </a>
                 </h1>
                 <div class="article-info">
-                    <#if article.articleAnonymous == 0>
                     <a rel="author" href="${servePath}/member/${article.articleAuthorName}"
-                       title="${article.articleAuthorName}"></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
+                       title="${article.articleAuthorName}"><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div></a>
                     <div class="article-params">
-                        <#if article.articleAnonymous == 0>
                         <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-gray"
-                           title="${article.articleAuthorName}"></#if><strong>${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
+                           title="${article.articleAuthorName}"><strong>${article.articleAuthorName}</strong></a>
                         <span class="ft-gray">
                         &nbsp;•&nbsp;
                         <a rel="nofollow" class="ft-gray" href="#comments">

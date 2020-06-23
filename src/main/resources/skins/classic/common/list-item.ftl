@@ -49,19 +49,15 @@
     <div class="fn-flex">
         <div class="fn-flex-1">
             <div class="fn-flex">
-                <#if article.articleAnonymous == 0>
-                    <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if><div
-                    class="avatar"
-                    style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
+                <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"><div
+                    class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div></a>
 
                 <div class="fn-ellipsis ft-fade ft-smaller list-info">
-                    <#if article.articleAnonymous == 0>
-                        <a rel="nofollow" class="author"
-                           href="${servePath}/member/${article.articleAuthorName}"></#if>
+                    <a rel="nofollow" class="author" href="${servePath}/member/${article.articleAuthorName}">
                     ${article.articleAuthorName}
-                    <#if article.articleAnonymous == 0></a></#if>
+                    </a>
 
-                    <#if article.articleAuthor.userIntro != '' && article.articleAnonymous == 0>
+                    <#if article.articleAuthor.userIntro != ''>
                         - ${article.articleAuthor.userIntro}
                     </#if>
                     <br>

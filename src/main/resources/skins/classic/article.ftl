@@ -63,12 +63,10 @@
         <div class="article-body">
             <div class="wrapper">
                 <div class="article-info fn-flex">
-                    <#if article.articleAnonymous == 0>
-                        <a rel="author" href="${servePath}/member/${article.articleAuthorName}"></#if><div
-                        class="avatar-mid tooltipped tooltipped-se" aria-label="${article.articleAuthorName}" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
+                    <a rel="author" href="${servePath}/member/${article.articleAuthorName}"><div
+                        class="avatar-mid tooltipped tooltipped-se" aria-label="${article.articleAuthorName}" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div></a>
                     <div class="fn-flex-1 fn-ellipsis">
-                        <#if article.articleAnonymous == 0>
-                            <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-gray"></#if><strong class="ft-gray">${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
+                        <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-gray"></#if><strong class="ft-gray">${article.articleAuthorName}</strong></a>
 
                         <#if 0 == article.articleAuthor.userUAStatus>
                             <span id="articltVia" class="ft-fade" data-ua="${article.articleUA}"></span>
@@ -103,7 +101,7 @@
                             </#if>
                              &nbsp;•&nbsp;
                         ${article.timeAgo}
-                                <#if "" != article.articleCity && article.articleAnonymous == 0>
+                                <#if "" != article.articleCity>
                                 &nbsp;•&nbsp; <a href="${servePath}/city/${article.articleCity}" target="_blank" rel="nofollow"><span class="ft-green">${article.articleCity}</span></a>
                                 </#if>
                             </span>
