@@ -43,7 +43,7 @@ import java.util.Set;
  * Initialization management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.3, Jul 11, 2019
+ * @version 1.2.2.4, Jun 23, 2020
  * @since 1.8.0
  */
 @Service
@@ -638,13 +638,25 @@ public class InitMgmtService {
             comBot.put(User.USER_EMAIL, UserExt.COM_BOT_EMAIL);
             comBot.put(User.USER_NAME, UserExt.COM_BOT_NAME);
             comBot.put(User.USER_PASSWORD, DigestUtils.md5Hex(String.valueOf(new Random().nextInt())));
-            comBot.put(UserExt.USER_LANGUAGE, "en_US");
+            comBot.put(UserExt.USER_LANGUAGE, DEFAULT_LANG);
             comBot.put(UserExt.USER_GUIDE_STEP, UserExt.USER_GUIDE_STEP_FIN);
             comBot.put(User.USER_ROLE, Role.ROLE_ID_C_DEFAULT);
             comBot.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             userMgmtService.addUser(comBot);
 
-            LOGGER.info("Initialized admin user");
+            // Init community anonymous user placeholder
+            final JSONObject someone = new JSONObject();
+            someone.put(User.USER_EMAIL, UserExt.ANONYMOUS_USER_NAME + UserExt.USER_BUILTIN_EMAIL_SUFFIX);
+            someone.put(User.USER_NAME, UserExt.ANONYMOUS_USER_NAME);
+            someone.put(UserExt.USER_NICKNAME, UserExt.ANONYMOUS_USER_NAME);
+            someone.put(User.USER_PASSWORD, DigestUtils.md5Hex(String.valueOf(new Random().nextInt())));
+            someone.put(UserExt.USER_LANGUAGE, DEFAULT_LANG);
+            someone.put(UserExt.USER_GUIDE_STEP, UserExt.USER_GUIDE_STEP_FIN);
+            someone.put(User.USER_ROLE, Role.ROLE_ID_C_DEFAULT);
+            someone.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
+            userMgmtService.addUser(someone);
+
+            LOGGER.info("Initialized system users");
 
             // Add tags
             String tagTitle = Symphonys.SYS_ANNOUNCE_TAG;

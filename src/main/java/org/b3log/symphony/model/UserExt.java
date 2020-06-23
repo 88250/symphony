@@ -426,11 +426,6 @@ public final class UserExt {
      */
     public static final String ANONYMOUS_USER_NAME = "someone";
 
-    /**
-     * Anonymous user id.
-     */
-    public static final String ANONYMOUS_USER_ID = "0";
-
     //// Status constants
     /**
      * User status - valid.

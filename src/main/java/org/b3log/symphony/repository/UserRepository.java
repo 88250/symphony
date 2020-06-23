@@ -24,6 +24,7 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.cache.UserCache;
 import org.b3log.symphony.model.Role;
+import org.b3log.symphony.model.UserExt;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.List;
  * User repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.2.3, Jun 6, 2019
+ * @version 2.2.0.0, Jun 23, 2020
  * @since 0.2.0
  */
 @Repository
@@ -133,5 +134,15 @@ public class UserRepository extends AbstractRepository {
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the anonymous user.
+     *
+     * @return anonymous user
+     * @throws RepositoryException repository exception
+     */
+    public JSONObject getAnonymousUser() throws RepositoryException {
+        return getByName(UserExt.ANONYMOUS_USER_NAME);
     }
 }

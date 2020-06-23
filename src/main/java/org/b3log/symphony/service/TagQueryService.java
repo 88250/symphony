@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.6, May 12, 2019
+ * @version 1.9.0.7, Jun 23, 2020
  * @since 0.2.0
  */
 @Service
@@ -421,7 +421,6 @@ public class TagQueryService {
      * @return tag creator, for example,      <pre>
      * {
      *     "tagCreatorThumbnailURL": "",
-     *     "tagCreatorThumbnailUpdateTime": 0,
      *     "tagCreatorName": ""
      * }
      * </pre>, returns {@code null} if not found
@@ -437,24 +436,20 @@ public class TagQueryService {
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                 addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
         try {
-            final JSONObject ret = new JSONObject();
+            JSONObject ret;
             final JSONObject creatorTagRelation = userTagRepository.getFirst(query);
             if (null == creatorTagRelation) {
-                LOGGER.log(Level.WARN, "Can't find tag [id=" + tagId + "]'s creator, uses anonymous user instead");
-                ret.put(Tag.TAG_T_CREATOR_NAME, UserExt.ANONYMOUS_USER_NAME);
-                return ret;
+                LOGGER.log(Level.WARN, "Can't find tag [id=" + tagId + "]'s creator, uses admin user instead");
+                final List<JSONObject> admins = userRepository.getAdmins();
+                ret = admins.get(0);
+            } else {
+                final String creatorId = creatorTagRelation.optString(User.USER + '_' + Keys.OBJECT_ID);
+                ret = userRepository.get(creatorId);
             }
 
-            final String creatorId = creatorTagRelation.optString(User.USER + '_' + Keys.OBJECT_ID);
-            if (UserExt.ANONYMOUS_USER_ID.equals(creatorId)) {
-                ret.put(Tag.TAG_T_CREATOR_NAME, UserExt.ANONYMOUS_USER_NAME);
-                return ret;
-            }
-
-            final JSONObject creator = userRepository.get(creatorId);
-            final String thumbnailURL = avatarQueryService.getAvatarURLByUser(creator, "48");
+            final String thumbnailURL = avatarQueryService.getAvatarURLByUser(ret, "48");
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
-            ret.put(Tag.TAG_T_CREATOR_NAME, creator.optString(User.USER_NAME));
+            ret.put(Tag.TAG_T_CREATOR_NAME, ret.optString(User.USER_NAME));
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tag creator failed [tagId=" + tagId + "]", e);
