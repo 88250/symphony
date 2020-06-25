@@ -1947,6 +1947,9 @@ code .dec {
     display: inline-block;
     padding: 0 5px 0 3px;
     vertical-align: middle;
+    svg {
+      margin-top: 2px;
+    }
   }
 
   .offline {
