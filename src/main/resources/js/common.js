@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
- * @version 1.49.0.1, Apr 30, 2020
+ * @version 1.49.1.0, Jun 28, 2020
  */
 
 /**
@@ -660,6 +660,7 @@ var Util = {
         filename: function (name) {
           return name.replace(/\?|\\|\/|:|\||<|>|\*|\[|\]|\s+/g, '-')
         },
+        accept: '.zip,.rar,.7z,.tar,.gzip,.bz2,.jar,.jpg,.jpeg,.png,.gif,.webp,.webm,.bmp,.mp3,.mp4,.wav,.mov,.weba,.mkv',
       },
       placeholder: data.placeholder,
       height: data.height,
