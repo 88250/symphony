@@ -580,19 +580,19 @@ public class SettingsProcessor {
         final String userId = user.optString(Keys.OBJECT_ID);
         user = userQueryService.getUser(userId);
 
-        user.put(UserExt.USER_ONLINE_STATUS, onlineStatus ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_ARTICLE_STATUS, articleStatus ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_COMMENT_STATUS, commentStatus ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_FOLLOWING_USER_STATUS, followingUserStatus ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_FOLLOWING_TAG_STATUS, followingTagStatus ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_FOLLOWING_ARTICLE_STATUS, followingArticleStatus ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_WATCHING_ARTICLE_STATUS, watchingArticleStatus ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_FOLLOWER_STATUS, followerStatus ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_BREEZEMOON_STATUS, breezemoonStatus ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_POINT_STATUS, pointStatus ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_UA_STATUS, uaStatus ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_JOIN_POINT_RANK, userJoinPointRank ? UserExt.USER_JOIN_XXX_C_JOIN : UserExt.USER_JOIN_XXX_C_NOT_JOIN);
-        user.put(UserExt.USER_JOIN_USED_POINT_RANK, userJoinUsedPointRank ? UserExt.USER_JOIN_XXX_C_JOIN : UserExt.USER_JOIN_XXX_C_NOT_JOIN);
+        user.put(UserExt.USER_ONLINE_STATUS, onlineStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_ARTICLE_STATUS, articleStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_COMMENT_STATUS, commentStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_FOLLOWING_USER_STATUS, followingUserStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_FOLLOWING_TAG_STATUS, followingTagStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_FOLLOWING_ARTICLE_STATUS, followingArticleStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_WATCHING_ARTICLE_STATUS, watchingArticleStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_FOLLOWER_STATUS, followerStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_BREEZEMOON_STATUS, breezemoonStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_POINT_STATUS, pointStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_UA_STATUS, uaStatus ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_JOIN_POINT_RANK, userJoinPointRank ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_JOIN_USED_POINT_RANK, userJoinUsedPointRank ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
 
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);

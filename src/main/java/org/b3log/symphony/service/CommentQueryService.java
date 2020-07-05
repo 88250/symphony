@@ -238,7 +238,7 @@ public class CommentQueryService {
             final JSONObject ret = new JSONObject();
 
             final JSONObject commentAuthor = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
-            if (UserExt.USER_XXX_STATUS_C_PRIVATE == commentAuthor.optInt(UserExt.USER_UA_STATUS)) {
+            if (UserExt.USER_XXX_STATUS_C_DISABLED == commentAuthor.optInt(UserExt.USER_UA_STATUS)) {
                 ret.put(Comment.COMMENT_UA, "");
             }
 
@@ -298,7 +298,7 @@ public class CommentQueryService {
                 ret.add(reply);
 
                 final JSONObject commentAuthor = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
-                if (UserExt.USER_XXX_STATUS_C_PRIVATE == commentAuthor.optInt(UserExt.USER_UA_STATUS)) {
+                if (UserExt.USER_XXX_STATUS_C_DISABLED == commentAuthor.optInt(UserExt.USER_UA_STATUS)) {
                     reply.put(Comment.COMMENT_UA, "");
                 }
 

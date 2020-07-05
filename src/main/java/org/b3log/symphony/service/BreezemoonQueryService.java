@@ -357,7 +357,7 @@ public class BreezemoonQueryService {
 
                 final String authorId = bm.optString(Breezemoon.BREEZEMOON_AUTHOR_ID);
                 final JSONObject author = userRepository.get(authorId);
-                if (UserExt.USER_XXX_STATUS_C_PRIVATE == author.optInt(UserExt.USER_BREEZEMOON_STATUS)
+                if (UserExt.USER_XXX_STATUS_C_DISABLED == author.optInt(UserExt.USER_BREEZEMOON_STATUS)
                         && !StringUtils.equals(currentUserId, authorId) && !"admin".equals(currentUserId)) {
                     iterator.remove();
                     continue;

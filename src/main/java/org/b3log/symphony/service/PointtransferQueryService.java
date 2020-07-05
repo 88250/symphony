@@ -133,7 +133,7 @@ public class PointtransferQueryService {
         final List<JSONObject> ret = new ArrayList<>();
         final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).
                 setPage(1, fetchSize).
-                setFilter(new PropertyFilter(UserExt.USER_JOIN_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_JOIN_XXX_C_JOIN));
+                setFilter(new PropertyFilter(UserExt.USER_JOIN_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_XXX_STATUS_C_ENABLED));
         final int moneyUnit = Symphonys.POINT_EXCHANGE_UNIT;
         try {
             final List<JSONObject> users = userRepository.getList(query);
@@ -163,7 +163,7 @@ public class PointtransferQueryService {
         final List<JSONObject> ret = new ArrayList<>();
         final Query query = new Query().addSort(UserExt.USER_USED_POINT, SortDirection.DESCENDING).
                 setPage(1, fetchSize).
-                setFilter(new PropertyFilter(UserExt.USER_JOIN_USED_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_JOIN_XXX_C_JOIN));
+                setFilter(new PropertyFilter(UserExt.USER_JOIN_USED_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_XXX_STATUS_C_ENABLED));
         final int moneyUnit = Symphonys.POINT_EXCHANGE_UNIT;
         try {
             final List<JSONObject> users = userRepository.getList(query);
