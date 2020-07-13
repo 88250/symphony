@@ -40,7 +40,7 @@
 ### 修复缺陷
 
 * [更新帖子内容为空](https://github.com/88250/symphony/issues/6)
-* [一个关于登陆注册的问题](https://github.com/88250/symphony/issues/8)
+* [一个关于登录注册的问题](https://github.com/88250/symphony/issues/8)
 
 ## v3.6.1 / 2020-01-25
 

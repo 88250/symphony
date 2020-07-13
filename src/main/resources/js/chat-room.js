@@ -37,7 +37,7 @@ var ChatRoom = {
       $('.list').height($(window).height() - 173)
     }
 
-    // 没用登陆就不需要编辑起初始化了
+    // 没用登录就不需要编辑器初始化了
     if ($('#chatContent').length === 0) {
       return false
     }
